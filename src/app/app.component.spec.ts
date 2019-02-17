@@ -1,27 +1,42 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, async, fakeAsync } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { initialState } from './store/reducers/data.reducer';
+import { Store, select } from '@ngrx/store';
+import { when } from 'ts-mockito';
+import { of } from 'rxjs';
+
 describe('AppComponent', () => {
+  let mockStore: MockStore<{ count: number }>;
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        AppComponent
+        AppComponent,
       ],
+      providers: [
+        provideMockStore({
+          initialState: initialState,
+        }),
+      ]
     }).compileComponents();
+
+    mockStore = TestBed.get(Store);
+
+    when(mockStore.pipe(select('count'))).thenReturn(of(2));
   }));
-  it('should create the app', async(() => {
+
+  it('should create the app', fakeAsync(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
+
+    // mockStore.setState({ count: 2 });
+
     expect(app).toBeTruthy();
+
+    // mockStore.pipe(select('count'), take(1)).subscribe((count: number) => {
+    //   expect(count).toBe(2);
+    // });
   }));
-  it(`should have as title 'app'`, async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('app');
-  }));
-  it('should render title in a h1 tag', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to app!');
-  }));
+
 });
