@@ -16,7 +16,7 @@ describe('AppComponent', () => {
       ],
       providers: [
         provideMockStore({
-          initialState: initialState,
+          initialState,
         }),
       ]
     }).compileComponents();
