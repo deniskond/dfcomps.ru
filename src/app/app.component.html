@@ -1,7 +1,8 @@
-<button (click)="increment()">Increment</button>
- 
-<div>Current Count: {{ count$ | async }}</div>
+<a class="routing-link" routerLink="/">Главная</a>
+<a class="routing-link" routerLink="/rating">Рейтинг</a>
+<a class="routing-link" routerLink="/teams">Команды</a>
+<a class="routing-link" routerLink="/rules">Правила</a>
+<a class="routing-link" routerLink="/archive">Архив</a>
+<a class="routing-link" routerLink="/movies">Мувики</a>
 
-<button (click)="decrement()">Decrement</button>
-
-<button (click)="reset()">Reset Counter</button>
+<router-outlet></router-outlet>

@@ -1,0 +1,15 @@
+.routing-link {
+    cursor: pointer;
+    color: rgb(57, 38, 118);
+    transition: 0.3s;
+    font-size: 20px;
+    padding: 10px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.routing-link:hover {
+    cursor: pointer;
+    color: rgb(51, 122, 183);
+    text-decoration: underline;
+}
