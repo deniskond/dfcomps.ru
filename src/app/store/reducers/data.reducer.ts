@@ -3,7 +3,7 @@ import { ActionTypes } from '../actions/data.actions';
 
 export const initialState = 0;
 
-export function counterReducer(state = initialState, action: Action) {
+export function counterReducer(state = initialState, action: Action): number {
   switch (action.type) {
     case ActionTypes.Increment:
       return state + 1;
