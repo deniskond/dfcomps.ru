@@ -2,6 +2,6 @@ import { Component } from '@angular/core';
 
 @Component({
     templateUrl: './archive.page.html',
-    styleUrls: ['./archive.page.css']
+    styleUrls: ['./archive.page.less']
 })
 export class ArchivePageComponent {}
