@@ -7,6 +7,7 @@ import { counterReducer } from './store/reducers/data.reducer';
 import { SharedModule } from './modules/shared.module';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from './app.routing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     declarations: [AppComponent],
@@ -15,7 +16,8 @@ import { appRoutes } from './app.routing';
         StoreModule.forRoot({ count: counterReducer }),
         HttpClientModule,
         SharedModule,
-        RouterModule.forRoot(appRoutes)
+        RouterModule.forRoot(appRoutes),
+        BrowserAnimationsModule
     ],
     bootstrap: [AppComponent]
 })
