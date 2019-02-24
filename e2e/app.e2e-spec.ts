@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('mock-store App', () => {
+describe('defrag-ru App', () => {
   let page: AppPage;
 
   beforeEach(() => {
