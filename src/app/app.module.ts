@@ -8,7 +8,7 @@ import { SharedModule } from './modules/shared.module';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from './app.routing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule, MatDividerModule } from '@angular/material';
 
 @NgModule({
     declarations: [AppComponent],
@@ -19,7 +19,8 @@ import { MatButtonModule } from '@angular/material';
         SharedModule,
         RouterModule.forRoot(appRoutes),
         BrowserAnimationsModule,
-        MatButtonModule
+        MatButtonModule,
+        MatDividerModule
     ],
     bootstrap: [AppComponent]
 })

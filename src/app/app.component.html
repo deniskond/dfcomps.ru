@@ -16,13 +16,7 @@
         <meta name="keywords" content="defrag, quake, comps, dfcomps, competitions, турниры" />
         <meta name="description" content="Defrag online competitions" />
         <meta name="copyright" lang="ru" content="Defrag comps" />
-        <!-- <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen" type="text/css">
-        <script src="/js/jquery-1.12.2.min.js" type="text/javascript"></script>
-        <script src="/js/jquery.color-2.1.2.min.js" type="text/javascript"></script>
-        <script src="/js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="/js/main.js" type="text/javascript"></script> -->
         <script type="text/javascript" src="https://vk.com/js/api/share.js?95" charset="windows-1251"></script>
-        <!-- <link rel="stylesheet" type="text/css" href="/css/main.css"> -->
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112074270-1"></script>
         <script>
@@ -38,79 +32,47 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/lib/js/emojione.min.js"></script>
     </head>
     <body>
-        <!-- <? $this->load->view("main/popup"); ?>
-        <? $this->load->view('smiles'); ?> -->
-        <!-- <div
-            class="bg"
-            style="position:fixed;top:0;left:0;width:100%;height:100%;background:url('../assets/images/bg/generation.jpg');background-size:cover;background-position:50%;"
-        ></div> -->
-        <div class="body" style="width:1170px;margin:0 auto;opacity:1;padding: 25px;">
-            <div class="header shadowed" style="position:relative;background:white;height:115px;width:1170px;">
-                <div
-                    class="logo"
-                    style="position:absolute;top:0;left:0;font-family:bebas;color:#392676;font-size:48px;margin-left:15px;margin-top:3px;letter-spacing:1px;"
-                >
-                    <img src="../assets/images/ushastik.png" style="border:1px solid #392676;margin-right:5px;" />
-                    Defrag.ru
-                    <div
-                        style="font-family: elektra;
-    position: absolute;
-    left: 227px;
-    top: 16px;
-    font-size: 16px;
-    width: 257px;
-    line-height: 20px;"
-                    >
-                        Quake 3 Defrag<br />
-                        Competitions
+        <div class="body" style="width:1170px;margin:0 auto;opacity:1;padding: 25px;box-sizing:content-box;">
+            <div class="header shadowed">
+                <div class="header-first-row" style="height: 72px; position: relative;">
+                    <div class="logo">
+                        <img src="../assets/images/ushastik.png" style="border:1px solid #392676;margin-right:5px;" />
+                        <span style="margin-left:8px;">Defrag.ru</span>
+                        <div class="slogan">
+                            Quake 3 Defrag<br />
+                            Competitions
+                        </div>
+                    </div>
+                    <div class="auth" style="position:absolute;right:15px;top:11px;">
+                        <div style="text-align:right;">
+                            <a href="/language/en"><img src="../assets/images/lang/en.png"/></a>
+                            <a href="/language/ru"><img style="margin-left:6px;" src="../assets/images/lang/ru.png"/></a>
+                        </div>
+                        <div style="margin-top:5px;"></div>
                     </div>
                 </div>
-                <div class="auth" style="position:absolute;right:0;top:0;margin-right:15px;margin-top:15px;">
-                    <div style="text-align:right;">
-                        <a href="/language/en"><img src="../assets/images/lang/en.png"/></a>
-                        <a href="/language/ru"><img style="margin-left:3px;" src="../assets/images/lang/ru.png"/></a>
-                    </div>
-                    <div style="margin-top:5px;">
 
+                <mat-divider></mat-divider>
+
+                <div class="header-second-row">
+                    <div style="position:absolute;right:256px;display:flex;height:42px;align-items:center;">
+                        <a href="https://www.twitch.tv/w00deh" style="display: flex;align-items: center;" target="_blank">
+                            <img src="../assets/images/icons/twitch.png" style="width:22px;height:22px;" />
+                            <div style="line-height:15px;margin-left:5px;vertical-align:middle;font-size:15px;">Twitch</div>
+                        </a>
                     </div>
+
+                    <div style="position:absolute;right:152px;display:flex;height:42px;align-items:center;">
+                        <a href="https://www.youtube.com/c/Quake3Defrag" style="display: flex;align-items: center;" target="_blank">
+                            <img src="../assets/images/icons/youtube.png" style="width:25px;height:18px;" />
+                            <div style="line-height:15px;margin-left:5px;vertical-align:middle;font-size:15px;">YouTube</div>
+                        </a>
+                    </div>
+
+                    <button mat-raised-button color="accent" class="download-df-button">
+                        Скачать Defrag
+                    </button>
                 </div>
-                <div class="menu">
-                    <!-- <ul>
-                        <a href="/" style="color:black;"><li class="selected">Home</li></a>
-                        <a href="/rating" style="color:black;"><li style="margin-left:8px;">rating</li></a>
-                        <a href="/teams" style="color:black;"><li style="margin-left:8px;">teams</li></a>
-                        <a href="/rules" style="color:black;"><li style="margin-left:8px;">rules</li></a>
-                        <a href="/archive" style="color:black;"><li style="margin-left:10px;">archive</li></a>
-                        <a href="/movies" style="color:black;"><li class="selected" style="margin-left:10px;">movies</li></a>
-                        <a href="http://defrag.ru/forum" target="_blank" style="color:black;"><li style="margin-left:10px;">forum</li></a>
-                    </ul> -->
-                </div>
-                <div style="position:absolute;right:256px;bottom:0;margin-bottom:0px;height:42px;">
-                    <a href="https://www.twitch.tv/w00deh" target="_blank">
-                        <img src="../assets/images/icons/twitch.png" style="width:22px;height:22px;" /><span
-                            style="line-height:42px;margin-left:5px;vertical-align:middle;"
-                            >Twitch</span
-                        >
-                    </a>
-                </div>
-                <div style="position:absolute;right:158px;bottom:0px;height:42px;">
-                    <a href="https://www.youtube.com/c/Quake3Defrag" target="_blank">
-                        <img src="../assets/images/icons/youtube.png" /><span style="margin-left:5px;line-height:42px;vertical-align:middle;"
-                            >Youtube</span
-                        >
-                    </a>
-                </div>
-                <button mat-raised-button color="accent" style="position: absolute;
-                right: 0;
-                bottom: 0;
-                margin-right: 15px;
-                /* margin-bottom: 8px; */
-                font-size: 14px;
-                height: 35px;
-                /* display: flex; */
-                /* align-items: center; */
-                padding: 10px;
-                padding-top: 0px;">Скачать defrag</button>
             </div>
         </div>
     </body>
