@@ -6,9 +6,9 @@ import { AppComponent } from './app.component';
 import { counterReducer } from './store/reducers/data.reducer';
 import { SharedModule } from './modules/shared.module';
 import { RouterModule } from '@angular/router';
-import { appRoutes } from './app.routing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatDividerModule } from '@angular/material';
+import { MatButtonModule, MatDividerModule, MatTabsModule } from '@angular/material';
+import { appRoutes } from './routing/app.routing';
 
 @NgModule({
     declarations: [AppComponent],
@@ -20,7 +20,8 @@ import { MatButtonModule, MatDividerModule } from '@angular/material';
         RouterModule.forRoot(appRoutes),
         BrowserAnimationsModule,
         MatButtonModule,
-        MatDividerModule
+        MatDividerModule,
+        MatTabsModule
     ],
     bootstrap: [AppComponent]
 })

@@ -1,46 +1,4 @@
-@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
-
-// .routing-link {
-//     cursor: pointer;
-//     color: rgb(57, 38, 118);
-//     transition: 0.3s;
-//     font-size: 20px;
-//     padding: 10px;
-//     font-weight: bold;
-//     display: inline-block;
-
-//     &:hover {
-//         cursor: pointer;
-//         color: rgb(51, 122, 183);
-//         text-decoration: underline;
-//     }
-// }
-
-@font-face {
-    font-family: bebas; /* Гарнитура шрифта */
-    src: url('../assets/fonts/BebasNeue.woff') format('woff'); /* Путь к файлу со шрифтом */
-}
-
-@font-face {
-    font-family: elektra; /* Гарнитура шрифта */
-    src: url('../assets/fonts/ElektraTextPro.woff') format('woff'); /* Путь к файлу со шрифтом */
-}
-
-@font-face {
-    font-family: elektra bold; /* Гарнитура шрифта */
-    src: url('../assets/fonts/ElektraTextPro-Bold.woff') format('woff'); /* Путь к файлу со шрифтом */
-}
-
-@font-face {
-    font-family: orbitron; /* Гарнитура шрифта */
-    src: url('../assets/fonts/Orbitron-Regular.woff') format('woff'); /* Путь к файлу со шрифтом */
-}
-
-// html {
-//     height: 100%;
-// }
-
-body {
+.background {
     margin: 0;
     border: 0;
     font-family: elektra;
@@ -49,6 +7,14 @@ body {
     background-attachment: fixed;
     background-position: 50%;
     min-height: 100vh;
+}
+
+.container {
+    width: 1170px;
+    margin: 0 auto;
+    opacity: 1;
+    padding: 25px;
+    box-sizing: content-box;
 }
 
 .menu {
@@ -115,6 +81,10 @@ a {
 .header {
     position: relative;
     background :white;
-    height:115px;
+    height: 150px;
     width: 1170px;
+}
+
+.navigation-link {
+    user-select: none;
 }

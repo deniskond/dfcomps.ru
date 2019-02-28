@@ -1,79 +1,62 @@
-<!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-<a class="routing-link" routerLink="/">Главная</a>
-<a class="routing-link" routerLink="/rating">Рейтинг</a>
-<a class="routing-link" routerLink="/teams">Команды</a>
-<a class="routing-link" routerLink="/rules">Правила</a>
-<a class="routing-link" routerLink="/archive">Архив</a>
-<a class="routing-link" routerLink="/movies">Мувики</a>
-
-<router-outlet></router-outlet> -->
-
-<html>
-    <head>
-        <title>DF Competitions</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="keywords" content="defrag, quake, comps, dfcomps, competitions, турниры" />
-        <meta name="description" content="Defrag online competitions" />
-        <meta name="copyright" lang="ru" content="Defrag comps" />
-        <script type="text/javascript" src="https://vk.com/js/api/share.js?95" charset="windows-1251"></script>
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112074270-1"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag() {
-                dataLayer.push(arguments);
-            }
-            gtag('js', new Date());
-
-            gtag('config', 'UA-112074270-1');
-        </script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/css/emojione.min.css" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/lib/js/emojione.min.js"></script>
-    </head>
-    <body>
-        <div class="body" style="width:1170px;margin:0 auto;opacity:1;padding: 25px;box-sizing:content-box;">
-            <div class="header shadowed">
-                <div class="header-first-row" style="height: 72px; position: relative;">
-                    <div class="logo">
-                        <img src="../assets/images/ushastik.png" style="border:1px solid #392676;margin-right:5px;" />
-                        <span style="margin-left:8px;">Defrag.ru</span>
-                        <div class="slogan">
-                            Quake 3 Defrag<br />
-                            Competitions
-                        </div>
-                    </div>
-                    <div class="auth" style="position:absolute;right:15px;top:11px;">
-                        <div style="text-align:right;">
-                            <a href="/language/en"><img src="../assets/images/lang/en.png"/></a>
-                            <a href="/language/ru"><img style="margin-left:6px;" src="../assets/images/lang/ru.png"/></a>
-                        </div>
-                        <div style="margin-top:5px;"></div>
+<div class="background">
+    <div class="container">
+        <div class="header shadowed">
+            <div class="header-first-row" style="height: 72px; position: relative;">
+                <div class="logo">
+                    <img src="../assets/images/ushastik.png" style="border:1px solid #392676;margin-right:5px;" />
+                    <span style="margin-left:8px;">Defrag.ru</span>
+                    <div class="slogan">
+                        Quake 3 Defrag<br />
+                        Competitions
                     </div>
                 </div>
-
-                <mat-divider></mat-divider>
-
-                <div class="header-second-row">
-                    <div style="position:absolute;right:256px;display:flex;height:42px;align-items:center;">
-                        <a href="https://www.twitch.tv/w00deh" style="display: flex;align-items: center;" target="_blank">
-                            <img src="../assets/images/icons/twitch.png" style="width:22px;height:22px;" />
-                            <div style="line-height:15px;margin-left:5px;vertical-align:middle;font-size:15px;">Twitch</div>
-                        </a>
+                <div class="auth" style="position:absolute;right:15px;top:11px;">
+                    <div style="text-align:right;">
+                        <a href="/language/en"><img src="../assets/images/lang/en.png"/></a>
+                        <a href="/language/ru"><img style="margin-left:6px;" src="../assets/images/lang/ru.png"/></a>
                     </div>
-
-                    <div style="position:absolute;right:152px;display:flex;height:42px;align-items:center;">
-                        <a href="https://www.youtube.com/c/Quake3Defrag" style="display: flex;align-items: center;" target="_blank">
-                            <img src="../assets/images/icons/youtube.png" style="width:25px;height:18px;" />
-                            <div style="line-height:15px;margin-left:5px;vertical-align:middle;font-size:15px;">YouTube</div>
-                        </a>
-                    </div>
-
-                    <button mat-raised-button color="accent" class="download-df-button">
-                        Скачать Defrag
-                    </button>
+                    <div style="margin-top:5px;"></div>
                 </div>
             </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="header-second-row">
+                <div style="height:50px;">
+                    <nav mat-tab-nav-bar>
+                        <a
+                            *ngFor="let tab of tabs"
+                            mat-tab-link
+                            [active]="activePage === tab.page"
+                            (click)="navigate(tab.page)"
+                            class="navigation-link"
+                            >{{ tab.name }}</a
+                        >
+                    </nav>
+                </div>
+
+                <div style="position:absolute;right:256px;display:flex;height:42px;align-items:center;">
+                    <a href="https://www.twitch.tv/w00deh" style="display: flex;align-items: center;" target="_blank">
+                        <img src="../assets/images/icons/twitch.png" style="width:22px;height:22px;" />
+                        <div style="line-height:15px;margin-left:5px;vertical-align:middle;font-size:15px;">Twitch</div>
+                    </a>
+                </div>
+
+                <div style="position:absolute;right:152px;display:flex;height:42px;align-items:center;">
+                    <a
+                        href="https://www.youtube.com/channel/UCLyl7evRHAOWSfnRSMKLBVQ"
+                        style="display: flex;align-items: center;"
+                        target="_blank"
+                    >
+                        <img src="../assets/images/icons/youtube.png" style="width:25px;height:18px;" />
+                        <div style="line-height:15px;margin-left:5px;vertical-align:middle;font-size:15px;">YouTube</div>
+                    </a>
+                </div>
+
+                <button mat-raised-button color="accent" class="download-df-button">
+                    Скачать Defrag
+                </button>
+            </div>
         </div>
-    </body>
-</html>
+    </div>
+</div>
