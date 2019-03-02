@@ -9,6 +9,13 @@
     min-height: 100vh;
 }
 
+.header {
+    position: relative;
+    background: white;
+    height: 115px;
+    width: 1170px;
+}
+
 .container {
     width: 1170px;
     margin: 0 auto;
@@ -17,25 +24,162 @@
     box-sizing: content-box;
 }
 
-.menu {
-    background: white;
-    width: 100%;
-    height: 42px;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    padding-top: 12px;
-    padding-left: 15px;
-    font-size: 16px;
-    line-height: 19px;
+.header-first-row {
+    height: 72px;
+    position: relative;
 }
 
-.social_link div {
-    color: #1e476b;
-    opacity: 0.8;
+.logo {
+    position: absolute;
+    top: 0;
+    left: 15px;
+    font-family: bebas;
+    color: #392676;
+    font-size: 48px;
+    letter-spacing: 1px;
+    height: 73px;
+    align-items: center;
+    display: flex;
 
-    &:hover {
+    .ushastik {
+        margin-right: 3px;
+        width: 76px;
+        height: 57px;
+    }
+
+    .site-name {
+        margin-left: 8px;
+    }
+
+    .slogan {
+        font-family: elektra;
+        font-size: 16px;
+        width: 257px;
+        line-height: 20px;
+        margin-left: 10px;
+        margin-top: 2px;
+    }
+}
+
+.auth {
+    position: absolute;
+    right: 15px;
+    top: 11px;
+
+    .langs {
+        text-align: right;
+
+        .ru {
+            margin-left: 6px;
+        }
+    }
+}
+
+.social-link {
+    position: absolute;
+    display: flex;
+    height: 42px;
+    align-items: center;
+    top: 73px;
+
+    &_twitch {
+        right: 256px;
+
+        img {
+            width: 22px;
+            height: 22px;
+        }
+    }
+
+    &_youtube {
+        right: 152px;
+
+        img {
+            width: 25px;
+            height: 18px;
+        }
+    }
+
+    a {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+    }
+
+    .link-caption {
+        line-height: 15px;
+        margin-left: 5px;
+        vertical-align: middle;
+        font-size: 15px;
+        color: #1e476b;
+        opacity: 0.8;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+}
+
+.navigation {
+    border-bottom: 0;
+    margin-top: 5px;
+    margin-left: 6px;
+
+    .active {
         opacity: 1;
+    }
+
+    .navigation-link {
+        user-select: none;
+        min-width: 90px;
+        font-family: elektra;
+        font-size: 16px;
+        color: black;
+        height: 32px;
+        padding: 0 12px;
+    
+        &:hover {
+            color: black;
+            opacity: 1;
+        }
+    }
+}
+
+.profile {
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    user-select: none;
+
+    .logged-in-as {
+        color: #333333;
+        font-size: 14px;
+        margin-right: 10px;
+    }
+
+    .profile-links {
+        border-radius: 4px;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        height: 25px;
+        display: flex;
+    
+        .profile-link {
+            border-right: 1px solid rgba(0, 0, 0, 0.12);
+            padding: 0 12px;
+            font-size: 14px;
+            line-height: 26px;
+            cursor: pointer;
+            color: #1e476b;
+            opacity: 0.8;
+    
+            &:hover {
+                opacity: 1;
+            }
+    
+            &:last-child {
+                border: 0;
+            }
+        }
     }
 }
 
@@ -51,92 +195,4 @@
     line-height: 33px;
     font-family: elektra;
     color: #333333;
-}
-
-.shadowed {
-    box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.4);
-}
-
-.slogan {
-    font-family: elektra;
-    font-size: 16px;
-    width: 257px;
-    line-height: 20px;
-    margin-left: 10px;
-    margin-top: 2px;
-}
-
-.logo {
-    position: absolute;
-    top: 0;
-    left: 15px;
-    font-family: bebas;
-    color: #392676;
-    font-size: 48px;
-    letter-spacing: 1px;
-    height: 73px;
-    align-items: center;
-}
-
-.header {
-    position: relative;
-    background :white;
-    height: 115px;
-    width: 1170px;
-}
-
-.navigation-link {
-    user-select: none;
-    min-width: 90px;
-    font-family: elektra;
-    font-size: 16px;
-    color: black;
-    height: 32px;
-    padding: 0 12px;
-
-    &:hover {
-        color: black;
-        opacity: 1;
-    }
-}
-
-nav .active {
-    opacity: 1;
-}
-
-.logged-in-as {
-    color: #333333;
-    font-size: 14px;
-    margin-right: 10px;
-}
-
-.profile {
-    margin-top: 5px;
-    display: flex;
-    align-items: center;
-}
-
-.profile-links {
-    border-radius: 4px; 
-    border: 1px solid rgba(0,0,0,0.12);
-    height: 25px;
-    display: flex;
-
-    .profile-link {
-        border-right: 1px solid rgba(0,0,0,0.12);
-        padding: 0 12px;
-        font-size: 14px;
-        line-height: 26px;
-        cursor: pointer;
-        color: #1e476b;
-        opacity: 0.8;
-    
-        &:hover {
-            opacity: 1;
-        }
-
-        &:last-child {
-            border: 0;
-        }
-    }
 }

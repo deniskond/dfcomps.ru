@@ -1,19 +1,19 @@
 <div class="background">
     <div class="container">
         <div class="header shadowed">
-            <div class="header-first-row" style="height: 72px; position: relative;">
-                <div class="logo" style="display: flex; ">
-                    <img src="../assets/images/ushastik.png" style="margin-right:3px;width:76px;height:57px;" />
-                    <div style="margin-left:8px;">Defrag.ru</div>
+            <div class="header-first-row">
+                <div class="logo">
+                    <img class="ushastik" src="../assets/images/ushastik.png" />
+                    <div class="site-name">Defrag.ru</div>
                     <div class="slogan">
                         Quake 3 Defrag<br />
                         Competitions
                     </div>
                 </div>
-                <div class="auth" style="position:absolute;right:15px;top:11px;">
-                    <div style="text-align:right;">
-                        <a href="/language/en"><img src="../assets/images/lang/en.png"/></a>
-                        <a href="/language/ru"><img style="margin-left:6px;" src="../assets/images/lang/ru.png"/></a>
+                <div class="auth">
+                    <div class="langs">
+                        <a href="/language/en"><img class="en" src="../assets/images/lang/en.png"/></a>
+                        <a href="/language/ru"><img class="ru" src="../assets/images/lang/ru.png"/></a>
                     </div>
 
                     <div class="profile">
@@ -39,7 +39,7 @@
             <mat-divider></mat-divider>
 
             <div class="header-second-row">
-                <nav mat-tab-nav-bar style="border-bottom: 0;margin-top:5px;margin-left:6px;">
+                <nav mat-tab-nav-bar class="navigation">
                     <a
                         *ngFor="let tab of tabs"
                         mat-tab-link
@@ -52,21 +52,17 @@
                     <a mat-tab-link href="/forum" target="_blank" class="navigation-link">Форум</a>
                 </nav>
 
-                <div style="position:absolute;right:256px;display:flex;height:42px;align-items:center;top:73px;" class="social_link">
-                    <a href="https://www.twitch.tv/w00deh" style="display: flex;align-items: center;text-decoration:none;" target="_blank">
-                        <img src="../assets/images/icons/twitch.png" style="width:22px;height:22px;" />
-                        <div style="line-height:15px;margin-left:5px;vertical-align:middle;font-size:15px;">Twitch</div>
+                <div class="social-link social-link_twitch">
+                    <a href="https://www.twitch.tv/w00deh" target="_blank">
+                        <img src="../assets/images/icons/twitch.png" />
+                        <div class="link-caption">Twitch</div>
                     </a>
                 </div>
 
-                <div style="position:absolute;right:152px;display:flex;height:42px;align-items:center;top:73px;" class="social_link">
-                    <a
-                        href="https://www.youtube.com/channel/UCLyl7evRHAOWSfnRSMKLBVQ"
-                        style="display: flex;align-items: center;text-decoration:none;"
-                        target="_blank"
-                    >
-                        <img src="../assets/images/icons/youtube.png" style="width:25px;height:18px;" />
-                        <div style="line-height:15px;margin-left:5px;vertical-align:middle;font-size:15px;">YouTube</div>
+                <div class="social-link social-link_youtube">
+                    <a href="https://www.youtube.com/channel/UCLyl7evRHAOWSfnRSMKLBVQ" target="_blank">
+                        <img src="../assets/images/icons/youtube.png" />
+                        <div class="link-caption">YouTube</div>
                     </a>
                 </div>
 
