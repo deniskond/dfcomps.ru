@@ -13,6 +13,10 @@ export class AppComponent implements OnInit {
     public activePage: NavigationPages;
     public tabs = TABS_CONFIG.TABS;
 
+    public logged = true;
+    public nick = 'Nosf';
+    public isAdmin = true;
+
     constructor(private router: Router) {}
 
     public ngOnInit(): void {

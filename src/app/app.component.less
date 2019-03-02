@@ -30,28 +30,27 @@
     line-height: 19px;
 }
 
-button {
-    outline: none;
-}
-
-a {
-    color: #337ab7;
+.social_link div {
+    color: #1e476b;
+    opacity: 0.8;
 
     &:hover {
-        color: #337ab7;
+        opacity: 1;
     }
 }
 
 .download-df-button {
     position: absolute;
+    top: 78px;
     right: 0;
-    bottom: 7px;
     margin-right: 15px;
     font-size: 14px;
     height: 30px;
     padding: 10px;
     padding-top: 0px;
-    line-height: 30px;
+    line-height: 33px;
+    font-family: elektra;
+    color: #333333;
 }
 
 .shadowed {
@@ -60,12 +59,11 @@ a {
 
 .slogan {
     font-family: elektra;
-    position: absolute;
-    left: 227px;
-    top: 17px;
     font-size: 16px;
     width: 257px;
     line-height: 20px;
+    margin-left: 10px;
+    margin-top: 2px;
 }
 
 .logo {
@@ -76,15 +74,69 @@ a {
     color: #392676;
     font-size: 48px;
     letter-spacing: 1px;
+    height: 73px;
+    align-items: center;
 }
 
 .header {
     position: relative;
     background :white;
-    height: 150px;
+    height: 115px;
     width: 1170px;
 }
 
 .navigation-link {
     user-select: none;
+    min-width: 90px;
+    font-family: elektra;
+    font-size: 16px;
+    color: black;
+    height: 32px;
+    padding: 0 12px;
+
+    &:hover {
+        color: black;
+        opacity: 1;
+    }
+}
+
+nav .active {
+    opacity: 1;
+}
+
+.logged-in-as {
+    color: #333333;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.profile {
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.profile-links {
+    border-radius: 4px; 
+    border: 1px solid rgba(0,0,0,0.12);
+    height: 25px;
+    display: flex;
+
+    .profile-link {
+        border-right: 1px solid rgba(0,0,0,0.12);
+        padding: 0 12px;
+        font-size: 14px;
+        line-height: 26px;
+        cursor: pointer;
+        color: #1e476b;
+        opacity: 0.8;
+    
+        &:hover {
+            opacity: 1;
+        }
+
+        &:last-child {
+            border: 0;
+        }
+    }
 }

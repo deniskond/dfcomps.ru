@@ -7,7 +7,7 @@ import { counterReducer } from './store/reducers/data.reducer';
 import { SharedModule } from './modules/shared.module';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatDividerModule, MatTabsModule } from '@angular/material';
+import { MatButtonModule, MatDividerModule, MatTabsModule, MatButtonToggleModule, MatRippleModule } from '@angular/material';
 import { appRoutes } from './routing/app.routing';
 
 @NgModule({
@@ -21,8 +21,10 @@ import { appRoutes } from './routing/app.routing';
         BrowserAnimationsModule,
         MatButtonModule,
         MatDividerModule,
-        MatTabsModule
+        MatTabsModule,
+        MatButtonToggleModule,
+        MatRippleModule,
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
 })
 export class AppModule {}

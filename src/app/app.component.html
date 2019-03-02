@@ -2,9 +2,9 @@
     <div class="container">
         <div class="header shadowed">
             <div class="header-first-row" style="height: 72px; position: relative;">
-                <div class="logo">
-                    <img src="../assets/images/ushastik.png" style="border:1px solid #392676;margin-right:5px;" />
-                    <span style="margin-left:8px;">Defrag.ru</span>
+                <div class="logo" style="display: flex; ">
+                    <img src="../assets/images/ushastik.png" style="margin-right:3px;width:76px;height:57px;" />
+                    <div style="margin-left:8px;">Defrag.ru</div>
                     <div class="slogan">
                         Quake 3 Defrag<br />
                         Competitions
@@ -15,37 +15,54 @@
                         <a href="/language/en"><img src="../assets/images/lang/en.png"/></a>
                         <a href="/language/ru"><img style="margin-left:6px;" src="../assets/images/lang/ru.png"/></a>
                     </div>
-                    <div style="margin-top:5px;"></div>
+
+                    <div class="profile">
+                        <ng-container *ngIf="logged; else notlogged">
+                            <span class="logged-in-as">Вы вошли как {{ nick }}</span>
+                            <div class="profile-links">
+                                <div matRipple class="profile-link">Админка</div>
+                                <div matRipple class="profile-link">Команда</div>
+                                <div matRipple class="profile-link">Профиль</div>
+                                <div matRipple class="profile-link">Выйти</div>
+                            </div>
+                        </ng-container>
+                        <ng-template #notlogged>
+                            <div class="profile-links">
+                                <div matRipple class="profile-link">Войти</div>
+                                <div matRipple class="profile-link">Зарегистрироваться</div>
+                            </div>
+                        </ng-template>
+                    </div>
                 </div>
             </div>
 
             <mat-divider></mat-divider>
 
             <div class="header-second-row">
-                <div style="height:50px;">
-                    <nav mat-tab-nav-bar>
-                        <a
-                            *ngFor="let tab of tabs"
-                            mat-tab-link
-                            [active]="activePage === tab.page"
-                            (click)="navigate(tab.page)"
-                            class="navigation-link"
-                            >{{ tab.name }}</a
-                        >
-                    </nav>
-                </div>
+                <nav mat-tab-nav-bar style="border-bottom: 0;margin-top:5px;margin-left:6px;">
+                    <a
+                        *ngFor="let tab of tabs"
+                        mat-tab-link
+                        [active]="activePage === tab.page"
+                        [class.active]="activePage === tab.page"
+                        (click)="navigate(tab.page)"
+                        class="navigation-link"
+                        >{{ tab.name }}</a
+                    >
+                    <a mat-tab-link href="/forum" target="_blank" class="navigation-link">Форум</a>
+                </nav>
 
-                <div style="position:absolute;right:256px;display:flex;height:42px;align-items:center;">
-                    <a href="https://www.twitch.tv/w00deh" style="display: flex;align-items: center;" target="_blank">
+                <div style="position:absolute;right:256px;display:flex;height:42px;align-items:center;top:73px;" class="social_link">
+                    <a href="https://www.twitch.tv/w00deh" style="display: flex;align-items: center;text-decoration:none;" target="_blank">
                         <img src="../assets/images/icons/twitch.png" style="width:22px;height:22px;" />
                         <div style="line-height:15px;margin-left:5px;vertical-align:middle;font-size:15px;">Twitch</div>
                     </a>
                 </div>
 
-                <div style="position:absolute;right:152px;display:flex;height:42px;align-items:center;">
+                <div style="position:absolute;right:152px;display:flex;height:42px;align-items:center;top:73px;" class="social_link">
                     <a
                         href="https://www.youtube.com/channel/UCLyl7evRHAOWSfnRSMKLBVQ"
-                        style="display: flex;align-items: center;"
+                        style="display: flex;align-items: center;text-decoration:none;"
                         target="_blank"
                     >
                         <img src="../assets/images/icons/youtube.png" style="width:25px;height:18px;" />
