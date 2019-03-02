@@ -5,7 +5,7 @@
   "rules": {
     "arrow-return-shorthand": true,
     "callable-types": true,
-    "class-name": true,
+    "class-name": false,
     "comment-format": [
       true,
       "check-space"
@@ -98,7 +98,8 @@
     "directive-class-suffix": true,
     "no-submodule-imports": false,
     "quotemark": [true, "single"],
-    "typedef": [true, "call-signature"]
+    "typedef": [true, "call-signature"],
+    "interface-name": [false]
   },
   "extends": [
     "tslint:latest",

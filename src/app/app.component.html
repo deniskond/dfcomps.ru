@@ -1,10 +1,85 @@
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<div class="background">
+    <div class="container">
+        <div class="header shadowed">
+            <div class="header-first-row">
+                <div class="logo">
+                    <img class="ushastik" src="../assets/images/ushastik.png" />
+                    <div class="site-name">Defrag.ru</div>
+                    <div class="slogan">
+                        Quake 3 Defrag<br />
+                        Competitions
+                    </div>
+                </div>
 
-<a class="routing-link" routerLink="/">Главная</a>
-<a class="routing-link" routerLink="/rating">Рейтинг</a>
-<a class="routing-link" routerLink="/teams">Команды</a>
-<a class="routing-link" routerLink="/rules">Правила</a>
-<a class="routing-link" routerLink="/archive">Архив</a>
-<a class="routing-link" routerLink="/movies">Мувики</a>
+                <div class="langs">
+                    <a href="/language/en"><img class="en" src="../assets/images/lang/en.png"/></a>
+                    <a href="/language/ru"><img class="ru" src="../assets/images/lang/ru.png"/></a>
+                </div>
 
-<router-outlet></router-outlet>
+                <div class="profile">
+                    <ng-container *ngIf="logged; else notlogged">
+                        <span class="logged-in-as">Вы вошли как {{ nick }}</span>
+                        <div class="profile-links">
+                            <div matRipple class="profile-link">Админка</div>
+                            <div matRipple class="profile-link">Команда</div>
+                            <div matRipple class="profile-link">Профиль</div>
+                            <div matRipple class="profile-link">Выйти</div>
+                        </div>
+                    </ng-container>
+                    <ng-template #notlogged>
+                        <div class="profile-links">
+                            <div matRipple class="profile-link">Войти</div>
+                            <div matRipple class="profile-link">Зарегистрироваться</div>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="header-second-row">
+                <nav mat-tab-nav-bar class="navigation">
+                    <a
+                        *ngFor="let tab of tabs"
+                        mat-tab-link
+                        [active]="activePage === tab.page"
+                        [class.active]="activePage === tab.page"
+                        (click)="navigate(tab.page)"
+                        class="navigation-link"
+                        >{{ tab.name }}</a
+                    >
+                    <a mat-tab-link href="/forum" target="_blank" class="navigation-link">Форум</a>
+                </nav>
+
+                <div class="social-link social-link_twitch">
+                    <a href="https://www.twitch.tv/w00deh" target="_blank">
+                        <img src="../assets/images/icons/twitch.png" />
+                        <div class="link-caption">Twitch</div>
+                    </a>
+                </div>
+
+                <div class="social-link social-link_youtube">
+                    <a href="https://www.youtube.com/channel/UCLyl7evRHAOWSfnRSMKLBVQ" target="_blank">
+                        <img src="../assets/images/icons/youtube.png" />
+                        <div class="link-caption">YouTube</div>
+                    </a>
+                </div>
+
+                <button mat-raised-button color="accent" class="download-df-button">
+                    Скачать Defrag
+                </button>
+            </div>
+        </div>
+
+        <div class="main">
+            <div class="main-column shadowed">
+                <router-outlet></router-outlet>
+            </div>
+            <div class="right-column">
+                <div class="r-block shadowed">timer</div>
+                <div class="r-block shadowed">cpm top 10</div>
+                <div class="r-block shadowed">vq3 top 10</div>
+            </div>
+        </div>
+    </div>
+</div>
