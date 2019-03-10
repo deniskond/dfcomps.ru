@@ -9,9 +9,10 @@ import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule, MatDividerModule, MatTabsModule, MatButtonToggleModule, MatRippleModule } from '@angular/material';
 import { appRoutes } from './routing/app.routing';
+import { CupTimerComponent } from './components/cup-timer/cup-timer.component';
 
 @NgModule({
-    declarations: [AppComponent],
+    declarations: [AppComponent, CupTimerComponent],
     imports: [
         BrowserModule,
         StoreModule.forRoot({ count: counterReducer }),

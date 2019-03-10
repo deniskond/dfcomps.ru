@@ -83,9 +83,11 @@
                 <router-outlet></router-outlet>
             </div>
             <div class="right-column">
-                <div class="r-block shadowed">timer</div>
-                <div class="r-block shadowed">cpm top 10</div>
-                <div class="r-block shadowed">vq3 top 10</div>
+                <div class="right-block shadowed">
+                    <app-cup-timer cupName="WarCup #222" [startTime]="" [endTime]=""></app-cup-timer>
+                </div>
+                <div class="right-block shadowed">cpm top 10</div>
+                <div class="right-block shadowed">vq3 top 10</div>
             </div>
         </div>
     </div>

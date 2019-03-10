@@ -1,0 +1,22 @@
+<div class="opacity-bg"></div>
+
+<div class="cup-info">
+    <!-- Ссылки нет, когда еще не начался -->
+    <a href="/news/{{ newsId }}" class="news-link">
+        <h1>
+            WarCup #222
+        </h1>
+    </a>
+    <h2 class="cup-date-time">
+        Окончание <!-- Начало --> 9 Мар 22:30 МСК
+    </h2>
+    <div class="timeholder">
+        1Дн 10:35:17 <!-- Обновление --> <!-- Закончен -->
+    </div>
+    <a *ngIf="!started; else awaitingCupStart" href="#" class="map-link">
+        <div class="bottom-info">Скачать карту</div>
+    </a>
+    <ng-template #awaitingCupStart>
+        <div class="bottom-info">Ожидание начала турнира</div>
+    </ng-template>
+</div>
