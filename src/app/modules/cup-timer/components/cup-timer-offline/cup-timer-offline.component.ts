@@ -25,6 +25,10 @@ export class CupTimerOfflineComponent implements OnInit {
         this.timerState = this.getCurrentTimerState();
     }
 
+    public changeTimerState(timerState: CupTimerStates): void {
+        this.timerState = timerState;
+    }
+
     private getCurrentTimerState(): CupTimerStates {
         if (moment().unix() < this.startTime) {
             return CupTimerStates.AWAITING_START;

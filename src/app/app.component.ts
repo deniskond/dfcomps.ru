@@ -22,8 +22,8 @@ export class AppComponent implements OnInit {
 
     // TODO [DFRU-21] Оффлайн капы
     // TODO [DFRU-22] Онлайн капы
-    public startTime = moment().subtract(2, 'days').unix();
-    public endTime = moment().add(2, 'days').unix();
+    public startTime = moment().add(10, 'seconds').unix();
+    public endTime = moment().add(20, 'seconds').unix();
 
     constructor(private router: Router) {}
 

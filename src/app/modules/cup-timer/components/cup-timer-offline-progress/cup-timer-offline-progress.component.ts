@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { formatCupTime } from '../../helpers/cup-time-format.helpers';
 
 @Component({
     selector: 'app-cup-timer-offline-progress',
     templateUrl: './cup-timer-offline-progress.component.html'
 })
-export class CupTimerOfflineProgressComponent {
+export class CupTimerOfflineProgressComponent implements OnInit {
     @Input()
     cupName: string;
     @Input()
@@ -13,6 +14,13 @@ export class CupTimerOfflineProgressComponent {
     mapLink: string;
     @Input()
     endTime: number;
-    @Input()
-    currentTime: number;
+
+    @Output()
+    finished = new EventEmitter<void>();
+
+    public formattedTime: string;
+
+    ngOnInit(): void {
+        this.formattedTime = formatCupTime(this.endTime);
+    }
 }

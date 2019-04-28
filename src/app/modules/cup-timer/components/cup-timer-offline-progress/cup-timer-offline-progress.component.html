@@ -2,12 +2,12 @@
     <h1 class="cup-name">{{ cupName }}</h1>
 </a>
 <h2 class="cup-date-time">
-    Окончание {{ endTime }}
+    Окончание {{ formattedTime }}
 </h2>
 <div class="timeholder">
     <app-countdown-timer
-        [currentTime]="currentTime"
-        [targetTime]="endTime">
+        [targetTime]="endTime"
+        (finished)="finished.emit()">
     </app-countdown-timer>
 </div>
 <a href="#" class="map-link">

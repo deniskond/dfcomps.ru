@@ -13,8 +13,6 @@ const SECONDS_IN_MINUTE = 60;
 })
 export class CountdownTimerComponent implements OnInit, OnDestroy {
     @Input()
-    currentTime: number;
-    @Input()
     targetTime: number;
 
     @Output()
@@ -25,12 +23,9 @@ export class CountdownTimerComponent implements OnInit, OnDestroy {
     public currentDaysCaption$: Observable<number>;
 
     private timerSubscription: Subscription;
-    private syncSubscription: Subscription;
 
     ngOnInit(): void {
-        const timeDiff = this.targetTime - this.currentTime;
-
-        this.currentTimerValue$ = new BehaviorSubject(timeDiff > 0 ? timeDiff : 0);
+        this.currentTimerValue$ = new BehaviorSubject(this.calculateCurrentTimerValue());
 
         this.currentDaysCaption$ = this.currentTimerValue$.pipe(
             map((timerValue: number) => this.mapTimerValueToDaysCount(timerValue)),
@@ -40,17 +35,28 @@ export class CountdownTimerComponent implements OnInit, OnDestroy {
             map((timerValue: number) => this.mapTimerValueToTimerCaption(timerValue)),
         );
 
-        this.timerSubscription = interval(1000).subscribe(() =>
-            this.currentTimerValue$.next(this.targetTime - moment().unix()),
-        );
+        this.timerSubscription = interval(1000).subscribe(() => {
+            const currentTimerValue = this.calculateCurrentTimerValue();
+
+            if (!currentTimerValue) {
+                this.finished.emit();
+            }
+
+            this.currentTimerValue$.next(currentTimerValue);
+        });
     }
 
     ngOnDestroy(): void {
         this.timerSubscription.unsubscribe();
-        this.syncSubscription.unsubscribe();
     }
 
-    public mapTimerValueToTimerCaption(timerValue: number): string {
+    private calculateCurrentTimerValue(): number {
+        const timeDiff = this.targetTime - moment().unix();
+
+        return timeDiff > 0 ? timeDiff : 0;
+    }
+
+    private mapTimerValueToTimerCaption(timerValue: number): string {
         const daysLeft = Math.floor(timerValue / SECONDS_IN_DAY);
         const hoursTimer = timerValue - daysLeft * SECONDS_IN_DAY;
         const hours = Math.floor(hoursTimer / SECONDS_IN_HOUR);
@@ -64,7 +70,7 @@ export class CountdownTimerComponent implements OnInit, OnDestroy {
         );
     }
 
-    public mapTimerValueToDaysCount(timerValue: number): number {
+    private mapTimerValueToDaysCount(timerValue: number): number {
         return Math.floor(timerValue / SECONDS_IN_DAY);
     }
 
