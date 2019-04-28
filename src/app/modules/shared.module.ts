@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
+import { CupTimerModule } from './cup-timer/cup-timer.module';
 
 @NgModule({
-    declarations: [],
+    imports: [
+        CupTimerModule,
+    ],
 })
 export class SharedModule {}

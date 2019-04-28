@@ -1,0 +1,20 @@
+<div class="opacity-bg"></div>
+
+<div class="cup-info">
+    <ng-container [ngSwitch]="cupType">
+        <app-cup-timer-online
+            *ngSwitchCase="cupTypes.ONLINE"
+            [cupName]="cupName"
+            [startTime]="startTime"
+            [newsId]="newsId">
+        </app-cup-timer-online>
+        <app-cup-timer-offline
+            *ngSwitchCase="cupTypes.OFFLINE"
+            [cupName]="cupName"
+            [startTime]="startTime"
+            [endTime]="endTime"
+            [mapLink]="mapLink"
+            [newsId]="newsId">
+        </app-cup-timer-offline>
+    </ng-container>
+</div>

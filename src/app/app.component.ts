@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NavigationPages } from './routing/enums/pages.enum';
 import { TABS_CONFIG } from './routing/config/tabs.config';
 import * as moment from 'moment';
+import { CupTypes } from './enums/cup-types.enum';
 
 @Component({
     selector: 'app-root',
@@ -17,6 +18,7 @@ export class AppComponent implements OnInit {
     public logged = true;
     public nick = 'Nosf';
     public isAdmin = true;
+    public cupTypes = CupTypes;
 
     // TODO [DFRU-21] Оффлайн капы
     // TODO [DFRU-22] Онлайн капы
@@ -27,7 +29,6 @@ export class AppComponent implements OnInit {
 
     public ngOnInit(): void {
         this.activePage = NavigationPages.MAIN;
-        debugger;
     }
 
     public navigate(page: NavigationPages): void {
