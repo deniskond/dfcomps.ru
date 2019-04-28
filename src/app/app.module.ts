@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule, MatDividerModule, MatTabsModule, MatButtonToggleModule, MatRippleModule } from '@angular/material';
 import { appRoutes } from './routing/app.routing';
+import { CupTimerModule } from './modules/cup-timer/cup-timer.module';
 
 @NgModule({
     declarations: [AppComponent],
@@ -24,6 +25,7 @@ import { appRoutes } from './routing/app.routing';
         MatTabsModule,
         MatButtonToggleModule,
         MatRippleModule,
+        CupTimerModule,
     ],
     bootstrap: [AppComponent],
 })

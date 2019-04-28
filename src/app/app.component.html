@@ -12,8 +12,8 @@
                 </div>
 
                 <div class="langs">
-                    <a href="/language/en"><img class="en" src="../assets/images/lang/en.png"/></a>
-                    <a href="/language/ru"><img class="ru" src="../assets/images/lang/ru.png"/></a>
+                    <a href="/language/en"><img class="en" src="../assets/images/lang/en.png" /></a>
+                    <a href="/language/ru"><img class="ru" src="../assets/images/lang/ru.png" /></a>
                 </div>
 
                 <div class="profile">
@@ -39,16 +39,16 @@
 
             <div class="header-second-row">
                 <nav mat-tab-nav-bar class="navigation">
-                    <a
-                        *ngFor="let tab of tabs"
-                        mat-tab-link
-                        [active]="activePage === tab.page"
-                        [class.active]="activePage === tab.page"
-                        (click)="navigate(tab.page)"
-                        class="navigation-link"
-                        >{{ tab.name }}</a
-                    >
-                    <a mat-tab-link href="/forum" target="_blank" class="navigation-link">Форум</a>
+                    <a *ngFor="let tab of tabs"
+                       mat-tab-link
+                       [active]="activePage === tab.page"
+                       [class.active]="activePage === tab.page"
+                       (click)="navigate(tab.page)"
+                       class="navigation-link">{{ tab.name }}</a>
+                    <a mat-tab-link
+                       href="/forum"
+                       target="_blank"
+                       class="navigation-link">Форум</a>
                 </nav>
 
                 <div class="social-link social-link_discord">
@@ -83,9 +83,16 @@
                 <router-outlet></router-outlet>
             </div>
             <div class="right-column">
-                <div class="r-block shadowed">timer</div>
-                <div class="r-block shadowed">cpm top 10</div>
-                <div class="r-block shadowed">vq3 top 10</div>
+                <div class="right-block shadowed">
+                    <app-cup-timer 
+                        [startTime]="startTime"
+                        [endTime]="endTime"
+                        [cupType]="cupTypes.OFFLINE"
+                        cupName="WarCup #222">
+                    </app-cup-timer>
+                </div>
+                <div class="right-block shadowed">cpm top 10</div>
+                <div class="right-block shadowed">vq3 top 10</div>
             </div>
         </div>
     </div>

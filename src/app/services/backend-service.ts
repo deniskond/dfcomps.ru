@@ -1,20 +1,30 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 import { Observable } from 'rxjs';
+
+const ACCESS_CONTROL_HEADERS = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
+};
 
 @Injectable({
     providedIn: 'root'
 })
 export class BackendService {
-    constructor(private httpClient: HttpClient) {}
+    constructor(@Optional() private httpClient: HttpClient) {}
 
-    public test(): Observable<any> {
-        return this.httpClient.get('http://localhost:80/1v1', {
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
-                'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
-            }
+    public get(url: string, params?: Record<string, string>): Observable<any> {
+        return this.httpClient.get(url, {
+            headers: ACCESS_CONTROL_HEADERS,
+            params,
+        });
+    }
+
+    public post(url: string, params?: Record<string, string>): Observable<any> {
+        return this.httpClient.post(url, {
+            headers: ACCESS_CONTROL_HEADERS,
+            params,
         });
     }
 }
