@@ -91,8 +91,12 @@
                         cupName="WarCup #222">
                     </app-cup-timer>
                 </div>
-                <div class="right-block shadowed">cpm top 10</div>
-                <div class="right-block shadowed">vq3 top 10</div>
+                <div class="right-block shadowed">
+                    <app-top-ten-table [physics]="physics.CPM"></app-top-ten-table>
+                </div>
+                <div class="right-block shadowed">
+                    <app-top-ten-table [physics]="physics.VQ3"></app-top-ten-table>
+                </div>
             </div>
         </div>
     </div>
