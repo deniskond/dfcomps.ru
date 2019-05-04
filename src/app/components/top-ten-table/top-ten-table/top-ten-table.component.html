@@ -1,23 +1,30 @@
+<div class="side-block-header table-header">
+    Лидеры рейтинга (CPM)
+</div>
+
+<!-- TODO [DFRU-4] Вынести все стили из шаблона -->
 <mat-table [dataSource]="dataSource">
-    <!-- User name Definition -->
-    <ng-container cdkColumnDef="username">
-      <mat-header-cell *cdkHeaderCellDef> User name </mat-header-cell>
-      <mat-cell *cdkCellDef="let row"> {{row.username}} </mat-cell>
+    <ng-container cdkColumnDef="number">
+        <mat-header-cell *cdkHeaderCellDef style="width: 36px;justify-content:center;"> # </mat-header-cell>
+        <mat-cell *cdkCellDef="let row" style="width: 36px;justify-content:center;"> {{ row.position }} </mat-cell>
     </ng-container>
   
-    <!-- Age Definition -->
-    <ng-container cdkColumnDef="age">
-      <mat-header-cell *cdkHeaderCellDef> Age </mat-header-cell>
-      <mat-cell *cdkCellDef="let row"> {{row.age}} </mat-cell>
+    <ng-container cdkColumnDef="player">
+        <mat-header-cell *cdkHeaderCellDef style="flex-grow: 1;border:1px solid #ccc; border-top:0; border-bottom: 0; justify-content:center;"> Игрок </mat-header-cell>
+        <mat-cell *cdkCellDef="let row" style="flex-grow: 1;border:1px solid #ccc; border-top:0; border-bottom: 0;padding-left: 8px;"> 
+            <div style="display: flex;align-items: center;">
+                <!-- TODO [DFRU-4] Вынести в отдельный компонент-заглушку -->
+                <div style="width: 18px;height: 13px;background: gray;border: 1px solid #333;"></div>
+                <div style="margin-left: 4px;margin-top:1px;">{{ row.nick }}</div>
+            </div> 
+        </mat-cell>
     </ng-container>
   
-    <!-- Title Definition -->
-    <ng-container cdkColumnDef="title">
-      <mat-header-cell *cdkHeaderCellDef> Title </mat-header-cell>
-      <mat-cell *cdkCellDef="let row"> {{row.title}} </mat-cell>
+    <ng-container cdkColumnDef="rating">
+        <mat-header-cell *cdkHeaderCellDef style="width:80px;justify-content:center;"> Рейтинг </mat-header-cell>
+        <mat-cell *cdkCellDef="let row" style="width:80px;justify-content:center;"> {{ row.rating }} </mat-cell>
     </ng-container>
   
-    <!-- Header and Row Declarations -->
-    <mat-header-row *cdkHeaderRowDef="['username', 'age', 'title']"></mat-header-row>
-    <mat-row *cdkRowDef="let row; columns: ['username', 'age', 'title']"></mat-row>
+    <mat-header-row *cdkHeaderRowDef="['number', 'player', 'rating']"></mat-header-row>
+    <mat-row *cdkRowDef="let row; columns: ['number', 'player', 'rating']"></mat-row>
 </mat-table>
