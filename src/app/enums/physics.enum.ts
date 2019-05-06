@@ -1,4 +1,4 @@
 export enum Physics {
-    CPM,
-    VQ3,
+    CPM = 'cpm',
+    VQ3 = 'vq3',
 }
