@@ -1,0 +1,40 @@
+<div class="side-block-header table-header">
+    Лидеры рейтинга ({{ physics }})
+</div>
+
+<ng-container *ngIf="topTenTable$ | async as topTenTable; else loader">
+    <mat-table [dataSource]="topTenTable">
+        <ng-container cdkColumnDef="number">
+            <mat-header-cell *cdkHeaderCellDef class="number-column"> # </mat-header-cell>
+            <mat-cell *cdkCellDef="let row" class="number-column"> {{ row.position }} </mat-cell>
+        </ng-container>
+    
+        <ng-container cdkColumnDef="player">
+            <mat-header-cell *cdkHeaderCellDef class="player-column header"> Игрок </mat-header-cell>
+            <mat-cell 
+                *cdkCellDef="let row"
+                [@hoveredCell]="getHoveredState(row)"
+                (mouseenter)="darkenPlayerRow(row)" 
+                (mouseleave)="lightenPlayerRow(row)" 
+                class="player-column player-nick-container"> 
+
+                <app-flag [country]="row.country"></app-flag>
+                <div (click)="navigateToPlayerProfile(row.playerId)" class="player-nick">{{ row.nick }}</div>
+            </mat-cell>
+        </ng-container>
+    
+        <ng-container cdkColumnDef="rating">
+            <mat-header-cell *cdkHeaderCellDef class="rating-column"> Рейтинг </mat-header-cell>
+            <mat-cell *cdkCellDef="let row" class="rating-column"> {{ row.rating }} </mat-cell>
+        </ng-container>
+    
+        <mat-header-row *cdkHeaderRowDef="['number', 'player', 'rating']"></mat-header-row>
+        <mat-row *cdkRowDef="let row; columns: ['number', 'player', 'rating']"></mat-row>
+    </mat-table>
+</ng-container>
+
+<ng-template #loader>
+    <div class="loader">
+        <mat-spinner diameter="80" strokeWidth="5" color="accent"></mat-spinner>
+    </div>
+</ng-template>

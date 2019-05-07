@@ -1,4 +1,5 @@
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import './assets/styles/colors.less';
 @import './assets/styles/typography.less';
 
 @font-face {
@@ -23,6 +24,7 @@
 
 * {
     box-sizing: border-box;
+    font-family: elektra;
 }
 
 body {
@@ -33,8 +35,12 @@ button {
     outline: none;
 }
 
-.shadowed-main-block {
+.shadowed {
     box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.4);
+}
+
+.shadowed-main-block {
+    .shadowed();
     padding: 15px;
     background: white;
 
@@ -44,7 +50,7 @@ button {
 }
 
 a {
-    color: #337ab7;
+    color: @link-blue;
     text-decoration: none;
 
     &:hover {
