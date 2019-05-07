@@ -1,5 +1,5 @@
 export interface LeaderTableInterface {
-    player_id: number;
+    playerId: number;
     position: number;
     nick: string;
     country: string;

@@ -2,34 +2,31 @@
     Лидеры рейтинга ({{ physics }})
 </div>
 
-<!-- TODO [DFRU-4] Вынести все стили из шаблона -->
 <ng-container *ngIf="topTenTable$ | async as topTenTable; else loader">
     <mat-table [dataSource]="topTenTable">
         <ng-container cdkColumnDef="number">
-            <mat-header-cell *cdkHeaderCellDef style="width: 36px;justify-content:center;"> # </mat-header-cell>
-            <mat-cell *cdkCellDef="let row" style="width: 36px;justify-content:center;"> {{ row.position }} </mat-cell>
+            <mat-header-cell *cdkHeaderCellDef class="number-column"> # </mat-header-cell>
+            <mat-cell *cdkCellDef="let row" class="number-column"> {{ row.position }} </mat-cell>
         </ng-container>
     
         <ng-container cdkColumnDef="player">
-            <mat-header-cell *cdkHeaderCellDef style="flex-grow: 1;border:1px solid #ccc; border-top:0; border-bottom: 0; justify-content:center;"> Игрок </mat-header-cell>
+            <mat-header-cell *cdkHeaderCellDef class="player-column header"> Игрок </mat-header-cell>
             <mat-cell 
                 *cdkCellDef="let row"
+                [@hoveredCell]="getHoveredState(row)"
                 (mouseenter)="darkenPlayerRow(row)" 
                 (mouseleave)="lightenPlayerRow(row)" 
-                class="player-nick-container" 
-                style="flex-grow: 1;border:1px solid #ccc; border-top:0; border-bottom: 0;padding-left: 8px;"> 
-                <div style="display: flex;align-items: center;">
-                    <!-- TODO [DFRU-4] Вынести в отдельный компонент-заглушку -->
-                    <div style="width: 18px;height: 13px;background: gray;border: 1px solid #333;"></div>
-                    <!-- TODO [DFRU-4] Hover + link -->
-                    <div class="player-nick">{{ row.nick }}</div>
-                </div> 
+                class="player-column player-nick-container"> 
+
+                <!-- TODO [DFRU-4] Вынести в отдельный компонент-заглушку -->
+                <div style="width: 18px;height: 13px;background: gray;border: 1px solid #333;"></div>
+                <div (click)="navigateToPlayerProfile(row.playerId)" class="player-nick">{{ row.nick }}</div>
             </mat-cell>
         </ng-container>
     
         <ng-container cdkColumnDef="rating">
-            <mat-header-cell *cdkHeaderCellDef style="width:80px;justify-content:center;"> Рейтинг </mat-header-cell>
-            <mat-cell *cdkCellDef="let row" style="width:80px;justify-content:center;"> {{ row.rating }} </mat-cell>
+            <mat-header-cell *cdkHeaderCellDef class="rating-column"> Рейтинг </mat-header-cell>
+            <mat-cell *cdkCellDef="let row" class="rating-column"> {{ row.rating }} </mat-cell>
         </ng-container>
     
         <mat-header-row *cdkHeaderRowDef="['number', 'player', 'rating']"></mat-header-row>

@@ -1,3 +1,4 @@
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { CupTimerModule } from './cup-timer/cup-timer.module';
 import { MatTableModule, MatProgressSpinnerModule } from '@angular/material';
@@ -6,7 +7,7 @@ import { TopTenTableComponent } from '../components/top-ten-table/top-ten-table.
 import { CommonModule } from '@angular/common';
 
 @NgModule({
-    imports: [CupTimerModule, MatTableModule, CdkTableModule, CommonModule, MatProgressSpinnerModule],
+    imports: [CupTimerModule, MatTableModule, CdkTableModule, CommonModule, MatProgressSpinnerModule, BrowserAnimationsModule],
     declarations: [TopTenTableComponent],
     exports: [TopTenTableComponent],
 })
