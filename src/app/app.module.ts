@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { StoreModule } from '@ngrx/store';
 import { AppComponent } from './app.component';
 import { counterReducer } from './store/reducers/data.reducer';
-import { SharedModule } from './modules/shared.module';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
@@ -16,6 +15,7 @@ import {
 } from '@angular/material';
 import { appRoutes } from './routing/app.routing';
 import { CupTimerModule } from './modules/cup-timer/cup-timer.module';
+import { TopTenTableModule } from './modules/top-ten-table/top-ten-table.module';
 
 @NgModule({
     declarations: [AppComponent],
@@ -23,7 +23,6 @@ import { CupTimerModule } from './modules/cup-timer/cup-timer.module';
         BrowserModule,
         StoreModule.forRoot({ count: counterReducer }),
         HttpClientModule,
-        SharedModule,
         RouterModule.forRoot(appRoutes),
         BrowserAnimationsModule,
         MatButtonModule,
@@ -32,6 +31,7 @@ import { CupTimerModule } from './modules/cup-timer/cup-timer.module';
         MatButtonToggleModule,
         MatRippleModule,
         CupTimerModule,
+        TopTenTableModule,
     ],
     bootstrap: [AppComponent],
 })

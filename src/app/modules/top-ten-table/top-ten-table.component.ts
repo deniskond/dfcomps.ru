@@ -10,7 +10,6 @@ import {
 } from './animations/hoverable-cell.animation';
 import { Router } from '@angular/router';
 
-// TODO [DFRU-4] Оформить в модуль
 @Component({
     selector: 'app-top-ten-table',
     templateUrl: './top-ten-table.component.html',

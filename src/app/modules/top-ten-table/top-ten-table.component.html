@@ -18,8 +18,7 @@
                 (mouseleave)="lightenPlayerRow(row)" 
                 class="player-column player-nick-container"> 
 
-                <!-- TODO [DFRU-4] Вынести в отдельный компонент-заглушку -->
-                <div style="width: 18px;height: 13px;background: gray;border: 1px solid #333;"></div>
+                <app-flag [country]="row.country"></app-flag>
                 <div (click)="navigateToPlayerProfile(row.playerId)" class="player-nick">{{ row.nick }}</div>
             </mat-cell>
         </ng-container>
