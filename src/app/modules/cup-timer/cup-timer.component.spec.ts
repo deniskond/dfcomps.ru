@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { CupTimerComponent } from './cup-timer.component';
+import { CupTimerModule } from './cup-timer.module';
 
 describe('CupTimerComponent', () => {
     let component: CupTimerComponent;
@@ -8,7 +8,7 @@ describe('CupTimerComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [CupTimerComponent],
+            imports: [CupTimerModule],
         }).compileComponents();
     }));
 

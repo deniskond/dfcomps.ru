@@ -1,10 +1,11 @@
 import { TestBed, async, fakeAsync } from '@angular/core/testing';
 import { CupTimerOfflineProgressComponent } from './cup-timer-offline-progress.component';
+import { CountdownTimerComponent } from '../countdown-timer/countdown-timer.component';
 
 describe('CupTimerOfflineProgressComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [CupTimerOfflineProgressComponent],
+            declarations: [CupTimerOfflineProgressComponent, CountdownTimerComponent],
         }).compileComponents();
     }));
 

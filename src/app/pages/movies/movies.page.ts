@@ -16,7 +16,7 @@ export class MoviesPageComponent implements OnInit {
     constructor(private moviesService: MoviesService, private sanitizer: DomSanitizer) {}
 
     ngOnInit(): void {
-        this.movies$ = this.moviesService.getMovies().pipe(map((movies: MovieInterface[]) => shuffle(movies)));
+        this.movies$ = this.moviesService.getMovies$().pipe(map((movies: MovieInterface[]) => shuffle(movies)));
     }
 
     public getAuthorName(name: string): string {

@@ -6,12 +6,12 @@ import { ArchivePageComponent } from './archive.page';
 const routes: Routes = [
     {
         path: '',
-        component: ArchivePageComponent
-    }
+        component: ArchivePageComponent,
+    },
 ];
 
 @NgModule({
     declarations: [ArchivePageComponent],
-    imports: [CommonModule, RouterModule.forChild(routes)]
+    imports: [CommonModule, RouterModule.forChild(routes)],
 })
 export class ArchivePageModule {}

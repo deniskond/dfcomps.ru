@@ -6,12 +6,12 @@ import { RatingPageComponent } from './rating.page';
 const routes: Routes = [
     {
         path: '',
-        component: RatingPageComponent
-    }
+        component: RatingPageComponent,
+    },
 ];
 
 @NgModule({
     declarations: [RatingPageComponent],
-    imports: [CommonModule, RouterModule.forChild(routes)]
+    imports: [CommonModule, RouterModule.forChild(routes)],
 })
 export class RatingPageModule {}

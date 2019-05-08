@@ -6,7 +6,7 @@ import { BackendService } from '../backend-service/backend-service';
 import { Observable } from 'rxjs';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class RatingTablesService extends BackendService {
     public getTop10Table$(physics: Physics): Observable<LeaderTableInterface[]> {

@@ -1,0 +1,43 @@
+.background {
+    margin: 0;
+    border: 0;
+    font-family: elektra;
+    background: url('/assets/images/bg/generation.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: 50%;
+    width: 100%;
+    min-height: 100vw;
+}
+
+.container {
+    width: 1170px;
+    margin: 0 auto;
+    opacity: 1;
+    padding: 25px;
+    box-sizing: content-box;
+}
+
+.main {
+    display: flex; 
+    margin-top:20px;
+
+    .main-column {
+        width: 830px;
+        min-height: 400px;
+    }
+
+    .right-column {
+        padding-left: 20px;
+        width: 340px;
+
+        .right-block {
+            width: 100%;
+            margin-top: 20px;
+
+            &:first-child {
+                margin-top: 0;
+            }
+        }
+    }
+}
