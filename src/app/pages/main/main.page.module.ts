@@ -7,12 +7,12 @@ import { MatButtonModule, MatButtonToggleModule } from '@angular/material';
 const routes: Routes = [
     {
         path: '',
-        component: MainPageComponent
-    }
+        component: MainPageComponent,
+    },
 ];
 
 @NgModule({
     declarations: [MainPageComponent],
-    imports: [CommonModule, RouterModule.forChild(routes), MatButtonModule, MatButtonToggleModule]
+    imports: [CommonModule, RouterModule.forChild(routes), MatButtonModule, MatButtonToggleModule],
 })
 export class MainPageModule {}

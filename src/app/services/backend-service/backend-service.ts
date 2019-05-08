@@ -5,11 +5,11 @@ import { Observable } from 'rxjs';
 const ACCESS_CONTROL_HEADERS = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
 };
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class BackendService {
     constructor(@Optional() private httpClient: HttpClient) {}

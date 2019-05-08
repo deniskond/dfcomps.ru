@@ -3,7 +3,7 @@ import { formatCupTime } from '../../helpers/cup-time-format.helpers';
 
 @Component({
     selector: 'app-cup-timer-offline-finished',
-    templateUrl: './cup-timer-offline-finished.component.html'
+    templateUrl: './cup-timer-offline-finished.component.html',
 })
 export class CupTimerOfflineFinishedComponent implements OnInit {
     @Input()

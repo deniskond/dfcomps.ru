@@ -12,9 +12,7 @@ import { CountdownTimerComponent } from './components/countdown-timer/countdown-
 import { CommonModule } from '@angular/common';
 
 @NgModule({
-    imports: [
-        CommonModule,
-    ],
+    imports: [CommonModule],
     declarations: [
         CupTimerComponent,
         CupTimerOnlineComponent,
@@ -27,8 +25,6 @@ import { CommonModule } from '@angular/common';
         CupTimerOfflineFinishedComponent,
         CountdownTimerComponent,
     ],
-    exports: [
-        CupTimerComponent,
-    ]
+    exports: [CupTimerComponent],
 })
 export class CupTimerModule {}

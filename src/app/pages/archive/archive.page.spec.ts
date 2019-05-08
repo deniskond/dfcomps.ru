@@ -7,7 +7,7 @@ describe('ArchivePageComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [ArchivePageComponent]
+            declarations: [ArchivePageComponent],
         }).compileComponents();
     }));
 

@@ -7,7 +7,7 @@ describe('RatingPageComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [RatingPageComponent]
+            declarations: [RatingPageComponent],
         }).compileComponents();
     }));
 

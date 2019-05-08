@@ -5,7 +5,7 @@ import * as moment from 'moment';
 
 @Component({
     templateUrl: './main-site.component.html',
-    styleUrls: ['./main-site.component.less']
+    styleUrls: ['./main-site.component.less'],
 })
 export class MainSiteComponent {
     public cupTypes = CupTypes;
@@ -13,6 +13,10 @@ export class MainSiteComponent {
 
     // TODO [DFRU-21] Оффлайн капы
     // TODO [DFRU-22] Онлайн капы
-    public startTime = moment().add(10, 'seconds').unix();
-    public endTime = moment().add(20, 'seconds').unix();
+    public startTime = moment()
+        .add(10, 'seconds')
+        .unix();
+    public endTime = moment()
+        .add(20, 'seconds')
+        .unix();
 }
