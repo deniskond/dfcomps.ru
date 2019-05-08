@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SiteHeaderComponent } from './site-header.component';
+import { SiteHeaderModule } from './site-header.module';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('SiteHeaderComponent', () => {
     let component: SiteHeaderComponent;
@@ -8,7 +9,7 @@ describe('SiteHeaderComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [SiteHeaderComponent],
+            imports: [SiteHeaderModule, RouterTestingModule],
         }).compileComponents();
     }));
 

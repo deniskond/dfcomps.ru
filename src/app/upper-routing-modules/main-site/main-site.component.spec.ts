@@ -4,14 +4,14 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { Store } from '@ngrx/store';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MainSiteComponent } from './main-site.component';
+import { MainSiteModule } from './main-site.module';
 
 describe('MainSiteComponent', () => {
     let mockStore: MockStore<{ count: number }>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [RouterTestingModule],
-            declarations: [MainSiteComponent],
+            imports: [RouterTestingModule, MainSiteModule],
             providers: [
                 provideMockStore({
                     initialState,

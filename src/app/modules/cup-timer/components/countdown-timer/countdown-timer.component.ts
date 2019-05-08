@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable, Subscription, interval } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, interval, Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 import * as moment from 'moment';
 
 const SECONDS_IN_DAY = 24 * 60 * 60;
@@ -22,7 +22,7 @@ export class CountdownTimerComponent implements OnInit, OnDestroy {
     public currentTimerCaption$: Observable<string>;
     public currentDaysCaption$: Observable<number>;
 
-    private timerSubscription: Subscription;
+    private onDestroy$ = new Subject<void>();
 
     ngOnInit(): void {
         this.currentTimerValue$ = new BehaviorSubject(this.calculateCurrentTimerValue());
@@ -35,7 +35,9 @@ export class CountdownTimerComponent implements OnInit, OnDestroy {
             map((timerValue: number) => this.mapTimerValueToTimerCaption(timerValue)),
         );
 
-        this.timerSubscription = interval(1000).subscribe(() => {
+        interval(1000).pipe(
+            takeUntil(this.onDestroy$),
+        ).subscribe(() => {
             const currentTimerValue = this.calculateCurrentTimerValue();
 
             if (!currentTimerValue) {
@@ -47,7 +49,8 @@ export class CountdownTimerComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.timerSubscription.unsubscribe();
+        this.onDestroy$.next();
+        this.onDestroy$.complete();
     }
 
     private calculateCurrentTimerValue(): number {
