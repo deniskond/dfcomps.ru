@@ -12,6 +12,7 @@ export const mainSiteRoutes: Routes = [
             { path: 'movies', loadChildren: './../../pages/movies/movies.page.module#MoviesPageModule' },
             { path: 'rules', loadChildren: './../../pages/rules/rules.page.module#RulesPageModule' },
             { path: 'teams', loadChildren: './../../pages/teams/teams.page.module#TeamsPageModule' },
+            { path: 'profile/:id', loadChildren: './../../pages/profile/profile.page.module#ProfilePageModule' },
         ],
     },
 ];
