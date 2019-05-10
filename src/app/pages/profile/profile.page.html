@@ -1,29 +1,30 @@
 <div class="shadowed-main-block">
-    <div style="display: flex;align-items:center;justify-content:space-between;">
-        <h1 class="h1-block-header"> Профиль игрока {{ playerNick }} </h1>
+    <div class="profile-header">
+        <h1 class="h1-block-header"> 
+            Профиль игрока
+            <ng-container *ngIf="!isLoading"> {{ mainInfo.nick }} </ng-container>
+        </h1>
         <button mat-raised-button color="primary" class="edit-profile-button">
             Редактировать профиль
         </button>
     </div>
 
-    <ng-container>
-        <div style="display:flex;height:236px;justify-content:space-between;margin-bottom: 16px;">
+    <ng-container *ngIf="!isLoading; else loader">
+        <div class="info-and-charts">
             <div class="player-info">
-                <div class="avatar" style="background: #eee;width:150px;height:150px;border:1px solid #ddd;">
-
-                </div>
-                <div class="rating-and-country" style="font-size: 15px;line-height: 25px;margin-top:12px;">
-                    <div><b>VQ3 рейтинг:</b> 1500</div>
-                    <div><b>CPM рейтинг:</b> 1500</div>
-                    <div style="display:flex;align-items:center;">
+                <img src="{{ mainUrl }}/avatars/{{ mainInfo.avatar }}.jpg" class="avatar" />
+                <div class="rating-and-country">
+                    <div><b>VQ3 рейтинг:</b> {{ mainInfo.vq3Rating }}</div>
+                    <div><b>CPM рейтинг:</b> {{ mainInfo.cpmRating }}</div>
+                    <div class="country">
                         <b>Страна:</b> 
-                        <app-flag [country]="ru" style="margin: 0 4px"></app-flag>
-                        Russia
+                        <app-flag [country]="mainInfo.country" class="flag"></app-flag>
+                        <span>{{ mainInfo.country }}</span>
                     </div>
                 </div>
             </div>
-            <div class="rating" style="width:310px;height:100%;background:#eee;border:1px solid #ddd;"></div>
-            <div class="rating" style="width:310px;height:100%;background:#eee;border:1px solid #ddd;"></div>
+            <app-profile-rating-chart [physics]="physics.VQ3" [chart]="cpmChart"></app-profile-rating-chart>
+            <app-profile-rating-chart [physics]="physics.CPM" [chart]="vq3Chart"></app-profile-rating-chart>
         </div>
         <div class="bold-15">Награды:</div>
         <app-profile-rewards></app-profile-rewards>
