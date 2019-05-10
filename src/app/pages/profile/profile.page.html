@@ -1,3 +1,39 @@
-<p>
-  profile page
-</p>
+<div class="shadowed-main-block">
+    <div style="display: flex;align-items:center;justify-content:space-between;">
+        <h1 class="h1-block-header"> Профиль игрока {{ playerNick }} </h1>
+        <button mat-raised-button color="primary" class="edit-profile-button">
+            Редактировать профиль
+        </button>
+    </div>
+
+    <ng-container>
+        <div style="display:flex;height:236px;justify-content:space-between;margin-bottom: 16px;">
+            <div class="player-info">
+                <div class="avatar" style="background: #eee;width:150px;height:150px;border:1px solid #ddd;">
+
+                </div>
+                <div class="rating-and-country" style="font-size: 15px;line-height: 25px;margin-top:12px;">
+                    <div><b>VQ3 рейтинг:</b> 1500</div>
+                    <div><b>CPM рейтинг:</b> 1500</div>
+                    <div style="display:flex;align-items:center;">
+                        <b>Страна:</b> 
+                        <app-flag [country]="ru" style="margin: 0 4px"></app-flag>
+                        Russia
+                    </div>
+                </div>
+            </div>
+            <div class="rating" style="width:310px;height:100%;background:#eee;border:1px solid #ddd;"></div>
+            <div class="rating" style="width:310px;height:100%;background:#eee;border:1px solid #ddd;"></div>
+        </div>
+        <div class="bold-15">Награды:</div>
+        <app-profile-rewards></app-profile-rewards>
+        <div class="bold-15">Участие в турнирах:</div>
+        <app-profile-cups-table></app-profile-cups-table>
+    </ng-container>
+
+    <ng-template #loader>
+        <div class="loader">
+            <mat-spinner diameter="80" strokeWidth="5" color="accent"></mat-spinner>
+        </div>
+    </ng-template>
+</div>

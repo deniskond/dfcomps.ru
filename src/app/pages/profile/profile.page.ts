@@ -4,4 +4,7 @@ import { Component } from '@angular/core';
     templateUrl: './profile.page.html',
     styleUrls: ['./profile.page.less'],
 })
-export class ProfilePageComponent {}
+export class ProfilePageComponent {
+    // TODO [DFRU-8] Перевести на реальные данные
+    public playerNick = 'Nosf';
+}
