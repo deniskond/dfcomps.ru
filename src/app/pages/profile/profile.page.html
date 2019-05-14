@@ -12,7 +12,7 @@
     <ng-container *ngIf="!isLoading; else loader">
         <div class="info-and-charts">
             <div class="player-info">
-                <img src="{{ mainUrl }}/avatars/{{ mainInfo.avatar }}.jpg" class="avatar" />
+                <img [src]="getAvatarSrc()" class="avatar" />
                 <div class="rating-and-country">
                     <div><b>VQ3 рейтинг:</b> {{ mainInfo.vq3Rating }}</div>
                     <div><b>CPM рейтинг:</b> {{ mainInfo.cpmRating }}</div>
@@ -27,7 +27,7 @@
             <app-profile-rating-chart [physics]="physics.CPM" [chart]="vq3Chart"></app-profile-rating-chart>
         </div>
         <div class="bold-15">Награды:</div>
-        <app-profile-rewards></app-profile-rewards>
+        <app-profile-rewards [rewards]="rewards"></app-profile-rewards>
         <div class="bold-15">Участие в турнирах:</div>
         <app-profile-cups-table></app-profile-cups-table>
     </ng-container>

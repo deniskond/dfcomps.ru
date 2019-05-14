@@ -6,6 +6,7 @@ import { switchMap, tap, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { ProfileService } from './services/profile.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Rewards } from './enums/rewards.enum';
 
 @Component({
     templateUrl: './profile.page.html',
@@ -18,6 +19,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     public vq3Chart: any;
     public demos: any;
     public cups: any;
+    public rewards: Rewards[];
     public isLoading = true;
     public physics = Physics;
     public mainUrl = MAIN_URL;
@@ -46,10 +48,15 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
             this.vq3Chart = profileInfo.rating.vq3;
             this.demos = profileInfo.demos;
             this.cups = profileInfo.cups;
+            this.rewards = profileInfo.rewards.map(({ name }) => name);
 
             this.sanitizer.bypassSecurityTrustResourceUrl(`/assets/images/avatars/${ this.mainInfo.avatar }.jpg`);
 
             this.isLoading = false;
         });
+    }
+
+    public getAvatarSrc(): string {
+        return this.mainInfo.avatar ? `${this.mainUrl}/avatars/${this.mainInfo.avatar}.jpg` : `${this.mainUrl}/avatars/no_avatar.png`;
     }
 }

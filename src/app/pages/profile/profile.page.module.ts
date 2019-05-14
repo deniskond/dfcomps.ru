@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { ProfilePageComponent } from './profile.page';
-import { MatProgressSpinnerModule, MatButtonModule } from '@angular/material';
+import { MatProgressSpinnerModule, MatButtonModule, MatTooltipModule } from '@angular/material';
 import { SharedModule } from '../../modules/shared.module';
 import { ProfileCupsTableComponent } from './components/profile-cups-table/profile-cups-table.component';
 import { ProfileRewardsComponent } from './components/profile-rewards/profile-rewards.component';
@@ -17,8 +17,20 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [ProfilePageComponent, ProfileCupsTableComponent, ProfileRewardsComponent, ProfileRatingChartComponent],
-    imports: [CommonModule, RouterModule.forChild(routes), MatProgressSpinnerModule, SharedModule, MatButtonModule],
+    declarations: [
+        ProfilePageComponent,
+        ProfileCupsTableComponent,
+        ProfileRewardsComponent,
+        ProfileRatingChartComponent,
+    ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        MatProgressSpinnerModule,
+        SharedModule,
+        MatButtonModule,
+        MatTooltipModule,
+    ],
     providers: [ProfileService],
 })
 export class ProfilePageModule {}
