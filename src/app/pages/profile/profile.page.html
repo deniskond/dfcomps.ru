@@ -26,10 +26,9 @@
             <app-profile-rating-chart [physics]="physics.VQ3" [chart]="cpmChart"></app-profile-rating-chart>
             <app-profile-rating-chart [physics]="physics.CPM" [chart]="vq3Chart"></app-profile-rating-chart>
         </div>
-        <div class="bold-15">Награды:</div>
-        <app-profile-rewards [rewards]="rewards"></app-profile-rewards>
-        <div class="bold-15">Участие в турнирах:</div>
-        <app-profile-cups-table></app-profile-cups-table>
+        <app-profile-rewards [rewards]="rewards" class="bottom-16"></app-profile-rewards>
+        <app-profile-cups-table [cups]="cups" class="bottom-16"></app-profile-cups-table>
+        <app-profile-last-demos [demos]="demos"></app-profile-last-demos>
     </ng-container>
 
     <ng-template #loader>

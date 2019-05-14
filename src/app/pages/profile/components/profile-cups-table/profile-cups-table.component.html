@@ -1,1 +1,27 @@
-<div style="border: 1px solid #eee;height: 300px;margin-top: 8px;"></div>
+<div class="bold-15">Участие в турнирах:</div>
+<div class="table-container">
+    <mat-table [dataSource]="cups">
+        <ng-container cdkColumnDef="name">
+            <mat-header-cell *cdkHeaderCellDef> Название турнира </mat-header-cell>
+            <mat-cell *cdkCellDef="let row"> {{ row.name }} </mat-cell>
+        </ng-container>
+    
+        <ng-container cdkColumnDef="physics">
+            <mat-header-cell *cdkHeaderCellDef> Физика </mat-header-cell>
+            <mat-cell *cdkCellDef="let row"> {{ row.physics }} </mat-cell>
+        </ng-container>
+    
+        <ng-container cdkColumnDef="result">
+            <mat-header-cell *cdkHeaderCellDef> Результат </mat-header-cell>
+            <mat-cell *cdkCellDef="let row"> {{ row.resultPlace }} </mat-cell>
+        </ng-container>
+
+        <ng-container cdkColumnDef="rating">
+            <mat-header-cell *cdkHeaderCellDef> Рейтинг </mat-header-cell>
+            <mat-cell *cdkCellDef="let row"> {{ row.ratingChange }} </mat-cell>
+        </ng-container>
+    
+        <mat-header-row *cdkHeaderRowDef="['name', 'physics', 'result', 'rating']"></mat-header-row>
+        <mat-row *cdkRowDef="let row; columns: ['name', 'physics', 'result', 'rating']"></mat-row>
+    </mat-table>
+</div>

@@ -7,6 +7,8 @@ import { Subject } from 'rxjs';
 import { ProfileService } from './services/profile.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Rewards } from './enums/rewards.enum';
+import { ProfileCupInterface } from './interfaces/profile-cup.interface';
+import { ProfileCupDtoInterface } from './dto/profile-cup.dto';
 
 @Component({
     templateUrl: './profile.page.html',
@@ -26,7 +28,11 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
     private onDestroy$ = new Subject<void>();
 
-    constructor(private activatedRoute: ActivatedRoute, private profileService: ProfileService, private sanitizer: DomSanitizer) {}
+    constructor(
+        private activatedRoute: ActivatedRoute,
+        private profileService: ProfileService,
+        private sanitizer: DomSanitizer,
+    ) {}
 
     ngOnInit(): void {
         this.setRouteSubscription();
@@ -38,25 +44,43 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     }
 
     public setRouteSubscription(): void {
-        this.activatedRoute.params.pipe(
-            tap(() => this.isLoading = true),
-            switchMap(({ id }: Params) => this.profileService.getProfile$(id)),
-            takeUntil(this.onDestroy$),
-        ).subscribe((profileInfo: any) => {
-            this.mainInfo = profileInfo.player;
-            this.cpmChart = profileInfo.rating.cpm;
-            this.vq3Chart = profileInfo.rating.vq3;
-            this.demos = profileInfo.demos;
-            this.cups = profileInfo.cups;
-            this.rewards = profileInfo.rewards.map(({ name }) => name);
+        this.activatedRoute.params
+            .pipe(
+                tap(() => (this.isLoading = true)),
+                switchMap(({ id }: Params) => this.profileService.getProfile$(id)),
+                takeUntil(this.onDestroy$),
+            )
+            .subscribe((profileInfo: any) => {
+                this.mainInfo = profileInfo.player;
+                this.cpmChart = profileInfo.rating.cpm;
+                this.vq3Chart = profileInfo.rating.vq3;
+                this.demos = profileInfo.demos;
+                this.cups = this.mapCupsToView(profileInfo.cups);
+                this.rewards = profileInfo.rewards.map(({ name }) => name);
 
-            this.sanitizer.bypassSecurityTrustResourceUrl(`/assets/images/avatars/${ this.mainInfo.avatar }.jpg`);
+                this.sanitizer.bypassSecurityTrustResourceUrl(`/assets/images/avatars/${this.mainInfo.avatar}.jpg`);
 
-            this.isLoading = false;
-        });
+                this.isLoading = false;
+            });
     }
 
     public getAvatarSrc(): string {
-        return this.mainInfo.avatar ? `${this.mainUrl}/avatars/${this.mainInfo.avatar}.jpg` : `${this.mainUrl}/avatars/no_avatar.png`;
+        return this.mainInfo.avatar
+            ? `${this.mainUrl}/avatars/${this.mainInfo.avatar}.jpg`
+            : `${this.mainUrl}/avatars/no_avatar.png`;
+    }
+
+    private mapCupsToView(cups: ProfileCupDtoInterface[]): ProfileCupInterface[] {
+        return cups.map((cup: ProfileCupDtoInterface) => {
+            const physics = cup.cpm_place === '0' ? Physics.VQ3 : Physics.CPM;
+
+            return {
+                newsId: cup.news_id,
+                name: cup.name,
+                physics,
+                resultPlace: physics === Physics.CPM ? +cup.cpm_place : +cup.vq3_place,
+                ratingChange: physics === Physics.CPM ? +cup.cpm_change : +cup.vq3_change,
+            };
+        });
     }
 }
