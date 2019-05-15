@@ -43,7 +43,7 @@ export class ProfileRatingChartComponent implements OnInit {
                 fill: true,
                 borderColor: '#337ab7',
                 backgroundColor: '#eeeeee',
-                borderWidth: 2,
+                borderWidth: 1,
                 pointRadius: 3,
                 pointBackgroundColor: '#337ab7',
                 pointBorderWidth: 0,

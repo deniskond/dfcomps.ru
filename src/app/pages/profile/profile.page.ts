@@ -9,16 +9,19 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Rewards } from './enums/rewards.enum';
 import { ProfileCupInterface } from './interfaces/profile-cup.interface';
 import { ProfileCupDtoInterface } from './dto/profile-cup.dto';
+import { ProfileMainInfoInterface } from './interfaces/profile-main-info.interface';
+import { ProfileInterface } from './interfaces/profile.interface';
+import { ProfileDemosDtoInterface } from './dto/profile-demos.dto';
+import { ProfileRewardsDtoInterface } from './dto/profile-rewards.dto';
 
 @Component({
     templateUrl: './profile.page.html',
     styleUrls: ['./profile.page.less'],
 })
 export class ProfilePageComponent implements OnInit, OnDestroy {
-    // TODO [DFRU-8] типизировать все any
-    public mainInfo: any;
-    public cpmChart: any;
-    public vq3Chart: any;
+    public mainInfo: ProfileMainInfoInterface;
+    public cpmChart: string[];
+    public vq3Chart: string[];
     public demos: string[];
     public cups: ProfileCupInterface[];
     public rewards: Rewards[];
@@ -50,13 +53,13 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
                 switchMap(({ id }: Params) => this.profileService.getProfile$(id)),
                 takeUntil(this.onDestroy$),
             )
-            .subscribe((profileInfo: any) => {
+            .subscribe((profileInfo: ProfileInterface) => {
                 this.mainInfo = profileInfo.player;
                 this.cpmChart = profileInfo.rating.cpm;
                 this.vq3Chart = profileInfo.rating.vq3;
-                this.demos = profileInfo.demos.map(({ demopath }) => demopath);
+                this.demos = profileInfo.demos.map(({ demopath }: ProfileDemosDtoInterface) => demopath);
                 this.cups = this.mapCupsToView(profileInfo.cups);
-                this.rewards = profileInfo.rewards.map(({ name }) => name);
+                this.rewards = profileInfo.rewards.map(({ name }: ProfileRewardsDtoInterface) => name);
 
                 this.sanitizer.bypassSecurityTrustResourceUrl(`/assets/images/avatars/${this.mainInfo.avatar}.jpg`);
 
