@@ -1,5 +1,6 @@
 export interface ProfileCupDtoInterface {
-    name: string;
+    full_name: string;
+    short_name: string;
     news_id: string;
     cpm_place: string;
     vq3_place: string;

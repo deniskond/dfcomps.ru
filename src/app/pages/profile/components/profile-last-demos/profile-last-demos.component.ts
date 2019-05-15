@@ -7,7 +7,5 @@ import { Component, Input } from '@angular/core';
 })
 export class ProfileLastDemosComponent {
     @Input()
-    demos: any;
-
-
+    demos: string[];
 }

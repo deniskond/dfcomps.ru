@@ -19,8 +19,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     public mainInfo: any;
     public cpmChart: any;
     public vq3Chart: any;
-    public demos: any;
-    public cups: any;
+    public demos: string[];
+    public cups: ProfileCupInterface[];
     public rewards: Rewards[];
     public isLoading = true;
     public physics = Physics;
@@ -54,7 +54,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
                 this.mainInfo = profileInfo.player;
                 this.cpmChart = profileInfo.rating.cpm;
                 this.vq3Chart = profileInfo.rating.vq3;
-                this.demos = profileInfo.demos;
+                this.demos = profileInfo.demos.map(({ demopath }) => demopath);
                 this.cups = this.mapCupsToView(profileInfo.cups);
                 this.rewards = profileInfo.rewards.map(({ name }) => name);
 
@@ -76,7 +76,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
             return {
                 newsId: cup.news_id,
-                name: cup.name,
+                fullName: cup.full_name,
+                shortName: cup.short_name,
                 physics,
                 resultPlace: physics === Physics.CPM ? +cup.cpm_place : +cup.vq3_place,
                 ratingChange: physics === Physics.CPM ? +cup.cpm_change : +cup.vq3_change,

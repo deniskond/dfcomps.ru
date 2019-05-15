@@ -4,7 +4,7 @@
         <ng-container cdkColumnDef="name">
             <mat-header-cell *cdkHeaderCellDef class="cup-name-column"> Название турнира </mat-header-cell>
             <mat-cell *cdkCellDef="let row" class="cup-name-column"> 
-                <a href="/news/{{ row.newsId }}">{{ row.name }}</a> 
+                <a href="/news/{{ row.newsId }}">{{ row.fullName }} – {{ row.shortName }}</a> 
             </mat-cell>
         </ng-container>
     
