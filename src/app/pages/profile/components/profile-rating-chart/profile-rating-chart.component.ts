@@ -1,14 +1,53 @@
 import { Physics } from '../../../../enums/physics.enum';
-import { Component, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
     selector: 'app-profile-rating-chart',
     templateUrl: './profile-rating-chart.component.html',
     styleUrls: ['./profile-rating-chart.component.less'],
 })
-export class ProfileRatingChartComponent {
+export class ProfileRatingChartComponent implements OnInit {
     @Input()
     physics: Physics;
     @Input()
-    chart: number[];
+    chart: string[];
+
+    public barChartOptions: any = {
+        scaleShowVerticalLines: true,
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            xAxes: [
+                {
+                    display: false,
+                },
+            ],
+        },
+        tooltips: {
+            displayColors: false,
+        },
+        legend: {
+            display: false,
+        },
+    };
+
+    public barChartLabels: string[];
+    public barChartData: any;
+
+    ngOnInit(): void {
+        this.barChartLabels = this.chart;
+        this.barChartData = [
+            {
+                data: this.chart.map(val => +val),
+                label: `${this.physics.toUpperCase()} Rating`,
+                fill: true,
+                borderColor: '#337ab7',
+                backgroundColor: '#eeeeee',
+                borderWidth: 2,
+                pointRadius: 3,
+                pointBackgroundColor: '#337ab7',
+                pointBorderWidth: 0,
+            },
+        ];
+    }
 }

@@ -1,1 +1,11 @@
-<div class="rating" style="width:310px;height:100%;background:#eee;border:1px solid #ddd;"></div>
+<div class="rating">
+    <div class="rating-caption">{{ physics | uppercase }} рейтинг</div>
+    <div class="canvas-container">
+        <canvas baseChart
+            [datasets]="barChartData"
+            [labels]="barChartLabels"
+            [options]="barChartOptions"
+            chartType="line">
+        </canvas>
+    </div>
+</div>

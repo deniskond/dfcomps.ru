@@ -10,6 +10,7 @@ import { ProfileRatingChartComponent } from './components/profile-rating-chart/p
 import { ProfileService } from './services/profile.service';
 import { ProfileLastDemosComponent } from './components/profile-last-demos/profile-last-demos.component';
 import { CdkTableModule } from '@angular/cdk/table';
+import { ChartsModule } from 'ng2-charts';
 
 const routes: Routes = [
     {
@@ -35,6 +36,7 @@ const routes: Routes = [
         MatTooltipModule,
         MatTableModule,
         CdkTableModule,
+        ChartsModule,
     ],
     providers: [ProfileService],
 })
