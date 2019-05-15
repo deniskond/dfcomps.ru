@@ -1,6 +1,8 @@
+import { SharedModule } from '../../../../modules/shared.module';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ProfileCupsTableComponent } from './profile-cups-table.component';
+import { MatTableModule } from '@angular/material';
+import { CdkTableModule } from '@angular/cdk/table';
 
 describe('ProfileCupsTableComponent', () => {
     let component: ProfileCupsTableComponent;
@@ -8,6 +10,7 @@ describe('ProfileCupsTableComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
+            imports: [MatTableModule, SharedModule, CdkTableModule],
             declarations: [ProfileCupsTableComponent],
         }).compileComponents();
     }));

@@ -1,6 +1,7 @@
+import { Physics } from '../../../../enums/physics.enum';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ProfileRatingChartComponent } from './profile-rating-chart.component';
+import { ChartsModule } from 'ng2-charts';
 
 describe('ProfileRatingChartComponent', () => {
     let component: ProfileRatingChartComponent;
@@ -8,6 +9,7 @@ describe('ProfileRatingChartComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
+            imports: [ChartsModule],
             declarations: [ProfileRatingChartComponent],
         }).compileComponents();
     }));
@@ -15,6 +17,8 @@ describe('ProfileRatingChartComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(ProfileRatingChartComponent);
         component = fixture.componentInstance;
+        component.chart = [];
+        component.physics = Physics.CPM;
         fixture.detectChanges();
     });
 
