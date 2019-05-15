@@ -1,3 +1,5 @@
+@import '../../../assets/styles/variables.less';
+
 :host {
     display: block;
     min-height: 300px;
@@ -27,7 +29,7 @@ mat-cell, mat-footer-cell, mat-header-cell {
 .table-header {
     padding: 6px;
     text-align: center;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #ccc; 
 }
 
 .loader {
@@ -53,7 +55,7 @@ mat-cell, mat-footer-cell, mat-header-cell {
 
 .player-column {
     flex-grow: 1;
-    border: 1px solid #ccc;
+    border: @border; 
     border-top: 0;
     border-bottom: 0;
 
