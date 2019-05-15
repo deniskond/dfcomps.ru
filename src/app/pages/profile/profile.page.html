@@ -1,0 +1,39 @@
+<div class="shadowed-main-block">
+    <div class="profile-header">
+        <h1 class="h1-block-header"> 
+            Профиль игрока
+            <ng-container *ngIf="!isLoading"> {{ mainInfo.nick }} </ng-container>
+        </h1>
+        <button mat-raised-button color="primary" class="edit-profile-button">
+            Редактировать профиль
+        </button>
+    </div>
+
+    <ng-container *ngIf="!isLoading; else loader">
+        <div class="info-and-charts">
+            <div class="player-info">
+                <img [src]="getAvatarSrc()" class="avatar" />
+                <div class="rating-and-country">
+                    <div><b>VQ3 рейтинг:</b> {{ mainInfo.vq3Rating }}</div>
+                    <div><b>CPM рейтинг:</b> {{ mainInfo.cpmRating }}</div>
+                    <div class="country">
+                        <b>Страна:</b> 
+                        <app-flag [country]="mainInfo.country" class="flag"></app-flag>
+                        <span>{{ mainInfo.country }}</span>
+                    </div>
+                </div>
+            </div>
+            <app-profile-rating-chart [physics]="physics.VQ3" [chart]="vq3Chart"></app-profile-rating-chart>
+            <app-profile-rating-chart [physics]="physics.CPM" [chart]="cpmChart"></app-profile-rating-chart>
+        </div>
+        <app-profile-rewards [rewards]="rewards" class="bottom-16"></app-profile-rewards>
+        <app-profile-cups-table [cups]="cups" class="bottom-16"></app-profile-cups-table>
+        <app-profile-last-demos [demos]="demos"></app-profile-last-demos>
+    </ng-container>
+
+    <ng-template #loader>
+        <div class="loader">
+            <mat-spinner diameter="80" strokeWidth="5" color="accent"></mat-spinner>
+        </div>
+    </ng-template>
+</div>

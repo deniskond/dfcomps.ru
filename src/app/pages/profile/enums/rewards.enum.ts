@@ -1,0 +1,18 @@
+export enum Rewards {
+    SEASON_ONE_PARTICIPANT = 'Season 1 participant',
+    TOP1_VQ3_FIRST_SEASON = 'Top 1 VQ3 (first season)',
+    TOP2_VQ3_FIRST_SEASON = 'Top 2 VQ3 (first season)',
+    TOP3_VQ3_FIRST_SEASON = 'Top 3 VQ3 (first season)',
+    TOP1_CPM_FIRST_SEASON = 'Top 1 CPM (first season)',
+    TOP2_CPM_FIRST_SEASON = 'Top 2 CPM (first season)',
+    TOP3_CPM_FIRST_SEASON = 'Top 3 CPM (first season)',
+    TOP10_VQ3_FIRST_SEASON = 'Top 10 VQ3 (first season)',
+    TOP10_CPM_FIRST_SEASON = 'Top 10 CPM (first season)',
+    THE_BITTER_MAN = 'The Bitter Man',
+    THE_CAKE = 'The cake is a lie',
+    DDC2018_TOP1 = 'DDC2018 - Top 1',
+    DDC2018_TOP2 = 'DDC2018 - Top 2',
+    DDC2018_TOP3 = 'DDC2018 - Top 3',
+    DDC2018_TOP4 = 'DDC2018 - Top 4',
+    DDC2018_PARTICIPANT = 'DDC2018 - Participant',
+}

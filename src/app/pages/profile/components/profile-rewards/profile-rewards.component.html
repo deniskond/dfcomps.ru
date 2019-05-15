@@ -1,0 +1,9 @@
+<div class="bold-15">Награды:</div>
+<div class="rewards">
+    <img 
+        *ngFor="let reward of rewards" 
+        [matTooltip]="reward"   
+        [src]="getRewardIconPath(reward)" 
+        class="icon" 
+    />
+</div>

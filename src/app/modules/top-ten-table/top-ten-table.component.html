@@ -13,13 +13,15 @@
             <mat-header-cell *cdkHeaderCellDef class="player-column header"> Игрок </mat-header-cell>
             <mat-cell 
                 *cdkCellDef="let row"
+                mat-ripple
                 [@hoveredCell]="getHoveredState(row)"
                 (mouseenter)="darkenPlayerRow(row)" 
                 (mouseleave)="lightenPlayerRow(row)" 
+                (click)="navigateToPlayerProfile(row.playerId)"
                 class="player-column player-nick-container"> 
 
                 <app-flag [country]="row.country"></app-flag>
-                <div (click)="navigateToPlayerProfile(row.playerId)" class="player-nick">{{ row.nick }}</div>
+                <div class="player-nick">{{ row.nick }}</div>
             </mat-cell>
         </ng-container>
     

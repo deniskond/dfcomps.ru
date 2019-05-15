@@ -18,16 +18,16 @@
             <ng-container *ngIf="logged; else notlogged">
                 <span class="logged-in-as">Вы вошли как {{ nick }}</span>
                 <div class="profile-links">
-                    <div matRipple class="profile-link">Админка</div>
-                    <div matRipple class="profile-link">Команда</div>
-                    <div matRipple class="profile-link">Профиль</div>
-                    <div matRipple class="profile-link">Выйти</div>
+                    <div matRipple class="profile-link blue-link">Админка</div>
+                    <div matRipple class="profile-link blue-link">Команда</div>
+                    <div (click)="openProfile()" matRipple class="profile-link blue-link">Профиль</div>
+                    <div matRipple class="profile-link blue-link">Выйти</div>
                 </div>
             </ng-container>
             <ng-template #notlogged>
                 <div class="profile-links">
-                    <div matRipple class="profile-link">Войти</div>
-                    <div matRipple class="profile-link">Зарегистрироваться</div>
+                    <div matRipple class="profile-link blue-link">Войти</div>
+                    <div matRipple class="profile-link blue-link">Зарегистрироваться</div>
                 </div>
             </ng-template>
         </div>
@@ -52,21 +52,21 @@
         <div class="social-link social-link_discord">
             <a href="https://discord.gg/YTKVxMh" target="_blank">
                 <img src="/assets/images/icons/social/discord.png" />
-                <div class="link-caption">Discord</div>
+                <div class="link-caption blue-link">Discord</div>
             </a>
         </div>
 
         <div class="social-link social-link_twitch">
             <a href="https://www.twitch.tv/w00deh" target="_blank">
                 <img src="/assets/images/icons/social/twitch.png" />
-                <div class="link-caption">Twitch</div>
+                <div class="link-caption blue-link">Twitch</div>
             </a>
         </div>
 
         <div class="social-link social-link_youtube">
             <a href="https://www.youtube.com/channel/UCLyl7evRHAOWSfnRSMKLBVQ" target="_blank">
                 <img src="/assets/images/icons/social/youtube.png" />
-                <div class="link-caption">YouTube</div>
+                <div class="link-caption blue-link">YouTube</div>
             </a>
         </div>
 
