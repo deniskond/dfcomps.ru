@@ -2,6 +2,7 @@ import { UserInterface } from '../../../../interfaces/user.interface';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
+import { RegisterDialogComponent } from '../register-dialog/register-dialog.component';
 
 @Component({
     selector: 'app-user-panel',
@@ -20,9 +21,13 @@ export class UserPanelComponent {
     constructor(public dialog: MatDialog) {}
 
     public onLoginClick(): void {
-        const dialogRef = this.dialog.open(LoginDialogComponent);
+        this.dialog.open(LoginDialogComponent).afterClosed().subscribe(() => {
+            console.log('The dialog was closed');
+        });
+    }
 
-        dialogRef.afterClosed().subscribe(() => {
+    public onRegisterClick(): void {
+        this.dialog.open(RegisterDialogComponent).afterClosed().subscribe(() => {
             console.log('The dialog was closed');
         });
     }

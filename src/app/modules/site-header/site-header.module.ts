@@ -12,6 +12,7 @@ import {
 } from '@angular/material';
 import { UserPanelComponent } from './components/user-panel/user-panel.component';
 import { LoginDialogComponent } from './components/login-dialog/login-dialog.component';
+import { RegisterDialogComponent } from './components/register-dialog/register-dialog.component';
 
 @NgModule({
     imports: [
@@ -24,8 +25,8 @@ import { LoginDialogComponent } from './components/login-dialog/login-dialog.com
         HttpClientModule,
         MatDialogModule,
     ],
-    declarations: [SiteHeaderComponent, UserPanelComponent, LoginDialogComponent],
+    declarations: [SiteHeaderComponent, UserPanelComponent, LoginDialogComponent, RegisterDialogComponent],
     exports: [SiteHeaderComponent],
-    entryComponents: [LoginDialogComponent],
+    entryComponents: [LoginDialogComponent, RegisterDialogComponent],
 })
 export class SiteHeaderModule {}
