@@ -2,7 +2,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { SiteHeaderComponent } from './site-header.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatDividerModule, MatTabsModule, MatButtonToggleModule, MatRippleModule, MatButtonModule } from '@angular/material';
+import {
+    MatDividerModule,
+    MatTabsModule,
+    MatButtonToggleModule,
+    MatRippleModule,
+    MatButtonModule,
+    MatDialogModule,
+} from '@angular/material';
+import { UserPanelComponent } from './components/user-panel/user-panel.component';
+import { LoginDialogComponent } from './components/login-dialog/login-dialog.component';
 
 @NgModule({
     imports: [
@@ -13,8 +22,10 @@ import { MatDividerModule, MatTabsModule, MatButtonToggleModule, MatRippleModule
         MatButtonToggleModule,
         MatRippleModule,
         HttpClientModule,
+        MatDialogModule,
     ],
-    declarations: [SiteHeaderComponent],
+    declarations: [SiteHeaderComponent, UserPanelComponent, LoginDialogComponent],
     exports: [SiteHeaderComponent],
+    entryComponents: [LoginDialogComponent],
 })
 export class SiteHeaderModule {}

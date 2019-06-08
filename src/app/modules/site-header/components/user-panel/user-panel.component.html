@@ -1,0 +1,16 @@
+<ng-container *ngIf="isLogged; else notLogged">
+    <span class="logged-in-as">Вы вошли как {{ userInfo.nick }}</span>
+    <div class="profile-links">
+        <div matRipple class="profile-link blue-link">Админка</div>
+        <!-- TODO [DFRU-30] Страница команды -->
+        <!-- <div matRipple class="profile-link blue-link">Команда</div> -->
+        <div (click)="openProfile.emit()" matRipple class="profile-link blue-link">Профиль</div>
+        <div matRipple class="profile-link blue-link">Выйти</div>
+    </div>
+</ng-container>
+<ng-template #notLogged>
+    <div class="profile-links">
+        <div (click)="onLoginClick()" matRipple class="profile-link blue-link">Войти</div>
+        <div (click)="onRegisterClick()" matRipple class="profile-link blue-link">Зарегистрироваться</div>
+    </div>
+</ng-template>
