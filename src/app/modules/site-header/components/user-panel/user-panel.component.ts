@@ -3,6 +3,9 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 import { RegisterDialogComponent } from '../register-dialog/register-dialog.component';
+import { UserService } from '../../../../services/user-service/user.service';
+import { switchMap } from 'rxjs/operators';
+import { LoginDialogDataInterface } from '../../interfaces/login-dialog-data.interface';
 
 @Component({
     selector: 'app-user-panel',
@@ -18,17 +21,24 @@ export class UserPanelComponent {
     @Output()
     openProfile = new EventEmitter<void>();
 
-    constructor(public dialog: MatDialog) {}
+    constructor(private dialog: MatDialog, private userService: UserService) {}
 
     public onLoginClick(): void {
-        this.dialog.open(LoginDialogComponent).afterClosed().subscribe(() => {
-            console.log('The dialog was closed');
-        });
+        this.dialog
+            .open(LoginDialogComponent, { data: { login: '', password: '' } })
+            .afterClosed()
+            .pipe(switchMap(({ login, password }: LoginDialogDataInterface) => this.userService.login(login, password)))
+            .subscribe(val => {
+                console.log(val);
+            });
     }
 
     public onRegisterClick(): void {
-        this.dialog.open(RegisterDialogComponent).afterClosed().subscribe(() => {
-            console.log('The dialog was closed');
-        });
+        this.dialog
+            .open(RegisterDialogComponent)
+            .afterClosed()
+            .subscribe(() => {
+                console.log('The dialog was closed');
+            });
     }
 }

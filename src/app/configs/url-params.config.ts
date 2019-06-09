@@ -8,6 +8,20 @@ export class URL_PARAMS {
         return `${API_URL}/movies`;
     }
 
+    public static get USER_ACTIONS(): {
+        LOGIN: string;
+        REGISTER: string;
+        LOGOUT: string;
+        CHECK_ACCESS: string;
+    } {
+        return {
+            LOGIN: `${API_URL}/user/login`,
+            REGISTER: `${API_URL}/user/register`,
+            LOGOUT: `${API_URL}/user/logout`,
+            CHECK_ACCESS: `${API_URL}/user/check_access`,
+        };
+    }
+
     public static TOP_TEN_TABLE(physics: Physics): string {
         return `${API_URL}/tables/top10/${physics}`;
     }

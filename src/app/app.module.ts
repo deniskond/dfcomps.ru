@@ -4,6 +4,7 @@ import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from './routing/app.routing';
 import { MainSiteModule } from './upper-routing-modules/main-site/main-site.module';
+import { UserService } from './services/user-service/user.service';
 
 @NgModule({
     declarations: [AppComponent],
@@ -13,5 +14,6 @@ import { MainSiteModule } from './upper-routing-modules/main-site/main-site.modu
         MainSiteModule,
     ],
     bootstrap: [AppComponent],
+    providers: [UserService],
 })
 export class AppModule {}

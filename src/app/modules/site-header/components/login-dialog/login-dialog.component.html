@@ -2,13 +2,13 @@
 
 <div class="input-container">
     <div class="input-caption">Логин</div> 
-    <input class="input-field" />
+    <input [(ngModel)]="data.login" class="input-field" />
 </div>
 <div class="input-container">
     <div class="input-caption">Пароль</div> 
-    <input class="input-field password" type="password" />
+    <input [(ngModel)]="data.password" class="input-field password" type="password" />
 </div>
 
 <div class="dialog-button">
-    <button (click)="onLoginClick()" mat-raised-button color="primary">Войти</button>
+    <button [mat-dialog-close]="data" mat-raised-button color="primary">Войти</button>
 </div>
