@@ -1,18 +1,39 @@
 <div class="h1-block-header dialog-header">Регистрация на сайте</div>
 
-<div class="input-container">
-    <div class="input-caption">Логин</div> 
-    <input class="input-field" />
-</div>
-<div class="input-container">
-    <div class="input-caption">Пароль</div> 
-    <input class="input-field password" type="password" />
-</div>
-<div class="input-container">
-    <div class="input-caption">Подтверждение</div> 
-    <input class="input-field password" type="password" />
-</div>
+<form [formGroup]="loginForm">
+    <div class="input-container">
+        <div class="input-caption">Логин <span class="required"></span></div> 
+        <div>
+            <input formControlName="login" class="input-field" />
+            <div *ngIf="needToDisplayErrors && loginForm?.controls.login.errors?.required" class="field-error">Поле не заполнено</div>
+            <div *ngIf="needToDisplayErrors && loginForm?.controls.login.errors?.login as error" class="field-error">{{ error }}</div>
+        </div>
+    </div>
+    <div class="input-container">
+        <div class="input-caption">E-mail <span class="required"></span></div> 
+        <div>
+            <input formControlName="email" class="input-field" />
+            <div *ngIf="needToDisplayErrors && loginForm?.controls.email.errors?.required" class="field-error">Поле не заполнено</div>
+            <div *ngIf="needToDisplayErrors && loginForm?.controls.email.errors?.email as error" class="field-error">{{ error }}</div>
+        </div>
+    </div>
+    <div class="input-container">
+        <div class="input-caption">Пароль <span class="required"></span></div> 
+        <div>
+            <input formControlName="password" class="input-field password" type="password" />
+            <div *ngIf="needToDisplayErrors && loginForm?.controls.password.errors?.required" class="field-error">Поле не заполнено</div>
+        </div>
+    </div>
+    <div class="input-container">
+        <div class="input-caption">Подтверждение <span class="required"></span></div> 
+        <div>
+            <input formControlName="validation" class="input-field password" type="password" />
+            <div *ngIf="needToDisplayErrors && loginForm?.controls.validation.errors?.required" class="field-error">Поле не заполнено</div>
+            <div *ngIf="needToDisplayErrors && loginForm?.errors?.validation as error" class="field-error">{{ error }}</div>
+        </div>
+    </div>
+</form>
 
 <div class="dialog-button">
-    <button (click)="onRegisterClick()" mat-raised-button color="primary">Зарегистрироваться</button>
+    <button [disabled]="!loginForm.valid" (click)="onRegisterClick()" mat-raised-button color="primary">Зарегистрироваться</button>
 </div>

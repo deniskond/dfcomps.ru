@@ -10,6 +10,6 @@ import { Observable } from 'rxjs';
 })
 export class RatingTablesService extends BackendService {
     public getTop10Table$(physics: Physics): Observable<LeaderTableInterface[]> {
-        return this.get$(URL_PARAMS.TOP_TEN_TABLE(physics));
+        return this.post$(URL_PARAMS.TOP_TEN_TABLE(physics));
     }
 }

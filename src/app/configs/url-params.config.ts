@@ -13,12 +13,14 @@ export class URL_PARAMS {
         REGISTER: string;
         LOGOUT: string;
         CHECK_ACCESS: string;
+        CHECK_LOGIN: string;
     } {
         return {
             LOGIN: `${API_URL}/user/login`,
             REGISTER: `${API_URL}/user/register`,
             LOGOUT: `${API_URL}/user/logout`,
             CHECK_ACCESS: `${API_URL}/user/check_access`,
+            CHECK_LOGIN: `${API_URL}/user/check_login`,
         };
     }
 

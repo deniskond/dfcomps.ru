@@ -6,12 +6,11 @@
 .input-container {
     font-size: 16px;
     display: flex;
-    height: 28px;
     margin-top: 12px;
 
     .input-caption {
         text-align: right;
-        width: 120px;
+        width: 140px;
         margin-right: 16px;
         line-height: 28px;
     }
@@ -28,10 +27,23 @@
             letter-spacing: 2px;
         }   
     }
+
+    .field-error {
+        color: red;
+        margin-top: 6px;
+    }
 }
 
 .dialog-button {
     display: flex;
     justify-content: center;
     margin-top: 16px;
+}
+
+.required {
+    color: red;
+
+    &::after {
+        content: '*';
+    }
 }

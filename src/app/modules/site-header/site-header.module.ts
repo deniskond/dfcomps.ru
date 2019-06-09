@@ -13,7 +13,7 @@ import {
 import { UserPanelComponent } from './components/user-panel/user-panel.component';
 import { LoginDialogComponent } from './components/login-dialog/login-dialog.component';
 import { RegisterDialogComponent } from './components/register-dialog/register-dialog.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     imports: [
@@ -26,6 +26,7 @@ import { FormsModule } from '@angular/forms';
         HttpClientModule,
         MatDialogModule,
         FormsModule,
+        ReactiveFormsModule,
     ],
     declarations: [SiteHeaderComponent, UserPanelComponent, LoginDialogComponent, RegisterDialogComponent],
     exports: [SiteHeaderComponent],

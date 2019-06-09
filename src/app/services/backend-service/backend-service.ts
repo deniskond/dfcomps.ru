@@ -8,16 +8,6 @@ import { Observable } from 'rxjs';
 export class BackendService {
     constructor(@Optional() private httpClient: HttpClient) {}
 
-    public get$(url: string, getParams?: Record<string, string>): Observable<any> {
-        return this.httpClient.post(
-            url,
-            {
-                ...getParams,
-            },
-            { withCredentials: true },
-        );
-    }
-
     public post$(url: string, postParams?: Record<string, string>): Observable<any> {
         return this.httpClient.post(url, this.prepareHttpParams(postParams), { withCredentials: true });
     }

@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 import { RegisterDialogComponent } from '../register-dialog/register-dialog.component';
 import { UserService } from '../../../../services/user-service/user.service';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, take, filter } from 'rxjs/operators';
 import { LoginDialogDataInterface } from '../../interfaces/login-dialog-data.interface';
 
 @Component({
@@ -27,7 +27,11 @@ export class UserPanelComponent {
         this.dialog
             .open(LoginDialogComponent, { data: { login: '', password: '' } })
             .afterClosed()
-            .pipe(switchMap(({ login, password }: LoginDialogDataInterface) => this.userService.login(login, password)))
+            .pipe(
+                take(1),
+                filter((data: LoginDialogDataInterface) => !!data && !!data.login && !!data.password),
+                switchMap(({ login, password }: LoginDialogDataInterface) => this.userService.login$(login, password))
+            )
             .subscribe(val => {
                 console.log(val);
             });
