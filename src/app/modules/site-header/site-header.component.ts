@@ -1,4 +1,3 @@
-import { UserInterface } from '../../interfaces/user.interface';
 import { NavigationPages } from '../../routing/enums/pages.enum';
 import { TABS_CONFIG } from '../../routing/config/tabs.config';
 import { Component, OnInit } from '@angular/core';
