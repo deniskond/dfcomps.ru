@@ -14,23 +14,7 @@
             <a href="/language/ru"><img class="ru" src="/assets/images/icons/lang/ru.png" /></a>
         </div>
 
-        <div class="profile">
-            <ng-container *ngIf="logged; else notlogged">
-                <span class="logged-in-as">Вы вошли как {{ nick }}</span>
-                <div class="profile-links">
-                    <div matRipple class="profile-link blue-link">Админка</div>
-                    <div matRipple class="profile-link blue-link">Команда</div>
-                    <div (click)="openProfile()" matRipple class="profile-link blue-link">Профиль</div>
-                    <div matRipple class="profile-link blue-link">Выйти</div>
-                </div>
-            </ng-container>
-            <ng-template #notlogged>
-                <div class="profile-links">
-                    <div matRipple class="profile-link blue-link">Войти</div>
-                    <div matRipple class="profile-link blue-link">Зарегистрироваться</div>
-                </div>
-            </ng-template>
-        </div>
+        <app-user-panel></app-user-panel>
     </div>
 
     <mat-divider></mat-divider>

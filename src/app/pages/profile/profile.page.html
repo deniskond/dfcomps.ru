@@ -4,9 +4,10 @@
             Профиль игрока
             <ng-container *ngIf="!isLoading"> {{ mainInfo.nick }} </ng-container>
         </h1>
-        <button mat-raised-button color="primary" class="edit-profile-button">
+        <!-- TODO [DFRU-29] Редактирование профиля -->
+        <!-- <button mat-raised-button color="primary" class="edit-profile-button">
             Редактировать профиль
-        </button>
+        </button> -->
     </div>
 
     <ng-container *ngIf="!isLoading; else loader">

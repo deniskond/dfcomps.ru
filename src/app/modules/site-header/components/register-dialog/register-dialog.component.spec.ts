@@ -1,0 +1,33 @@
+import { UserService } from '../../../../services/user-service/user.service';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RegisterDialogComponent } from './register-dialog.component';
+import { MatDialogRef, MAT_DIALOG_DATA, MatProgressSpinnerModule } from '@angular/material';
+import { mock, instance } from 'ts-mockito';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+describe('RegisterDialogComponent', () => {
+    let component: RegisterDialogComponent;
+    let fixture: ComponentFixture<RegisterDialogComponent>;
+
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            imports: [FormsModule, ReactiveFormsModule, MatProgressSpinnerModule],
+            declarations: [RegisterDialogComponent],
+            providers: [
+                { provide: MatDialogRef, useFactory: () => instance(mock(MatDialogRef)) },
+                { provide: UserService, useFactory: () => instance(mock(UserService)) },
+                { provide: MAT_DIALOG_DATA, useValue: {} },
+            ],
+        }).compileComponents();
+    }));
+
+    beforeEach(() => {
+        fixture = TestBed.createComponent(RegisterDialogComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
+
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
+});

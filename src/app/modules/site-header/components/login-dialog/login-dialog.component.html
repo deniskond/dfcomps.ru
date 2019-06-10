@@ -1,0 +1,18 @@
+<div class="h1-block-header dialog-header">Вход на сайт</div>
+
+<form [formGroup]="loginForm">
+    <div class="input-container">
+        <div class="input-caption">Логин</div> 
+        <input formControlName="login" class="input-field" />
+    </div>
+    <div class="input-container">
+        <div class="input-caption">Пароль</div> 
+        <input formControlName="password" class="input-field password" type="password" />
+    </div>
+</form>
+<div *ngIf="loginResult === false" class="login-error">Неверный логин/пароль</div>
+
+<div class="dialog-button">
+    <mat-spinner *ngIf="isLoading" diameter="20" strokeWidth="2" color="accent" class="spinner"></mat-spinner>
+    <button [disabled]="!loginForm.valid || isLoading" (click)="onLoginClick()" mat-raised-button color="primary">Войти</button>
+</div>

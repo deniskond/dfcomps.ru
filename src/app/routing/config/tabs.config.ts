@@ -10,7 +10,8 @@ export class TABS_CONFIG {
         return [
             { page: NavigationPages.MAIN, name: 'Главная' },
             { page: NavigationPages.RATING, name: 'Рейтинг' },
-            { page: NavigationPages.TEAMS, name: 'Команды' },
+            // TODO [DFRU-6] Страница команд
+            // { page: NavigationPages.TEAMS, name: 'Команды' },
             { page: NavigationPages.RULES, name: 'Правила' },
             { page: NavigationPages.ARCHIVE, name: 'Архив' },
             { page: NavigationPages.MOVIES, name: 'Мувики' },

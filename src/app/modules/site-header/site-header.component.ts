@@ -10,10 +10,7 @@ import { Router } from '@angular/router';
 })
 export class SiteHeaderComponent implements OnInit {
     public pages = NavigationPages;
-    public nick = 'Nosf';
-    public playerId = 10;
     public tabs = TABS_CONFIG.TABS;
-    public logged = true;
     public activePage: NavigationPages;
 
     constructor(private router: Router) {}
@@ -25,9 +22,5 @@ export class SiteHeaderComponent implements OnInit {
     public navigate(page: NavigationPages): void {
         this.router.navigate([`/${page}`]);
         this.activePage = page;
-    }
-
-    public openProfile(): void {
-        this.router.navigate([`/profile/${this.playerId}`]);
     }
 }
