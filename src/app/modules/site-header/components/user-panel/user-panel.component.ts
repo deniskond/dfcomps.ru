@@ -40,7 +40,11 @@ export class UserPanelComponent implements OnInit, OnDestroy {
         this.dialog.open(RegisterDialogComponent);
     }
 
-    public openProfile(): void {
+    public onLogoutClick(): void {
+        this.userService.logout();
+    }
+
+    public onProfileClick(): void {
         this.router.navigate([`/profile/${this.user.id}`]);
     }
 }

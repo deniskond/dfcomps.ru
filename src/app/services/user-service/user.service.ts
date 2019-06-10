@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { BackendService } from '../backend-service/backend-service';
 import { URL_PARAMS } from '../../configs/url-params.config';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, of } from 'rxjs';
 import { LoginAvailableDtoInterface } from './dto/login-available.dto';
 import { map } from 'rxjs/operators';
 import { UserInterface } from '../../interfaces/user.interface';
 import { LoginResultDtoInterface } from './dto/login-result.dto';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class UserService {
     private _currentUser$ = new BehaviorSubject<UserInterface>(null);
 
-    constructor(private backendService: BackendService) {}
+    constructor(private backendService: BackendService, private cookieService: CookieService) {}
 
     public getCurrentUser$(): Observable<UserInterface> {
         return this._currentUser$.asObservable();
@@ -22,6 +23,21 @@ export class UserService {
             login,
             password,
         });
+    }
+
+    public tryLoginFromCookie$(): Observable<LoginResultDtoInterface> {
+        const login = this.cookieService.get('login');
+        const password = this.cookieService.get('password');
+
+        return login && password
+            ? this.backendService.post$(URL_PARAMS.USER_ACTIONS.LOGIN, {
+                  login,
+                  password,
+              })
+            : of({
+                  logged: false,
+                  user: null,
+              });
     }
 
     public checkLogin$(login: string): Observable<boolean> {
@@ -41,7 +57,8 @@ export class UserService {
     }
 
     public logout(): void {
-        this.backendService.post$(URL_PARAMS.USER_ACTIONS.REGISTER);
+        this.cookieService.delete('login');
+        this.cookieService.delete('password');
         this._currentUser$.next(null);
     }
 

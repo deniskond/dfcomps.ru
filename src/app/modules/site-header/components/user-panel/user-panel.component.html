@@ -4,8 +4,8 @@
         <div matRipple class="profile-link blue-link">Админка</div>
         <!-- TODO [DFRU-30] Страница команды -->
         <!-- <div matRipple class="profile-link blue-link">Команда</div> -->
-        <div (click)="openProfile.emit()" matRipple class="profile-link blue-link">Профиль</div>
-        <div matRipple class="profile-link blue-link">Выйти</div>
+        <div (click)="onProfileClick()" matRipple class="profile-link blue-link">Профиль</div>
+        <div (click)="onLogoutClick()" matRipple class="profile-link blue-link">Выйти</div>
     </div>
 </ng-container>
 <ng-template #notLogged>
