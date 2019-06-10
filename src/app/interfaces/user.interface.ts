@@ -1,6 +1,11 @@
 export interface UserInterface {
-    id: number;
+    access: string;
+    avatar: string;
+    country: string;
+    cpmRating: string;
+    id: string;
     nick: string;
-    ratingCpm: number;
-    ratingVq3: number;
+    teamId: string;
+    teamStatus: string;
+    vq3Rating: string;
 }

@@ -9,6 +9,7 @@ import {
     MatRippleModule,
     MatButtonModule,
     MatDialogModule,
+    MatProgressSpinnerModule,
 } from '@angular/material';
 import { UserPanelComponent } from './components/user-panel/user-panel.component';
 import { LoginDialogComponent } from './components/login-dialog/login-dialog.component';
@@ -25,6 +26,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         MatRippleModule,
         HttpClientModule,
         MatDialogModule,
+        MatProgressSpinnerModule,
         FormsModule,
         ReactiveFormsModule,
     ],

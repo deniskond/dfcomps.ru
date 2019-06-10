@@ -14,9 +14,9 @@ export class MainSiteComponent {
     // TODO [DFRU-21] Оффлайн капы
     // TODO [DFRU-22] Онлайн капы
     public startTime = moment()
-        .add(10, 'seconds')
+        .add(100, 'seconds')
         .unix();
     public endTime = moment()
-        .add(20, 'seconds')
+        .add(200, 'seconds')
         .unix();
 }

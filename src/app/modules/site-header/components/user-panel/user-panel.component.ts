@@ -1,48 +1,46 @@
 import { UserInterface } from '../../../../interfaces/user.interface';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 import { RegisterDialogComponent } from '../register-dialog/register-dialog.component';
 import { UserService } from '../../../../services/user-service/user.service';
-import { switchMap, take, filter } from 'rxjs/operators';
-import { LoginDialogDataInterface } from '../../interfaces/login-dialog-data.interface';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-user-panel',
     templateUrl: './user-panel.component.html',
     styleUrls: ['./user-panel.component.less'],
 })
-export class UserPanelComponent {
-    @Input()
-    isLogged: boolean;
-    @Input()
-    userInfo: UserInterface;
+export class UserPanelComponent implements OnInit, OnDestroy {
+    public user: UserInterface;
 
-    @Output()
-    openProfile = new EventEmitter<void>();
+    private onDestroy$ = new Subject<void>();
 
-    constructor(private dialog: MatDialog, private userService: UserService) {}
+    constructor(private dialog: MatDialog, private userService: UserService, private router: Router) {}
+
+    ngOnInit(): void {
+        this.userService
+            .getCurrentUser$()
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe((user: UserInterface) => (this.user = user));
+    }
+
+    ngOnDestroy(): void {
+        this.onDestroy$.next();
+        this.onDestroy$.complete();
+    }
 
     public onLoginClick(): void {
-        this.dialog
-            .open(LoginDialogComponent, { data: { login: '', password: '' } })
-            .afterClosed()
-            .pipe(
-                take(1),
-                filter((data: LoginDialogDataInterface) => !!data && !!data.login && !!data.password),
-                switchMap(({ login, password }: LoginDialogDataInterface) => this.userService.login$(login, password))
-            )
-            .subscribe(val => {
-                console.log(val);
-            });
+        this.dialog.open(LoginDialogComponent, { data: { login: '', password: '' } })
     }
 
     public onRegisterClick(): void {
-        this.dialog
-            .open(RegisterDialogComponent)
-            .afterClosed()
-            .subscribe(() => {
-                console.log('The dialog was closed');
-            });
+        this.dialog.open(RegisterDialogComponent);
+    }
+
+    public openProfile(): void {
+        this.router.navigate([`/profile/${this.user.id}`]);
     }
 }

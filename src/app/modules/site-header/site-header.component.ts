@@ -12,14 +12,7 @@ import { Router } from '@angular/router';
 export class SiteHeaderComponent implements OnInit {
     public pages = NavigationPages;
     public tabs = TABS_CONFIG.TABS;
-    public isLogged = false;
     public activePage: NavigationPages;
-    public userInfo: UserInterface = {
-        id: 10,
-        nick: 'Nosf',
-        ratingCpm: 1500,
-        ratingVq3: 1500,
-    };
 
     constructor(private router: Router) {}
 
@@ -30,9 +23,5 @@ export class SiteHeaderComponent implements OnInit {
     public navigate(page: NavigationPages): void {
         this.router.navigate([`/${page}`]);
         this.activePage = page;
-    }
-
-    public openProfile(): void {
-        this.router.navigate([`/profile/${this.userInfo.id}`]);
     }
 }

@@ -2,10 +2,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Subject, Observable, timer } from 'rxjs';
-import { takeUntil, filter, map, debounceTime, switchMap } from 'rxjs/operators';
+import { takeUntil, filter, map, switchMap, finalize } from 'rxjs/operators';
 import { RegisterDialogDataInterface } from '../../interfaces/register-dialog-data.interface';
 import { EMAIL_VALIDATION_REGEXP } from './configs/register-dialog.config';
 import { UserService } from '../../../../services/user-service/user.service';
+import { UserInterface } from '../../../../interfaces/user.interface';
 
 const DEBOUNCE_TIME = 300;
 
@@ -16,13 +17,14 @@ const DEBOUNCE_TIME = 300;
 })
 export class RegisterDialogComponent implements OnInit, OnDestroy {
     public needToDisplayErrors = false;
+    public isLoading = false;
 
-    public loginForm = new FormGroup(
+    public registerForm = new FormGroup(
         {
             login: new FormControl('', Validators.required, this.validateLogin$.bind(this)),
             email: new FormControl('', Validators.compose([Validators.required, this.validateEmail])),
             password: new FormControl('', Validators.required),
-            validation: new FormControl('', Validators.compose([Validators.required])),
+            validation: new FormControl('', Validators.required),
         },
         this.validateRepeatingPassword.bind(this),
     );
@@ -41,11 +43,23 @@ export class RegisterDialogComponent implements OnInit, OnDestroy {
     }
 
     public onRegisterClick(): void {
-        // TODO [DFRU-12]
+        this.isLoading = true;
+
+        this.userService
+            .register$(
+                this.registerForm.get('login').value,
+                this.registerForm.get('password').value,
+                this.registerForm.get('email').value,
+            )
+            .pipe(finalize(() => this.isLoading = false))
+            .subscribe((user: UserInterface) => {
+                this.userService.setCurrentUser(user);
+                this.dialogRef.close();
+            });
     }
 
     private setDisplayErrorsSubscription(): void {
-        this.loginForm.valueChanges
+        this.registerForm.valueChanges
             .pipe(
                 filter(
                     ({ login, password, email, validation }: RegisterDialogDataInterface) =>
@@ -57,7 +71,7 @@ export class RegisterDialogComponent implements OnInit, OnDestroy {
     }
 
     private validateRepeatingPassword(): Record<string, string> | null {
-        return this.loginForm && this.loginForm.controls.validation.value === this.loginForm.controls.password.value
+        return this.registerForm && this.registerForm.controls.validation.value === this.registerForm.controls.password.value
             ? null
             : { validation: 'Пароли не совпадают' };
     }
