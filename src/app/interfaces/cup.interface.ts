@@ -1,0 +1,32 @@
+export interface CupInterface {
+    archiveLink: string;
+    bonusRating: string;
+    currentRound: string;
+    demosValidated: string;
+    endTime: string;
+    fullName: string;
+    id: string;
+    map1: string;
+    map2: string;
+    map3: string;
+    map4: string;
+    map5: string;
+    mapAuthor: string;
+    mapPk3: string;
+    mapSize: string;
+    mapWeapons: string;
+    multicup: string;
+    multicupId: string;
+    physics: string;
+    ratingCalculated: string;
+    server1: string;
+    server2: string;
+    shortName: string;
+    startTime: string;
+    system: string;
+    timer: string;
+    twitch: string;
+    type: string;
+    useTwoServers: string;
+    youtube: string;
+}

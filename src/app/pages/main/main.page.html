@@ -1,0 +1,22 @@
+<div *ngIf="(news$ | async) as news; else loader" class="news-container">
+    <ng-container *ngFor="let singleNews of news">
+        <div class="shadowed-main-block news-block">
+            <ng-container [ngSwitch]="singleNews.type">
+                <app-news-simple *ngSwitchCase="newsTypes.SIMPLE"></app-news-simple>
+                <app-news-multicup-results *ngSwitchCase="newsTypes.MULTICUP_RESULTS"></app-news-multicup-results>
+                <app-news-online-announce *ngSwitchCase="newsTypes.ONLINE_ANNOUNCE"></app-news-online-announce>
+                <app-news-online-results *ngSwitchCase="newsTypes.ONLINE_RESULTS"></app-news-online-results>
+                <app-news-offline-start *ngSwitchCase="newsTypes.OFFLINE_START"></app-news-offline-start>
+                <app-news-offline-results *ngSwitchCase="newsTypes.OFFLINE_RESULTS"></app-news-offline-results>
+            </ng-container>
+        </div>
+    </ng-container>
+</div>
+
+<ng-template #loader>
+    <div class="shadowed-main-block">
+        <div class="loader">
+            <mat-spinner diameter="80" strokeWidth="5" color="accent"></mat-spinner>
+        </div>
+    </div>
+</ng-template>
