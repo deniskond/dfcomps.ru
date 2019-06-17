@@ -1,0 +1,27 @@
+@border-color: #cccccc;
+
+.players-row {
+    &:first-of-type {
+        border-top: 1px solid @border-color;
+    }
+}
+
+.number {
+    width: 28px;
+    background: #eeeeee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid @border-color;
+    border-right: 1px solid @border-color;
+    border-bottom: 1px solid @border-color;
+}
+
+.player {
+    flex-grow: 1;
+    border-bottom: 1px solid @border-color;
+
+    &:last-of-type {
+        border-right: 1px solid @border-color;
+    }
+}

@@ -10,6 +10,7 @@ import { NewsOfflineStartComponent } from './components/news-offline-start/news-
 import { NewsSimpleComponent } from './components/news-simple/news-simple.component';
 import { NewsMulticupResultsComponent } from './components/news-multicup-results/news-multicup-results.component';
 import { NewsService } from '../../services/news-service/news.service';
+import { HtmlNewsComponent } from './components/html-news/html-news.component';
 
 const routes: Routes = [
     {
@@ -27,6 +28,7 @@ const routes: Routes = [
         NewsOfflineStartComponent,
         NewsSimpleComponent,
         NewsMulticupResultsComponent,
+        HtmlNewsComponent,
     ],
     imports: [CommonModule, RouterModule.forChild(routes), MatProgressSpinnerModule],
     providers: [NewsService],

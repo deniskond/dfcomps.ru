@@ -1,3 +1,10 @@
-<p>
-  news-online-announce works!
-</p>
+<app-html-news [newsHtml]="news.text"></app-html-news>
+<span>Список зарегистрированных участников:</span>
+<div style="margin-top: 10px;">
+    <div *ngFor="let row of range(rowCount)" class="players-row" style="display: flex;height:28px;">
+        <ng-container *ngFor="let column of range(columnCount)">
+            <div class="number">{{ column * rowCount + row + 1 }}</div>
+            <div class="player"></div>
+        </ng-container>
+    </div>
+</div>

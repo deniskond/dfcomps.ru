@@ -3,6 +3,7 @@ import { NewsService } from '../../services/news-service/news.service';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NewsTypes } from '../../enums/news-types.enum';
+import * as moment from 'moment';
 
 @Component({
     templateUrl: './main.page.html',
@@ -16,5 +17,9 @@ export class MainPageComponent implements OnInit {
 
     ngOnInit(): void {
         this.news$ = this.newsService.getMainPageNews$();
+    }
+
+    public formatDate(date: string): string {
+        return moment(date).format('DD.MM.YYYY HH:mm');
     }
 }
