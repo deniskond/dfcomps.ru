@@ -1,8 +1,25 @@
-@border-color: #cccccc;
+@border-color: #e0e0e0;
+
+.players-table {
+    margin-top: 10px;
+}
 
 .players-row {
+    display: flex;
+    height: 28px;
+
     &:first-of-type {
         border-top: 1px solid @border-color;
+    }
+}
+
+.players-cell {
+    display: flex;
+    flex-grow: 1;
+    width: 0;
+
+    &:last-of-type {
+        border-right: 1px solid @border-color;
     }
 }
 
@@ -18,10 +35,7 @@
 }
 
 .player {
+    display: flex;
     flex-grow: 1;
     border-bottom: 1px solid @border-color;
-
-    &:last-of-type {
-        border-right: 1px solid @border-color;
-    }
 }

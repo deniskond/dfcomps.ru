@@ -11,6 +11,7 @@ import { NewsSimpleComponent } from './components/news-simple/news-simple.compon
 import { NewsMulticupResultsComponent } from './components/news-multicup-results/news-multicup-results.component';
 import { NewsService } from '../../services/news-service/news.service';
 import { HtmlNewsComponent } from './components/html-news/html-news.component';
+import { SharedModule } from '../../modules/shared.module';
 
 const routes: Routes = [
     {
@@ -20,6 +21,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
+    imports: [SharedModule, CommonModule, RouterModule.forChild(routes), MatProgressSpinnerModule],
     declarations: [
         MainPageComponent,
         NewsOnlineResultsComponent,
@@ -30,7 +32,6 @@ const routes: Routes = [
         NewsMulticupResultsComponent,
         HtmlNewsComponent,
     ],
-    imports: [CommonModule, RouterModule.forChild(routes), MatProgressSpinnerModule],
     providers: [NewsService],
 })
 export class MainPageModule {}

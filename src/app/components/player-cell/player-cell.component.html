@@ -1,0 +1,10 @@
+<div mat-ripple
+    [@hoveredCell]="getHoveredState()"
+    (mouseenter)="darkenPlayerRow()" 
+    (mouseleave)="lightenPlayerRow()" 
+    (click)="navigateToPlayerProfile(playerId)"
+    class="player-nick-container">
+
+    <app-flag [country]="country" class="flag"></app-flag>
+    <div class="player-nick">{{ nick }}</div>
+</div>  
