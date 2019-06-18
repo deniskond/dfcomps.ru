@@ -1,0 +1,22 @@
+<div class="physics-header">
+    {{ physics }} 
+</div>
+<div class="multicup-results-row">
+    <div class="place-column">#</div>
+    <div class="player-column">Player</div>
+    <div class="points-column">Points</div>
+</div>
+<div *ngFor="let result of slicedPhysicsTable; let i = index" class="multicup-results-row">
+    <div class="place-column">{{ places[i] || '' }}</div>
+    <div class="player-column">
+        <app-player-cell 
+            [country]="result.country" 
+            [nick]="result.nick"
+            [playerId]="result.id">
+        </app-player-cell>
+    </div>
+    <div class="points-column">{{ result.sum }}</div>
+</div>
+<div class="multicup-footer">
+    <a routerLink="/multicup/{{ multicupId }}/vq3">Общая таблица</a> 
+</div>

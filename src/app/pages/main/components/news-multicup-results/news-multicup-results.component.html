@@ -1,3 +1,18 @@
-<p>
-  news-multicup-results works!
-</p>
+<app-html-news [newsHtml]="news.text"></app-html-news>
+
+<div class="flex">
+    <div class="left-table">
+        <app-multicup-physics-table 
+            [physics]="physics.VQ3" 
+            [physicsTable]="news.vq3Results"
+            [multicupId]="news.multicup.id">
+        </app-multicup-physics-table>
+    </div>
+    <div class="right-table">
+        <app-multicup-physics-table 
+            [physics]="physics.CPM" 
+            [physicsTable]="news.cpmResults"
+            [multicupId]="news.multicup.id">
+        </app-multicup-physics-table>
+    </div>
+</div>

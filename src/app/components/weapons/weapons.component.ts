@@ -41,7 +41,7 @@ export class WeaponsComponent {
     }
 
     public get hasRailgun(): boolean {
-        return this.weapons.indexOf('R') !== -1;
+        return this.weapons.indexOf('I') !== -1;
     }
 
     public get hasHook(): boolean {

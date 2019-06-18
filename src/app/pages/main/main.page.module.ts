@@ -12,6 +12,7 @@ import { NewsMulticupResultsComponent } from './components/news-multicup-results
 import { NewsService } from '../../services/news-service/news.service';
 import { HtmlNewsComponent } from './components/html-news/html-news.component';
 import { SharedModule } from '../../modules/shared.module';
+import { MulticupPhysicsTableComponent } from './components/news-multicup-results/multicup-physics-table/multicup-physics-table.component';
 
 const routes: Routes = [
     {
@@ -31,6 +32,7 @@ const routes: Routes = [
         NewsSimpleComponent,
         NewsMulticupResultsComponent,
         HtmlNewsComponent,
+        MulticupPhysicsTableComponent,
     ],
     providers: [NewsService],
 })
