@@ -22,7 +22,7 @@
                 <app-news-multicup-results *ngSwitchCase="newsTypes.MULTICUP_RESULTS"></app-news-multicup-results>
                 <app-news-online-announce *ngSwitchCase="newsTypes.ONLINE_ANNOUNCE" [news]="singleNews"></app-news-online-announce>
                 <app-news-online-results *ngSwitchCase="newsTypes.ONLINE_RESULTS"></app-news-online-results>
-                <app-news-offline-start *ngSwitchCase="newsTypes.OFFLINE_START"></app-news-offline-start>
+                <app-news-offline-start *ngSwitchCase="newsTypes.OFFLINE_START" [news]="singleNews"></app-news-offline-start>
                 <app-news-offline-results *ngSwitchCase="newsTypes.OFFLINE_RESULTS"></app-news-offline-results>
             </ng-container>
         </div>
