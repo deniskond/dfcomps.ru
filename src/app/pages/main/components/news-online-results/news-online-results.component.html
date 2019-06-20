@@ -1,3 +1,11 @@
-<p>
-  news-online-results works!
-</p>
+<div class="table-container">
+    <div class="youtube"></div>
+    <app-online-results-table 
+        [table]="news.results" 
+        [physics]="news.cup.physics" 
+        [cupId]="news.cup.id" 
+        class="online-results-table">
+    </app-online-results-table>
+</div>
+
+<app-html-news [newsHtml]="news.text"></app-html-news>

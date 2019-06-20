@@ -7,7 +7,7 @@ export function getTablePlaces(results: number[]): number[] {
         }
 
         if (results[index - 1] !== results[index]) {
-            place++;
+            place = index + 1;
         }
 
         return place;

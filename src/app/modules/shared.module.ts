@@ -6,8 +6,16 @@ import { RatingChangeComponent } from '../components/rating-change/rating-change
 import { PlayerCellComponent } from '../components/player-cell/player-cell.component';
 import { MatRippleModule } from '@angular/material';
 import { WeaponsComponent } from '../components/weapons/weapons.component';
+import { PlayerPlaceComponent } from '../components/player-place/player-place.component';
 
-const COMPONENTS = [FlagComponent, RatingChangeComponent, PlayerCellComponent, WeaponsComponent, GmtDateTimeComponent];
+const COMPONENTS = [
+    FlagComponent,
+    RatingChangeComponent,
+    PlayerCellComponent,
+    WeaponsComponent,
+    GmtDateTimeComponent,
+    PlayerPlaceComponent,
+];
 
 @NgModule({
     declarations: COMPONENTS,
