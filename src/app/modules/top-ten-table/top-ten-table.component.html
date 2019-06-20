@@ -11,17 +11,8 @@
     
         <ng-container cdkColumnDef="player">
             <mat-header-cell *cdkHeaderCellDef class="player-column header"> Игрок </mat-header-cell>
-            <mat-cell 
-                *cdkCellDef="let row"
-                mat-ripple
-                [@hoveredCell]="getHoveredState(row)"
-                (mouseenter)="darkenPlayerRow(row)" 
-                (mouseleave)="lightenPlayerRow(row)" 
-                (click)="navigateToPlayerProfile(row.playerId)"
-                class="player-column player-nick-container"> 
-
-                <app-flag [country]="row.country"></app-flag>
-                <div class="player-nick">{{ row.nick }}</div>
+            <mat-cell *cdkCellDef="let row" class="player-column"> 
+                <app-player-cell [country]="row.country" [nick]="row.nick" [playerId]="row.playerId"></app-player-cell>
             </mat-cell>
         </ng-container>
     

@@ -1,0 +1,37 @@
+<div class="physics-header">
+    {{ physics }} 
+</div>
+<div class="cup-results-row">
+    <div class="place-column">#</div>
+    <div class="player-column">Player</div>
+    <div class="time-column">Time</div>
+    <div class="rating-column">Rating</div>
+</div>
+<div *ngFor="let result of physicsTable; let i = index" class="cup-results-row">
+    <div class="place-column">
+        <app-player-place [place]="places[i]"></app-player-place>
+    </div>
+    <div class="player-column">
+        <app-player-cell 
+            [country]="result.country" 
+            [nick]="result.nick"
+            [playerId]="result.id">
+        </app-player-cell>
+    </div>
+    <div *ngIf="archiveLink; else noArchiveLink" class="time-column time">{{ formatResult(result.time) }}</div>
+    <ng-template #noArchiveLink>
+        <div class="time-column time">
+            <a href="/uploads/demos/cup{{ cupId }}/{{ result.demopath }}">{{ formatResult(result.time) }}</a>
+        </div>
+    </ng-template>
+    <div class="rating-column">
+        <app-rating-change [change]="result.change"></app-rating-change>
+    </div>
+</div>
+
+<div *ngFor="let row of range(maxDemosCount - physicsTable.length)" class="cup-results-row">
+    <div class="place-column"></div>
+    <div class="player-column"></div>
+    <div class="time-column"></div>
+    <div class="rating-column"></div>
+</div>

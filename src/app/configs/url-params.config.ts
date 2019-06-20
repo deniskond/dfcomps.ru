@@ -31,4 +31,12 @@ export class URL_PARAMS {
     public static PROFILE(playerId: string): string {
         return `${API_URL}/profile/${playerId}`;
     }
+
+    public static get NEWS(): {
+        MAIN_PAGE: string;
+    } {
+        return {
+            MAIN_PAGE: `${API_URL}/news/mainpage`,
+        };
+    }
 }

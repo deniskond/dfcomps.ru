@@ -1,5 +1,38 @@
-<p>
-    main.page works!
-</p>
+<div *ngIf="(news$ | async) as news; else loader" class="news-container">
+    <ng-container *ngFor="let singleNews of news">
+        <div class="shadowed-main-block news-block">
+            <h1 class="h1-block-header no-margin">
+                <a routerLink="/news/{{ singleNews.id }}" class="news_header_link">
+                    {{ singleNews.header }}
+                </a>
+            </h1>
+                
+            <div class="author-and-date">
+                Автор: <a routerLink="/profile/{{ singleNews.authorId }}" class="black-link">{{ singleNews.authorName }}</a>,
+                {{ formatDate(singleNews.datetime) }}
+            </div>
 
-<button mat-raised-button color="primary">Кнопка</button>
+            <!-- TODO [DFRU-33] -->
+            <!-- <div *ngIf="news.youtube" style="margin-top:10px;">
+                <div class="youtube" id="news.youtube" time="0" style="width:100%;height:450px;margin:0 auto;"></div>
+            </div> -->
+
+            <ng-container [ngSwitch]="singleNews.type">
+                <app-news-simple *ngSwitchCase="newsTypes.SIMPLE" [news]="singleNews"></app-news-simple>
+                <app-news-multicup-results *ngSwitchCase="newsTypes.MULTICUP_RESULTS" [news]="singleNews"></app-news-multicup-results>
+                <app-news-online-announce *ngSwitchCase="newsTypes.ONLINE_ANNOUNCE" [news]="singleNews"></app-news-online-announce>
+                <app-news-online-results *ngSwitchCase="newsTypes.ONLINE_RESULTS" [news]="singleNews"></app-news-online-results>
+                <app-news-offline-start *ngSwitchCase="newsTypes.OFFLINE_START" [news]="singleNews"></app-news-offline-start>
+                <app-news-offline-results *ngSwitchCase="newsTypes.OFFLINE_RESULTS" [news]="singleNews"></app-news-offline-results>
+            </ng-container>
+        </div>
+    </ng-container>
+</div>
+
+<ng-template #loader>
+    <div class="shadowed-main-block">
+        <div class="loader">
+            <mat-spinner diameter="80" strokeWidth="5" color="accent"></mat-spinner>
+        </div>
+    </div>
+</ng-template>

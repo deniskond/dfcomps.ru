@@ -1,0 +1,63 @@
+<div class="map-info-container">
+    <div class="image-container">
+        <img [src]="news.levelshot" class="levelshot"/>
+    </div>
+    <div class="tables-container">
+        <div class="map-info-table">
+            <div class="map-info-row">
+                <div class="row-desc">Карта</div>
+                <div class="row-info">
+                    <a href="http://ws.q3df.org/map/{{news.cup.map1}}/" target="_blank" class="map-link">{{ news.cup.map1 }}</a>
+                </div>
+            </div>
+            <div class="map-info-row">
+                <div class="row-desc">Старт</div>
+                <div class="row-info">
+                    <app-gmt-date-time [timestamp]="news.cup.startTime"></app-gmt-date-time>
+                </div>
+            </div>
+            <div class="map-info-row">
+                <div class="row-desc">Финиш</div>
+                <div class="row-info">
+                    <app-gmt-date-time [timestamp]="news.cup.endTime"></app-gmt-date-time>
+                </div>
+            </div>
+            <div class="map-info-row">
+                <div class="row-desc">Автор</div>
+                <div class="row-info">{{ news.cup.mapAuthor }}</div>
+            </div>
+            <div class="map-info-row">
+                <div class="row-desc">Оружия</div>
+                <div class="row-info">
+                    <app-weapons [weapons]="news.cup.mapWeapons"></app-weapons>
+                </div>
+            </div>
+            <div class="map-info-row">
+                <div class="row-desc">Скачать</div>
+                <div class="row-info">
+                    <a [href]="news.cup.mapPk3">{{ news.cup.mapSize }} MB</a>
+                </div>
+            </div>
+            <div class="map-info-row">
+                <div class="row-desc">Правила</div>
+                <div class="row-info">
+                    <a routerLink="/rules">Полные правила</a>
+                    <span class="separator">|</span> 
+                    <a href="/assets/files/offline-rules.cfg" target="_blank">Конфиг</a>
+                </div>
+            </div>
+        </div>
+        <div class="map-info-table">
+            <div class="map-info-row">
+                <div class="row-desc">Загрузить</div>
+                <div class="row-info">Турнир завершен</div>
+            </div>
+            <div class="map-info-row">
+                <div class="row-desc">Тайм</div>
+                <div class="row-info">Пока нет загруженных демок</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-html-news [newsHtml]="news.text"></app-html-news>

@@ -1,0 +1,14 @@
+<app-html-news [newsHtml]="news.text"></app-html-news>
+<span>Список зарегистрированных участников:</span>
+<div class="players-table">
+    <div *ngFor="let row of range(rowCount)" class="players-row">
+        <div *ngFor="let column of range(columnCount)" class="players-cell">
+            <div class="number">{{ column * rowCount + row + 1 }}</div>
+            <div class="player">
+                <ng-container *ngIf="news.registeredPlayers[column * rowCount + row + 1] as player">
+                    <app-player-cell [country]="player.country" [nick]="player.nick" [playerId]="player.id"></app-player-cell>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>

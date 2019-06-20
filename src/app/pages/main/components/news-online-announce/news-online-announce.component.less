@@ -1,0 +1,41 @@
+@border-color: #cccccc;
+
+.players-table {
+    margin-top: 10px;
+}
+
+.players-row {
+    display: flex;
+    height: 28px;
+
+    &:first-of-type {
+        border-top: 1px solid @border-color;
+    }
+}
+
+.players-cell {
+    display: flex;
+    flex-grow: 1;
+    width: 0;
+
+    &:last-of-type {
+        border-right: 1px solid @border-color;
+    }
+}
+
+.number {
+    width: 28px;
+    background: #eeeeee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid @border-color;
+    border-right: 1px solid @border-color;
+    border-bottom: 1px solid @border-color;
+}
+
+.player {
+    display: flex;
+    flex-grow: 1;
+    border-bottom: 1px solid @border-color;
+}
