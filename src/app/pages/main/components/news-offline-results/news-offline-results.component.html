@@ -1,3 +1,60 @@
-<p>
-  news-offline-results works!
-</p>
+<div class="map-info">
+    <div class="levelshot-container">
+        <img [src]="news.levelshot" class="levelshot" />
+    </div>
+    <div class="map-info-table">
+        <div class="map-info-table-row">
+            <div class="map-info-cell-desc">Карта</div>
+            <div class="map-info-cell-info">
+                <a href="http://ws.q3df.org/map/{{news.cup.map1}}/" target="_blank" class="map-link">{{ news.cup.map1 }}</a>
+            </div>
+        </div>
+        <div class="map-info-table-row">
+            <div class="map-info-cell-desc">Старт</div>
+            <div class="map-info-cell-info">
+                <app-gmt-date-time [timestamp]="news.cup.startTime"></app-gmt-date-time>
+            </div>
+        </div>
+        <div class="map-info-table-row">
+            <div class="map-info-cell-desc">Финиш</div>
+            <div class="map-info-cell-info">
+                <app-gmt-date-time [timestamp]="news.cup.endTime"></app-gmt-date-time>
+            </div>
+        </div>
+        <div class="map-info-table-row">
+            <div class="map-info-cell-desc">Оружия</div>
+            <div class="map-info-cell-info">
+                <app-weapons [weapons]="news.cup.mapWeapons"></app-weapons>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="news.cup.archiveLink" style="margin-top:15px;font-size:17px;text-align:center;">
+    <a [href]="news.cup.archiveLink">
+        <strong>&gt;&gt; Все демки одним архивом &lt;&lt;</strong>
+    </a>
+</div>
+
+<div class="flex">
+    <div class="left-table">
+        <app-news-physics-table 
+            [physics]="physics.VQ3" 
+            [physicsTable]="news.vq3Results.valid"
+            [archiveLink]="news.cup.archiveLink"
+            [cupId]="news.cup.id"
+            [maxDemosCount]="maxDemosCount">
+        </app-news-physics-table>
+    </div>
+    <div class="right-table">
+        <app-news-physics-table 
+            [physics]="physics.CPM" 
+            [physicsTable]="news.cpmResults.valid"
+            [archiveLink]="news.cup.archiveLink"
+            [cupId]="news.cup.id"
+            [maxDemosCount]="maxDemosCount">
+        </app-news-physics-table>
+    </div>
+</div>
+
+<app-html-news [newsHtml]="news.text"></app-html-news>

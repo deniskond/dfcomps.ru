@@ -23,7 +23,7 @@
                 <app-news-online-announce *ngSwitchCase="newsTypes.ONLINE_ANNOUNCE" [news]="singleNews"></app-news-online-announce>
                 <app-news-online-results *ngSwitchCase="newsTypes.ONLINE_RESULTS"></app-news-online-results>
                 <app-news-offline-start *ngSwitchCase="newsTypes.OFFLINE_START" [news]="singleNews"></app-news-offline-start>
-                <app-news-offline-results *ngSwitchCase="newsTypes.OFFLINE_RESULTS"></app-news-offline-results>
+                <app-news-offline-results *ngSwitchCase="newsTypes.OFFLINE_RESULTS" [news]="singleNews"></app-news-offline-results>
             </ng-container>
         </div>
     </ng-container>

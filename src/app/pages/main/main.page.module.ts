@@ -13,6 +13,7 @@ import { NewsService } from '../../services/news-service/news.service';
 import { HtmlNewsComponent } from './components/html-news/html-news.component';
 import { SharedModule } from '../../modules/shared.module';
 import { MulticupPhysicsTableComponent } from './components/news-multicup-results/multicup-physics-table/multicup-physics-table.component';
+import { NewsPhysicsTableComponent } from './components/news-offline-results/news-physics-table/news-physics-table.component';
 
 const routes: Routes = [
     {
@@ -33,6 +34,7 @@ const routes: Routes = [
         NewsMulticupResultsComponent,
         HtmlNewsComponent,
         MulticupPhysicsTableComponent,
+        NewsPhysicsTableComponent,
     ],
     providers: [NewsService],
 })

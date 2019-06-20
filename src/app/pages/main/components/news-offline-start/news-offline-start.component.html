@@ -13,15 +13,13 @@
             <div class="map-info-row">
                 <div class="row-desc">Старт</div>
                 <div class="row-info">
-                    <span>{{ getFormattedDateTime(news.cup.startTime) }}&nbsp;</span>
-                    <a href="http://wwp.greenwichmeantime.com/time-zone/gmt-plus-3/" target="_blank">(GMT+3)</a>
+                    <app-gmt-date-time [timestamp]="news.cup.startTime"></app-gmt-date-time>
                 </div>
             </div>
             <div class="map-info-row">
                 <div class="row-desc">Финиш</div>
                 <div class="row-info">
-                    <span>{{ getFormattedDateTime(news.cup.endTime) }}&nbsp;</span>
-                    <a href="http://wwp.greenwichmeantime.com/time-zone/gmt-plus-3/" target="_blank">(GMT+3)</a>
+                    <app-gmt-date-time [timestamp]="news.cup.endTime"></app-gmt-date-time>
                 </div>
             </div>
             <div class="map-info-row">

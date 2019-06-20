@@ -1,3 +1,4 @@
+import { GmtDateTimeComponent } from '../components/gmt-date-time/gmt-date-time.component';
 import { FlagComponent } from '../components/flag/flag.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -6,7 +7,7 @@ import { PlayerCellComponent } from '../components/player-cell/player-cell.compo
 import { MatRippleModule } from '@angular/material';
 import { WeaponsComponent } from '../components/weapons/weapons.component';
 
-const COMPONENTS = [FlagComponent, RatingChangeComponent, PlayerCellComponent, WeaponsComponent];
+const COMPONENTS = [FlagComponent, RatingChangeComponent, PlayerCellComponent, WeaponsComponent, GmtDateTimeComponent];
 
 @NgModule({
     declarations: COMPONENTS,
