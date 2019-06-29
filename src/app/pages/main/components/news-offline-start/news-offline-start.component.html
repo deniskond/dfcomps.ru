@@ -50,7 +50,13 @@
         <div class="map-info-table">
             <div class="map-info-row">
                 <div class="row-desc">Загрузить</div>
-                <div class="row-info">Турнир завершен</div>
+                <div class="row-info">
+                    <ng-container [ngSwitch]="cupState">
+                        <div *ngSwitchCase="cupStates.IN_PROGRESS">Загрузить демку</div>
+                        <div *ngSwitchCase="cupStates.FINISHED">Турнир завершен</div>
+                        <div *ngSwitchCase="cupStates.NOT_STARTED">Турнир еще не начался</div>
+                    </ng-container>
+                </div>
             </div>
             <div class="map-info-row">
                 <div class="row-desc">Тайм</div>

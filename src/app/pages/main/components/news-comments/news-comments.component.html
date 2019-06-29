@@ -24,9 +24,19 @@
         </ng-container>
     </ng-container>
 
-    <div class="write-commentary">Написать комментарий:</div>
-    <div #textarea contenteditable="true" class="comment-textarea"></div>
-    <button mat-raised-button (click)="sendComment()" color="primary" class="add-comment-button">
-        Отправить
-    </button>
+    <ng-container *ngIf="currentUser$ | async; else notLogged">
+        <div class="write-commentary">Написать комментарий:</div>
+        <div #textarea contenteditable="true" class="comment-textarea"></div>
+
+        <div class="send-comment-button">
+            <mat-spinner *ngIf="isLoading" diameter="20" strokeWidth="2" color="accent" class="spinner"></mat-spinner>
+            <button [disabled]="isLoading" (click)="sendComment()" mat-raised-button color="primary" class="add-comment-button">
+                Отправить
+            </button>
+        </div>
+    </ng-container>
+
+    <ng-template #notLogged>
+        <div class="not-logged">Войдите или зарегистрируйтесь, чтобы оставить комментарий</div>
+    </ng-template>
 </ng-template>
