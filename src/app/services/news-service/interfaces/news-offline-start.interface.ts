@@ -11,4 +11,5 @@ export interface NewsOfflineStartInterface extends NewsInterface {
     vq3Demo?: string;
     vq3Res?: string;
     playerDemos?: UploadedDemoInterface[];
+    levelshot: string;
 }

@@ -33,7 +33,7 @@ export class PlayerCellComponent {
         return this.hovered ? HOVERABLE_CELL_HOVERED_STATE : HOVERABLE_CELL_NORMAL_STATE;
     }
 
-    public navigateToPlayerProfile(playerId: number): void {
+    public navigateToPlayerProfile(playerId: string): void {
         this.router.navigate([`/profile/${playerId}`]);
     }
 }

@@ -8,4 +8,5 @@ export interface NewsOfflineResultsInterface extends NewsInterface {
     cpmResults: ResultsTableInterface;
     vq3Results: ResultsTableInterface;
     cup: CupInterface;
+    levelshot: string;
 }
