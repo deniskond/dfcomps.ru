@@ -42,6 +42,10 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
 
     public sendComment(): void {
         const text = this.textarea.nativeElement.textContent;
+
+        if (!text) {
+            return;
+        }
         
         this.isLoading = true;
 
