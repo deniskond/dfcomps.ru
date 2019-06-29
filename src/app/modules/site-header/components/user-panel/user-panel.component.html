@@ -1,7 +1,7 @@
 <ng-container *ngIf="user; else notLogged">
     <span class="logged-in-as">Вы вошли как {{ user.nick }}</span>
     <div class="profile-links">
-        <div matRipple class="profile-link blue-link">Админка</div>
+        <!-- <div matRipple class="profile-link blue-link">Админка</div> -->
         <!-- TODO [DFRU-30] Страница команды -->
         <!-- <div matRipple class="profile-link blue-link">Команда</div> -->
         <div (click)="onProfileClick()" matRipple class="profile-link blue-link">Профиль</div>

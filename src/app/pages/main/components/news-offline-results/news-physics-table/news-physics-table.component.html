@@ -21,7 +21,7 @@
     <div *ngIf="archiveLink; else noArchiveLink" class="time-column time">{{ formatResult(result.time) }}</div>
     <ng-template #noArchiveLink>
         <div class="time-column time">
-            <a href="/uploads/demos/cup{{ cupId }}/{{ result.demopath }}">{{ formatResult(result.time) }}</a>
+            <a href="/api/uploads/demos/cup{{ cupId }}/{{ result.demopath }}">{{ formatResult(result.time) }}</a>
         </div>
     </ng-template>
     <div class="rating-column">
