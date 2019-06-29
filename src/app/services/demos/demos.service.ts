@@ -3,6 +3,7 @@ import { BackendService } from '../backend-service/backend-service';
 import { URL_PARAMS } from '../../configs/url-params.config';
 import { Observable } from 'rxjs';
 import { UploadDemoDtoInterface } from './dto/upload-demo.dto';
+import { UploadedDemoInterface } from '../../interfaces/uploaded-demo.interface';
 
 @Injectable({
     providedIn: 'root',
@@ -20,6 +21,13 @@ export class DemosService extends BackendService {
             mapName,
             playerId,
             fileName,
+        });
+    }
+
+    public deleteDemo$(demo: string, cupId: string): Observable<UploadedDemoInterface[]> {
+        return this.post$(URL_PARAMS.DEMOS.DELETE,  {
+            demo,
+            cupId,
         });
     }
 }

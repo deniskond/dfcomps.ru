@@ -17,6 +17,7 @@ import { NewsPhysicsTableComponent } from './components/news-offline-results/new
 import { NewsOnlineResultsTableComponent } from './components/news-online-results/online-results-table/online-results-table.component';
 import { NewsCommentsComponent } from './components/news-comments/news-comments.component';
 import { ValidationDialogComponent } from './components/news-offline-start/validation-dialog/validation-dialog.component';
+import { PlayerDemosDialogComponent } from './components/news-offline-start/player-demos-dialog/player-demos-dialog.component';
 
 const routes: Routes = [
     {
@@ -49,8 +50,9 @@ const routes: Routes = [
         NewsOnlineResultsTableComponent,
         NewsCommentsComponent,
         ValidationDialogComponent,
+        PlayerDemosDialogComponent,
     ],
     providers: [NewsService],
-    entryComponents: [ValidationDialogComponent],
+    entryComponents: [ValidationDialogComponent, PlayerDemosDialogComponent],
 })
 export class MainPageModule {}

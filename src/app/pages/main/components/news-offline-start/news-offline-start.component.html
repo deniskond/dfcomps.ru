@@ -70,7 +70,23 @@
             </div>
             <div class="map-info-row">
                 <div class="row-desc">Тайм</div>
-                <div class="row-info">Пока нет загруженных демок</div>
+                <div class="row-info">
+                    <ng-container *ngIf="news.playerDemos && !!news.playerDemos.length; else noDemos">
+                        <div class="top-demos">
+                            <ng-container *ngIf="news.cpmRes && news.cpmDemo">
+                                <a href="{{ mainUrl }}/api/uploads/demos/cup{{ news.cup.id }}/{{ news.cpmDemo }}">{{ news.cpmRes }}</a>&nbsp;(cpm)
+                                <span *ngIf="news.vq3Res && news.vq3Demo">,&nbsp;</span>
+                            </ng-container>
+                            <ng-container *ngIf="news.vq3Res && news.vq3Demo">
+                                <a href="{{ mainUrl }}/api/uploads/demos/cup{{ news.cup.id }}/{{ news.vq3Demo }}">{{ news.vq3Res }}</a>&nbsp;(vq3)
+                            </ng-container>
+                        </div>
+                        <div (click)="openPlayerDemosDialog()" class="player-demos-button">
+                            <img src="/assets/images/icons/list.png" />
+                        </div>
+                    </ng-container>
+                    <ng-template #noDemos>Нет загруженных демок</ng-template>
+                </div>
             </div>
         </div>
     </div>

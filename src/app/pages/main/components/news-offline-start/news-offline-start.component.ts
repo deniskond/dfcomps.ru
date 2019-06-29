@@ -1,3 +1,4 @@
+import { MAIN_URL } from '../../../../configs/url-params.config';
 import { UploadDemoDtoInterface } from '../../../../services/demos/dto/upload-demo.dto';
 import { UserInterface } from '../../../../interfaces/user.interface';
 import { UserService } from '../../../../services/user-service/user.service';
@@ -10,6 +11,8 @@ import { finalize, take, switchMap, catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { ValidationDialogComponent } from './validation-dialog/validation-dialog.component';
+import { PlayerDemosDialogComponent } from './player-demos-dialog/player-demos-dialog.component';
+import { NewsService } from '../../../../services/news-service/news.service';
 
 @Component({
     selector: 'app-news-offline-start',
@@ -26,12 +29,14 @@ export class NewsOfflineStartComponent implements OnInit {
     public cupState: CupStates;
     public cupStates = CupStates;
     public isUploading = false;
+    public mainUrl = MAIN_URL;
 
     constructor(
         private demosService: DemosService,
         private userService: UserService,
         private snackBar: MatSnackBar,
         private dialog: MatDialog,
+        private newsService: NewsService,
     ) {}
 
     ngOnInit(): void {
@@ -75,6 +80,7 @@ export class NewsOfflineStartComponent implements OnInit {
             .subscribe(({ status, validation, message }: UploadDemoDtoInterface) => {
                 if (status === 'Success') {
                     this.snackBar.open('Success', 'Demo sent', { duration: 3000 });
+                    this.newsService.loadMainPageNews();
                 } else if (status === 'Error') {
                     this.snackBar.open('Error', message, { duration: 3000 });
                 } else if (status === 'Invalid') {
@@ -83,6 +89,16 @@ export class NewsOfflineStartComponent implements OnInit {
                     });
                 }
             });
+    }
+
+    public openPlayerDemosDialog(): void {
+        this.dialog.open(PlayerDemosDialogComponent, {
+            data: { 
+                demos: this.news.playerDemos,
+                cupName: this.news.cup.fullName,
+                cupId: this.news.cup.id,
+            },
+        });
     }
 
     private getCupState(): CupStates {

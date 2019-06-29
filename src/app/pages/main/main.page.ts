@@ -10,12 +10,13 @@ import * as moment from 'moment';
     styleUrls: ['./main.page.less'],
 })
 export class MainPageComponent implements OnInit {
-    public news$: Observable<NewsInterfaceUnion>;
+    public news$: Observable<NewsInterfaceUnion[]>;
     public newsTypes = NewsTypes;
 
     constructor(private newsService: NewsService) {}
 
     ngOnInit(): void {
+        this.newsService.loadMainPageNews();
         this.news$ = this.newsService.getMainPageNews$();
     }
 
