@@ -8,11 +8,13 @@
             </div>
             <div class="right-column">
                 <div class="right-block shadowed">
-                    <app-cup-timer 
-                        [startTime]="startTime"
-                        [endTime]="endTime"
-                        [cupType]="cupTypes.OFFLINE"
-                        cupName="WarCup #222">
+                    <app-cup-timer
+                        *ngIf="(nextCupInfo$ | async) as cup" 
+                        [startTime]="cup.startTime"
+                        [endTime]="cup.endTime"
+                        [cupType]="cup.type === 'offline' ? cupTypes.OFFLINE : cupTypes.ONLINE"
+                        [cupName]="cup.fullName"
+                        [mapLink]="cup.mapPk3">
                     </app-cup-timer>
                 </div>
                 <div class="right-block shadowed">

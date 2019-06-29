@@ -57,4 +57,12 @@ export class URL_PARAMS {
             DELETE: `${API_URL}/cup/delete_demo`,
         }
     }
+
+    public static get CUP(): {
+        GET_NEXTCUP: string;
+    } {
+        return {
+            GET_NEXTCUP: `${API_URL}/cup/next_cup_info`,
+        };
+    }
 }

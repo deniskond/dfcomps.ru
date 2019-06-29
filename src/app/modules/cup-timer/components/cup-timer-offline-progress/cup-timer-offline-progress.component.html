@@ -1,6 +1,4 @@
-<a href="/news/{{ newsId }}" class="news-link">
-    <h1 class="cup-name">{{ cupName }}</h1>
-</a>
+<h1 class="cup-name">{{ cupName }}</h1>
 <h2 class="cup-date-time">
     Окончание {{ formattedTime }}
 </h2>
@@ -10,6 +8,6 @@
         (finished)="finished.emit()">
     </app-countdown-timer>
 </div>
-<a href="#" class="map-link">
+<a [href]="mapLink" class="map-link">
     <div class="bottom-info">Скачать карту</div>
 </a>
