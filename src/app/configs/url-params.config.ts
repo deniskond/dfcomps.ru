@@ -47,4 +47,14 @@ export class URL_PARAMS {
             ADD: `${API_URL}/comments/add`,
         };
     }
+
+    public static get DEMOS(): {
+        UPLOAD: string;
+        DELETE: string;
+    } {
+        return {
+            UPLOAD: `${API_URL}/cup/upload_demo`,
+            DELETE: `${API_URL}/cup/delete_demo`,
+        }
+    }
 }

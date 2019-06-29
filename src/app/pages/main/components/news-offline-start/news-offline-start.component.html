@@ -50,11 +50,43 @@
         <div class="map-info-table">
             <div class="map-info-row">
                 <div class="row-desc">Загрузить</div>
-                <div class="row-info">Турнир завершен</div>
+                <div class="row-info">
+                    <ng-container *ngIf="user$ | async; else notLogged">
+                        <ng-container [ngSwitch]="cupState">
+                            <div *ngSwitchCase="cupStates.IN_PROGRESS" class="demo-upload-block">
+                                <input #fileInput name="demo" accept=".dm_68" type="file">
+                                <div (click)="uploadDemo()" class="demo-upload-button">
+                                    <mat-spinner *ngIf="isUploading" diameter="20" strokeWidth="2" color="accent" class="spinner"></mat-spinner>
+                                    <img *ngIf="!isUploading" src="/assets/images/icons/upload.jpg" />
+                                </div>
+                            </div>
+                            <div *ngSwitchCase="cupStates.FINISHED">Турнир завершен</div>
+                            <div *ngSwitchCase="cupStates.NOT_STARTED">Турнир еще не начался</div>
+                        </ng-container>
+                    </ng-container>
+
+                    <ng-template #notLogged>Войдите или зарегистрируйтесь</ng-template>
+                </div>
             </div>
             <div class="map-info-row">
                 <div class="row-desc">Тайм</div>
-                <div class="row-info">Пока нет загруженных демок</div>
+                <div class="row-info">
+                    <ng-container *ngIf="news.playerDemos && !!news.playerDemos.length; else noDemos">
+                        <div class="top-demos">
+                            <ng-container *ngIf="news.cpmRes && news.cpmDemo">
+                                <a href="{{ mainUrl }}/api/uploads/demos/cup{{ news.cup.id }}/{{ news.cpmDemo }}">{{ news.cpmRes }}</a>&nbsp;(cpm)
+                                <span *ngIf="news.vq3Res && news.vq3Demo">,&nbsp;</span>
+                            </ng-container>
+                            <ng-container *ngIf="news.vq3Res && news.vq3Demo">
+                                <a href="{{ mainUrl }}/api/uploads/demos/cup{{ news.cup.id }}/{{ news.vq3Demo }}">{{ news.vq3Res }}</a>&nbsp;(vq3)
+                            </ng-container>
+                        </div>
+                        <div (click)="openPlayerDemosDialog()" class="player-demos-button">
+                            <img src="/assets/images/icons/list.png" />
+                        </div>
+                    </ng-container>
+                    <ng-template #noDemos>Нет загруженных демок</ng-template>
+                </div>
             </div>
         </div>
     </div>

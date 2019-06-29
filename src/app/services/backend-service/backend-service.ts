@@ -12,6 +12,15 @@ export class BackendService {
         return this.httpClient.post(url, this.prepareHttpParams(postParams), { withCredentials: true });
     }
 
+    public uploadFile$(url: string, file: any, postParams?: Record<string, string>): Observable<any> {
+        const formData: FormData = new FormData();
+        
+        formData.append('file', file, file.name);
+        Object.keys(postParams).forEach((key: string) => formData.append(key, postParams[key]));
+
+        return this.httpClient.post(url, formData, { withCredentials: true });
+    }
+
     private prepareHttpParams(params?: Record<string, string>): HttpParams {
         let httpParams = new HttpParams();
 
