@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MainPageComponent } from './main.page';
 import { RouterModule, Routes } from '@angular/router';
-import { MatProgressSpinnerModule } from '@angular/material';
+import { MatProgressSpinnerModule, MatButtonModule } from '@angular/material';
 import { NewsOnlineResultsComponent } from './components/news-online-results/news-online-results.component';
 import { NewsOnlineAnnounceComponent } from './components/news-online-announce/news-online-announce.component';
 import { NewsOfflineResultsComponent } from './components/news-offline-results/news-offline-results.component';
@@ -15,6 +15,7 @@ import { SharedModule } from '../../modules/shared.module';
 import { MulticupPhysicsTableComponent } from './components/news-multicup-results/multicup-physics-table/multicup-physics-table.component';
 import { NewsPhysicsTableComponent } from './components/news-offline-results/news-physics-table/news-physics-table.component';
 import { NewsOnlineResultsTableComponent } from './components/news-online-results/online-results-table/online-results-table.component';
+import { NewsCommentsComponent } from './components/news-comments/news-comments.component';
 
 const routes: Routes = [
     {
@@ -24,7 +25,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [SharedModule, CommonModule, RouterModule.forChild(routes), MatProgressSpinnerModule],
+    imports: [SharedModule, CommonModule, RouterModule.forChild(routes), MatProgressSpinnerModule, MatButtonModule],
     declarations: [
         MainPageComponent,
         NewsOnlineResultsComponent,
@@ -37,6 +38,7 @@ const routes: Routes = [
         MulticupPhysicsTableComponent,
         NewsPhysicsTableComponent,
         NewsOnlineResultsTableComponent,
+        NewsCommentsComponent,
     ],
     providers: [NewsService],
 })
