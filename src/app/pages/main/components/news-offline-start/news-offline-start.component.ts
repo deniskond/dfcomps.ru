@@ -8,7 +8,8 @@ import { CupStates } from '../../../../enums/cup-states.enum';
 import * as moment from 'moment';
 import { finalize, take, switchMap, catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
+import { ValidationDialogComponent } from './validation-dialog/validation-dialog.component';
 
 @Component({
     selector: 'app-news-offline-start',
@@ -26,7 +27,12 @@ export class NewsOfflineStartComponent implements OnInit {
     public cupStates = CupStates;
     public isUploading = false;
 
-    constructor(private demosService: DemosService, private userService: UserService, private snackBar: MatSnackBar) {}
+    constructor(
+        private demosService: DemosService,
+        private userService: UserService,
+        private snackBar: MatSnackBar,
+        private dialog: MatDialog,
+    ) {}
 
     ngOnInit(): void {
         this.cupState = this.getCupState();
@@ -72,7 +78,9 @@ export class NewsOfflineStartComponent implements OnInit {
                 } else if (status === 'Error') {
                     this.snackBar.open('Error', message, { duration: 3000 });
                 } else if (status === 'Invalid') {
-                    // TODO
+                    this.dialog.open(ValidationDialogComponent, {
+                        data: validation,
+                    });
                 }
             });
     }
