@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MainPageComponent } from './main.page';
 import { RouterModule, Routes } from '@angular/router';
-import { MatProgressSpinnerModule, MatButtonModule } from '@angular/material';
+import { MatProgressSpinnerModule, MatButtonModule, MatSnackBarModule } from '@angular/material';
 import { NewsOnlineResultsComponent } from './components/news-online-results/news-online-results.component';
 import { NewsOnlineAnnounceComponent } from './components/news-online-announce/news-online-announce.component';
 import { NewsOfflineResultsComponent } from './components/news-offline-results/news-offline-results.component';
@@ -25,7 +25,14 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [SharedModule, CommonModule, RouterModule.forChild(routes), MatProgressSpinnerModule, MatButtonModule],
+    imports: [
+        SharedModule,
+        CommonModule,
+        RouterModule.forChild(routes),
+        MatProgressSpinnerModule,
+        MatButtonModule,
+        MatSnackBarModule,
+    ],
     declarations: [
         MainPageComponent,
         NewsOnlineResultsComponent,
