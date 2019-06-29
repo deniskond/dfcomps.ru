@@ -39,4 +39,12 @@ export class URL_PARAMS {
             MAIN_PAGE: `${API_URL}/news/mainpage`,
         };
     }
+
+    public static get COMMENTS(): {
+        ADD: string;
+    } {
+        return {
+            ADD: `${API_URL}/comments/add`,
+        };
+    }
 }

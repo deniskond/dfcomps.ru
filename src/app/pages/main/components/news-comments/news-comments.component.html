@@ -4,7 +4,7 @@
 <ng-template #expanded>
     <div (click)="toggleExpand()" class="hide-comments">Скрыть комментарии</div>
 
-    <ng-container *ngIf="comments && comments.length">
+    <ng-container *ngIf="(comments$ | async) as comments">
         <ng-container *ngFor="let comment of comments; let i = index;">
             <div class="comment">
                 <div class="comment-header">
@@ -25,8 +25,8 @@
     </ng-container>
 
     <div class="write-commentary">Написать комментарий:</div>
-    <div contenteditable="true" class="comment-textarea"></div>
-    <button mat-raised-button color="primary" class="add-comment-button">
+    <div #textarea contenteditable="true" class="comment-textarea"></div>
+    <button mat-raised-button (click)="sendComment()" color="primary" class="add-comment-button">
         Отправить
     </button>
 </ng-template>
