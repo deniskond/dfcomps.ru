@@ -16,6 +16,7 @@ export class MoviesPageComponent implements OnInit {
     constructor(private moviesService: MoviesService, private sanitizer: DomSanitizer) {}
 
     ngOnInit(): void {
+        this.moviesService.loadMoviesIfNeeded();
         this.movies$ = this.moviesService.getMovies$().pipe(map((movies: MovieInterface[]) => shuffle(movies)));
     }
 
