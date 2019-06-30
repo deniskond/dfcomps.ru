@@ -15,7 +15,7 @@
         <app-player-cell 
             [country]="result.country" 
             [nick]="result.nick"
-            [playerId]="result.id">
+            [playerId]="result.playerId">
         </app-player-cell>
     </div>
     <div *ngIf="archiveLink; else noArchiveLink" class="time-column time">{{ formatResult(result.time) }}</div>

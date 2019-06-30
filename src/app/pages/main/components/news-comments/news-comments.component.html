@@ -11,7 +11,7 @@
                     <div class="comment-header-left">
                         <span>#{{ i + 1 }}</span>
                         <span class="separator"></span>
-                        <span>{{ comment.username }}</span>
+                        <span><a class="black-link" routerLink="/profile/{{ comment.playerId }}">{{ comment.username }}</a></span>
                     </div>
                     <div class="comment-header-right">
                         {{ comment.datetime }}

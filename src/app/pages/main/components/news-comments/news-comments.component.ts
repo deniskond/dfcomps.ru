@@ -41,7 +41,7 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
     }
 
     public sendComment(): void {
-        const text = this.textarea.nativeElement.textContent;
+        const text = this.textarea.nativeElement.innerHTML.replace(/<div>(.+)<\/div>/g, '<br>$1');
 
         if (!text) {
             return;
