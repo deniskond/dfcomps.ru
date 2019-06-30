@@ -1,4 +1,4 @@
-import { MAIN_URL } from '../../configs/url-params.config';
+import { API_URL } from '../../configs/url-params.config';
 import { Physics } from '../../enums/physics.enum';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -27,7 +27,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     public rewards: Rewards[];
     public isLoading = true;
     public physics = Physics;
-    public mainUrl = MAIN_URL;
+    public apiUrl = API_URL;
 
     private onDestroy$ = new Subject<void>();
 
@@ -69,8 +69,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
     public getAvatarSrc(): string {
         return this.mainInfo.avatar
-            ? `${this.mainUrl}/avatars/${this.mainInfo.avatar}.jpg`
-            : `${this.mainUrl}/avatars/no_avatar.png`;
+            ? `${this.apiUrl}/avatars/${this.mainInfo.avatar}.jpg`
+            : `${this.apiUrl}/avatars/no_avatar.png`;
     }
 
     private mapCupsToView(cups: ProfileCupDtoInterface[]): ProfileCupInterface[] {
