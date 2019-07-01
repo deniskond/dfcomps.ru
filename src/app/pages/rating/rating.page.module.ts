@@ -1,3 +1,4 @@
+import { SharedModule } from '../../modules/shared.module';
 import { MatProgressSpinnerModule } from '@angular/material';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -18,6 +19,6 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [RatingPageComponent, RatingSystemComponent],
-    imports: [CommonModule, RouterModule.forChild(routes), MatProgressSpinnerModule],
+    imports: [CommonModule, SharedModule, RouterModule.forChild(routes), MatProgressSpinnerModule],
 })
 export class RatingPageModule {}
