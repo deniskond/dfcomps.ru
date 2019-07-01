@@ -1,1 +1,18 @@
-<p>rating</p>
+<div class="shadowed-main-block">
+    <h1 class="h1-block-header"> Рейтинг-лист игроков: текущий сезон </h1>
+    <div style="line-height:1.6;font-size: 15px;">Посмотреть полное описание рейтинговой системы можно <a style="font-weight: bold;" routerLink="/rating/system">здесь</a></div>
+    <div style="line-height:1.6;font-size: 15px;">Рейтинги прошлых сезонов: 
+        <a style="font-size: 15px;font-weight: bold;margin-left:8px;" routerLink="/rating/season/1">Сезон 1</a>
+        <a style="font-size: 15px;font-weight: bold;margin-left:8px;" routerLink="/rating/season/2">Сезон 2</a>
+    </div>
+
+    <div *ngIf="(ratings$ | async) as ratings; else loader">
+        ratings
+    </div>
+
+    <ng-template #loader>
+        <div class="loader">
+            <mat-spinner diameter="80" strokeWidth="5" color="accent"></mat-spinner>
+        </div>
+    </ng-template>
+</div>

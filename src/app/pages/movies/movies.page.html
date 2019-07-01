@@ -2,15 +2,17 @@
     <h1 class="h1-block-header"> Мувики по дефрагу </h1>
 
     <div *ngIf="(movies$ | async) as movies; else loader" class="movies-container">
-        <div *ngFor="let movie of movies" class="movie-block">
-            <a href="https://youtube.com/watch?v={{ movie.youtube }}" target="_blank" class="movie-link">
-                <div [ngStyle]="getMovieBgStyle(movie.youtube)" class="movie-bg"></div>
-                <div class="movie-sub">
-                    <div class="movie-name">{{ movie.name }}</div>
-                    <div class="movie-author-year">{{ getAuthorName(movie.author) }} / {{ movie.year }}</div>
-                </div>
-            </a>
-        </div>
+        <ng-container *ngIf="!!movies.length; else loader">
+            <div *ngFor="let movie of movies" class="movie-block">
+                <a href="https://youtube.com/watch?v={{ movie.youtube }}" target="_blank" class="movie-link">
+                    <div [ngStyle]="getMovieBgStyle(movie.youtube)" class="movie-bg"></div>
+                    <div class="movie-sub">
+                        <div class="movie-name">{{ movie.name }}</div>
+                        <div class="movie-author-year">{{ getAuthorName(movie.author) }} / {{ movie.year }}</div>
+                    </div>
+                </a>
+            </div>
+        </ng-container>
     </div>
 
     <ng-template #loader>

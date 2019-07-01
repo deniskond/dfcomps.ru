@@ -1,3 +1,4 @@
+import { PlayersRatingTableComponent } from '../components/players-rating-table/players-rating-table.component';
 import { GmtDateTimeComponent } from '../components/gmt-date-time/gmt-date-time.component';
 import { FlagComponent } from '../components/flag/flag.component';
 import { NgModule } from '@angular/core';
@@ -15,6 +16,7 @@ const COMPONENTS = [
     WeaponsComponent,
     GmtDateTimeComponent,
     PlayerPlaceComponent,
+    PlayersRatingTableComponent,
 ];
 
 @NgModule({
