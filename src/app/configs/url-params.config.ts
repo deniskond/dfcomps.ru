@@ -28,6 +28,22 @@ export class URL_PARAMS {
         return `${API_URL}/tables/top10/${physics}`;
     }
 
+    public static RATING_TABLE_PAGE(physics: Physics, page: number): string {
+        return `${API_URL}/tables/rating/${physics}/${page}`;
+    }
+
+    public static RATING_TABLE_PLAYERS_COUNT(physics: Physics): string {
+        return `${API_URL}/tables/rating_table_players_count/${physics}`;
+    }
+
+    public static SEASON_RATING_TABLE_PAGE(physics: Physics, page: number, season: number): string {
+        return `${API_URL}/tables/rating/${physics}/${page}/${season}`;
+    }
+
+    public static SEASON_RATING_TABLE_PLAYERS_COUNT(physics: Physics, season: number): string {
+        return `${API_URL}/tables/season_rating_table_players_count/${physics}/${season}`;
+    }
+
     public static PROFILE(playerId: string): string {
         return `${API_URL}/profile/${playerId}`;
     }

@@ -1,5 +1,4 @@
-import { MatTableModule, MatProgressSpinnerModule, MatRippleModule } from '@angular/material';
-import { CdkTableModule } from '@angular/cdk/table';
+import { MatProgressSpinnerModule, MatRippleModule } from '@angular/material';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TopTenTableComponent } from './top-ten-table.component';
@@ -8,8 +7,6 @@ import { SharedModule } from '../shared.module';
 
 @NgModule({
     imports: [
-        MatTableModule,
-        CdkTableModule,
         CommonModule,
         MatProgressSpinnerModule,
         BrowserAnimationsModule,
