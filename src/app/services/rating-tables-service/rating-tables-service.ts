@@ -23,7 +23,7 @@ export class RatingTablesService extends BackendService {
     public getRatingTablePagesCount$(): Observable<number> {
         return this.post$(URL_PARAMS.RATING_TABLE_PLAYERS_COUNT()).pipe(
             map((response: { count: string }) => +response.count),
-            map((playersCount: number) => Math.floor(playersCount / MAX_PLAYERS_PER_PAGE)),
+            map((playersCount: number) => Math.ceil(playersCount / MAX_PLAYERS_PER_PAGE)),
         );
     }
 
@@ -38,7 +38,7 @@ export class RatingTablesService extends BackendService {
     public getSeasonRatingTablePagesCount$(season: number): Observable<number> {
         return this.post$(URL_PARAMS.SEASON_RATING_TABLE_PLAYERS_COUNT(season)).pipe(
             map((response: { count: string }) => +response.count),
-            map((playersCount: number) => Math.floor(playersCount / MAX_PLAYERS_PER_PAGE)),
+            map((playersCount: number) => Math.ceil(playersCount / MAX_PLAYERS_PER_PAGE)),
         );
     }
 }

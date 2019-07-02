@@ -37,7 +37,7 @@ export class URL_PARAMS {
     }
 
     public static SEASON_RATING_TABLE_PAGE(physics: Physics, page: number, season: number): string {
-        return `${API_URL}/tables/rating/${physics}/${page}/${season}`;
+        return `${API_URL}/tables/season_rating/${physics}/${page}/${season}`;
     }
 
     public static SEASON_RATING_TABLE_PLAYERS_COUNT( season: number): string {

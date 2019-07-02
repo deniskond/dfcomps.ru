@@ -1,29 +1,42 @@
 <div class="shadowed-main-block">
-    <h1 class="h1-block-header"> Рейтинг-лист игроков: текущий сезон </h1>
-    <div style="line-height:1.6;font-size: 15px;">Посмотреть полное описание рейтинговой системы можно <a style="font-weight: bold;" routerLink="/rating/system">здесь</a></div>
-    <!-- <div style="line-height:1.6;font-size: 15px;">Рейтинги прошлых сезонов: 
-        <a style="font-size: 15px;font-weight: bold;margin-left:8px;" routerLink="/rating/season/1">Сезон 1</a>
-        <a style="font-size: 15px;font-weight: bold;margin-left:8px;" routerLink="/rating/season/2">Сезон 2</a>
-    </div> -->
+    <h1 *ngIf="currentSeason === currentSeasonConst" class="h1-block-header"> Рейтинг-лист игроков: текущий сезон</h1>
+    <h1 *ngIf="currentSeason !== currentSeasonConst" class="h1-block-header"> Рейтинг-лист игроков: сезон {{ currentSeason }} </h1>
+    <div class="top-text">
+        Посмотреть полное описание рейтинговой системы можно 
+        <a class="bold-link" routerLink="/rating/system">здесь</a>
+    </div>
+    <div class="top-text">Рейтинги по сезонам: 
+        <a (click)="setSeason(1)" class="season-link">Сезон 1</a>
+        <a (click)="setSeason(2)" class="season-link">Сезон 2</a>
+        <a (click)="setSeason(3)" class="season-link">Сезон 3</a>
+    </div>
 
-    <div style="display: flex;margin-top: 8px;">
-        <div style="flex-grow: 1;">
+    <div class="tables-container">
+        <div class="rating-table">
             <h2 class="h1-block-header"> Vq3 </h2>
-            <div *ngIf="!isLoadingVq3 && (vq3Ratings$ | async) as vq3Ratings; else loader" style="border:1px solid rgba(0, 0, 0, 0.12);border-bottom:0;">
-                <app-players-rating-table [ratingTable]="vq3Ratings"></app-players-rating-table>
+            <div *ngIf="!isLoadingVq3 && (vq3Ratings$ | async) as vq3Ratings; else loader" class="table-border">
+                <app-players-rating-table [ratingTable]="vq3Ratings" [bias]="bias"></app-players-rating-table>
             </div>
         </div>
-        <div style="flex-grow: 1;margin-left:15px;">
+        <div class="rating-table">
             <h2 class="h1-block-header"> Cpm </h2>
-            <div *ngIf="!isLoadingCpm && (cpmRatings$ | async) as cpmRatings; else loader" style="border:1px solid rgba(0, 0, 0, 0.12);border-bottom:0;">
-                <app-players-rating-table [ratingTable]="cpmRatings"></app-players-rating-table>
+            <div *ngIf="!isLoadingCpm && (cpmRatings$ | async) as cpmRatings; else loader" class="table-border">
+                <app-players-rating-table [ratingTable]="cpmRatings" [bias]="bias"></app-players-rating-table>
             </div>
         </div>
     </div>
 
-    <div *ngIf="(pagesCount$ | async) as pagesCount;" style="display:flex;justify-content:center;align-items:center;margin-top:16px;font-size: 16px;text-decoration: underline;">
-        <a *ngFor="let page of range(pagesCount); let i = index;" (click)="loadPage(i + 1)" style="margin: 0 4px;color:#333;cursor:pointer;">{{ i + 1 }}</a>
-    </div>
+    <ng-container *ngIf="currentSeason === currentSeasonConst; else previousSeason">
+        <div *ngIf="(pagesCount$ | async) as pagesCount;" class="pagination-container">
+            <a *ngFor="let page of range(pagesCount); let i = index;" (click)="loadCurrentSeasonPage(i + 1)">{{ i + 1 }}</a>
+        </div>
+    </ng-container>
+
+    <ng-template #previousSeason>
+        <div *ngIf="(pagesCount$ | async) as pagesCount;" class="pagination-container">
+            <a *ngFor="let page of range(pagesCount); let i = index;" (click)="loadPreviousSeasonPage(i + 1)">{{ i + 1 }}</a>
+        </div>
+    </ng-template>
 
     <ng-template #loader>
         <div class="loader">

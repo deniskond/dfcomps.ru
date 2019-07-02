@@ -1,4 +1,4 @@
-<mat-table [dataSource]="ratingTable">
+<mat-table [dataSource]="ratingTableWithPositions">
     <ng-container cdkColumnDef="number">
         <mat-header-cell *cdkHeaderCellDef class="number-column"> # </mat-header-cell>
         <mat-cell *cdkCellDef="let row" class="number-column"> {{ row.position }} </mat-cell>
