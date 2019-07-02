@@ -1,0 +1,26 @@
+import { LeaderTableInterface } from '../../interfaces/leader-table.interface';
+import { Component, Input, OnInit } from '@angular/core';
+import { getTablePlaces } from '../../helpers/table-places.helper';
+
+@Component({
+    selector: 'app-players-rating-table',
+    templateUrl: './players-rating-table.component.html',
+    styleUrls: ['./players-rating-table.component.less'],
+})
+export class PlayersRatingTableComponent implements OnInit {
+    @Input()
+    ratingTable: LeaderTableInterface[];
+    @Input()
+    bias = 0;
+
+    public ratingTableWithPositions: LeaderTableInterface[];
+
+    ngOnInit(): void {
+        const places = getTablePlaces(this.ratingTable.map(({ rating }: LeaderTableInterface) => +rating));
+
+        this.ratingTableWithPositions = this.ratingTable.map((row: LeaderTableInterface, index: number) => ({
+            ...row,
+            position: places[index] + this.bias,
+        }));
+    }
+}

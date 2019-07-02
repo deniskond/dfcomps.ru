@@ -9,8 +9,7 @@ export class TABS_CONFIG {
     public static get TABS(): TabInterface[] {
         return [
             { page: NavigationPages.MAIN, name: 'Главная' },
-            // TODO [DFRU-5] Страница рейтинга
-            // { page: NavigationPages.RATING, name: 'Рейтинг' },
+            { page: NavigationPages.RATING, name: 'Рейтинг' },
             // TODO [DFRU-6] Страница команд
             // { page: NavigationPages.TEAMS, name: 'Команды' },
             { page: NavigationPages.RULES, name: 'Правила' },

@@ -21,6 +21,4 @@ export class TopTenTableComponent implements OnInit {
     ngOnInit(): void {
         this.topTenTable$ = this.ratingTablesService.getTop10Table$(this.physics);
     }
-
-    
 }

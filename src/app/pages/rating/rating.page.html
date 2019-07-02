@@ -1,1 +1,46 @@
-<p>rating</p>
+<div class="shadowed-main-block">
+    <h1 *ngIf="currentSeason === currentSeasonConst" class="h1-block-header"> Рейтинг-лист игроков: текущий сезон</h1>
+    <h1 *ngIf="currentSeason !== currentSeasonConst" class="h1-block-header"> Рейтинг-лист игроков: сезон {{ currentSeason }} </h1>
+    <div class="top-text">
+        Посмотреть полное описание рейтинговой системы можно 
+        <a class="bold-link" routerLink="/rating/system">здесь</a>
+    </div>
+    <div class="top-text">Рейтинги по сезонам: 
+        <a (click)="setSeason(1)" class="season-link">Сезон 1</a>
+        <a (click)="setSeason(2)" class="season-link">Сезон 2</a>
+        <a (click)="setSeason(3)" class="season-link">Сезон 3</a>
+    </div>
+
+    <div class="tables-container">
+        <div class="rating-table">
+            <h2 class="h1-block-header"> Vq3 </h2>
+            <div *ngIf="!isLoadingVq3 && (vq3Ratings$ | async) as vq3Ratings; else loader" class="table-border">
+                <app-players-rating-table [ratingTable]="vq3Ratings" [bias]="bias"></app-players-rating-table>
+            </div>
+        </div>
+        <div class="rating-table">
+            <h2 class="h1-block-header"> Cpm </h2>
+            <div *ngIf="!isLoadingCpm && (cpmRatings$ | async) as cpmRatings; else loader" class="table-border">
+                <app-players-rating-table [ratingTable]="cpmRatings" [bias]="bias"></app-players-rating-table>
+            </div>
+        </div>
+    </div>
+
+    <ng-container *ngIf="currentSeason === currentSeasonConst; else previousSeason">
+        <div *ngIf="(pagesCount$ | async) as pagesCount;" class="pagination-container">
+            <a *ngFor="let page of range(pagesCount); let i = index;" (click)="loadCurrentSeasonPage(i + 1)">{{ i + 1 }}</a>
+        </div>
+    </ng-container>
+
+    <ng-template #previousSeason>
+        <div *ngIf="(pagesCount$ | async) as pagesCount;" class="pagination-container">
+            <a *ngFor="let page of range(pagesCount); let i = index;" (click)="loadPreviousSeasonPage(i + 1)">{{ i + 1 }}</a>
+        </div>
+    </ng-template>
+
+    <ng-template #loader>
+        <div class="loader">
+            <mat-spinner diameter="80" strokeWidth="5" color="accent"></mat-spinner>
+        </div>
+    </ng-template>
+</div>
