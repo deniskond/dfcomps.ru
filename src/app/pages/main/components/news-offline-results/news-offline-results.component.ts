@@ -1,3 +1,4 @@
+import { API_URL } from '../../../../configs/url-params.config';
 import { Physics } from '../../../../enums/physics.enum';
 import { NewsOfflineResultsInterface } from '../../../../services/news-service/interfaces/news-offline-results.interface';
 import { Component, Input, OnInit } from '@angular/core';
@@ -18,5 +19,9 @@ export class NewsOfflineResultsComponent implements OnInit {
             this.news.cpmResults.valid.length > this.news.vq3Results.valid.length
                 ? this.news.cpmResults.valid.length
                 : this.news.vq3Results.valid.length;
+    }
+
+    public getArchiveLink(archiveLink: string): string {
+        return `${API_URL}/${archiveLink}`;
     }
 }

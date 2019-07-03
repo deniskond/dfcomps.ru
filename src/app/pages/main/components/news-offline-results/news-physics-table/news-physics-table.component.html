@@ -21,11 +21,11 @@
     <div *ngIf="archiveLink; else noArchiveLink" class="time-column time">{{ formatResult(result.time) }}</div>
     <ng-template #noArchiveLink>
         <div class="time-column time">
-            <a href="/api/uploads/demos/cup{{ cupId }}/{{ result.demopath }}">{{ formatResult(result.time) }}</a>
+            <a href="/api/uploads/demos/cup{{ cup.id }}/{{ result.demopath }}">{{ formatResult(result.time) }}</a>
         </div>
     </ng-template>
     <div class="rating-column">
-        <app-rating-change [change]="result.change"></app-rating-change>
+        <app-rating-change [change]="result.change" [zeroIfNull]="cup.ratingCalculated === '1'"></app-rating-change>
     </div>
 </div>
 

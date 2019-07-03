@@ -31,7 +31,7 @@
 </div>
 
 <div *ngIf="news.cup.archiveLink" style="margin-top:15px;font-size:17px;text-align:center;">
-    <a [href]="news.cup.archiveLink">
+    <a [href]="getArchiveLink(news.cup.archiveLink)">
         <strong>&gt;&gt; Все демки одним архивом &lt;&lt;</strong>
     </a>
 </div>
@@ -42,7 +42,7 @@
             [physics]="physics.VQ3" 
             [physicsTable]="news.vq3Results.valid"
             [archiveLink]="news.cup.archiveLink"
-            [cupId]="news.cup.id"
+            [cup]="news.cup"
             [maxDemosCount]="maxDemosCount">
         </app-news-physics-table>
     </div>
@@ -51,7 +51,7 @@
             [physics]="physics.CPM" 
             [physicsTable]="news.cpmResults.valid"
             [archiveLink]="news.cup.archiveLink"
-            [cupId]="news.cup.id"
+            [cup]="news.cup"
             [maxDemosCount]="maxDemosCount">
         </app-news-physics-table>
     </div>

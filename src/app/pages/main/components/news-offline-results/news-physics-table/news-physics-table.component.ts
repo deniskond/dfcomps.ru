@@ -4,6 +4,7 @@ import { Physics } from '../../../../../enums/physics.enum';
 import { getTablePlaces } from '../../../../../helpers/table-places.helper';
 import { formatResultTime } from '../../../../../helpers/result-time.helper';
 import { range } from 'lodash';
+import { CupInterface } from '../../../../../interfaces/cup.interface';
 
 @Component({
     selector: 'app-news-physics-table',
@@ -14,8 +15,8 @@ export class NewsPhysicsTableComponent implements OnInit {
     @Input() physics: Physics;
     @Input() physicsTable: ValidDemoInterface[];
     @Input() archiveLink: string;
-    @Input() cupId: string;
     @Input() maxDemosCount: number;
+    @Input() cup: CupInterface;
 
     public places: number[];
     public range = range;

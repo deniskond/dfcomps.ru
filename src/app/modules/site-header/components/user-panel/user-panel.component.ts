@@ -1,3 +1,4 @@
+import { API_URL } from '../../../../configs/url-params.config';
 import { UserInterface } from '../../../../interfaces/user.interface';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material';
@@ -15,6 +16,7 @@ import { Router } from '@angular/router';
 })
 export class UserPanelComponent implements OnInit, OnDestroy {
     public user: UserInterface;
+    public apiUrl = API_URL;
 
     private onDestroy$ = new Subject<void>();
 
