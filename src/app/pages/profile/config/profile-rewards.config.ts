@@ -4,6 +4,7 @@ export class PROFILE_REWARDS {
     public static get ICONS_MAP(): Record<Rewards, string> {
         return {
             [Rewards.SEASON_ONE_PARTICIPANT]: 's1',
+            [Rewards.SEASON_TWO_PARTICIPANT]: 's2',
             [Rewards.TOP1_VQ3_FIRST_SEASON]: 'top_1_vq3',
             [Rewards.TOP2_VQ3_FIRST_SEASON]: 'top_2_vq3',
             [Rewards.TOP3_VQ3_FIRST_SEASON]: 'top_3_vq3',
@@ -12,6 +13,14 @@ export class PROFILE_REWARDS {
             [Rewards.TOP3_CPM_FIRST_SEASON]: 'top_3_cpm',
             [Rewards.TOP10_VQ3_FIRST_SEASON]: 'top10',
             [Rewards.TOP10_CPM_FIRST_SEASON]: 'top10',
+            [Rewards.TOP1_VQ3_SECOND_SEASON]: 'top_1_vq3',
+            [Rewards.TOP2_VQ3_SECOND_SEASON]: 'top_2_vq3',
+            [Rewards.TOP3_VQ3_SECOND_SEASON]: 'top_3_vq3',
+            [Rewards.TOP1_CPM_SECOND_SEASON]: 'top_1_cpm',
+            [Rewards.TOP2_CPM_SECOND_SEASON]: 'top_2_cpm',
+            [Rewards.TOP3_CPM_SECOND_SEASON]: 'top_3_cpm',
+            [Rewards.TOP10_VQ3_SECOND_SEASON]: 'top10',
+            [Rewards.TOP10_CPM_SECOND_SEASON]: 'top10',
             [Rewards.THE_BITTER_MAN]: 'the_bitter_man',
             [Rewards.THE_CAKE]: 'qportal',
             [Rewards.DDC2018_TOP1]: 'ddc2018-top1',
