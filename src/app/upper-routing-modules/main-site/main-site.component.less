@@ -2,11 +2,20 @@
     margin: 0;
     border: 0;
     font-family: elektra;
-    background: url('/assets/images/bg/dfwc2010-3_1.jpg');
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: 50%;
     width: 100%;
+    position: relative;
+
+    &::before {
+        background: url(/assets/images/bg/dfwc2010-3_1.jpg) 50%/cover fixed;
+        position: fixed;
+        top: 0;
+        left: 0;
+        content: ' ';
+        height: 100%;
+        width: 100%;
+        will-change: transform;
+        z-index: -1;
+    }
 }
 
 .container {
