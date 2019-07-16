@@ -41,9 +41,7 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
     }
 
     public sendComment(): void {
-        const text = this.textarea.nativeElement.innerHTML
-            .replace(/^<div>(.+?)<\/div>/, '$1')
-            .replace(/<div>(.+?)<\/div>/g, '<br>$1');
+        const text = this.textarea.nativeElement.value;
 
         if (!text) {
             return;
@@ -59,7 +57,7 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
             )
             .subscribe((updatedComments: CommentInterface[]) => { 
                 this.comments$.next(updatedComments);
-                this.textarea.nativeElement.textContent = '';
+                this.textarea.nativeElement.value = '';
             });
     }
 }

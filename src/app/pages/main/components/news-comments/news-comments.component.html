@@ -24,7 +24,7 @@
 
     <ng-container *ngIf="currentUser$ | async; else notLogged">
         <div class="write-commentary">Написать комментарий:</div>
-        <div #textarea contenteditable="true" class="comment-textarea"></div>
+        <textarea #textarea class="comment-textarea"></textarea>
 
         <div class="send-comment-button">
             <mat-spinner *ngIf="isLoading" diameter="20" strokeWidth="2" color="accent" class="spinner"></mat-spinner>
