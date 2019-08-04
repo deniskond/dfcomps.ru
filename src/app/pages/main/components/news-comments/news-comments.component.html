@@ -2,7 +2,11 @@
     <a (click)="toggleExpand()" class="expand-link">Комментарии ({{ comments.length }})</a>
 </div>
 <ng-template #expanded>
-    <div (click)="toggleExpand()" class="hide-comments">Скрыть комментарии</div>
+    <div *ngIf="expandable; else commentsCount" (click)="toggleExpand()" class="hide-comments">Скрыть комментарии</div>
+
+    <ng-template #commentsCount>
+        <div class="single-news-comments">Комментарии</div>
+    </ng-template>
 
     <ng-container *ngIf="(comments$ | async) as comments">
         <ng-container *ngFor="let comment of comments; let i = index;">

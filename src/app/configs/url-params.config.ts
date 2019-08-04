@@ -50,9 +50,11 @@ export class URL_PARAMS {
 
     public static get NEWS(): {
         MAIN_PAGE: string;
+        SINGLE_NEWS: (id: string) => string;
     } {
         return {
             MAIN_PAGE: `${API_URL}/news/mainpage`,
+            SINGLE_NEWS: (id: string) => `${API_URL}/news/single/${id}`,
         };
     }
 

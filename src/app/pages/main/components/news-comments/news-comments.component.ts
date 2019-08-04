@@ -16,6 +16,8 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
     comments: CommentInterface[];
     @Input()
     newsId: string;
+    @Input()
+    expandable = true;
 
     @ViewChild('textarea') textarea: ElementRef;
 
@@ -28,6 +30,10 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
 
     ngOnInit(): void {
         this.currentUser$ = this.userService.getCurrentUser$();
+
+        if (!this.expandable) {
+            this.isExpanded = true;
+        }
     }
 
     ngOnChanges({ comments }: SimpleChanges): void {
