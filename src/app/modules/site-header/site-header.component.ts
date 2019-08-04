@@ -1,3 +1,5 @@
+import { LanguageService } from '../../services/language/language.service';
+import { Languages } from '../../enums/languages.enum';
 import { NavigationPages } from '../../routing/enums/pages.enum';
 import { TABS_CONFIG, TabInterface } from '../../routing/config/tabs.config';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -13,15 +15,18 @@ import { Subject } from 'rxjs';
 export class SiteHeaderComponent implements OnInit, OnDestroy {
     public pages = NavigationPages;
     public tabs = TABS_CONFIG.TABS;
+    public languages = Languages;
     public activePage: NavigationPages;
+    public translations: Record<string, string>;
 
     private onDestroy$ = new Subject<void>();
 
-    constructor(private router: Router) {}
+    constructor(private router: Router, private languageService: LanguageService) {}
 
     ngOnInit(): void {
         this.setActivePage();
-        this.setActivePageSubscription();
+        this.initActivePageSubscription();
+        this.initLanguageSubscription();
     }
 
     ngOnDestroy(): void {
@@ -33,7 +38,11 @@ export class SiteHeaderComponent implements OnInit, OnDestroy {
         this.router.navigate([`/${page}`]);
     }
 
-    private setActivePageSubscription(): void {
+    public setLanguage(language: Languages): void {
+        this.languageService.setLanguage(language);
+    }
+
+    private initActivePageSubscription(): void {
         this.router.events
             .pipe(
                 filter((event: RouterEvent) => event instanceof NavigationEnd),
@@ -60,5 +69,11 @@ export class SiteHeaderComponent implements OnInit, OnDestroy {
         }
 
         this.activePage = null;
+    }
+
+    private initLanguageSubscription(): void {
+        this.languageService.languageTranslations$
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe((translations: Record<string, string>) => (this.translations = translations));
     }
 }
