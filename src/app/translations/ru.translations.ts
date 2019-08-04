@@ -10,4 +10,8 @@ export const RUSSIAN_TRANSLATIONS = {
     logout: 'Выйти',
     logIn: 'Войти',
     signUp: 'Зарегистрироваться',
+    mainPage: 'Главная',
+    ratingPage: 'Рейтинг',
+    rulesPage: 'Правила',
+    moviesPage: 'Мувики',
 }

@@ -10,4 +10,8 @@ export const ENGLISH_TRANSLATIONS = {
     logout: 'Logout',
     logIn: 'Log in',
     signUp: 'Sign up',
+    mainPage: 'Home',
+    ratingPage: 'Rating',
+    rulesPage: 'Rules',
+    moviesPage: 'Movies',
 }

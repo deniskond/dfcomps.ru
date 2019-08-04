@@ -1,3 +1,5 @@
+import { RUSSIAN_TRANSLATIONS } from '../../translations/ru.translations';
+import { ENGLISH_TRANSLATIONS } from '../../translations/en.translations';
 import { Languages } from '../../enums/languages.enum';
 import { LanguageService } from '../../services/language/language.service';
 import { OnInit, OnDestroy } from '@angular/core';
@@ -6,6 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 
 export class Translations implements OnInit, OnDestroy {
     public translations: Record<string, string>;
+    public language: Languages;
 
     private languageOnDestroy$ = new Subject<void>();
 
@@ -25,8 +28,12 @@ export class Translations implements OnInit, OnDestroy {
     }
 
     private initLanguageSubscription(): void {
-        this.languageService.getLanguageTranslations$()
+        this.languageService
+            .getLanguage$()
             .pipe(takeUntil(this.languageOnDestroy$))
-            .subscribe((translations: Record<string, string>) => (this.translations = translations));
+            .subscribe((language: Languages) => {
+                this.language = language;
+                this.translations = language === Languages.EN ? ENGLISH_TRANSLATIONS : RUSSIAN_TRANSLATIONS;
+            });
     }
 }

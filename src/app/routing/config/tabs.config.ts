@@ -8,14 +8,14 @@ export interface TabInterface {
 export class TABS_CONFIG {
     public static get TABS(): TabInterface[] {
         return [
-            { page: NavigationPages.MAIN, name: 'Главная' },
-            { page: NavigationPages.RATING, name: 'Рейтинг' },
+            { page: NavigationPages.MAIN, name: 'mainPage' },
+            { page: NavigationPages.RATING, name: 'ratingPage' },
             // TODO [DFRU-6] Страница команд
             // { page: NavigationPages.TEAMS, name: 'Команды' },
-            { page: NavigationPages.RULES, name: 'Правила' },
+            { page: NavigationPages.RULES, name: 'rulesPage' },
             // TODO [DFRU-13] Страница архива
             // { page: NavigationPages.ARCHIVE, name: 'Архив' },
-            { page: NavigationPages.MOVIES, name: 'Мувики' },
+            { page: NavigationPages.MOVIES, name: 'moviesPage' },
         ];
     }
 }
