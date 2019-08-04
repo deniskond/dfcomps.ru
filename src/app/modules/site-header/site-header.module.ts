@@ -15,6 +15,7 @@ import { UserPanelComponent } from './components/user-panel/user-panel.component
 import { LoginDialogComponent } from './components/login-dialog/login-dialog.component';
 import { RegisterDialogComponent } from './components/register-dialog/register-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared.module';
 
 @NgModule({
     imports: [
@@ -29,6 +30,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         MatProgressSpinnerModule,
         FormsModule,
         ReactiveFormsModule,
+        SharedModule,
     ],
     declarations: [SiteHeaderComponent, UserPanelComponent, LoginDialogComponent, RegisterDialogComponent],
     exports: [SiteHeaderComponent],

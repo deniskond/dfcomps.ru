@@ -1,3 +1,4 @@
+import { LanguageTranslationsComponent } from '../../components/language-translations/language-translations.component';
 import { LanguageService } from '../../services/language/language.service';
 import { Languages } from '../../enums/languages.enum';
 import { NavigationPages } from '../../routing/enums/pages.enum';
@@ -12,7 +13,7 @@ import { Subject } from 'rxjs';
     templateUrl: './site-header.component.html',
     styleUrls: ['./site-header.component.less'],
 })
-export class SiteHeaderComponent implements OnInit, OnDestroy {
+export class SiteHeaderComponent extends LanguageTranslationsComponent implements OnInit, OnDestroy {
     public pages = NavigationPages;
     public tabs = TABS_CONFIG.TABS;
     public languages = Languages;
@@ -21,25 +22,24 @@ export class SiteHeaderComponent implements OnInit, OnDestroy {
 
     private onDestroy$ = new Subject<void>();
 
-    constructor(private router: Router, private languageService: LanguageService) {}
+    constructor(private router: Router, protected languageService: LanguageService) {
+        super(languageService);
+    }
 
     ngOnInit(): void {
         this.setActivePage();
         this.initActivePageSubscription();
-        this.initLanguageSubscription();
+        super.ngOnInit();
     }
 
     ngOnDestroy(): void {
         this.onDestroy$.next();
         this.onDestroy$.complete();
+        super.ngOnDestroy();
     }
 
     public navigate(page: NavigationPages): void {
         this.router.navigate([`/${page}`]);
-    }
-
-    public setLanguage(language: Languages): void {
-        this.languageService.setLanguage(language);
     }
 
     private initActivePageSubscription(): void {
@@ -69,11 +69,5 @@ export class SiteHeaderComponent implements OnInit, OnDestroy {
         }
 
         this.activePage = null;
-    }
-
-    private initLanguageSubscription(): void {
-        this.languageService.languageTranslations$
-            .pipe(takeUntil(this.onDestroy$))
-            .subscribe((translations: Record<string, string>) => (this.translations = translations));
     }
 }

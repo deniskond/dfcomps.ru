@@ -9,6 +9,7 @@ import { MatRippleModule, MatTableModule } from '@angular/material';
 import { WeaponsComponent } from '../components/weapons/weapons.component';
 import { PlayerPlaceComponent } from '../components/player-place/player-place.component';
 import { CdkTableModule } from '@angular/cdk/table';
+import { LanguageTranslationsModule } from '../components/language-translations/language-translations.module';
 
 const COMPONENTS = [
     FlagComponent,
@@ -22,7 +23,7 @@ const COMPONENTS = [
 
 @NgModule({
     declarations: COMPONENTS,
-    imports: [CommonModule, MatRippleModule, MatTableModule, CdkTableModule],
+    imports: [CommonModule, MatRippleModule, MatTableModule, CdkTableModule, LanguageTranslationsModule],
     exports: COMPONENTS,
 })
 export class SharedModule {}
