@@ -18,11 +18,16 @@ import { NewsOnlineResultsTableComponent } from './components/news-online-result
 import { NewsCommentsComponent } from './components/news-comments/news-comments.component';
 import { ValidationDialogComponent } from './components/news-offline-start/validation-dialog/validation-dialog.component';
 import { PlayerDemosDialogComponent } from './components/news-offline-start/player-demos-dialog/player-demos-dialog.component';
+import { SingleNewsPageComponent } from './components/single-news-page/single-news-page.component';
 
 const routes: Routes = [
     {
         path: '',
         component: MainPageComponent,
+    },
+    {
+        path: ':id',
+        component: SingleNewsPageComponent,
     },
 ];
 
@@ -51,6 +56,7 @@ const routes: Routes = [
         NewsCommentsComponent,
         ValidationDialogComponent,
         PlayerDemosDialogComponent,
+        SingleNewsPageComponent,
     ],
     providers: [NewsService],
     entryComponents: [ValidationDialogComponent, PlayerDemosDialogComponent],

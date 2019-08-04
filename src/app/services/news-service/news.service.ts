@@ -16,4 +16,8 @@ export class NewsService extends BackendService {
     public getMainPageNews$(): Observable<NewsInterfaceUnion[]> {
         return this._mainPageNews$.asObservable();
     }
+
+    public getSingleNews$(id: string): Observable<NewsInterfaceUnion> {
+        return this.post$(URL_PARAMS.NEWS.SINGLE_NEWS(id));
+    }
 }
