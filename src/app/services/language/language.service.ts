@@ -1,7 +1,7 @@
 import { Languages } from '../../enums/languages.enum';
 import { Injectable } from '@angular/core';
-import { ENGLISH_TRANSLATIONS } from './translations/en.translations';
-import { RUSSIAN_TRANSLATIONS } from './translations/ru.translations';
+import { ENGLISH_TRANSLATIONS } from '../../translations/en.translations';
+import { RUSSIAN_TRANSLATIONS } from '../../translations/ru.translations';
 import { ReplaySubject, Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -14,7 +14,7 @@ export class LanguageService {
 
     constructor(private cookieService: CookieService) {}
 
-    public get languageTranslations$(): Observable<Record<string, string>> {
+    public getLanguageTranslations$(): Observable<Record<string, string>> {
         return this.translations$.asObservable();
     }
 

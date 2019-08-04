@@ -8,7 +8,7 @@
             </h1>
                 
             <div class="author-and-date">
-                Автор: <a routerLink="/profile/{{ singleNews.authorId }}" class="black-link">{{ singleNews.authorName }}</a>,
+                {{ translations?.author }}: <a routerLink="/profile/{{ singleNews.authorId }}" class="black-link">{{ singleNews.authorName }}</a>,
                 {{ formatDate(singleNews.datetime) }}
             </div>
 

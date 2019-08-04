@@ -1,3 +1,5 @@
+import { LanguageService } from '../../services/language/language.service';
+import { LanguageTranslationsComponent } from '../../components/language-translations/language-translations.component';
 import { NewsInterfaceUnion } from '../../types/news-union.type';
 import { NewsService } from '../../services/news-service/news.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -10,22 +12,26 @@ import { takeUntil } from 'rxjs/operators';
     templateUrl: './main.page.html',
     styleUrls: ['./main.page.less'],
 })
-export class MainPageComponent implements OnInit, OnDestroy {
+export class MainPageComponent extends LanguageTranslationsComponent implements OnInit, OnDestroy {
     public news: NewsInterfaceUnion[];
     public newsTypes = NewsTypes;
 
     private onDestroy$ = new Subject<void>();
 
-    constructor(private newsService: NewsService) {}
+    constructor(private newsService: NewsService, protected languageService: LanguageService) {
+        super(languageService);
+    }
 
     ngOnInit(): void {
         this.newsService.loadMainPageNews();
         this.initNewsSubscription();
+        super.ngOnInit();
     }
 
     ngOnDestroy(): void {
         this.onDestroy$.next();
         this.onDestroy$.complete();
+        super.ngOnDestroy();
     }
 
     public formatDate(date: string): string {

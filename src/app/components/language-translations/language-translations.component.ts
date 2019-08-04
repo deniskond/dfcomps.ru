@@ -29,7 +29,7 @@ export class LanguageTranslationsComponent implements OnInit, OnDestroy {
     }
 
     private initLanguageSubscription(): void {
-        this.languageService.languageTranslations$
+        this.languageService.getLanguageTranslations$()
             .pipe(takeUntil(this.languageOnDestroy$))
             .subscribe((translations: Record<string, string>) => (this.translations = translations));
     }
