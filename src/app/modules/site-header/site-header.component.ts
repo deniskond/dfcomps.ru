@@ -1,4 +1,4 @@
-import { LanguageTranslationsComponent } from '../../components/language-translations/language-translations.component';
+import { Translations } from '../../components/translations/translations.component';
 import { LanguageService } from '../../services/language/language.service';
 import { Languages } from '../../enums/languages.enum';
 import { NavigationPages } from '../../routing/enums/pages.enum';
@@ -13,7 +13,7 @@ import { Subject } from 'rxjs';
     templateUrl: './site-header.component.html',
     styleUrls: ['./site-header.component.less'],
 })
-export class SiteHeaderComponent extends LanguageTranslationsComponent implements OnInit, OnDestroy {
+export class SiteHeaderComponent extends Translations implements OnInit, OnDestroy {
     public pages = NavigationPages;
     public tabs = TABS_CONFIG.TABS;
     public languages = Languages;

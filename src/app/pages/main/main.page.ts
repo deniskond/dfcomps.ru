@@ -1,5 +1,5 @@
+import { Translations } from '../../components/translations/translations.component';
 import { LanguageService } from '../../services/language/language.service';
-import { LanguageTranslationsComponent } from '../../components/language-translations/language-translations.component';
 import { NewsInterfaceUnion } from '../../types/news-union.type';
 import { NewsService } from '../../services/news-service/news.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -12,7 +12,7 @@ import { takeUntil } from 'rxjs/operators';
     templateUrl: './main.page.html',
     styleUrls: ['./main.page.less'],
 })
-export class MainPageComponent extends LanguageTranslationsComponent implements OnInit, OnDestroy {
+export class MainPageComponent extends Translations implements OnInit, OnDestroy {
     public news: NewsInterfaceUnion[];
     public newsTypes = NewsTypes;
 

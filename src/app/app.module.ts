@@ -7,7 +7,6 @@ import { MainSiteModule } from './upper-routing-modules/main-site/main-site.modu
 import { UserService } from './services/user-service/user.service';
 import { CookieService } from 'ngx-cookie-service';
 import { NewsService } from './services/news-service/news.service';
-import { LanguageTranslationsModule } from './components/language-translations/language-translations.module';
 import { GlobalServicesModule } from './modules/global-services.module';
 
 @NgModule({
@@ -16,7 +15,6 @@ import { GlobalServicesModule } from './modules/global-services.module';
         BrowserModule,
         RouterModule.forRoot(appRoutes),
         MainSiteModule,
-        LanguageTranslationsModule,
         GlobalServicesModule,
     ],
     bootstrap: [AppComponent],

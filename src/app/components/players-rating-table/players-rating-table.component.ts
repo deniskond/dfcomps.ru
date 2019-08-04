@@ -1,17 +1,23 @@
+import { LanguageService } from '../../services/language/language.service';
 import { LeaderTableInterface } from '../../interfaces/leader-table.interface';
 import { Component, Input, OnInit } from '@angular/core';
 import { getTablePlaces } from '../../helpers/table-places.helper';
+import { Translations } from '../translations/translations.component';
 
 @Component({
     selector: 'app-players-rating-table',
     templateUrl: './players-rating-table.component.html',
     styleUrls: ['./players-rating-table.component.less'],
 })
-export class PlayersRatingTableComponent implements OnInit {
+export class PlayersRatingTableComponent extends Translations implements OnInit {
     @Input()
     ratingTable: LeaderTableInterface[];
     @Input()
     bias = 0;
+
+    constructor(protected languageService: LanguageService) {
+        super(languageService);
+    }
 
     public ratingTableWithPositions: LeaderTableInterface[];
 
@@ -22,5 +28,7 @@ export class PlayersRatingTableComponent implements OnInit {
             ...row,
             position: places[index] + this.bias,
         }));
+
+        super.ngOnInit();
     }
 }

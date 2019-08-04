@@ -1,18 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { LanguageTranslationsComponent } from './language-translations.component';
+import { Translations } from './translations.component';
 
-describe('LanguageTranslationsComponent', () => {
-    let component: LanguageTranslationsComponent;
-    let fixture: ComponentFixture<LanguageTranslationsComponent>;
+describe('Translations', () => {
+    let component: Translations;
+    let fixture: ComponentFixture<Translations>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [LanguageTranslationsComponent],
+            declarations: [Translations],
         }).compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(LanguageTranslationsComponent);
+        fixture = TestBed.createComponent(Translations);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

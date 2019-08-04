@@ -1,14 +1,10 @@
 import { Languages } from '../../enums/languages.enum';
 import { LanguageService } from '../../services/language/language.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-@Component({
-    selector: 'app-language-translations',
-    template: '',
-})
-export class LanguageTranslationsComponent implements OnInit, OnDestroy {
+export class Translations implements OnInit, OnDestroy {
     public translations: Record<string, string>;
 
     private languageOnDestroy$ = new Subject<void>();
