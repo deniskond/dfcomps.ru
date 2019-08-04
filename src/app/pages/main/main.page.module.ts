@@ -26,8 +26,9 @@ const routes: Routes = [
         component: MainPageComponent,
     },
     {
-        path: ':id',
+        path: 'news/:id',
         component: SingleNewsPageComponent,
+        pathMatch: 'full',
     },
 ];
 
