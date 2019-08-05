@@ -31,4 +31,5 @@ export const RUSSIAN_TRANSLATIONS = {
     loginOrRegister: 'Войдите или зарегистрируйтесь',
     noUploadedDemos: 'Нет загруженных демок',
     time: 'Тайм',
+    allDemosArchive: 'Все демки одним архивом',
 }

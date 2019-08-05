@@ -31,4 +31,5 @@ export const ENGLISH_TRANSLATIONS = {
     loginOrRegister: 'Login or register',
     noUploadedDemos: 'No uploaded demos',
     time: 'Time',
+    allDemosArchive: 'All demos in one archive',
 }

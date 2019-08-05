@@ -8,7 +8,6 @@ import { takeUntil } from 'rxjs/operators';
 
 export class Translations implements OnInit, OnDestroy {
     public translations: Record<string, string>;
-    public language: Languages;
 
     private languageOnDestroy$ = new Subject<void>();
 
@@ -31,9 +30,9 @@ export class Translations implements OnInit, OnDestroy {
         this.languageService
             .getLanguage$()
             .pipe(takeUntil(this.languageOnDestroy$))
-            .subscribe((language: Languages) => {
-                this.language = language;
-                this.translations = language === Languages.EN ? ENGLISH_TRANSLATIONS : RUSSIAN_TRANSLATIONS;
-            });
+            .subscribe(
+                (language: Languages) =>
+                    (this.translations = language === Languages.EN ? ENGLISH_TRANSLATIONS : RUSSIAN_TRANSLATIONS),
+            );
     }
 }

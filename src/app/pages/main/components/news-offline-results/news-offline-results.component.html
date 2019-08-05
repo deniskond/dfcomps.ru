@@ -4,25 +4,25 @@
     </div>
     <div class="map-info-table">
         <div class="map-info-table-row">
-            <div class="map-info-cell-desc">Карта</div>
+            <div class="map-info-cell-desc">{{ translations?.map }}</div>
             <div class="map-info-cell-info">
                 <a href="http://ws.q3df.org/map/{{news.cup.map1}}/" target="_blank" class="map-link">{{ news.cup.map1 }}</a>
             </div>
         </div>
         <div class="map-info-table-row">
-            <div class="map-info-cell-desc">Старт</div>
+            <div class="map-info-cell-desc">{{ translations?.start }}</div>
             <div class="map-info-cell-info">
                 <app-gmt-date-time [timestamp]="news.cup.startTime"></app-gmt-date-time>
             </div>
         </div>
         <div class="map-info-table-row">
-            <div class="map-info-cell-desc">Финиш</div>
+            <div class="map-info-cell-desc">{{ translations?.finish }}</div>
             <div class="map-info-cell-info">
                 <app-gmt-date-time [timestamp]="news.cup.endTime"></app-gmt-date-time>
             </div>
         </div>
         <div class="map-info-table-row">
-            <div class="map-info-cell-desc">Оружия</div>
+            <div class="map-info-cell-desc">{{ translations?.weapons }}</div>
             <div class="map-info-cell-info">
                 <app-weapons [weapons]="news.cup.mapWeapons"></app-weapons>
             </div>
@@ -32,7 +32,7 @@
 
 <div *ngIf="news.cup.archiveLink" style="margin-top:15px;font-size:17px;text-align:center;">
     <a [href]="getArchiveLink(news.cup.archiveLink)">
-        <strong>&gt;&gt; Все демки одним архивом &lt;&lt;</strong>
+        <strong>&gt;&gt; {{ translations?.allDemosArchive }} &lt;&lt;</strong>
     </a>
 </div>
 
@@ -57,4 +57,4 @@
     </div>
 </div>
 
-<app-html-news [newsHtml]="news.text"></app-html-news>
+<app-html-news [news]="news"></app-html-news>

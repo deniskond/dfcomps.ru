@@ -1,3 +1,4 @@
+import { Languages } from '../../enums/languages.enum';
 import { Translations } from '../../components/translations/translations.component';
 import { LanguageService } from '../../services/language/language.service';
 import { NewsInterfaceUnion } from '../../types/news-union.type';
@@ -15,6 +16,8 @@ import { takeUntil } from 'rxjs/operators';
 export class MainPageComponent extends Translations implements OnInit, OnDestroy {
     public news: NewsInterfaceUnion[];
     public newsTypes = NewsTypes;
+    public language: Languages;
+    public languages = Languages;
 
     private onDestroy$ = new Subject<void>();
 
@@ -25,6 +28,7 @@ export class MainPageComponent extends Translations implements OnInit, OnDestroy
     ngOnInit(): void {
         this.newsService.loadMainPageNews();
         this.initNewsSubscription();
+        this.initMainComponentNewsSubscription();
         super.ngOnInit();
     }
 
@@ -36,6 +40,13 @@ export class MainPageComponent extends Translations implements OnInit, OnDestroy
 
     public formatDate(date: string): string {
         return moment(date).format('DD.MM.YYYY HH:mm');
+    }
+
+    private initMainComponentNewsSubscription(): void {
+        this.languageService
+            .getLanguage$()
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe((language: Languages) => (this.language = language));
     }
 
     private initNewsSubscription(): void {
