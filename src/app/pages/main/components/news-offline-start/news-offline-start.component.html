@@ -5,51 +5,51 @@
     <div class="tables-container">
         <div class="map-info-table">
             <div class="map-info-row">
-                <div class="row-desc">Карта</div>
+                <div class="row-desc">{{ translations?.map }}</div>
                 <div class="row-info">
                     <a href="http://ws.q3df.org/map/{{news.cup.map1}}/" target="_blank" class="map-link">{{ news.cup.map1 }}</a>
                 </div>
             </div>
             <div class="map-info-row">
-                <div class="row-desc">Старт</div>
+                <div class="row-desc">{{ translations?.start }}</div>
                 <div class="row-info">
                     <app-gmt-date-time [timestamp]="news.cup.startTime"></app-gmt-date-time>
                 </div>
             </div>
             <div class="map-info-row">
-                <div class="row-desc">Финиш</div>
+                <div class="row-desc">{{ translations?.finish }}</div>
                 <div class="row-info">
                     <app-gmt-date-time [timestamp]="news.cup.endTime"></app-gmt-date-time>
                 </div>
             </div>
             <div class="map-info-row">
-                <div class="row-desc">Автор</div>
+                <div class="row-desc">{{ translations?.author }}</div>
                 <div class="row-info">{{ news.cup.mapAuthor }}</div>
             </div>
             <div class="map-info-row">
-                <div class="row-desc">Оружия</div>
+                <div class="row-desc">{{ translations?.weapons }}</div>
                 <div class="row-info">
                     <app-weapons [weapons]="news.cup.mapWeapons"></app-weapons>
                 </div>
             </div>
             <div class="map-info-row">
-                <div class="row-desc">Скачать</div>
+                <div class="row-desc">{{ translations?.download }}</div>
                 <div class="row-info">
                     <a [href]="news.cup.mapPk3">{{ news.cup.mapSize }} MB</a>
                 </div>
             </div>
             <div class="map-info-row">
-                <div class="row-desc">Правила</div>
+                <div class="row-desc">{{ translations?.rules }}</div>
                 <div class="row-info">
-                    <a routerLink="/rules">Полные правила</a>
+                    <a routerLink="/rules">{{ translations?.fullRules }}</a>
                     <span class="separator">|</span> 
-                    <a href="/assets/files/offline-rules.cfg" target="_blank">Конфиг</a>
+                    <a href="/assets/files/offline-rules.cfg" target="_blank">{{ translations?.config }}</a>
                 </div>
             </div>
         </div>
         <div class="map-info-table">
             <div class="map-info-row">
-                <div class="row-desc">Загрузить</div>
+                <div class="row-desc">{{ translations?.upload }}</div>
                 <div class="row-info">
                     <ng-container *ngIf="user$ | async; else notLogged">
                         <ng-container [ngSwitch]="cupState">
@@ -60,16 +60,16 @@
                                     <img *ngIf="!isUploading" src="/assets/images/icons/upload.jpg" />
                                 </div>
                             </div>
-                            <div *ngSwitchCase="cupStates.FINISHED">Турнир завершен</div>
-                            <div *ngSwitchCase="cupStates.NOT_STARTED">Турнир еще не начался</div>
+                            <div *ngSwitchCase="cupStates.FINISHED">{{ translations?.cupFinished }}</div>
+                            <div *ngSwitchCase="cupStates.NOT_STARTED">{{ translations?.cupNotStarted }}</div>
                         </ng-container>
                     </ng-container>
 
-                    <ng-template #notLogged>Войдите или зарегистрируйтесь</ng-template>
+                    <ng-template #notLogged>{{ translations?.loginOrRegister }}</ng-template>
                 </div>
             </div>
             <div class="map-info-row">
-                <div class="row-desc">Тайм</div>
+                <div class="row-desc">{{ translations?.time }}</div>
                 <div class="row-info">
                     <ng-container *ngIf="news.playerDemos && !!news.playerDemos.length; else noDemos">
                         <div class="top-demos">
@@ -85,7 +85,7 @@
                             <img src="/assets/images/icons/list.png" />
                         </div>
                     </ng-container>
-                    <ng-template #noDemos>Нет загруженных демок</ng-template>
+                    <ng-template #noDemos>{{ translations?.noUploadedDemos }}</ng-template>
                 </div>
             </div>
         </div>

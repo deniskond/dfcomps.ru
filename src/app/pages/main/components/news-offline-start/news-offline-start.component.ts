@@ -1,3 +1,5 @@
+import { LanguageService } from '../../../../services/language/language.service';
+import { Translations } from '../../../../components/translations/translations.component';
 import { MAIN_URL } from '../../../../configs/url-params.config';
 import { UploadDemoDtoInterface } from '../../../../services/demos/dto/upload-demo.dto';
 import { UserInterface } from '../../../../interfaces/user.interface';
@@ -19,7 +21,7 @@ import { NewsService } from '../../../../services/news-service/news.service';
     templateUrl: './news-offline-start.component.html',
     styleUrls: ['./news-offline-start.component.less'],
 })
-export class NewsOfflineStartComponent implements OnInit {
+export class NewsOfflineStartComponent extends Translations implements OnInit {
     @Input()
     news: NewsOfflineStartInterface;
 
@@ -37,11 +39,15 @@ export class NewsOfflineStartComponent implements OnInit {
         private snackBar: MatSnackBar,
         private dialog: MatDialog,
         private newsService: NewsService,
-    ) {}
+        protected languageService: LanguageService,
+    ) {
+        super(languageService);
+    }
 
     ngOnInit(): void {
         this.cupState = this.getCupState();
         this.user$ = this.userService.getCurrentUser$();
+        super.ngOnInit();
     }
 
     public uploadDemo(): void {
