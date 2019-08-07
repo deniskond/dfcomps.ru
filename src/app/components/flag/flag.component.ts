@@ -14,9 +14,7 @@ export class FlagComponent implements OnChanges {
     public flagStyle: Record<string, string>;
 
     ngOnChanges({ country }: SimpleChanges): void {
-        if (country && country.currentValue) {
-            this.flagStyle = this.getFlagStyle(country.currentValue);
-        }
+        this.flagStyle = this.getFlagStyle(this.country);
     }
 
     private getFlagStyle(countryShortName: string): Record<string, string> {
