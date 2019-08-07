@@ -1,3 +1,5 @@
+import { LanguageService } from '../../../../services/language/language.service';
+import { Translations } from '../../../../components/translations/translations.component';
 import { UserInterface } from '../../../../interfaces/user.interface';
 import { UserService } from '../../../../services/user-service/user.service';
 import { CommentInterface } from '../../../../interfaces/comments.interface';
@@ -11,7 +13,7 @@ import { take, finalize } from 'rxjs/operators';
     templateUrl: './news-comments.component.html',
     styleUrls: ['./news-comments.component.less'],
 })
-export class NewsCommentsComponent implements OnInit, OnChanges {
+export class NewsCommentsComponent extends Translations implements OnInit, OnChanges {
     @Input()
     comments: CommentInterface[];
     @Input()
@@ -26,7 +28,9 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
     public isExpanded = false;
     public isLoading = false;
 
-    constructor(private commentsService: CommentsService, private userService: UserService) {}
+    constructor(private commentsService: CommentsService, private userService: UserService, protected languageService: LanguageService) {
+        super(languageService);
+    }
 
     ngOnInit(): void {
         this.currentUser$ = this.userService.getCurrentUser$();
@@ -34,6 +38,8 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
         if (!this.expandable) {
             this.isExpanded = true;
         }
+
+        super.ngOnInit();
     }
 
     ngOnChanges({ comments }: SimpleChanges): void {

@@ -1,3 +1,5 @@
+import { LanguageService } from '../../../../services/language/language.service';
+import { Translations } from '../../../../components/translations/translations.component';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
@@ -15,14 +17,14 @@ const DEBOUNCE_TIME = 300;
     templateUrl: './register-dialog.component.html',
     styleUrls: ['./register-dialog.component.less'],
 })
-export class RegisterDialogComponent implements OnInit, OnDestroy {
+export class RegisterDialogComponent extends Translations implements OnInit, OnDestroy {
     public needToDisplayErrors = false;
     public isLoading = false;
 
     public registerForm = new FormGroup(
         {
             login: new FormControl('', Validators.required, this.validateLogin$.bind(this)),
-            email: new FormControl('', Validators.compose([Validators.required, this.validateEmail])),
+            email: new FormControl('', Validators.compose([Validators.required, this.validateEmail.bind(this)])),
             password: new FormControl('', Validators.required),
             validation: new FormControl('', Validators.required),
         },
@@ -31,15 +33,23 @@ export class RegisterDialogComponent implements OnInit, OnDestroy {
 
     private onDestroy$ = new Subject<void>();
 
-    constructor(public dialogRef: MatDialogRef<RegisterDialogComponent>, private userService: UserService) {}
+    constructor(
+        public dialogRef: MatDialogRef<RegisterDialogComponent>,
+        private userService: UserService,
+        protected languageService: LanguageService,
+    ) {
+        super(languageService);
+    }
 
     ngOnInit(): void {
         this.setDisplayErrorsSubscription();
+        super.ngOnInit();
     }
 
     ngOnDestroy(): void {
         this.onDestroy$.next();
         this.onDestroy$.complete();
+        super.ngOnDestroy();
     }
 
     public onRegisterClick(): void {
@@ -51,7 +61,7 @@ export class RegisterDialogComponent implements OnInit, OnDestroy {
                 this.registerForm.get('password').value,
                 this.registerForm.get('email').value,
             )
-            .pipe(finalize(() => this.isLoading = false))
+            .pipe(finalize(() => (this.isLoading = false)))
             .subscribe((user: UserInterface) => {
                 this.userService.setCurrentUser(user);
                 this.dialogRef.close();
@@ -71,19 +81,20 @@ export class RegisterDialogComponent implements OnInit, OnDestroy {
     }
 
     private validateRepeatingPassword(): Record<string, string> | null {
-        return this.registerForm && this.registerForm.controls.validation.value === this.registerForm.controls.password.value
+        return this.registerForm &&
+            this.registerForm.controls.validation.value === this.registerForm.controls.password.value
             ? null
-            : { validation: 'Пароли не совпадают' };
+            : { validation: this.translations.passwordsDoNotMatch };
     }
 
     private validateEmail({ value: email }: AbstractControl): Record<string, string> | null {
-        return EMAIL_VALIDATION_REGEXP.test(String(email).toLowerCase()) ? null : { email: 'Неверный формат e-mail' };
+        return EMAIL_VALIDATION_REGEXP.test(String(email).toLowerCase()) ? null : { email: this.translations.wrongEmailFormat };
     }
 
     private validateLogin$({ value: login }: AbstractControl): Observable<Record<string, string> | null> {
         return timer(DEBOUNCE_TIME).pipe(
             switchMap(() => this.userService.checkLogin$(login)),
-            map((loginAvailable: boolean) => (loginAvailable ? null : { login: 'Логин уже занят' })),
+            map((loginAvailable: boolean) => (loginAvailable ? null : { login: this.translations.loginAlreadyTaken })),
         );
     }
 }

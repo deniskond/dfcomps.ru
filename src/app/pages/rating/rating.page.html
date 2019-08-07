@@ -1,14 +1,14 @@
 <div class="shadowed-main-block">
-    <h1 *ngIf="currentSeason === currentSeasonConst" class="h1-block-header"> Рейтинг-лист игроков: текущий сезон</h1>
-    <h1 *ngIf="currentSeason !== currentSeasonConst" class="h1-block-header"> Рейтинг-лист игроков: сезон {{ currentSeason }} </h1>
+    <h1 *ngIf="currentSeason === currentSeasonConst" class="h1-block-header"> {{ translations?.currentSeasonRatingList }}</h1>
+    <h1 *ngIf="currentSeason !== currentSeasonConst" class="h1-block-header"> {{ translations?.seasonRatingList }} {{ currentSeason }} </h1>
     <div class="top-text">
-        Посмотреть полное описание рейтинговой системы можно 
-        <a class="bold-link" routerLink="/rating/system">здесь</a>
+        {{ translations?.youCanWatchFullRatingSystemDescription }}
+        <a class="bold-link" routerLink="/rating/system">{{ translations?.here }}</a>
     </div>
-    <div class="top-text">Рейтинги по сезонам: 
-        <a (click)="setSeason(1)" class="season-link">Сезон 1</a>
-        <a (click)="setSeason(2)" class="season-link">Сезон 2</a>
-        <a (click)="setSeason(3)" class="season-link">Сезон 3</a>
+    <div class="top-text">{{ translations?.ratingsBySeason }}: 
+        <a (click)="setSeason(1)" class="season-link">{{ translations?.season }} 1</a>
+        <a (click)="setSeason(2)" class="season-link">{{ translations?.season }} 2</a>
+        <a (click)="setSeason(3)" class="season-link">{{ translations?.season }} 3</a>
     </div>
 
     <div class="tables-container">

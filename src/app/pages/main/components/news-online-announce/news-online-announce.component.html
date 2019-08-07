@@ -1,5 +1,5 @@
-<app-html-news [newsHtml]="news.text"></app-html-news>
-<span>Список зарегистрированных участников:</span>
+<app-html-news [news]="news"></app-html-news>
+<span>{{ translations?.listOfRegisteredPlayers }}:</span>
 <div class="players-table">
     <div *ngFor="let row of range(rowCount)" class="players-row">
         <div *ngFor="let column of range(columnCount)" class="players-cell">

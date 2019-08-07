@@ -6,7 +6,7 @@
             </h1>
 
             <div class="author-and-date">
-                Автор: <a routerLink="/profile/{{ singleNews.authorId }}">{{ singleNews.authorName }}</a>,
+                {{ translations?.author }}: <a routerLink="/profile/{{ singleNews.authorId }}">{{ singleNews.authorName }}</a>,
                 {{ formatDate(singleNews.datetime) }}
             </div>
 
@@ -34,6 +34,6 @@
 
 <ng-template #error>
     <div class="shadowed-main-block error">
-        Ошибка - такой новости не существует
+        {{ translations?.errorNewsDoesntExist }}
     </div>
 </ng-template>

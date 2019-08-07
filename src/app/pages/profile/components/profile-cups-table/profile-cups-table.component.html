@@ -1,30 +1,30 @@
-<div class="bold-15">Участие в турнирах:</div>
+<div class="bold-15">{{ translations?.tournamentParticipation }}:</div>
 <div class="table-container">
     <mat-table [dataSource]="cups">
         <ng-container cdkColumnDef="name">
-            <mat-header-cell *cdkHeaderCellDef class="cup-name-column"> Название турнира </mat-header-cell>
+            <mat-header-cell *cdkHeaderCellDef class="cup-name-column"> {{ translations?.tournamentName }} </mat-header-cell>
             <mat-cell *cdkCellDef="let row" class="cup-name-column"> 
                 <a href="/news/{{ row.newsId }}">{{ row.fullName }} – {{ row.shortName }}</a> 
             </mat-cell>
         </ng-container>
     
         <ng-container cdkColumnDef="physics">
-            <mat-header-cell *cdkHeaderCellDef class="physics-column"> Физика </mat-header-cell>
+            <mat-header-cell *cdkHeaderCellDef class="physics-column"> {{ translations?.physics }} </mat-header-cell>
             <mat-cell *cdkCellDef="let row" class="physics-column"> {{ row.physics }} </mat-cell>
         </ng-container>
     
         <ng-container cdkColumnDef="result">
-            <mat-header-cell *cdkHeaderCellDef class="result-column"> Результат </mat-header-cell>
+            <mat-header-cell *cdkHeaderCellDef class="result-column"> {{ translations?.result }} </mat-header-cell>
             <mat-cell *cdkCellDef="let row" class="result-column"> 
                 <img *ngIf="row.resultPlace === 1" src="/assets/images/icons/result-tables/gold.png" class="place-icon" />
                 <img *ngIf="row.resultPlace === 2" src="/assets/images/icons/result-tables/silver.png" class="place-icon" />
                 <img *ngIf="row.resultPlace === 3" src="/assets/images/icons/result-tables/bronze.png" class="place-icon" />
-                <span class="left-4"> {{ row.resultPlace }} место </span>
+                <span class="left-4"> {{ row.resultPlace }} {{ translations?.place | lowercase }} </span>
             </mat-cell>
         </ng-container>
 
         <ng-container cdkColumnDef="rating">
-            <mat-header-cell *cdkHeaderCellDef class="rating-column"> Рейтинг </mat-header-cell>
+            <mat-header-cell *cdkHeaderCellDef class="rating-column"> {{ translations?.rating }} </mat-header-cell>
             <mat-cell *cdkCellDef="let row" class="rating-column"> 
                 <app-rating-change [change]="row.ratingChange"></app-rating-change>
             </mat-cell>

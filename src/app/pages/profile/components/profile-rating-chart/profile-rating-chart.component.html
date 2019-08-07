@@ -1,5 +1,5 @@
 <div class="rating">
-    <div class="rating-caption">{{ physics | uppercase }} рейтинг</div>
+    <div class="rating-caption">{{ physics | uppercase }} {{ translations?.rating | lowercase }}</div>
     <div class="canvas-container">
         <canvas baseChart
             [datasets]="barChartData"

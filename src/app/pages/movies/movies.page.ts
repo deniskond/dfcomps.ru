@@ -1,3 +1,5 @@
+import { LanguageService } from '../../services/language/language.service';
+import { Translations } from '../../components/translations/translations.component';
 import { Component, OnInit } from '@angular/core';
 import { MoviesService } from './services/movies.service';
 import { MovieInterface } from './interfaces/movie.interface';
@@ -10,14 +12,17 @@ import { shuffle } from 'lodash';
     templateUrl: './movies.page.html',
     styleUrls: ['./movies.page.less'],
 })
-export class MoviesPageComponent implements OnInit {
+export class MoviesPageComponent extends Translations implements OnInit {
     public movies$: Observable<MovieInterface[]>;
 
-    constructor(private moviesService: MoviesService, private sanitizer: DomSanitizer) {}
+    constructor(private moviesService: MoviesService, private sanitizer: DomSanitizer, protected languageService: LanguageService) {
+        super(languageService);
+    }
 
     ngOnInit(): void {
         this.moviesService.loadMoviesIfNeeded();
         this.movies$ = this.moviesService.getMovies$().pipe(map((movies: MovieInterface[]) => shuffle(movies)));
+        super.ngOnInit();
     }
 
     public getAuthorName(name: string): string {

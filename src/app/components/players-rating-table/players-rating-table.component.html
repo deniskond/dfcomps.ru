@@ -5,14 +5,14 @@
     </ng-container>
 
     <ng-container cdkColumnDef="player">
-        <mat-header-cell *cdkHeaderCellDef class="player-column header"> Игрок </mat-header-cell>
+        <mat-header-cell *cdkHeaderCellDef class="player-column header"> {{ translations?.player }} </mat-header-cell>
         <mat-cell *cdkCellDef="let row" class="player-column"> 
             <app-player-cell [country]="row.country" [nick]="row.nick" [playerId]="row.playerId"></app-player-cell>
         </mat-cell>
     </ng-container>
 
     <ng-container cdkColumnDef="rating">
-        <mat-header-cell *cdkHeaderCellDef class="rating-column"> Рейтинг </mat-header-cell>
+        <mat-header-cell *cdkHeaderCellDef class="rating-column"> {{ translations?.rating }} </mat-header-cell>
         <mat-cell *cdkCellDef="let row" class="rating-column"> {{ row.rating }} </mat-cell>
     </ng-container>
 

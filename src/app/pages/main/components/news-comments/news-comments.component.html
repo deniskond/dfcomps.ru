@@ -1,11 +1,11 @@
 <div *ngIf="!isExpanded; else expanded">
-    <a (click)="toggleExpand()" class="expand-link">Комментарии ({{ comments.length }})</a>
+    <a (click)="toggleExpand()" class="expand-link">{{ translations?.comments }} ({{ comments.length }})</a>
 </div>
 <ng-template #expanded>
-    <div *ngIf="expandable; else commentsCount" (click)="toggleExpand()" class="hide-comments">Скрыть комментарии</div>
+    <div *ngIf="expandable; else commentsCount" (click)="toggleExpand()" class="hide-comments">{{ translations?.hideComments }}</div>
 
     <ng-template #commentsCount>
-        <div class="single-news-comments">Комментарии</div>
+        <div class="single-news-comments">{{ translations?.comments }}</div>
     </ng-template>
 
     <ng-container *ngIf="(comments$ | async) as comments">
@@ -27,18 +27,18 @@
     </ng-container>
 
     <ng-container *ngIf="currentUser$ | async; else notLogged">
-        <div class="write-commentary">Написать комментарий:</div>
+        <div class="write-commentary">{{ translations?.writeComment }}:</div>
         <textarea #textarea class="comment-textarea"></textarea>
 
         <div class="send-comment-button">
             <mat-spinner *ngIf="isLoading" diameter="20" strokeWidth="2" color="accent" class="spinner"></mat-spinner>
             <button [disabled]="isLoading" (click)="sendComment()" mat-raised-button color="primary" class="add-comment-button">
-                Отправить
+                {{ translations?.send }}
             </button>
         </div>
     </ng-container>
 
     <ng-template #notLogged>
-        <div class="not-logged">Войдите или зарегистрируйтесь, чтобы оставить комментарий</div>
+        <div class="not-logged">{{ translations?.loginOrRegisterToComment }}</div>
     </ng-template>
 </ng-template>

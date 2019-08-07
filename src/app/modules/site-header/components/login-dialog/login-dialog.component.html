@@ -1,18 +1,24 @@
-<div class="h1-block-header dialog-header">Вход на сайт</div>
+<div class="h1-block-header dialog-header">{{ translations?.siteLogIn }}</div>
 
 <form [formGroup]="loginForm">
     <div class="input-container">
-        <div class="input-caption">Логин</div> 
+        <div class="input-caption">{{ translations?.userLogin }}</div> 
         <input formControlName="login" class="input-field" />
     </div>
     <div class="input-container">
-        <div class="input-caption">Пароль</div> 
+        <div class="input-caption">{{ translations?.password }}</div> 
         <input formControlName="password" class="input-field password" type="password" />
     </div>
 </form>
-<div *ngIf="loginResult === false" class="login-error">Неверный логин/пароль</div>
+<div *ngIf="loginResult === false" class="login-error">{{ translations?.wrongLoginPassword }}</div>
 
 <div class="dialog-button">
     <mat-spinner *ngIf="isLoading" diameter="20" strokeWidth="2" color="accent" class="spinner"></mat-spinner>
-    <button [disabled]="!loginForm.valid || isLoading" (click)="onLoginClick()" mat-raised-button color="primary">Войти</button>
+    <button 
+        [disabled]="!loginForm.valid || isLoading" 
+        (click)="onLoginClick()" 
+        mat-raised-button color="primary">
+
+        {{ translations?.logIn }}
+    </button>
 </div>

@@ -3,12 +3,12 @@
         <div class="shadowed-main-block news-block">
             <h1 class="h1-block-header no-margin">
                 <a routerLink="/news/{{ singleNews.id }}" class="news_header_link">
-                    {{ singleNews.header }}
+                    {{ language === languages.EN ? singleNews.headerEn : singleNews.header }}
                 </a>
             </h1>
                 
             <div class="author-and-date">
-                Автор: <a routerLink="/profile/{{ singleNews.authorId }}" class="black-link">{{ singleNews.authorName }}</a>,
+                {{ translations?.author }}: <a routerLink="/profile/{{ singleNews.authorId }}" class="black-link">{{ singleNews.authorName }}</a>,
                 {{ formatDate(singleNews.datetime) }}
             </div>
 
