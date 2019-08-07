@@ -1,3 +1,5 @@
+import { LanguageService } from '../../../../services/language/language.service';
+import { Translations } from '../../../../components/translations/translations.component';
 import { Component, Input } from '@angular/core';
 
 @Component({
@@ -5,7 +7,11 @@ import { Component, Input } from '@angular/core';
     templateUrl: './profile-last-demos.component.html',
     styleUrls: ['./profile-last-demos.component.less'],
 })
-export class ProfileLastDemosComponent {
+export class ProfileLastDemosComponent extends Translations {
     @Input()
     demos: string[];
+
+    constructor(protected languageService: LanguageService) {
+        super(languageService);
+    }
 }

@@ -1,7 +1,7 @@
 <div class="shadowed-main-block">
     <div class="profile-header">
         <h1 class="h1-block-header"> 
-            Профиль игрока
+            {{ translations?.playerProfile }}
             <ng-container *ngIf="!isLoading"> {{ mainInfo.nick }} </ng-container>
         </h1>
         <!-- TODO [DFRU-29] Редактирование профиля -->
@@ -15,10 +15,10 @@
             <div class="player-info">
                 <img [src]="getAvatarSrc()" class="avatar" />
                 <div class="rating-and-country">
-                    <div><b>VQ3 рейтинг:</b> {{ mainInfo.vq3Rating }}</div>
-                    <div><b>CPM рейтинг:</b> {{ mainInfo.cpmRating }}</div>
+                    <div><b>VQ3 {{ translations?.rating | lowercase }}:</b> {{ mainInfo.vq3Rating }}</div>
+                    <div><b>CPM {{ translations?.rating | lowercase }}:</b> {{ mainInfo.cpmRating }}</div>
                     <div class="country">
-                        <b>Страна:</b> 
+                        <b>{{ translations?.country }}:</b> 
                         <app-flag [country]="mainInfo.country" class="flag"></app-flag>
                         <span>{{ mainInfo.country }}</span>
                     </div>

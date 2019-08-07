@@ -1,3 +1,5 @@
+import { LanguageService } from '../../services/language/language.service';
+import { Translations } from '../../components/translations/translations.component';
 import { LeaderTableInterface } from '../../interfaces/leader-table.interface';
 import { RatingTablesService } from '../../services/rating-tables-service/rating-tables-service';
 import { Component, OnInit } from '@angular/core';
@@ -13,7 +15,7 @@ const MAX_PLAYERS_PER_PAGE = 100;
     templateUrl: './rating.page.html',
     styleUrls: ['./rating.page.less'],
 })
-export class RatingPageComponent implements OnInit {
+export class RatingPageComponent extends Translations implements OnInit {
     public currentPage = 1;
     public currentSeason = CURRENT_SEASON;
     public currentSeasonConst = CURRENT_SEASON;
@@ -25,10 +27,13 @@ export class RatingPageComponent implements OnInit {
     public isLoadingCpm: boolean;
     public bias = 0;
 
-    constructor(private ratingTablesService: RatingTablesService) {}
+    constructor(private ratingTablesService: RatingTablesService, protected languageService: LanguageService) {
+        super(languageService);
+    }
 
     ngOnInit(): void {
         this.loadCurrentSeasonPage(this.currentPage);
+        super.ngOnInit();
     }
 
     public loadCurrentSeasonPage(page: number): void {

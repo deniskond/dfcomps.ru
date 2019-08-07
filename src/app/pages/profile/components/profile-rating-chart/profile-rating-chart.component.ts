@@ -1,3 +1,5 @@
+import { LanguageService } from '../../../../services/language/language.service';
+import { Translations } from '../../../../components/translations/translations.component';
 import { Physics } from '../../../../enums/physics.enum';
 import { Component, OnInit, Input } from '@angular/core';
 
@@ -6,7 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
     templateUrl: './profile-rating-chart.component.html',
     styleUrls: ['./profile-rating-chart.component.less'],
 })
-export class ProfileRatingChartComponent implements OnInit {
+export class ProfileRatingChartComponent extends Translations implements OnInit {
     @Input()
     physics: Physics;
     @Input()
@@ -34,6 +36,10 @@ export class ProfileRatingChartComponent implements OnInit {
     public barChartLabels: string[];
     public barChartData: any;
 
+    constructor(protected languageService: LanguageService) {
+        super(languageService);
+    }
+
     ngOnInit(): void {
         this.barChartLabels = this.chart;
         this.barChartData = [
@@ -49,5 +55,7 @@ export class ProfileRatingChartComponent implements OnInit {
                 pointBorderWidth: 0,
             },
         ];
+
+        super.ngOnInit();
     }
 }

@@ -1,3 +1,5 @@
+import { Translations } from '../../components/translations/translations.component';
+import { LanguageService } from '../../services/language/language.service';
 import { API_URL } from '../../configs/url-params.config';
 import { Physics } from '../../enums/physics.enum';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -18,7 +20,7 @@ import { ProfileRewardsDtoInterface } from './dto/profile-rewards.dto';
     templateUrl: './profile.page.html',
     styleUrls: ['./profile.page.less'],
 })
-export class ProfilePageComponent implements OnInit, OnDestroy {
+export class ProfilePageComponent extends Translations implements OnInit, OnDestroy {
     public mainInfo: ProfileMainInfoInterface;
     public cpmChart: string[];
     public vq3Chart: string[];
@@ -35,15 +37,20 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private profileService: ProfileService,
         private sanitizer: DomSanitizer,
-    ) {}
+        protected languageService: LanguageService,
+    ) {
+        super(languageService);
+    }
 
     ngOnInit(): void {
         this.setRouteSubscription();
+        super.ngOnInit();
     }
 
     ngOnDestroy(): void {
         this.onDestroy$.next();
         this.onDestroy$.complete();
+        super.ngOnDestroy();
     }
 
     public setRouteSubscription(): void {
