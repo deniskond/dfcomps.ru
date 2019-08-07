@@ -1,3 +1,5 @@
+import { LanguageService } from '../../../../services/language/language.service';
+import { Translations } from '../../../../components/translations/translations.component';
 import { LoginResultDtoInterface } from '../../../../services/user-service/dto/login-result.dto';
 import { UserService } from '../../../../services/user-service/user.service';
 import { Component, Inject } from '@angular/core';
@@ -11,7 +13,7 @@ import { finalize } from 'rxjs/operators';
     templateUrl: './login-dialog.component.html',
     styleUrls: ['./login-dialog.component.less'],
 })
-export class LoginDialogComponent {
+export class LoginDialogComponent extends Translations {
     public loginResult: boolean;
     public isLoading = false;
 
@@ -24,7 +26,10 @@ export class LoginDialogComponent {
         public dialogRef: MatDialogRef<LoginDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: LoginDialogDataInterface,
         private userService: UserService,
-    ) {}
+        protected languageService: LanguageService,
+    ) {
+        super(languageService);
+    }
 
     public onLoginClick(): void {
         this.isLoading = true;

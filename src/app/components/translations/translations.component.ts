@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 export class Translations implements OnInit, OnDestroy {
-    public translations: Record<string, string>;
+    public translations: Record<string, string> = {};
     public lang: Languages;
 
     private languageOnDestroy$ = new Subject<void>();
