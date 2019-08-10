@@ -81,4 +81,5 @@ export const RUSSIAN_TRANSLATIONS = {
     uploadFailed: 'Загрузка не удалась',
     success: 'Успешно',
     demoSent: 'Демо отправлено',
+    defragIsDownloading: 'Defrag загружается',
 }

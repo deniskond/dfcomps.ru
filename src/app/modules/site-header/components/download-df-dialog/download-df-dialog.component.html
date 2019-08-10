@@ -1,0 +1,39 @@
+<div class="h1-block-header dialog-header">{{ translations?.defragIsDownloading }}</div>
+
+<div *ngIf="lang === languages.RU">
+    <div>
+        1. Чтобы запустить defrag, в распакованном архиве нужно запустить idfe.x64.exe (либо idfe.exe
+        для 32-битной системы). Exe-файл работает в системах Windows 7+.
+    </div>
+    <div class="paragraph">
+        2. В сборке уже есть самые популярные карты defrag, запустить их можно через меню Defrag vq3
+        или Defrag cpm, выбрать карту и нажать Fight.
+    </div>
+    <div class="paragraph">
+        3. Видео, о том как начать играть в defrag: 
+        <a target="_blank" href="https://www.youtube.com/watch?v=rpeIcdOeEt8">https://www.youtube.com/watch?v=rpeIcdOeEt8</a>
+    </div>
+    <div class="paragraph">
+        4. Полезные ссылки:
+        <a target="_blank" href="https://q3df.org/serverlist" class="margin-left">список серверов</a>
+        <span class="separator">|</span>
+        <a target="_blank" href="https://ws.q3df.org" >загрузить карты</a>
+    </div>
+</div>
+
+<div *ngIf="lang === languages.EN">
+    <div>
+        1. To start playing defrag, unpack the archive and launch idfe.x64.exe (or idfe.exe
+        for 32-bit systems). Exe-file works on Windows 7+.
+    </div>
+    <div class="paragraph">
+        2. There are already the most popular defrag maps in this archive, you can launch them through
+        menus Defrag CPM or Defrag VQ3: choose a map and then click the Fight button.
+    </div>
+    <div class="paragraph">
+        3. Useful links:
+        <a target="_blank" href="https://q3df.org/serverlist" class="margin-left">serverlist</a>
+        <span class="separator">|</span>
+        <a target="_blank" href="https://ws.q3df.org" >download maps</a>
+    </div>
+</div>
