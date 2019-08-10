@@ -55,9 +55,11 @@
                 </a>
             </div>
 
-            <button mat-raised-button color="accent" class="download-df-button">
+            <button (click)="onDownloadDefragClick()" mat-raised-button color="accent" class="download-df-button">
                 {{ translations?.downloadDefrag }}
             </button>
+
+            <a #downloadLink href="{{ mainUrl }}/files/defrag.rar" download="{{ mainUrl }}/files/defrag.rar"></a>
         </div>
     </div>
 </div>

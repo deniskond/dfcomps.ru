@@ -16,6 +16,7 @@ import { LoginDialogComponent } from './components/login-dialog/login-dialog.com
 import { RegisterDialogComponent } from './components/register-dialog/register-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared.module';
+import { DownloadDfDialogComponent } from './components/download-df-dialog/download-df-dialog.component';
 
 @NgModule({
     imports: [
@@ -32,8 +33,8 @@ import { SharedModule } from '../shared.module';
         ReactiveFormsModule,
         SharedModule,
     ],
-    declarations: [SiteHeaderComponent, UserPanelComponent, LoginDialogComponent, RegisterDialogComponent],
+    declarations: [SiteHeaderComponent, UserPanelComponent, LoginDialogComponent, RegisterDialogComponent, DownloadDfDialogComponent],
     exports: [SiteHeaderComponent],
-    entryComponents: [LoginDialogComponent, RegisterDialogComponent],
+    entryComponents: [LoginDialogComponent, RegisterDialogComponent, DownloadDfDialogComponent],
 })
 export class SiteHeaderModule {}
