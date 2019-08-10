@@ -54,13 +54,13 @@ export class NewsOfflineStartComponent extends Translations implements OnInit {
         const demo: File = this.fileInput.nativeElement.files[0];
 
         if (!demo) {
-            this.snackBar.open('Error', 'No demo', { duration: 3000 });
+            this.snackBar.open(this.translations.error, this.translations.noDemo, { duration: 3000 });
 
             return;
         }
 
         if (!demo.name.toLowerCase().includes(this.news.cup.map1.toLowerCase())) {
-            this.snackBar.open('Error', 'Wrong map', { duration: 3000 });
+            this.snackBar.open(this.translations.error, this.translations.wrongMap, { duration: 3000 });
 
             return;
         }
@@ -78,17 +78,17 @@ export class NewsOfflineStartComponent extends Translations implements OnInit {
                     this.isUploading = false;
                 }),
                 catchError(() => {
-                    this.snackBar.open('Error', 'Upload failed', { duration: 3000 });
+                    this.snackBar.open(this.translations.error, this.translations.uploadFailed, { duration: 3000 });
 
                     return of();
                 }),
             )
             .subscribe(({ status, validation, message }: UploadDemoDtoInterface) => {
                 if (status === 'Success') {
-                    this.snackBar.open('Success', 'Demo sent', { duration: 3000 });
+                    this.snackBar.open(this.translations.success, this.translations.demoSent, { duration: 3000 });
                     this.newsService.loadMainPageNews();
                 } else if (status === 'Error') {
-                    this.snackBar.open('Error', message, { duration: 3000 });
+                    this.snackBar.open(this.translations.error, message, { duration: 3000 });
                 } else if (status === 'Invalid') {
                     this.dialog.open(ValidationDialogComponent, {
                         data: validation,

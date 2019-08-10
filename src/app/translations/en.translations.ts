@@ -75,4 +75,10 @@ export const ENGLISH_TRANSLATIONS = {
     finished: 'Finished',
     downloadMap: 'Download map',
     finishing: 'Finishing',
+    error: 'Error',
+    noDemo: 'No demo',
+    wrongMap: 'Wrong map',
+    uploadFailed: 'Upload failed',
+    success: 'Success',
+    demoSent: 'Demo sent',
 }

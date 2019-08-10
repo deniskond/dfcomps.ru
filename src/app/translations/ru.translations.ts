@@ -75,4 +75,10 @@ export const RUSSIAN_TRANSLATIONS = {
     finished: 'Закончен',
     downloadMap: 'Скачать карту',
     finishing: 'Окончание',
+    error: 'Ошибка',
+    noDemo: 'Нет демки',
+    wrongMap: 'Неправильная карта',
+    uploadFailed: 'Загрузка не удалась',
+    success: 'Успешно',
+    demoSent: 'Демо отправлено',
 }
