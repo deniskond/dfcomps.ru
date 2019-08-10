@@ -42,6 +42,10 @@ export class MainPageComponent extends Translations implements OnInit, OnDestroy
         return moment(date).format('DD.MM.YYYY HH:mm');
     }
 
+    public reloadNews(): void {
+        this.newsService.loadMainPageNews();
+    }
+
     private initMainComponentNewsSubscription(): void {
         this.languageService
             .getLanguage$()

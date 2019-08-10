@@ -15,7 +15,11 @@
                 <app-news-multicup-results *ngSwitchCase="newsTypes.MULTICUP_RESULTS" [news]="singleNews"></app-news-multicup-results>
                 <app-news-online-announce *ngSwitchCase="newsTypes.ONLINE_ANNOUNCE" [news]="singleNews"></app-news-online-announce>
                 <app-news-online-results *ngSwitchCase="newsTypes.ONLINE_RESULTS" [news]="singleNews"></app-news-online-results>
-                <app-news-offline-start *ngSwitchCase="newsTypes.OFFLINE_START" [news]="singleNews"></app-news-offline-start>
+                <app-news-offline-start 
+                    *ngSwitchCase="newsTypes.OFFLINE_START" 
+                    [news]="singleNews" 
+                    (reloadNews)="reloadNews()">
+                </app-news-offline-start>
                 <app-news-offline-results *ngSwitchCase="newsTypes.OFFLINE_RESULTS" [news]="singleNews"></app-news-offline-results>
             </ng-container>
 

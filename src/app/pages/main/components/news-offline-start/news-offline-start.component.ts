@@ -6,7 +6,7 @@ import { UserInterface } from '../../../../interfaces/user.interface';
 import { UserService } from '../../../../services/user-service/user.service';
 import { DemosService } from '../../../../services/demos/demos.service';
 import { NewsOfflineStartInterface } from '../../../../services/news-service/interfaces/news-offline-start.interface';
-import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { CupStates } from '../../../../enums/cup-states.enum';
 import * as moment from 'moment';
 import { finalize, take, switchMap, catchError } from 'rxjs/operators';
@@ -25,6 +25,9 @@ export class NewsOfflineStartComponent extends Translations implements OnInit {
     @Input()
     news: NewsOfflineStartInterface;
 
+    @Output()
+    reloadNews = new EventEmitter<void>();
+
     @ViewChild('fileInput') fileInput: ElementRef;
 
     public user$: Observable<UserInterface>;
@@ -38,7 +41,6 @@ export class NewsOfflineStartComponent extends Translations implements OnInit {
         private userService: UserService,
         private snackBar: MatSnackBar,
         private dialog: MatDialog,
-        private newsService: NewsService,
         protected languageService: LanguageService,
     ) {
         super(languageService);
@@ -86,7 +88,7 @@ export class NewsOfflineStartComponent extends Translations implements OnInit {
             .subscribe(({ status, validation, message }: UploadDemoDtoInterface) => {
                 if (status === 'Success') {
                     this.snackBar.open(this.translations.success, this.translations.demoSent, { duration: 3000 });
-                    this.newsService.loadMainPageNews();
+                    this.reloadNews.emit();
                 } else if (status === 'Error') {
                     this.snackBar.open(this.translations.error, message, { duration: 3000 });
                 } else if (status === 'Invalid') {
@@ -98,13 +100,20 @@ export class NewsOfflineStartComponent extends Translations implements OnInit {
     }
 
     public openPlayerDemosDialog(): void {
-        this.dialog.open(PlayerDemosDialogComponent, {
-            data: { 
+        const dialogRef = this.dialog.open(PlayerDemosDialogComponent, {
+            data: {
                 demos: this.news.playerDemos,
                 cupName: this.news.cup.fullName,
                 cupId: this.news.cup.id,
             },
         });
+
+        const demoDeleteSubscription = dialogRef.componentInstance.reloadNews.subscribe(() => this.reloadNews.emit());
+
+        dialogRef
+            .afterClosed()
+            .pipe(take(1))
+            .subscribe(() => demoDeleteSubscription.unsubscribe());
     }
 
     private getCupState(): CupStates {
