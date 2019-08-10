@@ -69,4 +69,10 @@ export const RUSSIAN_TRANSLATIONS = {
     wrongEmailFormat: 'Неверный формат e-mail',
     loginAlreadyTaken: 'Логин уже занят',
     bonusRating: 'Бонусный рейтинг',
+    daysShorthand: 'Дн',
+    starting: 'Начало',
+    awaitingTournamentStart: 'Ожидание начала турнира',
+    finished: 'Закончен',
+    downloadMap: 'Скачать карту',
+    finishing: 'Окончание',
 }

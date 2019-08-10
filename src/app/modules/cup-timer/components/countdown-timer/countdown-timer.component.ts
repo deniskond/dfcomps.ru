@@ -1,3 +1,5 @@
+import { LanguageService } from '../../../../services/language/language.service';
+import { Translations } from '../../../../components/translations/translations.component';
 import { Component, Input, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, interval, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
@@ -11,7 +13,7 @@ const SECONDS_IN_MINUTE = 60;
     selector: 'app-countdown-timer',
     templateUrl: './countdown-timer.component.html',
 })
-export class CountdownTimerComponent implements OnInit, OnDestroy {
+export class CountdownTimerComponent extends Translations implements OnInit, OnDestroy {
     @Input()
     targetTime: number;
 
@@ -23,6 +25,10 @@ export class CountdownTimerComponent implements OnInit, OnDestroy {
     public currentDaysCaption$: Observable<number>;
 
     private onDestroy$ = new Subject<void>();
+
+    constructor(protected languageService: LanguageService) {
+        super(languageService);
+    }
 
     ngOnInit(): void {
         this.currentTimerValue$ = new BehaviorSubject(this.calculateCurrentTimerValue());
@@ -46,11 +52,14 @@ export class CountdownTimerComponent implements OnInit, OnDestroy {
 
             this.currentTimerValue$.next(currentTimerValue);
         });
+
+        super.ngOnInit();
     }
 
     ngOnDestroy(): void {
         this.onDestroy$.next();
         this.onDestroy$.complete();
+        super.ngOnDestroy();
     }
 
     private calculateCurrentTimerValue(): number {
