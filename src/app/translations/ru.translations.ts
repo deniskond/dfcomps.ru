@@ -68,4 +68,5 @@ export const RUSSIAN_TRANSLATIONS = {
     passwordsDoNotMatch: 'Пароли не совпадают',
     wrongEmailFormat: 'Неверный формат e-mail',
     loginAlreadyTaken: 'Логин уже занят',
+    bonusRating: 'Бонусный рейтинг',
 }

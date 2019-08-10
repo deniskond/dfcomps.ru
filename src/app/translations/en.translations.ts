@@ -68,4 +68,5 @@ export const ENGLISH_TRANSLATIONS = {
     passwordsDoNotMatch: 'Passwords do not match',
     wrongEmailFormat: 'Wrong email format',
     loginAlreadyTaken: 'Login already taken',
+    bonusRating: 'Bonus rating',
 }
