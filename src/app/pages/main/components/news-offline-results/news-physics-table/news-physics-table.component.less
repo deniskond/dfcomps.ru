@@ -32,6 +32,7 @@
         align-items: center;
         flex-grow: 1;
         border-right: 1px solid #ccc;
+        position: relative;
     }
 
     .time-column {
@@ -47,9 +48,26 @@
         justify-content: center;
         align-items: center;
         width: 80px;
+        position: relative;
     }
 }
 
 .time {
     color: @link-blue;
+}
+
+.bonus-plus {
+    position: absolute;
+    right: 10px;
+    top: 4px;
+    width: 9px;
+    height: 9px;
+}
+
+.impressive {
+    position: absolute;
+    right: 7px;
+    top: 9px;
+    width: 14px;
+    height: 14px;
 }
