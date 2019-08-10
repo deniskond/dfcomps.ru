@@ -3,8 +3,9 @@ import { ENGLISH_TRANSLATIONS } from '../../translations/en.translations';
 import { Languages } from '../../enums/languages.enum';
 import { LanguageService } from '../../services/language/language.service';
 import { OnInit, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, Observable } from 'rxjs';
+import { takeUntil, map } from 'rxjs/operators';
+import { formatCupTime } from '../../modules/cup-timer/helpers/cup-time-format.helpers';
 
 export class Translations implements OnInit, OnDestroy {
     public translations: Record<string, string> = {};
@@ -25,6 +26,12 @@ export class Translations implements OnInit, OnDestroy {
 
     public setLanguage(language: Languages): void {
         this.languageService.setLanguage(language);
+    }
+
+    public getFormattedCupTime$(timestamp: number): Observable<string> {
+        return this.languageService
+            .getLanguage$()
+            .pipe(map((language: Languages) => formatCupTime(timestamp, language)));
     }
 
     private initLanguageSubscription(): void {

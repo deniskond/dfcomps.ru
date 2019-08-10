@@ -1,11 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { formatCupTime } from '../../helpers/cup-time-format.helpers';
+import { Translations } from '../../../../components/translations/translations.component';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { LanguageService } from '../../../../services/language/language.service';
+import { Observable, ReplaySubject } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-cup-timer-offline-finished',
     templateUrl: './cup-timer-offline-finished.component.html',
 })
-export class CupTimerOfflineFinishedComponent implements OnInit {
+export class CupTimerOfflineFinishedComponent extends Translations implements OnInit, OnChanges {
     @Input()
     cupName: string;
     @Input()
@@ -15,9 +18,22 @@ export class CupTimerOfflineFinishedComponent implements OnInit {
     @Input()
     endTime: number;
 
-    public formattedTime: string;
+    public formattedTime$: Observable<string>;
+
+    private endTime$ = new ReplaySubject<number>(1);
+
+    constructor(protected languageService: LanguageService) {
+        super(languageService);
+    }
 
     ngOnInit(): void {
-        this.formattedTime = formatCupTime(this.endTime);
+        this.formattedTime$ = this.endTime$.pipe(switchMap((time: number) => this.getFormattedCupTime$(time)));
+        super.ngOnInit();
+    }
+
+    ngOnChanges({ endTime }: SimpleChanges): void {
+        if (endTime && endTime.currentValue) {
+            this.endTime$.next(endTime.currentValue);
+        }
     }
 }

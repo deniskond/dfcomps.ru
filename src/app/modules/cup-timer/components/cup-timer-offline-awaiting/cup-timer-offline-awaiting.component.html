@@ -1,6 +1,6 @@
 <h1 class="cup-name">{{ cupName }}</h1>
 <h2 class="cup-date-time">
-    Начало {{ formattedTime }}
+    {{ translations?.starting }} {{ formattedTime$ | async }}
 </h2>
 <div class="timeholder">
     <app-countdown-timer
@@ -8,4 +8,4 @@
         (finished)="finished.emit()">
     </app-countdown-timer>
 </div>
-<div class="bottom-info">Ожидание начала турнира</div>
+<div class="bottom-info">{{ translations?.awaitingTournamentStart }}</div>
