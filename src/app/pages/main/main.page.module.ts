@@ -19,6 +19,7 @@ import { NewsCommentsComponent } from './components/news-comments/news-comments.
 import { ValidationDialogComponent } from './components/news-offline-start/validation-dialog/validation-dialog.component';
 import { PlayerDemosDialogComponent } from './components/news-offline-start/player-demos-dialog/player-demos-dialog.component';
 import { SingleNewsPageComponent } from './components/single-news-page/single-news-page.component';
+import { InvalidDemosListComponent } from './components/news-offline-results/invalid-demos-list/invalid-demos-list.component';
 
 const routes: Routes = [
     {
@@ -58,6 +59,7 @@ const routes: Routes = [
         ValidationDialogComponent,
         PlayerDemosDialogComponent,
         SingleNewsPageComponent,
+        InvalidDemosListComponent,
     ],
     providers: [NewsService],
     entryComponents: [ValidationDialogComponent, PlayerDemosDialogComponent],
