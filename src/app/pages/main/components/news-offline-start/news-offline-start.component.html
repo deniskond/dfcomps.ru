@@ -92,4 +92,6 @@
     </div>
 </div>
 
+<div *ngIf="news.cup.bonusRating !== '0'" class="bonus-rating">{{ translations?.bonusRating }}: +{{ news.cup.bonusRating }}.</div>
+
 <app-html-news [news]="news"></app-html-news>
