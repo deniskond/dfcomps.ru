@@ -17,6 +17,7 @@
             [nick]="result.nick"
             [playerId]="result.playerId">
         </app-player-cell>
+        <img *ngIf="result.impressive === '1'" class="impressive" src="/assets/images/icons/impressive.png" />
     </div>
     <div *ngIf="archiveLink; else noArchiveLink" class="time-column time">{{ formatResult(result.time) }}</div>
     <ng-template #noArchiveLink>
@@ -26,6 +27,7 @@
     </ng-template>
     <div class="rating-column">
         <app-rating-change [change]="result.change" [zeroIfNull]="cup.ratingCalculated === '1'"></app-rating-change>
+        <img *ngIf="result.bonus === '1'" class="bonus-plus" src="/assets/images/icons/plus.png" />
     </div>
 </div>
 
