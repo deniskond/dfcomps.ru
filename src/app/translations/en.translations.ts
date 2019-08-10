@@ -69,7 +69,7 @@ export const ENGLISH_TRANSLATIONS = {
     wrongEmailFormat: 'Wrong email format',
     loginAlreadyTaken: 'Login already taken',
     bonusRating: 'Bonus rating',
-    daysShorthand: 'D',
+    daysShorthand: 'Days',
     starting: 'Starting',
     awaitingTournamentStart: 'Awaiting tournament start',
     finished: 'Finished',
