@@ -1,3 +1,4 @@
+import { MAIN_URL } from '../../../../configs/url-params.config';
 import { Languages } from '../../../../enums/languages.enum';
 import { LanguageService } from '../../../../services/language/language.service';
 import { Translations } from '../../../../components/translations/translations.component';
@@ -11,6 +12,7 @@ import { MatDialogRef } from '@angular/material';
 })
 export class DownloadDfDialogComponent extends Translations {
     public languages = Languages;
+    public mainUrl = MAIN_URL;
 
     constructor(public dialogRef: MatDialogRef<DownloadDfDialogComponent>, protected languageService: LanguageService) {
         super(languageService);

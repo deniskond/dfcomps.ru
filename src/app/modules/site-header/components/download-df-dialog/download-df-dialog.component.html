@@ -1,4 +1,4 @@
-<div class="h1-block-header dialog-header">{{ translations?.defragIsDownloading }}</div>
+<div class="h1-block-header dialog-header">{{ translations?.downloadDefrag }}</div>
 
 <div *ngIf="lang === languages.RU">
     <div>
@@ -19,6 +19,7 @@
         <span class="separator">|</span>
         <a target="_blank" href="https://ws.q3df.org" >загрузить карты</a>
     </div>
+    <div class="button"><a mat-raised-button color="primary" href="{{ mainUrl }}/files/defrag.rar">Скачать - 601MB</a></div>
 </div>
 
 <div *ngIf="lang === languages.EN">
@@ -36,4 +37,5 @@
         <span class="separator">|</span>
         <a target="_blank" href="https://ws.q3df.org" >download maps</a>
     </div>
+    <div class="button"><a mat-raised-button color="primary" href="{{ mainUrl }}/files/defrag.rar">Download - 601MB</a></div>
 </div>
