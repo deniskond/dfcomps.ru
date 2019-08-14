@@ -81,5 +81,4 @@ export const ENGLISH_TRANSLATIONS = {
     uploadFailed: 'Upload failed',
     success: 'Success',
     demoSent: 'Demo sent',
-    defragIsDownloading: 'Defrag is downloading',
 }

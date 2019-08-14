@@ -1,10 +1,9 @@
-import { MAIN_URL } from '../../configs/url-params.config';
 import { Translations } from '../../components/translations/translations.component';
 import { LanguageService } from '../../services/language/language.service';
 import { Languages } from '../../enums/languages.enum';
 import { NavigationPages } from '../../routing/enums/pages.enum';
 import { TABS_CONFIG, TabInterface } from '../../routing/config/tabs.config';
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -17,14 +16,11 @@ import { DownloadDfDialogComponent } from './components/download-df-dialog/downl
     styleUrls: ['./site-header.component.less'],
 })
 export class SiteHeaderComponent extends Translations implements OnInit, OnDestroy {
-    @ViewChild('downloadLink') downloadLink: ElementRef;
-
     public pages = NavigationPages;
     public tabs = TABS_CONFIG.TABS;
     public languages = Languages;
     public activePage: NavigationPages;
     public translations: Record<string, string>;
-    public mainUrl = MAIN_URL;
 
     private onDestroy$ = new Subject<void>();
 
@@ -49,7 +45,6 @@ export class SiteHeaderComponent extends Translations implements OnInit, OnDestr
     }
 
     public onDownloadDefragClick(): void {
-        this.downloadLink.nativeElement.click();
         this.dialog.open(DownloadDfDialogComponent);
     }
 
