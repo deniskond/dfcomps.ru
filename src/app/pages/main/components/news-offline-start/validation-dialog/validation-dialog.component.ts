@@ -22,5 +22,6 @@ export class ValidationDialogComponent extends Translations implements OnInit {
 
     ngOnInit(): void {
         this.validationErrorNames = Object.keys(this.data);
+        super.ngOnInit();
     }
 }
