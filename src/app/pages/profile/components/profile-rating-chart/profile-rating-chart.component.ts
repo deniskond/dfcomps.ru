@@ -1,14 +1,14 @@
 import { LanguageService } from '../../../../services/language/language.service';
 import { Translations } from '../../../../components/translations/translations.component';
 import { Physics } from '../../../../enums/physics.enum';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
     selector: 'app-profile-rating-chart',
     templateUrl: './profile-rating-chart.component.html',
     styleUrls: ['./profile-rating-chart.component.less'],
 })
-export class ProfileRatingChartComponent extends Translations implements OnInit {
+export class ProfileRatingChartComponent extends Translations implements OnInit, OnChanges {
     @Input()
     physics: Physics;
     @Input()
@@ -40,22 +40,22 @@ export class ProfileRatingChartComponent extends Translations implements OnInit 
         super(languageService);
     }
 
-    ngOnInit(): void {
-        this.barChartLabels = this.chart;
-        this.barChartData = [
-            {
-                data: this.chart.map(val => +val),
-                label: `${this.physics.toUpperCase()} Rating`,
-                fill: true,
-                borderColor: '#337ab7',
-                backgroundColor: '#eeeeee',
-                borderWidth: 1,
-                pointRadius: 3,
-                pointBackgroundColor: '#337ab7',
-                pointBorderWidth: 0,
-            },
-        ];
-
-        super.ngOnInit();
+    ngOnChanges({ chart }: SimpleChanges): void {
+        if (chart) {
+            this.barChartLabels = this.chart;
+            this.barChartData = [
+                {
+                    data: this.chart.map(val => +val),
+                    label: `${this.physics.toUpperCase()} Rating`,
+                    fill: true,
+                    borderColor: '#337ab7',
+                    backgroundColor: '#eeeeee',
+                    borderWidth: 1,
+                    pointRadius: 3,
+                    pointBackgroundColor: '#337ab7',
+                    pointBorderWidth: 0,
+                },
+            ];
+        }
     }
 }
