@@ -25,5 +25,6 @@ export class MulticupPhysicsTableComponent extends Translations implements OnIni
     ngOnInit(): void {
         this.slicedPhysicsTable = this.physicsTable.slice(0, 10);
         this.places = getTablePlaces(this.slicedPhysicsTable.map(({ sum }: MulticupResultInterface) => sum));
+        super.ngOnInit();
     }
 }
