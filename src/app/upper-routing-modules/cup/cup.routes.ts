@@ -1,5 +1,5 @@
+import { CupComponent } from '../../pages/cup/cup.component';
 import { Routes } from '@angular/router';
-import { CupComponent } from './cup.component';
 
 export const cupRoutes: Routes = [
     {

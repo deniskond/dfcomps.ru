@@ -5,6 +5,6 @@
     (click)="navigateToPlayerProfile(playerId)"
     class="player-nick-container">
 
-    <app-flag [country]="country" class="flag"></app-flag>
-    <div class="player-nick">{{ nick }}</div>
+    <app-flag [country]="country" [class.light]="style === playerCellStyles.TRANSPARENT" class="flag"></app-flag>
+    <div [class.light]="style === playerCellStyles.TRANSPARENT" class="player-nick">{{ nick }}</div>
 </div>  

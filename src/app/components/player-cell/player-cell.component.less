@@ -2,6 +2,8 @@
     display: flex;
     flex-grow: 1;
     align-self: stretch;
+    font-family: inherit;
+    letter-spacing: inherit;
 }
 
 .player-nick-container {
@@ -10,13 +12,26 @@
     align-self: stretch;
     align-items: center;
     cursor: pointer;
+    font-family: inherit;
+    letter-spacing: inherit;
 
     .flag {
         margin-left: 8px;
+
+        &.light {
+            filter: brightness(1.3);
+        }
     }
 
     .player-nick {
         margin-left: 5px;
-        margin-top: 2px; 
+        margin-top: 2px;
+        font-family: inherit;
+        letter-spacing: inherit;
+
+        &.light {
+            margin-top: 0;
+            margin-left: 6px;
+        }
     }
 }
