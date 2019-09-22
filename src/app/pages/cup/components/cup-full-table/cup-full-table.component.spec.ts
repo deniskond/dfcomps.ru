@@ -1,18 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CupComponent } from './cup.component';
+import { CupFullTableComponent } from './cup-full-table.component';
 
-describe('CupComponent', () => {
-    let component: CupComponent;
-    let fixture: ComponentFixture<CupComponent>;
+describe('CupFullTableComponent', () => {
+    let component: CupFullTableComponent;
+    let fixture: ComponentFixture<CupFullTableComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [CupComponent],
+            declarations: [CupFullTableComponent],
         }).compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(CupComponent);
+        fixture = TestBed.createComponent(CupFullTableComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });
