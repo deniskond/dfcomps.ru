@@ -1,0 +1,131 @@
+.background {
+    display: flex;
+    align-items: flex-start;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    background: url('/assets/images/bg/winter-industrial-bg.jpg');
+    background-size: cover;
+    background-position: 50%;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 0;
+    margin-top: 40px;
+
+    &.left {
+        align-items: flex-end;
+        margin-right: 20px;
+    }
+
+    &.right {
+        align-items: flex-start;
+        margin-left: 20px;
+    }
+}
+
+.round-info {
+    width: 512px;
+    height: 180px;
+    color: #fff;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
+    font-size: 44px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    border: 2px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: rgba(74, 67, 164, 0.8);
+
+    .cup-name {
+        color: #ffe557;
+    }
+
+    div {
+        font-family: bebas;
+    }
+}
+
+.levelshot {
+    width: 512px;
+    border: 2px solid #ccc;
+    margin-top: 40px;
+    background: rgba(74, 67, 164, 0.8);
+}
+
+.result-table {
+    width: 512px;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
+    background: rgba(74, 67, 164, 0.8);
+    border: 2px solid #ccc;
+
+    .row {
+        display: flex;
+        border-top: 2px solid #ccc;
+
+        &:first-of-type {
+            border-top: 0;
+        }
+    }
+
+    .cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 40px;
+        color: white;
+        font-family: bebas;
+        font-size: 24px;
+
+        &.header {
+            height: 46px;
+            color: #ffe557;
+            font-size: 30px;
+
+            &.player {
+                justify-content: center;
+            }
+        }
+
+        &.number {
+            width: 46px;
+            background-position: 50% 50%;
+            background-size: 22px 22px;
+            background-repeat: no-repeat;
+
+            &.gold {
+                background-image: url('/assets/images/icons/result-tables/gold.png');
+            }
+
+            &.silver {
+                background-image: url('/assets/images/icons/result-tables/silver.png');
+            }
+
+            &.bronze {
+                background-image: url('/assets/images/icons/result-tables/bronze.png');
+            }
+        }
+
+        &.player {
+            border: 2px solid #ccc;
+            border-top: 0;
+            border-bottom: 0;
+            width: 0px;
+            flex-grow: 1;
+            justify-content: flex-start;
+        }
+
+        &.time {
+            width: 120px;
+        }
+    }
+}
