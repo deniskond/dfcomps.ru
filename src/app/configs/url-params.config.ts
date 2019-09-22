@@ -1,6 +1,6 @@
 import { Physics } from '../enums/physics.enum';
 
-export const MAIN_URL = 'http://dfcomps.ru';
+export const MAIN_URL = 'http://localhost:80';
 export const API_URL = `${MAIN_URL}/api`;
 
 export class URL_PARAMS {
@@ -78,17 +78,17 @@ export class URL_PARAMS {
 
     public static get CUP(): {
         GET_NEXTCUP: string;
-        ONLINE_FULL_TABLE: (cupId: number) => string;
-        ONLINE_ROUND: (cupId: number, roundNumber: number) => string;
-        MULTICUP_FULL_TABLE: (cupId: number, physics: Physics) => string;
-        MULTICUP_ROUND: (cupId: number, physics: Physics, roundNumber: number) => string;
+        ONLINE_FULL_TABLE: (cupId: string) => string;
+        ONLINE_ROUND: (cupId: string, roundNumber: string) => string;
+        MULTICUP_FULL_TABLE: (cupId: string, physics: Physics) => string;
+        MULTICUP_ROUND: (cupId: string, physics: Physics, roundNumber: string) => string;
     } {
         return {
             GET_NEXTCUP: `${API_URL}/cup/next_cup_info`,
-            ONLINE_FULL_TABLE: (cupId: number) => `${API_URL}/cup/online/${cupId}`,
-            ONLINE_ROUND: (cupId: number, roundNumber: number) => `${API_URL}/cup/online/${cupId}/round/${roundNumber}`,
-            MULTICUP_FULL_TABLE: (cupId: number, physics: Physics) => `${API_URL}/cup/multi/${cupId}/${physics}`,
-            MULTICUP_ROUND: (cupId: number, physics: Physics, roundNumber: number) =>
+            ONLINE_FULL_TABLE: (cupId: string) => `${API_URL}/cup/online/${cupId}`,
+            ONLINE_ROUND: (cupId: string, roundNumber: string) => `${API_URL}/cup/online/${cupId}/round/${roundNumber}`,
+            MULTICUP_FULL_TABLE: (cupId: string, physics: Physics) => `${API_URL}/cup/multi/${cupId}/${physics}`,
+            MULTICUP_ROUND: (cupId: string, physics: Physics, roundNumber: string) =>
                 `${API_URL}/cup/multi/${cupId}/${physics}/round/${roundNumber}`,
         };
     }

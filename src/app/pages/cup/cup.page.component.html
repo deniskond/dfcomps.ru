@@ -1,2 +1,8 @@
-<!-- <app-cup-full-table></app-cup-full-table> -->
-<app-cup-round></app-cup-round>
+<app-cup-full-table
+    *ngIf="isRound === false"
+    [fullTable]="fullTable$ | async"
+></app-cup-full-table>
+<app-cup-round
+    *ngIf="isRound === true"
+    [round]="round$ | async"
+></app-cup-round>

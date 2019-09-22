@@ -1,4 +1,4 @@
-export interface MultiCupResultInterface {
+export interface MulticupResultInterface {
     playerId: string;
     playerNick: string;
     playerCountry: string;

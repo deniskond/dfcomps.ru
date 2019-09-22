@@ -1,4 +1,4 @@
-export interface MultiCupRoundResultInterface {
+export interface MulticupRoundResultInterface {
     playerId: string;
     result: string;
     nick: string;

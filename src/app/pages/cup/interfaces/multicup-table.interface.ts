@@ -1,10 +1,10 @@
 import { CupSystems } from '../../../enums/cup-systems.enum';
-import { MultiCupResultInterface } from './multicup-result.interface';
+import { MulticupResultInterface } from './multicup-result.interface';
 
-export interface MultiCupInterface {
+export interface MulticupTableInterface {
     fullName: string;
     rounds: string;
     system: CupSystems;
-    resultsTable: MultiCupResultInterface[];
+    players: MulticupResultInterface[];
     shortName?: string;
 }

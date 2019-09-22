@@ -1,9 +1,9 @@
-import { MultiCupRoundResultInterface } from './multicup-round-result.interface';
+import { MulticupRoundResultInterface } from './multicup-round-result.interface';
 
-export interface MultiCupRoundInterface {
+export interface MulticupRoundInterface {
     fullName: string;
     map: string;
     levelshot: string;
-    resultsTable: MultiCupRoundResultInterface[];
+    resultsTable: MulticupRoundResultInterface[];
     shortName?: string;
 }

@@ -1,81 +1,40 @@
-<div class="background">
-    <div class="table-container">
-        <div class="table-bg"></div>
-        <div class="table-upper-header">
-            <a class="header-link mainpage" href="/">На главную</a>
-            <span class="cup-name">Summer 2019 Cup: </span>
-            <span class="cup-physics">vq3</span>
-            <a class="header-link system" href="https://docs.google.com/forms/d/e/1FAIpQLScdbpcs6rczpF1C_TQ4IFUxUqARq9MXygeP9Ru2sjZl3cdUDA/viewform">
-                EE System
-            </a>
+<div class="background"></div>
+
+<div *ngIf="fullTable" class="table-container">
+    <div class="table-bg"></div>
+    <div class="table-upper-header">
+        <a class="header-link mainpage" href="/">На главную</a>
+        <span class="cup-name">{{ fullTable.fullName }}: </span>
+        <span class="cup-physics">доделать физику</span>
+        <a *ngIf="fullTable.system === cupSystems.EE" class="header-link system" href="https://docs.google.com/forms/d/e/1FAIpQLScdbpcs6rczpF1C_TQ4IFUxUqARq9MXygeP9Ru2sjZl3cdUDA/viewform">
+            EE System
+        </a>
+    </div>
+    <div class="header-row">
+        <div class="cell number"></div>
+        <div class="cell player-name">Player name</div>
+        <div *ngFor="let round of range(fullTable.rounds); let i = index;" class="cell">
+            <a (click)="navigateToRound(i + 1)" class="round-link">Round {{ i + 1 }}</a>
         </div>
-        <div class="header-row">
-            <div class="cell number"></div>
-            <div class="cell player-name">Player name</div>
-            <div class="cell">
-                <a class="round-link">Round 1</a>
-            </div>
-            <div class="cell">
-                <a class="round-link">Round 2</a>
-            </div>
-            <div class="cell">
-                <a class="round-link">Round 3</a>
-            </div>
-            <div class="cell">
-                <a class="round-link">Round 4</a>
-            </div>
-            <div class="cell">
-                <a class="round-link">Round 5</a>
-            </div>
-            <div class="cell">Overall</div>
+        <div class="cell">Overall</div>
+    </div>
+    <div *ngFor="let result of fullTable.players" class="results-row">
+        <div [class.gold]="false" [class.silver]="false" [class.bronze]="false" class="cell number"></div>
+        <div class="cell player-name">
+            <app-player-cell 
+                [country]="result.playerCountry" 
+                [nick]="result.playerNick" 
+                [playerId]="result.playerId" 
+                [style]="playerCellStyles.TRANSPARENT">
+            </app-player-cell>
         </div>
-        <div class="results-row">
-            <div class="cell number gold"></div>
-            <div class="cell player-name">
-                <app-player-cell country="ru" nick="Nosf" playerId="10" [style]="1"></app-player-cell>
-            </div>
-            <div class="cell">1000</div>
-            <div class="cell">1000</div>
-            <div class="cell">1000</div>
-            <div class="cell gray">800</div>
-            <div class="cell">1000</div>
-            <div class="cell">5000</div>
+        <div 
+            *ngFor="let roundResult of result.roundResults; let roundIndex = index;" 
+            [class.gray]="result.minround === roundIndex"
+            class="cell">
+            
+            {{ roundResult || '-' }}
         </div>
-        <div class="results-row">
-            <div class="cell number silver"></div>
-            <div class="cell player-name">
-                <app-player-cell country="ru" nick="Nosf" playerId="10" [style]="1"></app-player-cell>
-            </div>
-            <div class="cell">1000</div>
-            <div class="cell">1000</div>
-            <div class="cell">1000</div>
-            <div class="cell gray">800</div>
-            <div class="cell">1000</div>
-            <div class="cell">5000</div>
-        </div>
-        <div class="results-row">
-            <div class="cell number bronze"></div>
-            <div class="cell player-name">
-                <app-player-cell country="ru" nick="Nosf" playerId="10" [style]="1"></app-player-cell>
-            </div>
-            <div class="cell">1000</div>
-            <div class="cell">1000</div>
-            <div class="cell">1000</div>
-            <div class="cell gray">800</div>
-            <div class="cell">1000</div>
-            <div class="cell">5000</div>
-        </div>
-        <div class="results-row">
-            <div class="cell number">4</div>
-            <div class="cell player-name">
-                <app-player-cell country="ru" nick="Prokypop" playerId="10" [style]="1"></app-player-cell>
-            </div>
-            <div class="cell">1000</div>
-            <div class="cell">1000</div>
-            <div class="cell">1000</div>
-            <div class="cell gray">800</div>
-            <div class="cell">1000</div>
-            <div class="cell">5000</div>
-        </div>
+        <div class="cell">{{ result.overall }}</div>
     </div>
 </div>

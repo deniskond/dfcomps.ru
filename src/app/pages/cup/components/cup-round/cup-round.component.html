@@ -1,70 +1,42 @@
-<div class="background">
-    <div class="column left">
-        <div class="round-info">
-            <div>Defrag Online Cup #5:</div>
-            <div class="cup-name">CPM Oldschool maps</div>
-            <div>round 1, map br-cpm01</div>
-        </div>
-        <div
-            *ngIf="levelshot"
-            class="levelshot"
-        ></div>
+<div class="background"></div>
+
+<div *ngIf="round" class="column left">
+    <div class="round-info">
+        <ng-container *ngIf="round.shortName">
+            <div>{{ round.fullName }}:</div>
+            <div class="cup-name">{{ round.shortName }}</div>
+            <div>round ?, map&nbsp;{{ round.map }}</div>
+        </ng-container>
+        <ng-container *ngIf="!round.shortName">
+            <div>
+                <span class="cup-name">{{ round.fullName }}:</span> round ?
+            </div>
+            <div>map&nbsp;{{ round.map }}</div>
+        </ng-container>
     </div>
-    <div class="column right">
-        <div class="result-table">
-            <div class="row">
-                <div class="number cell"></div>
-                <div class="player header cell">Player</div>
-                <div class="time header cell">Time</div>
+    <div *ngIf="round.levelshot" class="levelshot">
+        <img [src]="round.levelshot" />
+    </div>
+</div>
+<div *ngIf="round" class="column right">
+    <div class="result-table">
+        <div class="row">
+            <div class="number cell"></div>
+            <div class="player header cell">Player</div>
+            <div class="player header cell">Time</div>
+            <div class="result header cell">Points</div>
+        </div>
+        <div *ngFor="let result of round.resultsTable" class="row">
+            <div [class.gold]="false" [class.silver]="false" [class.bronze]="false" class="number cell"></div>
+            <div class="player cell">
+                <app-player-cell
+                    [country]="result.country"
+                    [nick]="result.nick"
+                    [playerId]="result.playerId"
+                    [style]="playerCellStyles.TRANSPARENT"
+                ></app-player-cell>
             </div>
-            <div class="row">
-                <div class="number cell gold"></div>
-                <div class="player cell">
-                    <app-player-cell
-                        country="ru"
-                        nick="Nosf"
-                        playerId="10"
-                        [style]="1"
-                    ></app-player-cell>
-                </div>
-                <div class="time cell">08:948</div>
-            </div>
-            <div class="row">
-                <div class="number cell silver"></div>
-                <div class="player cell">
-                    <app-player-cell
-                        country="ru"
-                        nick="Nosf"
-                        playerId="10"
-                        [style]="1"
-                    ></app-player-cell>
-                </div>
-                <div class="time cell">08:948</div>
-            </div>
-            <div class="row">
-                <div class="number cell bronze"></div>
-                <div class="player cell">
-                    <app-player-cell
-                        country="ru"
-                        nick="Nosf"
-                        playerId="10"
-                        [style]="1"
-                    ></app-player-cell>
-                </div>
-                <div class="time cell">08:948</div>
-            </div>
-            <div class="row">
-                <div class="number cell">4</div>
-                <div class="player cell">
-                    <app-player-cell
-                        country="ru"
-                        nick="Nosf"
-                        playerId="10"
-                        [style]="1"
-                    ></app-player-cell>
-                </div>
-                <div class="time cell">08:948</div>
-            </div>
+            <div class="result cell">{{ result.result }}</div>
         </div>
     </div>
 </div>

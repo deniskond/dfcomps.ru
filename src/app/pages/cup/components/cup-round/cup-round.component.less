@@ -1,6 +1,9 @@
-.background {
+:host {
     display: flex;
     align-items: flex-start;
+}
+
+.background {
     position: fixed;
     top: 0;
     left: 0;
@@ -31,11 +34,12 @@
 }
 
 .round-info {
-    width: 512px;
-    height: 180px;
+    width: 516px;
+    padding: 20px;
+    text-align: center;
     color: #fff;
     text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
-    font-size: 44px;
+    font-size: 40px;
     letter-spacing: 4px;
     text-transform: uppercase;
     border: 2px solid #ccc;
@@ -49,20 +53,24 @@
         color: #ffe557;
     }
 
-    div {
+    div, span {
         font-family: bebas;
     }
 }
 
 .levelshot {
-    width: 512px;
+    width: 516px;
     border: 2px solid #ccc;
     margin-top: 40px;
     background: rgba(74, 67, 164, 0.8);
+
+    img {
+        display: block;
+    }
 }
 
 .result-table {
-    width: 512px;
+    width: 516px;
     letter-spacing: 1px;
     text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
     background: rgba(74, 67, 164, 0.8);
@@ -124,7 +132,7 @@
             justify-content: flex-start;
         }
 
-        &.time {
+        &.result {
             width: 120px;
         }
     }

@@ -1,4 +1,4 @@
 export enum CupSystems {
-    EE,
-    OLD,
+    EE = 'ee',
+    OLD = 'old',
 }
