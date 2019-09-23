@@ -1,4 +1,3 @@
-import { HttpClientModule } from '@angular/common/http';
 import { SiteHeaderComponent } from './site-header.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -26,7 +25,6 @@ import { DownloadDfDialogComponent } from './components/download-df-dialog/downl
         MatButtonModule,
         MatButtonToggleModule,
         MatRippleModule,
-        HttpClientModule,
         MatDialogModule,
         MatProgressSpinnerModule,
         FormsModule,

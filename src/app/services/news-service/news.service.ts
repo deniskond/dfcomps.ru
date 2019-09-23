@@ -3,10 +3,15 @@ import { Injectable } from '@angular/core';
 import { BackendService } from '../backend-service/backend-service';
 import { Observable, ReplaySubject } from 'rxjs';
 import { NewsInterfaceUnion } from '../../types/news-union.type';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class NewsService extends BackendService {
     private _mainPageNews$ = new ReplaySubject<NewsInterfaceUnion[]>(1);
+
+    constructor(protected httpClient: HttpClient) {
+        super(httpClient);
+    }
 
     // TODO эту штуку только в крайнем случае вызывать
     public loadMainPageNews(): void {

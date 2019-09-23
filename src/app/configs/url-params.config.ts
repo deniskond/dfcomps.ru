@@ -40,7 +40,7 @@ export class URL_PARAMS {
         return `${API_URL}/tables/season_rating/${physics}/${page}/${season}`;
     }
 
-    public static SEASON_RATING_TABLE_PLAYERS_COUNT( season: number): string {
+    public static SEASON_RATING_TABLE_PLAYERS_COUNT(season: number): string {
         return `${API_URL}/tables/season_rating_table_players_count/${season}`;
     }
 
@@ -73,14 +73,23 @@ export class URL_PARAMS {
         return {
             UPLOAD: `${API_URL}/cup/upload_demo`,
             DELETE: `${API_URL}/cup/delete_demo`,
-        }
+        };
     }
 
     public static get CUP(): {
         GET_NEXTCUP: string;
+        ONLINE_FULL_TABLE: (cupId: string) => string;
+        ONLINE_ROUND: (cupId: string, roundNumber: string) => string;
+        MULTICUP_FULL_TABLE: (cupId: string, physics: Physics) => string;
+        MULTICUP_ROUND: (cupId: string, physics: Physics, roundNumber: string) => string;
     } {
         return {
             GET_NEXTCUP: `${API_URL}/cup/next_cup_info`,
+            ONLINE_FULL_TABLE: (cupId: string) => `${API_URL}/cup/online/${cupId}`,
+            ONLINE_ROUND: (cupId: string, roundNumber: string) => `${API_URL}/cup/online/${cupId}/round/${roundNumber}`,
+            MULTICUP_FULL_TABLE: (cupId: string, physics: Physics) => `${API_URL}/cup/multi/${cupId}/${physics}`,
+            MULTICUP_ROUND: (cupId: string, physics: Physics, roundNumber: string) =>
+                `${API_URL}/cup/multi/${cupId}/${physics}/round/${roundNumber}`,
         };
     }
 }

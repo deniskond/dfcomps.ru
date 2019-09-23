@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
     declarations: [MainSiteComponent],
     imports: [
         CommonModule,
-        RouterModule.forRoot(mainSiteRoutes),
+        RouterModule.forChild(mainSiteRoutes),
         SiteHeaderModule,
         TopTenTableModule,
         CupTimerModule,

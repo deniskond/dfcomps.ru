@@ -1,0 +1,160 @@
+:host {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.background {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    background: url('/assets/images/bg/winter-industrial-bg.jpg');
+    background-size: cover;
+    background-position: 50%;
+}
+
+.table-container {
+    width: 90%;
+    min-width: 800px;
+    min-height: 90%;
+    position: relative;
+    margin-top: 40px;
+    margin-bottom: 50px;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
+    color: white;
+}
+
+.table-bg {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #4a43a4;
+    opacity: 0.8;
+}
+
+.table-upper-header {
+    display: flex;
+    height: 80px;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 36px;
+    border-bottom: 2px solid #ccc;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
+    font-size: 44px;
+    letter-spacing: 4px;
+}
+
+.yellow {
+    color: #ffe557;
+    font-family: bebas;
+}
+
+.cup-physics {
+    font-family: bebas;
+    margin-left: 8px;
+}
+
+.header-link {
+    position: absolute;
+    color: white;
+    text-decoration: none;
+    font-size: 30px;
+    vertical-align: top;
+    font-family: bebas;
+    border-bottom: 2px solid white;
+    letter-spacing: 2px;
+    transition: 0.4s;
+
+    &.mainpage {
+        left: 20px;
+    }
+
+    &.system {
+        right: 20px;
+    }
+
+    &:hover {
+        color: #ffe557;
+        border-bottom: 2px solid #ddf;
+    }
+}
+
+.header-row {
+    height: 44px;
+    display: flex;
+    border-bottom: 2px solid #ccc;
+    font-size: 28px;
+}
+
+.cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 0px;
+    flex-grow: 1;
+    border-right: 2px solid #ccc;
+    font-family: bebas;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    &.number {
+        width: 40px;
+        border-left: 2px solid #ccc;
+        flex-grow: unset;
+        background-position: 50% 50%;
+        background-size: 22px 22px;
+        background-repeat: no-repeat;
+
+        &.gold {
+            background-image: url('/assets/images/icons/result-tables/gold.png');
+        }
+
+        &.silver {
+            background-image: url('/assets/images/icons/result-tables/silver.png');
+        }
+
+        &.bronze {
+            background-image: url('/assets/images/icons/result-tables/bronze.png');
+        }
+    }
+
+    &.player-name {
+        flex-grow: 2;
+    }
+
+    &.gray {
+        color: #aaa;
+    }
+}
+
+.round-link {
+    font-family: bebas;
+    color: white;
+    text-decoration: none;
+    border-bottom: 2px solid white;
+    transition: 0.4s;
+    cursor: pointer;
+    line-height: 1;
+
+    &:hover {
+        color: #ffe557;
+        border-bottom: 2px solid #ddf;
+    }
+}
+
+.results-row {
+    display: flex;
+    border-bottom: 2px solid #ccc;
+    height: 40px;
+    font-size: 24px;
+}
