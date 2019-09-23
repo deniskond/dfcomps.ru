@@ -1,6 +1,6 @@
 import { Physics } from '../../enums/physics.enum';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { CupPageTypes } from './enums/cup-page-types.enum';
 import { CupTableService } from './services/cup-table.service';
 import { ReplaySubject, Subject } from 'rxjs';
@@ -22,7 +22,11 @@ export class CupPageComponent implements OnInit, OnDestroy {
 
     private onDestroy$ = new Subject<void>();
 
-    constructor(private activatedRoute: ActivatedRoute, private cupTableService: CupTableService) {
+    constructor(
+        private router: Router,
+        private activatedRoute: ActivatedRoute,
+        private cupTableService: CupTableService,
+    ) {
         this.type = this.activatedRoute.snapshot.params.type;
     }
 
@@ -33,6 +37,20 @@ export class CupPageComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.onDestroy$.next();
         this.onDestroy$.complete();
+    }
+
+    public navigateToRound(round: number): void {
+        const splitUrl: string[] = this.router.url.split('?');
+        const mainUrl: string = splitUrl.shift();
+        const queryParams: Record<string, string> = splitUrl.reduce((acc: Record<string, string>, urlPart: string) => {
+            const urlPartSplit = urlPart.split('=');
+
+            return { ...acc, [urlPartSplit[0]]: urlPartSplit[1] };
+        }, {});
+
+        queryParams.round = round.toString();
+
+        this.router.navigate([mainUrl], { queryParams });
     }
 
     private initSubscriptions(): void {

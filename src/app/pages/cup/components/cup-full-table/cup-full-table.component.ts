@@ -1,7 +1,7 @@
 import { Physics } from '../../../../enums/physics.enum';
 import { PlayerCellStyles } from '../../../../components/player-cell/enums/player-cell-styles.enum';
 import { CupSystems } from '../../../../enums/cup-systems.enum';
-import { Component, Input, ChangeDetectionStrategy, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { MulticupTableInterface } from '../../interfaces/multicup-table.interface';
 import { getTablePlaces } from '../../../../helpers/table-places.helper';
 import { MulticupResultInterface } from '../../interfaces/multicup-result.interface';
@@ -17,6 +17,8 @@ export class CupFullTableComponent implements OnChanges {
     fullTable: MulticupTableInterface;
     @Input()
     physics: Physics;
+    @Output()
+    navigateToRound = new EventEmitter<number>();
 
     public playerCellStyles = PlayerCellStyles;
     public cupSystems = CupSystems;
@@ -33,6 +35,4 @@ export class CupFullTableComponent implements OnChanges {
             this.roundsCount = +this.fullTable.rounds + 1;
         }
     }
-
-    public navigateToRound(round: number): void {}
 }

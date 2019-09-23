@@ -15,7 +15,7 @@
         <div class="cell player-name">Player name</div>
         <div *ngFor="let round of range(fullTable.rounds); let i = index;" class="cell">
             <ng-container *ngIf="i + 1 < fullTable.currentRound">
-                <a (click)="navigateToRound(i + 1)" class="round-link">
+                <a (click)="navigateToRound.emit(i + 1)" class="round-link">
                     Round {{ i + 1 }}
                 </a>
             </ng-container>
