@@ -1,3 +1,4 @@
+import { Physics } from '../../../../enums/physics.enum';
 import { PlayerCellStyles } from '../../../../components/player-cell/enums/player-cell-styles.enum';
 import { CupSystems } from '../../../../enums/cup-systems.enum';
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
@@ -12,6 +13,8 @@ import { MulticupTableInterface } from '../../interfaces/multicup-table.interfac
 export class CupFullTableComponent {
     @Input()
     fullTable: MulticupTableInterface;
+    @Input()
+    physics: Physics;
 
     public playerCellStyles = PlayerCellStyles;
     public cupSystems = CupSystems;

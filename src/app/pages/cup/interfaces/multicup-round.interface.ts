@@ -1,3 +1,4 @@
+import { Physics } from '../../../enums/physics.enum';
 import { MulticupRoundResultInterface } from './multicup-round-result.interface';
 
 export interface MulticupRoundInterface {
@@ -5,5 +6,7 @@ export interface MulticupRoundInterface {
     map: string;
     levelshot: string;
     resultsTable: MulticupRoundResultInterface[];
+    physics: Physics;
+    hasPoints: boolean;
     shortName?: string;
 }

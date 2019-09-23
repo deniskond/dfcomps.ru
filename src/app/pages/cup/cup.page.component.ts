@@ -18,6 +18,7 @@ export class CupPageComponent implements OnInit, OnDestroy {
     public isRound: boolean;
     public fullTable$ = new ReplaySubject<MulticupTableInterface>(1);
     public round$ = new ReplaySubject<MulticupRoundInterface>(1);
+    public roundNumber: number;
 
     private onDestroy$ = new Subject<void>();
 
@@ -43,6 +44,7 @@ export class CupPageComponent implements OnInit, OnDestroy {
 
             if (id && round) {
                 this.isRound = true;
+                this.roundNumber = round;
                 this.getRound(id, round, physics);
             }
         });
