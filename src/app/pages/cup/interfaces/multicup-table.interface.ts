@@ -5,7 +5,7 @@ import { MulticupResultInterface } from './multicup-result.interface';
 export interface MulticupTableInterface {
     fullName: string;
     rounds: string;
-    currentRound: string;
+    currentRound: number;
     physics: Physics;
     system: CupSystems;
     players: MulticupResultInterface[];

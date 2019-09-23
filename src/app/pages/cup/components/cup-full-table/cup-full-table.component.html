@@ -4,8 +4,8 @@
     <div class="table-bg"></div>
     <div class="table-upper-header">
         <a class="header-link mainpage" href="/">На главную</a>
-        <span class="cup-name">{{ fullTable.fullName }}: </span>
-        <span class="cup-physics">доделать физику</span>
+        <span class="yellow">{{ fullTable.fullName }}: </span>
+        <span class="cup-physics">{{ fullTable.physics }}</span>
         <a *ngIf="fullTable.system === cupSystems.EE" class="header-link system" href="https://docs.google.com/forms/d/e/1FAIpQLScdbpcs6rczpF1C_TQ4IFUxUqARq9MXygeP9Ru2sjZl3cdUDA/viewform">
             EE System
         </a>
@@ -14,12 +14,32 @@
         <div class="cell number"></div>
         <div class="cell player-name">Player name</div>
         <div *ngFor="let round of range(fullTable.rounds); let i = index;" class="cell">
-            <a (click)="navigateToRound(i + 1)" class="round-link">Round {{ i + 1 }}</a>
+            <ng-container *ngIf="i + 1 < fullTable.currentRound">
+                <a (click)="navigateToRound(i + 1)" class="round-link">
+                    Round {{ i + 1 }}
+                </a>
+            </ng-container>
+            <ng-container *ngIf="i + 1 === fullTable.currentRound">
+                <div class="yellow">Round {{ i + 1 }}</div>
+            </ng-container>
+            <ng-container *ngIf="i + 1 > fullTable.currentRound">
+                <div class="cell">Round {{ i + 1 }}</div>
+            </ng-container>
         </div>
-        <div class="cell">Overall</div>
+        <div [class.yellow]="fullTable.currentRound === roundsCount" class="cell">Overall</div>
     </div>
-    <div *ngFor="let result of fullTable.players" class="results-row">
-        <div [class.gold]="false" [class.silver]="false" [class.bronze]="false" class="cell number"></div>
+    <div *ngFor="let result of fullTable.players; let i = index;" class="results-row">
+        <ng-container *ngIf="places[i] < 4">
+            <div 
+                [class.gold]="places[i] === 1" 
+                [class.silver]="places[i] === 2" 
+                [class.bronze]="places[i] === 3" 
+                class="number cell">
+            </div>
+        </ng-container>
+        <ng-container *ngIf="places[i] >= 4">
+            <div class="number cell">{{ places[i] }}</div>
+        </ng-container>
         <div class="cell player-name">
             <app-player-cell 
                 [country]="result.playerCountry" 
@@ -30,11 +50,11 @@
         </div>
         <div 
             *ngFor="let roundResult of result.roundResults; let roundIndex = index;" 
-            [class.gray]="result.minround === roundIndex"
+            [class.gray]="result.minround === roundIndex + 1"
             class="cell">
             
-            {{ roundResult || '-' }}
+            {{ +roundResult || '-' }}
         </div>
-        <div class="cell">{{ result.overall }}</div>
+        <div [class.yellow]="fullTable.currentRound === roundsCount" class="cell">{{ result.overall }}</div>
     </div>
 </div>
