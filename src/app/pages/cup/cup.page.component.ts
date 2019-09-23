@@ -41,8 +41,8 @@ export class CupPageComponent implements OnInit, OnDestroy {
 
     public navigateToRound(round: number): void {
         const splitUrl: string[] = this.router.url.split('?');
-        const mainUrl: string = splitUrl.shift();
-        const queryParams: Record<string, string> = splitUrl.reduce((acc: Record<string, string>, urlPart: string) => {
+        const mainUrl: string = splitUrl[0];
+        const queryParams: Record<string, string> = splitUrl[1].split('&').reduce((acc: Record<string, string>, urlPart: string) => {
             const urlPartSplit = urlPart.split('=');
 
             return { ...acc, [urlPartSplit[0]]: urlPartSplit[1] };

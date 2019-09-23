@@ -6,6 +6,7 @@ import { Physics } from '../../../../../enums/physics.enum';
 import { getTablePlaces } from '../../../../../helpers/table-places.helper';
 import { formatResultTime } from '../../../../../helpers/result-time.helper';
 import { range } from 'lodash';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-online-results-table',
@@ -21,7 +22,7 @@ export class NewsOnlineResultsTableComponent extends Translations implements OnI
     public range = range;
     public allPhysics = Physics;
 
-    constructor(protected languageService: LanguageService) {
+    constructor(private router: Router, protected languageService: LanguageService) {
         super(languageService);
     }
 
@@ -32,5 +33,9 @@ export class NewsOnlineResultsTableComponent extends Translations implements OnI
 
     public formatResult(time: string): string {
         return formatResultTime(time);
+    }
+
+    public navigateToOnlineCupTable(): void {
+        this.router.navigate(['/cup/online'], { queryParams: { id: this.cupId } });
     }
 }

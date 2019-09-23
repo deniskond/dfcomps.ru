@@ -12,13 +12,13 @@
     </div>
     <div class="player-column">
         <app-player-cell 
-            [country]="result.country" 
-            [nick]="result.nick"
-            [playerId]="result.id">
+            [country]="result.playerCountry" 
+            [nick]="result.playerNick"
+            [playerId]="result.playerId">
         </app-player-cell>
     </div>
-    <div class="points-column">{{ result.sum }}</div>
+    <div class="points-column">{{ result.overall }}</div>
 </div>
 <div class="multicup-footer">
-    <a routerLink="/multicup/{{ multicupId }}/{{ physics }}">{{ translations?.fullTable }}</a> 
+    <a (click)="navigateToMultiCup()" class="pointer">{{ translations?.fullTable }}</a> 
 </div>
