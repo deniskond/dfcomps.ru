@@ -81,4 +81,7 @@ export const ENGLISH_TRANSLATIONS = {
     uploadFailed: 'Upload failed',
     success: 'Success',
     demoSent: 'Demo sent',
+    archive: 'News',
+    newsArchive: 'News archive',
+    goToArchive: 'Go to news archive',
 }

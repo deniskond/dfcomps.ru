@@ -1,3 +1,36 @@
-<p>
-  archive
-</p>
+<div class="shadowed-main-block">
+    <h1 class="h1-block-header">{{ translations?.newsArchive }}</h1>
+
+    <div *ngIf="(news$ | async) as news; else loader" class="movies-container">
+        <ng-container *ngIf="!!news.length; else loader">
+            <div class="news-container">
+                <div *ngFor="let singleNews of news" (click)="navigateToNewsPage(singleNews.id)" class="archive-news-row">
+                    <a *ngIf="(language$ | async) as language" class="blue-link bold">
+                        {{ language === languages.RU ? singleNews.header : singleNews.headerEn }}
+                    </a>
+                    <div>{{ singleNews.datetime }}</div>
+                </div>
+            </div>
+
+            <div class="pagination-container">
+                <div class="pagination">
+                    <div 
+                        *ngFor="let page of range(pagesCount)" 
+                        [class.selected]="currentPage === page" 
+                        (click)="changePagination(page)" 
+                        matRipple 
+                        class="page blue-link">
+                        
+                        {{ page + 1 }}
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+
+    <ng-template #loader>
+        <div class="loader">
+            <mat-spinner diameter="80" strokeWidth="5" color="accent"></mat-spinner>
+        </div>
+    </ng-template>
+</div>

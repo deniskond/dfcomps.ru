@@ -3,6 +3,6 @@ export enum NavigationPages {
     RATING = 'rating',
     TEAMS = 'teams',
     RULES = 'rules',
-    ARCHIVE = 'archive',
+    NEWS = 'archive',
     MOVIES = 'movies',
 }

@@ -81,4 +81,7 @@ export const RUSSIAN_TRANSLATIONS = {
     uploadFailed: 'Загрузка не удалась',
     success: 'Успешно',
     demoSent: 'Демо отправлено',
+    archive: 'Новости',
+    newsArchive: 'Архив новостей',
+    goToArchive: 'Перейти в архив новостей',
 }
