@@ -68,6 +68,12 @@ export class SiteHeaderComponent extends Translations implements OnInit, OnDestr
             return;
         }
 
+        if (this.router.url.includes('news')) {
+            this.activePage = NavigationPages.NEWS;
+
+            return;
+        }
+
         if (activeTab) {
             this.activePage = activeTab.page;
 

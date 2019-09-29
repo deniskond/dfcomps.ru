@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 import { NewsTypes } from '../../enums/news-types.enum';
 import * as moment from 'moment';
 import { takeUntil } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
     templateUrl: './main.page.html',
@@ -21,7 +22,7 @@ export class MainPageComponent extends Translations implements OnInit, OnDestroy
 
     private onDestroy$ = new Subject<void>();
 
-    constructor(private newsService: NewsService, protected languageService: LanguageService) {
+    constructor(private router: Router, private newsService: NewsService, protected languageService: LanguageService) {
         super(languageService);
     }
 
@@ -44,6 +45,10 @@ export class MainPageComponent extends Translations implements OnInit, OnDestroy
 
     public reloadNews(): void {
         this.newsService.loadMainPageNews();
+    }
+
+    public navigateToArchive(): void {
+        this.router.navigate(['/archive']);
     }
 
     private initMainComponentNewsSubscription(): void {
