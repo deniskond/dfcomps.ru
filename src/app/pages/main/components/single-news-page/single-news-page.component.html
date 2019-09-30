@@ -10,6 +10,8 @@
                 {{ formatDate(singleNews.datetime) }}
             </div>
 
+            <app-youtube *ngIf="singleNews.youtube && singleNews.type !== newsTypes.ONLINE_RESULTS" [id]="singleNews.youtube" width="800" height="450" class="youtube"></app-youtube>
+
             <ng-container [ngSwitch]="singleNews.type">
                 <app-news-simple *ngSwitchCase="newsTypes.SIMPLE" [news]="singleNews"></app-news-simple>
                 <app-news-multicup-results *ngSwitchCase="newsTypes.MULTICUP_RESULTS" [news]="singleNews"></app-news-multicup-results>
