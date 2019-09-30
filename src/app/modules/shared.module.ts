@@ -9,6 +9,7 @@ import { MatRippleModule, MatTableModule } from '@angular/material';
 import { WeaponsComponent } from '../components/weapons/weapons.component';
 import { PlayerPlaceComponent } from '../components/player-place/player-place.component';
 import { CdkTableModule } from '@angular/cdk/table';
+import { YoutubeComponent } from '../components/youtube/youtube.component';
 
 const COMPONENTS = [
     FlagComponent,
@@ -18,6 +19,7 @@ const COMPONENTS = [
     GmtDateTimeComponent,
     PlayerPlaceComponent,
     PlayersRatingTableComponent,
+    YoutubeComponent,
 ];
 
 @NgModule({
