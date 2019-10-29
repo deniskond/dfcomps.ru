@@ -20,6 +20,6 @@ export class YoutubeComponent implements OnInit {
     constructor(public domSantizer: DomSanitizer) {}
 
     ngOnInit(): void {
-        this.iframeLink = this.domSantizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${this.id}`);
+        this.iframeLink = this.domSantizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${this.id}/?autoplay=1`);
     }
 }
