@@ -14,7 +14,7 @@
                         [endTime]="cup.endTime"
                         [cupType]="cup.type === 'offline' ? cupTypes.OFFLINE : cupTypes.ONLINE"
                         [cupName]="cup.fullName"
-                        [mapLink]="cup.mapPk3">
+                        [mapLink]="cup.customMap || cup.mapPk3">
                     </app-cup-timer>
                 </div>
                 <div class="right-block shadowed">
