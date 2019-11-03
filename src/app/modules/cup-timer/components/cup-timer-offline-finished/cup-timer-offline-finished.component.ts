@@ -17,6 +17,8 @@ export class CupTimerOfflineFinishedComponent extends Translations implements On
     mapLink: string;
     @Input()
     endTime: number;
+    @Input()
+    customNews: string;
 
     public formattedTime$: Observable<string>;
 

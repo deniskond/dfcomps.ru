@@ -1,6 +1,11 @@
-<a href="/news/{{ newsId }}" class="news-link">
+<a *ngIf="customNews; else newsIdLink" [href]="customNews" class="news-link">
     <h1 class="cup-name">{{ cupName }}</h1>
 </a>
+<ng-template #newsIdLink>
+    <a href="/news/{{ newsId }}" class="news-link">
+        <h1 class="cup-name">{{ cupName }}</h1>
+    </a>
+</ng-template>
 <h2 class="cup-date-time">
     {{ translations?.finished }} {{ formattedTime$ | async }}
 </h2>
