@@ -5,6 +5,7 @@ import { API_URL } from '../../../../configs/url-params.config';
 import { Physics } from '../../../../enums/physics.enum';
 import { NewsOfflineResultsInterface } from '../../../../services/news-service/interfaces/news-offline-results.interface';
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { CUSTOM_TABLE_NEWS_LIMIT } from '../../config/news.config';
 
 @Component({
     selector: 'app-news-offline-results',
@@ -13,6 +14,7 @@ import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/cor
 })
 export class NewsOfflineResultsComponent extends Translations implements OnInit, OnChanges {
     @Input() news: NewsOfflineResultsInterface;
+    @Input() customTable = false;
 
     public physics = Physics;
     public maxDemosCount: number;
@@ -23,21 +25,27 @@ export class NewsOfflineResultsComponent extends Translations implements OnInit,
     }
 
     ngOnInit(): void {
-        this.maxDemosCount =
-            this.news.cpmResults.valid.length > this.news.vq3Results.valid.length
-                ? this.news.cpmResults.valid.length
-                : this.news.vq3Results.valid.length;
-        
+        this.maxDemosCount = this.getMaxDemosCount();
         super.ngOnInit();
     }
 
     ngOnChanges({ news }: SimpleChanges): void {
         if (news && news.currentValue) {
-            this.invalidDemos = [ ...this.news.cpmResults.invalid, ...this.news.vq3Results.invalid ];
+            this.invalidDemos = [...this.news.cpmResults.invalid, ...this.news.vq3Results.invalid];
         }
     }
 
     public getArchiveLink(archiveLink: string): string {
         return `${API_URL}/${archiveLink}`;
+    }
+
+    private getMaxDemosCount(): number {
+        if (this.customTable) {
+            return CUSTOM_TABLE_NEWS_LIMIT;
+        }
+
+        return this.news.cpmResults.valid.length > this.news.vq3Results.valid.length
+            ? this.news.cpmResults.valid.length
+            : this.news.vq3Results.valid.length;
     }
 }

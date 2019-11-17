@@ -16,4 +16,5 @@ export interface NewsInterface {
     text: string;
     textEn: string;
     youtube: string;
+    tableJson: string;
 }

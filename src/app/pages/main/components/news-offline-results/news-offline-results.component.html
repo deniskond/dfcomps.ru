@@ -6,19 +6,19 @@
         <div class="map-info-table-row">
             <div class="map-info-cell-desc">{{ translations?.map }}</div>
             <div class="map-info-cell-info">
-                <a href="http://ws.q3df.org/map/{{news.cup.map1}}/" target="_blank" class="map-link">{{ news.cup.map1 }}</a>
+                <a href="{{ news.cup.customMap || 'http://ws.q3df.org/map/' + news.cup.map1 + '/' }}" target="_blank" class="map-link">{{ news.cup.map1 }}</a>
             </div>
         </div>
         <div class="map-info-table-row">
             <div class="map-info-cell-desc">{{ translations?.start }}</div>
             <div class="map-info-cell-info">
-                <app-gmt-date-time [timestamp]="news.cup.startTime"></app-gmt-date-time>
+                <app-gmt-date-time *ngIf="news.cup.startTime" [timestamp]="news.cup.startTime"></app-gmt-date-time>
             </div>
         </div>
         <div class="map-info-table-row">
             <div class="map-info-cell-desc">{{ translations?.finish }}</div>
             <div class="map-info-cell-info">
-                <app-gmt-date-time [timestamp]="news.cup.endTime"></app-gmt-date-time>
+                <app-gmt-date-time *ngIf="news.cup.endTime" [timestamp]="news.cup.endTime"></app-gmt-date-time>
             </div>
         </div>
         <div class="map-info-table-row">
@@ -43,7 +43,8 @@
             [physicsTable]="news.vq3Results.valid"
             [archiveLink]="news.cup.archiveLink"
             [cup]="news.cup"
-            [maxDemosCount]="maxDemosCount">
+            [maxDemosCount]="maxDemosCount"
+            [customTable]="customTable">
         </app-news-physics-table>
     </div>
     <div class="right-table">
@@ -52,7 +53,8 @@
             [physicsTable]="news.cpmResults.valid"
             [archiveLink]="news.cup.archiveLink"
             [cup]="news.cup"
-            [maxDemosCount]="maxDemosCount">
+            [maxDemosCount]="maxDemosCount"
+            [customTable]="customTable">
         </app-news-physics-table>
     </div>
 </div>

@@ -84,4 +84,5 @@ export const RUSSIAN_TRANSLATIONS = {
     archive: 'Новости',
     newsArchive: 'Архив новостей',
     goToArchive: 'Перейти в архив новостей',
+    fullResultsTable: 'Полная таблица результатов',
 }

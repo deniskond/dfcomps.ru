@@ -43,6 +43,8 @@ export class PlayerCellComponent {
     }
 
     public navigateToPlayerProfile(playerId: string): void {
-        this.router.navigate([`/profile/${playerId}`]);
+        if (playerId) {
+            this.router.navigate([`/profile/${playerId}`]);
+        }
     }
 }
