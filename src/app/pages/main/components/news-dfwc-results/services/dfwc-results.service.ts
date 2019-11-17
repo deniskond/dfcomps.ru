@@ -1,6 +1,5 @@
 import { BackendService } from '../../../../../services/backend-service/backend-service';
 import { ResultsTableInterface } from '../../../../../interfaces/results-table.interface';
-import { NewsTypes } from '../../../../../enums/news-types.enum';
 import { NewsOfflineResultsInterface } from '../../../../../services/news-service/interfaces/news-offline-results.interface';
 import { Injectable } from '@angular/core';
 import { DfwcResultsDtoInterface } from '../dto/dfwc-results.dto';
@@ -17,10 +16,8 @@ export class DfwcResultsService {
 
         return {
             ...news,
-            type: NewsTypes.OFFLINE_RESULTS,
             cpmResults: this.getPhysicsResults(cpm),
             vq3Results: this.getPhysicsResults(vq3),
-            levelshot: '',
         };
     }
 

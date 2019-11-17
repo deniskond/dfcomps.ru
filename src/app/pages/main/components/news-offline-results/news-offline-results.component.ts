@@ -25,6 +25,7 @@ export class NewsOfflineResultsComponent extends Translations implements OnInit,
     }
 
     ngOnInit(): void {
+        debugger;
         this.maxDemosCount = this.getMaxDemosCount();
         super.ngOnInit();
     }
