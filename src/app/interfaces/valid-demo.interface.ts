@@ -11,4 +11,5 @@ export interface ValidDemoInterface {
     row: string;
     time: string;
     isPreliminaryResult?: boolean;
+    absoluteLink?: boolean;
 }
