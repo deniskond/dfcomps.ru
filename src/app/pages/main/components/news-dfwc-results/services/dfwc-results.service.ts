@@ -22,22 +22,30 @@ export class DfwcResultsService {
     }
 
     private getPhysicsResults(results: Record<string, DfwcSingleResultDtoInterface>): ResultsTableInterface {
-        const arrayResults: DfwcSingleResultDtoInterface[] = Object.values(results).map(result => result);
+        const arrayResults: DfwcSingleResultDtoInterface[] = Object.values(results);
+        const firstPlaceTime = +arrayResults[0].time_ms;
 
         return {
-            valid: arrayResults.map((result: DfwcSingleResultDtoInterface) => ({
-                bonus: '0',
-                change: '0',
-                col: '',
-                country: result.flag,
-                demopath: '',
-                impressive: '0',
-                nick: result.name,
-                playerId: '',
-                rating: result.points,
-                row: '',
-                time: result.time.replace(/\:/, '\.'),
-            })),
+            valid: arrayResults.map((result: DfwcSingleResultDtoInterface, index: number) => {
+                const k1 = firstPlaceTime / +result.time_ms;
+                const k2 = (100 - index) / 100;
+                const points = arrayResults[0].rank ? result.points : (Math.round(1000 * k1 * k2)).toString();
+
+                return {
+                    bonus: '0',
+                    change: '0',
+                    col: '',
+                    country: result.flag,
+                    demopath: '',
+                    impressive: '0',
+                    nick: result.name,
+                    playerId: '',
+                    rating: points,
+                    row: '',
+                    time: result.time.replace(/\:/, '.'),
+                    isPreliminaryResult: !arrayResults[0].rank,
+                };
+            }),
             invalid: [],
         };
     }

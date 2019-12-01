@@ -10,4 +10,5 @@ export interface ValidDemoInterface {
     rating: string;
     row: string;
     time: string;
+    isPreliminaryResult?: boolean;
 }
