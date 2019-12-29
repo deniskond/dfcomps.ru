@@ -84,4 +84,5 @@ export const ENGLISH_TRANSLATIONS = {
     archive: 'News',
     newsArchive: 'News archive',
     goToArchive: 'Go to news archive',
+    fullResultsTable: 'Full results table',
 }

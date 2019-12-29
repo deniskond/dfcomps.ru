@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import {
     hoverableCellAnimation,
     HOVERABLE_CELL_HOVERED_STATE,
@@ -14,6 +14,7 @@ import { PlayerCellStyles } from './enums/player-cell-styles.enum';
     templateUrl: './player-cell.component.html',
     styleUrls: ['./player-cell.component.less'],
     animations: [hoverableCellAnimation],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayerCellComponent {
     @Input() country: string;
@@ -43,6 +44,8 @@ export class PlayerCellComponent {
     }
 
     public navigateToPlayerProfile(playerId: string): void {
-        this.router.navigate([`/profile/${playerId}`]);
+        if (playerId) {
+            this.router.navigate([`/profile/${playerId}`]);
+        }
     }
 }
