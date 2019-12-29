@@ -1,4 +1,5 @@
-<div mat-ripple
+<div *ngIf="playerId"
+    mat-ripple
     [@hoveredCell]="getHoveredState()"
     (mouseenter)="darkenPlayerRow()" 
     (mouseleave)="lightenPlayerRow()" 
@@ -7,4 +8,9 @@
 
     <app-flag [country]="country" [class.light]="style === playerCellStyles.TRANSPARENT" class="flag"></app-flag>
     <div [class.light]="style === playerCellStyles.TRANSPARENT" class="player-nick">{{ nick }}</div>
-</div>  
+</div>
+
+<div *ngIf="!playerId" class="player-nick-container no-hover">
+    <app-flag [country]="country" [class.light]="style === playerCellStyles.TRANSPARENT" class="flag"></app-flag>
+    <div [class.light]="style === playerCellStyles.TRANSPARENT" class="player-nick">{{ nick }}</div>
+</div>

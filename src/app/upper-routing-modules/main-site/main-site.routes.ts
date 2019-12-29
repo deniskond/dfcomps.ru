@@ -14,6 +14,7 @@ export const mainSiteRoutes: Routes = [
             { path: 'rules', loadChildren: './../../pages/rules/rules.page.module#RulesPageModule' },
             { path: 'teams', loadChildren: './../../pages/teams/teams.page.module#TeamsPageModule' },
             { path: 'profile/:id', loadChildren: './../../pages/profile/profile.page.module#ProfilePageModule' },
+            { path: 'dfwc2019', loadChildren: './../../pages/dfwc2019/dfwc2019.page.module#Dfwc2019PageModule' },
         ],
     },
 ];
