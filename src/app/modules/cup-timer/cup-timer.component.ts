@@ -20,6 +20,8 @@ export class CupTimerComponent {
     mapLink: string;
     @Input()
     newsId: string;
+    @Input()
+    customNews: string;
 
     public cupTypes = CupTypes;
 }

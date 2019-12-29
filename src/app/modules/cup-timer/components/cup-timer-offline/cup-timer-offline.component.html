@@ -12,6 +12,7 @@
             [newsId]="newsId"
             [mapLink]="mapLink"
             [endTime]="endTime"
+            [customNews]="customNews"
             (finished)="changeTimerState(timerStates.FINISHED)">
         </app-cup-timer-offline-progress>
     </ng-container>
@@ -20,6 +21,7 @@
             [cupName]="cupName"
             [newsId]="newsId"
             [mapLink]="mapLink"
+            [customNews]="customNews"
             [endTime]="endTime">
         </app-cup-timer-offline-finished>
     </ng-container>

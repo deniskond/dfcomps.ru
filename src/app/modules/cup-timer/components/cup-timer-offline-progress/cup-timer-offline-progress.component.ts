@@ -17,6 +17,8 @@ export class CupTimerOfflineProgressComponent extends Translations implements On
     mapLink: string;
     @Input()
     endTime: number;
+    @Input()
+    customNews: string;
 
     @Output()
     finished = new EventEmitter<void>();

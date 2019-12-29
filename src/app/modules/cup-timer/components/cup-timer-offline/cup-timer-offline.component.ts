@@ -17,6 +17,8 @@ export class CupTimerOfflineComponent implements OnInit {
     mapLink: string;
     @Input()
     newsId: string;
+    @Input()
+    customNews: string;
 
     public timerState: CupTimerStates;
     public timerStates = CupTimerStates;
