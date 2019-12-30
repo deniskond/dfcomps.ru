@@ -193,7 +193,7 @@ export const cpmTable: DfwcResultInterface[] = [
     { place: 49, country: 'ru', nick: 'player192', points: 2457 },
     { place: 50, country: 'ru', nick: '>>/Abibas', points: 2429, playerId: 25 },
     { place: 51, country: 'ru', nick: 'huh-halla', points: 2409, playerId: 227 },
-    { place: 52, country: 'ru', nick: 'vmo', points: 2384 },
+    { place: 52, country: 'ru', nick: 'vmo', points: 2384, playerId: 95 },
     { place: 53, country: 'fr', nick: 'De4th-crY', points: 2331 },
     { place: 54, country: 'se', nick: 'Crossaren', points: 2245 },
     { place: 55, country: 'nl', nick: 'Daan', points: 2219 },
