@@ -28,6 +28,13 @@ export class PROFILE_REWARDS {
             [Rewards.DDC2018_TOP3]: 'ddc2018-top3',
             [Rewards.DDC2018_TOP4]: 'ddc2018-top4',
             [Rewards.DDC2018_PARTICIPANT]: 'ddc2018-part',
+            [Rewards.DFWC2019_PARTICIPANT]: 'dfwc2019-participant',
+            [Rewards.DFWC2019_WINNER_VQ3]: 'dfwc2019-1st',
+            [Rewards.DFWC2019_WINNER_CPM]: 'dfwc2019-1st',
+            [Rewards.DFWC2019_TOP2_VQ3]: 'dfwc2019-2nd',
+            [Rewards.DFWC2019_TOP2_CPM]: 'dfwc2019-2nd',
+            [Rewards.DFWC2019_TOP3_VQ3]: 'dfwc2019-3rd',
+            [Rewards.DFWC2019_TOP3_CPM]: 'dfwc2019-3rd',
         };
     }
 }
