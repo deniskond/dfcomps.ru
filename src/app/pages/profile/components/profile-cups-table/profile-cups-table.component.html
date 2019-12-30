@@ -4,7 +4,8 @@
         <ng-container cdkColumnDef="name">
             <mat-header-cell *cdkHeaderCellDef class="cup-name-column"> {{ translations?.tournamentName }} </mat-header-cell>
             <mat-cell *cdkCellDef="let row" class="cup-name-column"> 
-                <a href="/news/{{ row.newsId }}">{{ row.fullName }} – {{ row.shortName }}</a> 
+                <a *ngIf="row.newsId" href="/news/{{ row.newsId }}">{{ row.fullName }} – {{ row.shortName }}</a> 
+                <span class="cup-name" *ngIf="!row.newsId">{{ row.fullName }} – {{ row.shortName }}</span>
             </mat-cell>
         </ng-container>
     
