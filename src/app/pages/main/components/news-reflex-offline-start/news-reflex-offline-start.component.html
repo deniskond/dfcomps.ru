@@ -7,7 +7,7 @@
             <div class="map-info-row">
                 <div class="row-desc">{{ translations?.map }}</div>
                 <div class="row-info">
-                    <a href="http://ws.q3df.org/map/{{news.cup.map1}}/" target="_blank" class="map-link">{{ news.cup.map1 }}</a>
+                    <a target="_blank" class="map-link">{{ news.cup.map1 }}</a>
                 </div>
             </div>
             <div class="map-info-row">
@@ -41,9 +41,7 @@
             <div class="map-info-row">
                 <div class="row-desc">{{ translations?.rules }}</div>
                 <div class="row-info">
-                    <a routerLink="/rules">{{ translations?.fullRules }}</a>
-                    <span class="separator">|</span> 
-                    <a href="/assets/files/offline-rules.cfg" target="_blank">{{ translations?.config }}</a>
+                    Instructions
                 </div>
             </div>
         </div>
@@ -54,13 +52,12 @@
                     <ng-container *ngIf="user$ | async; else notLogged">
                         <ng-container [ngSwitch]="cupState">
                             <div *ngSwitchCase="cupStates.IN_PROGRESS" class="demo-upload-block">
-                                <input #fileInput name="demo" accept=".dm_68" type="file">
+                                <input #fileInput name="demo" accept=".rep" type="file">
                                 <div (click)="uploadDemo()" class="demo-upload-button">
                                     <mat-spinner *ngIf="isUploading" diameter="20" strokeWidth="2" color="accent" class="spinner"></mat-spinner>
                                     <img *ngIf="!isUploading" src="/assets/images/icons/upload.jpg" />
                                 </div>
                             </div>
-                            <!-- TODO Поправить -->
                             <div *ngSwitchCase="cupStates.FINISHED || cupStates.NOT_STARTED">{{ translations?.cupFinished }}</div>
                             <div *ngSwitchCase="cupStates.NOT_STARTED">{{ translations?.cupNotStarted }}</div>
                         </ng-container>
@@ -75,7 +72,7 @@
                     <ng-container *ngIf="news.playerDemos && !!news.playerDemos.length; else noDemos">
                         <div class="top-demos">
                             <ng-container *ngIf="news.cpmRes && news.cpmDemo">
-                                <a href="{{ mainUrl }}/api/uploads/demos/cup{{ news.cup.id }}/{{ news.cpmDemo }}">{{ news.cpmRes }}</a>&nbsp;(cpm)
+                                <a href="{{ mainUrl }}/api/uploads/demos/cup{{ news.cup.id }}/{{ news.cpmDemo }}">Demo uploaded</a>&nbsp;(reflex)
                                 <span *ngIf="news.vq3Res && news.vq3Demo">,&nbsp;</span>
                             </ng-container>
                         </div>

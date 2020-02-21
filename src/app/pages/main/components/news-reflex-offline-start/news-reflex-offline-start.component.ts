@@ -59,19 +59,13 @@ export class NewsReflexOfflineStartComponent extends Translations implements OnI
             return;
         }
 
-        if (!demo.name.toLowerCase().includes(this.news.cup.map1.toLowerCase())) {
-            this.snackBar.open(this.translations.error, this.translations.wrongMap, { duration: 3000 });
-
-            return;
-        }
-
         this.isUploading = true;
 
         this.user$
             .pipe(
                 take(1),
                 switchMap((user: UserInterface) =>
-                    this.demosService.uploadDemo$(demo, this.news.cup.id, this.news.cup.map1, user.id, demo.name),
+                    this.demosService.reflexUploadDemo$(demo, this.news.cup.id, this.news.cup.map1, user.id, demo.name),
                 ),
                 finalize(() => {
                     this.fileInput.nativeElement.value = null;

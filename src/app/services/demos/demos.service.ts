@@ -30,4 +30,19 @@ export class DemosService extends BackendService {
             cupId,
         });
     }
+
+    public reflexUploadDemo$(
+        demo: File,
+        cupId: string,
+        mapName: string,
+        playerId: string,
+        fileName: string,
+    ): Observable<UploadDemoDtoInterface> {
+        return this.uploadFile$(URL_PARAMS.DEMOS.REFLEX_UPLOAD, demo, {
+            cupId,
+            mapName,
+            playerId,
+            fileName,
+        });
+    }
 }

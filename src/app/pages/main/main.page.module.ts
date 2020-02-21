@@ -22,6 +22,7 @@ import { PlayerDemosDialogComponent } from './components/news-offline-start/play
 import { SingleNewsPageComponent } from './components/single-news-page/single-news-page.component';
 import { InvalidDemosListComponent } from './components/news-offline-results/invalid-demos-list/invalid-demos-list.component';
 import { NewsDfwcResultsComponent } from './components/news-dfwc-results/news-dfwc-results.component';
+import { ReflexPlayerDemosDialogComponent } from './components/news-reflex-offline-start/reflex-player-demos-dialog/reflex-player-demos-dialog.component';
 
 const routes: Routes = [
     {
@@ -60,12 +61,13 @@ const routes: Routes = [
         NewsCommentsComponent,
         ValidationDialogComponent,
         PlayerDemosDialogComponent,
+        ReflexPlayerDemosDialogComponent,
         SingleNewsPageComponent,
         InvalidDemosListComponent,
         NewsDfwcResultsComponent,
         NewsReflexOfflineStartComponent,
     ],
     providers: [NewsService],
-    entryComponents: [ValidationDialogComponent, PlayerDemosDialogComponent],
+    entryComponents: [ValidationDialogComponent, PlayerDemosDialogComponent, ReflexPlayerDemosDialogComponent],
 })
 export class MainPageModule {}
