@@ -1,3 +1,4 @@
+import { NewsReflexOfflineStartComponent } from './components/news-reflex-offline-start/news-reflex-offline-start.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MainPageComponent } from './main.page';
@@ -62,6 +63,7 @@ const routes: Routes = [
         SingleNewsPageComponent,
         InvalidDemosListComponent,
         NewsDfwcResultsComponent,
+        NewsReflexOfflineStartComponent,
     ],
     providers: [NewsService],
     entryComponents: [ValidationDialogComponent, PlayerDemosDialogComponent],

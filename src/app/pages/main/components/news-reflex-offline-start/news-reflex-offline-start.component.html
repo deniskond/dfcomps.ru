@@ -60,7 +60,8 @@
                                     <img *ngIf="!isUploading" src="/assets/images/icons/upload.jpg" />
                                 </div>
                             </div>
-                            <div *ngSwitchCase="cupStates.FINISHED">{{ translations?.cupFinished }}</div>
+                            <!-- TODO Поправить -->
+                            <div *ngSwitchCase="cupStates.FINISHED || cupStates.NOT_STARTED">{{ translations?.cupFinished }}</div>
                             <div *ngSwitchCase="cupStates.NOT_STARTED">{{ translations?.cupNotStarted }}</div>
                         </ng-container>
                     </ng-container>
@@ -76,9 +77,6 @@
                             <ng-container *ngIf="news.cpmRes && news.cpmDemo">
                                 <a href="{{ mainUrl }}/api/uploads/demos/cup{{ news.cup.id }}/{{ news.cpmDemo }}">{{ news.cpmRes }}</a>&nbsp;(cpm)
                                 <span *ngIf="news.vq3Res && news.vq3Demo">,&nbsp;</span>
-                            </ng-container>
-                            <ng-container *ngIf="news.vq3Res && news.vq3Demo">
-                                <a href="{{ mainUrl }}/api/uploads/demos/cup{{ news.cup.id }}/{{ news.vq3Demo }}">{{ news.vq3Res }}</a>&nbsp;(vq3)
                             </ng-container>
                         </div>
                         <div (click)="openPlayerDemosDialog()" class="player-demos-button">
