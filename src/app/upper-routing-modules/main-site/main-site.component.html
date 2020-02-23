@@ -9,7 +9,8 @@
             <div class="right-column">
                 <div class="right-block shadowed">
                     <app-cup-timer
-                        *ngIf="(nextCupInfo$ | async) as cup" 
+                        *ngIf="(nextCupInfo$ | async) as cup"
+                        [newsId]="cup.newsId"
                         [startTime]="cup.startTime"
                         [endTime]="cup.endTime"
                         [cupType]="cup.type === 'offline' ? cupTypes.OFFLINE : cupTypes.ONLINE"
