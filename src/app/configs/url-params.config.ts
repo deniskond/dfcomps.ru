@@ -48,6 +48,14 @@ export class URL_PARAMS {
         return `${API_URL}/profile/${playerId}`;
     }
 
+    public static PROFILE_CHECK_NICK_CHANGE(): string {
+        return `${API_URL}/profile/check_last_nick_change_time`;
+    }
+
+    public static PROFILE_UPDATE(): string {
+        return `${API_URL}/profile/update`;
+    }
+
     public static get NEWS(): {
         MAIN_PAGE: string;
         COUNT: string;

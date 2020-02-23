@@ -1,0 +1,47 @@
+<div class="h1-block-header dialog-header">{{ translations?.editProfile }}</div>
+
+<form [formGroup]="editProfileForm">
+    <div class="edit-nick row">
+        <div class="left-column">
+            <div>{{ translations?.nick }}</div>
+            <div class="sub-message">{{ translations?.nickChangeMessage }}</div>
+        </div>
+        <div class="right-column">
+            <input formControlName="nick" class="input-field" />
+        </div>
+    </div>
+    <div class="edit-avatar row">
+        <div class="left-column">
+            <div>{{ translations?.avatar }}</div>
+            <div class="sub-message">{{ translations?.avatarChangeMessage }}</div>
+        </div>
+        <div class="right-column">
+            <input #fileInput name="avatar" type="file" class="file-input" accept=".jpg">
+        </div>
+    </div>
+    <div class="edit-country row">
+        <div class="left-column">{{ translations?.country }}</div>
+        <div class="right-column">
+            <select formControlName="country" class="input-field">
+                <option></option>
+                <option 
+                    *ngFor="let country of countries"
+                    [selected]="country.shortName === data.country">
+                    
+                    {{ country.fullName }}
+                </option>
+            </select>
+        </div>
+    </div>
+</form>
+
+<div class="dialog-button">
+    <mat-spinner *ngIf="isLoading" diameter="20" strokeWidth="2" color="accent" class="spinner"></mat-spinner>
+    <button 
+        [disabled]="!editProfileForm.valid || isLoading" 
+        (click)="onEditProfileClick()" 
+        mat-raised-button color="primary">
+
+        {{ translations?.save }}
+    </button>
+</div>

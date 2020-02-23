@@ -85,4 +85,10 @@ export const ENGLISH_TRANSLATIONS = {
     newsArchive: 'News archive',
     goToArchive: 'Go to news archive',
     fullResultsTable: 'Full results table',
+    editProfile: 'Edit profile',
+    nick: 'Nick',
+    nickChangeMessage: 'Can be changed once per month, login remains the same',
+    avatar: 'Avatar',
+    avatarChangeMessage: 'Max size - 1MB',
+    save: 'Save',
 }
