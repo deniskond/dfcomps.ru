@@ -66,8 +66,8 @@ export class ProfilePageComponent extends Translations implements OnInit, OnDest
 
     public getAvatarSrc(): string {
         return this.mainInfo.avatar
-            ? `${this.apiUrl}/avatars/${this.mainInfo.avatar}.jpg`
-            : `${this.apiUrl}/avatars/no_avatar.png`;
+            ? `${this.apiUrl}/images/avatars/${this.mainInfo.avatar}.jpg`
+            : `${this.apiUrl}/images/avatars/no_avatar.png`;
     }
 
     public openEditProfilePopup(): void {
