@@ -4,8 +4,8 @@ import { API_URL } from '../../configs/url-params.config';
 import { Physics } from '../../enums/physics.enum';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { switchMap, tap, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { switchMap, tap, takeUntil, map, withLatestFrom } from 'rxjs/operators';
+import { Subject, Observable, combineLatest } from 'rxjs';
 import { ProfileService } from './services/profile.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Rewards } from './enums/rewards.enum';
@@ -15,6 +15,10 @@ import { ProfileMainInfoInterface } from './interfaces/profile-main-info.interfa
 import { ProfileInterface } from './interfaces/profile.interface';
 import { ProfileDemosDtoInterface } from './dto/profile-demos.dto';
 import { ProfileRewardsDtoInterface } from './dto/profile-rewards.dto';
+import { UserService } from '../../services/user-service/user.service';
+import { UserInterface } from '../../interfaces/user.interface';
+import { MatDialog } from '@angular/material';
+import { EditProfileDialogComponent } from './components/edit-profile-dialog/edit-profile-dialog';
 
 @Component({
     templateUrl: './profile.page.html',
@@ -30,20 +34,27 @@ export class ProfilePageComponent extends Translations implements OnInit, OnDest
     public isLoading = true;
     public physics = Physics;
     public apiUrl = API_URL;
+    public isEditProfileAvailable$: Observable<boolean>;
+    public isNickChangeAllowed = false;
+    public profileUpdate$ = new Subject<void>();
 
     private onDestroy$ = new Subject<void>();
 
     constructor(
+        protected languageService: LanguageService,
         private activatedRoute: ActivatedRoute,
         private profileService: ProfileService,
         private sanitizer: DomSanitizer,
-        protected languageService: LanguageService,
+        private userService: UserService,
+        private dialog: MatDialog,
     ) {
         super(languageService);
     }
 
     ngOnInit(): void {
+        this.initObservables();
         this.setRouteSubscription();
+        this.setProfileUpdateSubscription();
         super.ngOnInit();
     }
 
@@ -53,31 +64,62 @@ export class ProfilePageComponent extends Translations implements OnInit, OnDest
         super.ngOnDestroy();
     }
 
-    public setRouteSubscription(): void {
+    public getAvatarSrc(): string {
+        return this.mainInfo.avatar
+            ? `${this.apiUrl}/images/avatars/${this.mainInfo.avatar}.jpg`
+            : `${this.apiUrl}/images/avatars/no_avatar.png`;
+    }
+
+    public openEditProfilePopup(): void {
+        const dialogRef = this.dialog.open(EditProfileDialogComponent, {
+            data: {
+                nick: this.mainInfo.nick,
+                country: this.mainInfo.country,
+            },
+        });
+
+        dialogRef.componentInstance.reloadProfile.subscribe(() => this.profileUpdate$.next());
+    }
+
+    private initObservables(): void {
+        this.isEditProfileAvailable$ = combineLatest([
+            this.activatedRoute.params,
+            this.userService.getCurrentUser$(),
+        ]).pipe(map(([{ id }, user]: [Params, UserInterface]) => id === user.id));
+    }
+
+    private setRouteSubscription(): void {
         this.activatedRoute.params
             .pipe(
                 tap(() => (this.isLoading = true)),
                 switchMap(({ id }: Params) => this.profileService.getProfile$(id)),
                 takeUntil(this.onDestroy$),
             )
-            .subscribe((profileInfo: ProfileInterface) => {
-                this.mainInfo = profileInfo.player;
-                this.cpmChart = profileInfo.rating.cpm;
-                this.vq3Chart = profileInfo.rating.vq3;
-                this.demos = profileInfo.demos.map(({ demopath }: ProfileDemosDtoInterface) => demopath);
-                this.cups = this.mapCupsToView(profileInfo.cups);
-                this.rewards = profileInfo.rewards.map(({ name }: ProfileRewardsDtoInterface) => name);
-
-                this.sanitizer.bypassSecurityTrustResourceUrl(`/assets/images/avatars/${this.mainInfo.avatar}.jpg`);
-
-                this.isLoading = false;
-            });
+            .subscribe((profileInfo: ProfileInterface) => this.updateProfile(profileInfo));
     }
 
-    public getAvatarSrc(): string {
-        return this.mainInfo.avatar
-            ? `${this.apiUrl}/avatars/${this.mainInfo.avatar}.jpg`
-            : `${this.apiUrl}/avatars/no_avatar.png`;
+    private setProfileUpdateSubscription(): void {
+        this.profileUpdate$
+            .pipe(
+                tap(() => (this.isLoading = true)),
+                withLatestFrom(this.activatedRoute.params),
+                switchMap(([, { id }]: [void, Params]) => this.profileService.getProfile$(id, false)),
+                takeUntil(this.onDestroy$),
+            )
+            .subscribe((profileInfo: ProfileInterface) => this.updateProfile(profileInfo));
+    }
+
+    private updateProfile(profileInfo: ProfileInterface): void {
+        this.mainInfo = profileInfo.player;
+        this.cpmChart = profileInfo.rating.cpm;
+        this.vq3Chart = profileInfo.rating.vq3;
+        this.demos = profileInfo.demos.map(({ demopath }: ProfileDemosDtoInterface) => demopath);
+        this.cups = this.mapCupsToView(profileInfo.cups);
+        this.rewards = profileInfo.rewards.map(({ name }: ProfileRewardsDtoInterface) => name);
+
+        this.sanitizer.bypassSecurityTrustResourceUrl(`/assets/images/avatars/${this.mainInfo.avatar}.jpg`);
+
+        this.isLoading = false;
     }
 
     private mapCupsToView(cups: ProfileCupDtoInterface[]): ProfileCupInterface[] {

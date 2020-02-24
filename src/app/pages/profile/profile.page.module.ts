@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { ProfilePageComponent } from './profile.page';
-import { MatProgressSpinnerModule, MatButtonModule, MatTooltipModule, MatTableModule } from '@angular/material';
+import { MatProgressSpinnerModule, MatButtonModule, MatTooltipModule, MatTableModule, MatDialogModule } from '@angular/material';
 import { SharedModule } from '../../modules/shared.module';
 import { ProfileCupsTableComponent } from './components/profile-cups-table/profile-cups-table.component';
 import { ProfileRewardsComponent } from './components/profile-rewards/profile-rewards.component';
@@ -11,6 +11,8 @@ import { ProfileService } from './services/profile.service';
 import { ProfileLastDemosComponent } from './components/profile-last-demos/profile-last-demos.component';
 import { CdkTableModule } from '@angular/cdk/table';
 import { ChartsModule } from 'ng2-charts';
+import { EditProfileDialogComponent } from './components/edit-profile-dialog/edit-profile-dialog';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
     {
@@ -26,6 +28,7 @@ const routes: Routes = [
         ProfileRewardsComponent,
         ProfileRatingChartComponent,
         ProfileLastDemosComponent,
+        EditProfileDialogComponent,
     ],
     imports: [
         CommonModule,
@@ -37,7 +40,11 @@ const routes: Routes = [
         MatTableModule,
         CdkTableModule,
         ChartsModule,
+        MatDialogModule,
+        FormsModule,
+        ReactiveFormsModule,
     ],
     providers: [ProfileService],
+    entryComponents: [EditProfileDialogComponent],
 })
 export class ProfilePageModule {}

@@ -85,4 +85,10 @@ export const RUSSIAN_TRANSLATIONS = {
     newsArchive: 'Архив новостей',
     goToArchive: 'Перейти в архив новостей',
     fullResultsTable: 'Полная таблица результатов',
+    editProfile: 'Редактировать профиль',
+    nick: 'Ник',
+    nickChangeMessage: 'Может быть изменен раз в месяц, логин остается прежним',
+    avatar: 'Аватар',
+    avatarChangeMessage: 'Макс. размер - 1MB',
+    save: 'Сохранить',
 }
