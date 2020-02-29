@@ -25,6 +25,7 @@ import { InvalidDemosListComponent } from './components/news-offline-results/inv
 import { NewsDfwcResultsComponent } from './components/news-dfwc-results/news-dfwc-results.component';
 import { ReflexPlayerDemosDialogComponent } from './components/news-reflex-offline-start/reflex-player-demos-dialog/reflex-player-demos-dialog.component';
 import { NewsReflexPhysicsTableComponent } from './components/news-reflex-offline-results/news-reflex-physics-table/news-reflex-physics-table.component';
+import { ReflexInvalidDemosListComponent } from './components/news-reflex-offline-results/reflex-invalid-demos-list/reflex-invalid-demos-list.component';
 
 const routes: Routes = [
     {
@@ -70,6 +71,7 @@ const routes: Routes = [
         NewsReflexOfflineStartComponent,
         NewsReflexOfflineResultsComponent,
         NewsReflexPhysicsTableComponent,
+        ReflexInvalidDemosListComponent,
     ],
     providers: [NewsService],
     entryComponents: [ValidationDialogComponent, PlayerDemosDialogComponent, ReflexPlayerDemosDialogComponent],
