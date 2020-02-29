@@ -7,4 +7,5 @@ export enum NewsTypes {
     SIMPLE = 'text',
     DFWC_RESULTS = 'dfwc_round_results',
     REFLEX_OFFLINE_START = 'reflex_offline_start',
+    REFLEX_OFFLINE_RESULTS = 'reflex_offline_results',
 }

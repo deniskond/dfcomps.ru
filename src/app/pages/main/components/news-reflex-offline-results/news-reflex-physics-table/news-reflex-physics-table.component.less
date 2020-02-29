@@ -1,0 +1,76 @@
+@import '../../../../../../assets/styles/colors';
+
+.physics-header {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eeeeee;
+    border: 1px solid #cccccc;
+    height: 32px;
+    margin-top: 15px;
+}
+
+.cup-results-row {
+    display: flex;
+    height: 32px;
+    border: 1px solid #ccc;
+    border-top: 0px;
+
+    .place-column {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 32px;
+        border-right: 1px solid #ccc;
+    }
+
+    .player-column {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 1;
+        border-right: 1px solid #ccc;
+        position: relative;
+    }
+
+    .time-column {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 80px;
+        border-right: 1px solid #ccc;
+    }
+
+    .rating-column {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 80px;
+        position: relative;
+    }
+}
+
+.time {
+    color: @link-blue;
+}
+
+.bonus-plus {
+    position: absolute;
+    right: 10px;
+    top: 4px;
+    width: 9px;
+    height: 9px;
+}
+
+.impressive {
+    position: absolute;
+    right: 7px;
+    top: 9px;
+    width: 14px;
+    height: 14px;
+}
+
+.preliminary {
+    color: #888;
+}

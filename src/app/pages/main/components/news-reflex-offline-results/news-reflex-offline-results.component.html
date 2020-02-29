@@ -1,0 +1,57 @@
+<div class="map-info">
+    <div class="levelshot-container">
+        <img [src]="news.levelshot" class="levelshot" />
+    </div>
+    <div class="map-info-table">
+        <div class="map-info-table-row">
+            <div class="map-info-cell-desc">{{ translations?.map }}</div>
+            <div class="map-info-cell-info">
+                <a href="{{ news.cup.customMap || 'http://ws.q3df.org/map/' + news.cup.map1 + '/' }}" target="_blank" class="map-link">{{ news.cup.map1 }}</a>
+            </div>
+        </div>
+        <div class="map-info-table-row">
+            <div class="map-info-cell-desc">{{ translations?.start }}</div>
+            <div class="map-info-cell-info">
+                <app-gmt-date-time *ngIf="news.cup.startTime" [timestamp]="news.cup.startTime"></app-gmt-date-time>
+            </div>
+        </div>
+        <div class="map-info-table-row">
+            <div class="map-info-cell-desc">{{ translations?.finish }}</div>
+            <div class="map-info-cell-info">
+                <app-gmt-date-time *ngIf="news.cup.endTime" [timestamp]="news.cup.endTime"></app-gmt-date-time>
+            </div>
+        </div>
+        <div class="map-info-table-row">
+            <div class="map-info-cell-desc">{{ translations?.weapons }}</div>
+            <div class="map-info-cell-info">
+                <app-weapons [weapons]="news.cup.mapWeapons"></app-weapons>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="news.cup.archiveLink" style="margin-top:15px;font-size:17px;text-align:center;">
+    <a [href]="getArchiveLink(news.cup.archiveLink)">
+        <strong>&gt;&gt; {{ translations?.allDemosArchive }} &lt;&lt;</strong>
+    </a>
+</div>
+
+<div class="flex">
+    <div class="left-table">
+        <app-news-reflex-physics-table 
+            [physics]="physics.CPM" 
+            [physicsTable]="news.cpmResults.valid"
+            [archiveLink]="news.cup.archiveLink"
+            [cup]="news.cup"
+            [maxDemosCount]="maxDemosCount"
+            [customTable]="customTable">
+        </app-news-reflex-physics-table>
+    </div>
+</div>
+
+<app-invalid-demos-list
+    [cupId]="news.cup.id"
+    [invalidDemos]="invalidDemos">
+</app-invalid-demos-list>
+
+<app-html-news [news]="news"></app-html-news>

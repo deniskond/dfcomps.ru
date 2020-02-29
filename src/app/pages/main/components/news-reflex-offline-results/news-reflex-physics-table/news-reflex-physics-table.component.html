@@ -1,0 +1,42 @@
+<div class="physics-header">
+    Reflex
+</div>
+<div class="cup-results-row">
+    <div class="place-column">#</div>
+    <div class="player-column">Player</div>
+    <div class="time-column">Time</div>
+    <div class="rating-column">{{ customTable ? 'Points' : 'Rating' }}</div>
+</div>
+<div *ngFor="let result of table; let i = index" class="cup-results-row">
+    <div class="place-column">
+        <app-player-place [place]="places[i]"></app-player-place>
+    </div>
+    <div class="player-column">
+        <app-player-cell 
+            [country]="result.country" 
+            [nick]="result.nick"
+            [playerId]="result.playerId">
+        </app-player-cell>
+        <img *ngIf="result.impressive === '1'" class="impressive" src="/assets/images/icons/impressive.png" />
+    </div>
+    <div *ngIf="archiveLink || !result.demopath; else noArchiveLink" class="time-column time">{{ formatResult(result.time) }}</div>
+    <ng-template #noArchiveLink>
+        <div class="time-column time">
+            <a [href]="getDemoLink(result)">{{ formatResult(result.time) }}</a>
+        </div>
+    </ng-template>
+    <div class="rating-column">
+        <ng-container *ngIf="!customTable">
+            <app-rating-change [change]="result.change" [zeroIfNull]="cup.ratingCalculated === '1'"></app-rating-change>
+            <img *ngIf="result.bonus === '1'" class="bonus-plus" src="/assets/images/icons/plus.png" />
+        </ng-container>
+        <span *ngIf="customTable" [class.preliminary]="result.isPreliminaryResult">{{ result.rating || '-' }}</span>
+    </div>
+</div>
+
+<div *ngFor="let row of range(maxDemosCount - table.length)" class="cup-results-row">
+    <div class="place-column"></div>
+    <div class="player-column"></div>
+    <div class="time-column"></div>
+    <div class="rating-column"></div>
+</div>

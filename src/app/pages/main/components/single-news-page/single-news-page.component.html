@@ -24,6 +24,7 @@
                 </app-news-offline-start>
                 <app-news-offline-results *ngSwitchCase="newsTypes.OFFLINE_RESULTS" [news]="singleNews"></app-news-offline-results>
                 <app-news-dfwc-results *ngSwitchCase="newsTypes.DFWC_RESULTS" [news]="singleNews"></app-news-dfwc-results>
+                <app-news-reflex-offline-results *ngSwitchCase="newsTypes.REFLEX_OFFLINE_RESULTS" [news]="singleNews"></app-news-reflex-offline-results>
             </ng-container>
 
             <app-news-comments [comments]="singleNews.comments" [newsId]="singleNews.id" [expandable]="false"></app-news-comments>

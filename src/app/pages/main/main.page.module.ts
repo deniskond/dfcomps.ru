@@ -1,3 +1,4 @@
+import { NewsReflexOfflineResultsComponent } from './components/news-reflex-offline-results/news-reflex-offline-results.component';
 import { NewsReflexOfflineStartComponent } from './components/news-reflex-offline-start/news-reflex-offline-start.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -23,6 +24,7 @@ import { SingleNewsPageComponent } from './components/single-news-page/single-ne
 import { InvalidDemosListComponent } from './components/news-offline-results/invalid-demos-list/invalid-demos-list.component';
 import { NewsDfwcResultsComponent } from './components/news-dfwc-results/news-dfwc-results.component';
 import { ReflexPlayerDemosDialogComponent } from './components/news-reflex-offline-start/reflex-player-demos-dialog/reflex-player-demos-dialog.component';
+import { NewsReflexPhysicsTableComponent } from './components/news-reflex-offline-results/news-reflex-physics-table/news-reflex-physics-table.component';
 
 const routes: Routes = [
     {
@@ -66,6 +68,8 @@ const routes: Routes = [
         InvalidDemosListComponent,
         NewsDfwcResultsComponent,
         NewsReflexOfflineStartComponent,
+        NewsReflexOfflineResultsComponent,
+        NewsReflexPhysicsTableComponent,
     ],
     providers: [NewsService],
     entryComponents: [ValidationDialogComponent, PlayerDemosDialogComponent, ReflexPlayerDemosDialogComponent],
