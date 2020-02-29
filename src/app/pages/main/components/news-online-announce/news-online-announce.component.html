@@ -1,5 +1,5 @@
 <app-html-news [news]="news"></app-html-news>
-<span>{{ translations?.listOfRegisteredPlayers }}:</span>
+<div class="players-table-description">{{ translations?.listOfRegisteredPlayers }}:</div>
 <div class="players-table">
     <div *ngFor="let row of range(rowCount)" class="players-row">
         <div *ngFor="let column of range(columnCount)" class="players-cell">
