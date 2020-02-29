@@ -31,4 +31,5 @@ export interface CupInterface {
     youtube: string;
     customMap?: string;
     customNews?: string;
+    cupId?: string;
 }
