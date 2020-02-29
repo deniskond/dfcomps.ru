@@ -5,7 +5,7 @@
         <div *ngFor="let column of range(columnCount)" class="players-cell">
             <div class="number">{{ column * rowCount + row + 1 }}</div>
             <div class="player">
-                <ng-container *ngIf="news.registeredPlayers[column * rowCount + row + 1] as player">
+                <ng-container *ngIf="news.registeredPlayers[column * rowCount + row] as player">
                     <app-player-cell [country]="player.country" [nick]="player.nick" [playerId]="player.id"></app-player-cell>
                 </ng-container>
             </div>
