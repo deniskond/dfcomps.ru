@@ -5,10 +5,18 @@
         <div *ngFor="let column of range(columnCount)" class="players-cell">
             <div class="number">{{ column * rowCount + row + 1 }}</div>
             <div class="player">
-                <ng-container *ngIf="news.registeredPlayers[column * rowCount + row] as player">
+                <ng-container *ngIf="registeredPlayers[column * rowCount + row] as player">
                     <app-player-cell [country]="player.country" [nick]="player.nick" [playerId]="player.id"></app-player-cell>
                 </ng-container>
             </div>
         </div>
     </div>
 </div>
+<button 
+    (click)="toggleRegistration()"
+    mat-raised-button 
+    color="primary"
+    class="registration-button">
+
+    {{ isRegistered ? translations?.cancelRegistration : translations?.registerForCup }}
+</button>

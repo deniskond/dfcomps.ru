@@ -91,4 +91,6 @@ export const ENGLISH_TRANSLATIONS = {
     avatar: 'Avatar',
     avatarChangeMessage: 'Max size - 1MB',
     save: 'Save',
+    registerForCup: 'Register for cup',
+    cancelRegistration: 'Cancel registration',
 }

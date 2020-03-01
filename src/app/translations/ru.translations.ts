@@ -91,4 +91,6 @@ export const RUSSIAN_TRANSLATIONS = {
     avatar: 'Аватар',
     avatarChangeMessage: 'Макс. размер - 1MB',
     save: 'Сохранить',
+    registerForCup: 'Зарегистрироваться',
+    cancelRegistration: 'Отменить регистрацию',
 }
