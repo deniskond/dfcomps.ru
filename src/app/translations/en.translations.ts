@@ -93,4 +93,5 @@ export const ENGLISH_TRANSLATIONS = {
     save: 'Save',
     registerForCup: 'Register for cup',
     cancelRegistration: 'Cancel registration',
+    returnToMainpage: 'Return to mainpage',
 }

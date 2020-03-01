@@ -93,4 +93,5 @@ export const RUSSIAN_TRANSLATIONS = {
     save: 'Сохранить',
     registerForCup: 'Зарегистрироваться',
     cancelRegistration: 'Отменить регистрацию',
+    returnToMainpage: 'На главную',
 }

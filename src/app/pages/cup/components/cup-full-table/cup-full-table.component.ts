@@ -1,3 +1,5 @@
+import { LanguageService } from '../../../../services/language/language.service';
+import { Translations } from '../../../../components/translations/translations.component';
 import { Physics } from '../../../../enums/physics.enum';
 import { PlayerCellStyles } from '../../../../components/player-cell/enums/player-cell-styles.enum';
 import { CupSystems } from '../../../../enums/cup-systems.enum';
@@ -12,7 +14,7 @@ import { MulticupResultInterface } from '../../interfaces/multicup-result.interf
     styleUrls: ['./cup-full-table.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CupFullTableComponent implements OnChanges {
+export class CupFullTableComponent extends Translations implements OnChanges {
     @Input()
     fullTable: MulticupTableInterface;
     @Input()
@@ -25,6 +27,10 @@ export class CupFullTableComponent implements OnChanges {
     public places: number[];
     public roundsCount: number;
     public range = (n: string) => new Array(+n).fill(null);
+
+    constructor(protected languageService: LanguageService) {
+        super(languageService);
+    }
 
     ngOnChanges({ fullTable }: SimpleChanges): void {
         if (fullTable && fullTable.currentValue) {

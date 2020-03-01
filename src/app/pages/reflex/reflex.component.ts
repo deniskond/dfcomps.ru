@@ -10,6 +10,6 @@ export class ReflexComponent implements OnInit {
     constructor(private router: Router) {}
 
     ngOnInit(): void {
-        this.router.navigate(['/news/375']);
+        this.router.navigate(['/news/382']);
     }
 }
