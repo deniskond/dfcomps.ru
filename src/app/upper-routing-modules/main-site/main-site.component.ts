@@ -3,7 +3,6 @@ import { CupInterface } from '../../interfaces/cup.interface';
 import { Physics } from '../../enums/physics.enum';
 import { CupTypes } from '../../enums/cup-types.enum';
 import { Component, OnInit } from '@angular/core';
-import * as moment from 'moment';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -20,13 +19,4 @@ export class MainSiteComponent implements OnInit {
     ngOnInit(): void {
         this.nextCupInfo$ = this.cupsService.getNextCupInfo$();
     }
-
-    // TODO [DFRU-21] Оффлайн капы
-    // TODO [DFRU-22] Онлайн капы
-    // public startTime = moment()
-    //     .add(100, 'seconds')
-    //     .unix();
-    // public endTime = moment()
-    //     .add(200, 'seconds')
-    //     .unix();
 }

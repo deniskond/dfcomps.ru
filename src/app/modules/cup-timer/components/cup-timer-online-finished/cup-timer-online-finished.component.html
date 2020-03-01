@@ -1,0 +1,12 @@
+<a href="/news/{{ newsId }}" class="news-link">
+    <h1 class="cup-name">{{ cupName }}</h1>
+</a>
+<h2 class="cup-date-time">
+    {{ translations?.finished }} {{ formattedTime$ | async }}
+</h2>
+<div class="timeholder">
+    {{ translations?.finished }}
+</div>
+<a class="map-link" download>
+    <div class="bottom-info">{{ server }}</div>
+</a>

@@ -22,6 +22,8 @@ export class CupTimerComponent {
     newsId: string;
     @Input()
     customNews: string;
+    @Input()
+    server: string;
 
     public cupTypes = CupTypes;
 }

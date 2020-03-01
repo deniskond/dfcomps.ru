@@ -7,21 +7,20 @@
         </app-cup-timer-online-awaiting>
     </ng-container>
     <ng-container *ngSwitchCase="timerStates.IN_PROGRESS">
-        <!-- <app-cup-timer-online-progress
+        <app-cup-timer-online-progress
             [cupName]="cupName"
             [newsId]="newsId"
             [endTime]="endTime"
-            [customNews]="customNews"
+            [server]="server"
             (finished)="changeTimerState(timerStates.FINISHED)">
-        </app-cup-timer-online-progress> -->
+        </app-cup-timer-online-progress>
     </ng-container>
     <ng-container *ngSwitchCase="timerStates.FINISHED">
-        <!-- <app-cup-timer-online-finished
+        <app-cup-timer-online-finished
             [cupName]="cupName"
             [newsId]="newsId"
-            [mapLink]="mapLink"
-            [customNews]="customNews"
-            [endTime]="endTime">
-        </app-cup-timer-online-finished> -->
+            [endTime]="endTime"
+            [server]="server">
+        </app-cup-timer-online-finished>
     </ng-container>
 </ng-container>

@@ -1,0 +1,15 @@
+<a href="/news/{{ newsId }}" class="news-link">
+    <h1 class="cup-name">{{ cupName }}</h1>
+</a>
+<h2 class="cup-date-time">
+    {{ translations?.finishing }} {{ formattedTime$ | async }}
+</h2>
+<div class="timeholder">
+    <app-countdown-timer
+        [targetTime]="endTime"
+        (finished)="finished.emit()">
+    </app-countdown-timer>
+</div>
+<a class="map-link" download>
+    <div class="bottom-info">{{ server }}</div>
+</a>

@@ -6,7 +6,9 @@
             *ngSwitchCase="cupTypes.ONLINE"
             [cupName]="cupName"
             [startTime]="startTime"
-            [newsId]="newsId">
+            [endTime]="endTime"
+            [newsId]="newsId"
+            [server]="server">
         </app-cup-timer-online>
         <app-cup-timer-offline
             *ngSwitchCase="cupTypes.OFFLINE"

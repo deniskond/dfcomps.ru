@@ -17,6 +17,8 @@ export class CupTimerOnlineComponent implements OnInit {
     currentTime: number;
     @Input()
     newsId: string;
+    @Input()
+    server: string;
 
     public timerState: CupTimerStates;
     public timerStates = CupTimerStates;

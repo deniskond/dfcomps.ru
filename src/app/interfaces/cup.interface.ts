@@ -28,6 +28,7 @@ export interface CupInterface {
     type: string;
     useTwoServers: string;
     youtube: string;
+    newsId?: string;
     customMap?: string;
     customNews?: string;
     cupId?: string;

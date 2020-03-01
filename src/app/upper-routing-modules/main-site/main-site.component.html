@@ -11,12 +11,13 @@
                     <app-cup-timer
                         *ngIf="(nextCupInfo$ | async) as cup"
                         [newsId]="cup.newsId"
-                        [startTime]="cup.startTime"
-                        [endTime]="cup.endTime"
+                        [startTime]="startTime"
+                        [endTime]="endTime"
                         [cupType]="cup.type === 'offline' ? cupTypes.OFFLINE : cupTypes.ONLINE"
                         [cupName]="cup.fullName"
                         [customNews]="cup.customNews"
-                        [mapLink]="cup.customMap || cup.mapPk3">
+                        [mapLink]="cup.customMap || cup.mapPk3"
+                        [server]="cup.server1">
                     </app-cup-timer>
                 </div>
                 <div class="right-block shadowed">
