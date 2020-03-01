@@ -1,3 +1,23 @@
+<div *ngIf="news.twitch1 && news.twitch2" class="streams-container">
+    <div class="pagination-container">
+        <div class="pagination">
+            <div 
+                *ngFor="let streamNumber of range(2)" 
+                [class.selected]="currentStream === streamNumber" 
+                (click)="changeStream(streamNumber)" 
+                matRipple 
+                class="page blue-link">
+                
+                Stream {{ streamNumber + 1 }}
+            </div>
+        </div>
+    </div>
+    <iframe *ngIf="currentStream === 0" [src]="iframeLink1" frameborder="0" allowfullscreen="true" scrolling="no" height="450" width="800">
+    </iframe>
+    <iframe *ngIf="currentStream === 1" [src]="iframeLink2" frameborder="0" allowfullscreen="true" scrolling="no" height="450" width="800">
+    </iframe>
+</div>
+
 <app-html-news [news]="news"></app-html-news>
 <div class="players-table-description">{{ translations?.listOfRegisteredPlayers }}:</div>
 <div class="players-table">

@@ -4,18 +4,19 @@ import { RegisteredPlayerInterface } from '../../../../interfaces/registered-pla
 import { LanguageService } from '../../../../services/language/language.service';
 import { Translations } from '../../../../components/translations/translations.component';
 import { NewsOnlineAnnounceInterface } from '../../../../services/news-service/interfaces/news-online-announce.interface';
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, OnInit } from '@angular/core';
 import { range } from 'lodash';
 import { CupRegistrationService } from '../../services/cup-registration/cup-registration.service';
 import { filter, withLatestFrom, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-news-online-announce',
     templateUrl: './news-online-announce.component.html',
     styleUrls: ['./news-online-announce.component.less'],
 })
-export class NewsOnlineAnnounceComponent extends Translations implements OnChanges {
+export class NewsOnlineAnnounceComponent extends Translations implements OnInit, OnChanges {
     @Input() news: NewsOnlineAnnounceInterface;
 
     public range = range;
@@ -23,14 +24,30 @@ export class NewsOnlineAnnounceComponent extends Translations implements OnChang
     public rowCount = 10;
     public isRegistered: boolean;
     public registeredPlayers: RegisteredPlayerInterface[];
+    public iframeLink1: SafeUrl;
+    public iframeLink2: SafeUrl;
+    public currentStream = 0;
 
     constructor(
         protected languageService: LanguageService,
         private cupRegistrationService: CupRegistrationService,
         private userService: UserService,
         private router: Router,
+        private domSantizer: DomSanitizer,
     ) {
         super(languageService);
+    }
+
+    ngOnInit(): void {
+        this.iframeLink1 = this.domSantizer.bypassSecurityTrustResourceUrl(
+            `https://player.twitch.tv/?channel=${this.news.twitch1}}&autoplay=false`,
+        );
+
+        this.iframeLink2 = this.domSantizer.bypassSecurityTrustResourceUrl(
+            `https://player.twitch.tv/?channel=${this.news.twitch2}}&autoplay=false`,
+        );
+
+        super.ngOnInit();
     }
 
     ngOnChanges({ news }: SimpleChanges): void {
@@ -77,5 +94,9 @@ export class NewsOnlineAnnounceComponent extends Translations implements OnChang
 
     public openFullTable(): void {
         this.router.navigate(['/cup/online'], { queryParams: { id: this.news.cupId } });
+    }
+
+    public changeStream(streamNumber: number): void {
+        this.currentStream = streamNumber;
     }
 }
