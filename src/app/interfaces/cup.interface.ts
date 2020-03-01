@@ -15,7 +15,6 @@ export interface CupInterface {
     mapPk3: string;
     mapSize: string;
     mapWeapons: string;
-    multicup: string;
     multicupId: string;
     physics: string;
     ratingCalculated: string;

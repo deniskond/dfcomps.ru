@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CupTimerStates } from '../../enums/cup-timer-states.enum';
-import * as moment from 'moment';
+import { getCurrentTimerState } from '../../helpers/cup-timer-state.helper';
 
 @Component({
     selector: 'app-cup-timer-offline',
@@ -24,22 +24,10 @@ export class CupTimerOfflineComponent implements OnInit {
     public timerStates = CupTimerStates;
 
     ngOnInit(): void {
-        this.timerState = this.getCurrentTimerState();
+        this.timerState = getCurrentTimerState(this.startTime, this.endTime);
     }
 
     public changeTimerState(timerState: CupTimerStates): void {
         this.timerState = timerState;
-    }
-
-    private getCurrentTimerState(): CupTimerStates {
-        if (moment().unix() < this.startTime) {
-            return CupTimerStates.AWAITING_START;
-        }
-
-        if (moment().unix() < this.endTime) {
-            return CupTimerStates.IN_PROGRESS;
-        }
-
-        return CupTimerStates.FINISHED;
     }
 }
