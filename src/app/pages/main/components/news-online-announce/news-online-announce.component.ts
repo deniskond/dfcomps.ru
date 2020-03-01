@@ -8,7 +8,7 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { range } from 'lodash';
 import { CupRegistrationService } from '../../services/cup-registration/cup-registration.service';
 import { filter, withLatestFrom, catchError } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-news-online-announce',
@@ -28,7 +28,7 @@ export class NewsOnlineAnnounceComponent extends Translations implements OnChang
         protected languageService: LanguageService,
         private cupRegistrationService: CupRegistrationService,
         private userService: UserService,
-        private snackBar: MatSnackBar,
+        private router: Router,
     ) {
         super(languageService);
     }
@@ -73,5 +73,9 @@ export class NewsOnlineAnnounceComponent extends Translations implements OnChang
                     ];
                 });
         }
+    }
+
+    public openFullTable(): void {
+        this.router.navigate(['/cup/online'], { queryParams: { id: this.news.cupId } });
     }
 }

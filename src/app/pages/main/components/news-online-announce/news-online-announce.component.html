@@ -12,11 +12,21 @@
         </div>
     </div>
 </div>
-<button 
-    (click)="toggleRegistration()"
-    mat-raised-button 
-    color="primary"
-    class="registration-button">
+<div class="buttons-container">
+    <button 
+        (click)="toggleRegistration()"
+        mat-raised-button 
+        color="primary"
+        class="registration-button">
 
-    {{ isRegistered ? translations?.cancelRegistration : translations?.registerForCup }}
-</button>
+        {{ isRegistered ? translations?.cancelRegistration : translations?.registerForCup }}
+    </button>
+    <button 
+        (click)="openFullTable()"
+        mat-raised-button 
+        color="primary"
+        class="full-table-button">
+
+        {{ translations?.fullTable }}
+    </button>
+</div>

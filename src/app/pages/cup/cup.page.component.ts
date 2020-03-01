@@ -4,7 +4,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { CupPageTypes } from './enums/cup-page-types.enum';
 import { CupTableService } from './services/cup-table.service';
 import { ReplaySubject, Subject } from 'rxjs';
-import { takeUntil, take } from 'rxjs/operators';
+import { takeUntil, take, map } from 'rxjs/operators';
 import { MulticupRoundInterface } from './interfaces/multicup-round.interface';
 import { MulticupTableInterface } from './interfaces/multicup-table.interface';
 
@@ -79,7 +79,10 @@ export class CupPageComponent implements OnInit, OnDestroy {
         if (this.type === CupPageTypes.ONLINE) {
             this.cupTableService
                 .getOnlineCupFullTable$(id)
-                .pipe(take(1))
+                .pipe(
+                    take(1),
+                    map((cupTable: MulticupTableInterface) => ({ ...cupTable, currentRound: +cupTable.currentRound })),
+                )
                 .subscribe((table: MulticupTableInterface) => this.fullTable$.next(table));
         }
     }

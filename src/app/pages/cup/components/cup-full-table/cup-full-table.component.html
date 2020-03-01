@@ -23,7 +23,7 @@
                 <div class="yellow">Round {{ i + 1 }}</div>
             </ng-container>
             <ng-container *ngIf="i + 1 > fullTable.currentRound">
-                <div class="cell">Round {{ i + 1 }}</div>
+                Round {{ i + 1 }}
             </ng-container>
         </div>
         <div [class.yellow]="fullTable.currentRound === roundsCount" class="cell">Overall</div>
