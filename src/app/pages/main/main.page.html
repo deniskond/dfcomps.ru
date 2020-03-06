@@ -1,50 +1,19 @@
-<div *ngIf="news; else loader" class="news-container">
+<div class="news-container">
     <ng-container *ngFor="let singleNews of news">
-        <div class="shadowed-main-block news-block">
+        <div class="shadowed-main-block news-block" style="height: 240px;box-shadow: 1px 1px 25px 8px rgba(0, 0, 0, 0.3);">
             <h1 class="h1-block-header no-margin">
-                <a routerLink="/news/{{ singleNews.id }}" class="news_header_link">
+                <a class="news_header_link">
                     {{ language === languages.EN ? singleNews.headerEn : singleNews.header }}
                 </a>
             </h1>
                 
             <div class="author-and-date">
-                {{ translations?.author }}: <a routerLink="/profile/{{ singleNews.authorId }}" class="black-link">{{ singleNews.authorName }}</a>,
-                {{ formatDate(singleNews.datetime) }}
+                {{ translations?.author }}: <a class="black-link">{{ singleNews.authorName }}</a>
             </div>
 
-            <app-youtube *ngIf="singleNews.youtube && singleNews.type !== newsTypes.ONLINE_RESULTS" [id]="singleNews.youtube" width="800" height="450" class="youtube"></app-youtube>
-
             <ng-container [ngSwitch]="singleNews.type">
-                <app-news-simple *ngSwitchCase="newsTypes.SIMPLE" [news]="singleNews"></app-news-simple>
-                <app-news-multicup-results *ngSwitchCase="newsTypes.MULTICUP_RESULTS" [news]="singleNews"></app-news-multicup-results>
-                <app-news-online-announce *ngSwitchCase="newsTypes.ONLINE_ANNOUNCE" [news]="singleNews"></app-news-online-announce>
-                <app-news-online-results *ngSwitchCase="newsTypes.ONLINE_RESULTS" [news]="singleNews"></app-news-online-results>
-                <app-news-offline-start 
-                    *ngSwitchCase="newsTypes.OFFLINE_START" 
-                    [news]="singleNews" 
-                    (reloadNews)="reloadNews()">
-                </app-news-offline-start>
-                <app-news-offline-results *ngSwitchCase="newsTypes.OFFLINE_RESULTS" [news]="singleNews"></app-news-offline-results>
-                <app-news-dfwc-results *ngSwitchCase="newsTypes.DFWC_RESULTS" [news]="singleNews"></app-news-dfwc-results>
-                <app-news-reflex-offline-start 
-                    *ngSwitchCase="newsTypes.REFLEX_OFFLINE_START" 
-                    [news]="singleNews" 
-                    (reloadNews)="reloadNews()">
-                </app-news-reflex-offline-start>
-                <app-news-reflex-offline-results *ngSwitchCase="newsTypes.REFLEX_OFFLINE_RESULTS" [news]="singleNews"></app-news-reflex-offline-results>
+                <app-news-simple *ngSwitchCase="newsTypes.SIMPLE" [news]="singleNews" style="display:block;margin-top:16px;"></app-news-simple>
             </ng-container>
-
-            <app-news-comments [comments]="singleNews.comments" [newsId]="singleNews.id"></app-news-comments>
         </div>
     </ng-container>
-
-    <div (click)="navigateToArchive()" class="archive-link">{{ translations?.goToArchive }}</div>
 </div>
-
-<ng-template #loader>
-    <div class="shadowed-main-block">
-        <div class="loader">
-            <mat-spinner diameter="80" strokeWidth="5" color="accent"></mat-spinner>
-        </div>
-    </div>
-</ng-template>

@@ -18,13 +18,13 @@ export class AppComponent implements OnInit {
     }
 
     private tryLoginFromCookie(): void {
-        this.userService
-            .tryLoginFromCookie$()
-            .pipe(
-                take(1),
-                filter(({ logged }: LoginResultDtoInterface) => logged),
-            )
-            .subscribe(({ user }: LoginResultDtoInterface) => this.userService.setCurrentUser(user));
+        // this.userService
+        //     .tryLoginFromCookie$()
+        //     .pipe(
+        //         take(1),
+        //         filter(({ logged }: LoginResultDtoInterface) => logged),
+        //     )
+        //     .subscribe(({ user }: LoginResultDtoInterface) => this.userService.setCurrentUser(user));
     }
 
     private setLanguageFromCookie(): void {
