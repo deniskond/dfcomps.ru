@@ -15,7 +15,7 @@ const SECONDS_IN_MINUTE = 60;
 })
 export class CountdownTimerComponent extends Translations implements OnInit, OnDestroy {
     @Input()
-    targetTime: number;
+    targetTime: string;
 
     @Output()
     finished = new EventEmitter<void>();
@@ -63,7 +63,7 @@ export class CountdownTimerComponent extends Translations implements OnInit, OnD
     }
 
     private calculateCurrentTimerValue(): number {
-        const timeDiff = this.targetTime - moment().unix();
+        const timeDiff: number = moment(this.targetTime).unix() - moment().unix();
 
         return timeDiff > 0 ? timeDiff : 0;
     }

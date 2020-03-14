@@ -12,21 +12,21 @@ export class CupTimerOfflineAwaitingComponent extends Translations implements On
     @Input()
     cupName: string;
     @Input()
-    startTime: number;
+    startTime: string;
 
     @Output()
     finished = new EventEmitter<void>();
 
     public formattedTime$: Observable<string>;
 
-    private startTime$ = new ReplaySubject<number>(1);
+    private startTime$ = new ReplaySubject<string>(1);
 
     constructor(protected languageService: LanguageService) {
         super(languageService);
     }
 
     ngOnInit(): void {
-        this.formattedTime$ = this.startTime$.pipe(switchMap((time: number) => this.getFormattedCupTime$(time)));
+        this.formattedTime$ = this.startTime$.pipe(switchMap((time: string) => this.getFormattedCupTime$(time)));
         super.ngOnInit();
     }
 

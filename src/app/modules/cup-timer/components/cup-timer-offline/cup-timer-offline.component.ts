@@ -10,9 +10,9 @@ export class CupTimerOfflineComponent implements OnInit {
     @Input()
     cupName: string;
     @Input()
-    startTime: number;
+    startTime: string;
     @Input()
-    endTime: number;
+    endTime: string;
     @Input()
     mapLink: string;
     @Input()

@@ -105,15 +105,14 @@ export class NewsReflexOfflineStartComponent extends Translations implements OnI
     }
 
     private getCupState(): CupStates {
-        const startTime = +this.news.cup.startTime;
-        const endTime = +this.news.cup.endTime;
-        const currentTime = +moment().format('X');
+        const startTime: string = this.news.cup.startDateTime;
+        const endTime: string = this.news.cup.endDateTime;
 
-        if (currentTime < startTime) {
+        if (moment().isBefore(moment(startTime))) {
             return CupStates.NOT_STARTED;
         }
 
-        if (currentTime > endTime) {
+        if (moment().isAfter(moment(endTime))) {
             return CupStates.FINISHED;
         }
 

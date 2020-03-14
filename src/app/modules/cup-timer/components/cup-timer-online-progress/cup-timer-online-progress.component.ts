@@ -14,7 +14,7 @@ export class CupTimerOnlineProgressComponent extends Translations implements OnI
     @Input()
     newsId: string;
     @Input()
-    endTime: number;
+    endTime: string;
     @Input()
     server: string;
 
@@ -23,14 +23,14 @@ export class CupTimerOnlineProgressComponent extends Translations implements OnI
 
     public formattedTime$: Observable<string>;
 
-    private endTime$ = new ReplaySubject<number>(1);
+    private endTime$ = new ReplaySubject<string>(1);
 
     constructor(protected languageService: LanguageService) {
         super(languageService);
     }
 
     ngOnInit(): void {
-        this.formattedTime$ = this.endTime$.pipe(switchMap((time: number) => this.getFormattedCupTime$(time)));
+        this.formattedTime$ = this.endTime$.pipe(switchMap((time: string) => this.getFormattedCupTime$(time)));
         super.ngOnInit();
     }
 

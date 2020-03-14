@@ -28,10 +28,10 @@ export class Translations implements OnInit, OnDestroy {
         this.languageService.setLanguage(language);
     }
 
-    public getFormattedCupTime$(timestamp: number): Observable<string> {
+    public getFormattedCupTime$(dateTime: string): Observable<string> {
         return this.languageService
             .getLanguage$()
-            .pipe(map((language: Languages) => formatCupTime(timestamp, language)));
+            .pipe(map((language: Languages) => formatCupTime(dateTime, language)));
     }
 
     private initLanguageSubscription(): void {

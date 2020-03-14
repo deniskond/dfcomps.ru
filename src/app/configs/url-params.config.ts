@@ -1,6 +1,6 @@
 import { Physics } from '../enums/physics.enum';
 
-export const MAIN_URL = 'http://dfcomps.ru';
+export const MAIN_URL = 'http://localhost';
 export const API_URL = `${MAIN_URL}/api`;
 
 export class URL_PARAMS {
