@@ -8,11 +8,11 @@ import * as moment from 'moment';
 })
 export class GmtDateTimeComponent implements OnInit {
     @Input()
-    timestamp: string;
+    dateTime: string;
 
     public formattedDateTime: string;
 
     ngOnInit(): void {
-        this.formattedDateTime = moment(+this.timestamp * 1000).format('DD.MM.YYYY HH:mm');
+        this.formattedDateTime = moment(this.dateTime).format('DD.MM.YYYY HH:mm');
     }
 }

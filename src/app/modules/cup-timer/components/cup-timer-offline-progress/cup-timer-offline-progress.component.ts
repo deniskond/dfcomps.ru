@@ -32,7 +32,6 @@ export class CupTimerOfflineProgressComponent extends Translations implements On
     }
 
     ngOnInit(): void {
-        debugger;
         this.formattedTime$ = this.endTime$.pipe(switchMap((time: string) => this.getFormattedCupTime$(time)));
         super.ngOnInit();
     }
