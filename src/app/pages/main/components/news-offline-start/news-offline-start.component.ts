@@ -14,7 +14,6 @@ import { Observable, of } from 'rxjs';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { ValidationDialogComponent } from './validation-dialog/validation-dialog.component';
 import { PlayerDemosDialogComponent } from './player-demos-dialog/player-demos-dialog.component';
-import { NewsService } from '../../../../services/news-service/news.service';
 
 @Component({
     selector: 'app-news-offline-start',
@@ -117,15 +116,14 @@ export class NewsOfflineStartComponent extends Translations implements OnInit {
     }
 
     private getCupState(): CupStates {
-        const startTime = +this.news.cup.startTime;
-        const endTime = +this.news.cup.endTime;
-        const currentTime = +moment().format('X');
+        const startTime: string = this.news.cup.startDateTime;
+        const endTime: string = this.news.cup.endDateTime;
 
-        if (currentTime < startTime) {
+        if (moment().isBefore(moment(startTime))) {
             return CupStates.NOT_STARTED;
         }
 
-        if (currentTime > endTime) {
+        if (moment().isAfter(moment(endTime))) {
             return CupStates.FINISHED;
         }
 

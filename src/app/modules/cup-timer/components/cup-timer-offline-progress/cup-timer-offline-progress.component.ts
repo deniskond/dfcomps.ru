@@ -16,7 +16,7 @@ export class CupTimerOfflineProgressComponent extends Translations implements On
     @Input()
     mapLink: string;
     @Input()
-    endTime: number;
+    endTime: string;
     @Input()
     customNews: string;
 
@@ -25,14 +25,14 @@ export class CupTimerOfflineProgressComponent extends Translations implements On
 
     public formattedTime$: Observable<string>;
 
-    private endTime$ = new ReplaySubject<number>(1);
+    private endTime$ = new ReplaySubject<string>(1);
 
     constructor(protected languageService: LanguageService) {
         super(languageService);
     }
 
     ngOnInit(): void {
-        this.formattedTime$ = this.endTime$.pipe(switchMap((time: number) => this.getFormattedCupTime$(time)));
+        this.formattedTime$ = this.endTime$.pipe(switchMap((time: string) => this.getFormattedCupTime$(time)));
         super.ngOnInit();
     }
 

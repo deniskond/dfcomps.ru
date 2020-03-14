@@ -3,7 +3,8 @@ export interface CupInterface {
     bonusRating: string;
     currentRound: string;
     demosValidated: string;
-    endTime: string;
+    startDateTime: string;
+    endDateTime: string;
     fullName: string;
     id: string;
     map1: string;
@@ -21,7 +22,6 @@ export interface CupInterface {
     server1: string;
     server2: string;
     shortName: string;
-    startTime: string;
     system: string;
     timer: string;
     twitch: string;

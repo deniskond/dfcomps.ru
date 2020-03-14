@@ -13,9 +13,9 @@ export class CupTimerComponent {
     @Input()
     cupType: CupTypes;
     @Input()
-    startTime: number;
+    startTime: string;
     @Input()
-    endTime: number;
+    endTime: string;
     @Input()
     mapLink: string;
     @Input()

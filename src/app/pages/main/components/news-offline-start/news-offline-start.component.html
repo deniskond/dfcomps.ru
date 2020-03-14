@@ -13,13 +13,13 @@
             <div class="map-info-row">
                 <div class="row-desc">{{ translations?.start }}</div>
                 <div class="row-info">
-                    <app-gmt-date-time [timestamp]="news.cup.startTime"></app-gmt-date-time>
+                    <app-gmt-date-time [dateTime]="news.cup.startDateTime"></app-gmt-date-time>
                 </div>
             </div>
             <div class="map-info-row">
                 <div class="row-desc">{{ translations?.finish }}</div>
                 <div class="row-info">
-                    <app-gmt-date-time [timestamp]="news.cup.endTime"></app-gmt-date-time>
+                    <app-gmt-date-time [dateTime]="news.cup.endDateTime"></app-gmt-date-time>
                 </div>
             </div>
             <div class="map-info-row">
