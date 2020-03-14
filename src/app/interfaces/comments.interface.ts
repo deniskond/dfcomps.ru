@@ -1,6 +1,6 @@
 export interface CommentInterface {
     comment: string;
-    datetime: string;
+    datetimezone: string;
     id: string;
     newsId: string;
     playerId: string;

@@ -8,7 +8,7 @@
                     <a *ngIf="(language$ | async) as language" class="blue-link bold">
                         {{ language === languages.RU ? singleNews.header : singleNews.headerEn }}
                     </a>
-                    <div>{{ singleNews.datetime }}</div>
+                    <div>{{ formatDate(singleNews.datetimezone) }}</div>
                 </div>
             </div>
 

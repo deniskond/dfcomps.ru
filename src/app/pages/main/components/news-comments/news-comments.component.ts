@@ -7,6 +7,7 @@ import { Component, Input, ViewChild, ElementRef, OnChanges, SimpleChanges, OnIn
 import { CommentsService } from '../../services/comments/comments.service';
 import { ReplaySubject, Observable } from 'rxjs';
 import { take, finalize } from 'rxjs/operators';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-news-comments',
@@ -71,5 +72,9 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
                 this.comments$.next(updatedComments);
                 this.textarea.nativeElement.value = '';
             });
+    }
+
+    public formatDate(date: string): string {
+        return moment(date).format('DD.MM.YYYY HH:mm:ss');
     }
 }

@@ -18,7 +18,7 @@
                         <span><a class="black-link" routerLink="/profile/{{ comment.playerId }}">{{ comment.username }}</a></span>
                     </div>
                     <div class="comment-header-right">
-                        {{ comment.datetime }}
+                        {{ formatDate(comment.datetimezone) }}
                     </div>
                 </div>
                 <div [innerHTML]="comment.smilesComment" class="comment-inner"></div>

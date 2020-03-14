@@ -1,3 +1,4 @@
+import { CommentInterface } from '../../../interfaces/comments.interface';
 import { NewsTypes } from '../../../enums/news-types.enum';
 
 export interface NewsInterface {
@@ -19,4 +20,5 @@ export interface NewsInterface {
     tableJson: string;
     twitch1: string;
     twitch2: string;
+    comments: CommentInterface[];
 }

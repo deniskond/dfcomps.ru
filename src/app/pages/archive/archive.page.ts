@@ -8,6 +8,7 @@ import { range } from 'lodash';
 import { switchMap } from 'rxjs/operators';
 import { ArchiveNewsInterface } from './interfaces/archive-news.interface';
 import { Router } from '@angular/router';
+import * as moment from 'moment';
 
 const NEWS_ON_PAGE = 50;
 
@@ -58,5 +59,9 @@ export class ArchivePageComponent extends Translations implements OnInit {
         this.currentPage = page;
         this.currentNewsRange$.next([0, 0]);
         this.currentNewsRange$.next([page * NEWS_ON_PAGE, (page + 1) * NEWS_ON_PAGE]);
+    }
+
+    public formatDate(date: string): string {
+        return moment(date).format('DD.MM.YYYY HH:mm');
     }
 }
