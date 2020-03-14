@@ -6,7 +6,7 @@ export interface NewsInterface {
     authorId: string;
     authorName: string;
     currentRound: string;
-    datetime: string;
+    datetimezone: string;
     header: string;
     headerEn: string;
     image: string;
