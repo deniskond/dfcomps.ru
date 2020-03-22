@@ -9,7 +9,7 @@ import { CommentInterface } from '../../../../interfaces/comments.interface';
 import { Component, Input, ViewChild, ElementRef, OnChanges, SimpleChanges, OnInit } from '@angular/core';
 import { CommentsService } from '../../services/comments/comments.service';
 import { ReplaySubject, Observable, combineLatest } from 'rxjs';
-import { take, finalize, map, catchError } from 'rxjs/operators';
+import { take, finalize, map, catchError, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 import { CommentActionResultInterface } from '../../services/comments/interfaces/comment-action.interface';
 import { MatSnackBar, MatDialog } from '@angular/material';
@@ -112,8 +112,15 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
             );
     }
 
-    public adminDeleteComment(id: string): void {
-        this.dialog.open(AdminDeleteCommentDialogComponent).afterClosed().subscribe(data => console.log(data));
+    public adminDeleteComment(commentId: string): void {
+        this.dialog
+            .open(AdminDeleteCommentDialogComponent)
+            .afterClosed()
+            .pipe(switchMap((reason: string) => this.commentsService.adminDeleteComment$(commentId, reason)))
+            .subscribe((updatedComments: CommentInterface[]) => {
+                this.comments$.next(updatedComments);
+                this.textarea.nativeElement.value = '';
+            });
     }
 
     public editComment(id: string): void {
@@ -162,7 +169,7 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
             .add(COMMENT_ACTION_PERIOD_MINUTES, 'minutes')
             .isAfter(moment());
         const isEditable: boolean = user && comment.playerId === user.id && isNewComment;
-        const isAdminDeletable: boolean = !isEditable && user && user.access === UserAccess.ADMIN;
+        const isAdminDeletable: boolean = !comment.reason && !isEditable && user && user.access === UserAccess.ADMIN;
 
         return { ...comment, isEditable, isAdminDeletable };
     }

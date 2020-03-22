@@ -74,11 +74,13 @@ export class URL_PARAMS {
         ADD: string;
         DELETE: string;
         UPDATE: string;
+        ADMIN_DELETE: string;
     } {
         return {
             ADD: `${API_URL}/comments/add`,
             DELETE: `${API_URL}/comments/delete/`,
             UPDATE: `${API_URL}/comments/update/`,
+            ADMIN_DELETE: `${API_URL}/comments/admin_delete/`,
         };
     }
 

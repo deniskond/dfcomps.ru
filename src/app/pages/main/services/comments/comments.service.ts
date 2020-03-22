@@ -28,4 +28,11 @@ export class CommentsService extends BackendService {
             commentId,
         });
     }
+
+    public adminDeleteComment$(commentId: string, reason: string): Observable<CommentInterface[]> {
+        return this.post$(URL_PARAMS.COMMENTS.ADMIN_DELETE, {
+            commentId,
+            reason,
+        });
+    }
 }

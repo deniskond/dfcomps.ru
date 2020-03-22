@@ -101,4 +101,5 @@ export const RUSSIAN_TRANSLATIONS = {
     fillDeleteReason: 'Заполните причину удаления коммента',
     reason: 'Причина',
     edit: 'Редактировать',
+    commentDeletedByAdmin: 'Комментарий удален админом. Причина:',
 }

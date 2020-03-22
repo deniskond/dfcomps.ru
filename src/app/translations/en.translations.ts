@@ -101,4 +101,5 @@ export const ENGLISH_TRANSLATIONS = {
     fillDeleteReason: 'Fill reason for deleting comment',
     reason: 'Reason',
     edit: 'Edit',
+    commentDeletedByAdmin: 'Comment was deleted by admin. Reason:',
 }
