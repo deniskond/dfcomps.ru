@@ -1,0 +1,18 @@
+<div class="h1-block-header dialog-header">{{ translations?.fillDeleteReason }}</div>
+
+<form [formGroup]="reasonForm">
+    <div class="input-container">
+        <div class="input-caption">{{ translations?.reason }}</div> 
+        <input formControlName="reason" class="input-field" />
+    </div>
+</form>
+
+<div class="dialog-button">
+    <button 
+        [disabled]="!reasonForm.valid" 
+        (click)="onSaveClick()" 
+        mat-raised-button color="primary">
+
+        {{ translations?.save }}
+    </button>
+</div>

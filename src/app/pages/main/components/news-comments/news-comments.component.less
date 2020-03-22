@@ -51,12 +51,16 @@
     .comment-inner {
         padding: 5px 8px;
         line-height: 1.6;
+
+        &.gray {
+            color: #aaaaaa;
+        }
     }
 }
 
 .separator {
     &:before {
-        content: '|',
+        content: '|';
     }
 
     margin: 0px 7px;
@@ -90,11 +94,31 @@
     display: flex;
     justify-content: center;
     position: relative;
+}
 
-    .spinner {
-        position: absolute;
-        top: 20px;
-    }
+.spinner {
+    position: absolute;
+    top: 20px;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 12px;
+}
+
+.spinner-with-button {
+    margin-right: 30px;
+    position: relative;
+}
+
+.spinner-container {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
 }
 
 .not-logged {
@@ -105,4 +129,9 @@
 
 .black-link {
     color: #333;
+}
+
+.hoverable {
+    cursor: pointer;
+    text-decoration: none;
 }
