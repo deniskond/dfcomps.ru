@@ -1,6 +1,6 @@
 import { Physics } from '../enums/physics.enum';
 
-export const MAIN_URL = 'http://dfcomps.ru';
+export const MAIN_URL = 'http://localhost';
 export const API_URL = `${MAIN_URL}/api`;
 
 export class URL_PARAMS {
@@ -72,9 +72,13 @@ export class URL_PARAMS {
 
     public static get COMMENTS(): {
         ADD: string;
+        DELETE: string;
+        UPDATE: string;
     } {
         return {
             ADD: `${API_URL}/comments/add`,
+            DELETE: `${API_URL}/comments/delete/`,
+            UPDATE: `${API_URL}/comments/update/`,
         };
     }
 

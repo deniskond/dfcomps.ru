@@ -94,4 +94,11 @@ export const RUSSIAN_TRANSLATIONS = {
     registerForCup: 'Зарегистрироваться',
     cancelRegistration: 'Отменить регистрацию',
     returnToMainpage: 'На главную',
+    cancel: 'Отменить',
+    editComment: 'Редактировать комментарий',
+    twoMinutesError: 'Прошло более 2 минут',
+    cantModify: `Нельзя редактировать`,
+    fillDeleteReason: 'Заполните причину удаления коммента',
+    reason: 'Причина',
+    edit: 'Редактировать',
 }

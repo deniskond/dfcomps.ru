@@ -8,7 +8,7 @@
         <div class="single-news-comments">{{ translations?.comments }}</div>
     </ng-template>
 
-    <ng-container *ngIf="(comments$ | async) as comments">
+    <ng-container *ngIf="(commentsWithActions$ | async) as comments">
         <ng-container *ngFor="let comment of comments; let i = index;">
             <div class="comment">
                 <div class="comment-header">
@@ -16,6 +16,18 @@
                         <span>#{{ i + 1 }}</span>
                         <span class="separator"></span>
                         <span><a class="black-link" routerLink="/profile/{{ comment.playerId }}">{{ comment.username }}</a></span>
+                        <span *ngIf="comment.isEditable">
+                            <span class="separator"></span>
+                            <a (click)="editComment(comment.id)" class="bluelink hoverable">{{ translations?.edit }}</a>
+                        </span>
+                        <span *ngIf="comment.isEditable">
+                            <span class="separator"></span>
+                            <a (click)="deleteComment(comment.id)" class="bluelink hoverable">{{ translations?.delete }}</a>
+                        </span>
+                        <span *ngIf="comment.isAdminDeletable">
+                            <span class="separator"></span>
+                            <a (click)="adminDeleteComment(comment.id)" class="bluelink hoverable">{{ translations?.delete }}</a>
+                        </span>
                     </div>
                     <div class="comment-header-right">
                         {{ formatDate(comment.datetimezone) }}
@@ -27,15 +39,32 @@
     </ng-container>
 
     <ng-container *ngIf="currentUser$ | async; else notLogged">
-        <div class="write-commentary">{{ translations?.writeComment }}:</div>
+        <div class="write-commentary">{{ editingCommentId ? translations?.editComment : translations?.writeComment }}:</div>
         <textarea #textarea class="comment-textarea"></textarea>
 
-        <div class="send-comment-button">
+        <div *ngIf="!editingCommentId; else isEditing" class="send-comment-button">
             <mat-spinner *ngIf="isLoading" diameter="20" strokeWidth="2" color="accent" class="spinner"></mat-spinner>
             <button [disabled]="isLoading" (click)="sendComment()" mat-raised-button color="primary" class="add-comment-button">
                 {{ translations?.send }}
             </button>
         </div>
+
+        <ng-template #isEditing>
+            <div class="buttons-container">
+                <div class="spinner-with-button">
+                    <div class="spinner-container">
+                        <mat-spinner *ngIf="isLoading" diameter="20" strokeWidth="2" color="accent"></mat-spinner>
+                    </div>
+                    <button [disabled]="isLoading" (click)="updateComment()" mat-raised-button color="primary">
+                        {{ translations?.save }}
+                    </button>
+                </div>
+
+                <button [disabled]="isLoading" (click)="cancelEditingComment()" mat-raised-button color="primary">
+                    {{ translations?.cancel }}
+                </button>
+            </div>
+        </ng-template>
     </ng-container>
 
     <ng-template #notLogged>

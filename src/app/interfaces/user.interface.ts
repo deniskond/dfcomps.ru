@@ -1,5 +1,7 @@
+import { UserAccess } from '../enums/user-access.enum';
+
 export interface UserInterface {
-    access: string;
+    access: UserAccess;
     avatar: string;
     country: string;
     cpmRating: string;

@@ -26,6 +26,8 @@ import { NewsDfwcResultsComponent } from './components/news-dfwc-results/news-df
 import { ReflexPlayerDemosDialogComponent } from './components/news-reflex-offline-start/reflex-player-demos-dialog/reflex-player-demos-dialog.component';
 import { NewsReflexPhysicsTableComponent } from './components/news-reflex-offline-results/news-reflex-physics-table/news-reflex-physics-table.component';
 import { ReflexInvalidDemosListComponent } from './components/news-reflex-offline-results/reflex-invalid-demos-list/reflex-invalid-demos-list.component';
+import { AdminDeleteCommentDialogComponent } from './components/news-comments/components/admin-delete-comment-dialog/admin-delete-comment-dialog.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
     {
@@ -48,6 +50,8 @@ const routes: Routes = [
         MatButtonModule,
         MatSnackBarModule,
         MatDialogModule,
+        FormsModule,
+        ReactiveFormsModule,
     ],
     declarations: [
         MainPageComponent,
@@ -72,8 +76,14 @@ const routes: Routes = [
         NewsReflexOfflineResultsComponent,
         NewsReflexPhysicsTableComponent,
         ReflexInvalidDemosListComponent,
+        AdminDeleteCommentDialogComponent,
     ],
     providers: [NewsService],
-    entryComponents: [ValidationDialogComponent, PlayerDemosDialogComponent, ReflexPlayerDemosDialogComponent],
+    entryComponents: [
+        ValidationDialogComponent,
+        PlayerDemosDialogComponent,
+        ReflexPlayerDemosDialogComponent,
+        AdminDeleteCommentDialogComponent,
+    ],
 })
 export class MainPageModule {}

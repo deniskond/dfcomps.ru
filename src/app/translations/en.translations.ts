@@ -94,4 +94,11 @@ export const ENGLISH_TRANSLATIONS = {
     registerForCup: 'Register for cup',
     cancelRegistration: 'Cancel registration',
     returnToMainpage: 'Return to mainpage',
+    cancel: 'Cancel',
+    editComment: 'Edit comment',
+    twoMinutesError: '2 minutes have passed',
+    cantModify: `Can't modify`,
+    fillDeleteReason: 'Fill reason for deleting comment',
+    reason: 'Reason',
+    edit: 'Edit',
 }
