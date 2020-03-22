@@ -10,6 +10,7 @@ import { WeaponsComponent } from '../components/weapons/weapons.component';
 import { PlayerPlaceComponent } from '../components/player-place/player-place.component';
 import { CdkTableModule } from '@angular/cdk/table';
 import { YoutubeComponent } from '../components/youtube/youtube.component';
+import { InvokeFunctionPipe } from '../pipe/invoke-function.pipe';
 
 const COMPONENTS = [
     FlagComponent,
@@ -23,7 +24,7 @@ const COMPONENTS = [
 ];
 
 @NgModule({
-    declarations: COMPONENTS,
+    declarations: [...COMPONENTS, InvokeFunctionPipe],
     imports: [CommonModule, MatRippleModule, MatTableModule, CdkTableModule],
     exports: COMPONENTS,
 })
