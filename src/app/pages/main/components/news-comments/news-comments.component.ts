@@ -24,6 +24,8 @@ import { CommentActionResultInterface } from '../../services/comments/interfaces
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AdminDeleteCommentDialogComponent } from './components/admin-delete-comment-dialog/admin-delete-comment-dialog.component';
+import { smilesDialogAnimation, SMILES_DIALOG_OPENED, SMILES_DIALOG_CLOSED } from './animations/smiles-dialog.animation';
+import { AnimationEvent } from '@angular/animations';
 
 const COMMENT_ACTION_PERIOD_MINUTES = 2;
 
@@ -31,6 +33,7 @@ const COMMENT_ACTION_PERIOD_MINUTES = 2;
     selector: 'app-news-comments',
     templateUrl: './news-comments.component.html',
     styleUrls: ['./news-comments.component.less'],
+    animations: [smilesDialogAnimation],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewsCommentsComponent extends Translations implements OnInit, OnChanges {
@@ -50,6 +53,9 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
     public isLoading = false;
     public editingCommentId: string | null = null;
     public smilesDropdownOpened = false;
+    public smilesDropdownDisplayHidden = true;
+    public openedAnimationState = SMILES_DIALOG_OPENED;
+    public closedAnimationState = SMILES_DIALOG_CLOSED;
 
     constructor(
         private commentsService: CommentsService,
@@ -184,14 +190,19 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
     }
 
     public openSmilesDropdown(event: Event): void {
-        // TODO Animation
+        this.smilesDropdownDisplayHidden = false;
         this.smilesDropdownOpened = true;
         event.stopPropagation();
     }
 
     public closeSmilesDropdown(): void {
-        // TODO Animation
         this.smilesDropdownOpened = false;
+    }
+
+    public onAnimationEnd(event: AnimationEvent): void {
+        if (event.toState === SMILES_DIALOG_CLOSED) {
+            this.smilesDropdownDisplayHidden = true;
+        }
     }
 
     private mapCommentWithAction(comment: CommentInterface, user: UserInterface): CommentWithActionInterface {

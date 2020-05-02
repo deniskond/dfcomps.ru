@@ -48,7 +48,12 @@
         <div class="textarea-container">
             <textarea #textarea class="comment-textarea"></textarea>
             <img (click)="openSmilesDropdown($event)" src="/assets/images/icons/smile-icon.png" class="smiles-icon" />
-            <app-smiles-dropdown [class.opened]="smilesDropdownOpened" (clickOutside)="closeSmilesDropdown()"></app-smiles-dropdown>
+            <app-smiles-dropdown 
+                [class.hidden]="smilesDropdownDisplayHidden"
+                [@smilesDialog]="smilesDropdownOpened ? openedAnimationState : closedAnimationState"
+                (@smilesDialog.done)="onAnimationEnd($event)"
+                (clickOutside)="closeSmilesDropdown()">
+            </app-smiles-dropdown>
         </div>
 
         <div *ngIf="!editingCommentId; else isEditing" class="send-comment-button">
