@@ -6,7 +6,16 @@ import { Translations } from '../../../../components/translations/translations.c
 import { UserInterface } from '../../../../interfaces/user.interface';
 import { UserService } from '../../../../services/user-service/user.service';
 import { CommentInterface } from '../../../../interfaces/comments.interface';
-import { Component, Input, ViewChild, ElementRef, OnChanges, SimpleChanges, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {
+    Component,
+    Input,
+    ViewChild,
+    ElementRef,
+    OnChanges,
+    SimpleChanges,
+    OnInit,
+    ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommentsService } from '../../services/comments/comments.service';
 import { ReplaySubject, Observable, combineLatest } from 'rxjs';
 import { take, finalize, map, catchError, switchMap } from 'rxjs/operators';
@@ -72,7 +81,10 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
     }
 
     public copyIdToComment(id: number): void {
-        this.textarea.nativeElement.value += ` #${id} `;
+        if (this.textarea) {
+            this.textarea.nativeElement.value += ` #${id} `;
+            this.textarea.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
     }
 
     public toggleExpand(): void {
