@@ -49,6 +49,7 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
     public isExpanded = false;
     public isLoading = false;
     public editingCommentId: string | null = null;
+    public smilesDropdownOpened = false;
 
     constructor(
         private commentsService: CommentsService,
@@ -180,6 +181,17 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
             .subscribe((commentActionResult: CommentActionResultInterface) =>
                 this.processCommentActionResult(commentActionResult),
             );
+    }
+
+    public openSmilesDropdown(event: Event): void {
+        // TODO Animation
+        this.smilesDropdownOpened = true;
+        event.stopPropagation();
+    }
+
+    public closeSmilesDropdown(): void {
+        // TODO Animation
+        this.smilesDropdownOpened = false;
     }
 
     private mapCommentWithAction(comment: CommentInterface, user: UserInterface): CommentWithActionInterface {

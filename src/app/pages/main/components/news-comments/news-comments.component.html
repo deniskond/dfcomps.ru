@@ -45,7 +45,11 @@
 
     <ng-container *ngIf="currentUser$ | async; else notLogged">
         <div class="write-commentary">{{ editingCommentId ? translations?.editComment : translations?.writeComment }}:</div>
-        <textarea #textarea class="comment-textarea"></textarea>
+        <div class="textarea-container">
+            <textarea #textarea class="comment-textarea"></textarea>
+            <img (click)="openSmilesDropdown($event)" src="/assets/images/icons/smile-icon.png" class="smiles-icon" />
+            <app-smiles-dropdown [class.opened]="smilesDropdownOpened" (clickOutside)="closeSmilesDropdown()"></app-smiles-dropdown>
+        </div>
 
         <div *ngIf="!editingCommentId; else isEditing" class="send-comment-button">
             <mat-spinner *ngIf="isLoading" diameter="20" strokeWidth="2" color="accent" class="spinner"></mat-spinner>
