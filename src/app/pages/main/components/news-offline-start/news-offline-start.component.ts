@@ -11,7 +11,8 @@ import { CupStates } from '../../../../enums/cup-states.enum';
 import * as moment from 'moment';
 import { finalize, take, switchMap, catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { MatSnackBar, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ValidationDialogComponent } from './validation-dialog/validation-dialog.component';
 import { PlayerDemosDialogComponent } from './player-demos-dialog/player-demos-dialog.component';
 

@@ -1,7 +1,7 @@
 import { LanguageService } from '../../../../services/language/language.service';
 import { Translations } from '../../../../components/translations/translations.component';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Subject, Observable, timer } from 'rxjs';
 import { takeUntil, filter, map, switchMap, finalize } from 'rxjs/operators';

@@ -1,7 +1,7 @@
 import { SharedModule } from '../../../../modules/shared.module';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProfileCupsTableComponent } from './profile-cups-table.component';
-import { MatTableModule } from '@angular/material';
+import { MatTableModule } from '@angular/material/table';
 import { CdkTableModule } from '@angular/cdk/table';
 
 describe('ProfileCupsTableComponent', () => {

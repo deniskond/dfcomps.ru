@@ -17,7 +17,7 @@ import { ProfileDemosDtoInterface } from './dto/profile-demos.dto';
 import { ProfileRewardsDtoInterface } from './dto/profile-rewards.dto';
 import { UserService } from '../../services/user-service/user.service';
 import { UserInterface } from '../../interfaces/user.interface';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { EditProfileDialogComponent } from './components/edit-profile-dialog/edit-profile-dialog';
 
 @Component({

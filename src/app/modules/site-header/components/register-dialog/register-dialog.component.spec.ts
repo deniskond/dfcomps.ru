@@ -1,7 +1,8 @@
 import { UserService } from '../../../../services/user-service/user.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RegisterDialogComponent } from './register-dialog.component';
-import { MatDialogRef, MAT_DIALOG_DATA, MatProgressSpinnerModule } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { mock, instance } from 'ts-mockito';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 

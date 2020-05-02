@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProfileRewardsComponent } from './profile-rewards.component';
-import { MatTooltipModule } from '@angular/material';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 describe('ProfileRewardsComponent', () => {
     let component: ProfileRewardsComponent;

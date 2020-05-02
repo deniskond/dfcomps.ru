@@ -2,7 +2,7 @@ import { Translations } from '../../../../../components/translations/translation
 import { DemosService } from '../../../../../services/demos/demos.service';
 import { UploadedDemoInterface } from '../../../../../interfaces/uploaded-demo.interface';
 import { Component, Inject, Output, EventEmitter } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { formatResultTime } from '../../../../../helpers/result-time.helper';
 import { BehaviorSubject } from 'rxjs';
 import { LanguageService } from '../../../../../services/language/language.service';

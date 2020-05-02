@@ -3,7 +3,7 @@ import { Translations } from '../../../../components/translations/translations.c
 import { LoginResultDtoInterface } from '../../../../services/user-service/dto/login-result.dto';
 import { UserService } from '../../../../services/user-service/user.service';
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { LoginDialogDataInterface } from '../../interfaces/login-dialog-data.interface';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
