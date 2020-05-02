@@ -2,7 +2,8 @@ import { UserService } from '../../../../services/user-service/user.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoginDialogComponent } from './login-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatProgressSpinnerModule, MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { mock, instance } from 'ts-mockito';
 
 describe('LoginDialogComponent', () => {

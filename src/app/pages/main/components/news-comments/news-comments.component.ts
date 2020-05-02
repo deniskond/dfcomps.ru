@@ -21,7 +21,8 @@ import { ReplaySubject, Observable, combineLatest } from 'rxjs';
 import { take, finalize, map, catchError, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 import { CommentActionResultInterface } from '../../services/comments/interfaces/comment-action.interface';
-import { MatSnackBar, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AdminDeleteCommentDialogComponent } from './components/admin-delete-comment-dialog/admin-delete-comment-dialog.component';
 
 const COMMENT_ACTION_PERIOD_MINUTES = 2;

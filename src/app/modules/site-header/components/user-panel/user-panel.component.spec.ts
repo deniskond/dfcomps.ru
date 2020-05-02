@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserPanelComponent } from './user-panel.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { mock, instance, when } from 'ts-mockito';
 import { UserService } from '../../../../services/user-service/user.service';
 import { RouterTestingModule } from '@angular/router/testing';

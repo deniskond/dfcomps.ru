@@ -2,7 +2,7 @@ import { Translations } from '../../../../components/translations/translations.c
 import { API_URL } from '../../../../configs/url-params.config';
 import { UserInterface } from '../../../../interfaces/user.interface';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 import { RegisterDialogComponent } from '../register-dialog/register-dialog.component';
 import { UserService } from '../../../../services/user-service/user.service';

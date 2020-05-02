@@ -1,7 +1,7 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProfileLastDemosComponent } from './profile-last-demos.component';
-import { MatTableModule } from '@angular/material';
+import { MatTableModule } from '@angular/material/table';
 
 describe('ProfileLastDemosComponent', () => {
     let component: ProfileLastDemosComponent;

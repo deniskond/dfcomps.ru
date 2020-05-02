@@ -1,5 +1,5 @@
 import { Translations } from '../../../../components/translations/translations.component';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Inject, Component, OnInit, ElementRef, ViewChild, EventEmitter, Output } from '@angular/core';
 import { LanguageService } from '../../../../services/language/language.service';
 import { FormGroup, Validators, FormControl } from '@angular/forms';

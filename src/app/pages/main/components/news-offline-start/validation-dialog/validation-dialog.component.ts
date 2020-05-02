@@ -1,6 +1,6 @@
 import { Translations } from '../../../../../components/translations/translations.component';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ValidationErrorInterface } from '../../../interfaces/validation-error.interface';
 import { LanguageService } from '../../../../../services/language/language.service';
 

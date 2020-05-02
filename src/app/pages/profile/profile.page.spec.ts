@@ -6,7 +6,9 @@ import { ProfileRatingChartComponent } from './components/profile-rating-chart/p
 import { ProfileRewardsComponent } from './components/profile-rewards/profile-rewards.component';
 import { ProfileCupsTableComponent } from './components/profile-cups-table/profile-cups-table.component';
 import { ProfileLastDemosComponent } from './components/profile-last-demos/profile-last-demos.component';
-import { MatProgressSpinnerModule, MatTooltipModule, MatTableModule } from '@angular/material';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ChartsModule } from 'ng2-charts';
 import { ActivatedRoute } from '@angular/router';
 import { mock, instance } from 'ts-mockito';
