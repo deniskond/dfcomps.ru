@@ -7,8 +7,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { NewsTypes } from '../../enums/news-types.enum';
 import * as moment from 'moment';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, distinctUntilChanged } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { isEqual } from 'lodash';
 
 @Component({
     templateUrl: './main.page.html',
@@ -61,7 +62,10 @@ export class MainPageComponent extends Translations implements OnInit, OnDestroy
     private initNewsSubscription(): void {
         this.newsService
             .getMainPageNews$()
-            .pipe(takeUntil(this.onDestroy$))
+            .pipe(
+                distinctUntilChanged(isEqual),
+                takeUntil(this.onDestroy$),
+            )
             .subscribe((news: NewsInterfaceUnion[]) => (this.news = news));
     }
 }
