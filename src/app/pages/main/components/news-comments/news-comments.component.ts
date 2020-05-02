@@ -40,7 +40,7 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
     @Input()
     expandable = true;
 
-    @ViewChild('textarea', { static: false }) textarea: ElementRef;
+    @ViewChild('textarea') textarea: ElementRef;
 
     public currentUser$: Observable<UserInterface>;
     public comments$ = new ReplaySubject<CommentInterface[]>(1);

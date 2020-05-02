@@ -26,7 +26,7 @@ export class NewsReflexOfflineStartComponent extends Translations implements OnI
     @Output()
     reloadNews = new EventEmitter<void>();
 
-    @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
+    @ViewChild('fileInput') fileInput: ElementRef;
 
     public user$: Observable<UserInterface>;
     public cupState: CupStates;
