@@ -28,6 +28,7 @@ import { NewsReflexPhysicsTableComponent } from './components/news-reflex-offlin
 import { ReflexInvalidDemosListComponent } from './components/news-reflex-offline-results/reflex-invalid-demos-list/reflex-invalid-demos-list.component';
 import { AdminDeleteCommentDialogComponent } from './components/news-comments/components/admin-delete-comment-dialog/admin-delete-comment-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NewsSocialLinksComponent } from './components/news-social-links/news-social-links.component';
 
 const routes: Routes = [
     {
@@ -77,6 +78,7 @@ const routes: Routes = [
         NewsReflexPhysicsTableComponent,
         ReflexInvalidDemosListComponent,
         AdminDeleteCommentDialogComponent,
+        NewsSocialLinksComponent,
     ],
     providers: [NewsService],
     entryComponents: [
