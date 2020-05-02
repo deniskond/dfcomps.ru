@@ -32,6 +32,7 @@ import { ReflexInvalidDemosListComponent } from './components/news-reflex-offlin
 import { AdminDeleteCommentDialogComponent } from './components/news-comments/components/admin-delete-comment-dialog/admin-delete-comment-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SmilesDropdownComponent } from './components/news-comments/components/smiles-dropdown/smiles-dropdown.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 const routes: Routes = [
     {
@@ -56,6 +57,7 @@ const routes: Routes = [
         MatDialogModule,
         FormsModule,
         ReactiveFormsModule,
+        MatExpansionModule,
     ],
     declarations: [
         MainPageComponent,

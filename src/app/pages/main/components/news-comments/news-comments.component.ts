@@ -42,14 +42,13 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
     @Input()
     newsId: string;
     @Input()
-    expandable = true;
+    expanded = false;
 
     @ViewChild('textarea') textarea: ElementRef;
 
     public currentUser$: Observable<UserInterface>;
     public comments$ = new ReplaySubject<CommentInterface[]>(1);
     public commentsWithActions$: Observable<CommentWithActionInterface[]>;
-    public isExpanded = false;
     public isLoading = false;
     public editingCommentId: string | null = null;
     public smilesDropdownOpened = false;
@@ -75,10 +74,6 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
             ),
         );
 
-        if (!this.expandable) {
-            this.isExpanded = true;
-        }
-
         super.ngOnInit();
     }
 
@@ -93,10 +88,6 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
             this.textarea.nativeElement.value += ` #${id} `;
             this.textarea.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-    }
-
-    public toggleExpand(): void {
-        this.isExpanded = !this.isExpanded;
     }
 
     public sendComment(): void {

@@ -31,9 +31,8 @@
                     (reloadNews)="reloadNews()">
                 </app-news-reflex-offline-start>
             </ng-container>
-
-            <app-news-comments [comments]="singleNews.comments" [newsId]="singleNews.id" [expandable]="false"></app-news-comments>
         </div>
+        <app-news-comments [comments]="singleNews.comments" [newsId]="singleNews.id" [expanded]="true"></app-news-comments>
     </div>
 </ng-container>
 

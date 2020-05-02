@@ -33,9 +33,8 @@
                 </app-news-reflex-offline-start>
                 <app-news-reflex-offline-results *ngSwitchCase="newsTypes.REFLEX_OFFLINE_RESULTS" [news]="singleNews"></app-news-reflex-offline-results>
             </ng-container>
-
-            <app-news-comments [comments]="singleNews.comments" [newsId]="singleNews.id"></app-news-comments>
         </div>
+        <app-news-comments [comments]="singleNews.comments" [newsId]="singleNews.id" [expanded]="false"></app-news-comments>
     </ng-container>
 
     <div (click)="navigateToArchive()" class="archive-link">{{ translations?.goToArchive }}</div>
