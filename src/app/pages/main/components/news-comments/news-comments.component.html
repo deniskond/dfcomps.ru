@@ -15,7 +15,7 @@
                     <div class="comment-header-left">
                         <span>#{{ i + 1 }}</span>
                         <span class="separator"></span>
-                        <span><a class="black-link" routerLink="/profile/{{ comment.playerId }}">{{ comment.username }}</a></span>
+                        <span><a class="black-link" (click)="copyIdToComment(i + 1)">{{ comment.username }}</a></span>
                         <span *ngIf="comment.isEditable">
                             <span class="separator"></span>
                             <a (click)="editComment(comment.id)" class="bluelink hoverable">{{ translations?.edit }}</a>

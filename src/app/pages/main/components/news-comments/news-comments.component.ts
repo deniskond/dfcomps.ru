@@ -6,7 +6,7 @@ import { Translations } from '../../../../components/translations/translations.c
 import { UserInterface } from '../../../../interfaces/user.interface';
 import { UserService } from '../../../../services/user-service/user.service';
 import { CommentInterface } from '../../../../interfaces/comments.interface';
-import { Component, Input, ViewChild, ElementRef, OnChanges, SimpleChanges, OnInit } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, OnChanges, SimpleChanges, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommentsService } from '../../services/comments/comments.service';
 import { ReplaySubject, Observable, combineLatest } from 'rxjs';
 import { take, finalize, map, catchError, switchMap } from 'rxjs/operators';
@@ -21,6 +21,7 @@ const COMMENT_ACTION_PERIOD_MINUTES = 2;
     selector: 'app-news-comments',
     templateUrl: './news-comments.component.html',
     styleUrls: ['./news-comments.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewsCommentsComponent extends Translations implements OnInit, OnChanges {
     @Input()
@@ -68,6 +69,10 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
         if (comments && comments.currentValue) {
             this.comments$.next(comments.currentValue);
         }
+    }
+
+    public copyIdToComment(id: number): void {
+        this.textarea.nativeElement.value += ` #${id} `;
     }
 
     public toggleExpand(): void {
