@@ -27,7 +27,7 @@ export class NewsOfflineStartComponent extends Translations implements OnInit {
     @Output()
     reloadNews = new EventEmitter<void>();
 
-    @ViewChild('fileInput') fileInput: ElementRef;
+    @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
 
     public user$: Observable<UserInterface>;
     public cupState: CupStates;

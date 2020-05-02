@@ -16,7 +16,7 @@ export class EditProfileDialogComponent extends Translations implements OnInit {
     @Output()
     reloadProfile = new EventEmitter<void>();
 
-    @ViewChild('fileInput') fileInput: ElementRef;
+    @ViewChild('fileInput', { static: true }) fileInput: ElementRef;
 
     public isLoading = false;
     public editProfileForm: FormGroup;
