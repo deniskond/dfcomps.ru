@@ -28,7 +28,7 @@
     "core-js": "^2.4.1",
     "html-entities": "^1.2.1",
     "less": "^3.9.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "ng2-charts": "^2.2.3",
     "ngx-cookie-service": "^2.2.0",
