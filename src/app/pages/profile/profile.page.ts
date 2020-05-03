@@ -2,7 +2,7 @@ import { Translations } from '../../components/translations/translations.compone
 import { LanguageService } from '../../services/language/language.service';
 import { API_URL } from '../../configs/url-params.config';
 import { Physics } from '../../enums/physics.enum';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { switchMap, tap, takeUntil, map, withLatestFrom } from 'rxjs/operators';
 import { Subject, Observable, combineLatest } from 'rxjs';
@@ -23,6 +23,7 @@ import { EditProfileDialogComponent } from './components/edit-profile-dialog/edi
 @Component({
     templateUrl: './profile.page.html',
     styleUrls: ['./profile.page.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfilePageComponent extends Translations implements OnInit, OnDestroy {
     public mainInfo: ProfileMainInfoInterface;
@@ -64,9 +65,9 @@ export class ProfilePageComponent extends Translations implements OnInit, OnDest
         super.ngOnDestroy();
     }
 
-    public getAvatarSrc(): string {
-        return this.mainInfo.avatar
-            ? `${this.apiUrl}/images/avatars/${this.mainInfo.avatar}.jpg`
+    public getAvatarSrc(avatar: string): string {
+        return avatar
+            ? `${this.apiUrl}/images/avatars/${avatar}.jpg`
             : `${this.apiUrl}/images/avatars/no_avatar.png`;
     }
 

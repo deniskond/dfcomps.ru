@@ -10,41 +10,45 @@
     </ng-template>
 
     <ng-container *ngIf="(commentsWithActions$ | async) as comments">
-        <ng-container *ngFor="let comment of comments; let i = index;">
-            <div class="comment">
-                <div class="comment-header">
-                    <div class="comment-header-left">
-                        <span>#{{ i + 1 }}</span>
-                        <span class="separator"></span>
-                        <span>
-                            <a [class.no-hover]="!(currentUser$ | async)" (click)="copyIdToComment(i + 1)" class="black-link">{{ comment.username }}</a>
-                        </span>
-                        <span *ngIf="comment.isEditable">
+        <div *ngIf="comments.length" class="comments-container">
+            <ng-container *ngFor="let comment of comments; let i = index;">
+                <div class="comment">
+                    <div class="comment-header">
+                        <div class="comment-header-left">
+                            <span>#{{ i + 1 }}</span>
                             <span class="separator"></span>
-                            <a (click)="editComment(comment.id)" class="bluelink hoverable">{{ translations?.edit }}</a>
-                        </span>
-                        <span *ngIf="comment.isEditable">
-                            <span class="separator"></span>
-                            <a (click)="deleteComment(comment.id)" class="bluelink hoverable">{{ translations?.delete }}</a>
-                        </span>
-                        <span *ngIf="comment.isAdminDeletable">
-                            <span class="separator"></span>
-                            <a (click)="adminDeleteComment(comment.id)" class="bluelink hoverable">{{ translations?.delete }}</a>
-                        </span>
+                            <span>
+                                <a [class.no-hover]="!(currentUser$ | async)" (click)="copyIdToComment(i + 1)" class="black-link">{{ comment.username }}</a>
+                            </span>
+                            <span *ngIf="comment.isEditable">
+                                <span class="separator"></span>
+                                <a (click)="editComment(comment.id)" class="bluelink hoverable">{{ translations?.edit }}</a>
+                            </span>
+                            <span *ngIf="comment.isEditable">
+                                <span class="separator"></span>
+                                <a (click)="deleteComment(comment.id)" class="bluelink hoverable">{{ translations?.delete }}</a>
+                            </span>
+                            <span *ngIf="comment.isAdminDeletable">
+                                <span class="separator"></span>
+                                <a (click)="adminDeleteComment(comment.id)" class="bluelink hoverable">{{ translations?.delete }}</a>
+                            </span>
+                        </div>
+                        <div class="comment-header-right">
+                            {{ formatDate(comment.datetimezone) }}
+                        </div>
                     </div>
-                    <div class="comment-header-right">
-                        {{ formatDate(comment.datetimezone) }}
-                    </div>
+                    <div *ngIf="!comment.reason; else adminDeleted" [innerHTML]="comment.smilesComment" class="comment-inner"></div>
+                    <ng-template #adminDeleted>
+                        <div class="comment-inner gray">{{ translations?.commentDeletedByAdmin }} {{ comment.reason }}</div>
+                    </ng-template>
                 </div>
-                <div *ngIf="!comment.reason; else adminDeleted" [innerHTML]="comment.smilesComment" class="comment-inner"></div>
-                <ng-template #adminDeleted>
-                    <div class="comment-inner gray">{{ translations?.commentDeletedByAdmin }} {{ comment.reason }}</div>
-                </ng-template>
-            </div>
-        </ng-container>
+            </ng-container>
+        </div>
     </ng-container>
 
-    <ng-container *ngIf="currentUser$ | async; else notLogged">
+    <ng-container *ngIf="true; else notLogged">
+    <!-- TODO Вернуть -->
+    <!-- <ng-container *ngIf="currentUser$ | async; else notLogged"> -->
         <div class="write-commentary">{{ editingCommentId ? translations?.editComment : translations?.writeComment }}:</div>
         <div class="textarea-container">
             <textarea #textarea class="comment-textarea"></textarea>

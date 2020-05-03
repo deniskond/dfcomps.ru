@@ -6,7 +6,7 @@ import { UserInterface } from '../../../../interfaces/user.interface';
 import { UserService } from '../../../../services/user-service/user.service';
 import { DemosService } from '../../../../services/demos/demos.service';
 import { NewsOfflineStartInterface } from '../../../../services/news-service/interfaces/news-offline-start.interface';
-import { Component, Input, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ElementRef, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CupStates } from '../../../../enums/cup-states.enum';
 import * as moment from 'moment';
 import { finalize, take, switchMap, catchError } from 'rxjs/operators';
@@ -19,6 +19,7 @@ import { ReflexPlayerDemosDialogComponent } from './reflex-player-demos-dialog/r
     selector: 'app-news-reflex-offline-start',
     templateUrl: './news-reflex-offline-start.component.html',
     styleUrls: ['./news-reflex-offline-start.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewsReflexOfflineStartComponent extends Translations implements OnInit {
     @Input()

@@ -3,7 +3,7 @@ import { LanguageService } from '../../services/language/language.service';
 import { Languages } from '../../enums/languages.enum';
 import { NavigationPages } from '../../routing/enums/pages.enum';
 import { TABS_CONFIG, TabInterface } from '../../routing/config/tabs.config';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -14,6 +14,7 @@ import { DownloadDfDialogComponent } from './components/download-df-dialog/downl
     selector: 'app-site-header',
     templateUrl: './site-header.component.html',
     styleUrls: ['./site-header.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SiteHeaderComponent extends Translations implements OnInit, OnDestroy {
     public pages = NavigationPages;

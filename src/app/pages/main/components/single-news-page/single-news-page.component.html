@@ -7,7 +7,7 @@
 
             <div class="author-and-date">
                 {{ translations?.author }}: <a routerLink="/profile/{{ singleNews.authorId }}">{{ singleNews.authorName }}</a>,
-                {{ formatDate(singleNews.datetime) }}
+                {{ singleNews.datetime | invokeFunction : formatDate }}
             </div>
 
             <app-youtube *ngIf="singleNews.youtube && singleNews.type !== newsTypes.ONLINE_RESULTS" [id]="singleNews.youtube" width="800" height="450" class="youtube"></app-youtube>

@@ -1,7 +1,7 @@
 import { LanguageService } from '../../../../services/language/language.service';
 import { Translations } from '../../../../components/translations/translations.component';
 import { NewsInterfaceUnion } from '../../../../types/news-union.type';
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Languages } from '../../../../enums/languages.enum';
 import { Subject } from 'rxjs';
@@ -11,6 +11,7 @@ import { takeUntil } from 'rxjs/operators';
     selector: 'app-html-news',
     templateUrl: './html-news.component.html',
     styleUrls: ['./html-news.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HtmlNewsComponent extends Translations implements OnInit, OnDestroy {
     @Input() news: NewsInterfaceUnion;

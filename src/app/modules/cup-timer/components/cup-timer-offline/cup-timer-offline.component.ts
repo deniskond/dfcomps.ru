@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CupTimerStates } from '../../enums/cup-timer-states.enum';
 import { getCurrentTimerState } from '../../helpers/cup-timer-state.helper';
 
 @Component({
     selector: 'app-cup-timer-offline',
     templateUrl: './cup-timer-offline.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CupTimerOfflineComponent implements OnInit {
     @Input()

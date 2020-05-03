@@ -3,7 +3,7 @@ import { Translations } from '../../../../components/translations/translations.c
 import { NewsTypes } from '../../../../enums/news-types.enum';
 import { NewsService } from '../../../../services/news-service/news.service';
 import { NewsInterfaceUnion } from '../../../../types/news-union.type';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Observable, Subject, EMPTY, combineLatest } from 'rxjs';
 import { ActivatedRoute, Params } from '@angular/router';
 import { tap, switchMap, catchError, takeUntil, startWith, map } from 'rxjs/operators';
@@ -13,6 +13,7 @@ import * as moment from 'moment';
     selector: 'app-single-news-page',
     templateUrl: './single-news-page.component.html',
     styleUrls: ['./single-news-page.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SingleNewsPageComponent extends Translations implements OnInit, OnDestroy {
     public singleNews$: Observable<NewsInterfaceUnion>;

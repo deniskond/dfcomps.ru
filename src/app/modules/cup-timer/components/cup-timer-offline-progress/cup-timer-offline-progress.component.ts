@@ -1,12 +1,13 @@
 import { LanguageService } from '../../../../services/language/language.service';
 import { Translations } from '../../../../components/translations/translations.component';
-import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-cup-timer-offline-progress',
     templateUrl: './cup-timer-offline-progress.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CupTimerOfflineProgressComponent extends Translations implements OnInit, OnChanges {
     @Input()

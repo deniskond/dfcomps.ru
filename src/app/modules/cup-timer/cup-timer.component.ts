@@ -1,4 +1,4 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { CupTypes } from '../../enums/cup-types.enum';
 
 @Component({
@@ -6,6 +6,7 @@ import { CupTypes } from '../../enums/cup-types.enum';
     templateUrl: './cup-timer.component.html',
     styleUrls: ['./cup-timer.component.less'],
     encapsulation: ViewEncapsulation.ShadowDom,
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CupTimerComponent {
     @Input()

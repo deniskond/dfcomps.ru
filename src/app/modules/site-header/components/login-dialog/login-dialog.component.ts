@@ -2,7 +2,7 @@ import { LanguageService } from '../../../../services/language/language.service'
 import { Translations } from '../../../../components/translations/translations.component';
 import { LoginResultDtoInterface } from '../../../../services/user-service/dto/login-result.dto';
 import { UserService } from '../../../../services/user-service/user.service';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { LoginDialogDataInterface } from '../../interfaces/login-dialog-data.interface';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -12,6 +12,7 @@ import { finalize } from 'rxjs/operators';
     selector: 'app-login-dialog',
     templateUrl: './login-dialog.component.html',
     styleUrls: ['./login-dialog.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginDialogComponent extends Translations {
     public loginResult: boolean;

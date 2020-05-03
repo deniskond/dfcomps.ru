@@ -2,7 +2,7 @@ import { LanguageService } from '../../services/language/language.service';
 import { Translations } from '../../components/translations/translations.component';
 import { LeaderTableInterface } from '../../interfaces/leader-table.interface';
 import { RatingTablesService } from '../../services/rating-tables-service/rating-tables-service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { Physics } from '../../enums/physics.enum';
 import { range } from 'lodash';
@@ -14,6 +14,7 @@ const MAX_PLAYERS_PER_PAGE = 100;
 @Component({
     templateUrl: './rating.page.html',
     styleUrls: ['./rating.page.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RatingPageComponent extends Translations implements OnInit {
     public currentPage = 1;

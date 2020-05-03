@@ -35,12 +35,12 @@ export class PlayerCellComponent {
         this.hovered = false;
     }
 
-    public getHoveredState(): string {
-        if (this.style === PlayerCellStyles.LIGHT) {
-            return this.hovered ? HOVERABLE_CELL_HOVERED_STATE : HOVERABLE_CELL_NORMAL_STATE;
+    public getHoveredState(hovered: boolean, style: PlayerCellStyles): string {
+        if (style === PlayerCellStyles.LIGHT) {
+            return hovered ? HOVERABLE_CELL_HOVERED_STATE : HOVERABLE_CELL_NORMAL_STATE;
         }
 
-        return this.hovered ? HOVERABLE_CELL_TRANSPARENT_HOVERED_STATE : HOVERABLE_CELL_TRANSPARENT_NORMAL_STATE;
+        return hovered ? HOVERABLE_CELL_TRANSPARENT_HOVERED_STATE : HOVERABLE_CELL_TRANSPARENT_NORMAL_STATE;
     }
 
     public navigateToPlayerProfile(playerId: string): void {

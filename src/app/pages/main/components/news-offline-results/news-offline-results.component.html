@@ -31,7 +31,7 @@
 </div>
 
 <div *ngIf="news.cup.archiveLink" style="margin-top:15px;font-size:17px;text-align:center;">
-    <a [href]="getArchiveLink(news.cup.archiveLink)" download>
+    <a [href]="news.cup.archiveLink | invokeFunction : getArchiveLink" download>
         <strong>&gt;&gt; {{ translations?.allDemosArchive }} &lt;&lt;</strong>
     </a>
 </div>

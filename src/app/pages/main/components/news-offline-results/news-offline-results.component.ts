@@ -4,13 +4,14 @@ import { Translations } from '../../../../components/translations/translations.c
 import { API_URL } from '../../../../configs/url-params.config';
 import { Physics } from '../../../../enums/physics.enum';
 import { NewsOfflineResultsInterface } from '../../../../services/news-service/interfaces/news-offline-results.interface';
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { CUSTOM_TABLE_NEWS_LIMIT } from '../../config/news.config';
 
 @Component({
     selector: 'app-news-offline-results',
     templateUrl: './news-offline-results.component.html',
     styleUrls: ['./news-offline-results.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewsOfflineResultsComponent extends Translations implements OnInit, OnChanges {
     @Input() news: NewsOfflineResultsInterface;

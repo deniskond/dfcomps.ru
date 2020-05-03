@@ -1,6 +1,6 @@
 import { LanguageService } from '../../../../../services/language/language.service';
 import { Translations } from '../../../../../components/translations/translations.component';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Physics } from '../../../../../enums/physics.enum';
 import { getTablePlaces } from '../../../../../helpers/table-places.helper';
 import { Router } from '@angular/router';
@@ -10,6 +10,7 @@ import { MulticupResultInterface } from '../../../../../pages/cup/interfaces/mul
     selector: 'app-multicup-physics-table',
     templateUrl: './multicup-physics-table.component.html',
     styleUrls: ['./multicup-physics-table.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MulticupPhysicsTableComponent extends Translations implements OnInit {
     @Input() physics: Physics;

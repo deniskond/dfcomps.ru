@@ -1,7 +1,7 @@
 import { Languages } from '../../enums/languages.enum';
 import { LanguageService } from '../../services/language/language.service';
 import { Translations } from '../../components/translations/translations.component';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ArchiveService } from './services/archive/archive.service';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { range } from 'lodash';
@@ -15,6 +15,7 @@ const NEWS_ON_PAGE = 50;
 @Component({
     templateUrl: './archive.page.html',
     styleUrls: ['./archive.page.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ArchivePageComponent extends Translations implements OnInit {
     public newsCount: number;

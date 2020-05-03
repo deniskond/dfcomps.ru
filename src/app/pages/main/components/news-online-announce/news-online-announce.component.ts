@@ -4,7 +4,7 @@ import { RegisteredPlayerInterface } from '../../../../interfaces/registered-pla
 import { LanguageService } from '../../../../services/language/language.service';
 import { Translations } from '../../../../components/translations/translations.component';
 import { NewsOnlineAnnounceInterface } from '../../../../services/news-service/interfaces/news-online-announce.interface';
-import { Component, Input, OnChanges, SimpleChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { range } from 'lodash';
 import { CupRegistrationService } from '../../services/cup-registration/cup-registration.service';
 import { filter, withLatestFrom, catchError } from 'rxjs/operators';
@@ -15,6 +15,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
     selector: 'app-news-online-announce',
     templateUrl: './news-online-announce.component.html',
     styleUrls: ['./news-online-announce.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewsOnlineAnnounceComponent extends Translations implements OnInit, OnChanges {
     @Input() news: NewsOnlineAnnounceInterface;

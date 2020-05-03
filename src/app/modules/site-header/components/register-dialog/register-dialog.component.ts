@@ -1,6 +1,6 @@
 import { LanguageService } from '../../../../services/language/language.service';
 import { Translations } from '../../../../components/translations/translations.component';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Subject, Observable, timer } from 'rxjs';
@@ -16,6 +16,7 @@ const DEBOUNCE_TIME = 300;
     selector: 'app-register-dialog',
     templateUrl: './register-dialog.component.html',
     styleUrls: ['./register-dialog.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterDialogComponent extends Translations implements OnInit, OnDestroy {
     public needToDisplayErrors = false;
@@ -42,7 +43,7 @@ export class RegisterDialogComponent extends Translations implements OnInit, OnD
     }
 
     ngOnInit(): void {
-        this.setDisplayErrorsSubscription();
+        this.initDisplayErrorsSubscription();
         super.ngOnInit();
     }
 
@@ -68,7 +69,7 @@ export class RegisterDialogComponent extends Translations implements OnInit, OnD
             });
     }
 
-    private setDisplayErrorsSubscription(): void {
+    private initDisplayErrorsSubscription(): void {
         this.registerForm.valueChanges
             .pipe(
                 filter(

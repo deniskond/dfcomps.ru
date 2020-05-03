@@ -3,7 +3,7 @@ import { Translations } from '../../components/translations/translations.compone
 import { LanguageService } from '../../services/language/language.service';
 import { NewsInterfaceUnion } from '../../types/news-union.type';
 import { NewsService } from '../../services/news-service/news.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { NewsTypes } from '../../enums/news-types.enum';
 import * as moment from 'moment';
@@ -14,6 +14,7 @@ import { isEqual } from 'lodash';
 @Component({
     templateUrl: './main.page.html',
     styleUrls: ['./main.page.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainPageComponent extends Translations implements OnInit, OnDestroy {
     public news: NewsInterfaceUnion[];

@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MoviesPageComponent } from './movies.page';
 import { MoviesService } from './services/movies.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SharedModule } from '../../modules/shared.module';
 
 const routes: Routes = [
     {
@@ -14,7 +15,7 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [MoviesPageComponent],
-    imports: [CommonModule, RouterModule.forChild(routes), MatProgressSpinnerModule],
+    imports: [CommonModule, RouterModule.forChild(routes), MatProgressSpinnerModule, SharedModule],
     providers: [MoviesService],
 })
 export class MoviesPageModule {}

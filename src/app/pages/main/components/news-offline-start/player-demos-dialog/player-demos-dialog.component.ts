@@ -1,7 +1,7 @@
 import { Translations } from '../../../../../components/translations/translations.component';
 import { DemosService } from '../../../../../services/demos/demos.service';
 import { UploadedDemoInterface } from '../../../../../interfaces/uploaded-demo.interface';
-import { Component, Inject, Output, EventEmitter } from '@angular/core';
+import { Component, Inject, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { formatResultTime } from '../../../../../helpers/result-time.helper';
 import { BehaviorSubject } from 'rxjs';
@@ -11,6 +11,7 @@ import { LanguageService } from '../../../../../services/language/language.servi
     selector: 'app-player-demos-dialog',
     templateUrl: './player-demos-dialog.component.html',
     styleUrls: ['./player-demos-dialog.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayerDemosDialogComponent extends Translations {
     @Output()
@@ -51,6 +52,7 @@ export class PlayerDemosDialogComponent extends Translations {
             });
     }
 
+    // TODO Разобраться и поправить кривую логику
     public isLoading(demoName: string): boolean {
         return !!this.loading && !!this.loading[demoName];
     }
