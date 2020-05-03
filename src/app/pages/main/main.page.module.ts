@@ -33,6 +33,7 @@ import { AdminDeleteCommentDialogComponent } from './components/news-comments/co
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SmilesDropdownComponent } from './components/news-comments/components/smiles-dropdown/smiles-dropdown.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { NewsSocialLinksComponent } from './components/news-social-links/news-social-links.component';
 
 const routes: Routes = [
     {
@@ -84,6 +85,7 @@ const routes: Routes = [
         ReflexInvalidDemosListComponent,
         AdminDeleteCommentDialogComponent,
         SmilesDropdownComponent,
+        NewsSocialLinksComponent,
     ],
     providers: [NewsService],
     entryComponents: [
