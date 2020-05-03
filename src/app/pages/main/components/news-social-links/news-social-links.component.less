@@ -1,6 +1,6 @@
-.social-link-img-block {
+:host {
     position: absolute;
-    top: 15px;
+    top: 17px;
     right: 15px;
     display: flex;
 }
@@ -16,8 +16,12 @@
     &.telegram{
         background-image: url('/assets/images/icons/social/telegram.png');
     }
+
+    &:hover {
+        opacity: 0.9;
+    }
 }
 
-.social-link-img:last-child {
-    margin-left: 20px;
+.social-link {
+    margin-left: 6px;
 }
