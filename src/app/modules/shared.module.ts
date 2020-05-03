@@ -29,9 +29,13 @@ const DIRECTIVES = [
     ClickOutsideDirective,
 ];
 
+const PIPES = [
+    InvokeFunctionPipe,
+];
+
 @NgModule({
-    declarations: [...COMPONENTS, ...DIRECTIVES, InvokeFunctionPipe],
+    declarations: [...COMPONENTS, ...DIRECTIVES, ...PIPES],
     imports: [CommonModule, MatRippleModule, MatTableModule, CdkTableModule],
-    exports: [...COMPONENTS, ...DIRECTIVES],
+    exports: [...COMPONENTS, ...DIRECTIVES, ...PIPES],
 })
 export class SharedModule {}

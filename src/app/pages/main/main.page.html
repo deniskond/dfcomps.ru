@@ -1,8 +1,8 @@
-<div *ngIf="news; else loader" class="news-container">
-    <ng-container *ngFor="let singleNews of news">
+<div *ngIf="news$ | async as news; else loader" class="news-container">
+    <ng-container *ngFor="let singleNews of news; let i = index;">
         <div class="shadowed-main-block news-block">
             <h1 class="h1-block-header no-margin">
-                <a routerLink="/news/{{ singleNews.id }}" class="news_header_link">
+                <a *ngIf="language$ | async as language" routerLink="/news/{{ singleNews.id }}" class="news_header_link">
                     {{ language === languages.EN ? singleNews.headerEn : singleNews.header }}
                 </a>
             </h1>

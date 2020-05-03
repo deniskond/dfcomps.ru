@@ -5,7 +5,7 @@
         <ng-container *ngIf="!!movies.length; else loader">
             <div *ngFor="let movie of movies" class="movie-block">
                 <a href="https://youtube.com/watch?v={{ movie.youtube }}" target="_blank" class="movie-link">
-                    <div [ngStyle]="movie.youtube | invokeFunction : getMovieBgStyle" class="movie-bg"></div>
+                    <div [ngStyle]="getMovieBgStyle(movie.youtube)" class="movie-bg"></div>
                     <div class="movie-sub">
                         <div class="movie-name">{{ movie.name }}</div>
                         <div class="movie-author-year">{{ movie.author | invokeFunction : getAuthorName }} / {{ movie.year }}</div>

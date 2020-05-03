@@ -3,7 +3,7 @@ import { LanguageService } from '../../services/language/language.service';
 import { Languages } from '../../enums/languages.enum';
 import { NavigationPages } from '../../routing/enums/pages.enum';
 import { TABS_CONFIG, TabInterface } from '../../routing/config/tabs.config';
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -25,7 +25,12 @@ export class SiteHeaderComponent extends Translations implements OnInit, OnDestr
 
     private onDestroy$ = new Subject<void>();
 
-    constructor(private dialog: MatDialog, private router: Router, protected languageService: LanguageService) {
+    constructor(
+        protected languageService: LanguageService,
+        private dialog: MatDialog,
+        private router: Router,
+        private changeDetectorRef: ChangeDetectorRef,
+    ) {
         super(languageService);
     }
 
@@ -55,7 +60,10 @@ export class SiteHeaderComponent extends Translations implements OnInit, OnDestr
                 filter((event: RouterEvent) => event instanceof NavigationEnd),
                 takeUntil(this.onDestroy$),
             )
-            .subscribe(() => this.setActivePage());
+            .subscribe(() => {
+                this.setActivePage();
+                this.changeDetectorRef.markForCheck();
+            });
     }
 
     private setActivePage(): void {

@@ -2,7 +2,7 @@
     <div class="profile-header">
         <h1 class="h1-block-header"> 
             {{ translations?.playerProfile }}
-            <ng-container *ngIf="!isLoading"> {{ mainInfo.nick }} </ng-container>
+            <ng-container *ngIf="(isLoading$ | async) === false"> {{ mainInfo.nick }} </ng-container>
         </h1>
         <button 
             *ngIf="isEditProfileAvailable$ | async"
@@ -15,10 +15,10 @@
         </button>
     </div>
 
-    <ng-container *ngIf="!isLoading; else loader">
+    <ng-container *ngIf="(isLoading$ | async) === false; else loader">
         <div class="info-and-charts">
             <div class="player-info">
-                <img [src]="mainInfo.avatar | invokeFunction : getAvatarSrc" class="avatar" />
+                <img [src]="mainInfo.avatar | invokeFunction : getAvatarSrc : apiUrl" class="avatar" />
                 <div class="rating-and-country">
                     <div><b>VQ3 {{ translations?.rating | lowercase }}:</b> {{ mainInfo.vq3Rating }}</div>
                     <div><b>CPM {{ translations?.rating | lowercase }}:</b> {{ mainInfo.cpmRating }}</div>

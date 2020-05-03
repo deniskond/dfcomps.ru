@@ -14,13 +14,13 @@
     <div class="tables-container">
         <div class="rating-table">
             <h2 class="h1-block-header"> Vq3 </h2>
-            <div *ngIf="!isLoadingVq3 && (vq3Ratings$ | async) as vq3Ratings; else loader" class="table-border">
+            <div *ngIf="(isLoadingVq3$ | async) === false && (vq3Ratings$ | async) as vq3Ratings; else loader" class="table-border">
                 <app-players-rating-table [ratingTable]="vq3Ratings" [bias]="bias"></app-players-rating-table>
             </div>
         </div>
         <div class="rating-table">
             <h2 class="h1-block-header"> Cpm </h2>
-            <div *ngIf="!isLoadingCpm && (cpmRatings$ | async) as cpmRatings; else loader" class="table-border">
+            <div *ngIf="(isLoadingCpm$ | async) === false && (cpmRatings$ | async) as cpmRatings; else loader" class="table-border">
                 <app-players-rating-table [ratingTable]="cpmRatings" [bias]="bias"></app-players-rating-table>
             </div>
         </div>
