@@ -5,7 +5,7 @@ export interface SmileInterface {
     group: SmileGroups;
 }
 
-export enum  SmileGroups {
+export enum SmileGroups {
     MAIN,
     GESTURES,
     DEFRAG,
@@ -1195,5 +1195,17 @@ export class SMILES_CONFIG {
                 group: SmileGroups.PERSONAL,
             },
         ];
+    }
+
+    public static get SMILES_GROUP_INFO(): Record<SmileGroups, { order: number; name: string }> {
+        return {
+            [SmileGroups.PERSONAL]: { order: 1, name: 'personal_smiles' },
+            [SmileGroups.DEFRAG]: { order: 2, name: 'defrag_smiles' },
+            [SmileGroups.MAIN]: { order: 3, name: 'main_smiles' },
+            [SmileGroups.GESTURES]: { order: 4, name: 'gesture_smiles' },
+            [SmileGroups.FOOD]: { order: 5, name: 'food_smiles' },
+            [SmileGroups.ANIMALS]: { order: 6, name: 'animals_smiles' },
+            [SmileGroups.MISC]: { order: 7, name: 'misc_smiles' },
+        };
     }
 }

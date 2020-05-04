@@ -8,6 +8,7 @@ import { takeUntil, map } from 'rxjs/operators';
 import { formatCupTime } from '../../modules/cup-timer/helpers/cup-time-format.helpers';
 
 export class Translations implements OnInit, OnDestroy {
+    // TODO Перевести на поток
     public translations: Record<string, string> = {};
     public lang: Languages;
 

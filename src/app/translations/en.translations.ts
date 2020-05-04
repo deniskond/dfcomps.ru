@@ -102,4 +102,11 @@ export const ENGLISH_TRANSLATIONS = {
     reason: 'Reason',
     edit: 'Edit',
     commentDeletedByAdmin: 'Comment was deleted by admin. Reason:',
+    personal_smiles: 'Personal',
+    defrag_smiles: 'Defrag',
+    main_smiles: 'Smileys & People',
+    gesture_smiles: 'Gestures',
+    food_smiles: 'Food',
+    animals_smiles: 'Animals',
+    misc_smiles: 'Miscellaneous',
 }

@@ -1,4 +1,10 @@
-<mat-expansion-panel [expanded]="expanded" class="expansion-panel">
+<mat-expansion-panel 
+    [class.overflow-visible]="isOverflowVisible"
+    [expanded]="expanded"
+    (closed)="setOverflowVisible(false)"
+    (afterExpand)="setOverflowVisible(true)"
+    class="expansion-panel">
+
     <mat-expansion-panel-header class="expansion-panel-header">
         <mat-panel-title class="panel-title">
             {{ translations?.comments }} ({{ comments.length }})
