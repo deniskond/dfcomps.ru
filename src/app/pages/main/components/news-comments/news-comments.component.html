@@ -40,7 +40,7 @@
                             </span>
                         </div>
                         <div class="comment-header-right">
-                            {{ formatDate(comment.datetimezone) }}
+                            {{ comment.datetimezone | invokeFunction : formatDate }}
                         </div>
                     </div>
                     <div *ngIf="!comment.reason; else adminDeleted" [innerHTML]="comment.smilesComment" class="comment-inner"></div>
@@ -59,7 +59,8 @@
         <div class="textarea-container">
             <textarea #textarea class="comment-textarea"></textarea>
             <img (click)="openSmilesDropdown($event)" src="/assets/images/icons/smile-icon.png" class="smiles-icon" />
-            <app-smiles-dropdown 
+            <app-smiles-dropdown
+                #smilesDropdown
                 [class.hidden]="smilesDropdownDisplayHidden"
                 [@smilesDialog]="smilesDropdownOpened ? openedAnimationState : closedAnimationState"
                 (@smilesDialog.done)="onAnimationEnd($event)"

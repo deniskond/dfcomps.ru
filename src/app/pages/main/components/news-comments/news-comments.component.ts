@@ -18,6 +18,7 @@ import { AdminDeleteCommentDialogComponent } from './components/admin-delete-com
 import { smilesDialogAnimation, SMILES_DIALOG_OPENED, SMILES_DIALOG_CLOSED } from './animations/smiles-dialog.animation';
 import { AnimationEvent } from '@angular/animations';
 import { SmileInterface } from '../../../../configs/smiles.config';
+import { SmilesDropdownComponent } from './components/smiles-dropdown/smiles-dropdown.component';
 
 const COMMENT_ACTION_PERIOD_MINUTES = 2;
 
@@ -37,6 +38,7 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
     expanded = false;
 
     @ViewChild('textarea') textarea: ElementRef;
+    @ViewChild('smilesDropdown') smilesDropdown: SmilesDropdownComponent;
 
     public currentUser$: Observable<UserInterface>;
     public comments$ = new ReplaySubject<CommentInterface[]>(1);
@@ -183,6 +185,7 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
     public onAnimationEnd(event: AnimationEvent): void {
         if (event.toState === SMILES_DIALOG_CLOSED) {
             this.smilesDropdownDisplayHidden = true;
+            this.smilesDropdown.clearInput();
         }
     }
 
@@ -191,7 +194,7 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
     }
 
     public addSmile({ name }: SmileInterface): void {
-        this.textarea.nativeElement.value += ` :${name}:`;
+        this.textarea.nativeElement.value += this.textarea.nativeElement.value ? ` :${name}:` : `:${name}:`;
     }
 
     private mapCommentWithAction(comment: CommentInterface, user: UserInterface): CommentWithActionInterface {

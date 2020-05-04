@@ -3,11 +3,12 @@ import { SMILES_CONFIG, SmileInterface } from '../../../../../../configs/smiles.
 import { groupBy } from 'lodash';
 import { Translations } from '../../../../../../components/translations/translations.component';
 import { LanguageService } from '../../../../../../services/language/language.service';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { Languages } from '../../../../../../enums/languages.enum';
-import { map } from 'rxjs/operators';
+import { map, startWith } from 'rxjs/operators';
 import { ENGLISH_TRANSLATIONS } from '../../../../../../translations/en.translations';
 import { RUSSIAN_TRANSLATIONS } from '../../../../../../translations/ru.translations';
+import { FormGroup, FormControl } from '@angular/forms';
 
 interface SortedSmileGroupsInterface {
     name: string;
@@ -25,6 +26,7 @@ export class SmilesDropdownComponent extends Translations implements OnInit {
 
     public sortedAndGroupedSmiles$: Observable<SortedSmileGroupsInterface[]>;
     public hoveredSmile: SmileInterface | null = null;
+    public smileSearchForm = new FormGroup({ smile: new FormControl('') });
 
     constructor(protected languageService: LanguageService) {
         super(languageService);
@@ -46,12 +48,21 @@ export class SmilesDropdownComponent extends Translations implements OnInit {
         this.hoveredSmile = smile;
     }
 
-    private initSmilesObservable(): void {
-        this.sortedAndGroupedSmiles$ = this.languageService.getLanguage$().pipe(map((language: Languages) => this.getSortedAndGroupedSmiles(language)));
+    public clearInput(): void {
+        this.smileSearchForm.setValue({ smile: '' });
     }
 
-    private getSortedAndGroupedSmiles(language: Languages): SortedSmileGroupsInterface[] {
-        return Object.entries(groupBy(SMILES_CONFIG.SMILES, 'group'))
+    private initSmilesObservable(): void {
+        this.sortedAndGroupedSmiles$ = combineLatest([
+            this.languageService.getLanguage$(),
+            this.smileSearchForm.get('smile').valueChanges.pipe(startWith('')),
+        ]).pipe(map(([language, searchInput]: [Languages, string]) => this.getSortedAndGroupedSmiles(language, searchInput)));
+    }
+
+    private getSortedAndGroupedSmiles(language: Languages, searchInput: string): SortedSmileGroupsInterface[] {
+        const filteredSmiles: SmileInterface[] = SMILES_CONFIG.SMILES.filter(({ name }: SmileInterface) => name.includes(searchInput));
+
+        return Object.entries(groupBy(filteredSmiles, 'group'))
             .sort(([smileGroup1], [smileGroup2]) => SMILES_CONFIG.SMILES_GROUP_INFO[smileGroup1].order - SMILES_CONFIG.SMILES_GROUP_INFO[smileGroup2].order)
             .map(([smileGroup, smiles]: [string, SmileInterface[]]) => ({
                 name: this.getSmileGroupHeader(SMILES_CONFIG.SMILES_GROUP_INFO[smileGroup].name, language),

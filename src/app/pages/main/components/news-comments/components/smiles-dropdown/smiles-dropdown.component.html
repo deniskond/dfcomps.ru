@@ -1,21 +1,28 @@
-<input placeholder="Поиск смайлов" class="smile-search-input" />
+<form [formGroup]="smileSearchForm">
+    <input formControlName="smile" placeholder="Поиск смайлов" class="smile-search-input" />
+</form>
 
 <div class="scroll-container">
-    <div class="groups-container">
-        <div *ngFor="let smileGroup of (sortedAndGroupedSmiles$ | async)" class="smile-group">
-            <div class="group-name">{{ smileGroup.name }}</div>
-            <div class="smiles-container">
-                <div 
-                    *ngFor="let smile of smileGroup.items"
-                    (click)="chooseSmile.emit(smile)"
-                    (mouseover)="setFocusedSmile(smile)"
-                    (mouseout)="setFocusedSmile(null)"
-                    class="smile-container">
+    <div *ngIf="(sortedAndGroupedSmiles$ | async) as smileGroups" class="groups-container">
+        <ng-container *ngIf="smileGroups.length; else noSmilesFound">
+            <div *ngFor="let smileGroup of smileGroups" class="smile-group">
+                <div class="group-name">{{ smileGroup.name }}</div>
+                <div class="smiles-container">
+                    <div 
+                        *ngFor="let smile of smileGroup.items"
+                        (click)="chooseSmile.emit(smile)"
+                        (mouseover)="setFocusedSmile(smile)"
+                        (mouseout)="setFocusedSmile(null)"
+                        class="smile-container">
 
-                    <div [ngStyle]="smile | invokeFunction : getSmileStyle" class="smile"></div>
+                        <div [ngStyle]="smile | invokeFunction : getSmileStyle" class="smile"></div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </ng-container>
+        <ng-template #noSmilesFound>
+            <div class="no-smiles-found">Смайлов не найдено</div>
+        </ng-template>
     </div>
 </div>
 
