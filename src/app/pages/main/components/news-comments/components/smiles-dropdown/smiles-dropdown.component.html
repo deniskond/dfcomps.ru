@@ -15,7 +15,7 @@
                         (mouseout)="setFocusedSmile(null)"
                         class="smile-container">
 
-                        <div [ngStyle]="smile | invokeFunction : getSmileStyle" class="smile"></div>
+                        <app-smile [smile]="smile"></app-smile>
                     </div>
                 </div>
             </div>
@@ -32,7 +32,7 @@
     </div>
 
     <ng-template #chosenSmileTemplate>
-        <div [ngStyle]="hoveredSmile | invokeFunction : getSmileStyle" class="smile big"></div>
+        <app-smile [smile]="hoveredSmile" [isBig]="true"></app-smile>
         <div class="smile-name">:{{ hoveredSmile.name }}:</div>
     </ng-template>
 </div>

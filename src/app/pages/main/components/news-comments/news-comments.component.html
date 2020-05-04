@@ -43,9 +43,12 @@
                             {{ comment.datetimezone | invokeFunction : formatDate }}
                         </div>
                     </div>
-                    <div *ngIf="!comment.reason; else adminDeleted" [innerHTML]="comment.smilesComment" class="comment-inner"></div>
+                    <app-news-comment-text 
+                        *ngIf="!comment.reason; else adminDeleted" 
+                        [comment]="comment.comment">
+                    </app-news-comment-text>
                     <ng-template #adminDeleted>
-                        <div class="comment-inner gray">{{ translations?.commentDeletedByAdmin }} {{ comment.reason }}</div>
+                        <div class="comment-inner-gray">{{ translations?.commentDeletedByAdmin }} {{ comment.reason }}</div>
                     </ng-template>
                 </div>
             </ng-container>

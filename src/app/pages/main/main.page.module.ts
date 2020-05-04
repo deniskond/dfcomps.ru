@@ -34,6 +34,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SmilesDropdownComponent } from './components/news-comments/components/smiles-dropdown/smiles-dropdown.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { NewsSocialLinksComponent } from './components/news-social-links/news-social-links.component';
+import { NewsCommentTextComponent } from './components/news-comments/components/news-comment-text/news-comment-text.component';
 
 const routes: Routes = [
     {
@@ -86,6 +87,7 @@ const routes: Routes = [
         AdminDeleteCommentDialogComponent,
         SmilesDropdownComponent,
         NewsSocialLinksComponent,
+        NewsCommentTextComponent,
     ],
     providers: [NewsService],
     entryComponents: [
