@@ -63,7 +63,8 @@
                 [class.hidden]="smilesDropdownDisplayHidden"
                 [@smilesDialog]="smilesDropdownOpened ? openedAnimationState : closedAnimationState"
                 (@smilesDialog.done)="onAnimationEnd($event)"
-                (clickOutside)="closeSmilesDropdown()">
+                (clickOutside)="closeSmilesDropdown()"
+                (chooseSmile)="addSmile($event)">
             </app-smiles-dropdown>
         </div>
 

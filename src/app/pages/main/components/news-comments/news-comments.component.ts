@@ -17,6 +17,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AdminDeleteCommentDialogComponent } from './components/admin-delete-comment-dialog/admin-delete-comment-dialog.component';
 import { smilesDialogAnimation, SMILES_DIALOG_OPENED, SMILES_DIALOG_CLOSED } from './animations/smiles-dialog.animation';
 import { AnimationEvent } from '@angular/animations';
+import { SmileInterface } from '../../../../configs/smiles.config';
 
 const COMMENT_ACTION_PERIOD_MINUTES = 2;
 
@@ -187,6 +188,10 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
 
     public setOverflowVisible(isVisible: boolean): void {
         this.isOverflowVisible = isVisible;
+    }
+
+    public addSmile({ name }: SmileInterface): void {
+        this.textarea.nativeElement.value += ` :${name}:`;
     }
 
     private mapCommentWithAction(comment: CommentInterface, user: UserInterface): CommentWithActionInterface {

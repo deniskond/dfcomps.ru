@@ -1051,7 +1051,7 @@ export class SMILES_CONFIG {
                 group: SmileGroups.DEFRAG,
             },
             {
-                name: 'rabbit',
+                name: 'df_rabbit',
                 row: 12,
                 col: 8,
                 group: SmileGroups.DEFRAG,

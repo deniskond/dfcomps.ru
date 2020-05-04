@@ -1,11 +1,11 @@
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, Output, EventEmitter } from '@angular/core';
 import { SMILES_CONFIG, SmileInterface } from '../../../../../../configs/smiles.config';
 import { groupBy } from 'lodash';
 import { Translations } from '../../../../../../components/translations/translations.component';
 import { LanguageService } from '../../../../../../services/language/language.service';
 import { Observable } from 'rxjs';
 import { Languages } from '../../../../../../enums/languages.enum';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { ENGLISH_TRANSLATIONS } from '../../../../../../translations/en.translations';
 import { RUSSIAN_TRANSLATIONS } from '../../../../../../translations/ru.translations';
 
@@ -21,7 +21,10 @@ interface SortedSmileGroupsInterface {
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SmilesDropdownComponent extends Translations implements OnInit {
+    @Output() chooseSmile = new EventEmitter<SmileInterface>();
+
     public sortedAndGroupedSmiles$: Observable<SortedSmileGroupsInterface[]>;
+    public hoveredSmile: SmileInterface | null = null;
 
     constructor(protected languageService: LanguageService) {
         super(languageService);
@@ -33,10 +36,14 @@ export class SmilesDropdownComponent extends Translations implements OnInit {
 
     public getSmileStyle({ col, row }: SmileInterface): Record<string, string> {
         return {
-            'background': `url('/assets/images/smiles/smiles.png')`,
+            background: `url('/assets/images/smiles/smiles.png')`,
             'background-position-x': `-${(col - 1) * 32}px`,
             'background-position-y': `-${(row - 1) * 32}px`,
         };
+    }
+
+    public setFocusedSmile(smile: SmileInterface | null): void {
+        this.hoveredSmile = smile;
     }
 
     private initSmilesObservable(): void {

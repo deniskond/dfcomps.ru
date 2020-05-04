@@ -1,16 +1,31 @@
-<input style="margin:12px;" />
+<input placeholder="Поиск смайлов" class="smile-search-input" />
 
-<hr style="margin:0;"/>
+<div class="scroll-container">
+    <div class="groups-container">
+        <div *ngFor="let smileGroup of (sortedAndGroupedSmiles$ | async)" class="smile-group">
+            <div class="group-name">{{ smileGroup.name }}</div>
+            <div class="smiles-container">
+                <div 
+                    *ngFor="let smile of smileGroup.items"
+                    (click)="chooseSmile.emit(smile)"
+                    (mouseover)="setFocusedSmile(smile)"
+                    (mouseout)="setFocusedSmile(null)"
+                    class="smile-container">
 
-<div style="height: 250px;overflow-y:scroll;">
-    <div *ngFor="let smileGroup of (sortedAndGroupedSmiles$ | async)" style="padding:12px;">
-        <div><strong>{{ smileGroup.name }}</strong></div>
-        <div style="display:flex;flex-wrap:wrap;">
-            <div *ngFor="let smile of smileGroup.items" [ngStyle]="smile | invokeFunction : getSmileStyle" style="width:32px;height:32px;transform:scale(0.75);transform-origin: 0 0;"></div>
+                    <div [ngStyle]="smile | invokeFunction : getSmileStyle" class="smile"></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<hr style="margin:0;"/>
+<div class="chosen-smile-container">
+    <div *ngIf="!hoveredSmile; else chosenSmileTemplate" class="chosen-smile-placeholder">
+        Выбранный смайл
+    </div>
 
-<div style="margin:12px;">Выбранный смайл</div>
+    <ng-template #chosenSmileTemplate>
+        <div [ngStyle]="hoveredSmile | invokeFunction : getSmileStyle" class="smile big"></div>
+        <div class="smile-name">:{{ hoveredSmile.name }}:</div>
+    </ng-template>
+</div>
