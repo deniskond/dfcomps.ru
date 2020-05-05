@@ -59,7 +59,6 @@
         </div>
     </ng-container>
 
-    <ng-container *ngIf="true; else notLogged">
     <ng-container *ngIf="currentUser$ | async; else notLogged">
         <div class="write-commentary">{{ editingCommentId ? translations?.editComment : translations?.writeComment }}:</div>
         <div class="textarea-container">
