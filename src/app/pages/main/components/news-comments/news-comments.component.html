@@ -43,12 +43,14 @@
                             {{ comment.datetimezone | invokeFunction : formatDate }}
                         </div>
                     </div>
-                    <app-news-comment-text 
-                        *ngIf="!comment.reason; else adminDeleted" 
-                        [comment]="comment.comment"
-                        [personalSmiles]="personalSmiles$ | async"
-                        [currentUser]="currentUser$ | async">
-                    </app-news-comment-text>
+                    <ng-container *ngIf="!comment.reason; else adminDeleted">
+                        <app-news-comment-text 
+                            *ngIf="personalSmiles$ | async as personalSmiles"
+                            [comment]="comment"
+                            [personalSmiles]="personalSmiles"
+                            [currentUser]="currentUser$ | async">
+                        </app-news-comment-text>
+                    </ng-container>
                     <ng-template #adminDeleted>
                         <div class="comment-inner-gray">{{ translations?.commentDeletedByAdmin }} {{ comment.reason }}</div>
                     </ng-template>
@@ -58,17 +60,17 @@
     </ng-container>
 
     <ng-container *ngIf="true; else notLogged">
-    <!-- TODO Вернуть -->
-    <!-- <ng-container *ngIf="currentUser$ | async; else notLogged"> -->
+    <ng-container *ngIf="currentUser$ | async; else notLogged">
         <div class="write-commentary">{{ editingCommentId ? translations?.editComment : translations?.writeComment }}:</div>
         <div class="textarea-container">
             <textarea #textarea class="comment-textarea"></textarea>
             <img (click)="openSmilesDropdown($event)" src="/assets/images/icons/smile-icon.png" class="smiles-icon" />
             <app-smiles-dropdown
+                *ngIf="personalSmiles$ | async as personalSmiles"
                 #smilesDropdown
                 [class.hidden]="smilesDropdownDisplayHidden"
                 [currentUser]="currentUser$ | async"
-                [personalSmiles]="personalSmiles$ | async"
+                [personalSmiles]="personalSmiles"
                 [@smilesDialog]="smilesDropdownOpened ? openedAnimationState : closedAnimationState"
                 (@smilesDialog.done)="onAnimationEnd($event)"
                 (clickOutside)="closeSmilesDropdown()"

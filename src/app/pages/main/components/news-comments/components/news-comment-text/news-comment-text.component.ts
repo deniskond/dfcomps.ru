@@ -1,7 +1,8 @@
+import { CommentInterface } from './../../../../../../interfaces/comments.interface';
 import { UserInterface } from './../../../../../../interfaces/user.interface';
 import { PersonalSmileInterface } from './../../../../../../services/smiles/personal-smile.interface';
 import { Component, ChangeDetectionStrategy, Input, OnInit } from '@angular/core';
-import { SMILES_CONFIG, SmileInterface } from '../../../../../../configs/smiles.config';
+import { SMILES_CONFIG, SmileInterface, SmileGroups } from '../../../../../../configs/smiles.config';
 
 enum MessagePartTypes {
     SMILE,
@@ -20,7 +21,7 @@ interface MessagePartInterface {
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewsCommentTextComponent implements OnInit {
-    @Input() comment: string;
+    @Input() comment: CommentInterface;
     @Input() personalSmiles: PersonalSmileInterface[];
     @Input() currentUser: UserInterface;
 
@@ -32,7 +33,7 @@ export class NewsCommentTextComponent implements OnInit {
     }
 
     private getMessageParts(): void {
-        const splitMessage = this.comment.split(/(\:\w+?\:)/gm);
+        const splitMessage = this.comment.comment.split(/(\:\w+?\:)/gm).filter(messagePart => !!messagePart);
 
         this.messageParts = splitMessage.map((messagePart: string) => {
             const smile: SmileInterface | null = this.getSmile(messagePart);
@@ -55,7 +56,18 @@ export class NewsCommentTextComponent implements OnInit {
         }
 
         const strippedColonsText: string = text.substring(1, text.length - 1);
+        const smile = SMILES_CONFIG.SMILES.find(({ name }: SmileInterface) => name === strippedColonsText);
 
-        return SMILES_CONFIG.SMILES.find(({ name }: SmileInterface) => name === strippedColonsText);
+        if (!smile) {
+            return null;
+        }
+
+        return smile.group === SmileGroups.PERSONAL ? this.getPersonalSmile(smile) : smile;
+    }
+
+    private getPersonalSmile(smile: SmileInterface): SmileInterface | null {
+        return this.personalSmiles.find(({ playerId, smileAlias }: PersonalSmileInterface) => playerId === this.comment.playerId && smileAlias === smile.name)
+            ? smile
+            : null;
     }
 }
