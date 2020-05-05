@@ -1,3 +1,5 @@
+import { SmilesService } from './../../../../services/smiles/smiles.service';
+import { PersonalSmileInterface } from './../../../../services/smiles/personal-smile.interface';
 import { CommentActionResult } from './../../services/comments/enums/comment-action-result.enum';
 import { UserAccess } from '../../../../enums/user-access.enum';
 import { CommentWithActionInterface } from './interfaces/comment-with-action.interface';
@@ -43,6 +45,7 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
     public currentUser$: Observable<UserInterface>;
     public comments$ = new ReplaySubject<CommentInterface[]>(1);
     public commentsWithActions$: Observable<CommentWithActionInterface[]>;
+    public personalSmiles$: Observable<PersonalSmileInterface[]>;
     public isLoading = false;
     public editingCommentId: string | null = null;
     public smilesDropdownOpened = false;
@@ -56,19 +59,14 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
         private userService: UserService,
         private snackBar: MatSnackBar,
         private dialog: MatDialog,
+        private smilesService: SmilesService,
         protected languageService: LanguageService,
     ) {
         super(languageService);
     }
 
     ngOnInit(): void {
-        this.currentUser$ = this.userService.getCurrentUser$();
-        this.commentsWithActions$ = combineLatest([this.comments$, this.currentUser$]).pipe(
-            map(([comments, user]: [CommentInterface[], UserInterface]) =>
-                comments.map((comment: CommentInterface) => this.mapCommentWithAction(comment, user)),
-            ),
-        );
-
+        this.initObservables();
         super.ngOnInit();
     }
 
@@ -195,6 +193,16 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
 
     public addSmile({ name }: SmileInterface): void {
         this.textarea.nativeElement.value += this.textarea.nativeElement.value ? ` :${name}:` : `:${name}:`;
+    }
+
+    private initObservables(): void {
+        this.currentUser$ = this.userService.getCurrentUser$();
+        this.personalSmiles$ = this.smilesService.getPersonalSmiles$();
+        this.commentsWithActions$ = combineLatest([this.comments$, this.currentUser$]).pipe(
+            map(([comments, user]: [CommentInterface[], UserInterface]) =>
+                comments.map((comment: CommentInterface) => this.mapCommentWithAction(comment, user)),
+            ),
+        );
     }
 
     private mapCommentWithAction(comment: CommentInterface, user: UserInterface): CommentWithActionInterface {

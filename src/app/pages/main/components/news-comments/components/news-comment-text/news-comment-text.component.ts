@@ -1,3 +1,5 @@
+import { UserInterface } from './../../../../../../interfaces/user.interface';
+import { PersonalSmileInterface } from './../../../../../../services/smiles/personal-smile.interface';
 import { Component, ChangeDetectionStrategy, Input, OnInit } from '@angular/core';
 import { SMILES_CONFIG, SmileInterface } from '../../../../../../configs/smiles.config';
 
@@ -19,6 +21,8 @@ interface MessagePartInterface {
 })
 export class NewsCommentTextComponent implements OnInit {
     @Input() comment: string;
+    @Input() personalSmiles: PersonalSmileInterface[];
+    @Input() currentUser: UserInterface;
 
     public messageParts: MessagePartInterface[];
     public messagePartTypes = MessagePartTypes;

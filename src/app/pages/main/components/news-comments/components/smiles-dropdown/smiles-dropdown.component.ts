@@ -1,4 +1,6 @@
-import { Component, ChangeDetectionStrategy, OnInit, Output, EventEmitter } from '@angular/core';
+import { PersonalSmileInterface } from './../../../../../../services/smiles/personal-smile.interface';
+import { UserInterface } from './../../../../../../interfaces/user.interface';
+import { Component, ChangeDetectionStrategy, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { SMILES_CONFIG, SmileInterface } from '../../../../../../configs/smiles.config';
 import { groupBy } from 'lodash';
 import { Translations } from '../../../../../../components/translations/translations.component';
@@ -22,6 +24,9 @@ interface SortedSmileGroupsInterface {
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SmilesDropdownComponent extends Translations implements OnInit {
+    @Input() currentUser: UserInterface;
+    @Input() personalSmiles: PersonalSmileInterface[];
+
     @Output() chooseSmile = new EventEmitter<SmileInterface>();
 
     public sortedAndGroupedSmiles$: Observable<SortedSmileGroupsInterface[]>;

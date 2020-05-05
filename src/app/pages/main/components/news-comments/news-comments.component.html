@@ -45,7 +45,9 @@
                     </div>
                     <app-news-comment-text 
                         *ngIf="!comment.reason; else adminDeleted" 
-                        [comment]="comment.comment">
+                        [comment]="comment.comment"
+                        [personalSmiles]="personalSmiles$ | async"
+                        [currentUser]="currentUser$ | async">
                     </app-news-comment-text>
                     <ng-template #adminDeleted>
                         <div class="comment-inner-gray">{{ translations?.commentDeletedByAdmin }} {{ comment.reason }}</div>
@@ -65,6 +67,8 @@
             <app-smiles-dropdown
                 #smilesDropdown
                 [class.hidden]="smilesDropdownDisplayHidden"
+                [currentUser]="currentUser$ | async"
+                [personalSmiles]="personalSmiles$ | async"
                 [@smilesDialog]="smilesDropdownOpened ? openedAnimationState : closedAnimationState"
                 (@smilesDialog.done)="onAnimationEnd($event)"
                 (clickOutside)="closeSmilesDropdown()"
