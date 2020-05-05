@@ -1,12 +1,13 @@
 import { LanguageService } from '../../../../services/language/language.service';
 import { Translations } from '../../../../components/translations/translations.component';
 import { Physics } from '../../../../enums/physics.enum';
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app-profile-rating-chart',
     templateUrl: './profile-rating-chart.component.html',
     styleUrls: ['./profile-rating-chart.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileRatingChartComponent extends Translations implements OnInit, OnChanges {
     @Input()

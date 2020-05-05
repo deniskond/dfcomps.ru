@@ -1,7 +1,7 @@
 import { Translations } from '../../components/translations/translations.component';
 import { RatingTablesService } from '../../services/rating-tables-service/rating-tables-service';
 import { Physics } from '../../enums/physics.enum';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { LeaderTableInterface } from '../../interfaces/leader-table.interface';
 import { Observable } from 'rxjs';
 import { LanguageService } from '../../services/language/language.service';
@@ -10,6 +10,7 @@ import { LanguageService } from '../../services/language/language.service';
     selector: 'app-top-ten-table',
     templateUrl: './top-ten-table.component.html',
     styleUrls: ['./top-ten-table.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TopTenTableComponent extends Translations implements OnInit {
     @Input()

@@ -5,7 +5,6 @@ export interface CommentInterface {
     newsId: string;
     playerId: string;
     reason: string;
-    smilesComment: string;
     userId: string;
     username: string;
 }

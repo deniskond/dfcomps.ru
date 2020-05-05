@@ -1,6 +1,6 @@
 import { LanguageService } from '../../services/language/language.service';
 import { Translations } from '../../components/translations/translations.component';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MoviesService } from './services/movies.service';
 import { MovieInterface } from './interfaces/movie.interface';
 import { Observable } from 'rxjs';
@@ -11,6 +11,7 @@ import { shuffle } from 'lodash';
 @Component({
     templateUrl: './movies.page.html',
     styleUrls: ['./movies.page.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MoviesPageComponent extends Translations implements OnInit {
     public movies$: Observable<MovieInterface[]>;

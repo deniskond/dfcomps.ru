@@ -1,10 +1,9 @@
 import { LanguageService } from '../../../../../services/language/language.service';
 import { Translations } from '../../../../../components/translations/translations.component';
 import { OnlineCupResultInterface } from '../../../../../interfaces/online-cup-result.interface';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Physics } from '../../../../../enums/physics.enum';
 import { getTablePlaces } from '../../../../../helpers/table-places.helper';
-import { formatResultTime } from '../../../../../helpers/result-time.helper';
 import { range } from 'lodash';
 import { Router } from '@angular/router';
 
@@ -12,6 +11,7 @@ import { Router } from '@angular/router';
     selector: 'app-online-results-table',
     templateUrl: './online-results-table.component.html',
     styleUrls: ['./online-results-table.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewsOnlineResultsTableComponent extends Translations implements OnInit {
     @Input() table: OnlineCupResultInterface[];
@@ -29,10 +29,6 @@ export class NewsOnlineResultsTableComponent extends Translations implements OnI
     ngOnInit(): void {
         this.places = getTablePlaces(this.table.map(({ finalSum }: OnlineCupResultInterface) => +finalSum));
         super.ngOnInit();
-    }
-
-    public formatResult(time: string): string {
-        return formatResultTime(time);
     }
 
     public navigateToOnlineCupTable(): void {

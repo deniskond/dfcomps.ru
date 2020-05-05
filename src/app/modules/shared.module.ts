@@ -12,6 +12,8 @@ import { PlayerPlaceComponent } from '../components/player-place/player-place.co
 import { CdkTableModule } from '@angular/cdk/table';
 import { YoutubeComponent } from '../components/youtube/youtube.component';
 import { InvokeFunctionPipe } from '../pipe/invoke-function.pipe';
+import { ClickOutsideDirective } from '../directives/click-outside/click-outside.directive';
+import { SmileComponent } from '../components/smile/smile.component';
 
 const COMPONENTS = [
     FlagComponent,
@@ -22,11 +24,20 @@ const COMPONENTS = [
     PlayerPlaceComponent,
     PlayersRatingTableComponent,
     YoutubeComponent,
+    SmileComponent,
+];
+
+const DIRECTIVES = [
+    ClickOutsideDirective,
+];
+
+const PIPES = [
+    InvokeFunctionPipe,
 ];
 
 @NgModule({
-    declarations: [...COMPONENTS, InvokeFunctionPipe],
+    declarations: [...COMPONENTS, ...DIRECTIVES, ...PIPES],
     imports: [CommonModule, MatRippleModule, MatTableModule, CdkTableModule],
-    exports: COMPONENTS,
+    exports: [...COMPONENTS, ...DIRECTIVES, ...PIPES],
 })
 export class SharedModule {}

@@ -1,5 +1,5 @@
 import { Translations } from '../../../../../components/translations/translations.component';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ValidationErrorInterface } from '../../../interfaces/validation-error.interface';
 import { LanguageService } from '../../../../../services/language/language.service';
@@ -8,6 +8,7 @@ import { LanguageService } from '../../../../../services/language/language.servi
     selector: 'app-validation-dialog',
     templateUrl: './validation-dialog.component.html',
     styleUrls: ['./validation-dialog.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ValidationDialogComponent extends Translations implements OnInit {
     public validationErrorNames: string[];

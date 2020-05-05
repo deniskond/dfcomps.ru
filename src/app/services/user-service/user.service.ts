@@ -7,7 +7,6 @@ import { map } from 'rxjs/operators';
 import { UserInterface } from '../../interfaces/user.interface';
 import { LoginResultDtoInterface } from './dto/login-result.dto';
 import { CookieService } from 'ngx-cookie-service';
-import { NewsService } from '../news-service/news.service';
 
 @Injectable()
 export class UserService {
@@ -16,7 +15,6 @@ export class UserService {
     constructor(
         private backendService: BackendService,
         private cookieService: CookieService,
-        private newsService: NewsService,
     ) {}
 
     public getCurrentUser$(): Observable<UserInterface> {
@@ -65,11 +63,9 @@ export class UserService {
         this.cookieService.delete('login');
         this.cookieService.delete('password');
         this._currentUser$.next(null);
-        this.newsService.loadMainPageNews();
     }
 
     public setCurrentUser(user: UserInterface): void {
         this._currentUser$.next(user);
-        this.newsService.loadMainPageNews();
     }
 }

@@ -2,8 +2,8 @@ import { LanguageService } from '../../services/language/language.service';
 import { Translations } from '../../components/translations/translations.component';
 import { LeaderTableInterface } from '../../interfaces/leader-table.interface';
 import { RatingTablesService } from '../../services/rating-tables-service/rating-tables-service';
-import { Component, OnInit } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ReplaySubject, Subject } from 'rxjs';
 import { Physics } from '../../enums/physics.enum';
 import { range } from 'lodash';
 import { take, finalize } from 'rxjs/operators';
@@ -14,6 +14,7 @@ const MAX_PLAYERS_PER_PAGE = 100;
 @Component({
     templateUrl: './rating.page.html',
     styleUrls: ['./rating.page.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RatingPageComponent extends Translations implements OnInit {
     public currentPage = 1;
@@ -23,8 +24,8 @@ export class RatingPageComponent extends Translations implements OnInit {
     public cpmRatings$ = new ReplaySubject<LeaderTableInterface[]>(1);
     public pagesCount$ = new ReplaySubject<number>(1);
     public range = range;
-    public isLoadingVq3: boolean;
-    public isLoadingCpm: boolean;
+    public isLoadingVq3$ = new Subject<boolean>();
+    public isLoadingCpm$ = new Subject<boolean>();
     public bias = 0;
 
     constructor(private ratingTablesService: RatingTablesService, protected languageService: LanguageService) {
@@ -37,8 +38,8 @@ export class RatingPageComponent extends Translations implements OnInit {
     }
 
     public loadCurrentSeasonPage(page: number): void {
-        this.isLoadingVq3 = true;
-        this.isLoadingCpm = true;
+        this.isLoadingVq3$.next(true);
+        this.isLoadingCpm$.next(true);
         this.currentPage = page;
         this.bias = (page - 1) * MAX_PLAYERS_PER_PAGE;
 
@@ -51,7 +52,7 @@ export class RatingPageComponent extends Translations implements OnInit {
             .getRatingTablePage$(Physics.VQ3, page)
             .pipe(
                 take(1),
-                finalize(() => (this.isLoadingVq3 = false)),
+                finalize(() => (this.isLoadingVq3$.next(false))),
             )
             .subscribe((ratingTable: LeaderTableInterface[]) => this.vq3Ratings$.next(ratingTable));
 
@@ -59,14 +60,14 @@ export class RatingPageComponent extends Translations implements OnInit {
             .getRatingTablePage$(Physics.CPM, page)
             .pipe(
                 take(1),
-                finalize(() => (this.isLoadingCpm = false)),
+                finalize(() => (this.isLoadingCpm$.next(false))),
             )
             .subscribe((ratingTable: LeaderTableInterface[]) => this.cpmRatings$.next(ratingTable));
     }
 
     public loadPreviousSeasonPage(page: number): void {
-        this.isLoadingVq3 = true;
-        this.isLoadingCpm = true;
+        this.isLoadingVq3$.next(true);
+        this.isLoadingCpm$.next(true);
         this.currentPage = page;
         this.bias = (page - 1) * MAX_PLAYERS_PER_PAGE;
 
@@ -79,7 +80,7 @@ export class RatingPageComponent extends Translations implements OnInit {
             .getSeasonRatingTablePage$(Physics.VQ3, page, this.currentSeason)
             .pipe(
                 take(1),
-                finalize(() => (this.isLoadingVq3 = false)),
+                finalize(() => (this.isLoadingVq3$.next(false))),
             )
             .subscribe((ratingTable: LeaderTableInterface[]) => this.vq3Ratings$.next(ratingTable));
 
@@ -87,7 +88,7 @@ export class RatingPageComponent extends Translations implements OnInit {
             .getSeasonRatingTablePage$(Physics.CPM, page, this.currentSeason)
             .pipe(
                 take(1),
-                finalize(() => (this.isLoadingCpm = false)),
+                finalize(() => (this.isLoadingCpm$.next(false))),
             )
             .subscribe((ratingTable: LeaderTableInterface[]) => this.cpmRatings$.next(ratingTable));
     }

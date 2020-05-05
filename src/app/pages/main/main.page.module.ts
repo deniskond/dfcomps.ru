@@ -31,7 +31,10 @@ import { NewsReflexPhysicsTableComponent } from './components/news-reflex-offlin
 import { ReflexInvalidDemosListComponent } from './components/news-reflex-offline-results/reflex-invalid-demos-list/reflex-invalid-demos-list.component';
 import { AdminDeleteCommentDialogComponent } from './components/news-comments/components/admin-delete-comment-dialog/admin-delete-comment-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SmilesDropdownComponent } from './components/news-comments/components/smiles-dropdown/smiles-dropdown.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { NewsSocialLinksComponent } from './components/news-social-links/news-social-links.component';
+import { NewsCommentTextComponent } from './components/news-comments/components/news-comment-text/news-comment-text.component';
 
 const routes: Routes = [
     {
@@ -56,6 +59,7 @@ const routes: Routes = [
         MatDialogModule,
         FormsModule,
         ReactiveFormsModule,
+        MatExpansionModule,
     ],
     declarations: [
         MainPageComponent,
@@ -81,7 +85,9 @@ const routes: Routes = [
         NewsReflexPhysicsTableComponent,
         ReflexInvalidDemosListComponent,
         AdminDeleteCommentDialogComponent,
+        SmilesDropdownComponent,
         NewsSocialLinksComponent,
+        NewsCommentTextComponent,
     ],
     providers: [NewsService],
     entryComponents: [

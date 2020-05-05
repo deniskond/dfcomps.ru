@@ -1,5 +1,5 @@
 import { Translations } from '../../../../components/translations/translations.component';
-import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 import { LanguageService } from '../../../../services/language/language.service';
 import { Observable, ReplaySubject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -7,6 +7,7 @@ import { switchMap } from 'rxjs/operators';
 @Component({
     selector: 'app-cup-timer-offline-awaiting',
     templateUrl: './cup-timer-offline-awaiting.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CupTimerOfflineAwaitingComponent extends Translations implements OnInit, OnChanges {
     @Input()

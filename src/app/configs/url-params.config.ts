@@ -110,10 +110,17 @@ export class URL_PARAMS {
             ONLINE_FULL_TABLE: (cupId: string) => `${API_URL}/cup/online/${cupId}`,
             ONLINE_ROUND: (cupId: string, roundNumber: string) => `${API_URL}/cup/online/${cupId}/round/${roundNumber}`,
             MULTICUP_FULL_TABLE: (cupId: string, physics: Physics) => `${API_URL}/cup/multi/${cupId}/${physics}`,
-            MULTICUP_ROUND: (cupId: string, physics: Physics, roundNumber: string) =>
-                `${API_URL}/cup/multi/${cupId}/${physics}/round/${roundNumber}`,
+            MULTICUP_ROUND: (cupId: string, physics: Physics, roundNumber: string) => `${API_URL}/cup/multi/${cupId}/${physics}/round/${roundNumber}`,
             REGISTER: (cupId: string) => `${API_URL}/cup/register/${cupId}`,
             CANCEL_REGISTRATION: (cupId: string) => `${API_URL}/cup/cancel_registration/${cupId}`,
+        };
+    }
+
+    public static get SMILES(): {
+        GET_PERSONAL_SMILES: string;
+    } {
+        return {
+            GET_PERSONAL_SMILES: `${API_URL}/comments/get_personal_smiles`,
         };
     }
 }

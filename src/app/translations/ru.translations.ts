@@ -102,4 +102,11 @@ export const RUSSIAN_TRANSLATIONS = {
     reason: 'Причина',
     edit: 'Редактировать',
     commentDeletedByAdmin: 'Комментарий удален админом. Причина:',
+    personal_smiles: 'Персональные',
+    defrag_smiles: 'Defrag',
+    main_smiles: 'Смайлы',
+    gesture_smiles: 'Жесты',
+    food_smiles: 'Еда',
+    animals_smiles: 'Животные',
+    misc_smiles: 'Разное',
 }

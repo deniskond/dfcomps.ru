@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ArchivePageComponent } from './archive.page';
 import { MatRippleModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SharedModule } from '../../modules/shared.module';
 
 const routes: Routes = [
     {
@@ -14,6 +15,6 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [ArchivePageComponent],
-    imports: [CommonModule, RouterModule.forChild(routes), MatProgressSpinnerModule, MatRippleModule],
+    imports: [CommonModule, RouterModule.forChild(routes), MatProgressSpinnerModule, MatRippleModule, SharedModule],
 })
 export class ArchivePageModule {}

@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app-weapons',
     templateUrl: './weapons.component.html',
     styleUrls: ['./weapons.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WeaponsComponent {
     @Input() weapons: string;

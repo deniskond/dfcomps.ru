@@ -1,13 +1,13 @@
 import { Translations } from '../../../../components/translations/translations.component';
 import { API_URL } from '../../../../configs/url-params.config';
 import { UserInterface } from '../../../../interfaces/user.interface';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 import { RegisterDialogComponent } from '../register-dialog/register-dialog.component';
 import { UserService } from '../../../../services/user-service/user.service';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { Subject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { LanguageService } from '../../../../services/language/language.service';
 
@@ -15,9 +15,10 @@ import { LanguageService } from '../../../../services/language/language.service'
     selector: 'app-user-panel',
     templateUrl: './user-panel.component.html',
     styleUrls: ['./user-panel.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserPanelComponent extends Translations implements OnInit, OnDestroy {
-    public user: UserInterface;
+    public user$: Observable<UserInterface>;
     public apiUrl = API_URL;
 
     private onDestroy$ = new Subject<void>();
@@ -32,11 +33,7 @@ export class UserPanelComponent extends Translations implements OnInit, OnDestro
     }
 
     ngOnInit(): void {
-        this.userService
-            .getCurrentUser$()
-            .pipe(takeUntil(this.onDestroy$))
-            .subscribe((user: UserInterface) => (this.user = user));
-
+        this.user$ = this.userService.getCurrentUser$();
         super.ngOnInit();
     }
 
@@ -59,6 +56,6 @@ export class UserPanelComponent extends Translations implements OnInit, OnDestro
     }
 
     public onProfileClick(): void {
-        this.router.navigate([`/profile/${this.user.id}`]);
+        this.user$.pipe(take(1)).subscribe((user: UserInterface) => this.router.navigate([`/profile/${user.id}`]));
     }
 }

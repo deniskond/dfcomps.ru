@@ -3,25 +3,24 @@ import { Translations } from '../../components/translations/translations.compone
 import { LanguageService } from '../../services/language/language.service';
 import { NewsInterfaceUnion } from '../../types/news-union.type';
 import { NewsService } from '../../services/news-service/news.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Observable } from 'rxjs';
 import { NewsTypes } from '../../enums/news-types.enum';
 import * as moment from 'moment';
-import { takeUntil, distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { isEqual } from 'lodash';
 
 @Component({
     templateUrl: './main.page.html',
     styleUrls: ['./main.page.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MainPageComponent extends Translations implements OnInit, OnDestroy {
-    public news: NewsInterfaceUnion[];
+export class MainPageComponent extends Translations implements OnInit {
+    public news$: Observable<NewsInterfaceUnion[]>;
+    public language$: Observable<Languages>;
     public newsTypes = NewsTypes;
-    public language: Languages;
     public languages = Languages;
-
-    private onDestroy$ = new Subject<void>();
 
     constructor(private router: Router, private newsService: NewsService, protected languageService: LanguageService) {
         super(languageService);
@@ -29,15 +28,8 @@ export class MainPageComponent extends Translations implements OnInit, OnDestroy
 
     ngOnInit(): void {
         this.newsService.loadMainPageNews();
-        this.initNewsSubscription();
-        this.initMainComponentNewsSubscription();
+        this.initObservables();
         super.ngOnInit();
-    }
-
-    ngOnDestroy(): void {
-        this.onDestroy$.next();
-        this.onDestroy$.complete();
-        super.ngOnDestroy();
     }
 
     public formatDate(date: string): string {
@@ -52,20 +44,8 @@ export class MainPageComponent extends Translations implements OnInit, OnDestroy
         this.router.navigate(['/archive']);
     }
 
-    private initMainComponentNewsSubscription(): void {
-        this.languageService
-            .getLanguage$()
-            .pipe(takeUntil(this.onDestroy$))
-            .subscribe((language: Languages) => (this.language = language));
-    }
-
-    private initNewsSubscription(): void {
-        this.newsService
-            .getMainPageNews$()
-            .pipe(
-                distinctUntilChanged(isEqual),
-                takeUntil(this.onDestroy$),
-            )
-            .subscribe((news: NewsInterfaceUnion[]) => (this.news = news));
+    private initObservables(): void {
+        this.news$ = this.newsService.getMainPageNews$().pipe(distinctUntilChanged(isEqual));
+        this.language$ = this.languageService.getLanguage$();
     }
 }

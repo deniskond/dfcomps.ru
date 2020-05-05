@@ -19,10 +19,10 @@
         </app-player-cell>
         <img *ngIf="result.impressive === '1'" class="impressive" src="/assets/images/icons/impressive.png" />
     </div>
-    <div *ngIf="archiveLink || !result.demopath; else noArchiveLink" class="time-column time">{{ formatResult(result.time) }}</div>
+    <div *ngIf="archiveLink || !result.demopath; else noArchiveLink" class="time-column time">{{ result.time | invokeFunction : formatResult }}</div>
     <ng-template #noArchiveLink>
         <div class="time-column time">
-            <a [href]="getDemoLink(result)">{{ formatResult(result.time) }}</a>
+            <a [href]="result | invokeFunction : getDemoLink">{{ result.time | invokeFunction : formatResult }}</a>
         </div>
     </ng-template>
     <div class="rating-column">

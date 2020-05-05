@@ -1,10 +1,11 @@
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app-youtube',
     templateUrl: './youtube.component.html',
     styleUrls: ['./youtube.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class YoutubeComponent implements OnInit {
     @Input()

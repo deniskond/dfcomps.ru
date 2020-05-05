@@ -1,6 +1,5 @@
 :host {
     display: block;
-    margin-top: 16px;
 }
 
 .expand-link {
@@ -35,7 +34,7 @@
 }
 
 .comment {
-    margin-top: 12px;
+    margin-bottom: 12px;
 
     .comment-header {
         background: whitesmoke;
@@ -48,13 +47,10 @@
         align-items: center;
     }
 
-    .comment-inner {
+    .comment-inner-gray {
         padding: 5px 8px;
         line-height: 1.6;
-
-        &.gray {
-            color: #aaaaaa;
-        }
+        color: #aaaaaa;
     }
 }
 
@@ -68,20 +64,23 @@
 }
 
 .write-commentary {
-    margin-top: 16px;
+    margin-bottom: 8px;
     font-weight: bold;
 }
 
+.comments-container {
+    margin-bottom: 16px;
+}
+
 .comment-textarea {
-    overflow: hidden;
     min-height: 40px;
-    margin-top: 8px;
     padding: 8px 32px 8px 8px;
     height: 100px;
     border: 2px solid #dedede;
     width: 100%;
     resize: none;
     font-size: 14px;
+    outline: none;
 }
 
 .add-comment-button {
@@ -140,4 +139,41 @@
 .hoverable {
     cursor: pointer;
     text-decoration: none;
+}
+
+.textarea-container {
+    position: relative;
+}
+
+.smiles-icon {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+.expansion-panel {
+    border-radius: 0px;
+    box-shadow: none;
+}
+
+.expansion-panel-header {
+    padding-left: 15px;
+    padding-right: 18px;
+}
+
+.panel-title {
+    color: #337ab7;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.overflow-visible {
+    overflow: visible;
 }

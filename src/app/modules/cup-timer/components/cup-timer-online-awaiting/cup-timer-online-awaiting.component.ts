@@ -1,12 +1,13 @@
 import { LanguageService } from '../../../../services/language/language.service';
 import { Translations } from '../../../../components/translations/translations.component';
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-cup-timer-online-awaiting',
     templateUrl: './cup-timer-online-awaiting.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CupTimerOnlineAwaitingComponent extends Translations implements OnInit, OnChanges {
     @Input()

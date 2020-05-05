@@ -1,5 +1,5 @@
 import { Physics } from '../../enums/physics.enum';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { CupPageTypes } from './enums/cup-page-types.enum';
 import { CupTableService } from './services/cup-table.service';
@@ -12,6 +12,7 @@ import { MulticupTableInterface } from './interfaces/multicup-table.interface';
     selector: 'app-cup-page',
     templateUrl: './cup.page.component.html',
     styleUrls: ['./cup.page.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CupPageComponent implements OnInit, OnDestroy {
     public type: CupPageTypes;

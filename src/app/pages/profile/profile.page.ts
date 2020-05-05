@@ -2,7 +2,7 @@ import { Translations } from '../../components/translations/translations.compone
 import { LanguageService } from '../../services/language/language.service';
 import { API_URL } from '../../configs/url-params.config';
 import { Physics } from '../../enums/physics.enum';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { switchMap, tap, takeUntil, map, withLatestFrom } from 'rxjs/operators';
 import { Subject, Observable, combineLatest } from 'rxjs';
@@ -23,6 +23,7 @@ import { EditProfileDialogComponent } from './components/edit-profile-dialog/edi
 @Component({
     templateUrl: './profile.page.html',
     styleUrls: ['./profile.page.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfilePageComponent extends Translations implements OnInit, OnDestroy {
     public mainInfo: ProfileMainInfoInterface;
@@ -31,7 +32,7 @@ export class ProfilePageComponent extends Translations implements OnInit, OnDest
     public demos: string[];
     public cups: ProfileCupInterface[];
     public rewards: Rewards[];
-    public isLoading = true;
+    public isLoading$ = new Subject<boolean>();
     public physics = Physics;
     public apiUrl = API_URL;
     public isEditProfileAvailable$: Observable<boolean>;
@@ -49,6 +50,7 @@ export class ProfilePageComponent extends Translations implements OnInit, OnDest
         private dialog: MatDialog,
     ) {
         super(languageService);
+        this.isLoading$.next(true);
     }
 
     ngOnInit(): void {
@@ -64,10 +66,10 @@ export class ProfilePageComponent extends Translations implements OnInit, OnDest
         super.ngOnDestroy();
     }
 
-    public getAvatarSrc(): string {
-        return this.mainInfo.avatar
-            ? `${this.apiUrl}/images/avatars/${this.mainInfo.avatar}.jpg`
-            : `${this.apiUrl}/images/avatars/no_avatar.png`;
+    public getAvatarSrc(avatar: string, apiUrl: string): string {
+        return avatar
+            ? `${apiUrl}/images/avatars/${avatar}.jpg`
+            : `${apiUrl}/images/avatars/no_avatar.png`;
     }
 
     public openEditProfilePopup(): void {
@@ -85,13 +87,13 @@ export class ProfilePageComponent extends Translations implements OnInit, OnDest
         this.isEditProfileAvailable$ = combineLatest([
             this.activatedRoute.params,
             this.userService.getCurrentUser$(),
-        ]).pipe(map(([{ id }, user]: [Params, UserInterface]) => id === user.id));
+        ]).pipe(map(([{ id }, user]: [Params, UserInterface]) => user ? id === user.id : false));
     }
 
     private setRouteSubscription(): void {
         this.activatedRoute.params
             .pipe(
-                tap(() => (this.isLoading = true)),
+                tap(() => (this.isLoading$.next(true))),
                 switchMap(({ id }: Params) => this.profileService.getProfile$(id)),
                 takeUntil(this.onDestroy$),
             )
@@ -101,7 +103,7 @@ export class ProfilePageComponent extends Translations implements OnInit, OnDest
     private setProfileUpdateSubscription(): void {
         this.profileUpdate$
             .pipe(
-                tap(() => (this.isLoading = true)),
+                tap(() => (this.isLoading$.next(true))),
                 withLatestFrom(this.activatedRoute.params),
                 switchMap(([, { id }]: [void, Params]) => this.profileService.getProfile$(id, false)),
                 takeUntil(this.onDestroy$),
@@ -119,7 +121,7 @@ export class ProfilePageComponent extends Translations implements OnInit, OnDest
 
         this.sanitizer.bypassSecurityTrustResourceUrl(`/assets/images/avatars/${this.mainInfo.avatar}.jpg`);
 
-        this.isLoading = false;
+        this.isLoading$.next(false);
     }
 
     private mapCupsToView(cups: ProfileCupDtoInterface[]): ProfileCupInterface[] {

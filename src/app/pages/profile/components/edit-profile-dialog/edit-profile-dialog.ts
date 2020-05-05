@@ -1,6 +1,6 @@
 import { Translations } from '../../../../components/translations/translations.component';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Inject, Component, OnInit, ElementRef, ViewChild, EventEmitter, Output } from '@angular/core';
+import { Inject, Component, OnInit, ElementRef, ViewChild, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
 import { LanguageService } from '../../../../services/language/language.service';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { COUNTRIES_CONFIG } from '../../../../configs/countries.config';
@@ -11,6 +11,7 @@ import { filter, finalize } from 'rxjs/operators';
 @Component({
     templateUrl: './edit-profile-dialog.html',
     styleUrls: ['./edit-profile-dialog.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditProfileDialogComponent extends Translations implements OnInit {
     @Output()

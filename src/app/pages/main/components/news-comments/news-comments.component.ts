@@ -1,3 +1,5 @@
+import { SmilesService } from './../../../../services/smiles/smiles.service';
+import { PersonalSmileInterface } from './../../../../services/smiles/personal-smile.interface';
 import { CommentActionResult } from './../../services/comments/enums/comment-action-result.enum';
 import { UserAccess } from '../../../../enums/user-access.enum';
 import { CommentWithActionInterface } from './interfaces/comment-with-action.interface';
@@ -6,16 +8,7 @@ import { Translations } from '../../../../components/translations/translations.c
 import { UserInterface } from '../../../../interfaces/user.interface';
 import { UserService } from '../../../../services/user-service/user.service';
 import { CommentInterface } from '../../../../interfaces/comments.interface';
-import {
-    Component,
-    Input,
-    ViewChild,
-    ElementRef,
-    OnChanges,
-    SimpleChanges,
-    OnInit,
-    ChangeDetectionStrategy,
-} from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, OnChanges, SimpleChanges, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommentsService } from '../../services/comments/comments.service';
 import { ReplaySubject, Observable, combineLatest } from 'rxjs';
 import { take, finalize, map, catchError, switchMap } from 'rxjs/operators';
@@ -24,6 +17,10 @@ import { CommentActionResultInterface } from '../../services/comments/interfaces
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AdminDeleteCommentDialogComponent } from './components/admin-delete-comment-dialog/admin-delete-comment-dialog.component';
+import { smilesDialogAnimation, SMILES_DIALOG_OPENED, SMILES_DIALOG_CLOSED } from './animations/smiles-dialog.animation';
+import { AnimationEvent } from '@angular/animations';
+import { SmileInterface } from '../../../../configs/smiles.config';
+import { SmilesDropdownComponent } from './components/smiles-dropdown/smiles-dropdown.component';
 
 const COMMENT_ACTION_PERIOD_MINUTES = 2;
 
@@ -31,6 +28,7 @@ const COMMENT_ACTION_PERIOD_MINUTES = 2;
     selector: 'app-news-comments',
     templateUrl: './news-comments.component.html',
     styleUrls: ['./news-comments.component.less'],
+    animations: [smilesDialogAnimation],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewsCommentsComponent extends Translations implements OnInit, OnChanges {
@@ -39,39 +37,36 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
     @Input()
     newsId: string;
     @Input()
-    expandable = true;
+    expanded = false;
 
     @ViewChild('textarea') textarea: ElementRef;
+    @ViewChild('smilesDropdown') smilesDropdown: SmilesDropdownComponent;
 
     public currentUser$: Observable<UserInterface>;
     public comments$ = new ReplaySubject<CommentInterface[]>(1);
     public commentsWithActions$: Observable<CommentWithActionInterface[]>;
-    public isExpanded = false;
+    public personalSmiles$: Observable<PersonalSmileInterface[]>;
     public isLoading = false;
     public editingCommentId: string | null = null;
+    public smilesDropdownOpened = false;
+    public smilesDropdownDisplayHidden = true;
+    public openedAnimationState = SMILES_DIALOG_OPENED;
+    public closedAnimationState = SMILES_DIALOG_CLOSED;
+    public isOverflowVisible = false;
 
     constructor(
         private commentsService: CommentsService,
         private userService: UserService,
         private snackBar: MatSnackBar,
         private dialog: MatDialog,
+        private smilesService: SmilesService,
         protected languageService: LanguageService,
     ) {
         super(languageService);
     }
 
     ngOnInit(): void {
-        this.currentUser$ = this.userService.getCurrentUser$();
-        this.commentsWithActions$ = combineLatest([this.comments$, this.currentUser$]).pipe(
-            map(([comments, user]: [CommentInterface[], UserInterface]) =>
-                comments.map((comment: CommentInterface) => this.mapCommentWithAction(comment, user)),
-            ),
-        );
-
-        if (!this.expandable) {
-            this.isExpanded = true;
-        }
-
+        this.initObservables();
         super.ngOnInit();
     }
 
@@ -86,10 +81,6 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
             this.textarea.nativeElement.value += ` #${id} `;
             this.textarea.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-    }
-
-    public toggleExpand(): void {
-        this.isExpanded = !this.isExpanded;
     }
 
     public sendComment(): void {
@@ -125,9 +116,7 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
     public deleteComment(commentId: string): void {
         this.commentsService
             .deleteComment$(commentId)
-            .subscribe((commentActionResult: CommentActionResultInterface) =>
-                this.processCommentActionResult(commentActionResult),
-            );
+            .subscribe((commentActionResult: CommentActionResultInterface) => this.processCommentActionResult(commentActionResult));
     }
 
     public adminDeleteComment(commentId: string): void {
@@ -148,9 +137,7 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
             .pipe(take(1))
             .subscribe(
                 (comments: CommentInterface[]) =>
-                    (this.textarea.nativeElement.value = comments.find(
-                        (comment: CommentInterface) => comment.id === this.editingCommentId,
-                    ).comment),
+                    (this.textarea.nativeElement.value = comments.find((comment: CommentInterface) => comment.id === this.editingCommentId).comment),
             );
     }
 
@@ -177,15 +164,49 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
                     this.editingCommentId = null;
                 }),
             )
-            .subscribe((commentActionResult: CommentActionResultInterface) =>
-                this.processCommentActionResult(commentActionResult),
-            );
+            .subscribe((commentActionResult: CommentActionResultInterface) => this.processCommentActionResult(commentActionResult));
+    }
+
+    public openSmilesDropdown(event: Event): void {
+        if (!this.smilesDropdownOpened) {
+            event.stopPropagation();
+        }
+
+        this.smilesDropdownDisplayHidden = false;
+        this.smilesDropdownOpened = true;
+    }
+
+    public closeSmilesDropdown(): void {
+        this.smilesDropdownOpened = false;
+    }
+
+    public onAnimationEnd(event: AnimationEvent): void {
+        if (event.toState === SMILES_DIALOG_CLOSED) {
+            this.smilesDropdownDisplayHidden = true;
+            this.smilesDropdown.clearInput();
+        }
+    }
+
+    public setOverflowVisible(isVisible: boolean): void {
+        this.isOverflowVisible = isVisible;
+    }
+
+    public addSmile({ name }: SmileInterface): void {
+        this.textarea.nativeElement.value += this.textarea.nativeElement.value ? ` :${name}:` : `:${name}:`;
+    }
+
+    private initObservables(): void {
+        this.currentUser$ = this.userService.getCurrentUser$();
+        this.personalSmiles$ = this.smilesService.getPersonalSmiles$();
+        this.commentsWithActions$ = combineLatest([this.comments$, this.currentUser$]).pipe(
+            map(([comments, user]: [CommentInterface[], UserInterface]) =>
+                comments.map((comment: CommentInterface) => this.mapCommentWithAction(comment, user)),
+            ),
+        );
     }
 
     private mapCommentWithAction(comment: CommentInterface, user: UserInterface): CommentWithActionInterface {
-        const isNewComment: boolean = moment(comment.datetimezone)
-            .add(COMMENT_ACTION_PERIOD_MINUTES, 'minutes')
-            .isAfter(moment());
+        const isNewComment: boolean = moment(comment.datetimezone).add(COMMENT_ACTION_PERIOD_MINUTES, 'minutes').isAfter(moment());
         const isEditable: boolean = user && comment.playerId === user.id && isNewComment;
         const isAdminDeletable: boolean = !comment.reason && !isEditable && user && user.access === UserAccess.ADMIN;
 

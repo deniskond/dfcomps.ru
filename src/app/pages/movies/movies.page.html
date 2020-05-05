@@ -8,7 +8,7 @@
                     <div [ngStyle]="getMovieBgStyle(movie.youtube)" class="movie-bg"></div>
                     <div class="movie-sub">
                         <div class="movie-name">{{ movie.name }}</div>
-                        <div class="movie-author-year">{{ getAuthorName(movie.author) }} / {{ movie.year }}</div>
+                        <div class="movie-author-year">{{ movie.author | invokeFunction : getAuthorName }} / {{ movie.year }}</div>
                     </div>
                 </a>
             </div>

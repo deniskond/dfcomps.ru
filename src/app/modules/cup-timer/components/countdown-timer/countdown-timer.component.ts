@@ -1,6 +1,6 @@
 import { LanguageService } from '../../../../services/language/language.service';
 import { Translations } from '../../../../components/translations/translations.component';
-import { Component, Input, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { BehaviorSubject, Observable, interval, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import * as moment from 'moment';
@@ -12,6 +12,7 @@ const SECONDS_IN_MINUTE = 60;
 @Component({
     selector: 'app-countdown-timer',
     templateUrl: './countdown-timer.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CountdownTimerComponent extends Translations implements OnInit, OnDestroy {
     @Input()
@@ -41,17 +42,17 @@ export class CountdownTimerComponent extends Translations implements OnInit, OnD
             map((timerValue: number) => this.mapTimerValueToTimerCaption(timerValue)),
         );
 
-        interval(1000).pipe(
-            takeUntil(this.onDestroy$),
-        ).subscribe(() => {
-            const currentTimerValue = this.calculateCurrentTimerValue();
+        interval(1000)
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe(() => {
+                const currentTimerValue = this.calculateCurrentTimerValue();
 
-            if (!currentTimerValue) {
-                this.finished.emit();
-            }
+                if (currentTimerValue === 0) {
+                    this.finished.emit();
+                }
 
-            this.currentTimerValue$.next(currentTimerValue);
-        });
+                this.currentTimerValue$.next(currentTimerValue);
+            });
 
         super.ngOnInit();
     }

@@ -3,7 +3,7 @@
     <ng-container *ngIf="(demos$ | async) as demos">
         <ng-container *ngIf="demos.length; else noDemos">
             <tr *ngFor="let demo of demos">
-                <td class="table-field">{{ getFormattedTime(demo.time) }}</td>
+                <td class="table-field">{{ demo.time | invokeFunction : getFormattedTime }}</td>
                 <td class="table-field">{{ demo.physics }}</td>
                 <td class="table-field delete">
                     <a *ngIf="!isLoading(demo.demopath); else loader" (click)="deleteDemo(demo.demopath)" class="link">{{ translations?.delete }}</a>
