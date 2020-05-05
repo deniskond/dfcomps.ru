@@ -33,7 +33,7 @@ export class NewsCommentTextComponent implements OnInit {
     }
 
     private getMessageParts(): void {
-        const splitMessage = this.comment.comment.split(/(\:\w+?\:)/gm).filter(messagePart => !!messagePart);
+        const splitMessage = this.comment.comment.split(/(\:\w+?\:)/gm).filter(messagePart => !!messagePart.trim());
 
         this.messageParts = splitMessage.map((messagePart: string) => {
             const smile: SmileInterface | null = this.getSmile(messagePart);

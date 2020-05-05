@@ -78,8 +78,9 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
 
     public copyIdToComment(id: number): void {
         if (this.textarea) {
-            this.textarea.nativeElement.value += ` #${id} `;
+            this.textarea.nativeElement.value += this.textarea.nativeElement.value ? ` #${id} ` : `#${id} `;
             this.textarea.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            this.textarea.nativeElement.focus();
         }
     }
 

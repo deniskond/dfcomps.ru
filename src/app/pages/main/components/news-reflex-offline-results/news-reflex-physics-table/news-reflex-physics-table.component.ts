@@ -34,7 +34,7 @@ export class NewsReflexPhysicsTableComponent implements OnInit {
         return formatResultTime(time);
     }
 
-    public getDemoLink(result: ValidDemoInterface): string {
-        return result.absoluteLink ? result.demopath : `/api/uploads/demos/cup${this.cup.id}/${result.demopath}`;
+    public getDemoLink(result: ValidDemoInterface, cupId: string): string {
+        return result.absoluteLink ? result.demopath : `/api/uploads/demos/cup${cupId}/${result.demopath}`;
     }
 }

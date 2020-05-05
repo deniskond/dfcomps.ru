@@ -21,10 +21,10 @@
                 <div class="comment">
                     <div class="comment-header">
                         <div class="comment-header-left">
-                            <span>#{{ i + 1 }}</span>
+                            <span [class.no-hover]="!(currentUser$ | async)" (click)="copyIdToComment(i + 1)" class="black-link">#{{ i + 1 }}</span>
                             <span class="separator"></span>
                             <span>
-                                <a [class.no-hover]="!(currentUser$ | async)" (click)="copyIdToComment(i + 1)" class="black-link">{{ comment.username }}</a>
+                                <a routerLink="/profile/{{ comment.playerId }}" class="black-link">{{ comment.username }}</a>
                             </span>
                             <span *ngIf="comment.isEditable">
                                 <span class="separator"></span>

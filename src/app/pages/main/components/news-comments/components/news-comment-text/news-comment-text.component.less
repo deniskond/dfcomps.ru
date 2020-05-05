@@ -7,9 +7,17 @@
 .smile-container {
     width: 24px;
     height: 24px;
-    margin: 0px 6px;
+    margin-right: 6px;
+
+    & + .simple-text {
+        margin-left: 6px;
+    }
 }
 
 .simple-text {
     padding-top: 1px;
+
+    & + .smile-container {
+        margin-left: 6px;
+    }
 }
