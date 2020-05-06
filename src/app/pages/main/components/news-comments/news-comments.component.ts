@@ -173,12 +173,14 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
             event.stopPropagation();
         }
 
+        this.setOverflowVisible(true);
         this.smilesDropdownDisplayHidden = false;
         this.smilesDropdownOpened = true;
     }
 
     public closeSmilesDropdown(): void {
         this.smilesDropdownOpened = false;
+        this.setOverflowVisible(false);
     }
 
     public onAnimationEnd(event: AnimationEvent): void {

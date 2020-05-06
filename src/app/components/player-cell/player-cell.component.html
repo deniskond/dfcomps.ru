@@ -1,8 +1,8 @@
 <div *ngIf="playerId"
     mat-ripple
     [@hoveredCell]="hovered | invokeFunction : getHoveredState : style"
-    (mouseenter)="darkenPlayerRow()" 
-    (mouseleave)="lightenPlayerRow()" 
+    (mouseenter)="darkenPlayerRow()"
+    (mouseleave)="lightenPlayerRow()"
     (click)="navigateToPlayerProfile(playerId)"
     class="player-nick-container">
 

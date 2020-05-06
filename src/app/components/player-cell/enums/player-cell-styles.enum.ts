@@ -1,4 +1,4 @@
 export enum PlayerCellStyles {
-    LIGHT,
-    TRANSPARENT,
+    LIGHT = 'LIGHT',
+    TRANSPARENT = 'TRANSPARENT',
 }
