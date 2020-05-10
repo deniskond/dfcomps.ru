@@ -6,8 +6,8 @@
             </h1>
 
             <div class="author-and-date">
-                {{ translations?.author }}: <a routerLink="/profile/{{ singleNews.authorId }}">{{ singleNews.authorName }}</a>,
-                {{ singleNews.datetime | invokeFunction : formatDate }}
+                <span translate translation="author"></span>: <a routerLink="/profile/{{ singleNews.authorId }}">{{ singleNews.authorName }}</a>,
+                <span>{{ singleNews.datetimezone | invokeFunction : formatDate }}</span>
             </div>
 
             <app-youtube *ngIf="singleNews.youtube && singleNews.type !== newsTypes.ONLINE_RESULTS" [id]="singleNews.youtube" width="800" height="450" class="youtube"></app-youtube>
@@ -46,6 +46,6 @@
 
 <ng-template #error>
     <div class="shadowed-main-block error">
-        {{ translations?.errorNewsDoesntExist }}
+        <span translate translation="errorNewsDoesntExist"></span>
     </div>
 </ng-template>

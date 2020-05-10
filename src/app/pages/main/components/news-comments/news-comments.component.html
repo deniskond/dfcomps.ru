@@ -5,13 +5,10 @@
 
     <mat-expansion-panel-header class="expansion-panel-header">
         <mat-panel-title class="panel-title">
-            {{ translations?.comments }} ({{ comments.length }})
+            <span translate translation="comments"></span>
+            <span>({{ comments.length }})</span>
         </mat-panel-title>
     </mat-expansion-panel-header>
-
-    <ng-template #commentsCount>
-        <div class="single-news-comments">{{ translations?.comments }}</div>
-    </ng-template>
 
     <ng-container *ngIf="(commentsWithActions$ | async) as comments">
         <div *ngIf="comments.length" class="comments-container">
@@ -26,15 +23,21 @@
                             </span>
                             <span *ngIf="comment.isEditable">
                                 <span class="separator"></span>
-                                <a (click)="editComment(comment.id)" class="bluelink hoverable">{{ translations?.edit }}</a>
+                                <a (click)="editComment(comment.id)" class="bluelink hoverable">
+                                    <span translate translation="edit"></span>
+                                </a>
                             </span>
                             <span *ngIf="comment.isEditable">
                                 <span class="separator"></span>
-                                <a (click)="deleteComment(comment.id)" class="bluelink hoverable">{{ translations?.delete }}</a>
+                                <a (click)="deleteComment(comment.id)" class="bluelink hoverable">
+                                    <span translate translation="delete"></span>
+                                </a>
                             </span>
                             <span *ngIf="comment.isAdminDeletable">
                                 <span class="separator"></span>
-                                <a (click)="adminDeleteComment(comment.id)" class="bluelink hoverable">{{ translations?.delete }}</a>
+                                <a (click)="adminDeleteComment(comment.id)" class="bluelink hoverable">
+                                    <span translate translation="delete"></span>
+                                </a>
                             </span>
                         </div>
                         <div class="comment-header-right">
@@ -50,7 +53,10 @@
                         </app-news-comment-text>
                     </ng-container>
                     <ng-template #adminDeleted>
-                        <div class="comment-inner-gray">{{ translations?.commentDeletedByAdmin }} {{ comment.reason }}</div>
+                        <div class="comment-inner-gray">
+                            <span translate translation="commentDeletedByAdmin"></span>
+                            <span>{{ comment.reason }}</span>
+                        </div>
                     </ng-template>
                 </div>
             </ng-container>
@@ -58,7 +64,8 @@
     </ng-container>
 
     <ng-container *ngIf="currentUser$ | async; else notLogged">
-        <div class="write-commentary">{{ editingCommentId ? translations?.editComment : translations?.writeComment }}:</div>
+        <div *ngIf="editingCommentId" class="write-commentary"><span translate translation="editComment"></span>:</div>
+        <div *ngIf="!editingCommentId" class="write-commentary"><span translate translation="writeComment"></span>:</div>
         <div class="textarea-container">
             <textarea #textarea class="comment-textarea"></textarea>
             <img (click)="openSmilesDropdown($event)" src="/assets/images/icons/smile-icon.png" class="smiles-icon" />
@@ -78,7 +85,7 @@
         <div *ngIf="!editingCommentId; else isEditing" class="send-comment-button">
             <mat-spinner *ngIf="isLoading" diameter="20" strokeWidth="2" color="accent" class="spinner"></mat-spinner>
             <button [disabled]="isLoading" (click)="sendComment()" mat-raised-button color="primary" class="add-comment-button">
-                {{ translations?.send }}
+                <span translate translation="send"></span>
             </button>
         </div>
 
@@ -89,18 +96,18 @@
                         <mat-spinner *ngIf="isLoading" diameter="20" strokeWidth="2" color="accent"></mat-spinner>
                     </div>
                     <button [disabled]="isLoading" (click)="updateComment()" mat-raised-button color="primary">
-                        {{ translations?.save }}
+                        <span translate translation="save"></span>
                     </button>
                 </div>
 
                 <button [disabled]="isLoading" (click)="cancelEditingComment()" mat-raised-button color="primary">
-                    {{ translations?.cancel }}
+                    <span translate translation="cancel"></span>
                 </button>
             </div>
         </ng-template>
     </ng-container>
 
     <ng-template #notLogged>
-        <div class="not-logged">{{ translations?.loginOrRegisterToComment }}</div>
+        <div translate translation="loginOrRegisterToComment" class="not-logged"></div>
     </ng-template>
 </mat-expansion-panel>

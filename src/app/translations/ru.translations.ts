@@ -1,4 +1,4 @@
-export const RUSSIAN_TRANSLATIONS = {
+export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
     downloadDefrag: 'Скачать Defrag',
     author: 'Автор',
     ratingLeaders: 'Лидеры рейтинга',

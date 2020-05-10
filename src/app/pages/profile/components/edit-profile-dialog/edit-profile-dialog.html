@@ -1,10 +1,14 @@
-<div class="h1-block-header dialog-header">{{ translations?.editProfile }}</div>
+<div class="h1-block-header dialog-header">
+    <span translate translation="editProfile"></span>
+</div>
 
 <form [formGroup]="editProfileForm">
     <div class="edit-nick row">
         <div class="left-column">
-            <div>{{ translations?.nick }}</div>
-            <div class="sub-message">{{ translations?.nickChangeMessage }}</div>
+            <div translate translation="nick"></div>
+            <div class="sub-message">
+                <span translate translation="nickChangeMessage"></span>
+            </div>
         </div>
         <div class="right-column">
             <input formControlName="nick" class="input-field" />
@@ -12,15 +16,21 @@
     </div>
     <div class="edit-avatar row">
         <div class="left-column">
-            <div>{{ translations?.avatar }}</div>
-            <div class="sub-message">{{ translations?.avatarChangeMessage }}</div>
+            <div translate translation="avatar">
+                <span translate translation="avatar"></span>
+            </div>
+            <div class="sub-message">
+                <span translate translation="avatarChangeMessage"></span>
+            </div>
         </div>
         <div class="right-column">
             <input #fileInput name="avatar" type="file" class="file-input" accept=".jpg">
         </div>
     </div>
     <div class="edit-country row">
-        <div class="left-column">{{ translations?.country }}</div>
+        <div class="left-column">
+            <span translate translation="country"></span>
+        </div>
         <div class="right-column">
             <select formControlName="country" class="input-field">
                 <option></option>
@@ -42,6 +52,6 @@
         (click)="onEditProfileClick()" 
         mat-raised-button color="primary">
 
-        {{ translations?.save }}
+        <span translate translation="save"></span>
     </button>
 </div>

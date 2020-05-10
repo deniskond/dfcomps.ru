@@ -31,7 +31,7 @@ export class ProfileRewardsComponent extends Translations implements OnChanges {
         }
     }
 
-    private getRewardIconPath(reward: Rewards): string {
+    public getRewardIconPath(reward: Rewards): string {
         return `/assets/images/rewards/${PROFILE_REWARDS.ICONS_MAP[reward]}.png`;
     }
 }

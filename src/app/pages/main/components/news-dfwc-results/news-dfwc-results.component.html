@@ -1,4 +1,6 @@
 <app-news-offline-results *ngIf="mappedOfflineNews" [news]="mappedOfflineNews" [customTable]="true"></app-news-offline-results>
-<div style="font-weight: bold;margin-top: 12px;font-size: 16px;">
-    <a [href]="news.cup.customNews">>> {{ translations?.fullResultsTable }} <<</a>
+<div class="full-results-table">
+    <a [href]="news.cup.customNews">
+        >> <span translate translation="fullResultsTable"></span> <<
+    </a>
 </div>

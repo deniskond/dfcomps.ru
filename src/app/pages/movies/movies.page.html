@@ -1,5 +1,7 @@
 <div class="shadowed-main-block">
-    <h1 class="h1-block-header">{{ translations?.defragMovies }}</h1>
+    <h1 class="h1-block-header">
+        <span translate translation="defragMovies"></span>
+    </h1>
 
     <div *ngIf="(movies$ | async) as movies; else loader" class="movies-container">
         <ng-container *ngIf="!!movies.length; else loader">

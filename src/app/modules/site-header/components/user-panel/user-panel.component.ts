@@ -9,7 +9,6 @@ import { UserService } from '../../../../services/user-service/user.service';
 import { take } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { LanguageService } from '../../../../services/language/language.service';
 
 @Component({
     selector: 'app-user-panel',
@@ -17,30 +16,21 @@ import { LanguageService } from '../../../../services/language/language.service'
     styleUrls: ['./user-panel.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserPanelComponent extends Translations implements OnInit, OnDestroy {
+export class UserPanelComponent implements OnInit, OnDestroy {
     public user$: Observable<UserInterface>;
     public apiUrl = API_URL;
 
     private onDestroy$ = new Subject<void>();
 
-    constructor(
-        private dialog: MatDialog,
-        private userService: UserService,
-        private router: Router,
-        protected languageService: LanguageService,
-    ) {
-        super(languageService);
-    }
+    constructor(private dialog: MatDialog, private userService: UserService, private router: Router) {}
 
     ngOnInit(): void {
         this.user$ = this.userService.getCurrentUser$();
-        super.ngOnInit();
     }
 
     ngOnDestroy(): void {
         this.onDestroy$.next();
         this.onDestroy$.complete();
-        super.ngOnDestroy();
     }
 
     public onLoginClick(): void {

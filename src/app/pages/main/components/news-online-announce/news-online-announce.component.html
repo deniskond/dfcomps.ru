@@ -19,7 +19,9 @@
 </div>
 
 <app-html-news [news]="news"></app-html-news>
-<div class="players-table-description">{{ translations?.listOfRegisteredPlayers }}:</div>
+<div class="players-table-description">
+    <span translate translation="listOfRegisteredPlayers"></span>:
+</div>
 <div class="players-table">
     <div *ngFor="let row of range(rowCount)" class="players-row">
         <div *ngFor="let column of range(columnCount)" class="players-cell">
@@ -39,7 +41,8 @@
         color="primary"
         class="registration-button">
 
-        {{ isRegistered ? translations?.cancelRegistration : translations?.registerForCup }}
+        <span *ngIf="isRegistered" translate translation="cancelRegistration"></span>
+        <span *ngIf="!isRegistered" translate translation="registerForCup"></span>
     </button>
     <button 
         (click)="openFullTable()"
@@ -47,6 +50,6 @@
         color="primary"
         class="full-table-button">
 
-        {{ translations?.fullTable }}
+        <span translate translation="fullTable"></span>
     </button>
 </div>

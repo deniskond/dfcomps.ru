@@ -7,7 +7,7 @@
     </a>
 </ng-template>
 <h2 class="cup-date-time">
-    {{ translations?.finishing }} {{ formattedTime$ | async }}
+    <span translate translation="finishing"></span> {{ formattedTime$ | async }}
 </h2>
 <div class="timeholder">
     <app-countdown-timer
@@ -16,5 +16,5 @@
     </app-countdown-timer>
 </div>
 <a [href]="mapLink" class="map-link" download>
-    <div class="bottom-info">{{ translations?.downloadMap }}</div>
+    <div translate translation="downloadMap" class="bottom-info"></div>
 </a>

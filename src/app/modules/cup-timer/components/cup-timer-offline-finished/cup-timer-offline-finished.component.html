@@ -7,11 +7,13 @@
     </a>
 </ng-template>
 <h2 class="cup-date-time">
-    {{ translations?.finished }} {{ formattedTime$ | async }}
+    <span translate translation="finished"></span> {{ formattedTime$ | async }}
 </h2>
 <div class="timeholder">
-    {{ translations?.finished }}
+    <span translate translation="finished"></span>
 </div>
 <a [href]="mapLink" class="map-link" download>
-    <div class="bottom-info">{{ translations?.downloadMap }}</div>
+    <div class="bottom-info">
+        <span translate translation="downloadMap"></span>
+    </div>
 </a>

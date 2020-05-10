@@ -1,5 +1,3 @@
-import { LanguageService } from '../../../../services/language/language.service';
-import { Translations } from '../../../../components/translations/translations.component';
 import { NewsOfflineResultsInterface } from '../../../../services/news-service/interfaces/news-offline-results.interface';
 import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DfwcResultsService } from './services/dfwc-results.service';
@@ -10,18 +8,15 @@ import { DfwcResultsService } from './services/dfwc-results.service';
     styleUrls: ['./news-dfwc-results.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewsDfwcResultsComponent extends Translations implements OnInit {
+export class NewsDfwcResultsComponent implements OnInit {
     @Input()
     news: NewsOfflineResultsInterface;
 
     public mappedOfflineNews: NewsOfflineResultsInterface;
 
-    constructor(protected languageService: LanguageService, private dfwcResultsService: DfwcResultsService) {
-        super(languageService);
-    }
+    constructor(private dfwcResultsService: DfwcResultsService) {}
 
     ngOnInit(): void {
         this.mappedOfflineNews = this.dfwcResultsService.mapDfwcResultsToOfflineNews(this.news);
-        super.ngOnInit();
     }
 }

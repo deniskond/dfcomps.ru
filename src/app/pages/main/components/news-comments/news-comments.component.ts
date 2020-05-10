@@ -1,10 +1,9 @@
+import { LanguageService } from './../../../../services/language/language.service';
 import { SmilesService } from './../../../../services/smiles/smiles.service';
 import { PersonalSmileInterface } from './../../../../services/smiles/personal-smile.interface';
 import { CommentActionResult } from './../../services/comments/enums/comment-action-result.enum';
 import { UserAccess } from '../../../../enums/user-access.enum';
 import { CommentWithActionInterface } from './interfaces/comment-with-action.interface';
-import { LanguageService } from '../../../../services/language/language.service';
-import { Translations } from '../../../../components/translations/translations.component';
 import { UserInterface } from '../../../../interfaces/user.interface';
 import { UserService } from '../../../../services/user-service/user.service';
 import { CommentInterface } from '../../../../interfaces/comments.interface';
@@ -31,7 +30,7 @@ const COMMENT_ACTION_PERIOD_MINUTES = 2;
     animations: [smilesDialogAnimation],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewsCommentsComponent extends Translations implements OnInit, OnChanges {
+export class NewsCommentsComponent implements OnInit, OnChanges {
     @Input()
     comments: CommentInterface[];
     @Input()
@@ -60,14 +59,11 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
         private snackBar: MatSnackBar,
         private dialog: MatDialog,
         private smilesService: SmilesService,
-        protected languageService: LanguageService,
-    ) {
-        super(languageService);
-    }
+        private languageService: LanguageService,
+    ) {}
 
     ngOnInit(): void {
         this.initObservables();
-        super.ngOnInit();
     }
 
     ngOnChanges({ comments }: SimpleChanges): void {
@@ -221,7 +217,12 @@ export class NewsCommentsComponent extends Translations implements OnInit, OnCha
         this.textarea.nativeElement.value = '';
 
         if (result === CommentActionResult.TWO_MINUTES) {
-            this.snackBar.open(this.translations.cantModify, this.translations.twoMinutesError, { duration: 3000 });
+            this.languageService
+                .getTranslations$()
+                .pipe(take(1))
+                .subscribe((translations: Record<string, string>) =>
+                    this.snackBar.open(translations.cantModify, translations.twoMinutesError, { duration: 3000 }),
+                );
         }
     }
 }

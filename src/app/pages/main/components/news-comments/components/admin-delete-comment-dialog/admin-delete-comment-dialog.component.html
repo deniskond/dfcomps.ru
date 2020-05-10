@@ -1,8 +1,8 @@
-<div class="h1-block-header dialog-header">{{ translations?.fillDeleteReason }}</div>
+<div translate translation="fillDeleteReason" class="h1-block-header dialog-header"></div>
 
 <form [formGroup]="reasonForm">
     <div class="input-container">
-        <div class="input-caption">{{ translations?.reason }}</div> 
+        <div translate translation="reason" class="input-caption"></div> 
         <input formControlName="reason" class="input-field" />
     </div>
 </form>
@@ -13,6 +13,6 @@
         (click)="onSaveClick()" 
         mat-raised-button color="primary">
 
-        {{ translations?.save }}
+        <span translate translation="save"></span>
     </button>
 </div>

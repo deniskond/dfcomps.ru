@@ -1,5 +1,4 @@
 import { LanguageService } from '../../../../services/language/language.service';
-import { Translations } from '../../../../components/translations/translations.component';
 import { MAIN_URL } from '../../../../configs/url-params.config';
 import { UploadDemoDtoInterface } from '../../../../services/demos/dto/upload-demo.dto';
 import { UserInterface } from '../../../../interfaces/user.interface';
@@ -22,7 +21,7 @@ import { PlayerDemosDialogComponent } from './player-demos-dialog/player-demos-d
     styleUrls: ['./news-offline-start.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewsOfflineStartComponent extends Translations implements OnInit {
+export class NewsOfflineStartComponent implements OnInit {
     @Input()
     news: NewsOfflineStartInterface;
 
@@ -44,7 +43,6 @@ export class NewsOfflineStartComponent extends Translations implements OnInit {
         private dialog: MatDialog,
         protected languageService: LanguageService,
     ) {
-        super(languageService);
     }
 
     ngOnInit(): void {

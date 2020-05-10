@@ -4,25 +4,25 @@
     </div>
     <div class="map-info-table">
         <div class="map-info-table-row">
-            <div class="map-info-cell-desc">{{ translations?.map }}</div>
+            <div translate translation="map" class="map-info-cell-desc"></div>
             <div class="map-info-cell-info">
                 <a href="{{ news.cup.customMap || 'http://ws.q3df.org/map/' + news.cup.map1 + '/' }}" target="_blank" class="map-link">{{ news.cup.map1 }}</a>
             </div>
         </div>
         <div class="map-info-table-row">
-            <div class="map-info-cell-desc">{{ translations?.start }}</div>
+            <div translate translation="start" class="map-info-cell-desc"></div>
             <div class="map-info-cell-info">
                 <app-gmt-date-time *ngIf="news.cup.startDateTime" [dateTime]="news.cup.startDateTime"></app-gmt-date-time>
             </div>
         </div>
         <div class="map-info-table-row">
-            <div class="map-info-cell-desc">{{ translations?.finish }}</div>
+            <div translate translation="finish" class="map-info-cell-desc"></div>
             <div class="map-info-cell-info">
                 <app-gmt-date-time *ngIf="news.cup.endDateTime" [dateTime]="news.cup.endDateTime"></app-gmt-date-time>
             </div>
         </div>
         <div class="map-info-table-row">
-            <div class="map-info-cell-desc">{{ translations?.weapons }}</div>
+            <div translate translation="weapons"  class="map-info-cell-desc"></div>
             <div class="map-info-cell-info">
                 <app-weapons [weapons]="news.cup.mapWeapons"></app-weapons>
             </div>
@@ -32,7 +32,7 @@
 
 <div *ngIf="news.cup.archiveLink" style="margin-top:15px;font-size:17px;text-align:center;">
     <a [href]="news.cup.archiveLink | invokeFunction : getArchiveLink" download>
-        <strong>&gt;&gt; {{ translations?.allDemosArchive }} &lt;&lt;</strong>
+        <strong>&gt;&gt; <span translate translation="allDemosArchive"></span> &lt;&lt;</strong>
     </a>
 </div>
 

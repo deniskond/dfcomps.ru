@@ -1,16 +1,16 @@
-<div class="h1-block-header dialog-header">{{ translations?.siteLogIn }}</div>
+<div translate translation="siteLogIn" class="h1-block-header dialog-header"></div>
 
 <form [formGroup]="loginForm">
     <div class="input-container">
-        <div class="input-caption">{{ translations?.userLogin }}</div> 
+        <div translate translation="userLogin" class="input-caption"></div> 
         <input formControlName="login" class="input-field" />
     </div>
     <div class="input-container">
-        <div class="input-caption">{{ translations?.password }}</div> 
+        <div translate translation="password" class="input-caption"></div> 
         <input formControlName="password" class="input-field password" type="password" />
     </div>
 </form>
-<div *ngIf="loginResult === false" class="login-error">{{ translations?.wrongLoginPassword }}</div>
+<div *ngIf="loginResult === false" translate translation="wrongLoginPassword" class="login-error"></div>
 
 <div class="dialog-button">
     <mat-spinner *ngIf="isLoading" diameter="20" strokeWidth="2" color="accent" class="spinner"></mat-spinner>
@@ -19,6 +19,6 @@
         (click)="onLoginClick()" 
         mat-raised-button color="primary">
 
-        {{ translations?.logIn }}
+        <span translate translation="logIn"></span>
     </button>
 </div>

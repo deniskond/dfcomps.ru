@@ -1,5 +1,3 @@
-import { LanguageService } from '../../../../../services/language/language.service';
-import { Translations } from '../../../../../components/translations/translations.component';
 import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Physics } from '../../../../../enums/physics.enum';
 import { getTablePlaces } from '../../../../../helpers/table-places.helper';
@@ -12,7 +10,7 @@ import { MulticupResultInterface } from '../../../../../pages/cup/interfaces/mul
     styleUrls: ['./multicup-physics-table.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MulticupPhysicsTableComponent extends Translations implements OnInit {
+export class MulticupPhysicsTableComponent implements OnInit {
     @Input() physics: Physics;
     @Input() physicsTable: MulticupResultInterface[];
     @Input() multicupId: string;
@@ -20,14 +18,11 @@ export class MulticupPhysicsTableComponent extends Translations implements OnIni
     public slicedPhysicsTable: MulticupResultInterface[];
     public places: number[];
 
-    constructor(private router: Router, protected languageService: LanguageService) {
-        super(languageService);
-    }
+    constructor(private router: Router) {}
 
     ngOnInit(): void {
         this.slicedPhysicsTable = this.physicsTable.slice(0, 10);
         this.places = getTablePlaces(this.slicedPhysicsTable.map(({ overall }: MulticupResultInterface) => overall));
-        super.ngOnInit();
     }
 
     public navigateToMultiCup(): void {
