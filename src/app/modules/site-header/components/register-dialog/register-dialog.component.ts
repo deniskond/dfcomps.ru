@@ -75,11 +75,11 @@ export class RegisterDialogComponent implements OnInit, OnDestroy {
     private validateRepeatingPassword(): Record<string, string> | null {
         return this.registerForm && this.registerForm.controls.validation.value === this.registerForm.controls.password.value
             ? null
-            : { validation: this.translations.passwordsDoNotMatch };
+            : { validation: this.translations && this.translations.passwordsDoNotMatch };
     }
 
     private validateEmail({ value: email }: AbstractControl): Record<string, string> | null {
-        return EMAIL_VALIDATION_REGEXP.test(String(email).toLowerCase()) ? null : { email: this.translations.wrongEmailFormat };
+        return EMAIL_VALIDATION_REGEXP.test(String(email).toLowerCase()) ? null : { email: this.translations && this.translations.wrongEmailFormat };
     }
 
     private validateLogin$({ value: login }: AbstractControl): Observable<Record<string, string> | null> {

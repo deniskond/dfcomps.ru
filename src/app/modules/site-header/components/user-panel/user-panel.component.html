@@ -1,7 +1,7 @@
 <ng-container *ngIf="user$ | async as user; else notLogged">
     <span class="logged-in-as">
         <span translate translation="loggedInAs"></span>
-        <span>{{ user.nick }}</span>
+        <span>&nbsp;{{ user.nick }}</span>
     </span>
     <div class="profile-links">
         <a *ngIf="!!user && user.access === 'admin'" matRipple [href]="apiUrl + '/admin/'" class="profile-link blue-link">

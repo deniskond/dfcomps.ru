@@ -1,4 +1,3 @@
-import { LanguageService } from '../../services/language/language.service';
 import { LeaderTableInterface } from '../../interfaces/leader-table.interface';
 import { RatingTablesService } from '../../services/rating-tables-service/rating-tables-service';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
