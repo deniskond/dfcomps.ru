@@ -15,6 +15,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ValidationDialogComponent } from './validation-dialog/validation-dialog.component';
 import { PlayerDemosDialogComponent } from './player-demos-dialog/player-demos-dialog.component';
 
+const SNACKBAR_DURATION = 3000;
+
 @Component({
     selector: 'app-news-offline-start',
     templateUrl: './news-offline-start.component.html',
@@ -41,27 +43,25 @@ export class NewsOfflineStartComponent implements OnInit {
         private userService: UserService,
         private snackBar: MatSnackBar,
         private dialog: MatDialog,
-        protected languageService: LanguageService,
-    ) {
-    }
+        private languageService: LanguageService,
+    ) {}
 
     ngOnInit(): void {
         this.cupState = this.getCupState();
         this.user$ = this.userService.getCurrentUser$();
-        super.ngOnInit();
     }
 
     public uploadDemo(): void {
         const demo: File = this.fileInput.nativeElement.files[0];
 
         if (!demo) {
-            this.snackBar.open(this.translations.error, this.translations.noDemo, { duration: 3000 });
+            this.openSnackBar('error', 'noDemo');
 
             return;
         }
 
         if (!demo.name.toLowerCase().includes(this.news.cup.map1.toLowerCase())) {
-            this.snackBar.open(this.translations.error, this.translations.wrongMap, { duration: 3000 });
+            this.openSnackBar('error', 'wrongMap');
 
             return;
         }
@@ -71,25 +71,23 @@ export class NewsOfflineStartComponent implements OnInit {
         this.user$
             .pipe(
                 take(1),
-                switchMap((user: UserInterface) =>
-                    this.demosService.uploadDemo$(demo, this.news.cup.id, this.news.cup.map1, user.id, demo.name),
-                ),
+                switchMap((user: UserInterface) => this.demosService.uploadDemo$(demo, this.news.cup.id, this.news.cup.map1, user.id, demo.name)),
                 finalize(() => {
                     this.fileInput.nativeElement.value = null;
                     this.isUploading = false;
                 }),
                 catchError(() => {
-                    this.snackBar.open(this.translations.error, this.translations.uploadFailed, { duration: 3000 });
-
+                    this.openSnackBar('error', 'uploadFailed');
+ 
                     return of();
                 }),
             )
             .subscribe(({ status, validation, message }: UploadDemoDtoInterface) => {
                 if (status === 'Success') {
-                    this.snackBar.open(this.translations.success, this.translations.demoSent, { duration: 3000 });
+                    this.openSnackBar('success', 'demoSent');
                     this.reloadNews.emit();
                 } else if (status === 'Error') {
-                    this.snackBar.open(this.translations.error, message, { duration: 3000 });
+                    this.openSnackBar('error', message, false);
                 } else if (status === 'Invalid') {
                     this.dialog.open(ValidationDialogComponent, {
                         data: validation,
@@ -128,5 +126,16 @@ export class NewsOfflineStartComponent implements OnInit {
         }
 
         return CupStates.IN_PROGRESS;
+    }
+
+    private openSnackBar(title: string, message: string, needMessageTranslation = true): void {
+        this.languageService
+            .getTranslations$()
+            .pipe(take(1))
+            .subscribe((translations: Record<string, string>) => {
+                const snackBarMessage = needMessageTranslation ? translations[message] : message;
+
+                this.snackBar.open(translations[title], snackBarMessage, { duration: SNACKBAR_DURATION });
+            });
     }
 }

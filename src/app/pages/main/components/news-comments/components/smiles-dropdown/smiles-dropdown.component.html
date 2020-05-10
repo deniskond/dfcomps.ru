@@ -1,5 +1,5 @@
 <form [formGroup]="smileSearchForm">
-    <input formControlName="smile" placeholder="Поиск смайлов" class="smile-search-input" />
+    <input [placeholder]="searchSmilesCaption$ | async" formControlName="smile" class="smile-search-input" />
 </form>
 
 <div class="scroll-container">
@@ -21,14 +21,16 @@
             </div>
         </ng-container>
         <ng-template #noSmilesFound>
-            <div class="no-smiles-found">Смайлов не найдено</div>
+            <div class="no-smiles-found">
+                <span translate translation="noSmilesFound"></span>
+            </div>
         </ng-template>
     </div>
 </div>
 
 <div class="chosen-smile-container">
     <div *ngIf="!hoveredSmile; else chosenSmileTemplate" class="chosen-smile-placeholder">
-        Выбранный смайл
+        <span translate translation="chosenSmile"></span>
     </div>
 
     <ng-template #chosenSmileTemplate>

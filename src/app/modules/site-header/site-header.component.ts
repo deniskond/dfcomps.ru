@@ -1,5 +1,4 @@
-import { Translations } from '../../components/translations/translations.component';
-import { LanguageService } from '../../services/language/language.service';
+import { LanguageService } from './../../services/language/language.service';
 import { Languages } from '../../enums/languages.enum';
 import { NavigationPages } from '../../routing/enums/pages.enum';
 import { TABS_CONFIG, TabInterface } from '../../routing/config/tabs.config';
@@ -16,7 +15,7 @@ import { DownloadDfDialogComponent } from './components/download-df-dialog/downl
     styleUrls: ['./site-header.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SiteHeaderComponent extends Translations implements OnInit, OnDestroy {
+export class SiteHeaderComponent implements OnInit, OnDestroy {
     public pages = NavigationPages;
     public tabs = TABS_CONFIG.TABS;
     public languages = Languages;
@@ -25,25 +24,16 @@ export class SiteHeaderComponent extends Translations implements OnInit, OnDestr
 
     private onDestroy$ = new Subject<void>();
 
-    constructor(
-        protected languageService: LanguageService,
-        private dialog: MatDialog,
-        private router: Router,
-        private changeDetectorRef: ChangeDetectorRef,
-    ) {
-        super(languageService);
-    }
+    constructor(private dialog: MatDialog, private router: Router, private languageService: LanguageService, private changeDetectorRef: ChangeDetectorRef) {}
 
     ngOnInit(): void {
         this.setActivePage();
         this.initActivePageSubscription();
-        super.ngOnInit();
     }
 
     ngOnDestroy(): void {
         this.onDestroy$.next();
         this.onDestroy$.complete();
-        super.ngOnDestroy();
     }
 
     public navigate(page: NavigationPages): void {
@@ -52,6 +42,10 @@ export class SiteHeaderComponent extends Translations implements OnInit, OnDestr
 
     public onDownloadDefragClick(): void {
         this.dialog.open(DownloadDfDialogComponent);
+    }
+
+    public setLanguage(language: Languages): void {
+        this.languageService.setLanguage(language);
     }
 
     private initActivePageSubscription(): void {
@@ -67,9 +61,7 @@ export class SiteHeaderComponent extends Translations implements OnInit, OnDestr
     }
 
     private setActivePage(): void {
-        const activeTab: TabInterface = this.tabs.find(
-            ({ page }: TabInterface) => page && this.router.url.indexOf(page) !== -1,
-        );
+        const activeTab: TabInterface = this.tabs.find(({ page }: TabInterface) => page && this.router.url.indexOf(page) !== -1);
 
         if (this.router.url === '/') {
             this.activePage = NavigationPages.MAIN;

@@ -1,6 +1,5 @@
 import { LanguageService } from '../../../../services/language/language.service';
-import { Translations } from '../../../../components/translations/translations.component';
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Subject, Observable, timer } from 'rxjs';
@@ -18,9 +17,10 @@ const DEBOUNCE_TIME = 300;
     styleUrls: ['./register-dialog.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegisterDialogComponent extends Translations implements OnInit, OnDestroy {
+export class RegisterDialogComponent implements OnInit, OnDestroy {
     public needToDisplayErrors = false;
     public isLoading = false;
+    public translations: Record<string, string>;
 
     public registerForm = new FormGroup(
         {
@@ -37,31 +37,25 @@ export class RegisterDialogComponent extends Translations implements OnInit, OnD
     constructor(
         public dialogRef: MatDialogRef<RegisterDialogComponent>,
         private userService: UserService,
-        protected languageService: LanguageService,
-    ) {
-        super(languageService);
-    }
+        private languageService: LanguageService,
+        private changeDetectorRef: ChangeDetectorRef,
+    ) {}
 
     ngOnInit(): void {
         this.initDisplayErrorsSubscription();
-        super.ngOnInit();
+        this.initTranslationsSubscription();
     }
 
     ngOnDestroy(): void {
         this.onDestroy$.next();
         this.onDestroy$.complete();
-        super.ngOnDestroy();
     }
 
     public onRegisterClick(): void {
         this.isLoading = true;
 
         this.userService
-            .register$(
-                this.registerForm.get('login').value,
-                this.registerForm.get('password').value,
-                this.registerForm.get('email').value,
-            )
+            .register$(this.registerForm.get('login').value, this.registerForm.get('password').value, this.registerForm.get('email').value)
             .pipe(finalize(() => (this.isLoading = false)))
             .subscribe((user: UserInterface) => {
                 this.userService.setCurrentUser(user);
@@ -72,18 +66,14 @@ export class RegisterDialogComponent extends Translations implements OnInit, OnD
     private initDisplayErrorsSubscription(): void {
         this.registerForm.valueChanges
             .pipe(
-                filter(
-                    ({ login, password, email, validation }: RegisterDialogDataInterface) =>
-                        !!login && !!password && !!email && !!validation,
-                ),
+                filter(({ login, password, email, validation }: RegisterDialogDataInterface) => !!login && !!password && !!email && !!validation),
                 takeUntil(this.onDestroy$),
             )
             .subscribe(() => (this.needToDisplayErrors = true));
     }
 
     private validateRepeatingPassword(): Record<string, string> | null {
-        return this.registerForm &&
-            this.registerForm.controls.validation.value === this.registerForm.controls.password.value
+        return this.registerForm && this.registerForm.controls.validation.value === this.registerForm.controls.password.value
             ? null
             : { validation: this.translations.passwordsDoNotMatch };
     }
@@ -97,5 +87,15 @@ export class RegisterDialogComponent extends Translations implements OnInit, OnD
             switchMap(() => this.userService.checkLogin$(login)),
             map((loginAvailable: boolean) => (loginAvailable ? null : { login: this.translations.loginAlreadyTaken })),
         );
+    }
+
+    private initTranslationsSubscription(): void {
+        this.languageService
+            .getTranslations$()
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe((translations: Record<string, string>) => {
+                this.translations = translations;
+                this.changeDetectorRef.markForCheck();
+            });
     }
 }

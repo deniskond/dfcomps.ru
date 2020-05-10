@@ -36,6 +36,10 @@ export class LanguageService {
         return this.getLanguage$().pipe(map((language: Languages) => (language === Languages.EN ? ENGLISH_TRANSLATIONS : RUSSIAN_TRANSLATIONS)));
     }
 
+    public getTranslation$(translation: string): Observable<string> {
+        return this.getTranslations$().pipe(map((translations: Record<string, string>) => translations[translation]));
+    }
+
     private getLanguageFromCookie(): unknown {
         return this.cookieService.get('language');
     }

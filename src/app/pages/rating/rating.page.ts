@@ -1,5 +1,4 @@
 import { LanguageService } from '../../services/language/language.service';
-import { Translations } from '../../components/translations/translations.component';
 import { LeaderTableInterface } from '../../interfaces/leader-table.interface';
 import { RatingTablesService } from '../../services/rating-tables-service/rating-tables-service';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
@@ -16,7 +15,7 @@ const MAX_PLAYERS_PER_PAGE = 100;
     styleUrls: ['./rating.page.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RatingPageComponent extends Translations implements OnInit {
+export class RatingPageComponent implements OnInit {
     public currentPage = 1;
     public currentSeason = CURRENT_SEASON;
     public currentSeasonConst = CURRENT_SEASON;
@@ -28,13 +27,10 @@ export class RatingPageComponent extends Translations implements OnInit {
     public isLoadingCpm$ = new Subject<boolean>();
     public bias = 0;
 
-    constructor(private ratingTablesService: RatingTablesService, protected languageService: LanguageService) {
-        super(languageService);
-    }
+    constructor(private ratingTablesService: RatingTablesService) {}
 
     ngOnInit(): void {
         this.loadCurrentSeasonPage(this.currentPage);
-        super.ngOnInit();
     }
 
     public loadCurrentSeasonPage(page: number): void {
@@ -52,7 +48,7 @@ export class RatingPageComponent extends Translations implements OnInit {
             .getRatingTablePage$(Physics.VQ3, page)
             .pipe(
                 take(1),
-                finalize(() => (this.isLoadingVq3$.next(false))),
+                finalize(() => this.isLoadingVq3$.next(false)),
             )
             .subscribe((ratingTable: LeaderTableInterface[]) => this.vq3Ratings$.next(ratingTable));
 
@@ -60,7 +56,7 @@ export class RatingPageComponent extends Translations implements OnInit {
             .getRatingTablePage$(Physics.CPM, page)
             .pipe(
                 take(1),
-                finalize(() => (this.isLoadingCpm$.next(false))),
+                finalize(() => this.isLoadingCpm$.next(false)),
             )
             .subscribe((ratingTable: LeaderTableInterface[]) => this.cpmRatings$.next(ratingTable));
     }
@@ -80,7 +76,7 @@ export class RatingPageComponent extends Translations implements OnInit {
             .getSeasonRatingTablePage$(Physics.VQ3, page, this.currentSeason)
             .pipe(
                 take(1),
-                finalize(() => (this.isLoadingVq3$.next(false))),
+                finalize(() => this.isLoadingVq3$.next(false)),
             )
             .subscribe((ratingTable: LeaderTableInterface[]) => this.vq3Ratings$.next(ratingTable));
 
@@ -88,7 +84,7 @@ export class RatingPageComponent extends Translations implements OnInit {
             .getSeasonRatingTablePage$(Physics.CPM, page, this.currentSeason)
             .pipe(
                 take(1),
-                finalize(() => (this.isLoadingCpm$.next(false))),
+                finalize(() => this.isLoadingCpm$.next(false)),
             )
             .subscribe((ratingTable: LeaderTableInterface[]) => this.cpmRatings$.next(ratingTable));
     }

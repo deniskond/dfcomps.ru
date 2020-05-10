@@ -1,5 +1,3 @@
-import { LanguageService } from '../../../../../services/language/language.service';
-import { Translations } from '../../../../../components/translations/translations.component';
 import { OnlineCupResultInterface } from '../../../../../interfaces/online-cup-result.interface';
 import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Physics } from '../../../../../enums/physics.enum';
@@ -13,7 +11,7 @@ import { Router } from '@angular/router';
     styleUrls: ['./online-results-table.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewsOnlineResultsTableComponent extends Translations implements OnInit {
+export class NewsOnlineResultsTableComponent implements OnInit {
     @Input() table: OnlineCupResultInterface[];
     @Input() cupId: string;
     @Input() physics: Physics;
@@ -22,13 +20,10 @@ export class NewsOnlineResultsTableComponent extends Translations implements OnI
     public range = range;
     public allPhysics = Physics;
 
-    constructor(private router: Router, protected languageService: LanguageService) {
-        super(languageService);
-    }
+    constructor(private router: Router) {}
 
     ngOnInit(): void {
         this.places = getTablePlaces(this.table.map(({ finalSum }: OnlineCupResultInterface) => +finalSum));
-        super.ngOnInit();
     }
 
     public navigateToOnlineCupTable(): void {

@@ -3,7 +3,6 @@ import { UserInterface } from './../../../../../../interfaces/user.interface';
 import { Component, ChangeDetectionStrategy, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { SMILES_CONFIG, SmileInterface, SmileGroups } from '../../../../../../configs/smiles.config';
 import { groupBy } from 'lodash';
-import { Translations } from '../../../../../../components/translations/translations.component';
 import { LanguageService } from '../../../../../../services/language/language.service';
 import { Observable, combineLatest } from 'rxjs';
 import { Languages } from '../../../../../../enums/languages.enum';
@@ -23,7 +22,7 @@ interface SortedSmileGroupsInterface {
     styleUrls: ['./smiles-dropdown.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SmilesDropdownComponent extends Translations implements OnInit {
+export class SmilesDropdownComponent implements OnInit {
     @Input() currentUser: UserInterface | null;
     @Input() personalSmiles: PersonalSmileInterface[];
 
@@ -32,10 +31,9 @@ export class SmilesDropdownComponent extends Translations implements OnInit {
     public sortedAndGroupedSmiles$: Observable<SortedSmileGroupsInterface[]>;
     public hoveredSmile: SmileInterface | null = null;
     public smileSearchForm = new FormGroup({ smile: new FormControl('') });
+    public searchSmilesCaption$: Observable<string> = this.languageService.getTranslation$('searchSmiles');
 
-    constructor(protected languageService: LanguageService) {
-        super(languageService);
-    }
+    constructor(private languageService: LanguageService) {}
 
     ngOnInit(): void {
         this.initSmilesObservable();

@@ -1,4 +1,3 @@
-import { Translations } from '../../../../components/translations/translations.component';
 import { API_URL } from '../../../../configs/url-params.config';
 import { UserInterface } from '../../../../interfaces/user.interface';
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';

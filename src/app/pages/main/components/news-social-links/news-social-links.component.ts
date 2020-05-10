@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { NewsInterfaceUnion } from '../../../../types/news-union.type';
-import { Translations } from '../../../../components/translations/translations.component';
 import { LanguageService } from '../../../../services/language/language.service';
 import { map } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
@@ -13,16 +12,14 @@ import { MAIN_URL } from '../../../../configs/url-params.config';
     styleUrls: ['./news-social-links.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewsSocialLinksComponent extends Translations implements OnInit, OnDestroy {
+export class NewsSocialLinksComponent implements OnInit, OnDestroy {
     @Input() news: NewsInterfaceUnion;
 
     public telegramShareLink$: Observable<string>;
     public twitterShareLink$: Observable<string>;
     private onDestroy$ = new Subject<void>();
 
-    constructor(protected languageService: LanguageService) {
-        super(languageService);
-    }
+    constructor(private languageService: LanguageService) {}
 
     ngOnInit(): void {
         this.initLinkObservables();
@@ -31,7 +28,6 @@ export class NewsSocialLinksComponent extends Translations implements OnInit, On
     ngOnDestroy(): void {
         this.onDestroy$.next();
         this.onDestroy$.complete();
-        super.ngOnDestroy();
     }
 
     private initLinkObservables(): void {

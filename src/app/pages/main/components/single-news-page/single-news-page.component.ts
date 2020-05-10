@@ -1,5 +1,3 @@
-import { LanguageService } from '../../../../services/language/language.service';
-import { Translations } from '../../../../components/translations/translations.component';
 import { NewsTypes } from '../../../../enums/news-types.enum';
 import { NewsService } from '../../../../services/news-service/news.service';
 import { NewsInterfaceUnion } from '../../../../types/news-union.type';
@@ -15,7 +13,7 @@ import * as moment from 'moment';
     styleUrls: ['./single-news-page.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SingleNewsPageComponent extends Translations implements OnInit, OnDestroy {
+export class SingleNewsPageComponent implements OnInit, OnDestroy {
     public singleNews$: Observable<NewsInterfaceUnion>;
     public hasError = false;
     public newsTypes = NewsTypes;
@@ -23,13 +21,7 @@ export class SingleNewsPageComponent extends Translations implements OnInit, OnD
     private reloadNews$ = new Subject<void>();
     private onDestroy$ = new Subject<void>();
 
-    constructor(
-        private activatedRoute: ActivatedRoute,
-        private newsService: NewsService,
-        protected languageService: LanguageService,
-    ) {
-        super(languageService);
-    }
+    constructor(private activatedRoute: ActivatedRoute, private newsService: NewsService) {}
 
     ngOnInit(): void {
         this.singleNews$ = combineLatest([this.activatedRoute.params, this.reloadNews$.pipe(startWith(null))]).pipe(
@@ -43,15 +35,12 @@ export class SingleNewsPageComponent extends Translations implements OnInit, OnD
             }),
             takeUntil(this.onDestroy$),
         );
-
-        super.ngOnInit();
     }
 
     ngOnDestroy(): void {
         this.onDestroy$.next();
         this.onDestroy$.complete();
         this.reloadNews$.complete();
-        super.ngOnDestroy();
     }
 
     public formatDate(date: string): string {

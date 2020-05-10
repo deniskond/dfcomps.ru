@@ -1,6 +1,6 @@
 <div translate translation="downloadDefrag" class="h1-block-header dialog-header"></div>
 
-<div *ngIf="lang === languages.RU">
+<div *ngIf="(language$ | async) === languages.RU">
     <div>
         1. Чтобы запустить defrag, в распакованном архиве нужно запустить idfe.x64.exe (либо idfe.exe
         для 32-битной системы). Exe-файл работает в системах Windows 7+.
@@ -22,7 +22,7 @@
     <div class="button"><a mat-raised-button color="primary" href="{{ mainUrl }}/files/defrag.rar">Скачать - 601MB</a></div>
 </div>
 
-<div *ngIf="lang === languages.EN">
+<div *ngIf="(language$ | async) === languages.EN">
     <div>
         1. To start playing defrag, unpack the archive and launch idfe.x64.exe (or idfe.exe
         for 32-bit systems). Exe-file works on Windows 7+.

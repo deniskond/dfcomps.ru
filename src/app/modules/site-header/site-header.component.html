@@ -26,7 +26,10 @@
                [active]="activePage === tab.page"
                [class.active]="activePage === tab.page"
                (click)="navigate(tab.page)"
-               class="navigation-link">{{ translations[tab.name] }}</a>
+               class="navigation-link">
+               
+               <span [translation]="tab.name" translate></span>            
+            </a>
             <!-- <a mat-tab-link
                href="/forum"
                target="_blank"

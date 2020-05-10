@@ -5,7 +5,7 @@
     <img 
         *ngFor="let reward of rewards" 
         [matTooltip]="reward"   
-        [src]="reward : invokeFunction | getRewardIconPath" 
+        [src]="getRewardIconPath(reward)" 
         class="icon" 
     />
 </div>

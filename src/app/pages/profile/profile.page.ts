@@ -1,4 +1,3 @@
-import { Translations } from '../../components/translations/translations.component';
 import { LanguageService } from '../../services/language/language.service';
 import { API_URL } from '../../configs/url-params.config';
 import { Physics } from '../../enums/physics.enum';
@@ -25,7 +24,7 @@ import { EditProfileDialogComponent } from './components/edit-profile-dialog/edi
     styleUrls: ['./profile.page.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProfilePageComponent extends Translations implements OnInit, OnDestroy {
+export class ProfilePageComponent implements OnInit, OnDestroy {
     public mainInfo: ProfileMainInfoInterface;
     public cpmChart: string[];
     public vq3Chart: string[];
@@ -49,7 +48,6 @@ export class ProfilePageComponent extends Translations implements OnInit, OnDest
         private userService: UserService,
         private dialog: MatDialog,
     ) {
-        super(languageService);
         this.isLoading$.next(true);
     }
 
@@ -57,13 +55,11 @@ export class ProfilePageComponent extends Translations implements OnInit, OnDest
         this.initObservables();
         this.setRouteSubscription();
         this.setProfileUpdateSubscription();
-        super.ngOnInit();
     }
 
     ngOnDestroy(): void {
         this.onDestroy$.next();
         this.onDestroy$.complete();
-        super.ngOnDestroy();
     }
 
     public getAvatarSrc(avatar: string, apiUrl: string): string {
