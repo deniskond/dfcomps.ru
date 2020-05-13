@@ -1,7 +1,5 @@
-import { Translations } from '../../../../components/translations/translations.component';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Inject, Component, OnInit, ElementRef, ViewChild, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
-import { LanguageService } from '../../../../services/language/language.service';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { COUNTRIES_CONFIG } from '../../../../configs/countries.config';
 import { CountryInterface } from '../../../../interfaces/country.interface';
@@ -13,7 +11,7 @@ import { filter, finalize } from 'rxjs/operators';
     styleUrls: ['./edit-profile-dialog.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditProfileDialogComponent extends Translations implements OnInit {
+export class EditProfileDialogComponent implements OnInit {
     @Output()
     reloadProfile = new EventEmitter<void>();
 
@@ -27,10 +25,8 @@ export class EditProfileDialogComponent extends Translations implements OnInit {
     constructor(
         public dialogRef: MatDialogRef<EditProfileDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: { nick: string; country: string },
-        protected languageService: LanguageService,
         private profileService: ProfileService,
     ) {
-        super(languageService);
     }
 
     ngOnInit(): void {
@@ -46,7 +42,6 @@ export class EditProfileDialogComponent extends Translations implements OnInit {
         });
 
         this.setIsNickChangeAllowed();
-        super.ngOnInit();
     }
 
     public onEditProfileClick(): void {

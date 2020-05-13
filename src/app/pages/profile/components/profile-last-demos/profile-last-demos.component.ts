@@ -1,5 +1,3 @@
-import { LanguageService } from '../../../../services/language/language.service';
-import { Translations } from '../../../../components/translations/translations.component';
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
@@ -8,11 +6,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
     styleUrls: ['./profile-last-demos.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProfileLastDemosComponent extends Translations {
+export class ProfileLastDemosComponent {
     @Input()
     demos: string[];
-
-    constructor(protected languageService: LanguageService) {
-        super(languageService);
-    }
 }

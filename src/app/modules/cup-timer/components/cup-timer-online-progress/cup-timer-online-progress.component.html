@@ -2,7 +2,7 @@
     <h1 class="cup-name">{{ cupName }}</h1>
 </a>
 <h2 class="cup-date-time">
-    {{ translations?.finishing }} {{ formattedTime$ | async }}
+    <span translate translations="finishing"></span> {{ formattedTime$ | async }}
 </h2>
 <div class="timeholder">
     <app-countdown-timer

@@ -1,6 +1,4 @@
 import { InvalidDemoInterface } from '../../../../interfaces/invalid-demo.interface';
-import { LanguageService } from '../../../../services/language/language.service';
-import { Translations } from '../../../../components/translations/translations.component';
 import { API_URL } from '../../../../configs/url-params.config';
 import { Physics } from '../../../../enums/physics.enum';
 import { NewsOfflineResultsInterface } from '../../../../services/news-service/interfaces/news-offline-results.interface';
@@ -13,7 +11,7 @@ import { CUSTOM_TABLE_NEWS_LIMIT } from '../../config/news.config';
     styleUrls: ['./news-reflex-offline-results.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewsReflexOfflineResultsComponent extends Translations implements OnInit, OnChanges {
+export class NewsReflexOfflineResultsComponent implements OnInit, OnChanges {
     @Input() news: NewsOfflineResultsInterface;
     @Input() customTable = false;
 
@@ -21,13 +19,9 @@ export class NewsReflexOfflineResultsComponent extends Translations implements O
     public maxDemosCount: number;
     public invalidDemos: InvalidDemoInterface[];
 
-    constructor(protected languageService: LanguageService) {
-        super(languageService);
-    }
 
     ngOnInit(): void {
         this.maxDemosCount = this.getMaxDemosCount();
-        super.ngOnInit();
     }
 
     ngOnChanges({ news }: SimpleChanges): void {

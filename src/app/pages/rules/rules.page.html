@@ -1,4 +1,4 @@
-<ng-container *ngIf="lang === languages.RU">
+<ng-container *ngIf="(language$ | async) === languages.RU">
     <div class="shadowed-main-block">
         <h1 class="h1-block-header">Общие правила турниров</h1>
         <div class="rules-section">
@@ -163,7 +163,7 @@
     </div>
 </ng-container>
 
-<ng-container *ngIf="lang === languages.EN">
+<ng-container *ngIf="(language$ | async) === languages.EN">
     <div class="shadowed-main-block">
         <h1 class="h1-block-header">Common ruleset</h1>
         <div class="rules-section">

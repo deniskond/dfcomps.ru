@@ -1,5 +1,7 @@
 <ng-container *ngIf="(currentDaysCaption$ | async) as currentDaysCaption">
     <span class="days-left">{{ currentDaysCaption }}</span>
-    <span class="days-caption">{{ translations?.daysShorthand }}</span>
+    <span class="days-caption">
+        <span translate translation="daysShorthand"></span>
+    </span>
 </ng-container>
 <span class="time-left">{{ currentTimerCaption$ | async }}</span>

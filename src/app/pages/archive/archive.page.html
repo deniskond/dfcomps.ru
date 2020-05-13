@@ -1,5 +1,5 @@
 <div class="shadowed-main-block">
-    <h1 class="h1-block-header">{{ translations?.newsArchive }}</h1>
+    <h1 translate translation="newsArchive" class="h1-block-header"></h1>
 
     <div *ngIf="(news$ | async) as news; else loader" class="movies-container">
         <ng-container *ngIf="!!news.length; else loader">

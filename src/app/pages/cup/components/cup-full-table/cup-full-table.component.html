@@ -3,7 +3,7 @@
 <div *ngIf="fullTable" class="table-container">
     <div class="table-bg"></div>
     <div class="table-upper-header">
-        <a class="header-link mainpage" href="/">{{ translations?.returnToMainpage }}</a>
+        <a translate translation="returnToMainpage" class="header-link mainpage" href="/"></a>
         <span class="yellow">{{ fullTable.fullName === 'Reflex Race Online Cup' ? 'Sarge Online Cup' : fullTable.fullName }}: </span>
         <span class="cup-physics">{{ fullTable.fullName === 'Reflex Race Online Cup' ? 'Reflex' : fullTable.physics }}</span>
         <a *ngIf="fullTable.system === cupSystems.EE" class="header-link system" href="https://docs.google.com/forms/d/e/1FAIpQLScdbpcs6rczpF1C_TQ4IFUxUqARq9MXygeP9Ru2sjZl3cdUDA/viewform">

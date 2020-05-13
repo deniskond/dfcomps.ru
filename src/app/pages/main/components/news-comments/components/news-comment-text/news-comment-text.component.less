@@ -8,8 +8,16 @@
 .smile-container {
     width: 24px;
     height: 24px;
-    margin-right: 6px;
+    margin-right: 3px;
     display: inline-block;
     vertical-align: middle;
     margin-bottom: 2px;
+
+    span + & {
+        margin-left: 3px;
+    }
+
+    & + & {
+        margin-left: 3px;
+    }
 }

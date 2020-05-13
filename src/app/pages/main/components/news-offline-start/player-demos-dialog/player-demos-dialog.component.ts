@@ -1,4 +1,3 @@
-import { Translations } from '../../../../../components/translations/translations.component';
 import { DemosService } from '../../../../../services/demos/demos.service';
 import { UploadedDemoInterface } from '../../../../../interfaces/uploaded-demo.interface';
 import { Component, Inject, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
@@ -6,6 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { formatResultTime } from '../../../../../helpers/result-time.helper';
 import { BehaviorSubject } from 'rxjs';
 import { LanguageService } from '../../../../../services/language/language.service';
+import { take } from 'rxjs/operators';
 
 @Component({
     selector: 'app-player-demos-dialog',
@@ -13,7 +13,7 @@ import { LanguageService } from '../../../../../services/language/language.servi
     styleUrls: ['./player-demos-dialog.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlayerDemosDialogComponent extends Translations {
+export class PlayerDemosDialogComponent {
     @Output()
     reloadNews = new EventEmitter<void>();
 
@@ -24,9 +24,8 @@ export class PlayerDemosDialogComponent extends Translations {
         public dialogRef: MatDialogRef<PlayerDemosDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: { demos: UploadedDemoInterface[]; cupName: string; cupId: string },
         private demosService: DemosService,
-        protected languageService: LanguageService,
+        private languageService: LanguageService,
     ) {
-        super(languageService);
         this.demos$.next(this.data.demos);
     }
 
@@ -35,20 +34,23 @@ export class PlayerDemosDialogComponent extends Translations {
     }
 
     public deleteDemo(demoName: string): void {
-        if (!confirm(this.translations.confirmDelete)) {
-            return;
-        }
+        this.languageService
+            .getTranslation$('confirmDelete')
+            .pipe(take(1))
+            .subscribe((confirmDeleteCaption: string) => {
+                if (!confirm(confirmDeleteCaption)) {
+                    return;
+                }
 
-        this.loading = {
-            ...this.loading,
-            [demoName]: true,
-        };
+                this.loading = {
+                    ...this.loading,
+                    [demoName]: true,
+                };
 
-        this.demosService
-            .deleteDemo$(demoName, this.data.cupId)
-            .subscribe((demos: UploadedDemoInterface[]) => { 
-                this.demos$.next(demos);
-                this.reloadNews.emit();
+                this.demosService.deleteDemo$(demoName, this.data.cupId).subscribe((demos: UploadedDemoInterface[]) => {
+                    this.demos$.next(demos);
+                    this.reloadNews.emit();
+                });
             });
     }
 

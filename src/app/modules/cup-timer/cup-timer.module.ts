@@ -10,9 +10,10 @@ import { CupTimerOfflineProgressComponent } from './components/cup-timer-offline
 import { CupTimerOfflineFinishedComponent } from './components/cup-timer-offline-finished/cup-timer-offline-finished.component';
 import { CountdownTimerComponent } from './components/countdown-timer/countdown-timer.component';
 import { CommonModule } from '@angular/common';
+import { SharedModule } from '../shared.module';
 
 @NgModule({
-    imports: [CommonModule],
+    imports: [CommonModule, SharedModule],
     declarations: [
         CupTimerComponent,
         CupTimerOnlineComponent,

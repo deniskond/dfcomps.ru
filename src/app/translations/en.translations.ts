@@ -1,4 +1,4 @@
-export const ENGLISH_TRANSLATIONS = {
+export const ENGLISH_TRANSLATIONS: Record<string, string> = {
     downloadDefrag: 'Download Defrag',
     author: 'Author',
     ratingLeaders: 'Top players',
@@ -102,11 +102,14 @@ export const ENGLISH_TRANSLATIONS = {
     reason: 'Reason',
     edit: 'Edit',
     commentDeletedByAdmin: 'Comment was deleted by admin. Reason:',
-    personal_smiles: 'Personal',
-    defrag_smiles: 'Defrag',
-    main_smiles: 'Smileys & People',
-    gesture_smiles: 'Gestures',
-    food_smiles: 'Food',
-    animals_smiles: 'Animals',
-    misc_smiles: 'Miscellaneous',
+    personalSmiles: 'Personal',
+    defragSmiles: 'Defrag',
+    mainSmiles: 'Smileys & People',
+    gestureSmiles: 'Gestures',
+    foodSmiles: 'Food',
+    animalsSmiles: 'Animals',
+    miscSmiles: 'Miscellaneous',
+    noSmilesFound: 'No smiles found',
+    chosenSmile: 'Chosen smile',
+    searchSmiles: 'Search smiles',
 }

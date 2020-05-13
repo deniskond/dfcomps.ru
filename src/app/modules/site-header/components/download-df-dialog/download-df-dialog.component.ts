@@ -1,7 +1,6 @@
+import { LanguageService } from './../../../../services/language/language.service';
 import { MAIN_URL } from '../../../../configs/url-params.config';
 import { Languages } from '../../../../enums/languages.enum';
-import { LanguageService } from '../../../../services/language/language.service';
-import { Translations } from '../../../../components/translations/translations.component';
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
@@ -11,11 +10,10 @@ import { MatDialogRef } from '@angular/material/dialog';
     styleUrls: ['./download-df-dialog.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DownloadDfDialogComponent extends Translations {
+export class DownloadDfDialogComponent {
+    public language$ = this.languageService.getLanguage$();
     public languages = Languages;
     public mainUrl = MAIN_URL;
 
-    constructor(public dialogRef: MatDialogRef<DownloadDfDialogComponent>, protected languageService: LanguageService) {
-        super(languageService);
-    }
+    constructor(public dialogRef: MatDialogRef<DownloadDfDialogComponent>, private languageService: LanguageService) {}
 }

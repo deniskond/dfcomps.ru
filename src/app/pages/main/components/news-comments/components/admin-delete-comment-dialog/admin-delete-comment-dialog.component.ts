@@ -1,5 +1,3 @@
-import { LanguageService } from '../../../../../../services/language/language.service';
-import { Translations } from '../../../../../../components/translations/translations.component';
 import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -10,18 +8,12 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
     styleUrls: ['./admin-delete-comment-dialog.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdminDeleteCommentDialogComponent extends Translations {
+export class AdminDeleteCommentDialogComponent {
     public reasonForm = new FormGroup({
         reason: new FormControl('', Validators.required),
     });
 
-    constructor(
-        public dialogRef: MatDialogRef<AdminDeleteCommentDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: { reason: string },
-        protected languageService: LanguageService,
-    ) {
-        super(languageService);
-    }
+    constructor(public dialogRef: MatDialogRef<AdminDeleteCommentDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: { reason: string }) {}
 
     public onSaveClick(): void {
         this.dialogRef.close(this.reasonForm.get('reason').value);

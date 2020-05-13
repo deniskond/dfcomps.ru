@@ -1,6 +1,5 @@
 import { Languages } from '../../enums/languages.enum';
 import { LanguageService } from '../../services/language/language.service';
-import { Translations } from '../../components/translations/translations.component';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ArchiveService } from './services/archive/archive.service';
 import { Observable, of, BehaviorSubject } from 'rxjs';
@@ -17,7 +16,7 @@ const NEWS_ON_PAGE = 50;
     styleUrls: ['./archive.page.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ArchivePageComponent extends Translations implements OnInit {
+export class ArchivePageComponent implements OnInit {
     public newsCount: number;
     public pagesCount: number;
     public news$: Observable<ArchiveNewsInterface[]>;
@@ -27,13 +26,7 @@ export class ArchivePageComponent extends Translations implements OnInit {
     public language$: Observable<Languages>;
     public languages = Languages;
 
-    constructor(
-        private router: Router,
-        private archiveService: ArchiveService,
-        protected languageService: LanguageService,
-    ) {
-        super(languageService);
-    }
+    constructor(private router: Router, private archiveService: ArchiveService, private languageService: LanguageService) {}
 
     ngOnInit(): void {
         this.archiveService.getNewsCount$().subscribe((count: number) => {
@@ -48,8 +41,6 @@ export class ArchivePageComponent extends Translations implements OnInit {
         );
 
         this.language$ = this.languageService.getLanguage$();
-
-        super.ngOnInit();
     }
 
     public navigateToNewsPage(newsId: number): void {

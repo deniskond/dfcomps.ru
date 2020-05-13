@@ -1,5 +1,6 @@
 <div class="side-block-header table-header">
-    {{ translations?.ratingLeaders }} ({{ physics }})
+    <span translate translation="ratingLeaders"></span>
+    <span>&nbsp;({{ physics }})</span>
 </div>
 
 <ng-container *ngIf="topTenTable$ | async as topTenTable; else loader">

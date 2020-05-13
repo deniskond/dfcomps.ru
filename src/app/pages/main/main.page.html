@@ -8,8 +8,9 @@
             </h1>
                 
             <div class="author-and-date">
-                {{ translations?.author }}: <a routerLink="/profile/{{ singleNews.authorId }}" class="black-link">{{ singleNews.authorName }}</a>,
-                {{ singleNews.datetimezone | invokeFunction : formatDate }}
+                <span translate translation="author"></span>: 
+                <a routerLink="/profile/{{ singleNews.authorId }}" class="black-link">{{ singleNews.authorName }}</a>,
+                <span>{{ singleNews.datetimezone | invokeFunction : formatDate }}</span>
             </div>
 
             <app-youtube *ngIf="singleNews.youtube && singleNews.type !== newsTypes.ONLINE_RESULTS" [id]="singleNews.youtube" width="800" height="450" class="youtube"></app-youtube>
@@ -39,7 +40,7 @@
         <app-news-comments [comments]="singleNews.comments" [newsId]="singleNews.id" [expanded]="false"></app-news-comments>
     </ng-container>
 
-    <div (click)="navigateToArchive()" class="archive-link">{{ translations?.goToArchive }}</div>
+    <div translate translation="goToArchive" (click)="navigateToArchive()" class="archive-link"></div>
 </div>
 
 <ng-template #loader>

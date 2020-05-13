@@ -1,4 +1,4 @@
-export const RUSSIAN_TRANSLATIONS = {
+export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
     downloadDefrag: 'Скачать Defrag',
     author: 'Автор',
     ratingLeaders: 'Лидеры рейтинга',
@@ -102,11 +102,14 @@ export const RUSSIAN_TRANSLATIONS = {
     reason: 'Причина',
     edit: 'Редактировать',
     commentDeletedByAdmin: 'Комментарий удален админом. Причина:',
-    personal_smiles: 'Персональные',
-    defrag_smiles: 'Defrag',
-    main_smiles: 'Смайлы',
-    gesture_smiles: 'Жесты',
-    food_smiles: 'Еда',
-    animals_smiles: 'Животные',
-    misc_smiles: 'Разное',
+    personalSmiles: 'Персональные',
+    defragSmiles: 'Defrag',
+    mainSmiles: 'Смайлы',
+    gestureSmiles: 'Жесты',
+    foodSmiles: 'Еда',
+    animalsSmiles: 'Животные',
+    miscSmiles: 'Разное',
+    noSmilesFound: 'Смайлов не найдено',
+    chosenSmile: 'Выбранный смайл',
+    searchSmiles: 'Поиск смайлов',
 }

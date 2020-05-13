@@ -1,15 +1,16 @@
+import { Languages } from './../../../../enums/languages.enum';
 import { LanguageService } from '../../../../services/language/language.service';
-import { Translations } from '../../../../components/translations/translations.component';
 import { Component, OnInit, OnChanges, Input, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
-import { Observable, ReplaySubject } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Observable, ReplaySubject, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { formatCupTime } from '../../helpers/cup-time-format.helpers';
 
 @Component({
     selector: 'app-cup-timer-online-finished',
     templateUrl: './cup-timer-online-finished.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CupTimerOnlineFinishedComponent extends Translations implements OnInit, OnChanges {
+export class CupTimerOnlineFinishedComponent implements OnInit, OnChanges {
     @Input()
     cupName: string;
     @Input()
@@ -23,13 +24,12 @@ export class CupTimerOnlineFinishedComponent extends Translations implements OnI
 
     private endTime$ = new ReplaySubject<string>(1);
 
-    constructor(protected languageService: LanguageService) {
-        super(languageService);
-    }
+    constructor(private languageService: LanguageService) {}
 
     ngOnInit(): void {
-        this.formattedTime$ = this.endTime$.pipe(switchMap((time: string) => this.getFormattedCupTime$(time)));
-        super.ngOnInit();
+        this.formattedTime$ = combineLatest([this.endTime$, this.languageService.getLanguage$()]).pipe(
+            map(([time, language]: [string, Languages]) => formatCupTime(time, language)),
+        );
     }
 
     ngOnChanges({ endTime }: SimpleChanges): void {

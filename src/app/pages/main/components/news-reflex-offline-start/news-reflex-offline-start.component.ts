@@ -1,5 +1,4 @@
 import { LanguageService } from '../../../../services/language/language.service';
-import { Translations } from '../../../../components/translations/translations.component';
 import { MAIN_URL } from '../../../../configs/url-params.config';
 import { UploadDemoDtoInterface } from '../../../../services/demos/dto/upload-demo.dto';
 import { UserInterface } from '../../../../interfaces/user.interface';
@@ -15,13 +14,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ReflexPlayerDemosDialogComponent } from './reflex-player-demos-dialog/reflex-player-demos-dialog.component';
 
+const SNACKBAR_DURATION = 3000;
+
 @Component({
     selector: 'app-news-reflex-offline-start',
     templateUrl: './news-reflex-offline-start.component.html',
     styleUrls: ['./news-reflex-offline-start.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewsReflexOfflineStartComponent extends Translations implements OnInit {
+export class NewsReflexOfflineStartComponent implements OnInit {
     @Input()
     news: NewsOfflineStartInterface;
 
@@ -41,22 +42,19 @@ export class NewsReflexOfflineStartComponent extends Translations implements OnI
         private userService: UserService,
         private snackBar: MatSnackBar,
         private dialog: MatDialog,
-        protected languageService: LanguageService,
-    ) {
-        super(languageService);
-    }
+        private languageService: LanguageService,
+    ) {}
 
     ngOnInit(): void {
         this.cupState = this.getCupState();
         this.user$ = this.userService.getCurrentUser$();
-        super.ngOnInit();
     }
 
     public uploadDemo(): void {
         const demo: File = this.fileInput.nativeElement.files[0];
 
         if (!demo) {
-            this.snackBar.open(this.translations.error, this.translations.noDemo, { duration: 3000 });
+            this.openSnackBar('error', 'noDemo');
 
             return;
         }
@@ -66,25 +64,23 @@ export class NewsReflexOfflineStartComponent extends Translations implements OnI
         this.user$
             .pipe(
                 take(1),
-                switchMap((user: UserInterface) =>
-                    this.demosService.reflexUploadDemo$(demo, this.news.cup.id, this.news.cup.map1, user.id, demo.name),
-                ),
+                switchMap((user: UserInterface) => this.demosService.reflexUploadDemo$(demo, this.news.cup.id, this.news.cup.map1, user.id, demo.name)),
                 finalize(() => {
                     this.fileInput.nativeElement.value = null;
                     this.isUploading = false;
                 }),
                 catchError(() => {
-                    this.snackBar.open(this.translations.error, this.translations.uploadFailed, { duration: 3000 });
+                    this.openSnackBar('error', 'uploadFailed');
 
                     return of();
                 }),
             )
             .subscribe(({ status, validation, message }: UploadDemoDtoInterface) => {
                 if (status === 'Success') {
-                    this.snackBar.open(this.translations.success, this.translations.demoSent, { duration: 3000 });
+                    this.openSnackBar('success', 'demoSent');
                     this.reloadNews.emit();
                 } else if (status === 'Error') {
-                    this.snackBar.open(this.translations.error, message, { duration: 3000 });
+                    this.openSnackBar('error', message, false);
                 }
             });
     }
@@ -119,5 +115,16 @@ export class NewsReflexOfflineStartComponent extends Translations implements OnI
         }
 
         return CupStates.IN_PROGRESS;
+    }
+
+    private openSnackBar(title: string, message: string, needMessageTranslation = true): void {
+        this.languageService
+            .getTranslations$()
+            .pipe(take(1))
+            .subscribe((translations: Record<string, string>) => {
+                const snackBarMessage = needMessageTranslation ? translations[message] : message;
+
+                this.snackBar.open(translations[title], snackBarMessage, { duration: SNACKBAR_DURATION });
+            });
     }
 }

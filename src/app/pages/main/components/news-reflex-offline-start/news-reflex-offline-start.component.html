@@ -5,41 +5,55 @@
     <div class="tables-container">
         <div class="map-info-table">
             <div class="map-info-row">
-                <div class="row-desc">{{ translations?.map }}</div>
+                <div class="row-desc">
+                    <span translate translation="map"></span>
+                </div>
                 <div class="row-info">
                     <a [href]="news.cup.mapPk3" target="_blank" class="map-link">{{ news.cup.map1 }}</a>
                 </div>
             </div>
             <div class="map-info-row">
-                <div class="row-desc">{{ translations?.start }}</div>
+                <div class="row-desc">
+                    <span translate translation="start"></span>
+                </div>
                 <div class="row-info">
                     <app-gmt-date-time [dateTime]="news.cup.startDateTime"></app-gmt-date-time>
                 </div>
             </div>
             <div class="map-info-row">
-                <div class="row-desc">{{ translations?.finish }}</div>
+                <div class="row-desc">
+                    <span translate translation="finish"></span>
+                </div>
                 <div class="row-info">
                     <app-gmt-date-time [dateTime]="news.cup.endDateTime"></app-gmt-date-time>
                 </div>
             </div>
             <div class="map-info-row">
-                <div class="row-desc">{{ translations?.author }}</div>
+                <div class="row-desc">
+                    <span translate translation="author"></span>
+                </div>
                 <div class="row-info">{{ news.cup.mapAuthor }}</div>
             </div>
             <div class="map-info-row">
-                <div class="row-desc">{{ translations?.weapons }}</div>
+                <div class="row-desc">
+                    <span translate translation="weapons"></span>
+                </div>
                 <div class="row-info">
                     <app-weapons [weapons]="news.cup.mapWeapons"></app-weapons>
                 </div>
             </div>
             <div class="map-info-row">
-                <div class="row-desc">{{ translations?.download }}</div>
+                <div class="row-desc">
+                    <span translate translation="download"></span>
+                </div>
                 <div class="row-info">
                     <a [href]="news.cup.mapPk3" download>{{ news.cup.mapSize }} MB</a>
                 </div>
             </div>
             <div class="map-info-row">
-                <div class="row-desc">{{ translations?.rules }}</div>
+                <div class="row-desc">
+                    <span translate translation="rules"></span>
+                </div>
                 <div class="row-info">
                     <a target="_blank" href="https://reflex.racing/cups/world-cup/">RRWC Ruleset</a>
                 </div>
@@ -47,7 +61,9 @@
         </div>
         <div class="map-info-table">
             <div class="map-info-row">
-                <div class="row-desc">{{ translations?.upload }}</div>
+                <div class="row-desc">
+                    <span translate translation="upload"></span>
+                </div>
                 <div class="row-info">
                     <ng-container *ngIf="user$ | async; else notLogged">
                         <ng-container [ngSwitch]="cupState">
@@ -58,16 +74,24 @@
                                     <img *ngIf="!isUploading" src="/assets/images/icons/upload.jpg" />
                                 </div>
                             </div>
-                            <div *ngSwitchCase="cupStates.FINISHED || cupStates.NOT_STARTED">{{ translations?.cupFinished }}</div>
-                            <div *ngSwitchCase="cupStates.NOT_STARTED">{{ translations?.cupNotStarted }}</div>
+                            <div *ngSwitchCase="cupStates.FINISHED || cupStates.NOT_STARTED">
+                                <span translate translation="cupFinished"></span>
+                            </div>
+                            <div *ngSwitchCase="cupStates.NOT_STARTED">
+                                <span translate translation="cupNotStarted"></span>
+                            </div>
                         </ng-container>
                     </ng-container>
 
-                    <ng-template #notLogged>{{ translations?.loginOrRegister }}</ng-template>
+                    <ng-template #notLogged>
+                        <span translate translation="loginOrRegister"></span>
+                    </ng-template>
                 </div>
             </div>
             <div class="map-info-row">
-                <div class="row-desc">{{ translations?.time }}</div>
+                <div class="row-desc">
+                    <span translate translation="time"></span>
+                </div>
                 <div class="row-info">
                     <ng-container *ngIf="news.playerDemos && !!news.playerDemos.length; else noDemos">
                         <div class="top-demos">
@@ -80,13 +104,17 @@
                             <img src="/assets/images/icons/list.png" />
                         </div>
                     </ng-container>
-                    <ng-template #noDemos>{{ translations?.noUploadedDemos }}</ng-template>
+                    <ng-template #noDemos>
+                        <span translate translation="noUploadedDemos"></span>
+                    </ng-template>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div *ngIf="news.cup.bonusRating !== '0'" class="bonus-rating">{{ translations?.bonusRating }}: +{{ news.cup.bonusRating }}.</div>
+<div *ngIf="news.cup.bonusRating !== '0'" class="bonus-rating">
+    <span translate translation="bonusRating"></span>: +{{ news.cup.bonusRating }}.
+</div>
 
 <app-html-news [news]="news"></app-html-news>

@@ -1,7 +1,5 @@
-import { LanguageService } from '../../../../services/language/language.service';
-import { Translations } from '../../../../components/translations/translations.component';
 import { Physics } from '../../../../enums/physics.enum';
-import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app-profile-rating-chart',
@@ -9,7 +7,7 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectionStra
     styleUrls: ['./profile-rating-chart.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProfileRatingChartComponent extends Translations implements OnInit, OnChanges {
+export class ProfileRatingChartComponent implements OnChanges {
     @Input()
     physics: Physics;
     @Input()
@@ -36,10 +34,6 @@ export class ProfileRatingChartComponent extends Translations implements OnInit,
 
     public barChartLabels: string[];
     public barChartData: any;
-
-    constructor(protected languageService: LanguageService) {
-        super(languageService);
-    }
 
     ngOnChanges({ chart }: SimpleChanges): void {
         if (chart) {
