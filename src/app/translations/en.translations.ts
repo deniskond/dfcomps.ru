@@ -112,4 +112,6 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
     noSmilesFound: 'No smiles found',
     chosenSmile: 'Chosen smile',
     searchSmiles: 'Search smiles',
+    oneVOne: '1v1',
+    oneVOneMatches: '1v1 matches',
 }

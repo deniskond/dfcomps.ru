@@ -112,4 +112,6 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
     noSmilesFound: 'Смайлов не найдено',
     chosenSmile: 'Выбранный смайл',
     searchSmiles: 'Поиск смайлов',
+    oneVOne: '1v1',
+    oneVOneMatches: 'Матчи 1v1',
 }
