@@ -1,0 +1,99 @@
+:host {
+    display: block;
+    position: relative;
+    width: 120px;
+    height: 90px;
+}
+
+.map {
+    width: 120px;
+    height: 90px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    pointer-events: none;
+    transition: 0.3s;
+
+    &.abydos {
+        background: url('../../../../../assets/images/1v1/levelshots/ddc2018-abydos.jpg') no-repeat;
+    }
+
+    &.amaranth {
+        background: url('../../../../../assets/images/1v1/levelshots/ddc2018-amaranth.jpg') no-repeat;
+    }
+
+    &.countach {
+        background: url('../../../../../assets/images/1v1/levelshots/ddc2018-countach.jpg') no-repeat;
+    }
+
+    &.enigma {
+        background: url('../../../../../assets/images/1v1/levelshots/ddc2018-enigma.jpg') no-repeat;
+    }
+
+    &.medieva {
+        background: url('../../../../../assets/images/1v1/levelshots/ddc2018-medieva.jpg') no-repeat;
+    }
+
+    &:last-of-type {
+        margin-right: 0;
+    }
+
+    .border {
+        display: none;
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        left: -10px;
+        top: -10px;
+        background: white;
+        z-index: 3;
+    }
+
+    .cross {
+        width: 120px;
+        height: 90px;
+        display: none;
+        background: url('../../../../../assets/images/icons/cross.png') no-repeat;
+        background-position: 50% 50%;
+    }
+
+    &.banned {
+        opacity: 0.8;
+
+        .border {
+            display: block;
+        }
+
+        .cross {
+            display: block;
+        }
+    }
+
+    &.pointer-enabled {
+        cursor: pointer;
+        pointer-events: auto;
+    }
+
+    &:hover {
+        opacity: 0.8;
+
+        .border {
+            display: block;
+        }
+
+        .cross {
+            display: block;
+        }
+    }
+}
+
+.map-second-layer {
+    width: 120px;
+    height: 90px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    background: white;
+}

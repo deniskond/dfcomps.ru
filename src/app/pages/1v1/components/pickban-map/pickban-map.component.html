@@ -1,0 +1,12 @@
+<div
+    [ngClass]="map.name"
+    [class.banned]="isBanned"
+    [class.pointer-enabled]="!isBanned && pickbanPhase === pickBanPhases.YOU_ARE_BANNING"
+    (click)="banMap()"
+    class="map">
+
+    <div class="border"></div>
+    <div class="cross"></div>
+</div>
+
+<div class="map-second-layer"></div>

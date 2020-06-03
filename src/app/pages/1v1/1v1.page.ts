@@ -20,7 +20,6 @@ export class OneVOnePageComponent {
         this.matchState = MatchStates.IN_QUEUE;
 
         setTimeout(() => {
-            debugger;
             this.matchState = MatchStates.MATCH_IN_PROGRESS;
             this.changeDetectorRef.markForCheck();
         }, 5000);

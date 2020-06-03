@@ -1,4 +1,11 @@
-<div class="main-screen-title match-in-progress">Match in progress</div>
+<div class="main-screen-title match-in-progress">
+    <div>Match in progress: {{ pickbanPhase | invokeFunction: getPickbanPhaseCaption }}</div>
+    <ng-container [ngSwitch]="pickbanPhase">
+        <app-match-progress-timer *ngSwitchCase="pickbanPhases.OPPONENT_IS_BANNING" [initialSeconds]="30"></app-match-progress-timer>
+        <app-match-progress-timer *ngSwitchCase="pickbanPhases.YOU_ARE_BANNING" [initialSeconds]="30"></app-match-progress-timer>
+        <app-match-progress-timer *ngSwitchCase="pickbanPhases.PICK_BANS_FINISHED" [initialSeconds]="15 * 60"></app-match-progress-timer>
+    </ng-container>
+</div>
 <div class="player">
     <div class="player-flag-nick">
         <div class="player-flag ru"></div>
@@ -7,11 +14,13 @@
     <div class="player-rating">CPM Rating: 2337</div>
 </div>
 <div class="map-row">
-    <div class="map abydos"></div>
-    <div class="map amaranth"></div>
-    <div class="map countach"></div>
-    <div class="map enigma"></div>
-    <div class="map medieva"></div>
+    <app-pickban-map
+        *ngFor="let map of mapList"
+        [pickbanPhase]="pickbanPhase"
+        [map]="map"
+        (banned)="onMapBanned(map.name)"
+        class="map">
+    </app-pickban-map>
 </div>
 <div class="player">
     <div class="player-flag-nick">

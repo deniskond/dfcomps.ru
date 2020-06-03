@@ -7,6 +7,8 @@ import { OneVOnePageComponent } from './1v1.page';
 import { MatButtonModule } from '@angular/material/button';
 import { QueueTimerComponent } from './components/queue-timer/queue-timer.component';
 import { MatchProgressComponent } from './components/match-progress/match-progress.component';
+import { MatchProgressTimerComponent } from './components/match-progress-timer/match-progress-timer.component';
+import { PickbanMapComponent } from './components/pickban-map/pickban-map.component';
 
 const routes: Routes = [
     {
@@ -16,7 +18,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [OneVOnePageComponent, QueueTimerComponent, MatchProgressComponent],
+    declarations: [OneVOnePageComponent, QueueTimerComponent, MatchProgressComponent, MatchProgressTimerComponent, PickbanMapComponent],
     imports: [CommonModule, RouterModule.forChild(routes), MatProgressSpinnerModule, SharedModule, MatButtonModule],
 })
 export class OneVOnePageModule {}

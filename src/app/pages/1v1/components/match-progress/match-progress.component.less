@@ -1,9 +1,15 @@
 .main-screen-title {
     margin-top: 12px;
-    font-family: bebas;
     margin-left: -53px;
+    margin-right: -46px;
     color: #ffe557;
     margin-bottom: 44px;
+    display: flex;
+    justify-content: space-between;
+
+    div {
+        font-family: bebas;
+    }
 }
 
 .player {
@@ -41,31 +47,5 @@
 }
 
 .map {
-    width: 120px;
-    height: 90px;
     margin-right: 15px;
-
-    &.abydos {
-        background: url('../../../../../assets/images/1v1/levelshots/ddc2018-abydos.jpg') no-repeat;
-    }
-
-    &.amaranth {
-        background: url('../../../../../assets/images/1v1/levelshots/ddc2018-amaranth.jpg') no-repeat;
-    }
-
-    &.countach {
-        background: url('../../../../../assets/images/1v1/levelshots/ddc2018-countach.jpg') no-repeat;
-    }
-
-    &.enigma {
-        background: url('../../../../../assets/images/1v1/levelshots/ddc2018-enigma.jpg') no-repeat;
-    }
-
-    &.medieva {
-        background: url('../../../../../assets/images/1v1/levelshots/ddc2018-medieva.jpg') no-repeat;
-    }
-
-    &:last-of-type {
-        margin-right: 0;
-    }
 }
