@@ -21,13 +21,54 @@
     border: 1px solid #e0e0e0;
     background: url('../../../assets/images/1v1/bg.png') no-repeat;
     color: white;
-    padding-top: 98px;
     padding-left: 68px;
     padding-right: 68px;
     align-items: center;
     justify-content: center;
     font-size: 36px;
     letter-spacing: 1px;
+}
+
+.main-screen-title {
+    margin-top: 12px;
+    font-family: bebas;
+    margin-left: -53px;
+    color: #ffe557;
+}
+
+.queue-buttons-container {
+    display: flex;
+    margin-top: 174px;
+    align-items: center;
+    justify-content: center;
+
+    button + button {
+        margin-left: 32px;
+    }
+}
+
+.searching-for-opponent {
+    font-family: bebas;
+    margin-top: 92px;
+    text-align: center;
+}
+
+.queue-timer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 12px;
+}
+
+.timer {
+    position: absolute;
+}
+
+.leave-queue {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
 }
 
 .player-matches {
@@ -52,68 +93,4 @@
 
 .block-content {
     margin: 12px;
-}
-
-.player {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.player-flag-nick {
-    display: flex;
-    align-items: center;
-}
-
-.player-flag {
-    width: 84px;
-    height: 56px;
-
-    &.ru {
-        background: url('../../../assets/images/flags/big/ru.png') no-repeat;
-    }
-}
-
-.player-nick {
-    font-family: bebas;
-    margin-left: 12px;
-}
-
-.player-rating {
-    font-family: bebas;
-}
-
-.map-row {
-    display: flex;
-    margin: 32px 0px;
-}
-
-.map {
-    width: 120px;
-    height: 90px;
-    margin-right: 15px;
-
-    &.abydos {
-        background: url('../../../assets/images/1v1/levelshots/ddc2018-abydos.jpg') no-repeat;
-    }
-
-    &.amaranth {
-        background: url('../../../assets/images/1v1/levelshots/ddc2018-amaranth.jpg') no-repeat;
-    }
-
-    &.countach {
-        background: url('../../../assets/images/1v1/levelshots/ddc2018-countach.jpg') no-repeat;
-    }
-
-    &.enigma {
-        background: url('../../../assets/images/1v1/levelshots/ddc2018-enigma.jpg') no-repeat;
-    }
-
-    &.medieva {
-        background: url('../../../assets/images/1v1/levelshots/ddc2018-medieva.jpg') no-repeat;
-    }
-
-    &:last-of-type {
-        margin-right: 0;
-    }
 }
