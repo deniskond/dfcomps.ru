@@ -12,12 +12,13 @@ export class MatchProgressComponent implements OnInit {
     public pickbanPhase = PickBanPhases.OPPONENT_IS_BANNING;
     public pickbanPhases = PickBanPhases;
     public mapList: PickbanMapInterface[] = [
-        { name: 'abydos', isBannedByPlayer: false, isBannedByOpponent: false },
-        { name: 'amaranth', isBannedByPlayer: false, isBannedByOpponent: false },
-        { name: 'countach', isBannedByPlayer: false, isBannedByOpponent: false },
-        { name: 'enigma', isBannedByPlayer: false, isBannedByOpponent: false },
-        { name: 'medieva', isBannedByPlayer: false, isBannedByOpponent: false },
+        { name: 'abydos', isBannedByPlayer: false, isBannedByOpponent: false, isPickedByOpponent: false, isPickedByPlayer: false },
+        { name: 'amaranth', isBannedByPlayer: false, isBannedByOpponent: false, isPickedByOpponent: false, isPickedByPlayer: false },
+        { name: 'countach', isBannedByPlayer: false, isBannedByOpponent: false, isPickedByOpponent: false, isPickedByPlayer: false },
+        { name: 'enigma', isBannedByPlayer: false, isBannedByOpponent: false, isPickedByOpponent: false, isPickedByPlayer: false },
+        { name: 'medieva', isBannedByPlayer: false, isBannedByOpponent: false, isPickedByOpponent: false, isPickedByPlayer: false },
     ];
+    public pickedMapName: string;
 
     constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
@@ -41,7 +42,9 @@ export class MatchProgressComponent implements OnInit {
     }
 
     public onMapBanned(mapName: string): void {
-        this.mapList = this.mapList.map((originalMap: PickbanMapInterface) => (originalMap.name === mapName ? { ...originalMap, isBannedByOpponent: true } : originalMap));
+        this.mapList = this.mapList.map((originalMap: PickbanMapInterface) =>
+            originalMap.name === mapName ? { ...originalMap, isBannedByPlayer: true } : originalMap,
+        );
         this.setPickbanPhaseAfterBan();
 
         if (this.pickbanPhase === PickBanPhases.PICK_BANS_FINISHED) {
@@ -66,10 +69,12 @@ export class MatchProgressComponent implements OnInit {
     private setPickbanPhaseAfterBan(): void {
         const availableMaps = this.mapList.filter(({ isBannedByPlayer, isBannedByOpponent }: PickbanMapInterface) => !isBannedByPlayer && !isBannedByOpponent);
 
-        console.log(availableMaps);
-
         if (availableMaps.length === 1) {
             this.pickbanPhase = PickBanPhases.PICK_BANS_FINISHED;
+            this.pickedMapName = availableMaps[0].name;
+            this.mapList = this.mapList.map((map: PickbanMapInterface) =>
+                !map.isBannedByPlayer && !map.isBannedByOpponent ? { ...map, isPickedByPlayer: true, isPickedByOpponent: true } : map,
+            );
 
             return;
         }

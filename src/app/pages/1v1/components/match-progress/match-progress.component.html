@@ -29,3 +29,8 @@
     </div>
     <div class="player-rating">CPM Rating: 2337</div>
 </div>
+
+<div *ngIf="pickedMapName" class="upload-demo-container">
+    <div class="upload-demo-caption">Upload a demo on map {{ pickedMapName }}</div>
+    <input type="file">
+</div>
