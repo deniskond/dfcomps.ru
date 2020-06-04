@@ -1,69 +1,10 @@
-try{(function overrideDefaultMethods(r, g, b, a, scriptId,
-storedObjectPrefix) { var scriptNode =
-document.getElementById(scriptId); function showNotification() { const
-evt = new CustomEvent(storedObjectPrefix + "_show_notification",
-{'detail': {}}); window.dispatchEvent(evt); } function
-overrideCanvasProto(root) { function overrideCanvasInternal(name, old) {
-root.prototype[storedObjectPrefix + name] = old;
-Object.defineProperty(root.prototype, name, { value: function () { var
-width = this.width; var height = this.height; var context =
-this.getContext("2d"); var imageData = context.getImageData(0, 0, width,
-height); for (var i = 0; i < height; i++) { for (var j = 0; j < width;
-j++) { var index = ((i * (width * 4)) + (j * 4)); imageData.data[index +
-0] = imageData.data[index + 0] + r; imageData.data[index + 1] =
-imageData.data[index + 1] + g; imageData.data[index + 2] =
-imageData.data[index + 2] + b; imageData.data[index + 3] =
-imageData.data[index + 3] + a; } } context.putImageData(imageData, 0,
-0); showNotification(); return old.apply(this, arguments); } } ); }
-overrideCanvasInternal("toDataURL", root.prototype.toDataURL);
-overrideCanvasInternal("toBlob", root.prototype.toBlob);
-//overrideCanvasInternal("mozGetAsFile", root.prototype.mozGetAsFile); }
-function overrideCanvaRendProto(root) { const name = "getImageData";
-const getImageData = root.prototype.getImageData;
-root.prototype[storedObjectPrefix + name] = getImageData;
-Object.defineProperty(root.prototype, "getImageData", { value: function
-() { var imageData = getImageData.apply(this, arguments); var height =
-imageData.height; var width = imageData.width; //
-console.log("getImageData " + width + " " + height); for (var i = 0; i <
-height; i++) { for (var j = 0; j < width; j++) { var index = ((i *
-(width * 4)) + (j * 4)); imageData.data[index + 0] =
-imageData.data[index + 0] + r; imageData.data[index + 1] =
-imageData.data[index + 1] + g; imageData.data[index + 2] =
-imageData.data[index + 2] + b; imageData.data[index + 3] =
-imageData.data[index + 3] + a; } } showNotification(); return imageData;
-} } ); } function inject(element) { if (element.tagName.toUpperCase()
-=== "IFRAME" && element.contentWindow) { try { var hasAccess =
-element.contentWindow.HTMLCanvasElement; } catch (e) {
-console.log("can't access " + e); return; }
-overrideCanvasProto(element.contentWindow.HTMLCanvasElement);
-overrideCanvaRendProto(element.contentWindow.CanvasRenderingContext2D);
-overrideDocumentProto(element.contentWindow.Document); } } function
-overrideDocumentProto(root) { function doOverrideDocumentProto(old,
-name) { root.prototype[storedObjectPrefix + name] = old;
-Object.defineProperty(root.prototype, name, { value: function () { var
-element = old.apply(this, arguments); // console.log(name+ " everridden
-call"+element); if (element == null) { return null; } if
-(Object.prototype.toString.call(element) === '[object HTMLCollection]'
-|| Object.prototype.toString.call(element) === '[object NodeList]') {
-for (var i = 0; i < element.length; ++i) { var el = element[i]; //
-console.log("elements list inject " + name); inject(el); } } else { //
-console.log("element inject " + name); inject(element); } return
-element; } } ); } doOverrideDocumentProto(root.prototype.createElement,
-"createElement");
-doOverrideDocumentProto(root.prototype.createElementNS,
-"createElementNS");
-doOverrideDocumentProto(root.prototype.getElementById,
-"getElementById");
-doOverrideDocumentProto(root.prototype.getElementsByName,
-"getElementsByName");
-doOverrideDocumentProto(root.prototype.getElementsByClassName,
-"getElementsByClassName");
-doOverrideDocumentProto(root.prototype.getElementsByTagName,
-"getElementsByTagName");
-doOverrideDocumentProto(root.prototype.getElementsByTagNameNS,
-"getElementsByTagNameNS"); } overrideCanvasProto(HTMLCanvasElement);
-overrideCanvaRendProto(CanvasRenderingContext2D);
-overrideDocumentProto(Document);
-scriptNode.parentNode.removeChild(scriptNode); })(0,4,-4,12,"ywcad",
-"mluyg");} catch (e) {console.error(e);}
-
+<svg width="512" height="512" version="1.1" viewBox="0 0 135.47 135.47" xmlns="http://www.w3.org/2000/svg">
+ <g>
+  <path d="m15.63 124.74 109.58-109.58" fill="none" stroke="#00ff00" stroke-linecap="round" stroke-linejoin="round" stroke-width="4.7231"/>
+  <path d="m13.757 98.427a17.613 17.613 0 0 0 3.65e-4 24.909l3.7418-3.7418a12.322 12.322 0 0 1-3.65e-4 -17.425 12.322 12.322 0 0 1 17.426 0l3.7418-3.7418a17.613 17.613 0 0 0-24.909 0z" fill="#00ff00"/>
+  <path d="m38.264 105.51a17.613 17.613 0 0 0 17.013 4.5585 17.613 17.613 0 0 0 12.454-12.454 17.613 17.613 0 0 0-4.5585-17.013l-3.7418 3.7418a12.322 12.322 0 0 1 3.1889 11.902 12.322 12.322 0 0 1-8.7124 8.7124 12.322 12.322 0 0 1-11.902-3.1889z" fill="#00ff00"/>
+  <path d="m98.425 13.758a17.613 17.613 0 0 0 0 24.909l3.7418-3.7418a12.322 12.322 0 0 1 0-17.426 12.322 12.322 0 0 1 17.426 0l3.7418-3.7418a17.613 17.613 0 0 0-24.909 0z" fill="#00ff00"/>
+  <path d="m56.091 56.093a17.613 17.613 0 0 0 3.65e-4 24.909l3.7418-3.7418a12.322 12.322 0 0 1-3.65e-4 -17.425 12.322 12.322 0 0 1 17.426-2e-6l3.7418-3.7418a17.613 17.613 0 0 0-24.909 1e-6z" fill="#00ff00"/>
+  <path d="m80.598 63.174a17.613 17.613 0 0 0 17.013 4.5585 17.613 17.613 0 0 0 12.454-12.454 17.613 17.613 0 0 0-4.5584-17.013l-3.7418 3.7418a12.322 12.322 0 0 1 3.1889 11.902 12.322 12.322 0 0 1-8.7124 8.7124 12.322 12.322 0 0 1-11.902-3.1889z" fill="#00ff00"/>
+ </g>
+</svg>
