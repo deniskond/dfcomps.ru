@@ -5,37 +5,54 @@
 
     <div class="row">
         <div class="main-screen">
-            <ng-container [ngSwitch]="matchState">
-                <ng-container *ngSwitchCase="matchStates.WAITNG_FOR_QUEUE">
-                    <div class="main-screen-title">Waiting for queue</div>
-                    <div class="queue-buttons-container">
-                        <button (click)="joinQueue(physics.VQ3)" mat-raised-button color="accent">
-                            Играть 1v1 VQ3
-                        </button>
-                        <button (click)="joinQueue(physics.CPM)" mat-raised-button color="accent">
-                            Играть 1v1 CPM
-                        </button>
-                    </div>
-                </ng-container>
-                <ng-container *ngSwitchCase="matchStates.IN_QUEUE">
-                    <div class="main-screen-title">In queue</div>
-                    <div class="searching-for-opponent">Searching for opponent: {{ selectedPhysics }}</div>
-                    <div class="queue-timer">
-                        <mat-spinner diameter="80" strokeWidth="5" color="accent"></mat-spinner>
-                        <div class="timer">
-                            <app-queue-timer></app-queue-timer>
+            <ng-container *ngIf="user$ | async; else notLogged">
+                <ng-container [ngSwitch]="matchState">
+                    <ng-container *ngSwitchCase="matchStates.WAITING_FOR_QUEUE">
+                        <div class="main-screen-title">Waiting for queue</div>
+                        <div class="queue-buttons-container">
+                            <button
+                                [class.disabled]="isWaitingForServerAnswer"
+                                [disabled]="isWaitingForServerAnswer"
+                                (click)="joinQueue(physics.VQ3)"
+                                mat-raised-button
+                                color="accent">
+
+                                Играть 1v1 VQ3
+                            </button>
+                            <button
+                                [class.disabled]="isWaitingForServerAnswer"
+                                [disabled]="isWaitingForServerAnswer"
+                                (click)="joinQueue(physics.CPM)"
+                                mat-raised-button
+                                color="accent">
+
+                                Играть 1v1 CPM
+                            </button>
                         </div>
-                    </div>
-                    <div class="leave-queue">
-                        <button (click)="leaveQueue()" mat-raised-button color="accent">
-                            Отменить поиск
-                        </button>
-                    </div>
-                </ng-container>
-                <ng-container *ngSwitchCase="matchStates.MATCH_IN_PROGRESS">
-                    <app-match-progress></app-match-progress>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="matchStates.IN_QUEUE">
+                        <div class="main-screen-title">In queue</div>
+                        <div class="searching-for-opponent">Searching for opponent: {{ selectedPhysics }}</div>
+                        <div class="queue-timer">
+                            <mat-spinner diameter="80" strokeWidth="5" color="accent"></mat-spinner>
+                            <div class="timer">
+                                <app-queue-timer></app-queue-timer>
+                            </div>
+                        </div>
+                        <div class="leave-queue">
+                            <button (click)="leaveQueue()" mat-raised-button color="accent">
+                                Отменить поиск
+                            </button>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="matchStates.MATCH_IN_PROGRESS">
+                        <app-match-progress></app-match-progress>
+                    </ng-container>
                 </ng-container>
             </ng-container>
+            <ng-template #notLogged>
+                <div class="not-logged">Зарегистрируйтесь или войдите, чтобы играть матчи 1v1</div>
+            </ng-template>
         </div>
     </div>
 
