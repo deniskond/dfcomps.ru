@@ -55,7 +55,7 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
     }
 
     public leaveQueue(): void {
-        this.matchState = MatchStates.WAITING_FOR_QUEUE;
+        this.user$.pipe(filter(Boolean), take(1)).subscribe(({ id }: UserInterface) => this.duelService.leaveQueue(id));
     }
 
     private initServerMessagesSubscription(): void {
@@ -72,6 +72,10 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
 
             if (serverMessage.action === DuelWebsocketServerActions.JOIN_QUEUE_FAILURE) {
                 this.showErrorNotification(serverMessage.payload.error);
+            }
+
+            if (serverMessage.action === DuelWebsocketServerActions.LEAVE_QUEUE_SUCCESS) {
+                this.matchState = MatchStates.WAITING_FOR_QUEUE;
             }
 
             this.changeDetectorRef.markForCheck();

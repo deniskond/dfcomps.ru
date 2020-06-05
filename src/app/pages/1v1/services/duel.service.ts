@@ -6,6 +6,7 @@ import { filter, take } from 'rxjs/operators';
 import { DuelWebsocketClientActions } from './enums/duel-websocket-client-actions.enum';
 import { DuelClientMessage } from './types/duel-client-message.type';
 import { DuelServerMessageType } from './types/duel-server-message.type';
+import { LeaveQueueMessageInterface } from './interfaces/leave-queue-message.interface';
 
 @Injectable({
     providedIn: 'root',
@@ -40,6 +41,15 @@ export class DuelService {
         };
 
         this.send(joinQueueRequest);
+    }
+
+    public leaveQueue(playerId: string): void {
+        const leaveQueueRequest: LeaveQueueMessageInterface = {
+            playerId,
+            action: DuelWebsocketClientActions.LEAVE_QUEUE,
+        };
+
+        this.send(leaveQueueRequest);
     }
 
     public closeConnection(): void {
