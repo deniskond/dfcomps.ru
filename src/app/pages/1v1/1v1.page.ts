@@ -10,7 +10,7 @@ import { Observable, Subject } from 'rxjs';
 import { DuelWebsocketServerActions } from './services/enums/duel-websocket-server-actions.enum';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatchStates } from './services/enums/match-states.enum';
-import { PickbanPhases } from './enums/pickban-phases.enum';
+import { MatchInterface } from './services/interfaces/match.interface';
 
 @Component({
     templateUrl: './1v1.page.html',
@@ -24,7 +24,7 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
     public selectedPhysics: Physics;
     public user$: Observable<UserInterface>;
     public isWaitingForServerAnswer = false;
-    public pickbanPhase: PickbanPhases;
+    public match: MatchInterface;
 
     private onDestroy$ = new Subject<void>();
 
@@ -60,6 +60,10 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
         this.user$.pipe(filter(Boolean), take(1)).subscribe(({ id }: UserInterface) => this.duelService.leaveQueue(id));
     }
 
+    public onMapBanned(mapName: string): void {
+        this.user$.pipe(filter(Boolean), take(1)).subscribe(({ id }: UserInterface) => this.duelService.banMap(id, mapName));
+    }
+
     private initUserSubscriptions(): void {
         this.user$
             .pipe(takeUntil(this.onDestroy$))
@@ -90,9 +94,9 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
                 }
             }
 
-            if (serverMessage.action === DuelWebsocketServerActions.OPPONENT_FOUND) {
+            if (serverMessage.action === DuelWebsocketServerActions.PICKBAN_STEP) {
                 this.matchState = MatchStates.MATCH_IN_PROGRESS;
-                this.pickbanPhase = serverMessage.payload.opponentIsBanning ? PickbanPhases.OPPONENT_IS_BANNING : PickbanPhases.YOU_ARE_BANNING;
+                this.match = serverMessage.payload.match;
             }
 
             this.changeDetectorRef.markForCheck();
@@ -110,11 +114,15 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
         this.user$.pipe(filter(Boolean), take(1)).subscribe(({ id }: UserInterface) => this.duelService.sendRestoreStateMessage(id));
     }
 
-    private restoreState({ state, physics }: { state: MatchStates; physics?: Physics }): void {
+    private restoreState({ state, physics, match }: { state: MatchStates; physics?: Physics; match?: MatchInterface }): void {
         this.matchState = state;
 
         if (physics) {
             this.selectedPhysics = physics;
+        }
+
+        if (match) {
+            this.match = match;
         }
     }
 }

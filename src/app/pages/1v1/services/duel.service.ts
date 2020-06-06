@@ -7,6 +7,7 @@ import { DuelWebsocketClientActions } from './enums/duel-websocket-client-action
 import { DuelClientMessage } from './types/duel-client-message.type';
 import { DuelServerMessageType } from './types/duel-server-message.type';
 import { LeaveQueueMessageInterface } from './interfaces/leave-queue-message.interface';
+import { BanMapMessageInterface } from './interfaces/ban-map-message.interface';
 
 @Injectable({
     providedIn: 'root',
@@ -50,6 +51,18 @@ export class DuelService {
         };
 
         this.send(leaveQueueRequest);
+    }
+
+    public banMap(playerId: string, mapName: string): void {
+        const banMapRequest: BanMapMessageInterface = {
+            playerId,
+            action: DuelWebsocketClientActions.BAN_MAP,
+            payload: {
+                mapName,
+            },
+        };
+
+        this.send(banMapRequest);
     }
 
     public closeConnection(): void {

@@ -1,6 +1,9 @@
+import { UserInterface } from './../../../../interfaces/user.interface';
 import { PickbanPhases } from './../../enums/pickban-phases.enum';
-import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { PickbanMapInterface } from '../../interfaces/pickban-map.interface';
+import { MatchInterface } from '../../services/interfaces/match.interface';
+import { PickbanMapServerInterface } from '../../services/interfaces/pickban-map-server.interface';
 
 @Component({
     selector: 'app-match-progress',
@@ -8,28 +11,25 @@ import { PickbanMapInterface } from '../../interfaces/pickban-map.interface';
     styleUrls: ['./match-progress.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MatchProgressComponent implements OnInit {
-    @Input() pickbanPhase: PickbanPhases;
+export class MatchProgressComponent implements OnChanges {
+    @Input() match: MatchInterface;
+    @Input() user: UserInterface;
 
+    @Output() mapBanned = new EventEmitter<string>();
+
+    public pickbanPhase: PickbanPhases;
     public pickbanPhases = PickbanPhases;
-    public mapList: PickbanMapInterface[] = [
-        { name: 'abydos', isBannedByPlayer: false, isBannedByOpponent: false, isPickedByOpponent: false, isPickedByPlayer: false },
-        { name: 'amaranth', isBannedByPlayer: false, isBannedByOpponent: false, isPickedByOpponent: false, isPickedByPlayer: false },
-        { name: 'countach', isBannedByPlayer: false, isBannedByOpponent: false, isPickedByOpponent: false, isPickedByPlayer: false },
-        { name: 'enigma', isBannedByPlayer: false, isBannedByOpponent: false, isPickedByOpponent: false, isPickedByPlayer: false },
-        { name: 'medieva', isBannedByPlayer: false, isBannedByOpponent: false, isPickedByOpponent: false, isPickedByPlayer: false },
-    ];
+    public mapList: PickbanMapInterface[] = [];
     public pickedMapName: string;
 
     constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
-    ngOnInit(): void {
-        setTimeout(() => {
-            this.banRandomAvailableMap();
-            this.setPickbanPhaseAfterBan();
-            this.pickbanPhase = PickbanPhases.YOU_ARE_BANNING;
-            this.changeDetectorRef.markForCheck();
-        }, 5000);
+    ngOnChanges({ match }: SimpleChanges): void {
+        if (match && this.match) {
+            this.calculateBanPhaseByMatchInfo();
+            this.updateMaplistByMatchInfo();
+            this.updatePickedMapNameByMatchInfo();
+        }
     }
 
     public getPickbanPhaseCaption(pickbanPhase: PickbanPhases): string {
@@ -43,14 +43,7 @@ export class MatchProgressComponent implements OnInit {
     }
 
     public onMapBanned(mapName: string): void {
-        this.mapList = this.mapList.map((originalMap: PickbanMapInterface) =>
-            originalMap.name === mapName ? { ...originalMap, isBannedByPlayer: true } : originalMap,
-        );
-        this.setPickbanPhaseAfterBan();
-
-        if (this.pickbanPhase === PickbanPhases.PICK_BANS_FINISHED) {
-            return;
-        }
+        this.mapBanned.emit(mapName);
     }
 
     private banRandomAvailableMap(): void {
@@ -60,16 +53,46 @@ export class MatchProgressComponent implements OnInit {
         this.mapList = this.mapList.map((map: PickbanMapInterface) => (map.name === randomAvailableMap.name ? { ...map, isBannedByOpponent: true } : map));
     }
 
-    private setPickbanPhaseAfterBan(): void {
-        const availableMaps = this.mapList.filter(({ isBannedByPlayer, isBannedByOpponent }: PickbanMapInterface) => !isBannedByPlayer && !isBannedByOpponent);
-
-        if (availableMaps.length === 1) {
-            this.pickedMapName = availableMaps[0].name;
-            this.mapList = this.mapList.map((map: PickbanMapInterface) =>
-                !map.isBannedByPlayer && !map.isBannedByOpponent ? { ...map, isPickedByPlayer: true, isPickedByOpponent: true } : map,
-            );
+    private calculateBanPhaseByMatchInfo(): void {
+        if (!this.match.isFirstPlayerBanning && !this.match.isSecondPlayerBanning) {
+            this.pickbanPhase = PickbanPhases.PICK_BANS_FINISHED;
 
             return;
+        }
+
+        if (
+            (this.match.firstPlayerId === this.user.id && this.match.isFirstPlayerBanning) ||
+            (this.match.secondPlayerId === this.user.id && this.match.isSecondPlayerBanning)
+        ) {
+            this.pickbanPhase = PickbanPhases.YOU_ARE_BANNING;
+
+            return;
+        }
+
+        this.pickbanPhase = PickbanPhases.OPPONENT_IS_BANNING;
+    }
+
+    private updateMaplistByMatchInfo(): void {
+        this.mapList = this.match.maps.map((map: PickbanMapServerInterface) => {
+            const isFirstPlayer = this.user.id === this.match.firstPlayerId;
+
+            return {
+                name: map.name,
+                isBannedByPlayer: isFirstPlayer ? map.isBannedByFirstPlayer : map.isBannedBySecondPlayer,
+                isBannedByOpponent: isFirstPlayer ? map.isBannedBySecondPlayer : map.isBannedByFirstPlayer,
+                isPickedByPlayer: isFirstPlayer ? map.isPickedByFirstPlayer : map.isPickedBySecondPlayer,
+                isPickedByOpponent: isFirstPlayer ? map.isPickedBySecondPlayer : map.isPickedByFirstPlayer,
+            };
+        });
+    }
+
+    private updatePickedMapNameByMatchInfo(): void {
+        const pickedMap = this.match.maps.find(
+            (pickbanMap: PickbanMapServerInterface) => pickbanMap.isPickedByFirstPlayer && pickbanMap.isPickedBySecondPlayer,
+        );
+
+        if (pickedMap) {
+            this.pickedMapName = pickedMap.name;
         }
     }
 }
