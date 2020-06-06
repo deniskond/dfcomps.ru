@@ -10,6 +10,7 @@ import { Observable, Subject } from 'rxjs';
 import { DuelWebsocketServerActions } from './services/enums/duel-websocket-server-actions.enum';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatchStates } from './services/enums/match-states.enum';
+import { PickbanPhases } from './enums/pickban-phases.enum';
 
 @Component({
     templateUrl: './1v1.page.html',
@@ -23,6 +24,7 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
     public selectedPhysics: Physics;
     public user$: Observable<UserInterface>;
     public isWaitingForServerAnswer = false;
+    public pickbanPhase: PickbanPhases;
 
     private onDestroy$ = new Subject<void>();
 
@@ -35,8 +37,8 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.duelService.openConnection();
         this.user$ = this.userService.getCurrentUser$();
+        this.initUserSubscriptions();
         this.sendRestorePlayerStateMessage();
         this.initServerMessagesSubscription();
     }
@@ -58,6 +60,12 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
         this.user$.pipe(filter(Boolean), take(1)).subscribe(({ id }: UserInterface) => this.duelService.leaveQueue(id));
     }
 
+    private initUserSubscriptions(): void {
+        this.user$
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe((user: UserInterface) => (user ? this.duelService.openConnection() : this.duelService.closeConnection()));
+    }
+
     private initServerMessagesSubscription(): void {
         this.duelService.serverMessages$.pipe(takeUntil(this.onDestroy$)).subscribe((serverMessage: DuelServerMessageType) => {
             this.isWaitingForServerAnswer = false;
@@ -67,7 +75,9 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
             }
 
             if (serverMessage.action === DuelWebsocketServerActions.JOIN_QUEUE_SUCCESS) {
-                this.matchState = MatchStates.IN_QUEUE;
+                if (this.matchState === MatchStates.WAITING_FOR_QUEUE) {
+                    this.matchState = MatchStates.IN_QUEUE;
+                }
             }
 
             if (serverMessage.action === DuelWebsocketServerActions.JOIN_QUEUE_FAILURE) {
@@ -75,7 +85,14 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
             }
 
             if (serverMessage.action === DuelWebsocketServerActions.LEAVE_QUEUE_SUCCESS) {
-                this.matchState = MatchStates.WAITING_FOR_QUEUE;
+                if (this.matchState === MatchStates.IN_QUEUE) {
+                    this.matchState = MatchStates.WAITING_FOR_QUEUE;
+                }
+            }
+
+            if (serverMessage.action === DuelWebsocketServerActions.OPPONENT_FOUND) {
+                this.matchState = MatchStates.MATCH_IN_PROGRESS;
+                this.pickbanPhase = serverMessage.payload.opponentIsBanning ? PickbanPhases.OPPONENT_IS_BANNING : PickbanPhases.YOU_ARE_BANNING;
             }
 
             this.changeDetectorRef.markForCheck();
@@ -96,7 +113,7 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
     private restoreState({ state, physics }: { state: MatchStates; physics?: Physics }): void {
         this.matchState = state;
 
-        if (state === MatchStates.IN_QUEUE) {
+        if (physics) {
             this.selectedPhysics = physics;
         }
     }

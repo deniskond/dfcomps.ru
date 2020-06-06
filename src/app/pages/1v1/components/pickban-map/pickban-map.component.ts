@@ -1,4 +1,4 @@
-import { PickBanPhases } from './../../enums/pickban-phases.enum';
+import { PickbanPhases } from './../../enums/pickban-phases.enum';
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { PickbanMapInterface } from '../../interfaces/pickban-map.interface';
 
@@ -9,13 +9,13 @@ import { PickbanMapInterface } from '../../interfaces/pickban-map.interface';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PickbanMapComponent implements OnChanges {
-    @Input() pickbanPhase: PickBanPhases;
+    @Input() pickbanPhase: PickbanPhases;
     @Input() map: PickbanMapInterface;
 
     @Output() banned = new EventEmitter<void>();
 
     public isBanned = false;
-    public pickBanPhases = PickBanPhases;
+    public pickBanPhases = PickbanPhases;
 
     ngOnChanges({ map }: SimpleChanges): void {
         if (map && this.map) {
@@ -26,7 +26,7 @@ export class PickbanMapComponent implements OnChanges {
     }
 
     public banMap(): void {
-        if (this.pickbanPhase !== PickBanPhases.YOU_ARE_BANNING) {
+        if (this.pickbanPhase !== PickbanPhases.YOU_ARE_BANNING) {
             return;
         }
 

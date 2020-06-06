@@ -53,7 +53,10 @@ export class DuelService {
     }
 
     public closeConnection(): void {
-        this.webSocket.close();
+        if (this.webSocket) {
+            this.webSocket.close();
+        }
+
         this.isWebSocketOpened$.next(false);
     }
 
