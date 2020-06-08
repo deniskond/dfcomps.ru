@@ -64,6 +64,13 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
         this.user$.pipe(filter(Boolean), take(1)).subscribe(({ id }: UserInterface) => this.duelService.banMap(id, mapName));
     }
 
+    public acceptResult(): void {
+        this.user$.pipe(filter(Boolean), take(1)).subscribe(({ id }: UserInterface) => {
+            this.duelService.acceptResult(id);
+            this.matchState = MatchStates.WAITING_FOR_QUEUE;
+        });
+    }
+
     private initUserSubscriptions(): void {
         this.user$
             .pipe(takeUntil(this.onDestroy$))
@@ -97,6 +104,10 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
             if (serverMessage.action === DuelWebsocketServerActions.PICKBAN_STEP) {
                 this.matchState = MatchStates.MATCH_IN_PROGRESS;
                 this.match = serverMessage.payload.match;
+            }
+
+            if (serverMessage.action === DuelWebsocketServerActions.MATCH_FINISHED) {
+                this.matchState = MatchStates.MATCH_FINISHED;
             }
 
             this.changeDetectorRef.markForCheck();

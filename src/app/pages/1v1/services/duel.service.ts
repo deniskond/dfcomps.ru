@@ -8,6 +8,7 @@ import { DuelClientMessage } from './types/duel-client-message.type';
 import { DuelServerMessageType } from './types/duel-server-message.type';
 import { LeaveQueueMessageInterface } from './interfaces/leave-queue-message.interface';
 import { BanMapMessageInterface } from './interfaces/ban-map-message.interface';
+import { MatchResultAcceptedMessageInterface } from './interfaces/match-result-accepted-message.interface';
 
 @Injectable({
     providedIn: 'root',
@@ -71,6 +72,15 @@ export class DuelService {
         }
 
         this.isWebSocketOpened$.next(false);
+    }
+
+    public acceptResult(playerId: string): void {
+        const acceptResultRequest: MatchResultAcceptedMessageInterface = {
+            playerId,
+            action: DuelWebsocketClientActions.MATCH_RESULT_ACCEPTED,
+        };
+
+        this.send(acceptResultRequest);
     }
 
     private onMessage(event: MessageEvent): void {

@@ -3,4 +3,5 @@ export enum DuelWebsocketClientActions {
     JOIN_QUEUE = 'JOIN_QUEUE',
     LEAVE_QUEUE = 'LEAVE_QUEUE',
     BAN_MAP = 'BAN_MAP',
+    MATCH_RESULT_ACCEPTED = 'MATCH_RESULT_ACCEPTED',
 }

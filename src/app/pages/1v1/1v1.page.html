@@ -52,6 +52,9 @@
                             (mapBanned)="onMapBanned($event)">
                         </app-match-progress>
                     </ng-container>
+                    <ng-container *ngSwitchCase="matchStates.MATCH_FINISHED">
+                        <button (click)="acceptResult()" mat-raised-button color="accent">Принять и простить</button>
+                    </ng-container>
                 </ng-container>
             </ng-container>
             <ng-template #notLogged>
