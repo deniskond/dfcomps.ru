@@ -8,4 +8,5 @@ export interface MatchInterface {
     isSecondPlayerBanning: boolean;
     maps: PickbanMapServerInterface[];
     physics: Physics;
+    timer: number;
 }

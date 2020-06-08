@@ -1,6 +1,6 @@
 import { UserInterface } from './../../../../interfaces/user.interface';
 import { PickbanPhases } from './../../enums/pickban-phases.enum';
-import { Component, ChangeDetectionStrategy, ChangeDetectorRef, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { PickbanMapInterface } from '../../interfaces/pickban-map.interface';
 import { MatchInterface } from '../../services/interfaces/match.interface';
 import { PickbanMapServerInterface } from '../../services/interfaces/pickban-map-server.interface';
@@ -21,8 +21,6 @@ export class MatchProgressComponent implements OnChanges {
     public pickbanPhases = PickbanPhases;
     public mapList: PickbanMapInterface[] = [];
     public pickedMapName: string;
-
-    constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
     ngOnChanges({ match }: SimpleChanges): void {
         if (match && this.match) {

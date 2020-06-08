@@ -1,6 +1,6 @@
 import { Physics } from '../../../enums/physics.enum';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, ReplaySubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { JoinQueueMessageInterface } from './interfaces/join-queue-message.interface';
 import { filter, take } from 'rxjs/operators';
 import { DuelWebsocketClientActions } from './enums/duel-websocket-client-actions.enum';
@@ -13,7 +13,7 @@ import { BanMapMessageInterface } from './interfaces/ban-map-message.interface';
     providedIn: 'root',
 })
 export class DuelService {
-    private _serverMessages$ = new ReplaySubject<DuelServerMessageType>(1);
+    private _serverMessages$ = new Subject<DuelServerMessageType>();
     private webSocket: WebSocket;
     private isWebSocketOpened$ = new BehaviorSubject<boolean>(false);
 
