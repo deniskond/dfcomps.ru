@@ -1,9 +1,17 @@
+import { ValidationDialogComponent } from './../../../main/components/news-offline-start/validation-dialog/validation-dialog.component';
+import { UploadDemoDtoInterface } from './../../../../services/demos/dto/upload-demo.dto';
+import { DemosService } from './../../../../services/demos/demos.service';
+import { LanguageService } from './../../../../services/language/language.service';
 import { UserInterface } from './../../../../interfaces/user.interface';
 import { PickbanPhases } from './../../enums/pickban-phases.enum';
-import { Component, ChangeDetectionStrategy, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, OnChanges, SimpleChanges, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { PickbanMapInterface } from '../../interfaces/pickban-map.interface';
 import { MatchInterface } from '../../services/interfaces/match.interface';
 import { PickbanMapServerInterface } from '../../services/interfaces/pickban-map-server.interface';
+import { take, finalize, catchError } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { of } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-match-progress',
@@ -17,10 +25,16 @@ export class MatchProgressComponent implements OnChanges {
 
     @Output() mapBanned = new EventEmitter<string>();
 
+    @ViewChild('fileInput') fileInput: ElementRef;
+
     public pickbanPhase: PickbanPhases;
     public pickbanPhases = PickbanPhases;
     public mapList: PickbanMapInterface[] = [];
     public pickedMapName: string;
+    public isUploading = false;
+    public bestDemoTime: number;
+
+    constructor(private languageService: LanguageService, private snackBar: MatSnackBar, private demosService: DemosService, private dialog: MatDialog) {}
 
     ngOnChanges({ match }: SimpleChanges): void {
         if (match && this.match) {
@@ -44,11 +58,48 @@ export class MatchProgressComponent implements OnChanges {
         this.mapBanned.emit(mapName);
     }
 
-    private banRandomAvailableMap(): void {
-        const availableMaps = this.mapList.filter(({ isBannedByPlayer, isBannedByOpponent }: PickbanMapInterface) => !isBannedByPlayer && !isBannedByOpponent);
-        const randomAvailableMap = availableMaps[Math.floor(Math.random() * availableMaps.length)];
+    public uploadDemo(): void {
+        const demo: File = this.fileInput.nativeElement.files[0];
 
-        this.mapList = this.mapList.map((map: PickbanMapInterface) => (map.name === randomAvailableMap.name ? { ...map, isBannedByOpponent: true } : map));
+        if (!demo) {
+            this.openSnackBar('error', 'noDemo');
+
+            return;
+        }
+
+        if (!demo.name.toLowerCase().includes(this.pickedMapName.toLowerCase())) {
+            this.openSnackBar('error', 'wrongMap');
+
+            return;
+        }
+
+        this.isUploading = true;
+
+        this.demosService
+            .uploadDuelDemo$(demo)
+            .pipe(
+                finalize(() => {
+                    this.fileInput.nativeElement.value = null;
+                    this.isUploading = false;
+                }),
+                catchError(() => {
+                    this.openSnackBar('error', 'uploadFailed');
+
+                    return of();
+                }),
+            )
+            .subscribe(({ status, validation, message }: UploadDemoDtoInterface) => {
+                if (status === 'Success') {
+                    this.openSnackBar('success', 'demoSent');
+                    this.bestDemoTime = +message;
+                } else if (status === 'Error') {
+                    this.openSnackBar('error', message, false);
+                } else if (status === 'Invalid') {
+                    this.dialog.open(ValidationDialogComponent, {
+                        data: validation,
+                    });
+                }
+            });
     }
 
     private calculateBanPhaseByMatchInfo(): void {
@@ -92,5 +143,16 @@ export class MatchProgressComponent implements OnChanges {
         if (pickedMap) {
             this.pickedMapName = pickedMap.name;
         }
+    }
+
+    private openSnackBar(title: string, message: string, needMessageTranslation = true): void {
+        this.languageService
+            .getTranslations$()
+            .pipe(take(1))
+            .subscribe((translations: Record<string, string>) => {
+                const snackBarMessage = needMessageTranslation ? translations[message] : message;
+
+                this.snackBar.open(translations[title], snackBarMessage, { duration: 3000 });
+            });
     }
 }

@@ -9,13 +9,7 @@ import { UploadedDemoInterface } from '../../interfaces/uploaded-demo.interface'
     providedIn: 'root',
 })
 export class DemosService extends BackendService {
-    public uploadDemo$(
-        demo: File,
-        cupId: string,
-        mapName: string,
-        playerId: string,
-        fileName: string,
-    ): Observable<UploadDemoDtoInterface> {
+    public uploadDemo$(demo: File, cupId: string, mapName: string, playerId: string, fileName: string): Observable<UploadDemoDtoInterface> {
         return this.uploadFile$(URL_PARAMS.DEMOS.UPLOAD, demo, {
             cupId,
             mapName,
@@ -25,24 +19,22 @@ export class DemosService extends BackendService {
     }
 
     public deleteDemo$(demo: string, cupId: string): Observable<UploadedDemoInterface[]> {
-        return this.post$(URL_PARAMS.DEMOS.DELETE,  {
+        return this.post$(URL_PARAMS.DEMOS.DELETE, {
             demo,
             cupId,
         });
     }
 
-    public reflexUploadDemo$(
-        demo: File,
-        cupId: string,
-        mapName: string,
-        playerId: string,
-        fileName: string,
-    ): Observable<UploadDemoDtoInterface> {
+    public reflexUploadDemo$(demo: File, cupId: string, mapName: string, playerId: string, fileName: string): Observable<UploadDemoDtoInterface> {
         return this.uploadFile$(URL_PARAMS.DEMOS.REFLEX_UPLOAD, demo, {
             cupId,
             mapName,
             playerId,
             fileName,
         });
+    }
+
+    public uploadDuelDemo$(demo: File): Observable<UploadDemoDtoInterface> {
+        return this.uploadFile$(URL_PARAMS.DEMOS.DUEL_UPLOAD, demo);
     }
 }
