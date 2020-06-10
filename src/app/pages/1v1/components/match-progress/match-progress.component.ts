@@ -12,6 +12,7 @@ import { take, finalize, catchError } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { of } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
+import { DuelPlayersInfoInterface } from '../../interfaces/duel-players-info.interface';
 
 @Component({
     selector: 'app-match-progress',
@@ -22,6 +23,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class MatchProgressComponent implements OnChanges {
     @Input() match: MatchInterface;
     @Input() user: UserInterface;
+    @Input() playersInfo: DuelPlayersInfoInterface;
 
     @Output() mapBanned = new EventEmitter<string>();
 
@@ -33,14 +35,24 @@ export class MatchProgressComponent implements OnChanges {
     public pickedMapName: string;
     public isUploading = false;
     public bestDemoTime: number;
+    public playerRating: number;
+    public playerNick: string;
+    public playerCountry: string;
+    public opponentRating: number;
+    public opponentNick: string;
+    public opponentCountry: string;
 
     constructor(private languageService: LanguageService, private snackBar: MatSnackBar, private demosService: DemosService, private dialog: MatDialog) {}
 
-    ngOnChanges({ match }: SimpleChanges): void {
+    ngOnChanges({ match, playersInfo }: SimpleChanges): void {
         if (match && this.match) {
             this.calculateBanPhaseByMatchInfo();
             this.updateMaplistByMatchInfo();
             this.updatePickedMapNameByMatchInfo();
+        }
+
+        if (playersInfo) {
+            this.updatePlayersInfo();
         }
     }
 
@@ -58,12 +70,14 @@ export class MatchProgressComponent implements OnChanges {
         this.mapBanned.emit(mapName);
     }
 
+    public openFileDialog(): void {
+        this.fileInput.nativeElement.click();
+    }
+
     public uploadDemo(): void {
         const demo: File = this.fileInput.nativeElement.files[0];
 
         if (!demo) {
-            this.openSnackBar('error', 'noDemo');
-
             return;
         }
 
@@ -154,5 +168,23 @@ export class MatchProgressComponent implements OnChanges {
 
                 this.snackBar.open(translations[title], snackBarMessage, { duration: 3000 });
             });
+    }
+
+    private updatePlayersInfo(): void {
+        if (this.user.id === this.playersInfo.firstPlayerId) {
+            this.playerNick = this.playersInfo.firstPlayerInfo.nick;
+            this.playerRating = +this.playersInfo.firstPlayerInfo.rating || 1500;
+            this.playerCountry = this.playersInfo.firstPlayerInfo.country;
+            this.opponentNick = this.playersInfo.secondPlayerInfo.nick;
+            this.opponentRating = +this.playersInfo.secondPlayerInfo.rating || 1500;
+            this.opponentCountry = this.playersInfo.secondPlayerInfo.country;
+        } else {
+            this.opponentNick = this.playersInfo.firstPlayerInfo.nick;
+            this.opponentRating = +this.playersInfo.firstPlayerInfo.rating || 1500;
+            this.opponentCountry = this.playersInfo.firstPlayerInfo.country;
+            this.playerNick = this.playersInfo.secondPlayerInfo.nick;
+            this.playerRating = +this.playersInfo.secondPlayerInfo.rating || 1500;
+            this.playerCountry = this.playersInfo.secondPlayerInfo.country;
+        }
     }
 }

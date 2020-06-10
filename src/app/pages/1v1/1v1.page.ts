@@ -11,6 +11,7 @@ import { DuelWebsocketServerActions } from './services/enums/duel-websocket-serv
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatchStates } from './services/enums/match-states.enum';
 import { MatchInterface } from './services/interfaces/match.interface';
+import { DuelPlayersInfoInterface } from './interfaces/duel-players-info.interface';
 
 @Component({
     templateUrl: './1v1.page.html',
@@ -25,6 +26,7 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
     public user$: Observable<UserInterface>;
     public isWaitingForServerAnswer = false;
     public match: MatchInterface;
+    public playersInfo: DuelPlayersInfoInterface | null = null;
 
     private onDestroy$ = new Subject<void>();
 
@@ -68,6 +70,7 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
         this.user$.pipe(filter(Boolean), take(1)).subscribe(({ id }: UserInterface) => {
             this.duelService.acceptResult(id);
             this.matchState = MatchStates.WAITING_FOR_QUEUE;
+            this.playersInfo = null;
         });
     }
 
@@ -104,6 +107,8 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
             if (serverMessage.action === DuelWebsocketServerActions.PICKBAN_STEP) {
                 this.matchState = MatchStates.MATCH_IN_PROGRESS;
                 this.match = serverMessage.payload.match;
+
+                this.setPlayersInfo();
             }
 
             if (serverMessage.action === DuelWebsocketServerActions.MATCH_FINISHED) {
@@ -128,6 +133,10 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
     private restoreState({ state, physics, match }: { state: MatchStates; physics?: Physics; match?: MatchInterface }): void {
         this.matchState = state;
 
+        if (state === MatchStates.MATCH_IN_PROGRESS) {
+            this.setPlayersInfo();
+        }
+
         if (physics) {
             this.selectedPhysics = physics;
         }
@@ -135,5 +144,18 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
         if (match) {
             this.match = match;
         }
+    }
+
+    private setPlayersInfo(): void {
+        if (this.playersInfo) {
+            return;
+        }
+
+        this.user$.pipe(filter(Boolean), take(1)).subscribe(() =>
+            this.duelService.getPlayersInfo$().subscribe((playersInfo) => {
+                this.playersInfo = playersInfo;
+                this.changeDetectorRef.detectChanges();
+            }),
+        );
     }
 }

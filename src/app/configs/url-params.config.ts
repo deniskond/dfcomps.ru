@@ -98,6 +98,14 @@ export class URL_PARAMS {
         };
     }
 
+    public static get DUEL(): {
+        GET_PLAYERS_INFO: string;
+    } {
+        return {
+            GET_PLAYERS_INFO: `${API_URL}/match/get`,
+        };
+    }
+
     public static get CUP(): {
         GET_NEXTCUP: string;
         ONLINE_FULL_TABLE: (cupId: string) => string;

@@ -49,6 +49,7 @@
                         <app-match-progress
                             [match]="match"
                             [user]="user$ | async"
+                            [playersInfo]="playersInfo"
                             (mapBanned)="onMapBanned($event)">
                         </app-match-progress>
                     </ng-container>

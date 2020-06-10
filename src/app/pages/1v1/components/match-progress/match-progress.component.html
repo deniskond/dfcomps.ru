@@ -7,10 +7,10 @@
 </div>
 <div class="player">
     <div class="player-flag-nick">
-        <div class="player-flag ru"></div>
-        <div class="player-nick">w00dy</div>
+        <!-- <div class="player-flag ru"></div> -->
+        <div class="player-nick">{{ opponentNick }}</div>
     </div>
-    <div class="player-rating">CPM Rating: 2337</div>
+    <div class="player-rating">{{ match.physics }} Rating: {{ opponentRating }}</div>
 </div>
 <div class="map-row">
     <app-pickban-map
@@ -23,15 +23,18 @@
 </div>
 <div class="player">
     <div class="player-flag-nick">
-        <div class="player-flag ru"></div>
-        <div class="player-nick">Nosf</div>
+        <!-- <div class="player-flag ru"></div> -->
+        <div class="player-nick">{{ playerNick }}</div>
     </div>
-    <div class="player-rating">CPM Rating: 2337</div>
+    <div class="player-rating">{{ match.physics }} Rating: {{ playerRating }}</div>
 </div>
 
 <div *ngIf="pickedMapName" class="upload-demo-container">
     <div class="upload-demo-caption">Upload a demo on map {{ pickedMapName }}</div>
-    <input #fileInput name="demo" accept=".dm_68" type="file">
-    <button (click)="uploadDemo()"></button>
-    <span *ngIf="bestDemoTime">{{ bestDemoTime }}</span>
+    <input (change)="uploadDemo()" #fileInput name="demo" accept=".dm_68" type="file" class="file-input">
+    <button (click)="openFileDialog()" mat-raised-button color="accent">Загрузить</button>
+    <div *ngIf="bestDemoTime" class="best-demo-time">
+        Your best time: 
+        <span class="time">{{ bestDemoTime }}</span>
+    </div>
 </div>
