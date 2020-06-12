@@ -1,5 +1,9 @@
 <div class="main-screen-title match-in-progress">
-    <div>Match in progress: {{ pickbanPhase | invokeFunction: getPickbanPhaseCaption }} - {{ match.physics }}</div>
+    <div>
+        <span translate translation="matchInProgress" class="bebas"></span>: 
+        <span translate [translation]="pickbanPhase | invokeFunction: getPickbanPhaseCaption" class="bebas"></span>
+        <span class="bebas"> - {{ match.physics }}</span>
+    </div>
     <app-match-progress-timer
         [initialSeconds]="match.timer"
         [pickbanPhase]="pickbanPhase">
@@ -11,7 +15,7 @@
             <app-big-flag [country]="opponentCountry"></app-big-flag>
             <div class="player-nick">{{ opponentNick }}</div>
         </div>
-        <div class="player-rating">{{ match.physics }} Rating: {{ opponentRating }}</div>
+        <div class="player-rating">{{ match.physics }} <span translate translation="rating" class="bebas"></span>: {{ opponentRating }}</div>
     </div>
     <div class="map-row">
         <app-pickban-map
@@ -27,16 +31,18 @@
             <app-big-flag [country]="playerCountry"></app-big-flag>
             <div class="player-nick">{{ playerNick }}</div>
         </div>
-        <div class="player-rating">{{ match.physics }} Rating: {{ playerRating }}</div>
+        <div class="player-rating">{{ match.physics }} <span translate translation="rating" class="bebas"></span>: {{ playerRating }}</div>
     </div>
 </div>
 
 <div *ngIf="pickedMapName" class="upload-demo-container">
-    <div class="upload-demo-caption">Upload a demo on map {{ pickedMapName }}</div>
+    <div class="upload-demo-caption"><span translate translation="uploadDemoOnMap" class="bebas"></span> {{ pickedMapName }}</div>
     <input (change)="uploadDemo()" #fileInput name="demo" accept=".dm_68" type="file" class="file-input">
-    <button (click)="openFileDialog()" mat-raised-button color="accent">Загрузить</button>
+    <button (click)="openFileDialog()" mat-raised-button color="accent">
+        <span translate translation="upload"></span>
+    </button>
     <div *ngIf="bestDemoTime" class="best-demo-time">
-        Your best time: 
+        <span translate translation="yourBestTime" class="bebas"></span>: 
         <span class="time">{{ bestDemoTime }}</span>
     </div>
 </div>

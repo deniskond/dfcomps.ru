@@ -92,7 +92,23 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
             return 'draw';
         }
 
-        return firstPlayerTime < secondPlayerTime ? `${playersInfo.firstPlayerInfo.nick} wins` : `${playersInfo.secondPlayerInfo.nick} wins`;
+        return 'wins';
+    }
+
+    // TODO Поправить дублирование кода
+    public getMatchWinner(playersInfo: DuelPlayersInfoInterface): string {
+        if (!playersInfo) {
+            return '';
+        }
+
+        const firstPlayerTime = parseFloat(playersInfo.firstPlayerTime) || 10000;
+        const secondPlayerTime = parseFloat(playersInfo.secondPlayerTime) || 10000;
+
+        if (firstPlayerTime === secondPlayerTime) {
+            return '';
+        }
+
+        return firstPlayerTime < secondPlayerTime ? playersInfo.firstPlayerInfo.nick : playersInfo.secondPlayerInfo.nick;
     }
 
     private initUserSubscriptions(): void {

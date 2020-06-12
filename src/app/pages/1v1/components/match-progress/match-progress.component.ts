@@ -58,9 +58,9 @@ export class MatchProgressComponent implements OnChanges {
 
     public getPickbanPhaseCaption(pickbanPhase: PickbanPhases): string {
         const pickbanPhaseCaptionMap: Record<PickbanPhases, string> = {
-            [PickbanPhases.OPPONENT_IS_BANNING]: 'Opponent is banning a map',
-            [PickbanPhases.YOU_ARE_BANNING]: 'You are banning a map',
-            [PickbanPhases.PICK_BANS_FINISHED]: 'Upload a demo when ready',
+            [PickbanPhases.OPPONENT_IS_BANNING]: 'opponentIsBanningMap',
+            [PickbanPhases.YOU_ARE_BANNING]: 'youAreBanningMap',
+            [PickbanPhases.PICK_BANS_FINISHED]: 'uploadDemoWhenReady',
         };
 
         return pickbanPhaseCaptionMap[pickbanPhase];

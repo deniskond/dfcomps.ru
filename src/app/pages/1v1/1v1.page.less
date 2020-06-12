@@ -1,7 +1,7 @@
 @import './../../../assets/styles/typography.less';
 
 .one-v-one-container {
-    display: flex; 
+    display: flex;
 }
 
 .row {
@@ -11,7 +11,7 @@
 
 .rules {
     flex-grow: 1;
-    height: 328px;
+    line-height: 1.5;
     border: 1px solid #e0e0e0;
 }
 
@@ -150,10 +150,13 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    mat-spinner {
+        margin-top: 36px;
+    }
 }
 
 .message-caption {
     color: white;
-    margin-bottom: 36px;
     font-family: bebas;
 }

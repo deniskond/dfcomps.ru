@@ -1,6 +1,6 @@
 <div class="shadowed-main-block">
     <h1 class="h1-block-header">
-        <span translate translation="oneVOneMatches"></span>
+        <span translate translation="oneVOneMatches" [ngClass]="'bebas'"></span>
     </h1>
 
     <div class="row">
@@ -8,7 +8,9 @@
             <ng-container *ngIf="user$ | async; else notLogged">
                 <ng-container [ngSwitch]="matchState">
                     <ng-container *ngSwitchCase="matchStates.WAITING_FOR_QUEUE">
-                        <div class="main-screen-title">Waiting for queue</div>
+                        <div class="main-screen-title">
+                            <span translate translation="waitingForQueue" class="bebas"></span>
+                        </div>
                         <div class="queue-buttons-container">
                             <button
                                 [class.disabled]="isWaitingForServerAnswer"
@@ -17,7 +19,7 @@
                                 mat-raised-button
                                 color="accent">
 
-                                Играть 1v1 VQ3
+                                <span translate translation="playOneVersusOne"></span>&nbsp;<span>VQ3</span>
                             </button>
                             <button
                                 [class.disabled]="isWaitingForServerAnswer"
@@ -26,13 +28,16 @@
                                 mat-raised-button
                                 color="accent">
 
-                                Играть 1v1 CPM
+                                <span translate translation="playOneVersusOne"></span>&nbsp;<span>CPM</span>
                             </button>
                         </div>
                     </ng-container>
                     <ng-container *ngSwitchCase="matchStates.IN_QUEUE">
-                        <div class="main-screen-title">In queue</div>
-                        <div class="searching-for-opponent">Searching for opponent: {{ selectedPhysics }}</div>
+                        <div class="main-screen-title">
+                            <span translate translation="inQueue" class="bebas"></span>
+                        </div>
+                        <div class="searching-for-opponent">
+                            <span translate translation="searchingForOpponent" class="bebas"></span>: {{ selectedPhysics }}</div>
                         <div class="queue-timer">
                             <mat-spinner diameter="80" strokeWidth="5" color="accent"></mat-spinner>
                             <div class="timer">
@@ -41,7 +46,7 @@
                         </div>
                         <div class="leave-queue">
                             <button (click)="leaveQueue()" mat-raised-button color="accent">
-                                Отменить поиск
+                                <span translate translation="cancelSearch"></span>
                             </button>
                         </div>
                     </ng-container>
@@ -54,7 +59,11 @@
                         </app-match-progress>
                     </ng-container>
                     <ng-container *ngSwitchCase="matchStates.MATCH_FINISHED">
-                        <div class="main-screen-title">Match finished, {{ playersInfo | invokeFunction : getMatchResult }}</div>
+                        <div class="main-screen-title">
+                            <span translate translation="matchFinished" class="bebas"></span>, 
+                            {{ playersInfo | invokeFunction : getMatchWinner }}
+                            <span translate [translation]="playersInfo | invokeFunction : getMatchResult" class="bebas"></span>
+                        </div>
                         <div *ngIf="playersInfo" class="result-container">
                             <app-pickban-map
                                 [pickbanPhase]="pickbanPhases.PICK_BANS_FINISHED"
@@ -96,43 +105,53 @@
                             </div>
                         </div>
                         <div class="next-match-button">
-                            <button (click)="acceptResult()" mat-raised-button color="accent">Следующий матч</button>
+                            <button (click)="acceptResult()" mat-raised-button color="accent">
+                                <span translate translation="playNextMatch"></span>
+                            </button>
                         </div>
                     </ng-container>
                     <ng-container *ngSwitchCase="matchStates.DUPLICATE_CLIENT">
                         <div class="message-container">
-                            <div class="message-caption">Страница открыта в другой вкладке</div>
+                            <div class="message-caption">
+                                <span translate translation="matchesPageOpenedElsewhere" class="bebas"></span>
+                            </div>
                         </div>
                     </ng-container>
                     <ng-container *ngSwitchDefault>
                         <div class="message-container">
-                            <div class="message-caption">Ожидаем соединения с сервером...</div>
+                            <div class="message-caption">
+                                <span translate translation="waitingForServerConnection" class="bebas"></span>
+                            </div>
                             <mat-spinner diameter="80" strokeWidth="5" color="accent"></mat-spinner>
                         </div>
                     </ng-container>
                 </ng-container>
             </ng-container>
             <ng-template #notLogged>
-                <div class="not-logged">Зарегистрируйтесь или войдите, чтобы играть матчи 1v1</div>
+                <div class="not-logged">
+                    <span translate translation="registerToPlayMatches" class="bebas"></span>
+                </div>
             </ng-template>
         </div>
     </div>
 
     <div class="row">
         <div class="rules">
-            <div class="block-header">Правила</div>
+            <div class="block-header">
+                <span translate translation="rules"></span>
+            </div>
             <div class="block-content">
-                Всем бан за мой счет
+                <span translate translation="rulesMatch"></span>
             </div>
         </div>
     </div>
 
-    <div class="row">
+    <!-- <div class="row">
         <div class="player-matches">
             <div class="block-header">Мои матчи</div>
         </div>
         <div class="all-matches">
             <div class="block-header">Все матчи</div>
         </div>
-    </div>
+    </div> -->
 </div>
