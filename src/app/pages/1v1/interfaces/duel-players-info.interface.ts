@@ -2,6 +2,7 @@ import { Physics } from './../../../enums/physics.enum';
 import { DuelPlayerInfoInterface } from './duel-player-info.interface';
 
 export interface DuelPlayersInfoInterface {
+    matchId: string;
     firstPlayerId: string;
     secondPlayerId: string;
     firstPlayerTime: string | null;

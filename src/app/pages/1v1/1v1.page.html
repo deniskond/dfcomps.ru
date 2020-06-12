@@ -54,7 +54,46 @@
                         </app-match-progress>
                     </ng-container>
                     <ng-container *ngSwitchCase="matchStates.MATCH_FINISHED">
-                        <button (click)="acceptResult()" mat-raised-button color="accent">Принять и простить</button>
+                        <div class="main-screen-title">Match finished, {{ playersInfo | invokeFunction : getMatchWinner }} wins</div>
+                        <div *ngIf="playersInfo" class="result-container">
+                            <app-pickban-map
+                                [pickbanPhase]="pickbanPhases.PICK_BANS_FINISHED"
+                                [map]="{ name: playersInfo.map, isPickedByPlayer: true, isPickedByOpponent: true }">
+                            </app-pickban-map>
+                            <div class="player-result">
+                                <div class="flex">
+                                    <app-big-flag [country]="playersInfo.firstPlayerInfo.country"></app-big-flag>
+                                    <span class="player-nick">{{ playersInfo.firstPlayerInfo.nick }}</span>
+                                </div>
+                                <div class="player-time">
+                                    <a
+                                        [href]="playersInfo.firstPlayerDemo | invokeFunction : getDemoLink : playersInfo.matchId"
+                                        class="demo-link"
+                                        download>
+
+                                        {{ playersInfo.firstPlayerTime }}
+                                    </a>                           
+                                </div>
+                            </div>
+                            <div class="player-result">
+                                <div class="flex">
+                                    <app-big-flag [country]="playersInfo.secondPlayerInfo.country"></app-big-flag>
+                                    <span class="player-nick">{{ playersInfo.secondPlayerInfo.nick }}</span>
+                                </div>
+                                <div class="player-time">
+                                    <a
+                                        [href]="playersInfo.secondPlayerDemo | invokeFunction : getDemoLink : playersInfo.matchId"
+                                        class="demo-link"
+                                        download>
+
+                                        {{ playersInfo.secondPlayerTime }}
+                                    </a>                           
+                                </div>
+                            </div>
+                        </div>
+                        <div class="next-match-button">
+                            <button (click)="acceptResult()" mat-raised-button color="accent">Следующий матч</button>
+                        </div>
                     </ng-container>
                 </ng-container>
             </ng-container>

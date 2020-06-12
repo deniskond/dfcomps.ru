@@ -12,6 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatchStates } from './services/enums/match-states.enum';
 import { MatchInterface } from './services/interfaces/match.interface';
 import { DuelPlayersInfoInterface } from './interfaces/duel-players-info.interface';
+import { PickbanPhases } from './enums/pickban-phases.enum';
 
 @Component({
     templateUrl: './1v1.page.html',
@@ -27,6 +28,7 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
     public isWaitingForServerAnswer = false;
     public match: MatchInterface;
     public playersInfo: DuelPlayersInfoInterface | null = null;
+    public pickbanPhases = PickbanPhases;
 
     private onDestroy$ = new Subject<void>();
 
@@ -74,6 +76,21 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
         });
     }
 
+    public getDemoLink(demoName: string, matchId: string): string {
+        return `/api/uploads/demos/matches/match${matchId}/${demoName}`;
+    }
+
+    public getMatchWinner(playersInfo: DuelPlayersInfoInterface): string {
+        if (!playersInfo) {
+            return '';
+        }
+
+        const firstPlayerTime = parseFloat(playersInfo.firstPlayerTime) || 0;
+        const secondPlayerTime = parseFloat(playersInfo.secondPlayerTime) || 0;
+
+        return firstPlayerTime < secondPlayerTime ? playersInfo.firstPlayerInfo.nick : playersInfo.secondPlayerInfo.nick;
+    }
+
     private initUserSubscriptions(): void {
         this.user$
             .pipe(takeUntil(this.onDestroy$))
@@ -113,6 +130,8 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
 
             if (serverMessage.action === DuelWebsocketServerActions.MATCH_FINISHED) {
                 this.matchState = MatchStates.MATCH_FINISHED;
+
+                this.setPlayersInfo(false);
             }
 
             this.changeDetectorRef.markForCheck();
@@ -137,6 +156,10 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
             this.setPlayersInfo();
         }
 
+        if (state === MatchStates.MATCH_FINISHED) {
+            this.setPlayersInfo(false);
+        }
+
         if (physics) {
             this.selectedPhysics = physics;
         }
@@ -146,8 +169,8 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
         }
     }
 
-    private setPlayersInfo(): void {
-        if (this.playersInfo) {
+    private setPlayersInfo(useCache = true): void {
+        if (useCache && this.playersInfo) {
             return;
         }
 

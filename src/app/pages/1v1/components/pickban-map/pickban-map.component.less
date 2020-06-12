@@ -1,14 +1,17 @@
 :host {
-    display: block;
+    display: flex;
     position: relative;
+    width: 130px;
+    height: 123px;
+    align-items: center;
 }
 
 .map {
     width: 120px;
     height: 90px;
     position: absolute;
-    left: 0;
-    top: 0;
+    left: 5px;
+    top: 5px;
     z-index: 2;
     pointer-events: none;
     transition: 0.3s;
@@ -109,16 +112,18 @@
     width: 120px;
     height: 90px;
     position: absolute;
-    left: 0;
-    top: 0;
+    left: 5px;
+    top: 5px;
     z-index: 1;
     background: white;
 }
 
 .map-name {
+    position: absolute;
+    bottom: 0px;
     color: white;
     text-align: center;
-    width: 120px;
+    width: 130px;
     font-family: bebas;
     display: flex;
     align-items: center;
