@@ -1,5 +1,5 @@
 <div class="main-screen-title match-in-progress">
-    <div>Match in progress: {{ pickbanPhase | invokeFunction: getPickbanPhaseCaption }}</div>
+    <div>Match in progress: {{ pickbanPhase | invokeFunction: getPickbanPhaseCaption }} - {{ match.physics }}</div>
     <app-match-progress-timer
         [initialSeconds]="match.timer"
         [pickbanPhase]="pickbanPhase">

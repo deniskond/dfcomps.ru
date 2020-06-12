@@ -80,21 +80,31 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
         return `/api/uploads/demos/matches/match${matchId}/${demoName}`;
     }
 
-    public getMatchWinner(playersInfo: DuelPlayersInfoInterface): string {
+    public getMatchResult(playersInfo: DuelPlayersInfoInterface): string {
         if (!playersInfo) {
             return '';
         }
 
-        const firstPlayerTime = parseFloat(playersInfo.firstPlayerTime) || 0;
-        const secondPlayerTime = parseFloat(playersInfo.secondPlayerTime) || 0;
+        const firstPlayerTime = parseFloat(playersInfo.firstPlayerTime) || 10000;
+        const secondPlayerTime = parseFloat(playersInfo.secondPlayerTime) || 10000;
 
-        return firstPlayerTime < secondPlayerTime ? playersInfo.firstPlayerInfo.nick : playersInfo.secondPlayerInfo.nick;
+        if (firstPlayerTime === secondPlayerTime) {
+            return 'draw';
+        }
+
+        return firstPlayerTime < secondPlayerTime ? `${playersInfo.firstPlayerInfo.nick} wins` : `${playersInfo.secondPlayerInfo.nick} wins`;
     }
 
     private initUserSubscriptions(): void {
-        this.user$
-            .pipe(takeUntil(this.onDestroy$))
-            .subscribe((user: UserInterface) => (user ? this.duelService.openConnection() : this.duelService.closeConnection()));
+        this.user$.pipe(takeUntil(this.onDestroy$)).subscribe((user: UserInterface) => {
+            if (user) {
+                this.duelService.openConnection();
+                this.setPlayersInfo();
+                return;
+            }
+
+            this.duelService.closeConnection();
+        });
     }
 
     private initServerMessagesSubscription(): void {
@@ -132,6 +142,11 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
                 this.matchState = MatchStates.MATCH_FINISHED;
 
                 this.setPlayersInfo(false);
+            }
+
+            if (serverMessage.action === DuelWebsocketServerActions.DUPLICATE_CLIENT) {
+                this.matchState = MatchStates.DUPLICATE_CLIENT;
+                this.duelService.closeConnection();
             }
 
             this.changeDetectorRef.markForCheck();
