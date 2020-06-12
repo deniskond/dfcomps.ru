@@ -5,28 +5,30 @@
         [pickbanPhase]="pickbanPhase">
     </app-match-progress-timer>
 </div>
-<div class="player">
-    <div class="player-flag-nick">
-        <!-- <div class="player-flag ru"></div> -->
-        <div class="player-nick">{{ opponentNick }}</div>
+<div class="pickbans-section">
+    <div class="player">
+        <div class="player-flag-nick">
+            <app-big-flag [country]="opponentCountry"></app-big-flag>
+            <div class="player-nick">{{ opponentNick }}</div>
+        </div>
+        <div class="player-rating">{{ match.physics }} Rating: {{ opponentRating }}</div>
     </div>
-    <div class="player-rating">{{ match.physics }} Rating: {{ opponentRating }}</div>
-</div>
-<div class="map-row">
-    <app-pickban-map
-        *ngFor="let map of mapList"
-        [pickbanPhase]="pickbanPhase"
-        [map]="map"
-        (banned)="onMapBanned(map.name)"
-        class="map">
-    </app-pickban-map>
-</div>
-<div class="player">
-    <div class="player-flag-nick">
-        <!-- <div class="player-flag ru"></div> -->
-        <div class="player-nick">{{ playerNick }}</div>
+    <div class="map-row">
+        <app-pickban-map
+            *ngFor="let map of mapList"
+            [pickbanPhase]="pickbanPhase"
+            [map]="map"
+            (banned)="onMapBanned(map.name)"
+            class="map">
+        </app-pickban-map>
     </div>
-    <div class="player-rating">{{ match.physics }} Rating: {{ playerRating }}</div>
+    <div class="player">
+        <div class="player-flag-nick">
+            <app-big-flag [country]="playerCountry"></app-big-flag>
+            <div class="player-nick">{{ playerNick }}</div>
+        </div>
+        <div class="player-rating">{{ match.physics }} Rating: {{ playerRating }}</div>
+    </div>
 </div>
 
 <div *ngIf="pickedMapName" class="upload-demo-container">

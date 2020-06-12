@@ -51,7 +51,7 @@ export class MatchProgressComponent implements OnChanges {
             this.updatePickedMapNameByMatchInfo();
         }
 
-        if (playersInfo) {
+        if (playersInfo && this.playersInfo) {
             this.updatePlayersInfo();
         }
     }
@@ -178,6 +178,10 @@ export class MatchProgressComponent implements OnChanges {
             this.opponentNick = this.playersInfo.secondPlayerInfo.nick;
             this.opponentRating = +this.playersInfo.secondPlayerInfo.rating || 1500;
             this.opponentCountry = this.playersInfo.secondPlayerInfo.country;
+
+            if (this.playersInfo.firstPlayerTime) {
+                this.bestDemoTime = +this.playersInfo.firstPlayerTime;
+            }
         } else {
             this.opponentNick = this.playersInfo.firstPlayerInfo.nick;
             this.opponentRating = +this.playersInfo.firstPlayerInfo.rating || 1500;
@@ -185,6 +189,10 @@ export class MatchProgressComponent implements OnChanges {
             this.playerNick = this.playersInfo.secondPlayerInfo.nick;
             this.playerRating = +this.playersInfo.secondPlayerInfo.rating || 1500;
             this.playerCountry = this.playersInfo.secondPlayerInfo.country;
+
+            if (this.playersInfo.secondPlayerTime) {
+                this.bestDemoTime = +this.playersInfo.secondPlayerTime;
+            }
         }
     }
 }
