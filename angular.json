@@ -22,7 +22,8 @@
               "src/favicon.ico"
             ],
             "styles": [
-              "src/styles.less"
+              "src/styles.less",
+              "node_modules/flag-icon-css/css/flag-icon.min.css"
             ],
             "scripts": []
           },

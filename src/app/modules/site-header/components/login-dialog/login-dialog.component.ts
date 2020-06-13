@@ -1,6 +1,6 @@
 import { LoginResultDtoInterface } from '../../../../services/user-service/dto/login-result.dto';
 import { UserService } from '../../../../services/user-service/user.service';
-import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { LoginDialogDataInterface } from '../../interfaces/login-dialog-data.interface';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -25,6 +25,7 @@ export class LoginDialogComponent {
         public dialogRef: MatDialogRef<LoginDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: LoginDialogDataInterface,
         private userService: UserService,
+        private changeDetectorRef: ChangeDetectorRef,
     ) {
     }
 
@@ -35,12 +36,15 @@ export class LoginDialogComponent {
             .login$(this.loginForm.controls.login.value, this.loginForm.controls.password.value)
             .pipe(finalize(() => this.isLoading = false))
             .subscribe((({ logged, user }: LoginResultDtoInterface) => {
-                this.loginResult = logged;
-
                 if (logged) {
                     this.userService.setCurrentUser(user);
                     this.dialogRef.close();
+
+                    return;
                 }
+
+                this.loginResult = logged;
+                this.changeDetectorRef.detectChanges();
             }));
     }
 }
