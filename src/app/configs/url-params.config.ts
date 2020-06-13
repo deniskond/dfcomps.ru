@@ -87,12 +87,22 @@ export class URL_PARAMS {
     public static get DEMOS(): {
         UPLOAD: string;
         REFLEX_UPLOAD: string;
+        DUEL_UPLOAD: string;
         DELETE: string;
     } {
         return {
             UPLOAD: `${API_URL}/cup/upload_demo`,
             REFLEX_UPLOAD: `${API_URL}/cup/reflex_upload_demo`,
+            DUEL_UPLOAD: `${API_URL}/match/upload_demo`,
             DELETE: `${API_URL}/cup/delete_demo`,
+        };
+    }
+
+    public static get DUEL(): {
+        GET_PLAYERS_INFO: string;
+    } {
+        return {
+            GET_PLAYERS_INFO: `${API_URL}/match/get`,
         };
     }
 

@@ -15,6 +15,7 @@ import { InvokeFunctionPipe } from '../pipe/invoke-function.pipe';
 import { ClickOutsideDirective } from '../directives/click-outside/click-outside.directive';
 import { SmileComponent } from '../components/smile/smile.component';
 import { TranslateDirective } from '../directives/translate/translate.directive';
+import { BigFlagComponent } from '../components/big-flag/big-flag.component';
 
 const COMPONENTS = [
     FlagComponent,
@@ -26,6 +27,7 @@ const COMPONENTS = [
     PlayersRatingTableComponent,
     YoutubeComponent,
     SmileComponent,
+    BigFlagComponent,
 ];
 
 const DIRECTIVES = [

@@ -1,0 +1,21 @@
+<div
+    [ngClass]="map.name"
+    [class.banned]="isBanned"
+    [class.pointer-enabled]="!isBanned && pickbanPhase === pickBanPhases.YOU_ARE_BANNING"
+    (click)="banMap()"
+    class="map">
+
+    <div *ngIf="map.isBannedByOpponent" class="banned-border banned-by-opponent"></div>
+    <div *ngIf="map.isBannedByPlayer" class="banned-border banned-by-player"></div>
+    <div *ngIf="map.isPickedByOpponent" class="picked-border picked-by-opponent"></div>
+    <div *ngIf="map.isPickedByPlayer" class="picked-border picked-by-player"></div>
+
+    <div class="cross"></div>
+
+</div>
+
+<div class="map-second-layer"></div>
+
+<div class="map-name">
+    {{ map.name }}
+</div>

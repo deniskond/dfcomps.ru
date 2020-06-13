@@ -5,4 +5,5 @@ export enum NavigationPages {
     RULES = 'rules',
     NEWS = 'archive',
     MOVIES = 'movies',
+    ONE_V_ONE = '1v1',
 }

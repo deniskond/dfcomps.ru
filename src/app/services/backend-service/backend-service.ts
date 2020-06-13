@@ -19,7 +19,9 @@ export class BackendService {
             formData.append('file', file, file.name);
         }
         
-        Object.keys(postParams).forEach((key: string) => formData.append(key, postParams[key]));
+        if (postParams) {
+            Object.keys(postParams).forEach((key: string) => formData.append(key, postParams[key]));
+        }
 
         return this.httpClient.post(url, formData, { withCredentials: true });
     }
