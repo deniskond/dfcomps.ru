@@ -1,5 +1,5 @@
 <div
-    [ngClass]="map.name"
+    [ngStyle]="map.name | invokeFunction : getMapStyle"
     [class.banned]="isBanned"
     [class.pointer-enabled]="!isBanned && pickbanPhase === pickBanPhases.YOU_ARE_BANNING"
     (click)="banMap()"

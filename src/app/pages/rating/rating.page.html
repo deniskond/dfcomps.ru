@@ -4,7 +4,7 @@
     </h1>
     <h1 *ngIf="currentSeason !== currentSeasonConst" class="h1-block-header"> 
         <span translate translation="seasonRatingList"></span>
-        <span>{{ currentSeason }}</span>
+        <span> {{ currentSeason }}</span>
     </h1>
     <div class="top-text">
         <span translate translation="youCanWatchFullRatingSystemDescription"></span>
@@ -16,6 +16,7 @@
         <a (click)="setSeason(1)" class="season-link"><span translate translation="season"></span>&nbsp;1</a>
         <a (click)="setSeason(2)" class="season-link"><span translate translation="season"></span>&nbsp;2</a>
         <a (click)="setSeason(3)" class="season-link"><span translate translation="season"></span>&nbsp;3</a>
+        <a (click)="setSeason(4)" class="season-link"><span translate translation="season"></span>&nbsp;4</a>
     </div>
 
     <div class="tables-container">

@@ -33,4 +33,8 @@ export class PickbanMapComponent implements OnChanges {
         this.isBanned = true;
         this.banned.emit();
     }
+
+    public getMapStyle(mapName: string): Record<string, string> {
+        return { backgroundImage: `url(http://ws.q3df.org/images/levelshots/512x384/${mapName}.jpg)`};
+    }
 }
