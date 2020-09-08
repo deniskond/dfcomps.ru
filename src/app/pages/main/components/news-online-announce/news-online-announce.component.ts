@@ -2,7 +2,7 @@ import { UserInterface } from '../../../../interfaces/user.interface';
 import { UserService } from '../../../../services/user-service/user.service';
 import { RegisteredPlayerInterface } from '../../../../interfaces/registered-player.interface';
 import { NewsOnlineAnnounceInterface } from '../../../../services/news-service/interfaces/news-online-announce.interface';
-import { Component, Input, OnChanges, SimpleChanges, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { range } from 'lodash';
 import { CupRegistrationService } from '../../services/cup-registration/cup-registration.service';
 import { filter, withLatestFrom } from 'rxjs/operators';
@@ -32,6 +32,7 @@ export class NewsOnlineAnnounceComponent implements OnInit, OnChanges {
         private userService: UserService,
         private router: Router,
         private domSantizer: DomSanitizer,
+        private changeDetectorRef: ChangeDetectorRef,
     ) {}
 
     ngOnInit(): void {
@@ -57,6 +58,7 @@ export class NewsOnlineAnnounceComponent implements OnInit, OnChanges {
                 .subscribe(([, user]: [void, UserInterface]) => {
                     this.isRegistered = false;
                     this.registeredPlayers = this.registeredPlayers.filter(({ id }: RegisteredPlayerInterface) => id !== user.id);
+                    this.changeDetectorRef.markForCheck();
                 });
         } else {
             this.cupRegistrationService
@@ -75,6 +77,7 @@ export class NewsOnlineAnnounceComponent implements OnInit, OnChanges {
                             nick,
                         },
                     ];
+                    this.changeDetectorRef.markForCheck();
                 });
         }
     }

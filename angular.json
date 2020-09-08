@@ -100,7 +100,7 @@
           }
         }
       }
-    },
+    }
   },
   "defaultProject": "defrag-ru",
   "schematics": {
@@ -111,5 +111,8 @@
     "@schematics/angular:directive": {
       "prefix": "app"
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
