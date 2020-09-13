@@ -4,6 +4,7 @@ import { Component, OnInit, OnChanges, Input, EventEmitter, Output, SimpleChange
 import { Observable, ReplaySubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { formatCupTime } from '../../helpers/cup-time-format.helpers';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-cup-timer-online-progress',
@@ -24,12 +25,15 @@ export class CupTimerOnlineProgressComponent implements OnInit, OnChanges {
     finished = new EventEmitter<void>();
 
     public formattedTime$: Observable<string>;
+    public serverLink: string;
 
     private endTime$ = new ReplaySubject<string>(1);
 
-    constructor(private languageService: LanguageService) {}
+    constructor(private languageService: LanguageService, private domSantizer: DomSanitizer) {}
 
     ngOnInit(): void {
+        this.serverLink = `defrag://${this.server}`;
+
         this.formattedTime$ = combineLatest([this.endTime$, this.languageService.getLanguage$()]).pipe(
             map(([time, language]: [string, Languages]) => formatCupTime(time, language)),
         );
@@ -39,5 +43,9 @@ export class CupTimerOnlineProgressComponent implements OnInit, OnChanges {
         if (endTime && endTime.currentValue) {
             this.endTime$.next(endTime.currentValue);
         }
+    }
+
+    public sanitize(url: string) {
+        return this.domSantizer.bypassSecurityTrustUrl(url);
     }
 }

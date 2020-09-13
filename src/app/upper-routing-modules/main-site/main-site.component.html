@@ -21,7 +21,7 @@
                         [cupName]="cup.fullName"
                         [customNews]="cup.customNews"
                         [mapLink]="cup.customMap || cup.mapPk3"
-                        [server]="cup.server1">
+                        [server]="server$ | async">
                     </app-cup-timer>
                 </div>
                 <div class="right-block shadowed">

@@ -10,6 +10,7 @@
         (finished)="finished.emit()">
     </app-countdown-timer>
 </div>
-<a class="map-link" download>
+<!-- TODO поправить sanitize на invokeFunction -->
+<a [href]="sanitize(serverLink)" class="map-link" download>
     <div class="bottom-info">{{ server }}</div>
 </a>
