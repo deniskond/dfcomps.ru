@@ -114,6 +114,7 @@ export class URL_PARAMS {
         MULTICUP_ROUND: (cupId: string, physics: Physics, roundNumber: string) => string;
         REGISTER: (cupId: string) => string;
         CANCEL_REGISTRATION: (cupId: string) => string;
+        CHECK_REGISTRATION: (cupId: string, playerId: string) => string;
     } {
         return {
             GET_NEXTCUP: `${API_URL}/cup/next_cup_info`,
@@ -123,6 +124,7 @@ export class URL_PARAMS {
             MULTICUP_ROUND: (cupId: string, physics: Physics, roundNumber: string) => `${API_URL}/cup/multi/${cupId}/${physics}/round/${roundNumber}`,
             REGISTER: (cupId: string) => `${API_URL}/cup/register/${cupId}`,
             CANCEL_REGISTRATION: (cupId: string) => `${API_URL}/cup/cancel_registration/${cupId}`,
+            CHECK_REGISTRATION: (cupId: string, playerId: string) => `${API_URL}/cup/isRegistered/${cupId}/${playerId}`,
         };
     }
 
