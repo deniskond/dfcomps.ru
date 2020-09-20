@@ -35,6 +35,6 @@ export class PickbanMapComponent implements OnChanges {
     }
 
     public getMapStyle(mapName: string): Record<string, string> {
-        return { backgroundImage: `url(http://ws.q3df.org/images/levelshots/512x384/${mapName}.jpg)`};
+        return { backgroundImage: `url(https://ws.q3df.org/images/levelshots/512x384/${mapName}.jpg)`};
     }
 }
