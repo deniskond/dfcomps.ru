@@ -1,6 +1,6 @@
 import { LanguageService } from '../../../../services/language/language.service';
 import { NewsInterfaceUnion } from '../../../../types/news-union.type';
-import { Component, Input, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Languages } from '../../../../enums/languages.enum';
 import { Subject } from 'rxjs';
@@ -19,7 +19,7 @@ export class HtmlNewsComponent implements OnInit, OnDestroy {
 
     private onDestroy$ = new Subject<void>();
 
-    constructor(private domSanitizer: DomSanitizer, private languageService: LanguageService) {}
+    constructor(private domSanitizer: DomSanitizer, private languageService: LanguageService, private changeDetectorRef: ChangeDetectorRef) {}
 
     ngOnInit(): void {
         this.languageService
@@ -29,6 +29,7 @@ export class HtmlNewsComponent implements OnInit, OnDestroy {
                 const newsHtml = language === Languages.RU ? this.news.text : this.news.textEn;
 
                 this.newsHtml = this.domSanitizer.bypassSecurityTrustHtml(newsHtml);
+                this.changeDetectorRef.markForCheck();
             });
     }
 
