@@ -23,7 +23,8 @@ client.on('ready', () => {
     //     so stay tuned and check https://dfcomps.ru/discord-bot to see the list of available commands.`,
     // );
 
-    const warcupStartEmbed = new Discord.MessageEmbed()
+    // Type 1: Competition start
+    const competitionStartEmbed = new Discord.MessageEmbed()
         .setColor('#0099ff')
         .setTitle('WarCup #303 start!')
         .setURL('https://dfcomps.ru/news/465')
@@ -41,5 +42,47 @@ client.on('ready', () => {
         .setTimestamp()
         .setFooter('https://dfcomps.ru/news/465');
 
-    newsChannel.send(warcupStartEmbed);
+    // Type 2: Competition end
+    const warcupEndEmbed = new Discord.MessageEmbed()
+        .setColor('#39be27')
+        .setTitle('WarCup #301 finish!')
+        .setURL('https://dfcomps.ru/news/465')
+        .setDescription(
+            `**Map**: bug73
+            **Finish**: 03.10.2020 19:30 GMT,
+            **Weapons**: Rocket
+
+            **VQ3 (top 3):**
+            \:flag_ru: \`${formatNick('uN*DeaD|w00dy-', 1)} | 36:766\`
+            \:flag_ru: \`${formatNick('haze', 2)} | 40:504\`
+            \:flag_ru: \`${formatNick('[fps]Proky', 3)} | 42:152\`
+
+            **CPM (top 3):**
+            \:flag_ru: \`${formatNick('uN*DeaD|w00dy-', 1)} | 36:766\`
+            \:flag_ru: \`${formatNick('haze', 2)} | 40:504\`
+            \:flag_ru: \`${formatNick('[fps]Proky', 3)} | 42:152\``,
+        )
+        .setThumbnail('https://ws.q3df.org/images/levelshots/512x384/bug73.jpg')
+        .setTimestamp()
+        .setFooter('https://dfcomps.ru/news/777');
+
+    // Type 3: duel result
+    const duelResult = new Discord.MessageEmbed()
+        .setColor('#00ffde')
+        .setTitle(`\:flag_ru: oblepiha wins a duel vs \:flag_ru: podokarpus`)
+        .setURL('https://dfcomps.ru/1v1/777')
+        .setThumbnail('https://ws.q3df.org/images/levelshots/512x384/cityrocket.jpg')
+        .setDescription(`
+            **Map**: cityrocket
+
+            \`${formatNick('oblepiha', 1)} | 54.216 | +15 rating points\`
+            \`${formatNick('podokarpus', 2)} | 58.768 | -15 rating points \`
+        `)
+        .setFooter('https://dfcomps.ru/1v1/777');
+
+    newsChannel.send(duelResult);
 });
+
+function formatNick(nick: string, place: number): string {
+    return `${place}. ${nick.padEnd(15, ' ')}`;
+}
