@@ -1,14 +1,10 @@
 # Dfcomps.ru
 
-This is a repository for the frontend code of dfcomps.ru site, which is dedicated to hosting Quake III Defrag tournaments. Feel free to contribute or just join our awesome community and send your demos :)
+This is a repository for storing everything related to dfcomps.ru site, which is dedicated to hosting Quake III Defrag tournaments. Feel free to contribute or just join our awesome community and send your demos :)
 
-# About
+# Repo structure
 
-The project is written in Angular, to start it locally you need to do the following steps:
-```
-git clone https://github.com/deniskond/dfcomps.ru-frontend.git
-npm install
-npm start
-```
-
-Backend looks at the dfcomps.ru site, so there's no need to setup backend locally.
+The repository currently consists of three projects:
+- dfcomps.ru frontend - written in Angular
+- discord bot - designed to bring some dfcomps functionality to discord channels
+- websocket server for 1v1 dules - specially designed for 1v1 pick/bans and matchmaking

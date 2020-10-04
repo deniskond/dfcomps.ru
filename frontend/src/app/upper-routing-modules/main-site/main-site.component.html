@@ -1,0 +1,36 @@
+<a href="https://github.com/deniskond/dfcomps.ru-frontend" target="_blank">
+    <div class="github"></div>
+</a>
+
+<div class="background">
+    <div class="container">
+        <app-site-header></app-site-header>
+
+        <div class="main">
+            <div class="main-column">
+                <router-outlet></router-outlet>
+            </div>
+            <div class="right-column">
+                <div class="right-block shadowed">
+                    <app-cup-timer
+                        *ngIf="(nextCupInfo$ | async) as cup"
+                        [newsId]="cup.newsId"
+                        [startTime]="cup.startDateTime"
+                        [endTime]="cup.endDateTime"
+                        [cupType]="cup.type === 'offline' ? cupTypes.OFFLINE : cupTypes.ONLINE"
+                        [cupName]="cup.fullName"
+                        [customNews]="cup.customNews"
+                        [mapLink]="cup.customMap || cup.mapPk3"
+                        [server]="server$ | async">
+                    </app-cup-timer>
+                </div>
+                <div class="right-block shadowed">
+                    <app-top-ten-table [physics]="physics.CPM"></app-top-ten-table>
+                </div>
+                <div class="right-block shadowed">
+                    <app-top-ten-table [physics]="physics.VQ3"></app-top-ten-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
