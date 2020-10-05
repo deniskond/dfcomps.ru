@@ -9,7 +9,12 @@ import { map, switchMap } from 'rxjs/operators';
 import { NewsTypes } from './interfaces/news-types.enum';
 
 const client: Discord.Client = new Discord.Client();
-const postedNews: string[] = ['461', '454', '456', '458'];
+
+let newsChannelsInfo: Record<string, { newsChannels: { name: string; postedNews: string[] }[] }> = {
+    'DFComps Bot Testing Server': {
+        newsChannels: [{ name: 'general', postedNews: ['461', '454', '456', '458'] }],
+    },
+};
 
 client.login(config.BOT_TOKEN);
 
@@ -18,17 +23,15 @@ client.on('ready', () => {
         console.log(`${client.user.tag} is online!`);
     }
 
-    // Getting the channel from client.channels Collection.
-    // TODO each server should be configurable by command (only available to admin)
-    const newsChannel: Discord.TextChannel | undefined = client.channels.cache.get('762053640047296548') as Discord.TextChannel;
-
-    if (!newsChannel) {
-        return console.error("Couldn't find the channel.");
-    }
-
-    newsChannel.send(
-        `Hi! I'm DFComps bot. I will send messages about ongoing competitions. In time I will be able to do a lot more, so stay tuned and check https://dfcomps.ru/discord-bot to see the list of available commands.`,
+    Object.keys(newsChannelsInfo).forEach((serverName: string) =>
+        newsChannelsInfo[serverName].newsChannels.forEach((newsChannelInfo: { name: string; postedNews: string[] }) =>
+            setSubscription(serverName, newsChannelInfo.name),
+        ),
     );
+
+    // newsChannel.send(
+    //     `Hi! I'm DFComps bot. I will send messages about ongoing competitions. In time I will be able to do a lot more, so stay tuned and check https://dfcomps.ru/discord-bot to see the list of available commands.`,
+    // );
 
     // Type 3: duel result
     const duelResult = new Discord.MessageEmbed()
@@ -45,24 +48,70 @@ client.on('ready', () => {
         `,
         )
         .setFooter('https://dfcomps.ru/1v1/777');
+});
 
-    // TODO change to interval
-    timer(0)
-        .pipe(
-            switchMap(() => from(axios.get('https://dfcomps.ru/api/news/mainpage'))),
-            map(({ data }: AxiosResponse) => data),
-            map((news: NewsInterfaceUnion[]) =>
-                news
-                    .filter((newsElem: NewsInterfaceUnion) => [NewsTypes.OFFLINE_START, NewsTypes.OFFLINE_RESULTS].includes(newsElem.type))
-                    .filter((newsElem: NewsInterfaceUnion) => !postedNews.includes(newsElem.id)),
-            ),
-        )
-        .subscribe((news: NewsInterfaceUnion[]) =>
-            news.forEach((newsElem: NewsInterfaceUnion) => {
-                postedNews.push(newsElem.id);
-                postNews(newsChannel, newsElem);
-            }),
-        );
+client.on('message', (message: Discord.Message) => {
+    if (!message.content.startsWith('!')) {
+        return;
+    }
+
+    // TODO
+    // !dfcomps-help
+    // !dfcomps-my-stats
+    // !dfcomps-cup-info
+
+    if (message.content.startsWith('!dfcomps-warcup-suggest')) {
+        const map: string | undefined = message.content.split(' ')[1];
+
+        if (map) {
+            if (map.includes('gneg')) {
+                message.reply(`no gnegs for warcups`);
+            } else {
+                message.reply(`thanks for you suggestion!`);
+            }
+        } else {
+            message.reply(`no map specified`);
+        }
+    }
+
+    // admin and mods probably
+    if (message.member && message.member.hasPermission('MUTE_MEMBERS')) {
+        if (message.content.startsWith('!dfcomps-add-news-channel')) {
+            const channelName: string | undefined = message.content.split(' ')[1];
+
+            if (channelName) {
+                const serverChannel = (client.channels.cache as Discord.Collection<string, Discord.TextChannel>).find(
+                    (discordChannel: Discord.TextChannel) => discordChannel.type === 'text' && discordChannel.name === channelName,
+                );
+
+                if (serverChannel) {
+                    setSubscription(serverChannel.guild.name, channelName);
+                    message.reply(`added news channel ${channelName} to server \`${serverChannel.guild.name}\``);
+                } else {
+                    message.reply(`cannot find text channel ${channelName}`);
+                }
+            }
+        }
+
+        if (message.content.startsWith('!dfcomps-list-news-channels')) {
+            // TODO
+            // message.reply(`current news channels are: ${newsChannels.join(', ')}`);
+        }
+
+        if (message.content.startsWith('!dfcomps-remove-news-channel')) {
+            const channel: string | undefined = message.content.split(' ')[1];
+
+            // TODO
+            // if (channel) {
+            //     if (newsChannels.find((c) => c === channel)) {
+            //         message.reply(`removed news channel ${channel}`);
+            //     } else {
+            //         message.reply(`channel ${channel} not found`);
+            //     }
+            //     newsChannels = newsChannels.filter((c) => c !== channel);
+            // }
+        }
+    }
 });
 
 function formatNick(nick: string, place: number): string {
@@ -98,7 +147,7 @@ function postNews(newsChannel: Discord.TextChannel, news: NewsInterfaceUnion) {
             .setURL(`https://dfcomps.ru/news/${news.id}`)
             .setDescription(
                 `**Map**: ${news.cup.map1}
-                **Finish**: ${moment(news.cup.endDateTime).add(-3, 'hours').format('DD.MM.YYYY HH:mm')} GMT,
+                **Finish**: ${moment(news.cup.endDateTime).add(-3, 'hours').format('DD.MM.YYYY HH:mm')} GMT
                 **Weapons**: ${mapWeapons(news.cup.mapWeapons)}
 
                 **VQ3 (top 3):**
@@ -155,4 +204,55 @@ function mapWeapons(weapons: string): string {
         .split('')
         .map((weaponLetter: string) => weaponMap[weaponLetter])
         .join(', ');
+}
+
+function setSubscription(serverName: string, channelName: string): void {
+    const server = client.guilds.cache.find((s) => s.name === serverName);
+
+    if (!server) {
+        return;
+    }
+
+    const newsChannel = server.channels.cache.find((c) => c.name === channelName && c.type === 'text') as Discord.TextChannel;
+
+    if (!newsChannel) {
+        return;
+    }
+
+    if (!newsChannelsInfo[serverName]) {
+        newsChannelsInfo = { ...newsChannelsInfo, [serverName]: { newsChannels: [] } };
+    }
+
+    if (!newsChannelsInfo[serverName].newsChannels.find((c) => c.name === channelName)) {
+        newsChannelsInfo = {
+            ...newsChannelsInfo,
+            [serverName]: { newsChannels: [...newsChannelsInfo[serverName].newsChannels, { name: channelName, postedNews: [] }] },
+        };
+    }
+
+    // TODO change to interval and general subscription
+    timer(0)
+        .pipe(
+            switchMap(() => from(axios.get('https://dfcomps.ru/api/news/mainpage'))),
+            map(({ data }: AxiosResponse) => data),
+            map((news: NewsInterfaceUnion[]) =>
+                news
+                    .filter((newsElem: NewsInterfaceUnion) => [NewsTypes.OFFLINE_START, NewsTypes.OFFLINE_RESULTS].includes(newsElem.type))
+                    .filter((newsElem: NewsInterfaceUnion) => {
+                        const newsChannel = newsChannelsInfo[serverName].newsChannels.find((c) => c.name === channelName);
+
+                        return newsChannel ? !newsChannel.postedNews.includes(newsElem.id) : false;
+                    }),
+            ),
+        )
+        .subscribe((news: NewsInterfaceUnion[]) =>
+            news.forEach((newsElem: NewsInterfaceUnion) => {
+                const foundChannel = newsChannelsInfo[serverName].newsChannels.find((c) => c.name === channelName);
+
+                if (foundChannel) {
+                    foundChannel.postedNews.push(newsElem.id);
+                    postNews(newsChannel, newsElem);
+                }
+            }),
+        );
 }
