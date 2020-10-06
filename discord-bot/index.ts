@@ -285,12 +285,14 @@ function setSubscription(serverName: string, channelName: string): void {
 }
 
 function setupGeneralSubscription(): void {
-    interval(20000)
+    interval(60000)
         .pipe(
             switchMap(() => from(axios.get('https://dfcomps.ru/api/news/mainpage'))),
             map(({ data }: AxiosResponse) => data),
             map((news: NewsInterfaceUnion[]) =>
-                news.filter((newsElem: NewsInterfaceUnion) => [NewsTypes.OFFLINE_START, NewsTypes.OFFLINE_RESULTS].includes(newsElem.type)),
+                news
+                    .filter((newsElem: NewsInterfaceUnion) => [NewsTypes.OFFLINE_START, NewsTypes.OFFLINE_RESULTS].includes(newsElem.type))
+                    .filter((newsElem: NewsInterfaceUnion) => moment(newsElem.datetimezone).isSameOrAfter(moment(new Date()).add(-5, 'hours'))),
             ),
         )
         .subscribe((news: NewsInterfaceUnion[]) => news$.next(news));
@@ -306,7 +308,17 @@ function restoreFromFile(): void {
             return console.log(err);
         }
 
-        newsChannelsInfo = JSON.parse(data);
-        console.log(`restored database: ${data}`);
+        try {
+            newsChannelsInfo = JSON.parse(data);
+
+            Object.keys(newsChannelsInfo).forEach((serverName: string) =>
+                newsChannelsInfo[serverName].newsChannels.forEach((channel) => setSubscription(serverName, channel.name)),
+            );
+
+            console.log(`restored database: ${data}`);
+        } catch {
+            newsChannelsInfo = {};
+            console.log(`no database found, using empty database`);
+        }
     });
 }
