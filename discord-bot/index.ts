@@ -3,18 +3,17 @@ const config = require('./config.json');
 import * as Discord from 'discord.js';
 import axios, { AxiosResponse } from 'axios';
 import moment from 'moment';
+import fs from 'fs';
 import { NewsInterfaceUnion } from './interfaces/news-union.type';
-import { from, timer } from 'rxjs';
+import { from, interval, ReplaySubject, Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { NewsTypes } from './interfaces/news-types.enum';
 
 const client: Discord.Client = new Discord.Client();
+const news$ = new ReplaySubject<NewsInterfaceUnion[]>(1);
+const subscriptions: Map<string, Subscription> = new Map();
 
-let newsChannelsInfo: Record<string, { newsChannels: { name: string; postedNews: string[] }[] }> = {
-    'DFComps Bot Testing Server': {
-        newsChannels: [{ name: 'general', postedNews: ['461', '454', '456', '458'] }],
-    },
-};
+let newsChannelsInfo: Record<string, { newsChannels: { name: string; postedNews: string[] }[] }> = {};
 
 client.login(config.BOT_TOKEN);
 
@@ -22,6 +21,9 @@ client.on('ready', () => {
     if (client.user) {
         console.log(`${client.user.tag} is online!`);
     }
+
+    restoreFromFile();
+    setupGeneralSubscription();
 
     Object.keys(newsChannelsInfo).forEach((serverName: string) =>
         newsChannelsInfo[serverName].newsChannels.forEach((newsChannelInfo: { name: string; postedNews: string[] }) =>
@@ -94,22 +96,40 @@ client.on('message', (message: Discord.Message) => {
         }
 
         if (message.content.startsWith('!dfcomps-list-news-channels')) {
-            // TODO
-            // message.reply(`current news channels are: ${newsChannels.join(', ')}`);
+            const serverName: string | undefined = message.guild?.name;
+
+            if (serverName && newsChannelsInfo[serverName]) {
+                const channelsList = newsChannelsInfo[serverName].newsChannels.map((c) => c.name);
+
+                if (channelsList.length) {
+                    message.reply(`current news channels are: ${channelsList.join(', ')}`);
+                } else {
+                    message.reply(`no news channels for this server`);
+                }
+            } else {
+                message.reply(`no news channels for this server`);
+            }
         }
 
         if (message.content.startsWith('!dfcomps-remove-news-channel')) {
             const channel: string | undefined = message.content.split(' ')[1];
+            const serverName: string | undefined = message.guild?.name;
 
-            // TODO
-            // if (channel) {
-            //     if (newsChannels.find((c) => c === channel)) {
-            //         message.reply(`removed news channel ${channel}`);
-            //     } else {
-            //         message.reply(`channel ${channel} not found`);
-            //     }
-            //     newsChannels = newsChannels.filter((c) => c !== channel);
-            // }
+            if (!channel) {
+                message.reply(`no channel name specified`);
+
+                return;
+            }
+
+            if (serverName && newsChannelsInfo[serverName] && newsChannelsInfo[serverName].newsChannels.find((c) => c.name === channel)) {
+                newsChannelsInfo[serverName].newsChannels = newsChannelsInfo[serverName].newsChannels.filter((c) => c.name !== channel);
+                subscriptions.get(JSON.stringify({ serverName, channelName: channel }))?.unsubscribe();
+                subscriptions.delete(JSON.stringify({ serverName, channelName: channel }));
+                message.reply(`news channel ${channel} removed`);
+                saveToFile();
+            } else {
+                message.reply(`no such news channel`);
+            }
         }
     }
 });
@@ -221,6 +241,7 @@ function setSubscription(serverName: string, channelName: string): void {
 
     if (!newsChannelsInfo[serverName]) {
         newsChannelsInfo = { ...newsChannelsInfo, [serverName]: { newsChannels: [] } };
+        saveToFile();
     }
 
     if (!newsChannelsInfo[serverName].newsChannels.find((c) => c.name === channelName)) {
@@ -228,31 +249,64 @@ function setSubscription(serverName: string, channelName: string): void {
             ...newsChannelsInfo,
             [serverName]: { newsChannels: [...newsChannelsInfo[serverName].newsChannels, { name: channelName, postedNews: [] }] },
         };
+        saveToFile();
     }
 
-    // TODO change to interval and general subscription
-    timer(0)
+    subscriptions.set(
+        JSON.stringify({ serverName, channelName }),
+        news$
+            .pipe(
+                map((news: NewsInterfaceUnion[]) =>
+                    news
+                        .filter((newsElem: NewsInterfaceUnion) => [NewsTypes.OFFLINE_START, NewsTypes.OFFLINE_RESULTS].includes(newsElem.type))
+                        .filter((newsElem: NewsInterfaceUnion) => {
+                            const newsChannel = newsChannelsInfo[serverName].newsChannels.find((c) => c.name === channelName);
+
+                            return newsChannel ? !newsChannel.postedNews.includes(newsElem.id) : false;
+                        }),
+                ),
+            )
+            .subscribe((news: NewsInterfaceUnion[]) =>
+                news.forEach((newsElem: NewsInterfaceUnion) => {
+                    const foundChannel = newsChannelsInfo[serverName].newsChannels.find((c) => c.name === channelName);
+
+                    if (foundChannel) {
+                        foundChannel.postedNews.push(newsElem.id);
+                        postNews(newsChannel, newsElem);
+                        newsChannelsInfo[serverName].newsChannels = [
+                            ...newsChannelsInfo[serverName].newsChannels.filter((c) => c.name !== foundChannel.name),
+                            foundChannel,
+                        ];
+                        saveToFile();
+                    }
+                }),
+            ),
+    );
+}
+
+function setupGeneralSubscription(): void {
+    interval(20000)
         .pipe(
             switchMap(() => from(axios.get('https://dfcomps.ru/api/news/mainpage'))),
             map(({ data }: AxiosResponse) => data),
             map((news: NewsInterfaceUnion[]) =>
-                news
-                    .filter((newsElem: NewsInterfaceUnion) => [NewsTypes.OFFLINE_START, NewsTypes.OFFLINE_RESULTS].includes(newsElem.type))
-                    .filter((newsElem: NewsInterfaceUnion) => {
-                        const newsChannel = newsChannelsInfo[serverName].newsChannels.find((c) => c.name === channelName);
-
-                        return newsChannel ? !newsChannel.postedNews.includes(newsElem.id) : false;
-                    }),
+                news.filter((newsElem: NewsInterfaceUnion) => [NewsTypes.OFFLINE_START, NewsTypes.OFFLINE_RESULTS].includes(newsElem.type)),
             ),
         )
-        .subscribe((news: NewsInterfaceUnion[]) =>
-            news.forEach((newsElem: NewsInterfaceUnion) => {
-                const foundChannel = newsChannelsInfo[serverName].newsChannels.find((c) => c.name === channelName);
+        .subscribe((news: NewsInterfaceUnion[]) => news$.next(news));
+}
 
-                if (foundChannel) {
-                    foundChannel.postedNews.push(newsElem.id);
-                    postNews(newsChannel, newsElem);
-                }
-            }),
-        );
+function saveToFile(): void {
+    fs.writeFile('db.txt', JSON.stringify(newsChannelsInfo), () => {});
+}
+
+function restoreFromFile(): void {
+    fs.readFile('db.txt', 'utf8', function (err, data) {
+        if (err) {
+            return console.log(err);
+        }
+
+        newsChannelsInfo = JSON.parse(data);
+        console.log(`restored database: ${data}`);
+    });
 }
