@@ -97,7 +97,7 @@ client.on('message', (message: Discord.Message) => {
                 );
 
                 if (serverChannel) {
-                    if (newsChannelsInfo[serverChannel.guild.name].newsChannels.find((c) => c.name === channelName)) {
+                    if (newsChannelsInfo[serverChannel.guild.name] && newsChannelsInfo[serverChannel.guild.name].newsChannels.find((c) => c.name === channelName)) {
                         message.reply(`channel ${channelName} already added`);
 
                         return;
