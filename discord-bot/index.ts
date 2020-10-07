@@ -62,18 +62,28 @@ client.on('message', (message: Discord.Message) => {
     // !dfcomps-my-stats
     // !dfcomps-cup-info
 
-    if (message.content.startsWith('!dfcomps-warcup-suggest')) {
-        const map: string | undefined = message.content.split(' ')[1];
+    // TODO
+    // if (message.content.startsWith('!dfcomps-warcup-suggest')) {
+    //     const map: string | undefined = message.content.split(' ')[1];
 
-        if (map) {
-            if (map.includes('gneg')) {
-                message.reply(`no gnegs for warcups`);
-            } else {
-                message.reply(`thanks for you suggestion!`);
-            }
-        } else {
-            message.reply(`no map specified`);
-        }
+    //     if (map) {
+    //         if (map.includes('gneg')) {
+    //             message.reply(`no gnegs for warcups`);
+    //         } else {
+    //             message.reply(`thanks for you suggestion!`);
+    //         }
+    //     } else {
+    //         message.reply(`no map specified`);
+    //     }
+    // }
+
+    if (message.content.startsWith('!dfcomps-help')) {
+        message.reply(
+            `bot commands list:\n` +
+            `\`!dfcomps-add-news-channel {channel-name}\` adds channel to dfcomps news posting list (only works for admins and mods)\n` +
+            `\`!dfcomps-list-news-channels\` lists all channels in dfcomps news posting list (only works for admins and mods)\n` +
+            `\`!dfcomps-remove-news-channel {channel-name}\` removes channel from dfcomps news posting list (only works for admins and mods)\n`,
+        );
     }
 
     // admin and mods probably
@@ -87,6 +97,12 @@ client.on('message', (message: Discord.Message) => {
                 );
 
                 if (serverChannel) {
+                    if (newsChannelsInfo[serverChannel.guild.name].newsChannels.find((c) => c.name === channelName)) {
+                        message.reply(`channel ${channelName} already added`);
+
+                        return;
+                    }
+
                     setSubscription(serverChannel.guild.name, channelName);
                     message.reply(`added news channel ${channelName} to server \`${serverChannel.guild.name}\``);
                 } else {
