@@ -57,10 +57,12 @@ client.on('message', (message: Discord.Message) => {
         return;
     }
 
+    // TODO add error logging 
+
     // TODO
-    // !dfcomps-help
     // !dfcomps-my-stats
     // !dfcomps-cup-info
+    // !dfcomps-link-account
 
     // TODO
     // if (message.content.startsWith('!dfcomps-warcup-suggest')) {
