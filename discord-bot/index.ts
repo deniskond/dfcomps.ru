@@ -89,12 +89,12 @@ client.on('message', (message: Discord.Message) => {
     }
 
     // admin and mods probably
-    if (message.member && message.member.hasPermission('MUTE_MEMBERS')) {
+    if (message.member && (message.member.hasPermission('MUTE_MEMBERS') || isBotAdmin(message.member.user))) {
         if (message.content.startsWith('!dfcomps-add-news-channel')) {
             const channelName: string | undefined = message.content.split(' ')[1];
 
             if (channelName) {
-                const serverChannel = (client.channels.cache as Discord.Collection<string, Discord.TextChannel>).find(
+                const serverChannel = (message.guild?.channels.cache as Discord.Collection<string, Discord.TextChannel>).find(
                     (discordChannel: Discord.TextChannel) => discordChannel.type === 'text' && discordChannel.name === channelName,
                 );
 
@@ -339,4 +339,8 @@ function restoreFromFile(): void {
             console.log(`no database found, using empty database`);
         }
     });
+}
+
+function isBotAdmin(user: Discord.User): boolean {
+    return user.username === 'Nosf' && user.discriminator === '0422';
 }
