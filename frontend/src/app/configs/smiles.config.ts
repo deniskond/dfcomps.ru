@@ -1194,6 +1194,25 @@ export class SMILES_CONFIG {
                 col: 1,
                 group: SmileGroups.PERSONAL,
             },
+            {
+                name: 'pakistan1',
+                row: 14,
+                col: 2,
+                group: SmileGroups.PERSONAL,
+            },
+            // TOOD Add row 14 col 3
+            {
+                name: 'mixanik1',
+                row: 14,
+                col: 4,
+                group: SmileGroups.PERSONAL,
+            },
+            {
+                name: 'skaix1',
+                row: 14,
+                col: 5,
+                group: SmileGroups.PERSONAL,
+            },
         ];
     }
 
