@@ -6,7 +6,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NewsTypes } from '../../enums/news-types.enum';
 import * as moment from 'moment';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { isEqual } from 'lodash';
 
@@ -17,9 +17,12 @@ import { isEqual } from 'lodash';
 })
 export class MainPageComponent implements OnInit {
     public news$: Observable<NewsInterfaceUnion[]>;
+    public prepostedNews$: Observable<NewsInterfaceUnion[]>;
+    public postedNews$: Observable<NewsInterfaceUnion[]>;
     public language$: Observable<Languages>;
     public newsTypes = NewsTypes;
     public languages = Languages;
+    public showPrepostedNews = false;
 
     constructor(private router: Router, private newsService: NewsService, private languageService: LanguageService) {}
 
@@ -42,6 +45,8 @@ export class MainPageComponent implements OnInit {
 
     private initObservables(): void {
         this.news$ = this.newsService.getMainPageNews$().pipe(distinctUntilChanged(isEqual));
+        this.postedNews$ = this.news$.pipe(map((news: NewsInterfaceUnion[]) => news.filter((newsElem: NewsInterfaceUnion) => !newsElem.preposted)));
+        this.prepostedNews$ = this.news$.pipe(map((news: NewsInterfaceUnion[]) => news.filter((newsElem: NewsInterfaceUnion) => newsElem.preposted)));
         this.language$ = this.languageService.getLanguage$();
     }
 }

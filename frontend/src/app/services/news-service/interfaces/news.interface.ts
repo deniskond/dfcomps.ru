@@ -21,4 +21,5 @@ export interface NewsInterface {
     twitch1: string;
     twitch2: string;
     comments: CommentInterface[];
+    preposted: boolean;
 }

@@ -133,4 +133,5 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
     matchFinished: 'Match is finished',
     wins: 'wins',
     draw: 'draw',
+    showPrepostedNews: 'Show preposted news (7 days)',
 };

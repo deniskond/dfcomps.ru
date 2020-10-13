@@ -133,4 +133,5 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
     matchFinished: 'Матч завершен',
     wins: 'Побеждает',
     draw: 'Ничья',
+    showPrepostedNews: 'Показать будущие новости (7 дней)',
 };
