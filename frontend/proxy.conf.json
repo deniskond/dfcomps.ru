@@ -1,0 +1,8 @@
+{
+    "/api": {
+        "target": "https://dfcomps.ru",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+    }
+}

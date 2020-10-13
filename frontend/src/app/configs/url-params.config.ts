@@ -1,6 +1,13 @@
+import { environment } from '../../environments/environment';
 import { Physics } from '../enums/physics.enum';
 
-export const MAIN_URL = 'https://dfcomps.ru';
+const envMap = {
+    'local': '',
+    'local-backend': 'http://localhost',
+    'prod': 'https://dfcomps.ru',
+};
+
+export const MAIN_URL = envMap[environment.name];
 export const API_URL = `${MAIN_URL}/api`;
 
 export class URL_PARAMS {
