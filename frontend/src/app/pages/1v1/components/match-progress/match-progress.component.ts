@@ -102,7 +102,7 @@ export class MatchProgressComponent implements OnChanges {
                     return of();
                 }),
             )
-            .subscribe(({ status, validation, message }: UploadDemoDtoInterface) => {
+            .subscribe(({ status, errors, message }: UploadDemoDtoInterface) => {
                 if (status === 'Success') {
                     this.openSnackBar('success', 'demoSent');
                     this.bestDemoTime = +message;
@@ -110,7 +110,7 @@ export class MatchProgressComponent implements OnChanges {
                     this.openSnackBar('error', message, false);
                 } else if (status === 'Invalid') {
                     this.dialog.open(ValidationDialogComponent, {
-                        data: validation,
+                        data: errors,
                     });
                 }
             });

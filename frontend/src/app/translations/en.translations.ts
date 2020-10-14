@@ -134,4 +134,5 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
     wins: 'wins',
     draw: 'draw',
     showPrepostedNews: 'Show preposted news (7 days)',
+    killobsWarning: 'Warning: overbounces are enabled',
 };

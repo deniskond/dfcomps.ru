@@ -134,4 +134,5 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
     wins: 'Побеждает',
     draw: 'Ничья',
     showPrepostedNews: 'Показать будущие новости (7 дней)',
+    killobsWarning: 'Предупреждение: овербаунсы включены',
 };

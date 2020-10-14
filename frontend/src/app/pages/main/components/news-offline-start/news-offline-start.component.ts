@@ -5,7 +5,7 @@ import { UserInterface } from '../../../../interfaces/user.interface';
 import { UserService } from '../../../../services/user-service/user.service';
 import { DemosService } from '../../../../services/demos/demos.service';
 import { NewsOfflineStartInterface } from '../../../../services/news-service/interfaces/news-offline-start.interface';
-import { Component, Input, OnInit, ViewChild, ElementRef, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ElementRef, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CupStates } from '../../../../enums/cup-states.enum';
 import * as moment from 'moment';
 import { finalize, take, switchMap, catchError } from 'rxjs/operators';
@@ -14,6 +14,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ValidationDialogComponent } from './validation-dialog/validation-dialog.component';
 import { PlayerDemosDialogComponent } from './player-demos-dialog/player-demos-dialog.component';
+import { DemoUploadResult } from '../../../../services/demos/enums/demo-upload-result.enum';
+import { OverbouncesWarningDialogComponent } from './overbounces-warning-dialog/overbounces-warning-dialog.component';
 
 const SNACKBAR_DURATION = 3000;
 
@@ -44,6 +46,7 @@ export class NewsOfflineStartComponent implements OnInit {
         private snackBar: MatSnackBar,
         private dialog: MatDialog,
         private languageService: LanguageService,
+        private changeDetectorRef: ChangeDetectorRef,
     ) {}
 
     ngOnInit(): void {
@@ -75,22 +78,27 @@ export class NewsOfflineStartComponent implements OnInit {
                 finalize(() => {
                     this.fileInput.nativeElement.value = null;
                     this.isUploading = false;
+                    this.changeDetectorRef.markForCheck();
                 }),
                 catchError(() => {
                     this.openSnackBar('error', 'uploadFailed');
- 
+
                     return of();
                 }),
             )
-            .subscribe(({ status, validation, message }: UploadDemoDtoInterface) => {
-                if (status === 'Success') {
+            .subscribe(({ status, errors, warnings, message }: UploadDemoDtoInterface) => {
+                if (status === DemoUploadResult.SUCCESS) {
                     this.openSnackBar('success', 'demoSent');
                     this.reloadNews.emit();
-                } else if (status === 'Error') {
+
+                    if (warnings) {
+                        this.dialog.open(OverbouncesWarningDialogComponent);
+                    }
+                } else if (status === DemoUploadResult.ERROR) {
                     this.openSnackBar('error', message, false);
-                } else if (status === 'Invalid') {
+                } else if (status === DemoUploadResult.INVALID) {
                     this.dialog.open(ValidationDialogComponent, {
-                        data: validation,
+                        data: errors,
                     });
                 }
             });

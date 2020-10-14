@@ -75,7 +75,7 @@ export class NewsReflexOfflineStartComponent implements OnInit {
                     return of();
                 }),
             )
-            .subscribe(({ status, validation, message }: UploadDemoDtoInterface) => {
+            .subscribe(({ status, message }: UploadDemoDtoInterface) => {
                 if (status === 'Success') {
                     this.openSnackBar('success', 'demoSent');
                     this.reloadNews.emit();
