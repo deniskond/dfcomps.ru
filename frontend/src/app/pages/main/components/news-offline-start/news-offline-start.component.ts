@@ -91,7 +91,7 @@ export class NewsOfflineStartComponent implements OnInit {
                     this.openSnackBar('success', 'demoSent');
                     this.reloadNews.emit();
 
-                    if (warnings) {
+                    if (warnings.length) {
                         this.dialog.open(OverbouncesWarningDialogComponent);
                     }
                 } else if (status === DemoUploadResult.ERROR) {
