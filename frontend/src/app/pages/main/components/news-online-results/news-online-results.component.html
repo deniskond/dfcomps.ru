@@ -1,3 +1,5 @@
+<app-html-news [news]="news"></app-html-news>
+
 <div class="table-container">
     <app-youtube 
         *ngIf="news.youtube" 
@@ -13,5 +15,3 @@
         class="online-results-table">
     </app-online-results-table>
 </div>
-
-<app-html-news [news]="news"></app-html-news>
