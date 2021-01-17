@@ -1,0 +1,15 @@
+{
+    "version": "1.0.0",
+    "configurations": [
+        {
+            "name": "Launch",
+            "type": "node",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["run", "start"],
+            "envFile": "${workspaceFolder}/.env",
+        }
+    ]
+}
