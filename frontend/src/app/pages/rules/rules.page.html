@@ -81,15 +81,7 @@
                 до команды судьи об остановке раунда (STOP TIME). 
             </p>
             <p>
-                <b>5.1.4</b> Очки за раунд 
-                рассчитываются исходя из общего количества игроков на турнире &ndash; игрок,
-                занявший первое место получает число очков, равное числу участников, второй игрок получает на
-                одно очко меньше, третий - еще на одно меньше и так далее.
-            </p>
-            <p>
-                <b>5.1.5</b> Общий зачет идет по сумме набранных
-                очков во всех раундах, при одинаковом количестве очков считается, что игроки заняли одинаковые
-                места (нет тай-брейка и дополнительных показателей).
+                <b>5.1.4</b> Подведение результатов происходит по ЕЕ-системе.
             </p>
             <p>
                 <b>5.2</b> Запрещено умышленно имитировать потерю или задержку пакетов в сети.
@@ -153,8 +145,14 @@
             </p>
             <p>
                 <b>6.3.5</b> Рандомные овербаунсы являются причиной отклонения демо при валидации в двух случаях:<br>
-                &ndash; демо с рандомным овербаунсом занимает первое место на турнире;<br>
-                &ndash; рандомный овербаунс в демо влияет на распределение мест в итоговой таблице турнира.
+                &ndash; овербаунс повлиял на распределение мест в таблице<br>
+                &ndash; овербаунс повлиял на все распределение очков по
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLScdbpcs6rczpF1C_TQ4IFUxUqARq9MXygeP9Ru2sjZl3cdUDA/viewform">EE-системе</a>.<br>
+                <i>Примеры:</i> <br>
+                1) В турнире по ЕЕ-системе любой овербаунс, который дал плюс в топ1 демке повлияет на распределение очков во всей таблице, потому
+                что очки рассчитываются от времени первого места. Поэтому такая демка будет невалидна.<br>
+                2) Игрок использовал рандомный овербаунс, чтобы пропустить трикс на карте, но не получил достаточного преимущества, чтобы встать на строчку выше в таблице.
+                В этом случае демо также будет невалидным, потому что без рандомного овербаунса игрок мог не пройти карту вообще, поэтому он бы вообще не попал в таблицу.
             </p>
             <p>
                 <b>6.4</b> Запрещен таймресет (обнуление стартового триггера, при котором уже 
@@ -256,15 +254,8 @@
                 referee's message about the round end (STOP TIME message).
             </p>
             <p>
-                <b>5.1.4</b> Points per round are calculated based on the total number of 
-                players in the tournament &ndash; first place player gets the number of 
-                points equal to the number of participants, the second place player gets one 
-                point less, third place player gets one more point less, and so on.
-            </p>
-            <p>
-                <b>5.1.5</b> The overall standings are calculated based on a sum of points
-                scored in all rounds. Players who get same scores are considered as equally
-                placed players (there is no tie-break and additional indicators).
+                <b>5.1.4</b> The results are calculated according to the 
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLScdbpcs6rczpF1C_TQ4IFUxUqARq9MXygeP9Ru2sjZl3cdUDA/viewform">EE-system</a>.
             </p>
             <p>
                 <b>5.2</b> It's not allowed to drop nor delay packets (network) on purpose (net settings).
@@ -326,8 +317,13 @@
             </p>
             <p>
                 <b>6.3.5</b> Random overbounces cause a demo to be rejected during validation in two cases:<br>
-                &ndash; demo with random overbounce wins first place in the tournament;<br>
-                &ndash; random overbounce in the demo affects the distribution of places in the final tournament table.
+                &ndash; overbounce affected the distribution of places in the table<br>
+                &ndash; overbounce affected the whole distribution of points according to the EE-system<br>
+                <i>Examples:</i> <br>
+                1) In an EE-system tournament, any overbounce that gave a plus in the top1 demo will affect the distribution of points in the entire table, because points 
+                are calculated from the time of the first place. Therefore, such demo will be invalid.<br>
+                2) The player used a random overbounce to skip the trix on the map, but did not get enough advantage to move up the table. In this case, the demo will also be invalid, 
+                because without a random overbounce, the player may not have passed the map, so he would not have gotten into the table at all.
             </p>
             <p>
                 <b>6.4</b> It is not allowed to use time reset (using the start 
