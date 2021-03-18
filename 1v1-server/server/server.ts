@@ -3,7 +3,7 @@ import * as http from 'http';
 import * as WebSocket from 'ws';
 import { OneVOneHandler } from './1v1/1v1';
 import { DuelClientMessage } from './1v1/types/duel-client-message.type';
-import { throwError, BehaviorSubject } from 'rxjs';
+import { throwError } from 'rxjs';
 import * as uuid from 'uuid';
 import * as fs from 'fs';
 import * as util from 'util';
@@ -18,8 +18,8 @@ var log_file = fs.createWriteStream(__dirname + '/debug.log', { flags: 'w' });
 var log_stdout = process.stdout;
 
 console.log = function (message: any) {
-    log_file.write(util.format(message) + '\n');
-    log_stdout.write(util.format(message) + '\n');
+    log_file.write(Date.now() + ' | ' + util.format(message) + '\n');
+    log_stdout.write(Date.now() + ' | ' + util.format(message) + '\n');
 };
 
 // TODO Нужно выносить всю логику в OneVOneHandler и декомпозировать

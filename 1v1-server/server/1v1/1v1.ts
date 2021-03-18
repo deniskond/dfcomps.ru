@@ -15,6 +15,7 @@ import { MatchInterface } from './interfaces/match.interface';
 import { PickbanMapServerInterface } from './interfaces/pickban-map-server.interface';
 import { ServerMatchInterface } from './interfaces/server-match.interface';
 import { maps } from './constants/maps';
+import { routes } from './config/routes';
 
 interface QueueInterface {
     playerId: string;
@@ -105,8 +106,9 @@ export class OneVOneHandler {
                 return;
             }
 
-            this.addPlayerToQueue(message.playerId, message.payload.physics);
-            this.send(socket, { action: DuelWebsocketServerActions.JOIN_QUEUE_SUCCESS });
+            this.send(socket, { action: DuelWebsocketServerActions.JOIN_QUEUE_SUCCESS }, () =>
+                this.addPlayerToQueue(message.playerId, message.payload.physics),
+            );
         }
 
         if (message.action === DuelWebsocketClientActions.GET_PLAYER_STATE) {
@@ -178,8 +180,9 @@ export class OneVOneHandler {
         this.send(socket, { action: DuelWebsocketServerActions.DUPLICATE_CLIENT });
     }
 
-    private send(socket: WebSocket, message: DuelServerMessageType): void {
-        socket.send(JSON.stringify(message));
+    private send(socket: WebSocket, message: DuelServerMessageType, callback?: () => void): void {
+        callback ? socket.send(JSON.stringify(message), callback) : socket.send(JSON.stringify(message));
+
         console.log(`sent: ${JSON.stringify(message)}`);
     }
 
@@ -201,7 +204,7 @@ export class OneVOneHandler {
         const map3: string = maps.filter((map) => ![map1, map2].includes(map))[Math.floor(Math.random() * (maps.length - 2))];
         const map4: string = maps.filter((map) => ![map1, map2, map3].includes(map))[Math.floor(Math.random() * (maps.length - 3))];
         const map5: string = maps.filter((map) => ![map1, map2, map3, map4].includes(map))[Math.floor(Math.random() * (maps.length - 4))];
-        const randomMaps: string[] = [map1, map2, map3, map4, map5]
+        const randomMaps: string[] = [map1, map2, map3, map4, map5];
 
         console.log(`randomMaps: ${JSON.stringify(randomMaps)}`);
 
@@ -235,18 +238,21 @@ export class OneVOneHandler {
             bannedMapsCount: 0,
         };
 
-        this.doAxiosPostRequest('https://dfcomps.ru/api/match/start', {
+        this.doAxiosPostRequest(`${this.getRoutePrefix()}/api/match/start`, {
             firstPlayerId,
             secondPlayerId,
             physics,
             secretKey: config.DUELS_SERVER_PRIVATE_KEY,
-        }).then(() => {
-            this.setCheckForBanTimer(0, isFirstPlayerBanning ? firstPlayerId : secondPlayerId);
-            this.matches$.next([...this.matches$.value, serverMatch]);
-            this.sendPickBanStepsToMatchPlayers(match);
-        }).catch(() => {
-            // TODO Обработать ошибку
-        });
+        })
+            .then(() => {
+                this.setCheckForBanTimer(0, isFirstPlayerBanning ? firstPlayerId : secondPlayerId);
+                this.matches$.next([...this.matches$.value, serverMatch]);
+                this.sendPickBanStepsToMatchPlayers(match);
+            })
+            .catch(() => {
+                // TODO Обработать ошибку
+                console.log('rest backend server error');
+            });
     }
 
     private sendPickBanStepsToMatchPlayers(match: MatchInterface): void {
@@ -395,7 +401,7 @@ export class OneVOneHandler {
                 .find((map: PickbanMapServerInterface) => !map.isBannedByFirstPlayer && !map.isBannedBySecondPlayer);
 
             if (pickedMap) {
-                this.doAxiosPostRequest('https://dfcomps.ru/api/match/update_match_map', {
+                this.doAxiosPostRequest(`${this.getRoutePrefix()}/api/match/update_match_map`, {
                     firstPlayerId: match.firstPlayerId,
                     secondPlayerId: match.secondPlayerId,
                     map: pickedMap.name,
@@ -468,7 +474,7 @@ export class OneVOneHandler {
             .pipe(
                 switchMap(() =>
                     from(
-                        this.doAxiosPostRequest('https://dfcomps.ru/api/match/finish', {
+                        this.doAxiosPostRequest(`${this.getRoutePrefix()}/api/match/finish`, {
                             firstPlayerId,
                             secondPlayerId,
                             secretKey: config.DUELS_SERVER_PRIVATE_KEY,
@@ -508,5 +514,9 @@ export class OneVOneHandler {
         Object.entries(formData).forEach(([key, value]: [string, any]) => params.append(key, value));
 
         return axios.post(url, params);
+    }
+
+    private getRoutePrefix(): string {
+        return process.env.ENV ? routes[process.env.ENV] : 'http://localhost';
     }
 }

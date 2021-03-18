@@ -4,19 +4,19 @@ import { Physics } from '../../enums/physics.enum';
 
 describe('end-to-end: case 1 - joining and leaving queue', function () {
     let webSocket: WebSocket;
-    let playerId: string;
+    let playerId: number;
     let physics: Physics;
 
     beforeAll(() => {
         webSocket = new WebSocket('ws://localhost:3000/1v1');
-        playerId = faker.random.uuid();
+        playerId = faker.random.number();
         physics = faker.random.arrayElement([Physics.VQ3, Physics.CPM]);
 
         return new Promise((resolve) => {
             webSocket.onopen = () => {
                 resolve(null);
             };
-        })
+        });
     });
 
     it('should get answer on GET_PLAYER_STATE', (done) => {
@@ -77,5 +77,9 @@ describe('end-to-end: case 1 - joining and leaving queue', function () {
                 },
             }),
         );
+    });
+
+    afterAll(() => {
+        webSocket.close();
     });
 });
