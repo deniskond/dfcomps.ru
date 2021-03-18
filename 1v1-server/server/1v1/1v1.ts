@@ -1,4 +1,4 @@
-const config = require('./config.json');
+const config = require('./../config.json');
 
 import { DuelWebsocketClientActions } from './enums/duel-websocket-client-actions.enum';
 import { DuelClientMessage } from './types/duel-client-message.type';
@@ -34,6 +34,7 @@ export class OneVOneHandler {
     private finishedMatchPlayers$ = new BehaviorSubject<string[]>([]);
 
     public addClient(playerId: string, socket: WebSocket, uniqueId: string): void {
+        // TODO Перевести все логи на текстовые
         console.log('CHECKING FOR EXISTING CLIENT');
         console.log(this.clients$.value.map((client) => ({ playerId: client.playerId, uniqueId: client.uniqueId })));
 
@@ -57,6 +58,8 @@ export class OneVOneHandler {
             // кейс обновления страницы, предыдущий сокет при этом должен быть закрыт; тогда обновляем сокет для клиента
             // либо каким-то образом с одной страницы было создано два сокета
             this.clients$.next(this.clients$.value.map((client: ClientInterface) => (client.playerId === playerId ? { uniqueId, playerId, socket } : client)));
+
+            return;
         }
 
         this.clients$.next([
@@ -232,15 +235,18 @@ export class OneVOneHandler {
             bannedMapsCount: 0,
         };
 
-        this.setCheckForBanTimer(0, isFirstPlayerBanning ? firstPlayerId : secondPlayerId);
-        this.matches$.next([...this.matches$.value, serverMatch]);
-
         this.doAxiosPostRequest('https://dfcomps.ru/api/match/start', {
             firstPlayerId,
             secondPlayerId,
             physics,
             secretKey: config.DUELS_SERVER_PRIVATE_KEY,
-        }).then(() => this.sendPickBanStepsToMatchPlayers(match));
+        }).then(() => {
+            this.setCheckForBanTimer(0, isFirstPlayerBanning ? firstPlayerId : secondPlayerId);
+            this.matches$.next([...this.matches$.value, serverMatch]);
+            this.sendPickBanStepsToMatchPlayers(match);
+        }).catch(() => {
+            // TODO Обработать ошибку
+        });
     }
 
     private sendPickBanStepsToMatchPlayers(match: MatchInterface): void {

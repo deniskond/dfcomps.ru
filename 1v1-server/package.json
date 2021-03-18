@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "tsc": "tsc",
-    "start": "npm run tsc && && copyfiles config.json dist && node dist/server.js"
+    "start": "npm run tsc && copyfiles config.json dist && node dist/server.js"
   },
   "keywords": [
     "dfcomps",
