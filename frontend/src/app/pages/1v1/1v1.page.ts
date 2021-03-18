@@ -5,7 +5,7 @@ import { UserService } from './../../services/user-service/user.service';
 import { Physics } from './../../enums/physics.enum';
 import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { DuelService } from './services/duel.service';
-import { take, filter, takeUntil } from 'rxjs/operators';
+import { take, filter, takeUntil, distinctUntilChanged } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { DuelWebsocketServerActions } from './services/enums/duel-websocket-server-actions.enum';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -13,6 +13,7 @@ import { MatchStates } from './services/enums/match-states.enum';
 import { MatchInterface } from './services/interfaces/match.interface';
 import { DuelPlayersInfoInterface } from './interfaces/duel-players-info.interface';
 import { PickbanPhases } from './enums/pickban-phases.enum';
+import { isEqual } from 'lodash';
 
 @Component({
     templateUrl: './1v1.page.html',
@@ -112,7 +113,7 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
     }
 
     private initUserSubscriptions(): void {
-        this.user$.pipe(takeUntil(this.onDestroy$)).subscribe((user: UserInterface) => {
+        this.user$.pipe(distinctUntilChanged(isEqual), takeUntil(this.onDestroy$)).subscribe((user: UserInterface) => {
             if (user) {
                 this.duelService.openConnection();
                 this.setPlayersInfo();
