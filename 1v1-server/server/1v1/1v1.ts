@@ -499,6 +499,8 @@ export class OneVOneHandler {
                     });
                 }
 
+                console.log(`finishing match between ${firstClient?.playerId} and ${secondClient?.playerId}`);
+
                 this.finishedMatchPlayers$.next([...this.finishedMatchPlayers$.value, firstPlayerId, secondPlayerId]);
                 this.matches$.next(
                     this.matches$.value.filter(
