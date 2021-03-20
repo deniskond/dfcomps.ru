@@ -16,16 +16,17 @@ import { PickbanMapServerInterface } from './interfaces/pickban-map-server.inter
 import { ServerMatchInterface } from './interfaces/server-match.interface';
 import { maps } from './constants/maps';
 import { routes } from './config/routes';
+import { TimingsConfig } from './config/timing';
 
 interface QueueInterface {
     playerId: string;
     physics: Physics;
 }
 
-const BAN_TIMER_SECONDS = 30;
-const MATCH_TIMER_SECONDS = 15 * 60;
-const BAN_TIMER = BAN_TIMER_SECONDS * 1000;
-const MATCH_TIMER = MATCH_TIMER_SECONDS * 1000;
+const BAN_TIMER_SECONDS = TimingsConfig.BAN_TIMER_SECONDS;
+const MATCH_TIMER_SECONDS = TimingsConfig.MATCH_TIMER_SECONDS;
+const BAN_TIMER = TimingsConfig.BAN_TIMER_SECONDS * 1000;
+const MATCH_TIMER = TimingsConfig.MATCH_TIMER_SECONDS * 1000;
 const LAG_COMPENSATION = 1000;
 
 export class OneVOneHandler {
@@ -100,7 +101,7 @@ export class OneVOneHandler {
         console.log(`received: ${JSON.stringify(message)}`);
 
         if (message.action === DuelWebsocketClientActions.JOIN_QUEUE) {
-            if (this.getPlayerInQueue(message.playerId)) {
+            if (this.getPlayerInQueue(message.playerId) || this.finishedMatchPlayers$.value.find((playerId: string) => playerId === message.playerId)) {
                 this.send(socket, { action: DuelWebsocketServerActions.JOIN_QUEUE_FAILURE, payload: { error: 'Already in queue' } });
 
                 return;
@@ -499,7 +500,7 @@ export class OneVOneHandler {
                     });
                 }
 
-                console.log(`finishing match between ${firstClient?.playerId} and ${secondClient?.playerId}`);
+                console.log(`finishing match between ${firstPlayerId} and ${secondPlayerId}`);
 
                 this.finishedMatchPlayers$.next([...this.finishedMatchPlayers$.value, firstPlayerId, secondPlayerId]);
                 this.matches$.next(
