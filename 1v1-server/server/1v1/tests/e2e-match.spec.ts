@@ -10,7 +10,7 @@ import { BanMapMessageInterface } from '../interfaces/ban-map-message.interface'
 import { DuelWebsocketServerActions } from '../enums/duel-websocket-server-actions.enum';
 import { MatchResultAcceptedMessageInterface } from '../interfaces/match-result-accepted-message.interface';
 
-describe('end-to-end: case 2 - full match', function () {
+describe('end-to-end: case 2 - full match', () => {
     let webSocketFirst: WebSocket;
     let playerIdFirst: string;
     let webSocketSecond: WebSocket;
@@ -301,7 +301,7 @@ describe('end-to-end: case 2 - full match', function () {
         ]).then(() => done());
     });
 
-    it('player should not be able to join queue until match result is accepted', (done) => {
+    it('player should NOT be able to join queue until match result is accepted', (done) => {
         webSocketFirst.onmessage = (serverMessage: MessageEvent) => {
             expect(JSON.parse(serverMessage.data)).toEqual({ action: 'JOIN_QUEUE_FAILURE', payload: expect.any(Object) });
             done();

@@ -75,7 +75,13 @@ export class OneVOneHandler {
     }
 
     public removeClient(uniqueId: string): void {
+        const client: ClientInterface | undefined = this.clients$.value.find((client: ClientInterface) => client.uniqueId === uniqueId);
+
         this.clients$.next(this.clients$.value.filter((client: ClientInterface) => client.uniqueId !== uniqueId));
+
+        if (client) {
+            this.queue$.next(this.queue$.value.filter((item: QueueInterface) => item.playerId !== client.playerId));
+        }
     }
 
     public initSubscriptions(): void {

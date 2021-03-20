@@ -4,10 +4,11 @@
     "description": "Websocket server for dfcomps",
     "main": "index.js",
     "scripts": {
+        "jest": "jest",
         "tsc": "tsc",
         "start": "npm run tsc && copyfiles config.json dist && cross-env ENV=prod node dist/server.js",
         "start:local": "npm run tsc && copyfiles config.json dist && cross-env ENV=test node dist/server.js",
-        "test": "concurrently \"npm run start:local\" \"jest\""
+        "test": "concurrently \"npm run start:local\" \"jest --runInBand\""
     },
     "keywords": [
         "dfcomps",

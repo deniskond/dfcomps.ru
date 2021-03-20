@@ -1,4 +1,4 @@
-describe('testing connection', function () {
+describe('testing connection', () => {
     it('should open socket', (done) => {
         const webSocket = new WebSocket('ws://localhost:3000/1v1');
 
