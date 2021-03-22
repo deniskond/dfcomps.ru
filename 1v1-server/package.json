@@ -9,7 +9,8 @@
         "start": "rimraf dist && npm run tsc && copyfiles config.json dist && cross-env ENV=prod node dist/server.js",
         "start:local": "rimraf dist && npm run tsc && copyfiles config.json dist && cross-env ENV=test node dist/server.js",
         "test": "concurrently \"npm run start:local\" \"jest --runInBand\"",
-        "stress-test": "rimraf dist && npm run tsc && copyfiles config.json dist && concurrently \"cross-env ENV=test node dist/server.js\" \"node dist/1v1/tests/client-stress-testing.js\""
+        "stress-test": "rimraf dist && npm run tsc && copyfiles config.json dist && concurrently \"cross-env ENV=test E2E=true node dist/server.js\" \"node dist/1v1/tests/client-stress-testing.js\"",
+        "stress-test:ci": "rimraf dist && npm run tsc && copyfiles config.json dist && concurrently \"cross-env ENV=test LOGS=none E2E=true node dist/server.js\" \"node dist/1v1/tests/client-stress-testing.js\""
     },
     "keywords": [
         "dfcomps",

@@ -10,18 +10,39 @@ import { JoinQueueMessageInterface } from '../interfaces/join-queue-message.inte
 import { Physics } from '../../enums/physics.enum';
 import { DuelWebsocketServerActions } from '../enums/duel-websocket-server-actions.enum';
 import { MatchResultAcceptedMessageInterface } from '../interfaces/match-result-accepted-message.interface';
+import { stressTestNumberOfMatchesInEachPhysics } from '../constants/stress-test-clients-count';
 
-const numberOfClients = 100;
+const numberOfMatchesInEachPhysics = stressTestNumberOfMatchesInEachPhysics;
+// for both physics two players are needed for one match
+const numberOfClients = numberOfMatchesInEachPhysics * 4;
 
-for (let i = 0; i < numberOfClients; i++) {
-    testClientActions();
+const playersIds: string[] = new Array(numberOfClients).fill(null).map(() => faker.random.uuid());
+console.log(`Starting stress testing for ${numberOfClients} clients`);
+
+// double check for same array of players; the idea is to test if server state is correct for the same players to join and play again
+Promise.all(getClientsFunctionsBatch())
+    .then(() => {
+        console.log('First phase: success');
+        console.log('Testing second time queue for each player');
+        return Promise.all(getClientsFunctionsBatch());
+    })
+    .then(() => {
+        console.log('\x1b[32m%s\x1b[0m', 'Stress test passed!');
+        process.exit(0);
+    });
+
+function getClientsFunctionsBatch(): Promise<void>[] {
+    return new Array(numberOfClients).fill(null).map(
+        (_el, index) =>
+            new Promise<void>((resolve) =>
+                testClientActions(playersIds[index], index >= numberOfClients / 2 ? Physics.CPM : Physics.VQ3).then(() => resolve()),
+            ),
+    );
 }
 
-async function testClientActions(): Promise<void> {
+async function testClientActions(playerId: string, physics: Physics): Promise<void> {
     const webSocket = new WebSocket('ws://localhost:3000/1v1');
-    const playerId = faker.random.uuid();
     const websocketMessages: Subject<DuelServerMessageType> = new Subject();
-    const physics: Physics = faker.random.arrayElement([Physics.VQ3, Physics.CPM]);
 
     await new Promise<void>((resolve) => {
         webSocket.addEventListener('open', () => resolve());
@@ -77,13 +98,6 @@ async function testClientActions(): Promise<void> {
         ),
     );
 
-    const acceptMatchResultMessage: MatchResultAcceptedMessageInterface = {
-        playerId,
-        action: DuelWebsocketClientActions.MATCH_RESULT_ACCEPTED,
-    };
-
-    webSocket.send(JSON.stringify(acceptMatchResultMessage));
-
     await new Promise<void>((resolve) =>
         websocketMessages.pipe(take(1)).subscribe((message: DuelServerMessageType) => {
             if (message.action !== DuelWebsocketServerActions.MATCH_FINISHED) {
@@ -93,4 +107,11 @@ async function testClientActions(): Promise<void> {
             resolve();
         }),
     );
+
+    const acceptMatchResultMessage: MatchResultAcceptedMessageInterface = {
+        playerId,
+        action: DuelWebsocketClientActions.MATCH_RESULT_ACCEPTED,
+    };
+
+    webSocket.send(JSON.stringify(acceptMatchResultMessage));
 }
