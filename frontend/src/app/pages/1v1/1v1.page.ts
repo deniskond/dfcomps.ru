@@ -51,7 +51,6 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.onDestroy$.next();
         this.onDestroy$.complete();
-        this.duelService.closeConnection();
     }
 
     public joinQueue(physics: Physics): void {
@@ -113,15 +112,13 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
     }
 
     private initUserSubscriptions(): void {
-        this.user$.pipe(distinctUntilChanged(isEqual), takeUntil(this.onDestroy$)).subscribe((user: UserInterface) => {
-            if (user) {
-                this.duelService.openConnection();
-                this.setPlayersInfo();
-                return;
-            }
-
-            this.duelService.closeConnection();
-        });
+        this.user$
+            .pipe(
+                distinctUntilChanged(isEqual),
+                filter((user) => !!user),
+                takeUntil(this.onDestroy$),
+            )
+            .subscribe(() => this.setPlayersInfo());
     }
 
     private initServerMessagesSubscription(): void {

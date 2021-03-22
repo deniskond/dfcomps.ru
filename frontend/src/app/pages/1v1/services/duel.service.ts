@@ -32,8 +32,7 @@ export class DuelService {
     }
 
     public openConnection(): void {
-        // TODO [1v1] Заменить урл
-        this.webSocket = new WebSocket('wss://dfcomps.ru/ws/1v1');
+        this.webSocket = new WebSocket(URL_PARAMS.WEBSOCKET_1V1_URL);
         this.webSocket.onopen = () => this.isWebSocketOpened$.next(true);
         this.webSocket.onmessage = (event: MessageEvent) => this.onMessage(event);
     }

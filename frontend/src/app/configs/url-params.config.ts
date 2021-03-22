@@ -11,6 +11,16 @@ export const MAIN_URL = envMap[environment.name];
 export const API_URL = `${MAIN_URL}/api`;
 
 export class URL_PARAMS {
+    public static get WEBSOCKET_1V1_URL(): string {
+        const websocketEnvMap = {
+            'local': 'ws://localhost:3000/1v1',
+            'local-backend': 'ws://localhost:3000/1v1',
+            'prod': 'wss://dfcomps.ru/ws/1v1',
+        };
+
+        return websocketEnvMap[environment.name];
+    }
+
     public static get MOVIES(): string {
         return `${API_URL}/movies`;
     }
