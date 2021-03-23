@@ -7,4 +7,5 @@ export enum DuelWebsocketServerActions {
     TIMER_STARTED = 'TIMER_STARTED',
     DUPLICATE_CLIENT = 'DUPLICATE_CLIENT',
     MATCH_FINISHED = 'MATCH_FINISHED',
+    QUEUE_INFO = 'QUEUE_INFO',
 }

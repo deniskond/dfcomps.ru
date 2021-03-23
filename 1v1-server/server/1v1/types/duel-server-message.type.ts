@@ -5,6 +5,7 @@ import { PlayerStateMessageInterface } from '../interfaces/player-state-message.
 import { LeaveQueueSuccessMessageInterface } from '../interfaces/leave-queue-success-message.interface';
 import { DuplicateClientMessageInterface } from '../interfaces/duplicate-client-message.interface';
 import { PickbanStepMessageInterface } from '../interfaces/pickban-step-message.interface';
+import { QueueInfoMessageInterface } from '../interfaces/queue-info-message.interface';
 
 export type DuelServerMessageType =
     | JoinQueueFailureMessageInterface
@@ -13,4 +14,5 @@ export type DuelServerMessageType =
     | LeaveQueueSuccessMessageInterface
     | PickbanStepMessageInterface
     | DuplicateClientMessageInterface
-    | MatchFinishedMessageInterface;
+    | MatchFinishedMessageInterface
+    | QueueInfoMessageInterface;

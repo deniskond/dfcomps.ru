@@ -256,9 +256,9 @@ export class OneVOneHandler {
                 this.matches$.next([...this.matches$.value, serverMatch]);
                 this.sendPickBanStepsToMatchPlayers(match);
             })
-            .catch(() => {
+            .catch((error) => {
                 // TODO Обработать ошибку
-                console.log('rest backend server error');
+                console.log('rest backend server error: ' + JSON.stringify(error));
             });
     }
 
