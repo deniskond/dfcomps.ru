@@ -1,12 +1,13 @@
 import faker from 'faker';
+import { combineLatest, Subject } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { Physics } from '../../enums/physics.enum';
 import { DuelWebsocketClientActions } from '../enums/duel-websocket-client-actions.enum';
 import { DuelWebsocketServerActions } from '../enums/duel-websocket-server-actions.enum';
 import { GetPlayerStateMessageInterface } from '../interfaces/get-player-state-message.interface';
 import { JoinQueueMessageInterface } from '../interfaces/join-queue-message.interface';
 import { MatchInterface } from '../interfaces/match.interface';
-import { PickbanMapServerInterface } from '../interfaces/pickban-map-server.interface';
-import { PickbanStepMessageInterface } from '../interfaces/pickban-step-message.interface';
+import { DuelServerMessageType } from '../types/duel-server-message.type';
 import { pickbanStepMock } from './mocks/pickban-step.mock';
 
 describe('end-to-end: case 4 - restoring state', () => {
@@ -15,8 +16,8 @@ describe('end-to-end: case 4 - restoring state', () => {
     let webSocketSecond: WebSocket;
     let playerIdSecond: string;
     let physics: Physics;
-    let isFirstPlayerBanning: boolean;
-    let maps: string[];
+    const webSocketFirstMessagesStream$: Subject<DuelServerMessageType> = new Subject();
+    const webSocketSecondMessagesStream$: Subject<DuelServerMessageType> = new Subject();
 
     beforeAll(() => {
         webSocketFirst = new WebSocket('ws://localhost:3000/1v1');
@@ -24,6 +25,22 @@ describe('end-to-end: case 4 - restoring state', () => {
         webSocketSecond = new WebSocket('ws://localhost:3000/1v1');
         playerIdSecond = faker.random.uuid();
         physics = faker.random.arrayElement([Physics.VQ3, Physics.CPM]);
+
+        webSocketFirst.onmessage = (message: MessageEvent) => {
+            const parsedMessage: DuelServerMessageType = JSON.parse(message.data);
+
+            if (parsedMessage.action !== DuelWebsocketServerActions.QUEUE_INFO) {
+                webSocketFirstMessagesStream$.next(parsedMessage);
+            }
+        };
+
+        webSocketSecond.onmessage = (message: MessageEvent) => {
+            const parsedMessage: DuelServerMessageType = JSON.parse(message.data);
+
+            if (parsedMessage.action !== DuelWebsocketServerActions.QUEUE_INFO) {
+                webSocketSecondMessagesStream$.next(parsedMessage);
+            }
+        };
 
         return Promise.all([
             new Promise((resolve) => {
@@ -40,10 +57,10 @@ describe('end-to-end: case 4 - restoring state', () => {
     });
 
     it('should get answer on GET_PLAYER_STATE: first player', (done) => {
-        webSocketFirst.onmessage = (serverMessage: MessageEvent) => {
-            expect(JSON.parse(serverMessage.data)).toEqual({ action: 'PLAYER_STATE', payload: { state: 'WAITING_FOR_QUEUE' } });
+        webSocketFirstMessagesStream$.pipe(take(1)).subscribe((message: DuelServerMessageType) => {
+            expect(message).toEqual({ action: 'PLAYER_STATE', payload: { state: 'WAITING_FOR_QUEUE' } });
             done();
-        };
+        });
 
         const message: GetPlayerStateMessageInterface = { playerId: playerIdFirst, action: DuelWebsocketClientActions.GET_PLAYER_STATE };
 
@@ -51,10 +68,10 @@ describe('end-to-end: case 4 - restoring state', () => {
     });
 
     it('should get answer on GET_PLAYER_STATE: second player', (done) => {
-        webSocketSecond.onmessage = (serverMessage: MessageEvent) => {
-            expect(JSON.parse(serverMessage.data)).toEqual({ action: 'PLAYER_STATE', payload: { state: 'WAITING_FOR_QUEUE' } });
+        webSocketSecondMessagesStream$.pipe(take(1)).subscribe((message: DuelServerMessageType) => {
+            expect(message).toEqual({ action: 'PLAYER_STATE', payload: { state: 'WAITING_FOR_QUEUE' } });
             done();
-        };
+        });
 
         const message: GetPlayerStateMessageInterface = { playerId: playerIdSecond, action: DuelWebsocketClientActions.GET_PLAYER_STATE };
 
@@ -62,10 +79,10 @@ describe('end-to-end: case 4 - restoring state', () => {
     });
 
     it('should get answer on JOIN_QUEUE: first player', (done) => {
-        webSocketFirst.onmessage = (serverMessage: MessageEvent) => {
-            expect(JSON.parse(serverMessage.data)).toEqual({ action: 'JOIN_QUEUE_SUCCESS' });
+        webSocketFirstMessagesStream$.pipe(take(1)).subscribe((message: DuelServerMessageType) => {
+            expect(message).toEqual({ action: 'JOIN_QUEUE_SUCCESS' });
             done();
-        };
+        });
 
         const message: JoinQueueMessageInterface = {
             playerId: playerIdFirst,
@@ -79,10 +96,10 @@ describe('end-to-end: case 4 - restoring state', () => {
     });
 
     it('should get answer on JOIN_QUEUE: second player', (done) => {
-        webSocketSecond.onmessage = (serverMessage: MessageEvent) => {
-            expect(JSON.parse(serverMessage.data)).toEqual({ action: 'JOIN_QUEUE_SUCCESS' });
+        webSocketSecondMessagesStream$.pipe(take(1)).subscribe((message: DuelServerMessageType) => {
+            expect(message).toEqual({ action: 'JOIN_QUEUE_SUCCESS' });
             done();
-        };
+        });
 
         const message: JoinQueueMessageInterface = {
             playerId: playerIdSecond,
@@ -96,25 +113,11 @@ describe('end-to-end: case 4 - restoring state', () => {
     });
 
     it('should get both players PICKBAN_STEPS', (done) => {
-        Promise.all([
-            new Promise((resolve) => {
-                webSocketFirst.onmessage = (serverMessage: MessageEvent) => {
-                    const parsedMessage: PickbanStepMessageInterface = JSON.parse(serverMessage.data);
-
-                    isFirstPlayerBanning = parsedMessage.payload.match.isFirstPlayerBanning;
-                    maps = parsedMessage.payload.match.maps.map(({ name }: PickbanMapServerInterface) => name);
-
-                    expect(parsedMessage).toMatchObject(pickbanStepMock(playerIdFirst, playerIdSecond, physics));
-                    resolve(null);
-                };
-            }),
-            new Promise((resolve) => {
-                webSocketSecond.onmessage = (serverMessage: MessageEvent) => {
-                    expect(JSON.parse(serverMessage.data)).toMatchObject(pickbanStepMock(playerIdFirst, playerIdSecond, physics));
-                    resolve(null);
-                };
-            }),
-        ]).then(() => done());
+        combineLatest([webSocketFirstMessagesStream$, webSocketSecondMessagesStream$]).pipe(take(1)).subscribe((messages: DuelServerMessageType[]) => {
+            expect(messages[0]).toMatchObject(pickbanStepMock(playerIdFirst, playerIdSecond, physics));
+            expect(messages[1]).toMatchObject(pickbanStepMock(playerIdFirst, playerIdSecond, physics));
+            done();
+        });
     });
 
     it('should restore state correctly', (done) => {
@@ -128,7 +131,7 @@ describe('end-to-end: case 4 - restoring state', () => {
             webSocketFirst.send(JSON.stringify(message));
         };
 
-        webSocketFirst.onmessage = (serverMessage) => {
+        webSocketFirst.onmessage = (serverMessage: MessageEvent) => {
             const matchMock: MatchInterface = { ...pickbanStepMock(playerIdFirst, playerIdSecond, physics).payload.match, timer: expect.any(Number) };
 
             expect(JSON.parse(serverMessage.data)).toMatchObject({ action: DuelWebsocketServerActions.PLAYER_STATE, payload: { match: matchMock } });
