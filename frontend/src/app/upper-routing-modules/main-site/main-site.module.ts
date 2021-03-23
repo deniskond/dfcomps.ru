@@ -6,6 +6,8 @@ import { MainSiteComponent } from './main-site.component';
 import { RouterModule } from '@angular/router';
 import { mainSiteRoutes } from './main-site.routes';
 import { CommonModule } from '@angular/common';
+import { SharedModule } from '../../modules/shared.module';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
     declarations: [MainSiteComponent],
@@ -15,6 +17,8 @@ import { CommonModule } from '@angular/common';
         SiteHeaderModule,
         TopTenTableModule,
         CupTimerModule,
+        SharedModule,
+        MatTabsModule,
     ],
 })
 export class MainSiteModule {}

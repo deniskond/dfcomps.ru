@@ -17,6 +17,7 @@ export class MainSiteComponent implements OnInit {
     public physics = Physics;
     public nextCupInfo$ = new ReplaySubject<CupInterface>(1);
     public server$: Observable<string>;
+    public activePage = Math.random() > 0.5 ? 1 : 2;
 
     constructor(private cupsService: CupsService, private userService: UserService) {}
 
@@ -35,5 +36,9 @@ export class MainSiteComponent implements OnInit {
             ),
             map(([user, cup]: [UserInterface, CupInterface]) => (parseInt(user.id) % 2 === 0 ? cup.server2 : cup.server1)),
         );
+    }
+
+    public setTab(index: number): void {
+        this.activePage = index;
     }
 }

@@ -1,8 +1,3 @@
-<div class="side-block-header table-header">
-    <span translate translation="ratingLeaders"></span>
-    <span>&nbsp;({{ physics }})</span>
-</div>
-
 <ng-container *ngIf="topTenTable$ | async as topTenTable; else loader">
     <app-players-rating-table [ratingTable]="topTenTable"></app-players-rating-table>
 </ng-container>

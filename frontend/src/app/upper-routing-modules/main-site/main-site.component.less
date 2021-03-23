@@ -60,3 +60,37 @@
     cursor: pointer !important;
     z-index: 3;
 }
+
+.table-header {
+    padding: 6px;
+    text-align: center;
+    border-bottom: 1px solid #ccc; 
+    background: white;
+}
+
+.navigation {
+    border-bottom: 0;
+    background: white;
+    border-bottom: 1px solid #ccc;
+
+    .active {
+        opacity: 1;
+    }
+
+    .navigation-link {
+        user-select: none;
+        min-width: 70px;
+        font-family: elektra;
+        font-size: 16px;
+        color: black;
+        height: 32px;
+        padding: 0 12px;
+        font-size: 14px;
+
+        &:hover {
+            color: black;
+            opacity: 1;
+            text-decoration: none;
+        }
+    }
+}

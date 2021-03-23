@@ -3,8 +3,8 @@ import { Physics } from '../../enums/physics.enum';
 import { LeaderTableInterface } from '../../interfaces/leader-table.interface';
 import { Injectable } from '@angular/core';
 import { BackendService } from '../backend-service/backend-service';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 const MAX_PLAYERS_PER_PAGE = 100;
 
@@ -12,8 +12,14 @@ const MAX_PLAYERS_PER_PAGE = 100;
     providedIn: 'root',
 })
 export class RatingTablesService extends BackendService {
+    private cachedTables: Record<string, LeaderTableInterface[]> = {};
+
     public getTop10Table$(physics: Physics): Observable<LeaderTableInterface[]> {
-        return this.post$(URL_PARAMS.TOP_TEN_TABLE(physics));
+        if (this.cachedTables[physics]) {
+            return of(this.cachedTables[physics]);
+        }
+
+        return this.post$(URL_PARAMS.TOP_TEN_TABLE(physics)).pipe(tap((table: LeaderTableInterface[]) => this.cachedTables[physics] = table));
     }
 
     public getRatingTablePage$(physics: Physics, page: number): Observable<LeaderTableInterface[]> {
