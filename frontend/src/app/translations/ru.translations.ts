@@ -135,4 +135,5 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
     draw: 'Ничья',
     showPrepostedNews: 'Показать будущие новости (7 дней)',
     killobsWarning: 'Предупреждение: овербаунсы включены',
+    findOnevOne: 'Найти матч 1v1',
 };

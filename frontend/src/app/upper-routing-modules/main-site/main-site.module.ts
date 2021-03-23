@@ -8,9 +8,11 @@ import { mainSiteRoutes } from './main-site.routes';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../modules/shared.module';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatButtonModule } from '@angular/material/button';
+import { OneVOneWidgetComponent } from '../../components/one-v-one-widget/one-v-one-widget.component';
 
 @NgModule({
-    declarations: [MainSiteComponent],
+    declarations: [MainSiteComponent, OneVOneWidgetComponent],
     imports: [
         CommonModule,
         RouterModule.forChild(mainSiteRoutes),
@@ -19,6 +21,7 @@ import { MatTabsModule } from '@angular/material/tabs';
         CupTimerModule,
         SharedModule,
         MatTabsModule,
+        MatButtonModule,
     ],
 })
 export class MainSiteModule {}

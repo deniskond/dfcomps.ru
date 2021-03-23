@@ -135,4 +135,5 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
     draw: 'draw',
     showPrepostedNews: 'Show preposted news (7 days)',
     killobsWarning: 'Warning: overbounces are enabled',
+    findOnevOne: 'Find 1v1 match',
 };
