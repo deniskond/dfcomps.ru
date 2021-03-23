@@ -149,7 +149,7 @@ describe('end-to-end: case 5 - sending queue info to all players', () => {
         webSocketSecond.send(JSON.stringify(message));
     });
 
-    it('all three players should get new queue info', (done) => {
+    it('all three players should get new queue info AND first two players should get PICKBAN_STEPS', (done) => {
         const queueInfoMessage: QueueInfoMessageInterface = {
             action: DuelWebsocketServerActions.QUEUE_INFO,
             payload: {
@@ -164,40 +164,33 @@ describe('end-to-end: case 5 - sending queue info to all players', () => {
             new Promise((resolve) => {
                 webSocketFirst.onmessage = (serverMessage: MessageEvent) => {
                     expect(JSON.parse(serverMessage.data)).toMatchObject(queueInfoMessage);
-                    resolve(null);
+
+                    webSocketFirst.onmessage = (serverMessage: MessageEvent) => {
+                        const parsedMessage: PickbanStepMessageInterface = JSON.parse(serverMessage.data);
+
+                        isFirstPlayerBanning = parsedMessage.payload.match.isFirstPlayerBanning;
+                        maps = parsedMessage.payload.match.maps.map(({ name }: PickbanMapServerInterface) => name);
+
+                        expect(parsedMessage).toMatchObject(pickbanStepMock(playerIdFirst, playerIdSecond, physics));
+                        resolve(null);
+                    };
                 };
             }),
             new Promise((resolve) => {
                 webSocketSecond.onmessage = (serverMessage: MessageEvent) => {
                     expect(JSON.parse(serverMessage.data)).toMatchObject(queueInfoMessage);
-                    resolve(null);
+
+                    webSocketSecond.onmessage = (serverMessage: MessageEvent) => {
+                        const parsedMessage: PickbanStepMessageInterface = JSON.parse(serverMessage.data);
+
+                        expect(parsedMessage).toMatchObject(pickbanStepMock(playerIdFirst, playerIdSecond, physics));
+                        resolve(null);
+                    };
                 };
             }),
             new Promise((resolve) => {
                 webSocketThird.onmessage = (serverMessage: MessageEvent) => {
                     expect(JSON.parse(serverMessage.data)).toMatchObject(queueInfoMessage);
-                    resolve(null);
-                };
-            }),
-        ]).then(() => done());
-    });
-
-    it('should get both players PICKBAN_STEPS', (done) => {
-        Promise.all([
-            new Promise((resolve) => {
-                webSocketFirst.onmessage = (serverMessage: MessageEvent) => {
-                    const parsedMessage: PickbanStepMessageInterface = JSON.parse(serverMessage.data);
-
-                    isFirstPlayerBanning = parsedMessage.payload.match.isFirstPlayerBanning;
-                    maps = parsedMessage.payload.match.maps.map(({ name }: PickbanMapServerInterface) => name);
-
-                    expect(parsedMessage).toMatchObject(pickbanStepMock(playerIdFirst, playerIdSecond, physics));
-                    resolve(null);
-                };
-            }),
-            new Promise((resolve) => {
-                webSocketSecond.onmessage = (serverMessage: MessageEvent) => {
-                    expect(JSON.parse(serverMessage.data)).toMatchObject(pickbanStepMock(playerIdFirst, playerIdSecond, physics));
                     resolve(null);
                 };
             }),
@@ -368,26 +361,7 @@ describe('end-to-end: case 5 - sending queue info to all players', () => {
         ]).then(() => done());
     });
 
-    it('both players should receive MATCH_FINISHED message', (done) => {
-        Promise.all([
-            new Promise((resolve) => {
-                webSocketFirst.onmessage = (serverMessage: MessageEvent) => {
-                    expect(JSON.parse(serverMessage.data)).toEqual({ action: DuelWebsocketServerActions.MATCH_FINISHED });
-
-                    resolve(null);
-                };
-            }),
-            new Promise((resolve) => {
-                webSocketSecond.onmessage = (serverMessage: MessageEvent) => {
-                    expect(JSON.parse(serverMessage.data)).toEqual({ action: DuelWebsocketServerActions.MATCH_FINISHED });
-
-                    resolve(null);
-                };
-            }),
-        ]).then(() => done());
-    });
-
-    it('all three players should get new queue info', (done) => {
+    it('both players should receive MATCH_FINISHED message AND all players should receive queue info update', (done) => {
         const queueInfoMessage: QueueInfoMessageInterface = {
             action: DuelWebsocketServerActions.QUEUE_INFO,
             payload: {
@@ -401,14 +375,22 @@ describe('end-to-end: case 5 - sending queue info to all players', () => {
         Promise.all([
             new Promise((resolve) => {
                 webSocketFirst.onmessage = (serverMessage: MessageEvent) => {
-                    expect(JSON.parse(serverMessage.data)).toMatchObject(queueInfoMessage);
-                    resolve(null);
+                    expect(JSON.parse(serverMessage.data)).toEqual({ action: DuelWebsocketServerActions.MATCH_FINISHED });
+
+                    webSocketFirst.onmessage = (serverMessage: MessageEvent) => {
+                        expect(JSON.parse(serverMessage.data)).toMatchObject(queueInfoMessage);
+                        resolve(null);
+                    }
                 };
             }),
             new Promise((resolve) => {
                 webSocketSecond.onmessage = (serverMessage: MessageEvent) => {
-                    expect(JSON.parse(serverMessage.data)).toMatchObject(queueInfoMessage);
-                    resolve(null);
+                    expect(JSON.parse(serverMessage.data)).toEqual({ action: DuelWebsocketServerActions.MATCH_FINISHED });
+
+                    webSocketSecond.onmessage = (serverMessage: MessageEvent) => {
+                        expect(JSON.parse(serverMessage.data)).toMatchObject(queueInfoMessage);
+                        resolve(null);
+                    }
                 };
             }),
             new Promise((resolve) => {

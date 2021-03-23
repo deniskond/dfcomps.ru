@@ -42,20 +42,26 @@ function getClientsFunctionsBatch(): Promise<void>[] {
 
 async function testClientActions(playerId: string, physics: Physics): Promise<void> {
     const webSocket = new WebSocket('ws://localhost:3000/1v1');
-    const websocketMessages: Subject<DuelServerMessageType> = new Subject();
+    const websocketMessages$: Subject<DuelServerMessageType> = new Subject();
 
     await new Promise<void>((resolve) => {
         webSocket.addEventListener('open', () => resolve());
     });
 
-    webSocket.onmessage = (message: any) => websocketMessages.next(JSON.parse(message.data));
+    webSocket.onmessage = (message: any) => {
+        const parsedMessage: DuelServerMessageType = JSON.parse(message.data);
+
+        if (parsedMessage.action !== DuelWebsocketServerActions.QUEUE_INFO) {
+            websocketMessages$.next(parsedMessage);
+        }
+    };
 
     const getStateMessage: GetPlayerStateMessageInterface = { playerId, action: DuelWebsocketClientActions.GET_PLAYER_STATE };
 
     webSocket.send(JSON.stringify(getStateMessage));
 
     await new Promise<void>((resolve) =>
-        websocketMessages.pipe(take(1)).subscribe((message: DuelServerMessageType) => {
+        websocketMessages$.pipe(take(1)).subscribe((message: DuelServerMessageType) => {
             if (!isEqual(message, { action: 'PLAYER_STATE', payload: { state: 'WAITING_FOR_QUEUE' } })) {
                 throw new Error('Wrong answer on GET_PLAYER_STATE');
             }
@@ -75,7 +81,7 @@ async function testClientActions(playerId: string, physics: Physics): Promise<vo
     webSocket.send(JSON.stringify(joinQueueMessage));
 
     await new Promise<void>((resolve) =>
-        websocketMessages.pipe(take(1)).subscribe((message: DuelServerMessageType) => {
+        websocketMessages$.pipe(take(1)).subscribe((message: DuelServerMessageType) => {
             if (!isEqual(message, { action: 'JOIN_QUEUE_SUCCESS' })) {
                 throw new Error('Wrong answer on JOIN_QUEUE');
             }
@@ -85,7 +91,7 @@ async function testClientActions(playerId: string, physics: Physics): Promise<vo
     );
 
     await new Promise<void>((resolve) =>
-        websocketMessages.pipe(take(5)).subscribe(
+        websocketMessages$.pipe(take(5)).subscribe(
             (message: DuelServerMessageType) => {
                 if (message.action !== DuelWebsocketServerActions.PICKBAN_STEP) {
                     throw new Error('Wrong answer on JOIN_QUEUE');
@@ -99,7 +105,7 @@ async function testClientActions(playerId: string, physics: Physics): Promise<vo
     );
 
     await new Promise<void>((resolve) =>
-        websocketMessages.pipe(take(1)).subscribe((message: DuelServerMessageType) => {
+        websocketMessages$.pipe(take(1)).subscribe((message: DuelServerMessageType) => {
             if (message.action !== DuelWebsocketServerActions.MATCH_FINISHED) {
                 throw new Error('Wrong answer on MATCH_RESULT_ACCEPTED: ' + JSON.stringify(message));
             }
