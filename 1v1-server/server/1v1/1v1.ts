@@ -136,6 +136,7 @@ export class OneVOneHandler {
             this.removePlayerFromQueue(message.playerId);
 
             this.send(socket, { action: DuelWebsocketServerActions.LEAVE_QUEUE_SUCCESS });
+            this.sendUpdatedQueueInfoToAllClients();
         }
 
         if (message.action === DuelWebsocketClientActions.BAN_MAP) {

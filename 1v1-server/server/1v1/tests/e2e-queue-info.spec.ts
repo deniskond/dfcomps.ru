@@ -9,6 +9,7 @@ import { DuelWebsocketServerActions } from '../enums/duel-websocket-server-actio
 import { QueueInfoMessageInterface } from '../interfaces/queue-info-message.interface';
 import { PickbanMapServerInterface } from '../interfaces/pickban-map-server.interface';
 import { BanMapMessageInterface } from '../interfaces/ban-map-message.interface';
+import { LeaveQueueMessageInterface } from '../interfaces/leave-queue-message.interface';
 
 describe('end-to-end: case 5 - sending queue info to all players', () => {
     let webSocketFirst: WebSocket;
@@ -102,6 +103,103 @@ describe('end-to-end: case 5 - sending queue info to all players', () => {
         const message: GetPlayerStateMessageInterface = { playerId: playerIdThird, action: DuelWebsocketClientActions.GET_PLAYER_STATE };
 
         webSocketThird.send(JSON.stringify(message));
+    });
+
+    it('should get answer on JOIN_QUEUE: first player', (done) => {
+        webSocketFirst.onmessage = (serverMessage: MessageEvent) => {
+            expect(JSON.parse(serverMessage.data)).toEqual({ action: 'JOIN_QUEUE_SUCCESS' });
+            done();
+        };
+
+        const message: JoinQueueMessageInterface = {
+            playerId: playerIdFirst,
+            action: DuelWebsocketClientActions.JOIN_QUEUE,
+            payload: {
+                physics,
+            },
+        };
+
+        webSocketFirst.send(JSON.stringify(message));
+    });
+
+    it('all three players should get new queue info', (done) => {
+        const queueInfoMessage: QueueInfoMessageInterface = {
+            action: DuelWebsocketServerActions.QUEUE_INFO,
+            payload: {
+                cpmMatches: 0,
+                cpmPlayersInQueue: physics === Physics.CPM ? 1 : 0,
+                vq3Matches: 0,
+                vq3PlayersInQueue: physics === Physics.VQ3 ? 1 : 0,
+            },
+        };
+
+        Promise.all([
+            new Promise((resolve) => {
+                webSocketFirst.onmessage = (serverMessage: MessageEvent) => {
+                    expect(JSON.parse(serverMessage.data)).toMatchObject(queueInfoMessage);
+                    resolve(null);
+                };
+            }),
+            new Promise((resolve) => {
+                webSocketSecond.onmessage = (serverMessage: MessageEvent) => {
+                    expect(JSON.parse(serverMessage.data)).toMatchObject(queueInfoMessage);
+                    resolve(null);
+                };
+            }),
+            new Promise((resolve) => {
+                webSocketThird.onmessage = (serverMessage: MessageEvent) => {
+                    expect(JSON.parse(serverMessage.data)).toMatchObject(queueInfoMessage);
+                    resolve(null);
+                };
+            }),
+        ]).then(() => done());
+    });
+
+    it('should get answer on LEAVE_QUEUE: first player', (done) => {
+        webSocketFirst.onmessage = (serverMessage: MessageEvent) => {
+            expect(JSON.parse(serverMessage.data)).toEqual({ action: 'LEAVE_QUEUE_SUCCESS' });
+            done();
+        };
+
+        const message: LeaveQueueMessageInterface = {
+            playerId: playerIdFirst,
+            action: DuelWebsocketClientActions.LEAVE_QUEUE,
+        };
+
+        webSocketFirst.send(JSON.stringify(message));
+    });
+
+    it('all three players should get new queue info', (done) => {
+        const queueInfoMessage: QueueInfoMessageInterface = {
+            action: DuelWebsocketServerActions.QUEUE_INFO,
+            payload: {
+                cpmMatches: 0,
+                cpmPlayersInQueue: 0,
+                vq3Matches: 0,
+                vq3PlayersInQueue: 0,
+            },
+        };
+
+        Promise.all([
+            new Promise((resolve) => {
+                webSocketFirst.onmessage = (serverMessage: MessageEvent) => {
+                    expect(JSON.parse(serverMessage.data)).toMatchObject(queueInfoMessage);
+                    resolve(null);
+                };
+            }),
+            new Promise((resolve) => {
+                webSocketSecond.onmessage = (serverMessage: MessageEvent) => {
+                    expect(JSON.parse(serverMessage.data)).toMatchObject(queueInfoMessage);
+                    resolve(null);
+                };
+            }),
+            new Promise((resolve) => {
+                webSocketThird.onmessage = (serverMessage: MessageEvent) => {
+                    expect(JSON.parse(serverMessage.data)).toMatchObject(queueInfoMessage);
+                    resolve(null);
+                };
+            }),
+        ]).then(() => done());
     });
 
     it('should get answer on JOIN_QUEUE: first player', (done) => {
