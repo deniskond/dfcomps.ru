@@ -18,6 +18,7 @@ import { maps } from './constants/maps';
 import { routes } from './config/routes';
 import { TimingsConfig } from './config/timing';
 import { QueueInfoMessageInterface } from './interfaces/queue-info-message.interface';
+import { QueueInfoInterface } from './interfaces/queue-info.interface';
 
 interface QueueInterface {
     playerId: string;
@@ -121,44 +122,14 @@ export class OneVOneHandler {
         }
 
         if (message.action === DuelWebsocketClientActions.GET_PLAYER_STATE) {
-            const queueItem: QueueInterface | undefined = this.getPlayerInQueue(message.playerId);
+            this.respondWithPlayerState(socket, message);
+            // important - also sending QUEUE_INFO here
+            const queueInfoMessage: QueueInfoMessageInterface = {
+                action: DuelWebsocketServerActions.QUEUE_INFO,
+                payload: this.getQueueInfo(),
+            };
 
-            if (queueItem) {
-                this.send(socket, { action: DuelWebsocketServerActions.PLAYER_STATE, payload: { state: MatchStates.IN_QUEUE, physics: queueItem.physics } });
-
-                return;
-            }
-
-            const match: ServerMatchInterface | undefined = this.getPlayerMatch(message.playerId);
-
-            if (match) {
-                const availableMaps = match.maps.filter(
-                    ({ isBannedByFirstPlayer, isBannedBySecondPlayer }: PickbanMapServerInterface) => !isBannedByFirstPlayer && !isBannedBySecondPlayer,
-                );
-                const timerStartValue = availableMaps.length > 1 ? BAN_TIMER_SECONDS : MATCH_TIMER_SECONDS;
-                const timerValue = timerStartValue - Math.floor((Date.now() - match.timerStartTime) / 1000);
-                const clientMatch: MatchInterface = this.mapServerMatchToMatchDto({ ...match, timer: timerValue > 0 ? timerValue : 0 });
-
-                this.send(socket, {
-                    action: DuelWebsocketServerActions.PLAYER_STATE,
-                    payload: { state: MatchStates.MATCH_IN_PROGRESS, match: clientMatch },
-                });
-
-                return;
-            }
-
-            const finishedMatchPlayer: string | undefined = this.finishedMatchPlayers$.value.find((playerId: string) => playerId === message.playerId);
-
-            if (finishedMatchPlayer) {
-                this.send(socket, {
-                    action: DuelWebsocketServerActions.PLAYER_STATE,
-                    payload: { state: MatchStates.MATCH_FINISHED },
-                });
-
-                return;
-            }
-
-            this.send(socket, { action: DuelWebsocketServerActions.PLAYER_STATE, payload: { state: MatchStates.WAITING_FOR_QUEUE } });
+            this.send(socket, queueInfoMessage);
         }
 
         if (message.action === DuelWebsocketClientActions.LEAVE_QUEUE) {
@@ -187,6 +158,47 @@ export class OneVOneHandler {
 
     public sendDuplicateClientMessage(socket: WebSocket): void {
         this.send(socket, { action: DuelWebsocketServerActions.DUPLICATE_CLIENT });
+    }
+
+    private respondWithPlayerState(socket: WebSocket, message: DuelClientMessage): void {
+        const queueItem: QueueInterface | undefined = this.getPlayerInQueue(message.playerId);
+
+        if (queueItem) {
+            this.send(socket, { action: DuelWebsocketServerActions.PLAYER_STATE, payload: { state: MatchStates.IN_QUEUE, physics: queueItem.physics } });
+
+            return;
+        }
+
+        const match: ServerMatchInterface | undefined = this.getPlayerMatch(message.playerId);
+
+        if (match) {
+            const availableMaps = match.maps.filter(
+                ({ isBannedByFirstPlayer, isBannedBySecondPlayer }: PickbanMapServerInterface) => !isBannedByFirstPlayer && !isBannedBySecondPlayer,
+            );
+            const timerStartValue = availableMaps.length > 1 ? BAN_TIMER_SECONDS : MATCH_TIMER_SECONDS;
+            const timerValue = timerStartValue - Math.floor((Date.now() - match.timerStartTime) / 1000);
+            const clientMatch: MatchInterface = this.mapServerMatchToMatchDto({ ...match, timer: timerValue > 0 ? timerValue : 0 });
+
+            this.send(socket, {
+                action: DuelWebsocketServerActions.PLAYER_STATE,
+                payload: { state: MatchStates.MATCH_IN_PROGRESS, match: clientMatch },
+            });
+
+            return;
+        }
+
+        const finishedMatchPlayer: string | undefined = this.finishedMatchPlayers$.value.find((playerId: string) => playerId === message.playerId);
+
+        if (finishedMatchPlayer) {
+            this.send(socket, {
+                action: DuelWebsocketServerActions.PLAYER_STATE,
+                payload: { state: MatchStates.MATCH_FINISHED },
+            });
+
+            return;
+        }
+
+        this.send(socket, { action: DuelWebsocketServerActions.PLAYER_STATE, payload: { state: MatchStates.WAITING_FOR_QUEUE } });
     }
 
     private send(socket: WebSocket, message: DuelServerMessageType, callback?: () => void): void {
@@ -548,12 +560,7 @@ export class OneVOneHandler {
     private sendUpdatedQueueInfoToAllClients(): Promise<void[]> {
         const queueStateMessage: QueueInfoMessageInterface = {
             action: DuelWebsocketServerActions.QUEUE_INFO,
-            payload: {
-                cpmMatches: this.matches$.value.filter((match: ServerMatchInterface) => match.physics === Physics.CPM).length,
-                cpmPlayersInQueue: this.queue$.value.filter((element: QueueInterface) => element.physics === Physics.CPM).length,
-                vq3Matches: this.matches$.value.filter((match: ServerMatchInterface) => match.physics === Physics.VQ3).length,
-                vq3PlayersInQueue: this.queue$.value.filter((element: QueueInterface) => element.physics === Physics.VQ3).length,
-            },
+            payload: this.getQueueInfo(),
         };
 
         return Promise.all(
@@ -564,5 +571,14 @@ export class OneVOneHandler {
                     }),
             ),
         );
+    }
+
+    private getQueueInfo(): QueueInfoInterface {
+        return {
+            cpmMatches: this.matches$.value.filter((match: ServerMatchInterface) => match.physics === Physics.CPM).length,
+            cpmPlayersInQueue: this.queue$.value.filter((element: QueueInterface) => element.physics === Physics.CPM).length,
+            vq3Matches: this.matches$.value.filter((match: ServerMatchInterface) => match.physics === Physics.VQ3).length,
+            vq3PlayersInQueue: this.queue$.value.filter((element: QueueInterface) => element.physics === Physics.VQ3).length,
+        };
     }
 }

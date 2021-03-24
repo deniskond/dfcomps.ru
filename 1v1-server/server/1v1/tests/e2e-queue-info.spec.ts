@@ -21,6 +21,16 @@ describe('end-to-end: case 5 - sending queue info to all players', () => {
     let isFirstPlayerBanning: boolean;
     let maps: string[];
 
+    const initialQueueStateMessage: QueueInfoMessageInterface = {
+        action: DuelWebsocketServerActions.QUEUE_INFO,
+        payload: {
+            cpmMatches: 0,
+            cpmPlayersInQueue: 0,
+            vq3Matches: 0,
+            vq3PlayersInQueue: 0,
+        },
+    };
+
     beforeAll(() => {
         webSocketFirst = new WebSocket('ws://localhost:3000/1v1');
         playerIdFirst = faker.random.uuid();
@@ -49,10 +59,14 @@ describe('end-to-end: case 5 - sending queue info to all players', () => {
         ]);
     });
 
-    it('should get answer on GET_PLAYER_STATE: first player', (done) => {
+    it('should get answer on GET_PLAYER_STATE: first player with QUEUE_INFO', (done) => {
         webSocketFirst.onmessage = (serverMessage: MessageEvent) => {
             expect(JSON.parse(serverMessage.data)).toEqual({ action: 'PLAYER_STATE', payload: { state: 'WAITING_FOR_QUEUE' } });
-            done();
+
+            webSocketFirst.onmessage = (serverMessage: MessageEvent) => {
+                expect(JSON.parse(serverMessage.data)).toEqual(initialQueueStateMessage);
+                done();
+            };
         };
 
         const message: GetPlayerStateMessageInterface = { playerId: playerIdFirst, action: DuelWebsocketClientActions.GET_PLAYER_STATE };
@@ -60,10 +74,14 @@ describe('end-to-end: case 5 - sending queue info to all players', () => {
         webSocketFirst.send(JSON.stringify(message));
     });
 
-    it('should get answer on GET_PLAYER_STATE: second player', (done) => {
+    it('should get answer on GET_PLAYER_STATE: second player with QUEUE_INFO', (done) => {
         webSocketSecond.onmessage = (serverMessage: MessageEvent) => {
             expect(JSON.parse(serverMessage.data)).toEqual({ action: 'PLAYER_STATE', payload: { state: 'WAITING_FOR_QUEUE' } });
-            done();
+            
+            webSocketSecond.onmessage = (serverMessage: MessageEvent) => {
+                expect(JSON.parse(serverMessage.data)).toEqual(initialQueueStateMessage);
+                done();
+            };
         };
 
         const message: GetPlayerStateMessageInterface = { playerId: playerIdSecond, action: DuelWebsocketClientActions.GET_PLAYER_STATE };
@@ -71,10 +89,14 @@ describe('end-to-end: case 5 - sending queue info to all players', () => {
         webSocketSecond.send(JSON.stringify(message));
     });
 
-    it('should get answer on GET_PLAYER_STATE: third player', (done) => {
+    it('should get answer on GET_PLAYER_STATE: third player with QUEUE_INFO', (done) => {
         webSocketThird.onmessage = (serverMessage: MessageEvent) => {
             expect(JSON.parse(serverMessage.data)).toEqual({ action: 'PLAYER_STATE', payload: { state: 'WAITING_FOR_QUEUE' } });
-            done();
+            
+            webSocketThird.onmessage = (serverMessage: MessageEvent) => {
+                expect(JSON.parse(serverMessage.data)).toEqual(initialQueueStateMessage);
+                done();
+            };
         };
 
         const message: GetPlayerStateMessageInterface = { playerId: playerIdThird, action: DuelWebsocketClientActions.GET_PLAYER_STATE };
@@ -380,7 +402,7 @@ describe('end-to-end: case 5 - sending queue info to all players', () => {
                     webSocketFirst.onmessage = (serverMessage: MessageEvent) => {
                         expect(JSON.parse(serverMessage.data)).toMatchObject(queueInfoMessage);
                         resolve(null);
-                    }
+                    };
                 };
             }),
             new Promise((resolve) => {
@@ -390,7 +412,7 @@ describe('end-to-end: case 5 - sending queue info to all players', () => {
                     webSocketSecond.onmessage = (serverMessage: MessageEvent) => {
                         expect(JSON.parse(serverMessage.data)).toMatchObject(queueInfoMessage);
                         resolve(null);
-                    }
+                    };
                 };
             }),
             new Promise((resolve) => {
