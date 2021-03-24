@@ -10,6 +10,7 @@ import { MatchProgressComponent } from './components/match-progress/match-progre
 import { MatchProgressTimerComponent } from './components/match-progress-timer/match-progress-timer.component';
 import { PickbanMapComponent } from './components/pickban-map/pickban-map.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { OneVOneRatingChangeComponent } from './components/one-v-one-rating-change/one-v-one-rating-change.component';
 
 const routes: Routes = [
     {
@@ -19,7 +20,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [OneVOnePageComponent, QueueTimerComponent, MatchProgressComponent, MatchProgressTimerComponent, PickbanMapComponent],
+    declarations: [OneVOnePageComponent, QueueTimerComponent, MatchProgressComponent, MatchProgressTimerComponent, PickbanMapComponent, OneVOneRatingChangeComponent],
     imports: [CommonModule, RouterModule.forChild(routes), MatProgressSpinnerModule, SharedModule, MatButtonModule, MatSnackBarModule],
 })
 export class OneVOnePageModule {}
