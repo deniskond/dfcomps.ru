@@ -27,6 +27,7 @@ export class OneVOneWidgetComponent implements OnInit {
     public user$: Observable<UserInterface>;
     public queueInfo: QueueInfoInterface;
     public physics = Physics;
+    public firstPickbanStep = true;
 
     private onDestroy$ = new Subject<void>();
 
@@ -59,6 +60,7 @@ export class OneVOneWidgetComponent implements OnInit {
     private initMatchFinishedSubscription(): void {
         this.matchFinishedService.matchFinished$.pipe(takeUntil(this.onDestroy$)).subscribe(() => {
             this.matchState = MatchStates.WAITING_FOR_QUEUE;
+            this.firstPickbanStep = true;
             this.changeDetectorRef.markForCheck();
         });
     }
@@ -92,6 +94,11 @@ export class OneVOneWidgetComponent implements OnInit {
             }
 
             if (serverMessage.action === DuelWebsocketServerActions.PICKBAN_STEP) {
+                if (this.firstPickbanStep) {
+                    new Audio('/assets/sounds/fight.wav').play();
+                }
+
+                this.firstPickbanStep = false;
                 this.matchState = MatchStates.MATCH_IN_PROGRESS;
             }
 

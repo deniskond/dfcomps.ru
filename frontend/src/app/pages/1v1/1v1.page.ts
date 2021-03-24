@@ -120,7 +120,7 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
     private initQueryParamsSubscription(): void {
         this.activatedRoute.queryParams.pipe(filter((params: Params) => !!params?.physics)).subscribe(({ physics }: Params) => {
             this.joinQueue(physics);
-        })
+        });
     }
 
     private initUserSubscriptions(): void {
@@ -215,8 +215,8 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.user$.pipe(filter(Boolean), take(1)).subscribe(() =>
-            this.duelService.getPlayersInfo$().subscribe((playersInfo) => {
+        this.user$.pipe(filter(Boolean), take(1)).subscribe((user: UserInterface) =>
+            this.duelService.getPlayersInfo$().subscribe((playersInfo: DuelPlayersInfoInterface) => {
                 this.playersInfo = playersInfo;
                 this.changeDetectorRef.detectChanges();
             }),
