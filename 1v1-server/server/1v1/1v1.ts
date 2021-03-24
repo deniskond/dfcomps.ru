@@ -267,6 +267,7 @@ export class OneVOneHandler {
             secretKey: config.DUELS_SERVER_PRIVATE_KEY,
         })
             .then(() => {
+                console.log('rest backend answer ok');
                 this.setCheckForBanTimer(0, isFirstPlayerBanning ? firstPlayerId : secondPlayerId);
                 this.matches$.next([...this.matches$.value, serverMatch]);
                 this.sendUpdatedQueueInfoToAllClients().then(() => this.sendPickBanStepsToMatchPlayers(match));
@@ -505,7 +506,10 @@ export class OneVOneHandler {
                 ),
                 take(1),
             )
-            .subscribe(() => {
+            .subscribe((answer) => {
+                console.log('rest api finish match answer ok');
+                console.log(answer);
+
                 const firstClient = this.clients$.value.find((client: ClientInterface) => client.playerId === firstPlayerId);
                 const secondClient = this.clients$.value.find((client: ClientInterface) => client.playerId === secondPlayerId);
 
