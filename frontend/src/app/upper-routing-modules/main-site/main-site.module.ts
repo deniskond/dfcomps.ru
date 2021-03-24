@@ -10,6 +10,8 @@ import { SharedModule } from '../../modules/shared.module';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { OneVOneWidgetComponent } from '../../components/one-v-one-widget/one-v-one-widget.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
     declarations: [MainSiteComponent, OneVOneWidgetComponent],
@@ -22,6 +24,8 @@ import { OneVOneWidgetComponent } from '../../components/one-v-one-widget/one-v-
         SharedModule,
         MatTabsModule,
         MatButtonModule,
+        MatSnackBarModule,
+        MatProgressSpinnerModule,
     ],
 })
 export class MainSiteModule {}

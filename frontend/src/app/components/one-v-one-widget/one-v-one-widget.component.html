@@ -1,14 +1,28 @@
-<div class="row first">
-    <div class="text-column">
-        <div>Текущие матчи в VQ3: 2</div>
-        <div>Игроков в очереди VQ3: 5</div>
+<ng-container *ngIf="user$ | async; else notLogged">
+    <ng-container *ngIf="queueInfo && matchState; else loading">
+        <div class="row first">
+            <div class="text-column">
+                <div>Текущие матчи в VQ3: {{ queueInfo.vq3Matches }}</div>
+                <div>Игроков в очереди VQ3: {{ queueInfo.vq3PlayersInQueue }}</div>
+            </div>
+            <button mat-raised-button color="primary">Поиск VQ3</button>
+        </div>
+        <div class="row">
+            <div class="text-column">
+                <div>Текущие матчи в CPM: {{ queueInfo.cpmMatches }}</div>
+                <div>Игроков в очереди CPM: {{ queueInfo.cpmPlayersInQueue }}</div>
+            </div>
+            <button mat-raised-button color="primary">Поиск CPM</button>
+        </div>
+    </ng-container>
+</ng-container>
+
+<ng-template #loading>
+    <div class="loading">
+        <mat-spinner diameter="40" strokeWidth="3" color="accent"></mat-spinner>
     </div>
-    <button mat-raised-button color="primary">Поиск VQ3</button>
-</div>
-<div class="row">
-    <div class="text-column">
-        <div>Текущие матчи в CPM: 2</div>
-        <div>Игроков в очереди CPM: 5</div>
-    </div>
-    <button mat-raised-button color="primary">Поиск CPM</button>
-</div>
+</ng-template>
+
+<ng-template #notLogged>
+    <div class="not-logged">Войдите или зарегистрируйтесь, чтобы играть 1v1 матчи</div>
+</ng-template>
