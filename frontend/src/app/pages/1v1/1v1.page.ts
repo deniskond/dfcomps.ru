@@ -14,6 +14,8 @@ import { MatchInterface } from './services/interfaces/match.interface';
 import { DuelPlayersInfoInterface } from './interfaces/duel-players-info.interface';
 import { PickbanPhases } from './enums/pickban-phases.enum';
 import { isEqual } from 'lodash';
+import { ActivatedRoute, Params } from '@angular/router';
+import { MatchFinishedService } from './services/match-finsihed.service';
 
 @Component({
     templateUrl: './1v1.page.html',
@@ -39,6 +41,8 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
         private userService: UserService,
         private snackBar: MatSnackBar,
         private languageService: LanguageService,
+        private activatedRoute: ActivatedRoute,
+        private matchFinishedService: MatchFinishedService,
     ) {}
 
     ngOnInit(): void {
@@ -46,6 +50,7 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
         this.initUserSubscriptions();
         this.sendRestorePlayerStateMessage();
         this.initServerMessagesSubscription();
+        this.initQueryParamsSubscription();
     }
 
     ngOnDestroy(): void {
@@ -73,6 +78,7 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
             this.duelService.acceptResult(id);
             this.matchState = MatchStates.WAITING_FOR_QUEUE;
             this.playersInfo = null;
+            this.matchFinishedService.onMatchFinished();
         });
     }
 
@@ -109,6 +115,12 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
         }
 
         return firstPlayerTime < secondPlayerTime ? playersInfo.firstPlayerInfo.nick : playersInfo.secondPlayerInfo.nick;
+    }
+
+    private initQueryParamsSubscription(): void {
+        this.activatedRoute.queryParams.pipe(filter((params: Params) => !!params?.physics)).subscribe(({ physics }: Params) => {
+            this.joinQueue(physics);
+        })
     }
 
     private initUserSubscriptions(): void {

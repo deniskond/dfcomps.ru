@@ -1,28 +1,44 @@
 <ng-container *ngIf="user$ | async; else notLogged">
     <ng-container *ngIf="queueInfo && matchState; else loading">
-        <div class="row first">
-            <div class="text-column">
-                <div>Текущие матчи в VQ3: {{ queueInfo.vq3Matches }}</div>
-                <div>Игроков в очереди VQ3: {{ queueInfo.vq3PlayersInQueue }}</div>
-            </div>
-            <button mat-raised-button color="primary">Поиск VQ3</button>
-        </div>
-        <div class="row">
-            <div class="text-column">
-                <div>Текущие матчи в CPM: {{ queueInfo.cpmMatches }}</div>
-                <div>Игроков в очереди CPM: {{ queueInfo.cpmPlayersInQueue }}</div>
-            </div>
-            <button mat-raised-button color="primary">Поиск CPM</button>
-        </div>
+        <ng-container [ngSwitch]="matchState">
+            <ng-container *ngSwitchCase="matchStates.WAITING_FOR_QUEUE">
+                <div class="row first">
+                    <div class="text-column">
+                        <div>Текущие матчи в VQ3: {{ queueInfo.vq3Matches }}</div>
+                        <div>Игроков в очереди VQ3: {{ queueInfo.vq3PlayersInQueue }}</div>
+                    </div>
+                    <button [disabled]="isWaitingForServerAnswer" (click)="joinQueue(physics.VQ3)" mat-raised-button color="primary">Поиск VQ3</button>
+                </div>
+                <div class="row">
+                    <div class="text-column">
+                        <div>Текущие матчи в CPM: {{ queueInfo.cpmMatches }}</div>
+                        <div>Игроков в очереди CPM: {{ queueInfo.cpmPlayersInQueue }}</div>
+                    </div>
+                    <button [disabled]="isWaitingForServerAnswer" (click)="joinQueue(physics.CPM)" mat-raised-button color="primary">Поиск CPM</button>
+                </div>
+            </ng-container>
+            <ng-container *ngSwitchCase="matchStates.IN_QUEUE">
+                <div class="block">В очереди</div>
+            </ng-container>
+            <ng-container *ngSwitchCase="matchStates.MATCH_IN_PROGRESS">
+                <div class="block">Матч идет</div>
+            </ng-container>
+            <ng-container *ngSwitchCase="matchStates.MATCH_FINISHED">
+                <div class="block">Матч закончен</div>
+            </ng-container>
+            <ng-container *ngSwitchCase="matchStates.DUPLICATE_CLIENT">
+                <div class="block">Открыта вторая вкладка</div>
+            </ng-container>
+        </ng-container>
     </ng-container>
 </ng-container>
 
 <ng-template #loading>
-    <div class="loading">
+    <div class="block loading">
         <mat-spinner diameter="40" strokeWidth="3" color="accent"></mat-spinner>
     </div>
 </ng-template>
 
 <ng-template #notLogged>
-    <div class="not-logged">Войдите или зарегистрируйтесь, чтобы играть 1v1 матчи</div>
+    <div class="block">Войдите или зарегистрируйтесь, чтобы играть 1v1 матчи</div>
 </ng-template>

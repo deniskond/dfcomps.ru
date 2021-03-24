@@ -3,7 +3,7 @@ import { Physics } from '../../../enums/physics.enum';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
 import { JoinQueueMessageInterface } from './interfaces/join-queue-message.interface';
-import { filter, take, tap } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 import { DuelWebsocketClientActions } from './enums/duel-websocket-client-actions.enum';
 import { DuelClientMessage } from './types/duel-client-message.type';
 import { DuelServerMessageType } from './types/duel-server-message.type';

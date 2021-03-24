@@ -123,6 +123,8 @@ export class MatchProgressComponent implements OnChanges {
             return;
         }
 
+        this.bestDemoTime = undefined;
+
         if (
             (this.match.firstPlayerId === this.user.id && this.match.isFirstPlayerBanning) ||
             (this.match.secondPlayerId === this.user.id && this.match.isSecondPlayerBanning)

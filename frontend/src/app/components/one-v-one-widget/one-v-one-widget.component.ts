@@ -1,12 +1,15 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { filter, take, takeUntil } from 'rxjs/operators';
+import { Physics } from '../../enums/physics.enum';
 import { UserInterface } from '../../interfaces/user.interface';
 import { DuelService } from '../../pages/1v1/services/duel.service';
 import { DuelWebsocketServerActions } from '../../pages/1v1/services/enums/duel-websocket-server-actions.enum';
 import { MatchStates } from '../../pages/1v1/services/enums/match-states.enum';
 import { QueueInfoInterface } from '../../pages/1v1/services/interfaces/queue-info.interface';
+import { MatchFinishedService } from '../../pages/1v1/services/match-finsihed.service';
 import { DuelServerMessageType } from '../../pages/1v1/services/types/duel-server-message.type';
 import { LanguageService } from '../../services/language/language.service';
 import { UserService } from '../../services/user-service/user.service';
@@ -23,6 +26,7 @@ export class OneVOneWidgetComponent implements OnInit {
     public matchStates = MatchStates;
     public user$: Observable<UserInterface>;
     public queueInfo: QueueInfoInterface;
+    public physics = Physics;
 
     private onDestroy$ = new Subject<void>();
 
@@ -30,6 +34,7 @@ export class OneVOneWidgetComponent implements OnInit {
         this.user$ = this.userService.getCurrentUser$();
         this.initServerMessagesSubscription();
         this.sendRestorePlayerStateMessageSubscription();
+        this.initMatchFinishedSubscription();
     }
 
     ngOnDestroy(): void {
@@ -43,7 +48,20 @@ export class OneVOneWidgetComponent implements OnInit {
         private snackBar: MatSnackBar,
         private languageService: LanguageService,
         private userService: UserService,
+        private router: Router,
+        private matchFinishedService: MatchFinishedService,
     ) {}
+
+    public joinQueue(physics: Physics): void {
+        this.router.navigate(['/1v1'], { queryParams: { physics } });
+    }
+
+    private initMatchFinishedSubscription(): void {
+        this.matchFinishedService.matchFinished$.pipe(takeUntil(this.onDestroy$)).subscribe(() => {
+            this.matchState = MatchStates.WAITING_FOR_QUEUE;
+            this.changeDetectorRef.markForCheck();
+        });
+    }
 
     private initServerMessagesSubscription(): void {
         this.duelService.serverMessages$.pipe(takeUntil(this.onDestroy$)).subscribe((serverMessage: DuelServerMessageType) => {
