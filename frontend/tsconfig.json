@@ -1,7 +1,7 @@
 {
     "compileOnSave": false,
     "compilerOptions": {
-    "downlevelIteration": true,
+        "downlevelIteration": true,
         "importHelpers": true,
         "outDir": "./dist/out-tsc",
         "sourceMap": true,
@@ -24,4 +24,7 @@
             "@angular/material": ["node_modules/@angular/material"]
         }
     },
+    "angularCompilerOptions": {
+        "fullTemplateTypeCheck": true
+    }
 }

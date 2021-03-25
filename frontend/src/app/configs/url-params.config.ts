@@ -1,5 +1,6 @@
 import { environment } from '../../environments/environment';
 import { Physics } from '../enums/physics.enum';
+import { RatingTablesModes } from '../enums/rating-tables-modes.enum';
 
 const envMap = {
     'local': '',
@@ -41,8 +42,8 @@ export class URL_PARAMS {
         };
     }
 
-    public static TOP_TEN_TABLE(physics: Physics): string {
-        return `${API_URL}/tables/top10/${physics}`;
+    public static TOP_TEN_TABLE(physics: Physics, mode: RatingTablesModes): string {
+        return `${API_URL}/tables/top10/${physics}/${mode}`;
     }
 
     public static RATING_TABLE_PAGE(physics: Physics, page: number): string {

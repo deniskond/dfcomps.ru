@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { BackendService } from '../backend-service/backend-service';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { RatingTablesModes } from '../../enums/rating-tables-modes.enum';
 
 const MAX_PLAYERS_PER_PAGE = 100;
 
@@ -14,12 +15,12 @@ const MAX_PLAYERS_PER_PAGE = 100;
 export class RatingTablesService extends BackendService {
     private cachedTables: Record<string, LeaderTableInterface[]> = {};
 
-    public getTop10Table$(physics: Physics): Observable<LeaderTableInterface[]> {
-        if (this.cachedTables[physics]) {
-            return of(this.cachedTables[physics]);
+    public getTop10Table$(physics: Physics, mode: RatingTablesModes): Observable<LeaderTableInterface[]> {
+        if (this.cachedTables[`${physics}${mode}`]) {
+            return of(this.cachedTables[`${physics}${mode}`]);
         }
 
-        return this.post$(URL_PARAMS.TOP_TEN_TABLE(physics)).pipe(tap((table: LeaderTableInterface[]) => this.cachedTables[physics] = table));
+        return this.post$(URL_PARAMS.TOP_TEN_TABLE(physics, mode)).pipe(tap((table: LeaderTableInterface[]) => this.cachedTables[`${physics}${mode}`] = table));
     }
 
     public getRatingTablePage$(physics: Physics, page: number): Observable<LeaderTableInterface[]> {

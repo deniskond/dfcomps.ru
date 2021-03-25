@@ -7,6 +7,7 @@ import { Observable, ReplaySubject } from 'rxjs';
 import { UserService } from '../../services/user-service/user.service';
 import { withLatestFrom, tap, map, filter, switchMap } from 'rxjs/operators';
 import { UserInterface } from '../../interfaces/user.interface';
+import { RatingTablesModes } from '../../enums/rating-tables-modes.enum';
 
 @Component({
     templateUrl: './main-site.component.html',
@@ -18,6 +19,7 @@ export class MainSiteComponent implements OnInit {
     public nextCupInfo$ = new ReplaySubject<CupInterface>(1);
     public server$: Observable<string>;
     public activePage = Math.random() > 0.5 ? 1 : 2;
+    public ratingtablesModes = RatingTablesModes;
 
     constructor(private cupsService: CupsService, private userService: UserService) {}
 

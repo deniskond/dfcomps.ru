@@ -48,10 +48,10 @@
                             VQ3 (1v1)        
                         </a>
                     </nav>
-                    <app-top-ten-table *ngIf="activePage === 1"  [physics]="physics.CPM"></app-top-ten-table>
-                    <app-top-ten-table *ngIf="activePage === 2" [physics]="physics.VQ3"></app-top-ten-table>
-                    <app-top-ten-table *ngIf="activePage === 3"  [physics]="physics.CPM"></app-top-ten-table>
-                    <app-top-ten-table *ngIf="activePage === 4" [physics]="physics.VQ3"></app-top-ten-table>
+                    <app-top-ten-table *ngIf="activePage === 1"  [physics]="physics.CPM" [mode]="ratingtablesModes.CLASSIC"></app-top-ten-table>
+                    <app-top-ten-table *ngIf="activePage === 2" [physics]="physics.VQ3" [mode]="ratingtablesModes.CLASSIC"></app-top-ten-table>
+                    <app-top-ten-table *ngIf="activePage === 3"  [physics]="physics.CPM" [mode]="ratingtablesModes.ONEVONE"></app-top-ten-table>
+                    <app-top-ten-table *ngIf="activePage === 4" [physics]="physics.VQ3" [mode]="ratingtablesModes.ONEVONE"></app-top-ten-table>
                 </div>
             </div>
         </div>
