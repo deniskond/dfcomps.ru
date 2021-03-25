@@ -27,6 +27,8 @@ console.log = function (message: any) {
     }
 };
 
+oneVOneHandler.setEligiblePlayersSubscription();
+
 // TODO Нужно выносить всю логику в OneVOneHandler и декомпозировать
 webSocketServer.on('connection', function connection(ws: WebSocket) {
     const uniqueId = uuid.v4();

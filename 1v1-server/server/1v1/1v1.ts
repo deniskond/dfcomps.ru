@@ -3,7 +3,7 @@ const config = require('./../config.json');
 import { DuelWebsocketClientActions } from './enums/duel-websocket-client-actions.enum';
 import { DuelClientMessage } from './types/duel-client-message.type';
 import * as WebSocket from 'ws';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { DuelServerMessageType } from './types/duel-server-message.type';
 import { DuelWebsocketServerActions } from './enums/duel-websocket-server-actions.enum';
 import { Physics } from '../enums/physics.enum';
@@ -36,6 +36,21 @@ export class OneVOneHandler {
     private matches$ = new BehaviorSubject<ServerMatchInterface[]>([]);
     private clients$ = new BehaviorSubject<ClientInterface[]>([]);
     private finishedMatchPlayers$ = new BehaviorSubject<string[]>([]);
+    private eligiblePlayers: string[] = [];
+
+    public setEligiblePlayersSubscription(): void {
+        this.doAxiosPostRequest(`${this.getRoutePrefix()}/api/match/get_eligible_players`, {}).then(({ data }: AxiosResponse) => {
+            console.log(`Setting eligible players: ${JSON.stringify(data)}`)
+            this.eligiblePlayers = data.players;
+        });
+
+        setInterval(() => {
+            this.doAxiosPostRequest(`${this.getRoutePrefix()}/api/match/get_eligible_players`, {}).then(({ data }: AxiosResponse) => {
+                console.log(`Setting eligible players: ${JSON.stringify(data)}`)
+                this.eligiblePlayers = data.players;
+            });
+        }, 1000 * 60 * 60 * 24);
+    }
 
     public addClient(playerId: string, socket: WebSocket, uniqueId: string): void {
         const existingClient = this.clients$.value.find((client: ClientInterface) => client.playerId === playerId);
@@ -105,6 +120,12 @@ export class OneVOneHandler {
         console.log(`received: ${JSON.stringify(message)}`);
 
         if (message.action === DuelWebsocketClientActions.JOIN_QUEUE) {
+            if (!this.eligiblePlayers.includes(message.playerId) && process.env.ENV !== 'test') {
+                this.send(socket, { action: DuelWebsocketServerActions.JOIN_QUEUE_FAILURE, payload: { error: 'Should play three or more warcups to join queue' } });
+
+                return;
+            }
+
             if (this.getPlayerInQueue(message.playerId) || this.finishedMatchPlayers$.value.find((playerId: string) => playerId === message.playerId)) {
                 this.send(socket, { action: DuelWebsocketServerActions.JOIN_QUEUE_FAILURE, payload: { error: 'Already in queue' } });
 
@@ -506,9 +527,8 @@ export class OneVOneHandler {
                 ),
                 take(1),
             )
-            .subscribe((answer) => {
+            .subscribe(() => {
                 console.log('rest api finish match answer ok');
-                console.log(answer);
 
                 const firstClient = this.clients$.value.find((client: ClientInterface) => client.playerId === firstPlayerId);
                 const secondClient = this.clients$.value.find((client: ClientInterface) => client.playerId === secondPlayerId);
