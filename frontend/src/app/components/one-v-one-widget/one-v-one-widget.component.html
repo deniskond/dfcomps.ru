@@ -4,30 +4,30 @@
             <ng-container *ngSwitchCase="matchStates.WAITING_FOR_QUEUE">
                 <div class="row first">
                     <div class="text-column">
-                        <div>Текущие матчи в VQ3: {{ queueInfo.vq3Matches }}</div>
-                        <div>Игроков в очереди VQ3: {{ queueInfo.vq3PlayersInQueue }}</div>
+                        <div><span translate translation="currentMatchesIn"></span> VQ3: {{ queueInfo.vq3Matches }}</div>
+                        <div><span translate translation="playersInQueue"></span> VQ3: {{ queueInfo.vq3PlayersInQueue }}</div>
                     </div>
                     <button [disabled]="isWaitingForServerAnswer" (click)="joinQueue(physics.VQ3)" mat-raised-button color="primary">Поиск VQ3</button>
                 </div>
                 <div class="row">
                     <div class="text-column">
-                        <div>Текущие матчи в CPM: {{ queueInfo.cpmMatches }}</div>
-                        <div>Игроков в очереди CPM: {{ queueInfo.cpmPlayersInQueue }}</div>
+                        <div><span translate translation="currentMatchesIn"></span> CPM: {{ queueInfo.cpmMatches }}</div>
+                        <div><span translate translation="playersInQueue"></span> CPM: {{ queueInfo.cpmPlayersInQueue }}</div>
                     </div>
                     <button [disabled]="isWaitingForServerAnswer" (click)="joinQueue(physics.CPM)" mat-raised-button color="primary">Поиск CPM</button>
                 </div>
             </ng-container>
             <ng-container *ngSwitchCase="matchStates.IN_QUEUE">
-                <div class="block">В очереди</div>
+                <div class="block"><span translate translation="inQueue"></span></div>
             </ng-container>
             <ng-container *ngSwitchCase="matchStates.MATCH_IN_PROGRESS">
-                <div class="block">Матч идет</div>
+                <div class="block"><span translate translation="matchInProgress"></span></div>
             </ng-container>
             <ng-container *ngSwitchCase="matchStates.MATCH_FINISHED">
-                <div class="block">Матч закончен</div>
+                <div class="block"><span translate translation="matchFinished"></span></div>
             </ng-container>
             <ng-container *ngSwitchCase="matchStates.DUPLICATE_CLIENT">
-                <div class="block">Открыта вторая вкладка</div>
+                <div class="block"><span translate translation="matchesPageOpenedElsewhere"></span></div>
             </ng-container>
         </ng-container>
     </ng-container>

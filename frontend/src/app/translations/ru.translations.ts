@@ -136,4 +136,7 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
     showPrepostedNews: 'Показать будущие новости (7 дней)',
     killobsWarning: 'Предупреждение: овербаунсы включены',
     findOnevOne: 'Найти матч 1v1',
+    currentMatchesIn: 'Текущие матчи в',
+    playersInQueue: 'Игроков в очереди',
+    code: 'Код',
 };

@@ -136,4 +136,7 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
     showPrepostedNews: 'Show preposted news (7 days)',
     killobsWarning: 'Warning: overbounces are enabled',
     findOnevOne: 'Find 1v1 match',
+    currentMatchesIn: 'Current matches in',
+    playersInQueue: 'Players in queue -',
+    code: 'Code',
 };

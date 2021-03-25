@@ -38,7 +38,7 @@
 <div *ngIf="pickedMapName" class="upload-demo-container">
     <div class="upload-demo-caption">
         <span translate translation="uploadDemoOnMap" class="bebas"></span> {{ pickedMapName }}
-        <span class="yellow-bebas">&nbsp;Code: {{ securityCode }}</span>
+        <span class="yellow-bebas">&nbsp;<span translate translation="code" class="bebas"></span>: {{ securityCode }}</span>
     </div>
     <input (change)="uploadDemo()" #fileInput name="demo" accept=".dm_68" type="file" class="file-input">
     <button (click)="openFileDialog()" mat-raised-button color="accent">
