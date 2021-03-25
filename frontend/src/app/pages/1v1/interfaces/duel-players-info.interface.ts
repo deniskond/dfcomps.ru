@@ -17,4 +17,5 @@ export interface DuelPlayersInfoInterface {
     secondPlayerInfo: DuelPlayerInfoInterface;
     firstPlayerRatingChange: string | null;
     secondPlayerRatingChange: string | null;
+    securityCode: string;
 }

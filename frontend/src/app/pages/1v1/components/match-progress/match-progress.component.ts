@@ -8,9 +8,8 @@ import { Component, ChangeDetectionStrategy, Input, OnChanges, SimpleChanges, Ou
 import { PickbanMapInterface } from '../../interfaces/pickban-map.interface';
 import { MatchInterface } from '../../services/interfaces/match.interface';
 import { PickbanMapServerInterface } from '../../services/interfaces/pickban-map-server.interface';
-import { take, finalize, catchError } from 'rxjs/operators';
+import { take, finalize } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { of } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { DuelPlayersInfoInterface } from '../../interfaces/duel-players-info.interface';
 
@@ -41,6 +40,7 @@ export class MatchProgressComponent implements OnChanges {
     public opponentRating: number;
     public opponentNick: string;
     public opponentCountry: string;
+    public securityCode: string;
 
     constructor(private languageService: LanguageService, private snackBar: MatSnackBar, private demosService: DemosService, private dialog: MatDialog) {}
 
@@ -96,24 +96,22 @@ export class MatchProgressComponent implements OnChanges {
                     this.fileInput.nativeElement.value = null;
                     this.isUploading = false;
                 }),
-                catchError(() => {
-                    this.openSnackBar('error', 'uploadFailed');
-
-                    return of();
-                }),
             )
-            .subscribe(({ status, errors, message }: UploadDemoDtoInterface) => {
-                if (status === 'Success') {
-                    this.openSnackBar('success', 'demoSent');
-                    this.bestDemoTime = +message;
-                } else if (status === 'Error') {
-                    this.openSnackBar('error', message, false);
-                } else if (status === 'Invalid') {
-                    this.dialog.open(ValidationDialogComponent, {
-                        data: errors,
-                    });
-                }
-            });
+            .subscribe(
+                ({ status, errors, message }: UploadDemoDtoInterface) => {
+                    if (status === 'Success') {
+                        this.openSnackBar('success', 'demoSent');
+                        this.bestDemoTime = +message;
+                    } else if (status === 'Error') {
+                        this.openSnackBar('error', message, false);
+                    } else if (status === 'Invalid') {
+                        this.dialog.open(ValidationDialogComponent, {
+                            data: errors,
+                        });
+                    }
+                },
+                () => this.openSnackBar('error', 'uploadFailed'),
+            );
     }
 
     private calculateBanPhaseByMatchInfo(): void {
@@ -173,6 +171,8 @@ export class MatchProgressComponent implements OnChanges {
     }
 
     private updatePlayersInfo(): void {
+        this.securityCode = this.playersInfo.securityCode;
+
         if (this.user.id === this.playersInfo.firstPlayerId) {
             this.playerNick = this.playersInfo.firstPlayerInfo.nick;
             this.playerRating = +this.playersInfo.firstPlayerInfo.rating || 1500;
