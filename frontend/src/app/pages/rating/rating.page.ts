@@ -6,7 +6,7 @@ import { Physics } from '../../enums/physics.enum';
 import { range } from 'lodash';
 import { take, finalize } from 'rxjs/operators';
 
-const CURRENT_SEASON = 4;
+const CURRENT_SEASON = 5;
 const MAX_PLAYERS_PER_PAGE = 100;
 
 @Component({
