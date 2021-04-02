@@ -19,6 +19,7 @@ import { routes } from './config/routes';
 import { TimingsConfig } from './config/timing';
 import { QueueInfoMessageInterface } from './interfaces/queue-info-message.interface';
 import { QueueInfoInterface } from './interfaces/queue-info.interface';
+import { TEST_PLAYER_ID } from './constants/test-player-id';
 
 interface QueueInterface {
     playerId: string;
@@ -120,7 +121,7 @@ export class OneVOneHandler {
         console.log(`received: ${JSON.stringify(message)}`);
 
         if (message.action === DuelWebsocketClientActions.JOIN_QUEUE) {
-            if (!this.eligiblePlayers.includes(message.playerId) && process.env.ENV !== 'test') {
+            if (!this.eligiblePlayers.includes(message.playerId) && message.playerId !== TEST_PLAYER_ID && process.env.ENV !== 'test') {
                 this.send(socket, { action: DuelWebsocketServerActions.JOIN_QUEUE_FAILURE, payload: { error: 'Should play three or more warcups to join queue' } });
 
                 return;
