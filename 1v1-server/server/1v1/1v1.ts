@@ -41,13 +41,13 @@ export class OneVOneHandler {
 
     public setEligiblePlayersSubscription(): void {
         this.doAxiosPostRequest(`${this.getRoutePrefix()}/api/match/get_eligible_players`, {}).then(({ data }: AxiosResponse) => {
-            console.log(`Setting eligible players: ${JSON.stringify(data)}`)
+            console.log(`Setting eligible players: ${JSON.stringify(data)}`);
             this.eligiblePlayers = data.players;
         });
 
         setInterval(() => {
             this.doAxiosPostRequest(`${this.getRoutePrefix()}/api/match/get_eligible_players`, {}).then(({ data }: AxiosResponse) => {
-                console.log(`Setting eligible players: ${JSON.stringify(data)}`)
+                console.log(`Setting eligible players: ${JSON.stringify(data)}`);
                 this.eligiblePlayers = data.players;
             });
         }, 1000 * 60 * 60 * 24);
@@ -122,12 +122,19 @@ export class OneVOneHandler {
 
         if (message.action === DuelWebsocketClientActions.JOIN_QUEUE) {
             if (!this.eligiblePlayers.includes(message.playerId) && message.playerId !== TEST_PLAYER_ID && process.env.ENV !== 'test') {
-                this.send(socket, { action: DuelWebsocketServerActions.JOIN_QUEUE_FAILURE, payload: { error: 'Should play three or more warcups to join queue' } });
+                this.send(socket, {
+                    action: DuelWebsocketServerActions.JOIN_QUEUE_FAILURE,
+                    payload: { error: 'Should play three or more warcups to join queue' },
+                });
 
                 return;
             }
 
-            if (this.getPlayerInQueue(message.playerId) || this.finishedMatchPlayers$.value.find((playerId: string) => playerId === message.playerId)) {
+            if (
+                this.getPlayerInQueue(message.playerId) ||
+                this.finishedMatchPlayers$.value.find((playerId: string) => playerId === message.playerId) ||
+                this.getPlayerMatch(message.playerId)
+            ) {
                 this.send(socket, { action: DuelWebsocketServerActions.JOIN_QUEUE_FAILURE, payload: { error: 'Already in queue' } });
 
                 return;

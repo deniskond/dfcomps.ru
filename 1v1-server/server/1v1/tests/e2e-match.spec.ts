@@ -214,6 +214,23 @@ describe('end-to-end: case 2 - full match', () => {
         isFirstPlayerBanning = !isFirstPlayerBanning;
     });
 
+    it('should not be able to join queue while in match', (done) => {
+        webSocketFirstMessagesStream$.pipe(take(1)).subscribe((message: DuelServerMessageType) => {
+            expect(message).toEqual({ action: 'JOIN_QUEUE_FAILURE', payload: { error: 'Already in queue' } });
+            done();
+        });
+
+        const message: JoinQueueMessageInterface = {
+            playerId: playerIdFirst,
+            action: DuelWebsocketClientActions.JOIN_QUEUE,
+            payload: {
+                physics,
+            },
+        };
+
+        webSocketFirst.send(JSON.stringify(message));
+    });
+
     it('should auto-ban a map if there is no response from player (3rd ban)', (done) => {
         combineLatest([webSocketFirstMessagesStream$, webSocketSecondMessagesStream$])
             .pipe(take(1))
