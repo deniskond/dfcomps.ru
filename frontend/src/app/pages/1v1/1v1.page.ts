@@ -61,6 +61,7 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
     public joinQueue(physics: Physics): void {
         this.isWaitingForServerAnswer = true;
         this.selectedPhysics = physics;
+        this.playersInfo = null;
 
         this.user$.pipe(filter(Boolean), take(1)).subscribe(({ id }: UserInterface) => this.duelService.joinQueue(id, physics));
     }
