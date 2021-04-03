@@ -22,7 +22,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     @HostListener('window:beforeunload', ['$event'])
     unloadHandler() {
-        this.duelService.closeConnection();
+        // this.duelService.closeConnection();
     }
 
     ngOnInit(): void {
