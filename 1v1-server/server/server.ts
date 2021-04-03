@@ -61,6 +61,10 @@ webSocketServer.on('connection', function connection(ws: WebSocket) {
             process.exit(0);
         }
     });
+
+    ws.addListener('close', (code, message) => {
+        console.log(`closing with code ${code}, message: ${message}`);
+    });
 });
 
 server.listen(SERVER_PORT, () => {
