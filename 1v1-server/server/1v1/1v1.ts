@@ -457,7 +457,7 @@ export class OneVOneHandler {
                 this.doAxiosPostRequest(`${this.getRoutePrefix()}/api/match/update_match_map`, {
                     firstPlayerId: match.firstPlayerId,
                     secondPlayerId: match.secondPlayerId,
-                    map: pickedMap.map.name,
+                    map: JSON.stringify(pickedMap.map),
                     secretKey: config.DUELS_SERVER_PRIVATE_KEY,
                 });
             }
