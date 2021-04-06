@@ -10,6 +10,7 @@ import { QueueInfoMessageInterface } from '../interfaces/queue-info-message.inte
 import { PickbanMapServerInterface } from '../interfaces/pickban-map-server.interface';
 import { BanMapMessageInterface } from '../interfaces/ban-map-message.interface';
 import { LeaveQueueMessageInterface } from '../interfaces/leave-queue-message.interface';
+import { MapInterface } from '../interfaces/map.interface';
 
 describe('end-to-end: case 5 - sending queue info to all players', () => {
     let webSocketFirst: WebSocket;
@@ -20,7 +21,7 @@ describe('end-to-end: case 5 - sending queue info to all players', () => {
     let playerIdThird: string;
     let physics: Physics;
     let isFirstPlayerBanning: boolean;
-    let maps: string[];
+    let maps: MapInterface[];
 
     const initialQueueStateMessage: QueueInfoMessageInterface = {
         action: DuelWebsocketServerActions.QUEUE_INFO,
@@ -289,7 +290,7 @@ describe('end-to-end: case 5 - sending queue info to all players', () => {
                         const parsedMessage: PickbanStepMessageInterface = JSON.parse(serverMessage.data);
 
                         isFirstPlayerBanning = parsedMessage.payload.match.isFirstPlayerBanning;
-                        maps = parsedMessage.payload.match.maps.map(({ name }: PickbanMapServerInterface) => name);
+                        maps = parsedMessage.payload.match.maps.map(({ map }: PickbanMapServerInterface) => map);
 
                         expect(parsedMessage).toMatchObject(pickbanStepMock(playerIdFirst, playerIdSecond, physics));
                         resolve(null);
@@ -327,7 +328,7 @@ describe('end-to-end: case 5 - sending queue info to all players', () => {
                 playerId: playerIdFirst,
                 action: DuelWebsocketClientActions.BAN_MAP,
                 payload: {
-                    mapName: maps[0],
+                    mapName: maps[0].name,
                 },
             };
 
@@ -339,7 +340,7 @@ describe('end-to-end: case 5 - sending queue info to all players', () => {
                 playerId: playerIdSecond,
                 action: DuelWebsocketClientActions.BAN_MAP,
                 payload: {
-                    mapName: maps[0],
+                    mapName: maps[0].name,
                 },
             };
 
@@ -380,7 +381,7 @@ describe('end-to-end: case 5 - sending queue info to all players', () => {
                 playerId: playerIdFirst,
                 action: DuelWebsocketClientActions.BAN_MAP,
                 payload: {
-                    mapName: maps[1],
+                    mapName: maps[1].name,
                 },
             };
 
@@ -392,7 +393,7 @@ describe('end-to-end: case 5 - sending queue info to all players', () => {
                 playerId: playerIdSecond,
                 action: DuelWebsocketClientActions.BAN_MAP,
                 payload: {
-                    mapName: maps[1],
+                    mapName: maps[1].name,
                 },
             };
 

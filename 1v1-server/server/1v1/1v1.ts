@@ -20,6 +20,7 @@ import { TimingsConfig } from './config/timing';
 import { QueueInfoMessageInterface } from './interfaces/queue-info-message.interface';
 import { QueueInfoInterface } from './interfaces/queue-info.interface';
 import { TEST_PLAYER_ID } from './constants/test-player-id';
+import { MapInterface } from './interfaces/map.interface';
 
 interface QueueInterface {
     playerId: string;
@@ -250,17 +251,17 @@ export class OneVOneHandler {
     }
 
     private getRandomMaps(): PickbanMapServerInterface[] {
-        const map1: string = maps[Math.floor(Math.random() * maps.length)];
-        const map2: string = maps.filter((map) => map != map1)[Math.floor(Math.random() * (maps.length - 1))];
-        const map3: string = maps.filter((map) => ![map1, map2].includes(map))[Math.floor(Math.random() * (maps.length - 2))];
-        const map4: string = maps.filter((map) => ![map1, map2, map3].includes(map))[Math.floor(Math.random() * (maps.length - 3))];
-        const map5: string = maps.filter((map) => ![map1, map2, map3, map4].includes(map))[Math.floor(Math.random() * (maps.length - 4))];
-        const randomMaps: string[] = [map1, map2, map3, map4, map5];
+        const map1: MapInterface = maps[Math.floor(Math.random() * maps.length)];
+        const map2: MapInterface = maps.filter((map) => map.name != map1.name)[Math.floor(Math.random() * (maps.length - 1))];
+        const map3: MapInterface = maps.filter((map) => ![map1.name, map2.name].includes(map.name))[Math.floor(Math.random() * (maps.length - 2))];
+        const map4: MapInterface = maps.filter((map) => ![map1.name, map2.name, map3.name].includes(map.name))[Math.floor(Math.random() * (maps.length - 3))];
+        const map5: MapInterface = maps.filter((map) => ![map1.name, map2.name, map3.name, map4.name].includes(map.name))[Math.floor(Math.random() * (maps.length - 4))];
+        const randomMaps: MapInterface[] = [map1, map2, map3, map4, map5];
 
         console.log(`randomMaps: ${JSON.stringify(randomMaps)}`);
 
-        return randomMaps.map((name: string) => ({
-            name,
+        return randomMaps.map((map: MapInterface) => ({
+            map,
             isBannedByFirstPlayer: false,
             isBannedBySecondPlayer: false,
             isPickedByFirstPlayer: false,
@@ -361,13 +362,13 @@ export class OneVOneHandler {
             return;
         }
 
-        const randomMapName = availableMaps[Math.floor(Math.random() * availableMaps.length)].name;
+        const randomMapName = availableMaps[Math.floor(Math.random() * availableMaps.length)].map.name;
 
         this.banMap(match, randomMapName, banningPlayerId);
     }
 
     private banMap(match: ServerMatchInterface, mapName: string, banningPlayerId: string): void {
-        const matchMap = match.maps.find((map: PickbanMapServerInterface) => map.name === mapName);
+        const matchMap = match.maps.find((pickban: PickbanMapServerInterface) => pickban.map.name === mapName);
 
         if (!matchMap) {
             // TODO Нужна обработка ошибок, карта не в списке матча
@@ -394,21 +395,21 @@ export class OneVOneHandler {
                     return match;
                 }
 
-                const mappedMaps: PickbanMapServerInterface[] = match.maps.map((map: PickbanMapServerInterface) => {
-                    if (map.name !== mapName) {
-                        return map;
+                const mappedMaps: PickbanMapServerInterface[] = match.maps.map((pickban: PickbanMapServerInterface) => {
+                    if (pickban.map.name !== mapName) {
+                        return pickban;
                     }
 
-                    if (map.isBannedByFirstPlayer || map.isBannedBySecondPlayer) {
+                    if (pickban.isBannedByFirstPlayer || pickban.isBannedBySecondPlayer) {
                         // TODO Нужна обработка ошибок, карта уже забанена
                         console.log('map already banned');
-                        return map;
+                        return pickban;
                     }
 
-                    if (map.isPickedByFirstPlayer || map.isPickedBySecondPlayer) {
+                    if (pickban.isPickedByFirstPlayer || pickban.isPickedBySecondPlayer) {
                         // TODO Нужна обработка ошибок, карта уже выбрана
                         console.log('map already picked');
-                        return map;
+                        return pickban;
                     }
 
                     return {
@@ -416,7 +417,7 @@ export class OneVOneHandler {
                         isBannedBySecondPlayer: isSecondPlayer,
                         isPickedByFirstPlayer: false,
                         isPickedBySecondPlayer: false,
-                        name: map.name,
+                        map: pickban.map,
                     };
                 });
 
@@ -449,14 +450,14 @@ export class OneVOneHandler {
             );
 
             const pickedMap = availableMaps
-                .filter((map: PickbanMapServerInterface) => map.name !== mapName)
+                .filter((pickban: PickbanMapServerInterface) => pickban.map.name !== mapName)
                 .find((map: PickbanMapServerInterface) => !map.isBannedByFirstPlayer && !map.isBannedBySecondPlayer);
 
             if (pickedMap) {
                 this.doAxiosPostRequest(`${this.getRoutePrefix()}/api/match/update_match_map`, {
                     firstPlayerId: match.firstPlayerId,
                     secondPlayerId: match.secondPlayerId,
-                    map: pickedMap.name,
+                    map: pickedMap.map.name,
                     secretKey: config.DUELS_SERVER_PRIVATE_KEY,
                 });
             }

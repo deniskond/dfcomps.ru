@@ -1,5 +1,7 @@
+import { MapInterface } from './map.interface';
+
 export interface PickbanMapServerInterface {
-    name: string;
+    map: MapInterface;
     isBannedByFirstPlayer: boolean;
     isBannedBySecondPlayer: boolean;
     isPickedByFirstPlayer: boolean;

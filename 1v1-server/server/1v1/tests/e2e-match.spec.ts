@@ -12,6 +12,7 @@ import { MatchResultAcceptedMessageInterface } from '../interfaces/match-result-
 import { DuelServerMessageType } from '../types/duel-server-message.type';
 import { combineLatest, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { MapInterface } from '../interfaces/map.interface';
 
 describe('end-to-end: case 2 - full match', () => {
     let webSocketFirst: WebSocket;
@@ -20,7 +21,7 @@ describe('end-to-end: case 2 - full match', () => {
     let playerIdSecond: string;
     let physics: Physics;
     let isFirstPlayerBanning: boolean;
-    let maps: string[];
+    let maps: MapInterface[];
     const webSocketFirstMessagesStream$: Subject<DuelServerMessageType> = new Subject();
     const webSocketSecondMessagesStream$: Subject<DuelServerMessageType> = new Subject();
 
@@ -122,7 +123,7 @@ describe('end-to-end: case 2 - full match', () => {
             .pipe(take(1))
             .subscribe((messages: DuelServerMessageType[]) => {
                 isFirstPlayerBanning = (messages[0] as PickbanStepMessageInterface).payload.match.isFirstPlayerBanning;
-                maps = (messages[0] as PickbanStepMessageInterface).payload.match.maps.map(({ name }: PickbanMapServerInterface) => name);
+                maps = (messages[0] as PickbanStepMessageInterface).payload.match.maps.map(({ map }: PickbanMapServerInterface) => map);
 
                 expect(messages[0]).toMatchObject(pickbanStepMock(playerIdFirst, playerIdSecond, physics));
                 expect(messages[1]).toMatchObject(pickbanStepMock(playerIdFirst, playerIdSecond, physics));
@@ -148,7 +149,7 @@ describe('end-to-end: case 2 - full match', () => {
                 playerId: playerIdFirst,
                 action: DuelWebsocketClientActions.BAN_MAP,
                 payload: {
-                    mapName: maps[0],
+                    mapName: maps[0].name,
                 },
             };
 
@@ -160,7 +161,7 @@ describe('end-to-end: case 2 - full match', () => {
                 playerId: playerIdSecond,
                 action: DuelWebsocketClientActions.BAN_MAP,
                 payload: {
-                    mapName: maps[0],
+                    mapName: maps[0].name,
                 },
             };
 
@@ -190,7 +191,7 @@ describe('end-to-end: case 2 - full match', () => {
                 playerId: playerIdFirst,
                 action: DuelWebsocketClientActions.BAN_MAP,
                 payload: {
-                    mapName: maps[1],
+                    mapName: maps[1].name,
                 },
             };
 
@@ -202,7 +203,7 @@ describe('end-to-end: case 2 - full match', () => {
                 playerId: playerIdSecond,
                 action: DuelWebsocketClientActions.BAN_MAP,
                 payload: {
-                    mapName: maps[1],
+                    mapName: maps[1].name,
                 },
             };
 
