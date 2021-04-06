@@ -8,7 +8,6 @@ import { Observable } from 'rxjs';
 })
 export class CupRegistrationService extends BackendService {
     public registerForCup$(cupId: string): Observable<void> {
-        console.log(URL_PARAMS.CUP.REGISTER(cupId));
         return this.post$(URL_PARAMS.CUP.REGISTER(cupId));
     }
 

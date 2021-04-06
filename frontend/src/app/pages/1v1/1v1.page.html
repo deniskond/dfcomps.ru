@@ -67,7 +67,7 @@
                         <div *ngIf="playersInfo" class="result-container">
                             <app-pickban-map
                                 [pickbanPhase]="pickbanPhases.PICK_BANS_FINISHED"
-                                [map]="{ name: playersInfo.map, isPickedByPlayer: true, isPickedByOpponent: true }">
+                                [map]="{ map: playersInfo.map, isPickedByPlayer: true, isPickedByOpponent: true }">
                             </app-pickban-map>
                             <div class="player-result">
                                 <div class="flex">

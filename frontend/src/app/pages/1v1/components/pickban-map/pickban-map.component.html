@@ -1,5 +1,5 @@
 <div
-    [ngStyle]="map.name | invokeFunction : getMapStyle"
+    [ngStyle]="map?.map?.name | invokeFunction : getMapStyle"
     [class.banned]="isBanned"
     [class.pointer-enabled]="!isBanned && pickbanPhase === pickBanPhases.YOU_ARE_BANNING"
     (click)="banMap()"
@@ -17,5 +17,5 @@
 <div class="map-second-layer"></div>
 
 <div class="map-name">
-    {{ map.name }}
+    {{ map?.map?.name }}
 </div>

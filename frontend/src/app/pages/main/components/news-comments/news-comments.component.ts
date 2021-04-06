@@ -95,8 +95,6 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
                 take(1),
                 finalize(() => (this.isLoading = false)),
                 catchError((error: any) => {
-                    console.log(error);
-
                     return Observable.throw(new Error(error));
                 }),
             )

@@ -22,7 +22,7 @@
             *ngFor="let map of mapList"
             [pickbanPhase]="pickbanPhase"
             [map]="map"
-            (banned)="onMapBanned(map.name)"
+            (banned)="onMapBanned(map.map.name)"
             class="map">
         </app-pickban-map>
     </div>

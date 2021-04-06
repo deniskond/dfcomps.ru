@@ -13,7 +13,6 @@ export class MatchFinishedService {
     }
 
     public onMatchFinished(): void {
-        console.log('onMatchFinished')
         this._matchFinished$.next();
     }
 }

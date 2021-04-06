@@ -136,15 +136,15 @@ export class MatchProgressComponent implements OnChanges {
     }
 
     private updateMaplistByMatchInfo(): void {
-        this.mapList = this.match.maps.map((map: PickbanMapServerInterface) => {
+        this.mapList = this.match.maps.map((pickban: PickbanMapServerInterface) => {
             const isFirstPlayer = this.user.id === this.match.firstPlayerId;
 
             return {
-                name: map.name,
-                isBannedByPlayer: isFirstPlayer ? map.isBannedByFirstPlayer : map.isBannedBySecondPlayer,
-                isBannedByOpponent: isFirstPlayer ? map.isBannedBySecondPlayer : map.isBannedByFirstPlayer,
-                isPickedByPlayer: isFirstPlayer ? map.isPickedByFirstPlayer : map.isPickedBySecondPlayer,
-                isPickedByOpponent: isFirstPlayer ? map.isPickedBySecondPlayer : map.isPickedByFirstPlayer,
+                map: pickban.map,
+                isBannedByPlayer: isFirstPlayer ? pickban.isBannedByFirstPlayer : pickban.isBannedBySecondPlayer,
+                isBannedByOpponent: isFirstPlayer ? pickban.isBannedBySecondPlayer : pickban.isBannedByFirstPlayer,
+                isPickedByPlayer: isFirstPlayer ? pickban.isPickedByFirstPlayer : pickban.isPickedBySecondPlayer,
+                isPickedByOpponent: isFirstPlayer ? pickban.isPickedBySecondPlayer : pickban.isPickedByFirstPlayer,
             };
         });
     }
@@ -155,7 +155,7 @@ export class MatchProgressComponent implements OnChanges {
         );
 
         if (pickedMap) {
-            this.pickedMapName = pickedMap.name;
+            this.pickedMapName = pickedMap.map.name;
         }
     }
 

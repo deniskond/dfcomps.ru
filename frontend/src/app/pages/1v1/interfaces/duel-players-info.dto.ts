@@ -1,8 +1,7 @@
-import { MapInterface } from '../services/interfaces/map.interface';
-import { Physics } from './../../../enums/physics.enum';
+import { Physics } from '../../../enums/physics.enum';
 import { DuelPlayerInfoInterface } from './duel-player-info.interface';
 
-export interface DuelPlayersInfoInterface {
+export interface DuelPlayersInfoDtoInterface {
     matchId: string;
     firstPlayerId: string;
     secondPlayerId: string;
@@ -13,7 +12,7 @@ export interface DuelPlayersInfoInterface {
     startDatetime: string;
     isFinished: string;
     physics: Physics;
-    map: MapInterface | null;
+    map: string;
     firstPlayerInfo: DuelPlayerInfoInterface;
     secondPlayerInfo: DuelPlayerInfoInterface;
     firstPlayerRatingChange: string | null;
