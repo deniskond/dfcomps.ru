@@ -33,6 +33,8 @@ export class DuelService {
             map((duelPlayersInfoDto) => ({
                 ...duelPlayersInfoDto,
                 map: duelPlayersInfoDto.map ? JSON.parse(duelPlayersInfoDto.map) : null,
+                firstPlayerRatingChange: +duelPlayersInfoDto.firstPlayerRatingChange,
+                secondPlayerRatingChange: +duelPlayersInfoDto.secondPlayerRatingChange,
             })),
         );
     }

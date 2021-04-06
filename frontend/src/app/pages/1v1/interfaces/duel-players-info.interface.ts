@@ -16,7 +16,7 @@ export interface DuelPlayersInfoInterface {
     map: MapInterface | null;
     firstPlayerInfo: DuelPlayerInfoInterface;
     secondPlayerInfo: DuelPlayerInfoInterface;
-    firstPlayerRatingChange: string | null;
-    secondPlayerRatingChange: string | null;
+    firstPlayerRatingChange: number | null;
+    secondPlayerRatingChange: number | null;
     securityCode: string;
 }

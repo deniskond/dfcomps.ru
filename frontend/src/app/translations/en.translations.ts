@@ -124,7 +124,6 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
     waitingForServerConnection: 'Waiting for server connection',
     registerToPlayMatches: 'Login or register to play 1v1 matches',
     rulesMatch: 'Choose your physics and join the queue. After the match is found you will need to ban maps taking turns with your opponent. After map is chosen you will have 15 minutes to set time on selected map in chosen physics. Whoever sets the lowest time wins. A demo is considered valid by the same meanings as on regular Warcups.',
-    uploadDemoOnMap: 'Upload a demo on map',
     matchInProgress: 'Match in progress',
     opponentIsBanningMap: 'Opponent is banning a map',
     youAreBanningMap: 'You are banning a map',
@@ -139,4 +138,6 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
     currentMatchesIn: 'Current matches in',
     playersInQueue: 'Players in queue -',
     code: 'Code',
+    uploadDemo: 'Upload demo',
+    difficulty: 'Difficulty',
 };
