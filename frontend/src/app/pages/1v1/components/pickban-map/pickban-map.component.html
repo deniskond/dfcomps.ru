@@ -10,6 +10,13 @@
     <div *ngIf="map.isPickedByOpponent" class="picked-border picked-by-opponent"></div>
     <div *ngIf="map.isPickedByPlayer" class="picked-border picked-by-player"></div>
 
+    <div class="weapons-container">
+        <app-weapons *ngIf="map?.map?.weapons" [weapons]="map?.map?.weapons"></app-weapons>
+    </div>
+    <div class="difficulty-container" *ngIf="map?.map?.difficulty">
+        Difficulty: {{ map?.map?.difficulty }}/5
+    </div>
+
     <div class="cross"></div>
 
 </div>
