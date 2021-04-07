@@ -174,23 +174,23 @@ export class MatchProgressComponent implements OnChanges {
         this.securityCode = this.playersInfo.securityCode;
 
         if (this.user.id === this.playersInfo.firstPlayerId) {
-            this.playerNick = this.playersInfo.firstPlayerInfo.nick;
-            this.playerRating = +this.playersInfo.firstPlayerInfo.rating || 1500;
-            this.playerCountry = this.playersInfo.firstPlayerInfo.country;
-            this.opponentNick = this.playersInfo.secondPlayerInfo.nick;
-            this.opponentRating = +this.playersInfo.secondPlayerInfo.rating || 1500;
-            this.opponentCountry = this.playersInfo.secondPlayerInfo.country;
+            this.playerNick = this.playersInfo.firstPlayerInfo?.nick;
+            this.playerRating = +this.playersInfo.firstPlayerInfo?.rating || 1500;
+            this.playerCountry = this.playersInfo.firstPlayerInfo?.country;
+            this.opponentNick = this.playersInfo.secondPlayerInfo?.nick || 'dfcomps bot';
+            this.opponentRating = this.opponentNick === 'dfcomps bot' ? +this.playersInfo.firstPlayerInfo?.rating : +this.playersInfo.secondPlayerInfo?.rating || 1500;
+            this.opponentCountry = this.playersInfo.secondPlayerInfo?.country;
 
             if (this.playersInfo.firstPlayerTime) {
                 this.bestDemoTime = +this.playersInfo.firstPlayerTime;
             }
         } else {
-            this.opponentNick = this.playersInfo.firstPlayerInfo.nick;
-            this.opponentRating = +this.playersInfo.firstPlayerInfo.rating || 1500;
-            this.opponentCountry = this.playersInfo.firstPlayerInfo.country;
-            this.playerNick = this.playersInfo.secondPlayerInfo.nick;
-            this.playerRating = +this.playersInfo.secondPlayerInfo.rating || 1500;
-            this.playerCountry = this.playersInfo.secondPlayerInfo.country;
+            this.opponentNick = this.playersInfo.firstPlayerInfo?.nick || 'dfcomps bot';
+            this.opponentRating = 'dfcomps bot' ? +this.playersInfo.secondPlayerInfo?.rating : +this.playersInfo.firstPlayerInfo?.rating || 1500;
+            this.opponentCountry = this.playersInfo.firstPlayerInfo?.country;
+            this.playerNick = this.playersInfo.secondPlayerInfo?.nick;
+            this.playerRating = +this.playersInfo.secondPlayerInfo?.rating || 1500;
+            this.playerCountry = this.playersInfo.secondPlayerInfo?.country;
 
             if (this.playersInfo.secondPlayerTime) {
                 this.bestDemoTime = +this.playersInfo.secondPlayerTime;
