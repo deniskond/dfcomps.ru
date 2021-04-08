@@ -13,8 +13,8 @@ import { MatchStates } from './services/enums/match-states.enum';
 import { MatchInterface } from './services/interfaces/match.interface';
 import { DuelPlayersInfoInterface } from './interfaces/duel-players-info.interface';
 import { PickbanPhases } from './enums/pickban-phases.enum';
-import { ActivatedRoute, Params } from '@angular/router';
 import { MatchFinishedService } from './services/match-finsihed.service';
+import { JoinQueueService } from './services/join-queue.service';
 
 @Component({
     templateUrl: './1v1.page.html',
@@ -41,17 +41,17 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
         private userService: UserService,
         private snackBar: MatSnackBar,
         private languageService: LanguageService,
-        private activatedRoute: ActivatedRoute,
         private matchFinishedService: MatchFinishedService,
+        private joinQueueService: JoinQueueService,
     ) {
         document.addEventListener('visibilitychange', () => this.isBrowserTabVisible$.next(!document.hidden));
     }
 
     ngOnInit(): void {
         this.user$ = this.userService.getCurrentUser$();
-         this.sendRestorePlayerStateMessage();
+        this.sendRestorePlayerStateMessage();
         this.initServerMessagesSubscription();
-        this.initQueryParamsSubscription();
+        this.initJoinQueueCheck();
 
         this.isBrowserTabVisible$.pipe(filter(Boolean)).subscribe(() => this.sendRestorePlayerStateMessage());
     }
@@ -121,10 +121,11 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
         return firstPlayerTime < secondPlayerTime ? playersInfo.firstPlayerInfo.nick : playersInfo.secondPlayerInfo.nick;
     }
 
-    private initQueryParamsSubscription(): void {
-        this.activatedRoute.queryParams.pipe(filter((params: Params) => !!params?.physics)).subscribe(({ physics }: Params) => {
-            this.joinQueue(physics);
-        });
+    private initJoinQueueCheck(): void {
+        if (this.joinQueueService.queue !== null) {
+            this.joinQueue(this.joinQueueService.queue);
+            this.joinQueueService.setJoinQueue(null);
+        }
     }
 
     private initServerMessagesSubscription(): void {

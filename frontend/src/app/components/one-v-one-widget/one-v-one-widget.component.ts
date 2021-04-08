@@ -9,6 +9,7 @@ import { DuelService } from '../../pages/1v1/services/duel.service';
 import { DuelWebsocketServerActions } from '../../pages/1v1/services/enums/duel-websocket-server-actions.enum';
 import { MatchStates } from '../../pages/1v1/services/enums/match-states.enum';
 import { QueueInfoInterface } from '../../pages/1v1/services/interfaces/queue-info.interface';
+import { JoinQueueService } from '../../pages/1v1/services/join-queue.service';
 import { MatchFinishedService } from '../../pages/1v1/services/match-finsihed.service';
 import { DuelServerMessageType } from '../../pages/1v1/services/types/duel-server-message.type';
 import { LanguageService } from '../../services/language/language.service';
@@ -51,10 +52,12 @@ export class OneVOneWidgetComponent implements OnInit {
         private userService: UserService,
         private router: Router,
         private matchFinishedService: MatchFinishedService,
+        private joinQueueService: JoinQueueService,
     ) {}
 
     public joinQueue(physics: Physics): void {
-        this.router.navigate(['/1v1'], { queryParams: { physics } });
+        this.joinQueueService.setJoinQueue(physics);
+        this.router.navigate(['/1v1']);
     }
 
     private initMatchFinishedSubscription(): void {
