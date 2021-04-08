@@ -178,7 +178,8 @@ export class MatchProgressComponent implements OnChanges {
             this.playerRating = +this.playersInfo.firstPlayerInfo?.rating || 1500;
             this.playerCountry = this.playersInfo.firstPlayerInfo?.country;
             this.opponentNick = this.playersInfo.secondPlayerId === '-1' ? 'dfcomps bot' : this.playersInfo.secondPlayerInfo?.nick;
-            this.opponentRating = this.playersInfo.secondPlayerId === '-1' ? +this.playersInfo.firstPlayerInfo?.rating : +this.playersInfo.secondPlayerInfo?.rating || 1500;
+            this.opponentRating =
+                this.playersInfo.secondPlayerId === '-1' ? +this.playersInfo.firstPlayerInfo?.rating : +this.playersInfo.secondPlayerInfo?.rating || 1500;
             this.opponentCountry = this.playersInfo.secondPlayerInfo?.country;
 
             if (this.playersInfo.firstPlayerTime) {
@@ -186,7 +187,8 @@ export class MatchProgressComponent implements OnChanges {
             }
         } else {
             this.opponentNick = this.playersInfo.firstPlayerId === '-1' ? 'dfcomps bot' : this.playersInfo.firstPlayerInfo?.nick;
-            this.opponentRating = this.playersInfo.firstPlayerId === '-1' ? +this.playersInfo.secondPlayerInfo?.rating : +this.playersInfo.firstPlayerInfo?.rating || 1500;
+            this.opponentRating =
+                this.playersInfo.firstPlayerId === '-1' ? +this.playersInfo.secondPlayerInfo?.rating : +this.playersInfo.firstPlayerInfo?.rating || 1500;
             this.opponentCountry = this.playersInfo.firstPlayerInfo?.country;
             this.playerNick = this.playersInfo.secondPlayerInfo?.nick;
             this.playerRating = +this.playersInfo.secondPlayerInfo?.rating || 1500;

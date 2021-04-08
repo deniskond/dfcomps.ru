@@ -34,6 +34,7 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
     public pickbanPhases = PickbanPhases;
 
     private onDestroy$ = new Subject<void>();
+    private isBrowserTabVisible$ = new Subject<boolean>();
 
     constructor(
         private changeDetectorRef: ChangeDetectorRef,
@@ -43,7 +44,9 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
         private languageService: LanguageService,
         private activatedRoute: ActivatedRoute,
         private matchFinishedService: MatchFinishedService,
-    ) {}
+    ) {
+        document.addEventListener('visibilitychange', () => this.isBrowserTabVisible$.next(!document.hidden));
+    }
 
     ngOnInit(): void {
         this.user$ = this.userService.getCurrentUser$();
@@ -51,6 +54,8 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
         this.sendRestorePlayerStateMessage();
         this.initServerMessagesSubscription();
         this.initQueryParamsSubscription();
+
+        this.isBrowserTabVisible$.pipe(filter(Boolean)).subscribe(() => this.sendRestorePlayerStateMessage());
     }
 
     ngOnDestroy(): void {

@@ -21,8 +21,8 @@ export class MatchProgressTimerComponent implements OnInit, OnChanges, OnDestroy
         this.initFormattedTimeObservable();
     }
 
-    ngOnChanges({ pickbanPhase }: SimpleChanges): void {
-        if (pickbanPhase) {
+    ngOnChanges({ pickbanPhase, initialSeconds }: SimpleChanges): void {
+        if (pickbanPhase || initialSeconds) {
             this.updateTimer$.next();
         }
     }
@@ -34,8 +34,8 @@ export class MatchProgressTimerComponent implements OnInit, OnChanges, OnDestroy
     private initFormattedTimeObservable(): void {
         this.formattedTime$ = this.updateTimer$.pipe(
             switchMap(() =>
-                interval(250).pipe(
-                    map((seconds: number) => Math.floor(seconds / 4) + 1),
+                interval(1000).pipe(
+                    map((seconds: number) => seconds + 1),
                     startWith(0),
                     map((passedTime: number) => this.initialSeconds - passedTime),
                     map((passedTime: number) => (passedTime > 0 ? passedTime : 0)),
