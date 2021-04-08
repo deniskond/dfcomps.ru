@@ -457,12 +457,22 @@ export class OneVOneHandler {
                 .find((map: PickbanMapServerInterface) => !map.isBannedByFirstPlayer && !map.isBannedBySecondPlayer);
 
             if (pickedMap) {
-                this.doAxiosPostRequest(`${this.getRoutePrefix()}/api/match/update_match_map`, {
+                this.doAxiosPostRequest(`${this.getRoutePrefix()}/api/match/update_match_info`, {
                     firstPlayerId: match.firstPlayerId,
                     secondPlayerId: match.secondPlayerId,
                     map: JSON.stringify(pickedMap.map),
                     secretKey: config.DUELS_SERVER_PRIVATE_KEY,
                 });
+
+                if (match.firstPlayerId === '-1' || match.secondPlayerId === '-1') {
+                    this.doAxiosPostRequest(`${this.getRoutePrefix()}/api/match/update_bot_time`, {
+                        firstPlayerId: match.firstPlayerId,
+                        secondPlayerId: match.secondPlayerId,
+                        physics: match.physics,
+                        wr: match.physics === Physics.CPM ? pickedMap.map.cpmRecord.toString() : pickedMap.map.vq3Record.toString(),
+                        secretKey: config.DUELS_SERVER_PRIVATE_KEY,
+                    });
+                }
             }
         }
 
