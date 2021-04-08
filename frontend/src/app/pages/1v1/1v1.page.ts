@@ -5,7 +5,7 @@ import { UserService } from './../../services/user-service/user.service';
 import { Physics } from './../../enums/physics.enum';
 import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { DuelService } from './services/duel.service';
-import { take, filter, takeUntil, distinctUntilChanged } from 'rxjs/operators';
+import { take, filter, takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { DuelWebsocketServerActions } from './services/enums/duel-websocket-server-actions.enum';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -13,7 +13,6 @@ import { MatchStates } from './services/enums/match-states.enum';
 import { MatchInterface } from './services/interfaces/match.interface';
 import { DuelPlayersInfoInterface } from './interfaces/duel-players-info.interface';
 import { PickbanPhases } from './enums/pickban-phases.enum';
-import { isEqual } from 'lodash';
 import { ActivatedRoute, Params } from '@angular/router';
 import { MatchFinishedService } from './services/match-finsihed.service';
 
@@ -50,8 +49,7 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.user$ = this.userService.getCurrentUser$();
-        this.initUserSubscriptions();
-        this.sendRestorePlayerStateMessage();
+         this.sendRestorePlayerStateMessage();
         this.initServerMessagesSubscription();
         this.initQueryParamsSubscription();
 
@@ -127,16 +125,6 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
         this.activatedRoute.queryParams.pipe(filter((params: Params) => !!params?.physics)).subscribe(({ physics }: Params) => {
             this.joinQueue(physics);
         });
-    }
-
-    private initUserSubscriptions(): void {
-        this.user$
-            .pipe(
-                distinctUntilChanged(isEqual),
-                filter((user) => !!user),
-                takeUntil(this.onDestroy$),
-            )
-            .subscribe(() => this.setPlayersInfo());
     }
 
     private initServerMessagesSubscription(): void {
