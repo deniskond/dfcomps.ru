@@ -91,9 +91,9 @@
                             </div>
                             <div class="player-result">
                                 <div class="flex">
-                                    <app-big-flag [country]="playersInfo.secondPlayerInfo.country"></app-big-flag>
+                                    <app-big-flag [country]="playersInfo.secondPlayerInfo?.country"></app-big-flag>
                                     <div class="player-nick">
-                                        {{ playersInfo.secondPlayerInfo.nick }} 
+                                        {{ playersInfo.secondPlayerId === '-1' ? 'dfcomps bot' : playersInfo.secondPlayerInfo.nick }} 
                                         <app-one-v-one-rating-change [ratingChange]="playersInfo.secondPlayerRatingChange"></app-one-v-one-rating-change>
                                     </div>
                                 </div>

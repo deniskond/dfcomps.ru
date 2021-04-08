@@ -34,8 +34,8 @@ export class MatchProgressTimerComponent implements OnInit, OnChanges, OnDestroy
     private initFormattedTimeObservable(): void {
         this.formattedTime$ = this.updateTimer$.pipe(
             switchMap(() =>
-                interval(1000).pipe(
-                    map((seconds: number) => seconds + 1),
+                interval(250).pipe(
+                    map((seconds: number) => Math.floor(seconds / 4) + 1),
                     startWith(0),
                     map((passedTime: number) => this.initialSeconds - passedTime),
                     map((passedTime: number) => (passedTime > 0 ? passedTime : 0)),
