@@ -118,7 +118,10 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
             return '';
         }
 
-        return firstPlayerTime < secondPlayerTime ? playersInfo.firstPlayerInfo.nick : playersInfo.secondPlayerInfo.nick;
+        const firstPlayerNick = playersInfo.firstPlayerId === '-1' ? 'dfcomps bot' : playersInfo.firstPlayerInfo?.nick;
+        const secondPlayerNick = playersInfo.secondPlayerId === '-1' ? 'dfcomps bot' : playersInfo.secondPlayerInfo?.nick;
+
+        return firstPlayerTime < secondPlayerTime ? firstPlayerNick : secondPlayerNick;
     }
 
     private initJoinQueueCheck(): void {
