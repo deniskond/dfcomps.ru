@@ -143,6 +143,7 @@ export class OneVOneHandler {
 
             this.send(socket, { action: DuelWebsocketServerActions.JOIN_QUEUE_SUCCESS }, () => {
                 this.addPlayerToQueue(message.playerId, message.payload.physics);
+                this.setupBotTimer(message.playerId, message.payload.physics);
 
                 // sending update here only if no match will be found immediately; otherwise update is sent on match found
                 if (this.queue$.value.filter((element: QueueInterface) => element.physics === message.payload.physics).length === 1) {
@@ -255,7 +256,9 @@ export class OneVOneHandler {
         const map2: MapInterface = maps.filter((map) => map.name != map1.name)[Math.floor(Math.random() * (maps.length - 1))];
         const map3: MapInterface = maps.filter((map) => ![map1.name, map2.name].includes(map.name))[Math.floor(Math.random() * (maps.length - 2))];
         const map4: MapInterface = maps.filter((map) => ![map1.name, map2.name, map3.name].includes(map.name))[Math.floor(Math.random() * (maps.length - 3))];
-        const map5: MapInterface = maps.filter((map) => ![map1.name, map2.name, map3.name, map4.name].includes(map.name))[Math.floor(Math.random() * (maps.length - 4))];
+        const map5: MapInterface = maps.filter((map) => ![map1.name, map2.name, map3.name, map4.name].includes(map.name))[
+            Math.floor(Math.random() * (maps.length - 4))
+        ];
         const randomMaps: MapInterface[] = [map1, map2, map3, map4, map5];
 
         console.log(`randomMaps: ${JSON.stringify(randomMaps)}`);
@@ -298,8 +301,8 @@ export class OneVOneHandler {
         })
             .then(() => {
                 console.log('rest backend answer ok');
-                this.setCheckForBanTimer(0, isFirstPlayerBanning ? firstPlayerId : secondPlayerId);
                 this.matches$.next([...this.matches$.value, serverMatch]);
+                this.setCheckForBanTimer(0, isFirstPlayerBanning ? firstPlayerId : secondPlayerId);
                 this.sendUpdatedQueueInfoToAllClients().then(() => this.sendPickBanStepsToMatchPlayers(match));
             })
             .catch((error) => {
@@ -502,6 +505,12 @@ export class OneVOneHandler {
     }
 
     private setCheckForBanTimer(bannedMapsCount: number, banningPlayerId: string): void {
+        if (banningPlayerId === '-1') {
+            setTimeout(() => this.sendRandomMapBan(banningPlayerId), 5000);
+
+            return;
+        }
+
         timer(BAN_TIMER + LAG_COMPENSATION)
             .pipe(take(1))
             .subscribe(() => {
@@ -536,8 +545,9 @@ export class OneVOneHandler {
                 ),
                 take(1),
             )
-            .subscribe(() => {
+            .subscribe((answer) => {
                 console.log('rest api finish match answer ok');
+                console.log(answer.data);
 
                 const firstClient = this.clients$.value.find((client: ClientInterface) => client.playerId === firstPlayerId);
                 const secondClient = this.clients$.value.find((client: ClientInterface) => client.playerId === secondPlayerId);
@@ -614,5 +624,13 @@ export class OneVOneHandler {
             vq3Matches: this.matches$.value.filter((match: ServerMatchInterface) => match.physics === Physics.VQ3).length,
             vq3PlayersInQueue: this.queue$.value.filter((element: QueueInterface) => element.physics === Physics.VQ3).length,
         };
+    }
+
+    private setupBotTimer(playerId: string, physics: Physics): void {
+        setTimeout(() => {
+            if (this.getPlayerInQueue(playerId)) {
+                this.queue$.next([...this.queue$.value, { playerId: '-1', physics }]);
+            }
+        }, TimingsConfig.BOT_TIMER);
     }
 }

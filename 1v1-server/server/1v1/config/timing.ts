@@ -2,12 +2,14 @@ const PROD_CONFIG: Record<string, number> = {
     BAN_TIMER_SECONDS: 30,
     MATCH_TIMER_SECONDS: 15 * 60,
     LAG_COMPENSATION: 1000,
+    BOT_TIMER: 60 * 1000,
 }
 
 const TEST_CONFIG: Record<string, number> = {
     BAN_TIMER_SECONDS: 1,
     MATCH_TIMER_SECONDS: 1,
     LAG_COMPENSATION: 0,
+    BOT_TIMER: 10 * 1000,
 }
 
 export class TimingsConfig {
@@ -23,5 +25,9 @@ export class TimingsConfig {
 
     public static get LAG_COMPENSATION(): number {
         return this.targetConfig.LAG_COMPENSATION;
+    }
+
+    public static get BOT_TIMER(): number {
+        return this.targetConfig.BOT_TIMER;
     }
 }
