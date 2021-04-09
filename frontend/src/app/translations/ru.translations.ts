@@ -123,7 +123,6 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
     matchesPageOpenedElsewhere: 'Страница открыта во второй вкладке',
     waitingForServerConnection: 'Ожидание соединения с сервером',
     registerToPlayMatches: 'Войдите или зарегистрируйтесь, чтобы играть матчи 1v1',
-    rulesMatch: 'Сначала нужно выбрать физику и зайти в очередь. После того как матч будет найден, игроки по очереди блокируют карты. После того как карта будет выбрана, у игроков будет 15 минут, чтобы записать демо на выбранной карте в соответствующей физике. Игрок, поставивший меньший тайм, побеждает. Валидными считаются все демки, которые валидны на варкапе.',
     matchInProgress: 'Матч идет',
     opponentIsBanningMap: 'Соперник блокирует карту',
     youAreBanningMap: 'Вы блокируете карту',
@@ -140,4 +139,5 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
     code: 'Код',
     uploadDemo: 'Загрузить демо',
     difficulty: 'Сложность',
+    descriptionAndRules: 'Описание и правила',
 };

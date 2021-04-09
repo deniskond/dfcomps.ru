@@ -144,10 +144,31 @@
     <div class="row">
         <div class="rules">
             <div class="block-header">
-                <span translate translation="rules"></span>
+                <span translate translation="descriptionAndRules"></span>
             </div>
             <div class="block-content">
-                <span translate translation="rulesMatch"></span>
+                <ul *ngIf="(language$ | async) === languages.RU" class="padding-left-20">
+                    <li>Сначала нужно выбрать физику и зайти в очередь</li>
+                    <li>Если в течение минуты матч с другим игроком не будет найден, будет начат матч с ботом
+                    Тайм бота рассчитывается от рейтинга игрока и мирового рекорда на карте</li>
+                    <li>Игроки по очереди блокируют карты, пока не останется одна карта</li>
+                    <li>После того как карта будет выбрана нужно установить name либо df_name из поля код и запустить выбранную карту</li>
+                    <li>У игроков будет 15 минут, чтобы записать демо на выбранной карте в соответствующей физике, после записи тайма нужно
+                    загрузить его через кнопку 'Загрузить демо'</li>
+                    <li>Игрок, поставивший меньший тайм, побеждает</li>
+                    <li>Валидными считаются все демки, которые были бы валидны на онлайн-капе (запрещены только скрипты и читы)</li>
+                </ul>
+                <ul *ngIf="(language$ | async) === languages.EN" class="padding-left-20">
+                    <li>First you need to select physics and enter the queue</li>
+                    <li>If a match with another player is not found within a minute, a match with a bot will be started. 
+                    The bot's time is calculated from the player's rating and the world record on the map</li>
+                    <li>Players take turns banning maps until one map is left</li>
+                    <li>After the map is selected, you need to set name or df_name from the code field and run the selected map</li>
+                    <li>Players will have 15 minutes to record a demo on the selected map in the corresponding physics, 
+                        after recording the time, you need to upload it via the 'Upload demo' button</li>
+                    <li>The player with the lowest time wins</li>
+                    <li>All demos that would be valid on the online cup are considered valid (only scripts and cheats are prohibited)</li>
+                </ul>
             </div>
         </div>
     </div>

@@ -15,6 +15,7 @@ import { DuelPlayersInfoInterface } from './interfaces/duel-players-info.interfa
 import { PickbanPhases } from './enums/pickban-phases.enum';
 import { MatchFinishedService } from './services/match-finsihed.service';
 import { JoinQueueService } from './services/join-queue.service';
+import { Languages } from '../../enums/languages.enum';
 
 @Component({
     templateUrl: './1v1.page.html',
@@ -31,6 +32,8 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
     public match: MatchInterface;
     public playersInfo: DuelPlayersInfoInterface | null = null;
     public pickbanPhases = PickbanPhases;
+    public language$: Observable<Languages> = this.languageService.getLanguage$();
+    public languages = Languages;
 
     private onDestroy$ = new Subject<void>();
     private isBrowserTabVisible$ = new Subject<boolean>();
