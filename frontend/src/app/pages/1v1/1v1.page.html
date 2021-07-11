@@ -71,9 +71,9 @@
                             </app-pickban-map>
                             <div class="player-result">
                                 <div class="flex">
-                                    <app-big-flag [country]="playersInfo.firstPlayerInfo.country"></app-big-flag>
+                                    <app-big-flag [country]="playersInfo.firstPlayerInfo?.country"></app-big-flag>
                                     <div class="player-nick">
-                                        {{ playersInfo.firstPlayerInfo.nick }}
+                                        {{ playersInfo.firstPlayerInfo?.nick }}
                                         <app-one-v-one-rating-change [ratingChange]="playersInfo.firstPlayerRatingChange"></app-one-v-one-rating-change>
                                     </div>
                                 </div>
@@ -93,7 +93,7 @@
                                 <div class="flex">
                                     <app-big-flag [country]="playersInfo.secondPlayerInfo?.country"></app-big-flag>
                                     <div class="player-nick">
-                                        {{ playersInfo.secondPlayerId === '-1' ? 'dfcomps bot' : playersInfo.secondPlayerInfo.nick }} 
+                                        {{ playersInfo.secondPlayerId === '-1' ? 'dfcomps bot' : playersInfo.secondPlayerInfo?.nick }} 
                                         <app-one-v-one-rating-change [ratingChange]="playersInfo.secondPlayerRatingChange"></app-one-v-one-rating-change>
                                     </div>
                                 </div>
@@ -149,7 +149,7 @@
             <div class="block-content">
                 <ul *ngIf="(language$ | async) === languages.RU" class="padding-left-20">
                     <li>Сначала нужно выбрать физику и зайти в очередь</li>
-                    <li>Если в течение минуты матч с другим игроком не будет найден, будет начат матч с ботом
+                    <li>Если в течение минуты матч с другим игроком не будет найден, будет начат матч с ботом.
                     Тайм бота рассчитывается от рейтинга игрока и мирового рекорда на карте</li>
                     <li>Игроки по очереди блокируют карты, пока не останется одна карта</li>
                     <li>После того как карта будет выбрана нужно установить name либо df_name из поля код и запустить выбранную карту</li>
