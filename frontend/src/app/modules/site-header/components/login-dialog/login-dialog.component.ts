@@ -37,6 +37,7 @@ export class LoginDialogComponent {
             .pipe(finalize(() => this.isLoading = false))
             .subscribe((({ logged, user }: LoginResultDtoInterface) => {
                 if (logged) {
+                    // TODO should be moved into userService
                     this.userService.setCurrentUser(user);
                     this.dialogRef.close();
 

@@ -58,6 +58,7 @@ export class RegisterDialogComponent implements OnInit, OnDestroy {
             .register$(this.registerForm.get('login').value, this.registerForm.get('password').value, this.registerForm.get('email').value)
             .pipe(finalize(() => (this.isLoading = false)))
             .subscribe((user: UserInterface) => {
+                // TODO should be moved into userService
                 this.userService.setCurrentUser(user);
                 this.dialogRef.close();
             });

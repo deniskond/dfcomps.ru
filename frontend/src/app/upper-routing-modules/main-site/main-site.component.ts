@@ -36,7 +36,7 @@ export class MainSiteComponent implements OnInit {
                     map(() => [user, cup]),
                 ),
             ),
-            map(([user, cup]: [UserInterface, CupInterface]) => (parseInt(user.id) % 2 === 0 ? cup.server2 : cup.server1)),
+            map(([_, cup]: [UserInterface, CupInterface]) => cup.server),
         );
     }
 
