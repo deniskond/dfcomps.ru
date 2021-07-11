@@ -18,7 +18,7 @@
                         [startTime]="cup.startDateTime"
                         [endTime]="cup.endDateTime"
                         [cupType]="cup.type === 'offline' ? cupTypes.OFFLINE : cupTypes.ONLINE"
-                        [cupName]="cup.fullName"
+                        [cupName]="cup.shortName"
                         [customNews]="cup.customNews"
                         [mapLink]="cup.customMap || cup.mapPk3"
                         [server]="server$ | async">
