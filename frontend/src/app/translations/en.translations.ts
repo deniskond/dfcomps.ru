@@ -140,4 +140,6 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
     uploadDemo: 'Upload demo',
     difficulty: 'Difficulty',
     descriptionAndRules: 'Description and rules',
+    searchVQ3: 'Search VQ3',
+    searchCPM: 'Search CPM',
 };

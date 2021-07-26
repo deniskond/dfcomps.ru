@@ -140,4 +140,6 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
     uploadDemo: 'Загрузить демо',
     difficulty: 'Сложность',
     descriptionAndRules: 'Описание и правила',
+    searchVQ3: 'Поиск VQ3',
+    searchCPM: 'Поиск CPM',
 };

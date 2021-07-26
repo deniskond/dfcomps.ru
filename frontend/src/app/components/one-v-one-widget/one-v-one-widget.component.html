@@ -7,14 +7,14 @@
                         <div><span translate translation="currentMatchesIn"></span> VQ3: {{ queueInfo.vq3Matches }}</div>
                         <div><span translate translation="playersInQueue"></span> VQ3: {{ queueInfo.vq3PlayersInQueue }}</div>
                     </div>
-                    <button [disabled]="isWaitingForServerAnswer" (click)="joinQueue(physics.VQ3)" mat-raised-button color="primary">Поиск VQ3</button>
+                    <button [disabled]="isWaitingForServerAnswer" (click)="joinQueue(physics.VQ3)" mat-raised-button color="primary" translate translation="searchVQ3"></button>
                 </div>
                 <div class="row">
                     <div class="text-column">
                         <div><span translate translation="currentMatchesIn"></span> CPM: {{ queueInfo.cpmMatches }}</div>
                         <div><span translate translation="playersInQueue"></span> CPM: {{ queueInfo.cpmPlayersInQueue }}</div>
                     </div>
-                    <button [disabled]="isWaitingForServerAnswer" (click)="joinQueue(physics.CPM)" mat-raised-button color="primary">Поиск CPM</button>
+                    <button [disabled]="isWaitingForServerAnswer" (click)="joinQueue(physics.CPM)" mat-raised-button color="primary" translate translation="searchCPM"></button>
                 </div>
             </ng-container>
             <ng-container *ngSwitchCase="matchStates.IN_QUEUE">
@@ -40,5 +40,5 @@
 </ng-template>
 
 <ng-template #notLogged>
-    <div class="block">Войдите или зарегистрируйтесь, чтобы играть 1v1 матчи</div>
+    <div class="block" translate translation="loginOrRegisterToComment"></div>
 </ng-template>
