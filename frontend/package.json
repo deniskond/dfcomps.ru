@@ -6,7 +6,7 @@
     "ng": "ng",
     "start": "ng serve --open",
     "start:local": "ng serve --open --configuration=local-backend",
-    "build": "ng build --prod",
+    "build": "rimraf dist && ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "tslint-check": "tslint-config-prettier-check ./tslint.json"
@@ -41,6 +41,7 @@
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
+    "@angular-builders/custom-webpack": "^12.1.1",
     "@angular-devkit/build-angular": "~0.901.4",
     "@angular/cli": "^9.1.4",
     "@angular/compiler-cli": "9.1.4",
@@ -49,6 +50,7 @@
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
+    "copy-webpack-plugin": "^9.0.1",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~2.0.0",
@@ -57,6 +59,7 @@
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
     "protractor": "~5.1.2",
+    "rimraf": "^3.0.2",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",
     "typescript": "3.8.3"
