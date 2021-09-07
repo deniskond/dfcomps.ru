@@ -41,7 +41,7 @@
         "ts-jest": "^26.5.4",
         "typescript": "^3.9.3",
         "uuid": "^8.1.0",
-        "ws": "^7.3.0"
+        "ws": "^7.4.6"
     },
     "jest": {
         "testPathIgnorePatterns": [
