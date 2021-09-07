@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NewsReflexOfflineResultsComponent } from './news-reflex-offline-results.component';
 
 describe('NewsReflexOfflineResultsComponent', () => {
     let component: NewsReflexOfflineResultsComponent;
     let fixture: ComponentFixture<NewsReflexOfflineResultsComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [NewsReflexOfflineResultsComponent],
         }).compileComponents();

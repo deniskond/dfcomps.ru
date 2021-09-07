@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { OneVOneRatingChangeComponent } from './one-v-one-rating-change.component';
 
@@ -6,7 +6,7 @@ describe('OneVOneRatingChangeComponent', () => {
     let component: OneVOneRatingChangeComponent;
     let fixture: ComponentFixture<OneVOneRatingChangeComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [OneVOneRatingChangeComponent],
         }).compileComponents();

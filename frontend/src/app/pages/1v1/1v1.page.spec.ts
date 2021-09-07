@@ -1,12 +1,12 @@
 import { OneVOnePageComponent } from "./1v1.page";
-import { TestBed, ComponentFixture, async } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { OneVOnePageModule } from './1v1.page.module';
 
 describe('OneVOnePageComponent', () => {
     let component: OneVOnePageComponent;
     let fixture: ComponentFixture<OneVOnePageComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [OneVOnePageModule],
         }).compileComponents();

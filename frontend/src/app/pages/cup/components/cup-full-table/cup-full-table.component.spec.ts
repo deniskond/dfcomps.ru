@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CupFullTableComponent } from './cup-full-table.component';
 
 describe('CupFullTableComponent', () => {
     let component: CupFullTableComponent;
     let fixture: ComponentFixture<CupFullTableComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [CupFullTableComponent],
         }).compileComponents();

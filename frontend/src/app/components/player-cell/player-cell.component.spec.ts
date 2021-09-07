@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { PlayerCellComponent } from './player-cell.component';
 
 describe('PlayerCellComponent', () => {
     let component: PlayerCellComponent;
     let fixture: ComponentFixture<PlayerCellComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [PlayerCellComponent],
         }).compileComponents();

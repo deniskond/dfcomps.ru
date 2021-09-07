@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MulticupPhysicsTableComponent } from './multicup-physics-table.component';
 
 describe('MulticupPhysicsTableComponent', () => {
     let component: MulticupPhysicsTableComponent;
     let fixture: ComponentFixture<MulticupPhysicsTableComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [MulticupPhysicsTableComponent],
         }).compileComponents();

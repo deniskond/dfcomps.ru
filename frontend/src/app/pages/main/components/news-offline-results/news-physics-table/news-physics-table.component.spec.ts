@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NewsPhysicsTableComponent } from './news-physics-table.component';
 
 describe('NewsPhysicsTableComponent', () => {
     let component: NewsPhysicsTableComponent;
     let fixture: ComponentFixture<NewsPhysicsTableComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [NewsPhysicsTableComponent],
         }).compileComponents();

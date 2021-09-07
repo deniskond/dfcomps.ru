@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { GmtDateTimeComponent } from './gmt-date-time.component';
 
@@ -6,7 +6,7 @@ describe('GmtDateTimeComponent', () => {
   let component: GmtDateTimeComponent;
   let fixture: ComponentFixture<GmtDateTimeComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ GmtDateTimeComponent ]
     })

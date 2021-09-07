@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { UserPanelComponent } from './user-panel.component';
 import { MatDialog } from '@angular/material/dialog';
 import { mock, instance, when } from 'ts-mockito';
@@ -11,7 +11,7 @@ describe('UserPanelComponent', () => {
     let fixture: ComponentFixture<UserPanelComponent>;
     const userServiceMock = mock(UserService);
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [RouterTestingModule],
             declarations: [UserPanelComponent],

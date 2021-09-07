@@ -1,6 +1,6 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { SharedModule } from '../../modules/shared.module';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ProfilePageComponent } from './profile.page';
 import { ProfileRatingChartComponent } from './components/profile-rating-chart/profile-rating-chart.component';
 import { ProfileRewardsComponent } from './components/profile-rewards/profile-rewards.component';
@@ -18,7 +18,7 @@ describe('ProfilePageComponent', () => {
     let component: ProfilePageComponent;
     let fixture: ComponentFixture<ProfilePageComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 SharedModule,

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MatchProgressTimerComponent } from './match-progress-timer.component';
 
@@ -6,7 +6,7 @@ describe('MatchProgressTimerComponent', () => {
     let component: MatchProgressTimerComponent;
     let fixture: ComponentFixture<MatchProgressTimerComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [MatchProgressTimerComponent],
         }).compileComponents();

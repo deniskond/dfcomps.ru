@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SingleNewsPageComponent } from './single-news-page.component';
 
 describe('SingleNewsPageComponent', () => {
     let component: SingleNewsPageComponent;
     let fixture: ComponentFixture<SingleNewsPageComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [SingleNewsPageComponent],
         }).compileComponents();

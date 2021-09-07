@@ -1,9 +1,9 @@
-import { TestBed, async, fakeAsync } from '@angular/core/testing';
+import { TestBed, fakeAsync, waitForAsync } from '@angular/core/testing';
 import { CupTimerOfflineAwaitingComponent } from './cup-timer-offline-awaiting.component';
 import { CountdownTimerComponent } from '../countdown-timer/countdown-timer.component';
 
 describe('CupTimerOfflineAwaitingComponent', () => {
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [CupTimerOfflineAwaitingComponent, CountdownTimerComponent],
         }).compileComponents();

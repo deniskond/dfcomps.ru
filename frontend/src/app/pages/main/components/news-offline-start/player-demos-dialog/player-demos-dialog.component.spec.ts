@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { PlayerDemosDialogComponent } from './player-demos-dialog.component';
 
 describe('PlayerDemosDialogComponent', () => {
     let component: PlayerDemosDialogComponent;
     let fixture: ComponentFixture<PlayerDemosDialogComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [PlayerDemosDialogComponent],
         }).compileComponents();

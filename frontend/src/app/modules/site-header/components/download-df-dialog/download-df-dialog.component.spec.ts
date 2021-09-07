@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { DownloadDfDialogComponent } from './download-df-dialog.component';
 
 describe('DownloadDfDialogComponent', () => {
     let component: DownloadDfDialogComponent;
     let fixture: ComponentFixture<DownloadDfDialogComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [DownloadDfDialogComponent],
         }).compileComponents();

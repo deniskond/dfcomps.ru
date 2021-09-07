@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SmileComponent } from './smile.component';
 
 describe('SmileComponent', () => {
     let component: SmileComponent;
     let fixture: ComponentFixture<SmileComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [SmileComponent],
         }).compileComponents();

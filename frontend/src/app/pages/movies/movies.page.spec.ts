@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MoviesPageComponent } from './movies.page';
 import { MoviesPageModule } from './movies.page.module';
 import { MoviesService } from './services/movies.service';
@@ -10,7 +10,7 @@ describe('MoviesPageComponent', () => {
     let fixture: ComponentFixture<MoviesPageComponent>;
     const moviesServiceMock = mock(MoviesService);
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [MoviesPageModule],
             providers: [{ provide: MoviesService, useFactory: () => instance(moviesServiceMock) }],

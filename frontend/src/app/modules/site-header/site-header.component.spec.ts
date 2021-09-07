@@ -1,5 +1,5 @@
 import { UserService } from '../../services/user-service/user.service';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SiteHeaderComponent } from './site-header.component';
 import { SiteHeaderModule } from './site-header.module';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -11,7 +11,7 @@ describe('SiteHeaderComponent', () => {
     let fixture: ComponentFixture<SiteHeaderComponent>;
     const userServiceMock = mock(UserService);
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [SiteHeaderModule, RouterTestingModule],
             providers: [{ provide: UserService, useFactory: () => instance(userServiceMock) }],

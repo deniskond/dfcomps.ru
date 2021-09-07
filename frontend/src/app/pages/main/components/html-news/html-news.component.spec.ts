@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HtmlNewsComponent } from './html-news.component';
 
 describe('HtmlNewsComponent', () => {
     let component: HtmlNewsComponent;
     let fixture: ComponentFixture<HtmlNewsComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [HtmlNewsComponent],
         }).compileComponents();

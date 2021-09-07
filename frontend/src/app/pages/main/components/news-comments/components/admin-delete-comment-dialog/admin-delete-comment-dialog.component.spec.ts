@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AdminDeleteCommentDialogComponent } from './admin-delete-comment-dialog.component';
 
 describe('AdminDeleteCommentDialog', () => {
     let component: AdminDeleteCommentDialogComponent;
     let fixture: ComponentFixture<AdminDeleteCommentDialogComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [AdminDeleteCommentDialogComponent],
         }).compileComponents();

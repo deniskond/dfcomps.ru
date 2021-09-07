@@ -1,8 +1,8 @@
-import { TestBed, async, fakeAsync } from '@angular/core/testing';
+import { TestBed, fakeAsync, waitForAsync } from '@angular/core/testing';
 import { CountdownTimerComponent } from './countdown-timer.component';
 
 describe('CountdownTimerComponent', () => {
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [CountdownTimerComponent],
         }).compileComponents();

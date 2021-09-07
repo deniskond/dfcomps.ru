@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NewsOnlineAnnounceComponent } from './news-online-announce.component';
 
 describe('NewsOnlineAnnounceComponent', () => {
     let component: NewsOnlineAnnounceComponent;
     let fixture: ComponentFixture<NewsOnlineAnnounceComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [NewsOnlineAnnounceComponent],
         }).compileComponents();

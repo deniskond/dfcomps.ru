@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { OneVOneWidgetComponent } from './one-v-one-widget.component';
 
@@ -6,7 +6,7 @@ describe('OneVOneWidgetComponent', () => {
   let component: OneVOneWidgetComponent;
   let fixture: ComponentFixture<OneVOneWidgetComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ OneVOneWidgetComponent ]
     })

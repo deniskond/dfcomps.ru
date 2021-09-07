@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NewsOfflineStartComponent } from './news-offline-start.component';
 
 describe('NewsOfflineStartComponent', () => {
     let component: NewsOfflineStartComponent;
     let fixture: ComponentFixture<NewsOfflineStartComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [NewsOfflineStartComponent],
         }).compileComponents();

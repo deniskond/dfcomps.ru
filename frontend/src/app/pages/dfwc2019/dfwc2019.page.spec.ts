@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Dfwc2019PageComponent } from './dfwc2019.page';
 import { Dfwc2019PageModule } from './dfwc2019.page.module';
 
@@ -6,7 +6,7 @@ describe('Dfwc2019PageComponent', () => {
     let component: Dfwc2019PageComponent;
     let fixture: ComponentFixture<Dfwc2019PageComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [Dfwc2019PageModule],
         }).compileComponents();

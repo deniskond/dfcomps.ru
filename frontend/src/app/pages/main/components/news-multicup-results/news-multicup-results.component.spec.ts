@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NewsMulticupResultsComponent } from './news-multicup-results.component';
 
 describe('NewsMulticupResultsComponent', () => {
     let component: NewsMulticupResultsComponent;
     let fixture: ComponentFixture<NewsMulticupResultsComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [NewsMulticupResultsComponent],
         }).compileComponents();

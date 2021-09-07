@@ -1,8 +1,8 @@
-import { TestBed, async, fakeAsync } from '@angular/core/testing';
+import { TestBed, fakeAsync, waitForAsync } from '@angular/core/testing';
 import { CupTimerOnlineComponent } from './cup-timer-online.component';
 
 describe('CupTimerOnlineComponent', () => {
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [CupTimerOnlineComponent],
         }).compileComponents();
