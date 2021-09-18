@@ -55,6 +55,7 @@ export class PROFILE_REWARDS {
             [Rewards.DFWC2019_TOP3_CPM]: 'dfwc2019-3rd',
             [Rewards.DFWC2019_TOP3_CPM]: 'dfwc2019-3rd',
             [Rewards.PG_ULTIMATE]: 'pg-ultimate',
+            [Rewards.DFWC_TRAINING_CUP_WINNER]: 'dfwc-training',
         };
     }
 }

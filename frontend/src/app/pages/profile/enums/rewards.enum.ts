@@ -50,4 +50,5 @@ export enum Rewards {
     DFWC2019_TOP3_VQ3 = 'DFWC 2019 - Top 3 (VQ3)',
     DFWC2019_TOP3_CPM = 'DFWC 2019 - Top 3 (CPM)',
     PG_ULTIMATE = 'PG Ultimate',
+    DFWC_TRAINING_CUP_WINNER = 'DFWC Training Cup Winner',
 }
