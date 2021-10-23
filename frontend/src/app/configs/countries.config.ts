@@ -228,7 +228,7 @@ export class COUNTRIES_CONFIG {
             { fullName: 'United Kingdom', shortName: 'gb', col: 8, row: 5 },
             { fullName: 'United States', shortName: 'us', col: 10, row: 14 },
             { fullName: 'United States Virgin Islands', shortName: 'vi', col: 1, row: 15 },
-            { fullName: 'Union of Soviet Socialist Republics', shortName: 'ussr', col: 13, row: 15 },
+            { fullName: 'Union of Soviet Socialist Republics', shortName: 'su', col: 13, row: 15 },
             { fullName: 'Uruguay', shortName: 'uy', col: 11, row: 14 },
             { fullName: 'Uzbekistan', shortName: 'uz', col: 12, row: 14 },
             { fullName: 'Vanuatu', shortName: 'vu', col: 3, row: 15 },
