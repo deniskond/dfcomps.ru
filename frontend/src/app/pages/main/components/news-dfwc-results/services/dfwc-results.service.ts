@@ -10,8 +10,6 @@ import { Html5Entities } from 'html-entities';
     providedIn: 'root',
 })
 export class DfwcResultsService {
-    constructor(private backendService: BackendService) {}
-
     public mapDfwcResultsToOfflineNews(news: NewsOfflineResultsInterface): NewsOfflineResultsInterface {
         const { vq3, cpm }: DfwcResultsDtoInterface = JSON.parse(news.tableJson);
 
@@ -27,10 +25,16 @@ export class DfwcResultsService {
         const firstPlaceTime = +arrayResults[0].time_ms;
         const entities = new Html5Entities();
 
+        let currentPlace = 0; // used for detecting ties
+
         return {
             valid: arrayResults.map((result: DfwcSingleResultDtoInterface, index: number) => {
+                if (index > 0 && arrayResults[index].time_ms !== arrayResults[index - 1].time_ms) {
+                    currentPlace = index;
+                }
+
                 const k1 = firstPlaceTime / +result.time_ms;
-                const k2 = (100 - index) / 100;
+                const k2 = (100 - currentPlace) / 100;
                 const points = arrayResults[0].rank ? result.points : Math.round(1000 * k1 * k2).toString();
                 const demopath = entities.decode(result.demo);
 
