@@ -1,4 +1,3 @@
-import { BackendService } from '../../../../../services/backend-service/backend-service';
 import { ResultsTableInterface } from '../../../../../interfaces/results-table.interface';
 import { NewsOfflineResultsInterface } from '../../../../../services/news-service/interfaces/news-offline-results.interface';
 import { Injectable } from '@angular/core';
@@ -49,12 +48,22 @@ export class DfwcResultsService {
                     playerId: '',
                     rating: points,
                     row: '',
-                    time: result.time.replace(/\:/, '.'),
+                    time: this.convertDemoTime(result.time),
                     isPreliminaryResult: !arrayResults[0].rank,
                     absoluteLink: true,
                 };
             }),
             invalid: [],
         };
+    }
+
+    private convertDemoTime(time: string): string {
+        const timeSplit = time.split(':');
+
+        if (timeSplit.length > 2) {
+            return `${+timeSplit[0] * 60 + +timeSplit[1]}.${timeSplit[2]}`;
+        }
+
+        return time.replace(/\:/, '.');
     }
 }
