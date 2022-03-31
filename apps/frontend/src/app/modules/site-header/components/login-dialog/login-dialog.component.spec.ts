@@ -1,0 +1,34 @@
+import { UserService } from '../../../../services/user-service/user.service';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { LoginDialogComponent } from './login-dialog.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { mock, instance } from 'ts-mockito';
+
+describe('LoginDialogComponent', () => {
+  let component: LoginDialogComponent;
+  let fixture: ComponentFixture<LoginDialogComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, MatDialogModule],
+      declarations: [LoginDialogComponent],
+      providers: [
+        { provide: MatDialogRef, useFactory: () => instance(mock(MatDialogRef)) },
+        { provide: UserService, useFactory: () => instance(mock(UserService)) },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+      ],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(LoginDialogComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

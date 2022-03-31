@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "projects": {
+    "1v1-server": "apps/1v1-server",
+    "backend": "apps/backend",
+    "discord-bot": "apps/discord-bot",
+    "frontend": "apps/frontend"
+  }
+}

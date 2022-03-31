@@ -1,0 +1,20 @@
+<div translate translation="siteLogIn" class="h1-block-header dialog-header"></div>
+
+<form [formGroup]="loginForm">
+  <div class="input-container">
+    <div translate translation="userLogin" class="input-caption"></div>
+    <input formControlName="login" class="input-field" />
+  </div>
+  <div class="input-container">
+    <div translate translation="password" class="input-caption"></div>
+    <input formControlName="password" class="input-field password" type="password" />
+  </div>
+</form>
+<div *ngIf="loginResult === false" translate translation="wrongLoginPassword" class="login-error"></div>
+
+<div class="dialog-button">
+  <mat-spinner *ngIf="isLoading" diameter="20" strokeWidth="2" color="accent" class="spinner"></mat-spinner>
+  <button [disabled]="!loginForm.valid || isLoading" (click)="onLoginClick()" mat-raised-button color="primary">
+    <span translate translation="logIn"></span>
+  </button>
+</div>

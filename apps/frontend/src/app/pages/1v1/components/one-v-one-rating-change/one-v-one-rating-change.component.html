@@ -1,0 +1,5 @@
+<div *ngIf="ratingChange >= 0" class="green">
+  <div class="elektra">+</div>
+  <div class="bebas">{{ ratingChange }}</div>
+</div>
+<span *ngIf="ratingChange < 0" class="red">{{ ratingChange }}</span>

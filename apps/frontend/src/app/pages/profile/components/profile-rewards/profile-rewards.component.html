@@ -1,0 +1,4 @@
+<div class="bold-15"><span translate translation="rewards"></span>:</div>
+<div class="rewards">
+  <img *ngFor="let reward of rewards" [matTooltip]="reward" [src]="getRewardIconPath(reward)" class="icon" />
+</div>

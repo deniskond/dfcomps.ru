@@ -1,0 +1,31 @@
+<ng-container [ngSwitch]="timerState">
+  <ng-container *ngSwitchCase="timerStates.AWAITING_START">
+    <app-cup-timer-offline-awaiting
+      [cupName]="cupName"
+      [startTime]="startTime"
+      (finished)="changeTimerState(timerStates.IN_PROGRESS)"
+    >
+    </app-cup-timer-offline-awaiting>
+  </ng-container>
+  <ng-container *ngSwitchCase="timerStates.IN_PROGRESS">
+    <app-cup-timer-offline-progress
+      [cupName]="cupName"
+      [newsId]="newsId!"
+      [mapLink]="mapLink"
+      [endTime]="endTime"
+      [customNews]="customNews"
+      (finished)="changeTimerState(timerStates.FINISHED)"
+    >
+    </app-cup-timer-offline-progress>
+  </ng-container>
+  <ng-container *ngSwitchCase="timerStates.FINISHED">
+    <app-cup-timer-offline-finished
+      [cupName]="cupName"
+      [newsId]="+newsId!"
+      [mapLink]="mapLink"
+      [customNews]="customNews"
+      [endTime]="endTime"
+    >
+    </app-cup-timer-offline-finished>
+  </ng-container>
+</ng-container>

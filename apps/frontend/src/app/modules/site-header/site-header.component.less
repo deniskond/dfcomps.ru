@@ -1,0 +1,135 @@
+.header {
+  position: relative;
+  background: white;
+  height: 115px;
+  width: 1170px;
+}
+
+.header-first-row {
+  height: 72px;
+  position: relative;
+}
+
+.logo {
+  position: absolute;
+  top: 0;
+  left: 15px;
+  font-size: 48px;
+  letter-spacing: 1px;
+  height: 73px;
+  align-items: center;
+  display: flex;
+
+  .ushastik {
+    margin-right: 3px;
+    width: 76px;
+    height: 57px;
+  }
+
+  .site-name {
+    margin-left: 8px;
+    font-family: bebas;
+    color: #392676;
+  }
+
+  .slogan {
+    font-family: elektra;
+    font-size: 16px;
+    width: 257px;
+    line-height: 20px;
+    margin-left: 10px;
+    margin-top: 2px;
+    color: #392676;
+  }
+}
+
+.langs {
+  position: absolute;
+  right: 15px;
+  top: 11px;
+  text-align: right;
+
+  .ru {
+    margin-left: 6px;
+  }
+
+  img {
+    cursor: pointer;
+  }
+}
+
+.right-container {
+  position: absolute;
+  right: 15px;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  z-index: 2;
+}
+
+.social-link {
+  display: flex;
+  height: 42px;
+  align-items: center;
+  top: 73px;
+  margin-right: 15px;
+
+  img {
+    width: 22px;
+    height: 22px;
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .link-caption {
+    line-height: 15px;
+    margin-left: 5px;
+    vertical-align: middle;
+    font-size: 15px;
+  }
+
+  &_trello {
+    margin-right: 18px;
+  }
+}
+
+.navigation {
+  border-bottom: 0;
+  margin-top: 5px;
+  margin-left: 6px;
+
+  .active {
+    opacity: 1;
+  }
+
+  .navigation-link {
+    user-select: none;
+    min-width: 90px;
+    font-family: elektra;
+    font-size: 16px;
+    color: black;
+    height: 32px;
+    padding: 0 12px;
+
+    &:hover {
+      color: black;
+      opacity: 1;
+      text-decoration: none;
+    }
+  }
+}
+
+.download-df-button {
+  font-size: 14px;
+  height: 30px;
+  padding: 10px;
+  padding-top: 0px;
+  line-height: 33px;
+  font-family: elektra;
+  color: #333333;
+  margin-left: 2px;
+}

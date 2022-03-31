@@ -1,0 +1,58 @@
+<div class="main-screen-title match-in-progress">
+  <div>
+    <span translate translation="matchInProgress" class="bebas"></span>:
+    <span translate [translation]="pickbanPhase | invokeFunction: getPickbanPhaseCaption" class="bebas"></span>
+    <span class="bebas"> - {{ match.physics }}</span>
+  </div>
+  <app-match-progress-timer [initialSeconds]="match.timer" [pickbanPhase]="pickbanPhase"> </app-match-progress-timer>
+</div>
+<div class="pickbans-section">
+  <div class="player">
+    <div class="player-flag-nick">
+      <app-big-flag [country]="opponentCountry"></app-big-flag>
+      <div class="player-nick">{{ opponentNick }}</div>
+    </div>
+    <div class="player-rating">
+      {{ match.physics }} <span translate translation="rating" class="bebas"></span>: {{ opponentRating }}
+    </div>
+  </div>
+  <div class="map-row">
+    <app-pickban-map
+      *ngFor="let map of mapList"
+      [pickbanPhase]="pickbanPhase"
+      [map]="map"
+      (banned)="onMapBanned(map.map.name)"
+      class="map"
+    >
+    </app-pickban-map>
+  </div>
+  <div class="player">
+    <div class="player-flag-nick">
+      <app-big-flag [country]="playerCountry"></app-big-flag>
+      <div class="player-nick">{{ playerNick }}</div>
+    </div>
+    <div class="player-rating">
+      {{ match.physics }} <span translate translation="rating" class="bebas"></span>: {{ playerRating }}
+    </div>
+  </div>
+</div>
+
+<div *ngIf="pickedMapName" class="upload-demo-container">
+  <div class="upload-demo-caption">
+    <div class="bebas">
+      <span translate translation="map" class="bebas"></span><span class="bebas">: {{ pickedMapName }}</span>
+    </div>
+    <div class="margin-left-16">
+      <span translate translation="code" class="yellow-bebas"></span
+      ><span class="yellow-bebas">: {{ securityCode }}</span>
+    </div>
+  </div>
+  <input (change)="uploadDemo()" #fileInput name="demo" accept=".dm_68" type="file" class="file-input" />
+  <button (click)="openFileDialog()" mat-raised-button color="accent">
+    <span translate translation="uploadDemo"></span>
+  </button>
+  <div *ngIf="bestDemoTime" class="best-demo-time">
+    <span translate translation="yourBestTime" class="bebas"></span>:
+    <span class="time">{{ bestDemoTime }}</span>
+  </div>
+</div>

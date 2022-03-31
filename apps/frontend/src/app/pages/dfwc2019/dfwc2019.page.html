@@ -1,0 +1,60 @@
+<div class="shadowed-main-block">
+  <h1 class="h1-block-header">DFWC 2019 Results</h1>
+
+  <div style="display: flex">
+    <div style="flex-grow: 1; margin-right: 20px">
+      <div class="physics-header">VQ3</div>
+      <div class="cup-results-row">
+        <div class="place-column">#</div>
+        <div class="player-column">Player</div>
+        <div class="points-column">Points</div>
+        <div class="rating-column">Rating</div>
+      </div>
+      <div *ngFor="let result of vq3TableWithChange; let i = index" class="cup-results-row">
+        <div class="place-column">
+          <app-player-place [place]="result.place"></app-player-place>
+        </div>
+        <div class="player-column">
+          <app-player-cell
+            [class.transparent]="!result.playerId"
+            [country]="result.country"
+            [nick]="result.nick"
+            [playerId]="result.playerId!.toString()"
+          >
+          </app-player-cell>
+        </div>
+        <div class="points-column">{{ result.points }}</div>
+        <div class="rating-column">
+          <app-rating-change [change]="result.change!.toString()" [zeroIfNull]="false"></app-rating-change>
+        </div>
+      </div>
+    </div>
+    <div style="flex-grow: 1">
+      <div class="physics-header">CPM</div>
+      <div class="cup-results-row">
+        <div class="place-column">#</div>
+        <div class="player-column">Player</div>
+        <div class="points-column">Points</div>
+        <div class="rating-column">Rating</div>
+      </div>
+      <div *ngFor="let result of cpmTableWithChange; let i = index" class="cup-results-row">
+        <div class="place-column">
+          <app-player-place [place]="i + 1"></app-player-place>
+        </div>
+        <div class="player-column">
+          <app-player-cell
+            [class.transparent]="!result.playerId"
+            [country]="result.country"
+            [nick]="result.nick"
+            [playerId]="result.playerId!.toString()"
+          >
+          </app-player-cell>
+        </div>
+        <div class="points-column">{{ result.points }}</div>
+        <div class="rating-column">
+          <app-rating-change [change]="result.change!.toString()" [zeroIfNull]="false"></app-rating-change>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+<ng-container *ngFor="let messagePart of messageParts">
+  <div *ngIf="messagePart.type === messagePartTypes.SMILE; else text" class="smile-container">
+    <app-smile [smile]="$any(messagePart.content)"></app-smile>
+  </div>
+  <ng-template #text>
+    <span [innerHTML]="messagePart.content"></span>
+  </ng-template>
+</ng-container>

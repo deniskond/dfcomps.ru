@@ -1,0 +1,6 @@
+<app-cup-full-table
+  *ngIf="isRound === false"
+  [fullTable]="(fullTable$ | async)!"
+  (navigateToRound)="navigateToRound($event)"
+></app-cup-full-table>
+<app-cup-round *ngIf="isRound === true" [round]="(round$ | async)!" [roundNumber]="roundNumber"></app-cup-round>

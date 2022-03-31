@@ -1,0 +1,76 @@
+<ng-container *ngIf="!hasError; else error">
+  <div *ngIf="singleNews$ | async as singleNews; else loader" class="news-container">
+    <div class="shadowed-main-block news-block">
+      <h1 class="h1-block-header no-margin news_header">
+        {{ singleNews.header }}
+      </h1>
+
+      <div class="author-and-date">
+        <span translate translation="author"></span>:
+        <a routerLink="/profile/{{ singleNews.authorId }}">{{ singleNews.authorName }}</a
+        >,
+        <span>{{ singleNews.datetimezone | invokeFunction: formatDate }}</span>
+      </div>
+
+      <app-youtube
+        *ngIf="singleNews.youtube && singleNews.type !== newsTypes.ONLINE_RESULTS"
+        [id]="singleNews.youtube"
+        [width]="800"
+        [height]="450"
+        class="youtube"
+      ></app-youtube>
+
+      <ng-container [ngSwitch]="singleNews.type">
+        <app-news-simple *ngSwitchCase="newsTypes.SIMPLE" [news]="$any(singleNews)"></app-news-simple>
+        <app-news-multicup-results
+          *ngSwitchCase="newsTypes.MULTICUP_RESULTS"
+          [news]="$any(singleNews)"
+        ></app-news-multicup-results>
+        <app-news-online-announce
+          *ngSwitchCase="newsTypes.ONLINE_ANNOUNCE"
+          [news]="$any(singleNews)"
+        ></app-news-online-announce>
+        <app-news-online-results
+          *ngSwitchCase="newsTypes.ONLINE_RESULTS"
+          [news]="$any(singleNews)"
+        ></app-news-online-results>
+        <app-news-offline-start
+          *ngSwitchCase="newsTypes.OFFLINE_START"
+          [news]="$any(singleNews)"
+          (reloadNews)="reloadNews()"
+        >
+        </app-news-offline-start>
+        <app-news-offline-results
+          *ngSwitchCase="newsTypes.OFFLINE_RESULTS"
+          [news]="$any(singleNews)"
+        ></app-news-offline-results>
+        <app-news-dfwc-results *ngSwitchCase="newsTypes.DFWC_RESULTS" [news]="$any(singleNews)"></app-news-dfwc-results>
+        <app-news-reflex-offline-results
+          *ngSwitchCase="newsTypes.REFLEX_OFFLINE_RESULTS"
+          [news]="$any(singleNews)"
+        ></app-news-reflex-offline-results>
+        <app-news-reflex-offline-start
+          *ngSwitchCase="newsTypes.REFLEX_OFFLINE_START"
+          [news]="$any(singleNews)"
+          (reloadNews)="reloadNews()"
+        >
+        </app-news-reflex-offline-start>
+      </ng-container>
+    </div>
+    <app-news-comments [comments]="singleNews.comments" [newsId]="singleNews.id" [expanded]="true"></app-news-comments>
+  </div>
+</ng-container>
+
+<ng-template #loader>
+  <div class="shadowed-main-block">
+    <div class="loader">
+      <mat-spinner diameter="80" strokeWidth="5" color="accent"></mat-spinner>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #error>
+  <div class="shadowed-main-block error">
+    <span translate translation="errorNewsDoesntExist"></span>
+  </div>
+</ng-template>
