@@ -1,0 +1,9 @@
+<div class="rating">
+  <div class="rating-caption">
+    {{ physics | uppercase }}&nbsp;<span translate translation="rating" class="lowercase"></span>
+  </div>
+  <div class="canvas-container">
+    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" chartType="bar">
+    </canvas>
+  </div>
+</div>

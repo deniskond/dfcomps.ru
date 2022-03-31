@@ -1,9 +1,0 @@
-<ng-container *ngIf="topTenTable$ | async as topTenTable; else loader">
-    <app-players-rating-table [ratingTable]="topTenTable"></app-players-rating-table>
-</ng-container>
-
-<ng-template #loader>
-    <div class="loader">
-        <mat-spinner diameter="80" strokeWidth="5" color="accent"></mat-spinner>
-    </div>
-</ng-template>

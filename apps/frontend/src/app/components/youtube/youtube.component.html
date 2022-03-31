@@ -1,0 +1,17 @@
+<div *ngIf="!iframeShown; else youtubeEmbed" (click)="iframeShown = true" class="image-container">
+  <img [width]="width" [height]="height" src="https://i.ytimg.com/vi/{{ id }}/sddefault.jpg" />
+  <div class="play"></div>
+</div>
+
+<ng-template #youtubeEmbed>
+  <iframe
+    *ngIf="iframeLink"
+    [width]="width"
+    [height]="height"
+    [src]="iframeLink"
+    frameborder="0"
+    allow="accelerometer; autoplay; encrypted-media; gyroscope;"
+    allowfullscreen
+  >
+  </iframe>
+</ng-template>

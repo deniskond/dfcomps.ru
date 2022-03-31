@@ -1,0 +1,93 @@
+@border-color: #cccccc;
+
+.players-table {
+  margin-top: 10px;
+}
+
+.players-row {
+  display: flex;
+  height: 28px;
+
+  &:first-of-type {
+    border-top: 1px solid @border-color;
+  }
+}
+
+.players-cell {
+  display: flex;
+  flex-grow: 1;
+  width: 0;
+
+  &:last-of-type {
+    border-right: 1px solid @border-color;
+  }
+}
+
+.number {
+  width: 28px;
+  background: #eeeeee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid @border-color;
+  border-right: 1px solid @border-color;
+  border-bottom: 1px solid @border-color;
+}
+
+.player {
+  display: flex;
+  flex-grow: 1;
+  border-bottom: 1px solid @border-color;
+}
+
+.players-table-description {
+  margin-top: 12px;
+}
+
+.registration-button {
+  margin-top: 12px;
+}
+
+.buttons-container {
+  display: flex;
+}
+
+.full-table-button {
+  margin-top: 12px;
+  margin-left: 12px;
+}
+
+.streams-container {
+  margin-top: 12px;
+}
+
+.pagination-container {
+  display: flex;
+}
+
+.pagination {
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  height: 28px;
+  display: flex;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 12px;
+
+  .page {
+    border-right: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 0 12px;
+    font-size: 14px;
+    line-height: 28px;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:last-child {
+      border: 0;
+    }
+  }
+}
+
+.selected {
+  background-color: #eee;
+}

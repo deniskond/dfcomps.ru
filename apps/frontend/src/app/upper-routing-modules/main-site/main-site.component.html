@@ -1,0 +1,68 @@
+<a href="https://github.com/deniskond/dfcomps.ru-frontend" target="_blank">
+  <div class="github"></div>
+</a>
+
+<div class="background">
+  <div class="container">
+    <app-site-header></app-site-header>
+
+    <div class="main">
+      <div class="main-column">
+        <router-outlet></router-outlet>
+      </div>
+      <div class="right-column">
+        <div class="right-block shadowed">
+          <app-cup-timer
+            *ngIf="nextCupInfo$ | async as cup"
+            [newsId]="cup.newsId"
+            [startTime]="cup.startDateTime"
+            [endTime]="cup.endDateTime"
+            [cupType]="cup.type === 'offline' ? cupTypes.OFFLINE : cupTypes.ONLINE"
+            [cupName]="cup.shortName"
+            [customNews]="cup.customNews"
+            [mapLink]="cup.customMap || cup.mapPk3"
+            [server]="server$ | async"
+          >
+          </app-cup-timer>
+        </div>
+        <div class="right-block shadowed">
+          <div class="side-block-header table-header">
+            <span translate translation="findOnevOne"></span>
+          </div>
+          <app-one-v-one-widget></app-one-v-one-widget>
+        </div>
+        <div class="right-block shadowed">
+          <div class="side-block-header table-header">
+            <span translate translation="ratingLeaders"></span>
+          </div>
+          <nav mat-tab-nav-bar class="navigation">
+            <a [active]="activePage === 1" (click)="setTab(1)" mat-tab-link class="navigation-link"> CPM </a>
+            <a [active]="activePage === 2" (click)="setTab(2)" mat-tab-link class="navigation-link"> VQ3 </a>
+            <a [active]="activePage === 3" (click)="setTab(3)" mat-tab-link class="navigation-link"> CPM (1v1) </a>
+            <a [active]="activePage === 4" (click)="setTab(4)" mat-tab-link class="navigation-link"> VQ3 (1v1) </a>
+          </nav>
+          <app-top-ten-table
+            *ngIf="activePage === 1"
+            [physics]="physics.CPM"
+            [mode]="ratingtablesModes.CLASSIC"
+          ></app-top-ten-table>
+          <app-top-ten-table
+            *ngIf="activePage === 2"
+            [physics]="physics.VQ3"
+            [mode]="ratingtablesModes.CLASSIC"
+          ></app-top-ten-table>
+          <app-top-ten-table
+            *ngIf="activePage === 3"
+            [physics]="physics.CPM"
+            [mode]="ratingtablesModes.ONEVONE"
+          ></app-top-ten-table>
+          <app-top-ten-table
+            *ngIf="activePage === 4"
+            [physics]="physics.VQ3"
+            [mode]="ratingtablesModes.ONEVONE"
+          ></app-top-ten-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

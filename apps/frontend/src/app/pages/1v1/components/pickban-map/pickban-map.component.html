@@ -1,0 +1,29 @@
+<div
+  [ngStyle]="map?.map?.name | invokeFunction: getMapStyle"
+  [class.banned]="isBanned"
+  [class.pointer-enabled]="!isBanned && pickbanPhase === pickBanPhases.YOU_ARE_BANNING"
+  (click)="banMap()"
+  class="map"
+>
+  <div *ngIf="map.isBannedByOpponent" class="banned-border banned-by-opponent"></div>
+  <div *ngIf="map.isBannedByPlayer" class="banned-border banned-by-player"></div>
+  <div *ngIf="map.isPickedByOpponent" class="picked-border picked-by-opponent"></div>
+  <div *ngIf="map.isPickedByPlayer" class="picked-border picked-by-player"></div>
+
+  <div class="gradient-shadow"></div>
+
+  <div class="weapons-container">
+    <app-weapons *ngIf="map?.map?.weapons" [weapons]="map.map.weapons" class="flex-wrap"></app-weapons>
+  </div>
+  <div class="difficulty-container" *ngIf="map?.map?.difficulty">
+    <span translate translation="difficulty"></span>: {{ map?.map?.difficulty }}/5
+  </div>
+
+  <div class="cross"></div>
+</div>
+
+<div class="map-second-layer"></div>
+
+<div class="map-name">
+  {{ map?.map?.name }}
+</div>

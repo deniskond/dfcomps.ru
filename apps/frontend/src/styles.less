@@ -1,0 +1,129 @@
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import './assets/styles/colors.less';
+@import './assets/styles/typography.less';
+
+@font-face {
+  font-family: bebas; /* Гарнитура шрифта */
+  src: url('./assets/fonts/BebasNeue.woff') format('woff'); /* Путь к файлу со шрифтом */
+}
+
+@font-face {
+  font-family: elektra; /* Гарнитура шрифта */
+  src: url('./assets/fonts/ElektraTextPro.woff') format('woff'); /* Путь к файлу со шрифтом */
+}
+
+@font-face {
+  font-family: elektra bold; /* Гарнитура шрифта */
+  src: url('./assets/fonts/ElektraTextPro-Bold.woff') format('woff'); /* Путь к файлу со шрифтом */
+}
+
+@font-face {
+  font-family: orbitron; /* Гарнитура шрифта */
+  src: url('./assets/fonts/Orbitron-Regular.woff') format('woff'); /* Путь к файлу со шрифтом */
+}
+
+* {
+  box-sizing: border-box;
+  font-family: elektra;
+}
+
+body {
+  font-size: 14px;
+  color: #333;
+}
+
+.comment-inner img {
+  vertical-align: middle;
+  max-height: 24px;
+  max-width: 24px;
+  margin: 0px 3px;
+}
+
+button {
+  outline: none;
+}
+
+.shadowed {
+  box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.4);
+}
+
+.shadowed-main-block {
+  .shadowed();
+  padding: 15px;
+  background: white;
+
+  & + & {
+    margin-top: 25px;
+  }
+}
+
+a {
+  color: @link-blue;
+  text-decoration: none;
+
+  &:hover {
+    color: #23527c;
+    text-decoration: underline;
+  }
+}
+
+b {
+  font-weight: 700;
+}
+
+.blue-link {
+  color: #1e476b;
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.place-icon {
+  width: 18px;
+  height: 18px;
+}
+
+mat-dialog-container {
+  padding: 20px 24px 16px !important;
+  border: 6px solid #dddddd;
+}
+
+.mat-expansion-panel-body {
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}
+
+.lowercase {
+  text-transform: lowercase;
+}
+
+input {
+  outline: none;
+}
+
+.flex {
+  display: flex;
+}
+
+.bebas {
+  font-family: bebas;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}

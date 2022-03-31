@@ -1,0 +1,40 @@
+<form [formGroup]="smileSearchForm">
+  <input [placeholder]="searchSmilesCaption$ | async" formControlName="smile" class="smile-search-input" />
+</form>
+
+<div class="scroll-container">
+  <div *ngIf="sortedAndGroupedSmiles$ | async as smileGroups" class="groups-container">
+    <ng-container *ngIf="smileGroups.length; else noSmilesFound">
+      <div *ngFor="let smileGroup of smileGroups" class="smile-group">
+        <div class="group-name">{{ smileGroup.name }}</div>
+        <div class="smiles-container">
+          <div
+            *ngFor="let smile of smileGroup.items"
+            (click)="chooseSmile.emit(smile)"
+            (mouseover)="setFocusedSmile(smile)"
+            (mouseout)="setFocusedSmile(null)"
+            class="smile-container"
+          >
+            <app-smile [smile]="smile"></app-smile>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #noSmilesFound>
+      <div class="no-smiles-found">
+        <span translate translation="noSmilesFound"></span>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<div class="chosen-smile-container">
+  <div *ngIf="!hoveredSmile; else chosenSmileTemplate" class="chosen-smile-placeholder">
+    <span translate translation="chosenSmile"></span>
+  </div>
+
+  <ng-template #chosenSmileTemplate>
+    <app-smile [smile]="hoveredSmile!" [isBig]="true"></app-smile>
+    <div class="smile-name">:{{ hoveredSmile!.name }}:</div>
+  </ng-template>
+</div>

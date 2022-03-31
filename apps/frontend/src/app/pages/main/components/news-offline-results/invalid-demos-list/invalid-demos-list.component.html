@@ -1,0 +1,8 @@
+<div *ngIf="invalidDemos.length" class="invalid-demos-container">
+  <div class="invalid-demos-header">Невалидные демки:</div>
+  <div *ngFor="let demo of invalidDemos; let i = index">
+    <span>{{ i + 1 }})&nbsp;</span>
+    <a href="/api/uploads/demos/cup{{ cupId }}/{{ demo.demopath }}">{{ demo.demopath }}</a>
+    <span> - {{ demo.reason }}</span>
+  </div>
+</div>

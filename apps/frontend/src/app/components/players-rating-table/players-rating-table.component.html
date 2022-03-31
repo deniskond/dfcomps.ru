@@ -1,0 +1,25 @@
+<mat-table [dataSource]="ratingTableWithPositions">
+  <ng-container cdkColumnDef="number">
+    <mat-header-cell *cdkHeaderCellDef class="number-column"> # </mat-header-cell>
+    <mat-cell *cdkCellDef="let row" class="number-column"> {{ row.position }} </mat-cell>
+  </ng-container>
+
+  <ng-container cdkColumnDef="player">
+    <mat-header-cell *cdkHeaderCellDef class="player-column header">
+      <span translate translation="player"></span>
+    </mat-header-cell>
+    <mat-cell *cdkCellDef="let row" class="player-column">
+      <app-player-cell [country]="row.country" [nick]="row.nick" [playerId]="row.playerId"></app-player-cell>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container cdkColumnDef="rating">
+    <mat-header-cell *cdkHeaderCellDef class="rating-column">
+      <span translate translation="rating"></span>
+    </mat-header-cell>
+    <mat-cell *cdkCellDef="let row" class="rating-column"> {{ row.rating }} </mat-cell>
+  </ng-container>
+
+  <mat-header-row *cdkHeaderRowDef="['number', 'player', 'rating']"></mat-header-row>
+  <mat-row *cdkRowDef="let row; columns: ['number', 'player', 'rating']"></mat-row>
+</mat-table>
