@@ -41,4 +41,12 @@ export class CupFullTableComponent implements OnChanges {
       this.roundsCount = +this.fullTable.rounds + 1;
     }
   }
+
+  getPlayerRoundResult(roundResult: string | null): string {
+    if (roundResult === null) {
+      return '-';
+    }
+
+    return roundResult;
+  }
 }
