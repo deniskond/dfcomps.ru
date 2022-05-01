@@ -26,6 +26,7 @@ import { ValidationDialogComponent } from './validation-dialog/validation-dialog
 import { PlayerDemosDialogComponent } from './player-demos-dialog/player-demos-dialog.component';
 import { DemoUploadResult } from '../../../../services/demos/enums/demo-upload-result.enum';
 import { OverbouncesWarningDialogComponent } from './overbounces-warning-dialog/overbounces-warning-dialog.component';
+import { SDCRulesDialogComponent } from './sdc-rules-dialog/sdc-rules-dialog.component';
 
 const SNACKBAR_DURATION = 3000;
 
@@ -131,6 +132,10 @@ export class NewsOfflineStartComponent implements OnInit {
       .afterClosed()
       .pipe(take(1))
       .subscribe(() => demoDeleteSubscription.unsubscribe());
+  }
+
+  public openSDCPopup(): void {
+    this.dialog.open(SDCRulesDialogComponent);
   }
 
   private getCupState(): CupStates {

@@ -74,6 +74,12 @@
           <a href="/assets/files/offline-rules.cfg" target="_blank">
             <span translate translation="config"></span>
           </a>
+          <ng-container *ngIf="news.cup.multicupId === '10'">
+            <span class="separator">|</span>
+            <a (click)="openSDCPopup()" class="popup-link" target="_blank">
+              SDC
+            </a>
+          </ng-container>
         </div>
       </div>
     </div>

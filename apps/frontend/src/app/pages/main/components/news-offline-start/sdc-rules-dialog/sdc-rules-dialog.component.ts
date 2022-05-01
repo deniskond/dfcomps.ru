@@ -1,15 +1,15 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Languages } from '../../../../../enums/languages.enum';
 import { LanguageService } from '../../../../../services/language/language.service';
 
 @Component({
-  selector: 'app-overbounces-warning-dialog',
-  templateUrl: './overbounces-warning-dialog.component.html',
-  styleUrls: ['./overbounces-warning-dialog.component.less'],
+  selector: 'sdc-rules-dialog',
+  templateUrl: './sdc-rules-dialog.component.html',
+  styleUrls: ['./sdc-rules-dialog.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OverbouncesWarningDialogComponent {
+export class SDCRulesDialogComponent {
   public language$: Observable<Languages> = this.languageService.getLanguage$();
   public languages = Languages;
 

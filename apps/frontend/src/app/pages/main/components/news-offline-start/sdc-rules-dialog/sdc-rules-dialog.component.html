@@ -1,0 +1,30 @@
+<ng-container *ngIf="(language$ | async) === languages.RU">
+  <div class="h1-block-header dialog-header"><span translate translation="rules"></span> SDC</div>
+  <div>
+    1. SDC-UK20 состоит из 7 раундов, каждый будет проходить в течение недели<br />
+    2. Разрешены только оффлайн-демо<br />
+    3. Победитель определяется по сумме очков в 7 раундах, учитываются результаты всех раундов<br />
+    4. Распределение очков в раунде происходит по формуле <br />
+    <div class="formula">score = max(20000 - (best_time - player_time) * 1000, 0)</div>
+    <br />
+    best_time - топ 1 время в раунде (в миллисекундах)<br />
+    player_time - время игрока, которому рассчитываются очки (в миллисекундах)<br />
+    Например, топ 1 игрок всегда получит 20000 очков, игрок отставший ровно на одну секунду получит 19000, игрок
+    отставший больше чем на 20 секунд получит 0 очков
+  </div>
+</ng-container>
+<ng-container *ngIf="(language$ | async) === languages.EN">
+  <div class="h1-block-header dialog-header">SDC <span translate translation="rules"></span></div>
+  <div>
+    1. SDC-UK20 consists of 7 rounds, each round duration is one week<br />
+    2. Only offline demos are allowed<br />
+    3. Winner is determined by total points sum after 7 rounds, results of all rounds are taken into account<br />
+    4. Allocation of points in a round is made by the formula <br />
+    <div class="formula">score = max(20000 - (best_time - player_time) * 1000, 0)</div>
+    <br />
+    best_time - top 1 time in the round (in milliseconds)<br />
+    player_time - the time of the player, to whom the points are calculated (in milliseconds)<br />
+    For example, the top 1 player will always get 20000 points, a player behind the top time by exactly one second will
+    get 19000 points, a player more than 20 seconds behind will get 0 points
+  </div>
+</ng-container>

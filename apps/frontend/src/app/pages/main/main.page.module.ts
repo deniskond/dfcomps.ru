@@ -36,6 +36,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { NewsSocialLinksComponent } from './components/news-social-links/news-social-links.component';
 import { NewsCommentTextComponent } from './components/news-comments/components/news-comment-text/news-comment-text.component';
 import { OverbouncesWarningDialogComponent } from './components/news-offline-start/overbounces-warning-dialog/overbounces-warning-dialog.component';
+import { SDCRulesDialogComponent } from './components/news-offline-start/sdc-rules-dialog/sdc-rules-dialog.component';
 
 const routes: Routes = [
   {
@@ -90,6 +91,7 @@ const routes: Routes = [
     NewsSocialLinksComponent,
     NewsCommentTextComponent,
     OverbouncesWarningDialogComponent,
+    SDCRulesDialogComponent,
   ],
   providers: [NewsService],
   entryComponents: [
