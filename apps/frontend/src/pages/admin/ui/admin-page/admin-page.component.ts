@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'admin-page',
@@ -7,7 +8,22 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminPageComponent implements OnInit {
-  constructor() {}
+  public activePage: string;
 
-  ngOnInit(): void {}
+  constructor(private router: Router) {}
+
+  ngOnInit(): void {
+    this.setInitialActivePage();
+  }
+
+  public navigateTo(page: string): void {
+    this.activePage = page;
+    this.router.navigate([`admin/${page}`]);
+  }
+
+  private setInitialActivePage(): void {
+    const url: string[] = this.router.url.split('/');
+
+    this.activePage = url[2] || 'news';
+  }
 }

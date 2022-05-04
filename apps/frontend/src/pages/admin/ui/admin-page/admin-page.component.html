@@ -3,8 +3,18 @@
     <div class="logo-container">
       <img src="../../../../assets/images/admin/logo.png" />
     </div>
-    <admin-menu-item [isActive]="true" caption="News" icon="article"></admin-menu-item>
-    <admin-menu-item [isActive]="false" caption="Cups" icon="grade"></admin-menu-item>
+    <admin-menu-item
+      [isActive]="activePage === 'news'"
+      (click)="navigateTo('news')"
+      caption="News"
+      icon="article"
+    ></admin-menu-item>
+    <admin-menu-item
+      [isActive]="activePage === 'cups'"
+      (click)="navigateTo('cups')"
+      caption="Cups"
+      icon="grade"
+    ></admin-menu-item>
   </div>
   <div class="content">
     <div class="content-header">
@@ -18,5 +28,6 @@
         </div>
       </div>
     </div>
+    <router-outlet></router-outlet>
   </div>
 </div>
