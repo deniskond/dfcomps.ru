@@ -1,0 +1,5 @@
+<div [class.active]="isActive" class="menu-item">
+  <div *ngIf="isActive" class="active-indicator"></div>
+  <mat-icon class="icon">{{ icon }}</mat-icon>
+  <span class="caption">{{ caption }}</span>
+</div>
