@@ -7,6 +7,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { AdminNewsComponent } from './ui/admin-news/admin-news.component';
 import { AdminCupsComponent } from './ui/admin-cups/admin-cups.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SharedModule } from '../../app/modules/shared.module';
 
 const adminRoutes: Routes = [
   {
@@ -22,6 +25,14 @@ const adminRoutes: Routes = [
 
 @NgModule({
   declarations: [AdminPageComponent, AdminMenuItemComponent, AdminNewsComponent, AdminCupsComponent],
-  imports: [RouterModule.forChild(adminRoutes), MatButtonModule, MatIconModule, CommonModule],
+  imports: [
+    RouterModule.forChild(adminRoutes),
+    MatButtonModule,
+    MatIconModule,
+    MatCardModule,
+    MatProgressSpinnerModule,
+    SharedModule,
+    CommonModule,
+  ],
 })
 export class AdminModule {}

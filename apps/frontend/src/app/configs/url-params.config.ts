@@ -154,4 +154,12 @@ export class URL_PARAMS {
       GET_PERSONAL_SMILES: `${API_URL}/comments/get_personal_smiles`,
     };
   }
+
+  public static get ADMIN(): {
+    NEWS: string;
+  } {
+    return {
+      NEWS: `${API_URL}/admin/news/get_all_news`,
+    };
+  }
 }
