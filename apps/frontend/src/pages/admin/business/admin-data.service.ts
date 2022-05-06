@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { URL_PARAMS } from '../../../app/configs/url-params.config';
 import { BackendService } from '../../../app/services/backend-service/backend-service';
+import { mapAdminNewsDtoToInterface } from '../mappers/admin-news.mapper';
+import { AdminNewsDto } from '../models/admin-news.dto';
+import { AdminNewsInterface } from '../models/admin-news.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +12,11 @@ import { BackendService } from '../../../app/services/backend-service/backend-se
 export class AdminDataService {
   constructor(private backendService: BackendService) {}
 
-  public getAllNews$(): Observable<any> {
-    return this.backendService.post$(URL_PARAMS.ADMIN.NEWS);
+  public getAllNews$(): Observable<AdminNewsInterface[]> {
+    return this.backendService.post$<AdminNewsDto[]>(URL_PARAMS.ADMIN.GET_NEWS).pipe(map(mapAdminNewsDtoToInterface));
+  }
+
+  public deleteNewsItem$(newsId: string): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.DELETE_NEWS(newsId));
   }
 }

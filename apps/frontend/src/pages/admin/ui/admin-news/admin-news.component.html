@@ -13,14 +13,14 @@
       <div class="cell table-head">Date</div>
       <div class="cell table-head">Type</div>
       <div class="cell table-head">Actions</div>
-    <ng-container *ngFor="let news_item of news; let i = index;">
+    <ng-container *ngFor="let newsItem of news; let i = index;">
       <div class="cell first">{{ news.length - i }}</div>
-      <div class="cell header">{{ news_item.header_en }}</div>
-      <div class="cell date">{{ news_item.datetimezone | invokeFunction : getHumanTime }}</div>
-      <div class="cell type">{{ +news_item.type_id | invokeFunction : getNewsType }}</div>
+      <div class="cell header">{{ newsItem.headeEnglish }}</div>
+      <div class="cell date">{{ newsItem.date }}</div>
+      <div class="cell type">{{ newsItem.type }}</div>
       <div class="cell actions buttons">
         <button mat-raised-button color="basic">Edit</button>
-        <button mat-raised-button color="warn">Delete</button>
+        <button (click)="confirmDelete(newsItem)" mat-raised-button color="warn">Delete</button>
       </div>
     </ng-container>
   </div>

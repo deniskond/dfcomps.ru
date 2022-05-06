@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import * as moment from 'moment-timezone';
-import { Observable } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ReplaySubject, switchMap, take } from 'rxjs';
 import { AdminDataService } from '../../business/admin-data.service';
+import { AdminNewsInterface } from '../../models/admin-news.interface';
 
 @Component({
   selector: 'admin-news',
@@ -10,29 +11,29 @@ import { AdminDataService } from '../../business/admin-data.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminNewsComponent implements OnInit {
-  public news$: Observable<any>;
+  public news: AdminNewsInterface[];
+  public news$ = new ReplaySubject<AdminNewsInterface[]>(1);
 
-  constructor(private adminDataService: AdminDataService) {}
+  constructor(private adminDataService: AdminDataService, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
-    this.news$ = this.adminDataService.getAllNews$();
+    this.adminDataService.getAllNews$().subscribe((news: AdminNewsInterface[]) => {
+      this.news = news;
+      this.news$.next(news);
+    });
   }
 
-  public getHumanTime(time: string): string {
-    return moment(time).tz('Russia/Moscow').format('DD.MM.YYYY HH:mm') + ' MSK';
-  }
-
-  public getNewsType(type: number): string {
-    return {
-      1: 'Online cup results',
-      2: 'Online cup announcement',
-      3: 'Text',
-      4: 'Offline cup start',
-      5: 'Offline cup results',
-      6: 'Multicup results',
-      7: 'DFWC round results',
-      8: 'Legacy',
-      9: 'Legacy',
-    }[type]!;
+  public confirmDelete(newsItem: AdminNewsInterface): void {
+    const snackBar = this.snackBar.open(`Are you sure you want to delete "${newsItem.headeEnglish}"?`, 'Yes', {
+      duration: 3000,
+    });
+    const snackBarActionSubscription = snackBar
+      .onAction()
+      .pipe(switchMap(() => this.adminDataService.deleteNewsItem$(newsItem.id)))
+      .subscribe(() => {
+        this.news = this.news.filter((item: AdminNewsInterface) => item.id !== newsItem.id);
+        this.news$.next(this.news);
+        this.snackBar.open(`Successfully deleted "${newsItem.headeEnglish}"!`, '', { duration: 1000 });
+      });
   }
 }

@@ -11,6 +11,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SharedModule } from '../../app/modules/shared.module';
 import { HasAdminPanelAccess } from './has-admin-panel-access.guard';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 const adminRoutes: Routes = [
   {
@@ -35,6 +36,7 @@ const adminRoutes: Routes = [
     MatProgressSpinnerModule,
     SharedModule,
     CommonModule,
+    MatSnackBarModule,
   ],
   providers: [HasAdminPanelAccess],
 })

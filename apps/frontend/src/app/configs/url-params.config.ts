@@ -156,10 +156,12 @@ export class URL_PARAMS {
   }
 
   public static get ADMIN(): {
-    NEWS: string;
+    GET_NEWS: string;
+    DELETE_NEWS: (newsId: string) => string;
   } {
     return {
-      NEWS: `${API_URL}/admin/news/get_all_news`,
+      GET_NEWS: `${API_URL}/admin/news/get_all_news`,
+      DELETE_NEWS: (newsId: string) => `${API_URL}/admin/news/delete_v2/${newsId}`,
     };
   }
 }
