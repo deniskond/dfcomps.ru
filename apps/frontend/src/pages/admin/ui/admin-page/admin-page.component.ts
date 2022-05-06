@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { AdminCurrentPageService } from '../../business/admin-current-page.service';
 
 @Component({
   selector: 'admin-page',
@@ -8,22 +10,18 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminPageComponent implements OnInit {
-  public activePage: string;
+  public currentPage$: Observable<string>;
+  public navigationPage$: Observable<string>;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private adminCurrentPageService: AdminCurrentPageService) {}
 
   ngOnInit(): void {
-    this.setInitialActivePage();
+    this.adminCurrentPageService.setRouteSubscription();
+    this.currentPage$ = this.adminCurrentPageService.currentPage$;
+    this.navigationPage$ = this.adminCurrentPageService.navigationPage$;
   }
 
-  public navigateTo(page: string): void {
-    this.activePage = page;
-    this.router.navigate([`admin/${page}`]);
-  }
-
-  private setInitialActivePage(): void {
-    const url: string[] = this.router.url.split('/');
-
-    this.activePage = url[2] || 'news';
+  ngOnDestroy(): void {
+    this.adminCurrentPageService.unsetRouteSubscription();
   }
 }

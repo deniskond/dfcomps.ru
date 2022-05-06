@@ -12,6 +12,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SharedModule } from '../../app/modules/shared.module';
 import { HasAdminPanelAccess } from './has-admin-panel-access.guard';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { AdminValidateComponent } from './ui/admin-validate/admin-validate.component';
 
 const adminRoutes: Routes = [
   {
@@ -22,12 +23,27 @@ const adminRoutes: Routes = [
       { path: '', component: AdminNewsComponent },
       { path: 'news', component: AdminNewsComponent },
       { path: 'cups', component: AdminCupsComponent },
+      {
+        path: 'validate',
+        children: [
+          {
+            path: ':id',
+            component: AdminValidateComponent,
+          },
+        ],
+      },
     ],
   },
 ];
 
 @NgModule({
-  declarations: [AdminPageComponent, AdminMenuItemComponent, AdminNewsComponent, AdminCupsComponent],
+  declarations: [
+    AdminPageComponent,
+    AdminMenuItemComponent,
+    AdminNewsComponent,
+    AdminCupsComponent,
+    AdminValidateComponent,
+  ],
   imports: [
     RouterModule.forChild(adminRoutes),
     MatButtonModule,

@@ -1,24 +1,24 @@
 <div class="admin-page">
-  <div class="navigation">
+  <div *ngIf="navigationPage$ | async as navigationPage" class="navigation">
     <div class="logo-container">
       <img src="../../../../assets/images/admin/logo.png" />
     </div>
     <admin-menu-item
-      [isActive]="activePage === 'news'"
-      (click)="navigateTo('news')"
+      [isActive]="navigationPage === 'news'"
+      routerLink="/admin/news"
       caption="News"
       icon="article"
     ></admin-menu-item>
     <admin-menu-item
-      [isActive]="activePage === 'cups'"
-      (click)="navigateTo('cups')"
+      [isActive]="navigationPage === 'cups'"
+      routerLink="/admin/cups"
       caption="Cups"
       icon="grade"
     ></admin-menu-item>
   </div>
   <div class="content">
     <div class="content-header">
-      <div class="title">{{ activePage | titlecase }}</div>
+      <div *ngIf="currentPage$ | async as currentPage" class="title">{{ currentPage | titlecase }}</div>
       <div class="user-info">
         <div>Nosf</div>
         <div class="avatar">
