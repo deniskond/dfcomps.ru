@@ -10,11 +10,13 @@ import { AdminCupsComponent } from './ui/admin-cups/admin-cups.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SharedModule } from '../../app/modules/shared.module';
+import { HasAdminPanelAccess } from './has-admin-panel-access.guard';
 
 const adminRoutes: Routes = [
   {
     path: '',
     component: AdminPageComponent,
+    canActivate: [HasAdminPanelAccess],
     children: [
       { path: '', component: AdminNewsComponent },
       { path: 'news', component: AdminNewsComponent },
@@ -34,5 +36,6 @@ const adminRoutes: Routes = [
     SharedModule,
     CommonModule,
   ],
+  providers: [HasAdminPanelAccess],
 })
 export class AdminModule {}
