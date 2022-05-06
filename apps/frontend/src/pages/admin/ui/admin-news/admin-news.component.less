@@ -24,19 +24,8 @@
 
 .news-table {
   margin-top: 16px;
-}
-
-.news-table-header {
-  display: flex;
-  border-left: 1px solid #ccc;
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-  background: #eee;
-
-  .cell {
-    align-items: center;
-    justify-content: center;
-  }
+  display: grid;
+  grid-template-columns: 80px repeat(3, 1fr) 240px;
 }
 
 .spinner {
@@ -45,42 +34,32 @@
   margin-top: 16px;
 }
 
-.news-table-row {
-  display: flex;
-  border-bottom: 1px solid #ccc;
-  border-left: 1px solid #ccc;
-}
-
 .cell {
   display: flex;
   padding: 12px;
   border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
   align-items: center;
   justify-content: center;
 
-  &.number {
-    width: 80px;
+  &.table-head {
+    border-top: 1px solid #ccc;
+    background: #f3f3f3;
+  }
+
+  &.first {
+    border-left: 1px solid #ccc;
   }
 
   &.header {
-    flex-grow: 1;
     justify-content: left;
   }
 
-  &.date {
-    flex-grow: 1;
-  }
-
-  &.type {
-    flex-grow: 1;
-  }
-
-  &.actions {
-    width: 200px;
-  }
-
   &.buttons button {
-    margin-left: 16px;
     width: 80px;
+
+    &:last-of-type {
+      margin-left: 16px;
+    }
   }
 }

@@ -8,15 +8,13 @@
 <mat-card class="news-table-card">
   <div class="card-header">News list</div>
   <div *ngIf="news$ | async as news; else isLoading" class="news-table">
-    <div class="news-table-header">
-      <div class="cell number">Number</div>
-      <div class="cell header">Header</div>
-      <div class="cell date">Date</div>
-      <div class="cell type">Type</div>
-      <div class="cell actions">Actions</div>
-    </div>
-    <div *ngFor="let news_item of news; let i = index;" class="news-table-row">
-      <div class="cell number">{{ news.length - i }}</div>
+      <div class="cell first table-head">Number</div>
+      <div class="cell table-head">Header</div>
+      <div class="cell table-head">Date</div>
+      <div class="cell table-head">Type</div>
+      <div class="cell table-head">Actions</div>
+    <ng-container *ngFor="let news_item of news; let i = index;">
+      <div class="cell first">{{ news.length - i }}</div>
       <div class="cell header">{{ news_item.header_en }}</div>
       <div class="cell date">{{ news_item.datetimezone | invokeFunction : getHumanTime }}</div>
       <div class="cell type">{{ +news_item.type_id | invokeFunction : getNewsType }}</div>
@@ -24,7 +22,7 @@
         <button mat-raised-button color="basic">Edit</button>
         <button mat-raised-button color="warn">Delete</button>
       </div>
-    </div>
+    </ng-container>
   </div>
   <ng-template #isLoading>
     <div class="spinner">
