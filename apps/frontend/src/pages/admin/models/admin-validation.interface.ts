@@ -6,6 +6,7 @@ export enum AdminDemoValidationStatus {
 
 export interface PlayerDemosValidationInterface {
   nick: string;
+  country: string;
   demos: {
     time: string;
     validationStatus: AdminDemoValidationStatus;

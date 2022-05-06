@@ -30,6 +30,7 @@ export function mapAdminValidationDtoToInterface(validationInfo: AdminValidation
 function mapPlayerDemo(playerDemos: PlayerDemosValidationDto, cupId: string): PlayerDemosValidationInterface {
   return {
     nick: playerDemos.nick,
+    country: playerDemos.country,
     demos: playerDemos.demos.map((playerDemo) => ({
       time: playerDemo.ftime,
       validationStatus: validationStatusesMap[playerDemo.verified],

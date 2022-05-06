@@ -13,7 +13,9 @@
       <div class="cell table-head">Validation result</div>
       <ng-container *ngFor="let player of players; let i = index">
         <div class="cell first">{{ i + 1 }}</div>
-        <div class="cell nick">{{ player.nick }}</div>
+        <div class="cell nick">
+          <app-player-cell [country]="player.country" [nick]="player.nick" [playerId]="player.playerId"></app-player-cell>
+        </div>
         <div class="cell demos">
           <div *ngFor="let demo of player.demos" class="demo-cell">
             <a [href]="demo.demoLink" download>{{ demo.time }}</a>

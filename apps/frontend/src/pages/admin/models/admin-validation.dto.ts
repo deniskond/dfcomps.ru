@@ -1,5 +1,6 @@
 export interface PlayerDemosValidationDto {
   nick: string;
+  country: string;
   demos: {
     ftime: string;
     verified: string;
