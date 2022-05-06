@@ -159,11 +159,13 @@ export class URL_PARAMS {
     GET_NEWS: string;
     DELETE_NEWS: (newsId: string) => string;
     GET_CUPS: string;
+    CUP_VALIDATION: (cupId: string) => string;
   } {
     return {
       GET_NEWS: `${API_URL}/admin/news/get_all_news`,
       DELETE_NEWS: (newsId: string) => `${API_URL}/admin/news/delete_v2/${newsId}`,
       GET_CUPS: `${API_URL}/admin/cups/get_all_cups`,
+      CUP_VALIDATION: (cupId: string) => `${API_URL}/admin/cups/get_cup_validation_demos/${cupId}`,
     };
   }
 }

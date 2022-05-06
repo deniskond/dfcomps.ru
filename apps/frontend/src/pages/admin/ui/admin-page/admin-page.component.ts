@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { API_URL } from '../../../../app/configs/url-params.config';
+import { UserInterface } from '../../../../app/interfaces/user.interface';
+import { UserService } from '../../../../app/services/user-service/user.service';
 import { AdminCurrentPageService } from '../../business/admin-current-page.service';
 
 @Component({
@@ -12,13 +14,17 @@ import { AdminCurrentPageService } from '../../business/admin-current-page.servi
 export class AdminPageComponent implements OnInit {
   public currentPage$: Observable<string>;
   public navigationPage$: Observable<string>;
+  public user$: Observable<UserInterface>;
+  public apiUrl: string;
 
-  constructor(private router: Router, private adminCurrentPageService: AdminCurrentPageService) {}
+  constructor(private adminCurrentPageService: AdminCurrentPageService, private userService: UserService) {}
 
   ngOnInit(): void {
     this.adminCurrentPageService.setRouteSubscription();
     this.currentPage$ = this.adminCurrentPageService.currentPage$;
     this.navigationPage$ = this.adminCurrentPageService.navigationPage$;
+    this.user$ = this.userService.getCurrentUser$();
+    this.apiUrl = API_URL;
   }
 
   ngOnDestroy(): void {

@@ -19,11 +19,11 @@
   <div class="content">
     <div class="content-header">
       <div *ngIf="currentPage$ | async as currentPage" class="title">{{ currentPage | titlecase }}</div>
-      <div class="user-info">
-        <div>Nosf</div>
+      <div *ngIf="user$ | async as user" class="user-info">
+        <div>{{ user.nick }}</div>
         <div class="avatar">
           <div class="border-container">
-            <img src="https://dfcomps.ru/api/images/avatars/10_1604486577.jpg" />
+            <img [src]="apiUrl + '/assets/images/avatars/' + user.avatar + '.jpg'" />
           </div>
         </div>
       </div>

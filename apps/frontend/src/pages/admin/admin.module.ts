@@ -13,6 +13,7 @@ import { SharedModule } from '../../app/modules/shared.module';
 import { HasAdminPanelAccess } from './has-admin-panel-access.guard';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AdminValidateComponent } from './ui/admin-validate/admin-validate.component';
+import { MatRadioModule } from '@angular/material/radio';
 
 const adminRoutes: Routes = [
   {
@@ -53,6 +54,7 @@ const adminRoutes: Routes = [
     SharedModule,
     CommonModule,
     MatSnackBarModule,
+    MatRadioModule,
   ],
   providers: [HasAdminPanelAccess],
 })

@@ -31,8 +31,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.user$ = this.userService.getCurrentUser$();
-
-    this.tryLoginFromCookie();
     this.setLanguageFromCookie();
     this.initUserSubscriptions();
   }
@@ -41,16 +39,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.onDestroy$.next();
     this.onDestroy$.complete();
     this.duelService.closeConnection();
-  }
-
-  private tryLoginFromCookie(): void {
-    this.userService
-      .tryLoginFromCookie$()
-      .pipe(
-        take(1),
-        filter(({ logged }: LoginResultDtoInterface) => logged),
-      )
-      .subscribe(({ user }: LoginResultDtoInterface) => this.userService.setCurrentUser(user!)); // TODO should be moved into userService
   }
 
   private setLanguageFromCookie(): void {

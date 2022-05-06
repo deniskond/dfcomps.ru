@@ -8,9 +8,14 @@ import { filter, map, Observable, ReplaySubject, Subscription } from 'rxjs';
 export class AdminCurrentPageService {
   private routeSubscription: Subscription;
   private _currentPage$ = new ReplaySubject<string>(1);
-  private currentPageMap: Record<string, string> = {
+  private navigationPageMap: Record<string, string> = {
     cups: 'cups',
     validate: 'cups',
+    news: 'news',
+  };
+  private currentPageMap: Record<string, string> = {
+    cups: 'cups',
+    validate: 'validate demos',
     news: 'news',
   };
 
@@ -29,11 +34,11 @@ export class AdminCurrentPageService {
   }
 
   public get navigationPage$(): Observable<string> {
-    return this._currentPage$.asObservable().pipe(map((page: string) => this.currentPageMap[page]));
+    return this._currentPage$.asObservable().pipe(map((page: string) => this.navigationPageMap[page]));
   }
 
   public get currentPage$(): Observable<string> {
-    return this._currentPage$.asObservable();
+    return this._currentPage$.asObservable().pipe(map((page: string) => this.currentPageMap[page]));
   }
 
   public unsetRouteSubscription(): void {

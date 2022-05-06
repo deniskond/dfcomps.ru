@@ -4,10 +4,13 @@ import { URL_PARAMS } from '../../../app/configs/url-params.config';
 import { BackendService } from '../../../app/services/backend-service/backend-service';
 import { mapAdminCupsDtoToInterface } from '../mappers/admin-cups.mapper';
 import { mapAdminNewsDtoToInterface } from '../mappers/admin-news.mapper';
+import { AdminValidationInterface } from '../models/admin-validation.interface';
 import { AdminCupDto } from '../models/admin-cup.dto';
 import { AdminCupInterface } from '../models/admin-cup.interface';
 import { AdminNewsDto } from '../models/admin-news.dto';
 import { AdminNewsInterface } from '../models/admin-news.interface';
+import { AdminValidationDto } from '../models/admin-validation.dto';
+import { mapAdminValidationDtoToInterface } from '../mappers/admin-validation.mapper';
 
 @Injectable({
   providedIn: 'root',
@@ -42,6 +45,10 @@ export class AdminDataService {
       map(mapAdminCupsDtoToInterface),
       tap((cups: AdminCupInterface[]) => (this.cups = cups)),
     );
+  }
+
+  public getCupValidationInfo$(newsId: string): Observable<AdminValidationInterface> {
+    return this.backendService.post$<AdminValidationDto>(URL_PARAMS.ADMIN.CUP_VALIDATION(newsId)).pipe(map(mapAdminValidationDtoToInterface));
   }
 
   public setCups(cups: AdminCupInterface[]): void {
