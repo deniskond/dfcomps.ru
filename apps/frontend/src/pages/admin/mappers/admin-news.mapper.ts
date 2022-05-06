@@ -1,12 +1,12 @@
 import { AdminNewsDto } from '../models/admin-news.dto';
 import { AdminNewsInterface } from '../models/admin-news.interface';
-import * as moment from 'moment-timezone';
+import { getHumanTime } from './get-human-time';
 
 export function mapAdminNewsDtoToInterface(adminNewsDtoArray: AdminNewsDto[]): AdminNewsInterface[] {
   return adminNewsDtoArray.map((adminNewsDto: AdminNewsDto) => ({
     id: adminNewsDto.id,
     headerRussian: adminNewsDto.header,
-    headeEnglish: adminNewsDto.header_en,
+    headerEnglish: adminNewsDto.header_en,
     textRussian: adminNewsDto.text,
     textEnglish: adminNewsDto.text_en,
     type: getNewsType(+adminNewsDto.type_id),
@@ -26,8 +26,4 @@ function getNewsType(type: number): string {
     8: 'Legacy',
     9: 'Legacy',
   }[type]!;
-}
-
-function getHumanTime(time: string): string {
-  return moment(time).tz('Europe/Moscow').format('DD.MM.YYYY HH:mm') + ' MSK';
 }

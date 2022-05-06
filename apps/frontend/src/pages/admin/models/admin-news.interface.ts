@@ -1,7 +1,7 @@
 export interface AdminNewsInterface {
     id: string;
     headerRussian: string;
-    headeEnglish: string;
+    headerEnglish: string;
     textRussian: string;
     textEnglish: string;
     type: string;

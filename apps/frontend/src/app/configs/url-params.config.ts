@@ -158,10 +158,12 @@ export class URL_PARAMS {
   public static get ADMIN(): {
     GET_NEWS: string;
     DELETE_NEWS: (newsId: string) => string;
+    GET_CUPS: string;
   } {
     return {
       GET_NEWS: `${API_URL}/admin/news/get_all_news`,
       DELETE_NEWS: (newsId: string) => `${API_URL}/admin/news/delete_v2/${newsId}`,
+      GET_CUPS: `${API_URL}/admin/cups/get_all_cups`,
     };
   }
 }

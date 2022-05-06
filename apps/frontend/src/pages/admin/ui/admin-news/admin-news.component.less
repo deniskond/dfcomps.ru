@@ -25,7 +25,7 @@
 .news-table {
   margin-top: 16px;
   display: grid;
-  grid-template-columns: 80px repeat(3, 1fr) 240px;
+  grid-template-columns: 80px 1.5fr repeat(2, 1fr) 240px;
 }
 
 .spinner {
@@ -57,9 +57,10 @@
 
   &.buttons button {
     width: 80px;
+    margin-left: 16px;
 
-    &:last-of-type {
-      margin-left: 16px;
+    &:first-of-type {
+      margin-left: 0;
     }
   }
 }

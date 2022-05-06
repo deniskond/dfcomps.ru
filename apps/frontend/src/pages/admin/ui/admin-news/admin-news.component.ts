@@ -24,16 +24,21 @@ export class AdminNewsComponent implements OnInit {
   }
 
   public confirmDelete(newsItem: AdminNewsInterface): void {
-    const snackBar = this.snackBar.open(`Are you sure you want to delete "${newsItem.headeEnglish}"?`, 'Yes', {
+    const snackBar = this.snackBar.open(`Are you sure you want to delete "${newsItem.headerEnglish}"?`, 'Yes', {
       duration: 3000,
     });
-    const snackBarActionSubscription = snackBar
+
+    snackBar
       .onAction()
-      .pipe(switchMap(() => this.adminDataService.deleteNewsItem$(newsItem.id)))
+      .pipe(
+        take(1),
+        switchMap(() => this.adminDataService.deleteNewsItem$(newsItem.id)),
+      )
       .subscribe(() => {
         this.news = this.news.filter((item: AdminNewsInterface) => item.id !== newsItem.id);
         this.news$.next(this.news);
-        this.snackBar.open(`Successfully deleted "${newsItem.headeEnglish}"!`, '', { duration: 1000 });
+        this.adminDataService.setNews(this.news);
+        this.snackBar.open(`Successfully deleted "${newsItem.headerEnglish}"!`, '', { duration: 1000 });
       });
   }
 }
