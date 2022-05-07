@@ -48,7 +48,9 @@ export class AdminDataService {
   }
 
   public getCupValidationInfo$(newsId: string): Observable<AdminValidationInterface> {
-    return this.backendService.post$<AdminValidationDto>(URL_PARAMS.ADMIN.CUP_VALIDATION(newsId)).pipe(map(mapAdminValidationDtoToInterface));
+    return this.backendService
+      .post$<AdminValidationDto>(URL_PARAMS.ADMIN.CUP_VALIDATION(newsId))
+      .pipe(map(mapAdminValidationDtoToInterface));
   }
 
   public setCups(cups: AdminCupInterface[]): void {
@@ -57,5 +59,30 @@ export class AdminDataService {
 
   public setNews(news: AdminNewsInterface[]): void {
     this.news = news;
+  }
+
+  public sendValidationResult$(formValue: Record<string, boolean | string>, cupId: string): Observable<void> {
+    const demosIds: string[] = Object.keys(formValue).reduce((acc: string[], controlKey) => {
+      if (controlKey.match(/demo/)) {
+        acc.push(controlKey.split('_')[1]);
+      }
+
+      return acc;
+    }, []);
+
+    const postParams: Record<string, string> = demosIds.reduce((acc, demoId: string, index) => {
+      return {
+        ...acc,
+        [index + 1 + '_id']: demoId,
+        [index + 1 + '_valid']: formValue['demo_' + demoId] === true ? '1' : '2',
+        [index + 1 + '_reason']: formValue['reason_' + demoId].toString(),
+      };
+    }, {});
+
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.PROCESS_VALIDATE, {
+      ...postParams,
+      count: demosIds.length.toString(),
+      cup_id: cupId,
+    });
   }
 }

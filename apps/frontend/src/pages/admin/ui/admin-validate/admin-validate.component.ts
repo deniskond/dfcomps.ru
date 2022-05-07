@@ -1,8 +1,14 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Observable, switchMap } from 'rxjs';
+import { map, Observable, Subscription, switchMap, take, tap } from 'rxjs';
 import { AdminDataService } from '../../business/admin-data.service';
-import { AdminValidationInterface } from '../../models/admin-validation.interface';
+import {
+  AdminDemoValidationStatus,
+  AdminValidationInterface,
+  PlayerDemosValidationInterface,
+} from '../../models/admin-validation.interface';
 
 @Component({
   selector: 'dfcomps.ru-admin-validate',
@@ -10,14 +16,86 @@ import { AdminValidationInterface } from '../../models/admin-validation.interfac
   styleUrls: ['./admin-validate.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdminValidateComponent implements OnInit {
+export class AdminValidateComponent implements OnInit, OnDestroy {
   public cupValidationInfo$: Observable<AdminValidationInterface>;
+  public adminDemoValidationStatuses = AdminDemoValidationStatus;
+  public validationForm: FormGroup;
 
-  constructor(private adminDataService: AdminDataService, private activatedRoute: ActivatedRoute) {}
+  private setFormControlsSubscription: Subscription;
+
+  constructor(
+    private adminDataService: AdminDataService,
+    private activatedRoute: ActivatedRoute,
+    private changeDetectorRef: ChangeDetectorRef,
+    private snackBar: MatSnackBar,
+  ) {}
 
   ngOnInit(): void {
     this.cupValidationInfo$ = this.activatedRoute.params.pipe(
       switchMap((params: Params) => this.adminDataService.getCupValidationInfo$(params['id'])),
+      tap((cupValidationInfo: AdminValidationInterface) => this.initValidationForm(cupValidationInfo)),
     );
+  }
+
+  ngOnDestroy(): void {
+    this.setFormControlsSubscription.unsubscribe();
+  }
+
+  public setAllDemosValid(): void {
+    Object.keys(this.validationForm.controls).forEach((controlKey: string) => {
+      if (controlKey.match(/demo/)) {
+        this.validationForm.controls[controlKey].patchValue(true);
+      }
+
+      if (controlKey.match(/reason/)) {
+        this.validationForm.controls[controlKey].patchValue('');
+      }
+    });
+  }
+
+  public submit(): void {
+    this.activatedRoute.params
+      .pipe(
+        take(1),
+        map((params: Params) => params['id']),
+        switchMap((cupId: string) => this.adminDataService.sendValidationResult$(this.validationForm.value, cupId)),
+      )
+      .subscribe(() => this.snackBar.open('Validation results submitted successfully!', '', { duration: 2000 }));
+  }
+
+  private initValidationForm(cupValidationInfo: AdminValidationInterface): void {
+    const cpmControls = this.getFormPhysicsControls(cupValidationInfo.cpmDemos);
+    const vq3Controls = this.getFormPhysicsControls(cupValidationInfo.vq3Demos);
+
+    this.validationForm = new FormGroup({ ...cpmControls, ...vq3Controls });
+    this.changeDetectorRef.markForCheck();
+  }
+
+  private getValidationControlValue(validationStatus: AdminDemoValidationStatus): boolean | null {
+    const validationStatusMap: Record<AdminDemoValidationStatus, boolean | null> = {
+      [AdminDemoValidationStatus.NOT_CHECKED]: null,
+      [AdminDemoValidationStatus.VALIDATED_OK]: true,
+      [AdminDemoValidationStatus.VALIDATED_FAILED]: false,
+    };
+
+    return validationStatusMap[validationStatus];
+  }
+
+  private getFormPhysicsControls(playerDemos: PlayerDemosValidationInterface[]): Record<string, AbstractControl> {
+    return playerDemos.reduce((accumulator, playerDemos: PlayerDemosValidationInterface) => {
+      const playerDemosControls = playerDemos.demos.reduce(
+        (acc, demo) => ({
+          ...acc,
+          ['demo_' + demo.id]: new FormControl(
+            this.getValidationControlValue(demo.validationStatus),
+            Validators.required,
+          ),
+          ['reason_' + demo.id]: new FormControl(demo.validationFailedReason),
+        }),
+        {},
+      );
+
+      return { ...accumulator, ...playerDemosControls };
+    }, {});
   }
 }

@@ -12,6 +12,7 @@ export interface PlayerDemosValidationInterface {
     validationStatus: AdminDemoValidationStatus;
     validationFailedReason: string;
     demoLink: string;
+    id: string;
   }[];
 }
 

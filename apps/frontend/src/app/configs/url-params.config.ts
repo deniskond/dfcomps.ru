@@ -160,12 +160,14 @@ export class URL_PARAMS {
     DELETE_NEWS: (newsId: string) => string;
     GET_CUPS: string;
     CUP_VALIDATION: (cupId: string) => string;
+    PROCESS_VALIDATE: string;
   } {
     return {
       GET_NEWS: `${API_URL}/admin/news/get_all_news`,
       DELETE_NEWS: (newsId: string) => `${API_URL}/admin/news/delete_v2/${newsId}`,
       GET_CUPS: `${API_URL}/admin/cups/get_all_cups`,
       CUP_VALIDATION: (cupId: string) => `${API_URL}/admin/cups/get_cup_validation_demos/${cupId}`,
+      PROCESS_VALIDATE: `${API_URL}/admin/cups/process_validate_v2`,
     };
   }
 }

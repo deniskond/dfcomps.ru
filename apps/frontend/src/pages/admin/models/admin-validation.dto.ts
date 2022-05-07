@@ -6,6 +6,7 @@ export interface PlayerDemosValidationDto {
     verified: string;
     reason: string;
     demopath: string;
+    id: string;
   }[];
 }
 

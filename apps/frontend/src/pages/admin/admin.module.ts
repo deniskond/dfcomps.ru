@@ -14,6 +14,7 @@ import { HasAdminPanelAccess } from './has-admin-panel-access.guard';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AdminValidateComponent } from './ui/admin-validate/admin-validate.component';
 import { MatRadioModule } from '@angular/material/radio';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const adminRoutes: Routes = [
   {
@@ -55,6 +56,8 @@ const adminRoutes: Routes = [
     CommonModule,
     MatSnackBarModule,
     MatRadioModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [HasAdminPanelAccess],
 })
