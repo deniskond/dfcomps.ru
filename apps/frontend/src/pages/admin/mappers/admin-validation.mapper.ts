@@ -35,7 +35,7 @@ function mapPlayerDemo(playerDemos: PlayerDemosValidationDto, cupId: string): Pl
       time: playerDemo.ftime,
       validationStatus: validationStatusesMap[playerDemo.verified],
       validationFailedReason: playerDemo.reason,
-      demoLink: `${API_URL}/uploads/demos/cup/${cupId}/${playerDemo.demopath}`,
+      demoLink: `${API_URL}/uploads/demos/cup${cupId}/${playerDemo.demopath}`,
       id: playerDemo.id,
     })),
   };
