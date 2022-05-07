@@ -11,6 +11,6 @@ export function mapAdminCupsDtoToInterface(cups: AdminCupDto[]): AdminCupInterfa
     duration: getHumanTime(cup.start_datetime) + ' - ' + getHumanTime(cup.end_datetime),
     physics: cup.physics as unknown as Physics | 'mixed',
     type: cup.type as unknown as CupTypes,
-    validationAvailable: cup.rating_calculated === '0',
+    validationAvailable: cup.rating_calculated === '0' && cup.type === 'offline',
   }));
 }
