@@ -74,7 +74,7 @@ export class AdminDataService {
       return {
         ...acc,
         [index + 1 + '_id']: demoId,
-        [index + 1 + '_valid']: formValue['demo_' + demoId] === true ? '1' : '2',
+        [index + 1 + '_valid']: this.getDemoValidationResult(formValue['demo_' + demoId] as boolean | null),
         [index + 1 + '_reason']: formValue['reason_' + demoId].toString(),
       };
     }, {});
@@ -84,5 +84,17 @@ export class AdminDataService {
       count: demosIds.length.toString(),
       cup_id: cupId,
     });
+  }
+
+  private getDemoValidationResult(value: boolean | null): string {
+    if (value === null) {
+      return '0';
+    }
+
+    if (value === true) {
+      return '1';
+    }
+
+    return '2';
   }
 }
