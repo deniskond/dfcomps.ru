@@ -7,4 +7,5 @@ export interface AdminCupInterface {
   duration: string;
   physics: Physics | 'mixed';
   type: CupTypes;
+  validationAvailable: boolean;
 }

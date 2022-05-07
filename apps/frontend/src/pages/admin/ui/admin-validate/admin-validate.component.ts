@@ -16,12 +16,10 @@ import {
   styleUrls: ['./admin-validate.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdminValidateComponent implements OnInit, OnDestroy {
+export class AdminValidateComponent implements OnInit {
   public cupValidationInfo$: Observable<AdminValidationInterface>;
   public adminDemoValidationStatuses = AdminDemoValidationStatus;
   public validationForm: FormGroup;
-
-  private setFormControlsSubscription: Subscription;
 
   constructor(
     private adminDataService: AdminDataService,
@@ -35,10 +33,6 @@ export class AdminValidateComponent implements OnInit, OnDestroy {
       switchMap((params: Params) => this.adminDataService.getCupValidationInfo$(params['id'])),
       tap((cupValidationInfo: AdminValidationInterface) => this.initValidationForm(cupValidationInfo)),
     );
-  }
-
-  ngOnDestroy(): void {
-    this.setFormControlsSubscription.unsubscribe();
   }
 
   public setAllDemosValid(): void {

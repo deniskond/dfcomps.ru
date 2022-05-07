@@ -5,4 +5,5 @@ export interface AdminCupDto {
   full_name: string;
   physics: string;
   type: string;
+  rating_calculated: string;
 }
