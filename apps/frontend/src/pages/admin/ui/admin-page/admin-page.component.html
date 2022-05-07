@@ -1,0 +1,33 @@
+<div class="admin-page">
+  <div *ngIf="navigationPage$ | async as navigationPage" class="navigation">
+    <div class="logo-container">
+      <img src="../../../../assets/images/admin/logo.png" />
+    </div>
+    <admin-menu-item
+      [isActive]="navigationPage === 'news'"
+      routerLink="/admin/news"
+      caption="News"
+      icon="article"
+    ></admin-menu-item>
+    <admin-menu-item
+      [isActive]="navigationPage === 'cups'"
+      routerLink="/admin/cups"
+      caption="Cups"
+      icon="grade"
+    ></admin-menu-item>
+  </div>
+  <div class="content">
+    <div class="content-header">
+      <div *ngIf="currentPage$ | async as currentPage" class="title">{{ currentPage | titlecase }}</div>
+      <div *ngIf="user$ | async as user" class="user-info">
+        <div>{{ user.nick }}</div>
+        <div class="avatar">
+          <div class="border-container">
+            <img [src]="apiUrl + '/assets/images/avatars/' + user.avatar + '.jpg'" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <router-outlet></router-outlet>
+  </div>
+</div>

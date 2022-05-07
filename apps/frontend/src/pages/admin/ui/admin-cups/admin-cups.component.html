@@ -1,0 +1,32 @@
+<!-- <div class="actions-container">
+  <mat-card class="card">
+    <div class="card-header">Simple text news</div>
+    <div class="card-text">General news about any topic, which are not linked to any cup tables</div>
+    <button mat-raised-button color="accent">Add news</button>
+  </mat-card>
+</div> -->
+<mat-card class="cups-table-card">
+  <div class="card-header">Cups list</div>
+  <div *ngIf="cups$ | async as cups; else isLoading" class="cups-table">
+    <div class="cell first table-head">Number</div>
+    <div class="cell table-head">Full name</div>
+    <div class="cell table-head">Duration</div>
+    <div class="cell table-head">Type</div>
+    <div class="cell table-head">Actions</div>
+    <ng-container *ngFor="let cup of cups; let i = index">
+      <div class="cell first">{{ cups.length - i }}</div>
+      <div class="cell header">{{ cup.fullName }}</div>
+      <div class="cell">{{ cup.duration }}</div>
+      <div class="cell type">{{ cup.type }}</div>
+      <div class="cell actions buttons">
+        <button *ngIf="cup.validationAvailable; else noActions" [routerLink]="'/admin/validate/' + cup.id" mat-raised-button color="basic">Validate demos</button>
+        <ng-template #noActions>No actions available</ng-template>
+      </div>
+    </ng-container>
+  </div>
+  <ng-template #isLoading>
+    <div class="spinner">
+      <mat-spinner diameter="75" strokeWidth="4" color="accent"></mat-spinner>
+    </div>
+  </ng-template>
+</mat-card>

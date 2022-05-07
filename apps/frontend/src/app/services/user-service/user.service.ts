@@ -3,7 +3,7 @@ import { BackendService } from '../backend-service/backend-service';
 import { URL_PARAMS } from '../../configs/url-params.config';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { LoginAvailableDtoInterface } from './dto/login-available.dto';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 import { UserInterface } from '../../interfaces/user.interface';
 import { LoginResultDtoInterface } from './dto/login-result.dto';
 import { CookieService } from 'ngx-cookie-service';
@@ -11,12 +11,20 @@ import { isNonNull } from '../../../shared/helpers';
 
 @Injectable()
 export class UserService {
+  private firstTimeLogin = true;
   private _currentUser$ = new BehaviorSubject<UserInterface | null>(null);
 
   constructor(private backendService: BackendService, private cookieService: CookieService) {}
 
   public getCurrentUser$(): Observable<UserInterface> {
-    return this._currentUser$.asObservable().pipe(filter(isNonNull));
+    return this._currentUser$.asObservable().pipe(
+      tap((currentUser: UserInterface | null) => {
+        if (!currentUser) {
+          this.tryLoginFromCookie();
+        }
+      }),
+      filter(isNonNull),
+    );
   }
 
   public login$(login: string, password: string): Observable<LoginResultDtoInterface> {
@@ -24,21 +32,6 @@ export class UserService {
       login,
       password,
     });
-  }
-
-  public tryLoginFromCookie$(): Observable<LoginResultDtoInterface> {
-    const login = this.cookieService.get('login');
-    const password = this.cookieService.get('password');
-
-    return login && password
-      ? this.backendService.post$<LoginResultDtoInterface>(URL_PARAMS.USER_ACTIONS.LOGIN, {
-          login,
-          password,
-        })
-      : of({
-          logged: false,
-          user: null,
-        });
   }
 
   public checkLogin$(login: string): Observable<boolean> {
@@ -65,5 +58,26 @@ export class UserService {
 
   public setCurrentUser(user: UserInterface): void {
     this._currentUser$.next(user);
+  }
+
+  private tryLoginFromCookie(): void {
+    if (!this.firstTimeLogin) {
+      return;
+    }
+
+    this.firstTimeLogin = false;
+
+    const login = this.cookieService.get('login');
+    const password = this.cookieService.get('password');
+
+    if (login && password) {
+      this.backendService
+        .post$<LoginResultDtoInterface>(URL_PARAMS.USER_ACTIONS.LOGIN, {
+          login,
+          password,
+        })
+        .pipe(filter(({ logged }: LoginResultDtoInterface) => logged))
+        .subscribe(({ user }: LoginResultDtoInterface) => this.setCurrentUser(user!));
+    }
   }
 }
