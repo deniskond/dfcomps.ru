@@ -39,7 +39,7 @@
   <div class="rating-column"></div>
 </div>
 
-<div *ngIf="+cup.multicupId" class="multicup-button-container">
+<div *ngIf="+cup.multicupId && cup.demosValidated !== '0'" class="multicup-button-container">
   <button (click)="openFullMulticupTable()" mat-raised-button color="primary">
     <span translate translation="fullTable"></span> ({{ physics.toUpperCase() }})
   </button>
