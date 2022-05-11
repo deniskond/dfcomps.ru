@@ -54,11 +54,11 @@
       </app-player-cell>
     </div>
     <div
-      *ngFor="let roundResult of result.roundResults; let roundIndex = index"
+      *ngFor="let roundResult of range(fullTable.rounds); let roundIndex = index"
       [class.gray]="result.minround === roundIndex + 1"
       class="cell"
     >
-      {{ roundResult | invokeFunction : getPlayerRoundResult }}
+      {{ result.roundResults[roundIndex] | invokeFunction : getPlayerRoundResult }}
     </div>
     <div [class.yellow]="fullTable.currentRound === roundsCount" class="cell">{{ result.overall }}</div>
   </div>
