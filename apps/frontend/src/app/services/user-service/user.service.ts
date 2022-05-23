@@ -27,6 +27,10 @@ export class UserService {
     );
   }
 
+  public getCurrentUserUnfiltered$(): Observable<UserInterface | null> {
+    return this._currentUser$.asObservable();
+  }
+
   public login$(login: string, password: string): Observable<LoginResultDtoInterface> {
     return this.backendService.post$(URL_PARAMS.USER_ACTIONS.LOGIN, {
       login,

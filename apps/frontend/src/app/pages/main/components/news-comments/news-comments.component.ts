@@ -54,7 +54,7 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
   @ViewChild('textarea') textarea: ElementRef;
   @ViewChild('smilesDropdown') smilesDropdown: SmilesDropdownComponent;
 
-  public currentUser$: Observable<UserInterface>;
+  public currentUser$: Observable<UserInterface | null>;
   public comments$ = new ReplaySubject<CommentInterface[]>(1);
   public commentsWithActions$: Observable<CommentWithActionInterface[]>;
   public personalSmiles$: Observable<PersonalSmileInterface[]>;
@@ -209,21 +209,21 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
   }
 
   private initObservables(): void {
-    this.currentUser$ = this.userService.getCurrentUser$();
+    this.currentUser$ = this.userService.getCurrentUserUnfiltered$();
     this.personalSmiles$ = this.smilesService.getPersonalSmiles$();
     this.commentsWithActions$ = combineLatest([this.comments$, this.currentUser$]).pipe(
-      map(([comments, user]: [CommentInterface[], UserInterface]) =>
+      map(([comments, user]: [CommentInterface[], UserInterface | null]) =>
         comments.map((comment: CommentInterface) => this.mapCommentWithAction(comment, user)),
       ),
     );
   }
 
-  private mapCommentWithAction(comment: CommentInterface, user: UserInterface): CommentWithActionInterface {
+  private mapCommentWithAction(comment: CommentInterface, user: UserInterface | null): CommentWithActionInterface {
     const isNewComment: boolean = moment(comment.datetimezone)
       .add(COMMENT_ACTION_PERIOD_MINUTES, 'minutes')
       .isAfter(moment());
-    const isEditable: boolean = user && comment.playerId === user.id && isNewComment;
-    const isAdminDeletable: boolean = !comment.reason && !isEditable && user && user.access === UserAccess.ADMIN;
+    const isEditable: boolean = !!user && comment.playerId === user.id && isNewComment;
+    const isAdminDeletable: boolean = !comment.reason && !isEditable && !!user && user.access === UserAccess.ADMIN;
 
     return { ...comment, isEditable, isAdminDeletable };
   }
