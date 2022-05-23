@@ -16,6 +16,7 @@ import { CupRegistrationService } from '../../services/cup-registration/cup-regi
 import { filter, withLatestFrom } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { isNonNull } from '../../../../../shared/helpers/is-non-null';
 
 @Component({
   selector: 'app-news-online-announce',
@@ -64,7 +65,7 @@ export class NewsOnlineAnnounceComponent implements OnInit, OnChanges {
       this.cupRegistrationService
         .cancelRegistrationForCup$(this.news.cupId)
         .pipe(
-          withLatestFrom(this.userService.getCurrentUser$()),
+          withLatestFrom(this.userService.getCurrentUser$().pipe(filter(isNonNull))),
           filter(([, user]: [void, UserInterface]) => !!user),
         )
         .subscribe(([, user]: [void, UserInterface]) => {
@@ -76,7 +77,7 @@ export class NewsOnlineAnnounceComponent implements OnInit, OnChanges {
       this.cupRegistrationService
         .registerForCup$(this.news.cupId)
         .pipe(
-          withLatestFrom(this.userService.getCurrentUser$()),
+          withLatestFrom(this.userService.getCurrentUser$().pipe(filter(isNonNull))),
           filter(([, user]: [void, UserInterface]) => !!user),
         )
         .subscribe(([, { country, id, nick }]: [void, UserInterface]) => {

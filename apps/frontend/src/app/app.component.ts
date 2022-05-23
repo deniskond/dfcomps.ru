@@ -1,7 +1,6 @@
-import { LoginResultDtoInterface } from './services/user-service/dto/login-result.dto';
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from './services/user-service/user.service';
-import { take, filter, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { LanguageService } from './services/language/language.service';
 import { Observable, Subject } from 'rxjs';
 import { UserInterface } from './interfaces/user.interface';
@@ -14,7 +13,7 @@ import { DuelService } from './pages/1v1/services/duel.service';
   styleUrls: ['./app.component.less'],
 })
 export class AppComponent implements OnInit, OnDestroy {
-  public user$: Observable<UserInterface>;
+  public user$: Observable<UserInterface | null>;
 
   private onDestroy$ = new Subject<void>();
 

@@ -25,7 +25,7 @@ export class OneVOneWidgetComponent implements OnInit {
   public matchState: MatchStates;
   public isWaitingForServerAnswer = false;
   public matchStates = MatchStates;
-  public user$: Observable<UserInterface>;
+  public user$: Observable<UserInterface | null>;
   public queueInfo: QueueInfoInterface;
   public physics = Physics;
   public firstPickbanStep = true;

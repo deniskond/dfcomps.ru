@@ -17,11 +17,12 @@ import {
 } from '@angular/core';
 import { CupStates } from '../../../../enums/cup-states.enum';
 import * as moment from 'moment';
-import { finalize, take, switchMap, catchError } from 'rxjs/operators';
+import { finalize, take, switchMap, catchError, filter } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ReflexPlayerDemosDialogComponent } from './reflex-player-demos-dialog/reflex-player-demos-dialog.component';
+import { isNonNull } from '../../../../../shared/helpers/is-non-null';
 
 const SNACKBAR_DURATION = 3000;
 
@@ -40,7 +41,7 @@ export class NewsReflexOfflineStartComponent implements OnInit {
 
   @ViewChild('fileInput') fileInput: ElementRef;
 
-  public user$: Observable<UserInterface>;
+  public user$: Observable<UserInterface | null>;
   public cupState: CupStates;
   public cupStates = CupStates;
   public isUploading = false;
@@ -72,6 +73,7 @@ export class NewsReflexOfflineStartComponent implements OnInit {
 
     this.user$
       .pipe(
+        filter(isNonNull),
         take(1),
         switchMap((user: UserInterface) =>
           this.demosService.reflexUploadDemo$(demo, this.news.cup.id, this.news.cup.map1, user.id, demo.name),

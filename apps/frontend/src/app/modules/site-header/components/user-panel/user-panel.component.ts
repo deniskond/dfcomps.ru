@@ -5,9 +5,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 import { RegisterDialogComponent } from '../register-dialog/register-dialog.component';
 import { UserService } from '../../../../services/user-service/user.service';
-import { take } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { isNonNull } from '../../../../../shared/helpers/is-non-null';
 
 @Component({
   selector: 'app-user-panel',
@@ -16,7 +17,7 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserPanelComponent implements OnInit, OnDestroy {
-  public user$: Observable<UserInterface>;
+  public user$: Observable<UserInterface | null>;
   public apiUrl = API_URL;
 
   private onDestroy$ = new Subject<void>();
@@ -45,6 +46,6 @@ export class UserPanelComponent implements OnInit, OnDestroy {
   }
 
   public onProfileClick(): void {
-    this.user$.pipe(take(1)).subscribe((user: UserInterface) => this.router.navigate([`/profile/${user.id}`]));
+    this.user$.pipe(filter(isNonNull), take(1)).subscribe((user: UserInterface) => this.router.navigate([`/profile/${user.id}`]));
   }
 }

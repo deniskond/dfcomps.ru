@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { filter, Observable } from 'rxjs';
 import { API_URL } from '../../../../app/configs/url-params.config';
 import { UserInterface } from '../../../../app/interfaces/user.interface';
 import { UserService } from '../../../../app/services/user-service/user.service';
+import { isNonNull } from '../../../../shared/helpers/is-non-null';
 import { AdminCurrentPageService } from '../../business/admin-current-page.service';
 
 @Component({
@@ -23,7 +24,7 @@ export class AdminPageComponent implements OnInit {
     this.adminCurrentPageService.setRouteSubscription();
     this.currentPage$ = this.adminCurrentPageService.currentPage$;
     this.navigationPage$ = this.adminCurrentPageService.navigationPage$;
-    this.user$ = this.userService.getCurrentUser$();
+    this.user$ = this.userService.getCurrentUser$().pipe(filter(isNonNull));
     this.apiUrl = API_URL;
   }
 

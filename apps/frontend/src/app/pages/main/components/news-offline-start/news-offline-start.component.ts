@@ -18,7 +18,7 @@ import {
 } from '@angular/core';
 import { CupStates } from '../../../../enums/cup-states.enum';
 import * as moment from 'moment';
-import { finalize, take, switchMap, catchError } from 'rxjs/operators';
+import { finalize, take, switchMap, catchError, filter } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -27,6 +27,7 @@ import { PlayerDemosDialogComponent } from './player-demos-dialog/player-demos-d
 import { DemoUploadResult } from '../../../../services/demos/enums/demo-upload-result.enum';
 import { OverbouncesWarningDialogComponent } from './overbounces-warning-dialog/overbounces-warning-dialog.component';
 import { SDCRulesDialogComponent } from './sdc-rules-dialog/sdc-rules-dialog.component';
+import { isNonNull } from '../../../../../shared/helpers/is-non-null';
 
 const SNACKBAR_DURATION = 3000;
 
@@ -45,7 +46,7 @@ export class NewsOfflineStartComponent implements OnInit {
 
   @ViewChild('fileInput') fileInput: ElementRef;
 
-  public user$: Observable<UserInterface>;
+  public user$: Observable<UserInterface | null>;
   public cupState: CupStates;
   public cupStates = CupStates;
   public isUploading = false;
@@ -84,6 +85,7 @@ export class NewsOfflineStartComponent implements OnInit {
 
     this.user$
       .pipe(
+        filter(isNonNull),
         take(1),
         switchMap((user: UserInterface) =>
           this.demosService.uploadDemo$(demo, this.news.cup.id, this.news.cup.map1, user.id, demo.name),

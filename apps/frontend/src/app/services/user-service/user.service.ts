@@ -7,7 +7,6 @@ import { filter, map, tap } from 'rxjs/operators';
 import { UserInterface } from '../../interfaces/user.interface';
 import { LoginResultDtoInterface } from './dto/login-result.dto';
 import { CookieService } from 'ngx-cookie-service';
-import { isNonNull } from '../../../shared/helpers';
 
 @Injectable()
 export class UserService {
@@ -16,19 +15,14 @@ export class UserService {
 
   constructor(private backendService: BackendService, private cookieService: CookieService) {}
 
-  public getCurrentUser$(): Observable<UserInterface> {
+  public getCurrentUser$(): Observable<UserInterface | null> {
     return this._currentUser$.asObservable().pipe(
       tap((currentUser: UserInterface | null) => {
         if (!currentUser) {
           this.tryLoginFromCookie();
         }
       }),
-      filter(isNonNull),
     );
-  }
-
-  public getCurrentUserUnfiltered$(): Observable<UserInterface | null> {
-    return this._currentUser$.asObservable();
   }
 
   public login$(login: string, password: string): Observable<LoginResultDtoInterface> {

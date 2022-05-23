@@ -209,7 +209,7 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
   }
 
   private initObservables(): void {
-    this.currentUser$ = this.userService.getCurrentUserUnfiltered$();
+    this.currentUser$ = this.userService.getCurrentUser$();
     this.personalSmiles$ = this.smilesService.getPersonalSmiles$();
     this.commentsWithActions$ = combineLatest([this.comments$, this.currentUser$]).pipe(
       map(([comments, user]: [CommentInterface[], UserInterface | null]) =>

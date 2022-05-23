@@ -33,7 +33,12 @@ export class LoginDialogComponent {
 
     this.userService
       .login$(this.loginForm.controls['login'].value, this.loginForm.controls['password'].value)
-      .pipe(finalize(() => (this.isLoading = false)))
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+          this.changeDetectorRef.markForCheck();
+        }),
+      )
       .subscribe(({ logged, user }: LoginResultDtoInterface) => {
         if (logged) {
           // TODO should be moved into userService
