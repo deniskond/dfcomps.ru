@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { map, Observable, tap } from 'rxjs';
+import { filter, map, Observable, tap } from 'rxjs';
 import { UserAccess } from '../../app/enums/user-access.enum';
 import { UserInterface } from '../../app/interfaces/user.interface';
 import { UserService } from '../../app/services/user-service/user.service';
+import { isNonNull } from '../../shared/helpers';
 
 @Injectable()
 export class HasAdminPanelAccess implements CanActivate {
@@ -11,7 +12,8 @@ export class HasAdminPanelAccess implements CanActivate {
 
   canActivate(): Observable<boolean> {
     return this.userService.getCurrentUser$().pipe(
-      map((user: UserInterface | null) => !!user && (user.access === UserAccess.ADMIN || user.access === UserAccess.CUP_ORGANIZER)),
+      filter(isNonNull),
+      map((user: UserInterface) => user.access === UserAccess.ADMIN || user.access === UserAccess.CUP_ORGANIZER),
       tap((hasAccess: boolean) => {
         if (!hasAccess) {
           this.router.navigate(['/']);
