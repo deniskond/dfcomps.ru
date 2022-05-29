@@ -5,27 +5,54 @@
       <div class="input-title">Title (Russian)</div>
       <div>
         <input formControlName="russianTitle" class="input-field" />
-        <div *ngIf="hasFieldError(this.addSimpleNewsForm.get('russianTitle')!)" class="field-error">Field is required</div>
+        <div *ngIf="hasFieldError(this.addSimpleNewsForm.get('russianTitle')!)" class="field-error">
+          Field is required
+        </div>
       </div>
       <div class="input-title">Title (English)</div>
       <div>
         <input formControlName="englishTitle" class="input-field" />
-        <div *ngIf="hasFieldError(this.addSimpleNewsForm.get('englishTitle')!)" class="field-error">Field is required</div>
+        <div *ngIf="hasFieldError(this.addSimpleNewsForm.get('englishTitle')!)" class="field-error">
+          Field is required
+        </div>
       </div>
       <div class="input-title">Time to post</div>
-      <div>
-        <input formControlName="postingTime" class="input-field" type="datetime-local" />
-        <div *ngIf="hasFieldError(this.addSimpleNewsForm.get('postingTime')!)" class="field-error">Field is required</div>
+      <div class="radio-container">
+        <mat-radio-group formControlName="timeOption">
+          <div>
+            <mat-radio-button value="now" color="primary"></mat-radio-button>
+            <span>Now</span>
+          </div>
+          <div>
+            <mat-radio-button value="custom" color="primary"></mat-radio-button>
+            <span>Custom time</span>
+            <input formControlName="postingTime" class="input-field date" type="datetime-local" />
+            <span
+              *ngIf="
+                this.addSimpleNewsForm.errors &&
+                this.addSimpleNewsForm.errors['postingTimeEmpty'] &&
+                !this.addSimpleNewsForm.get('postingTime')!.pristine
+              "
+              class="field-error"
+            >
+              Field is required
+          </span>
+          </div>
+        </mat-radio-group>
       </div>
       <div class="input-title">Russian text</div>
       <div class="wysiwyg-container">
         <quill-editor formControlName="russianText" class="quill"></quill-editor>
-        <div *ngIf="hasFieldError(this.addSimpleNewsForm.get('russianText')!)" class="field-error">Field is required</div>
+        <div *ngIf="hasFieldError(this.addSimpleNewsForm.get('russianText')!)" class="field-error">
+          Field is required
+        </div>
       </div>
       <div class="input-title">English text</div>
       <div class="wysiwyg-container">
         <quill-editor formControlName="englishText" class="quill"></quill-editor>
-        <div *ngIf="hasFieldError(this.addSimpleNewsForm.get('englishText')!)" class="field-error">Field is required</div>
+        <div *ngIf="hasFieldError(this.addSimpleNewsForm.get('englishText')!)" class="field-error">
+          Field is required
+        </div>
       </div>
     </div>
   </form>
