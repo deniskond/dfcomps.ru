@@ -1,16 +1,18 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AdminDataService } from '../../business/admin-data.service';
+import { AdminOperationType } from '../../models/admin-operation-type.enum';
 
 @Component({
-  selector: 'dfcomps.ru-admin-add-simple-news',
-  templateUrl: './admin-add-simple-news.component.html',
-  styleUrls: ['./admin-add-simple-news.component.less'],
+  selector: 'admin-add-simple-news',
+  templateUrl: './admin-simple-news.component.html',
+  styleUrls: ['./admin-simple-news.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdminAddSimpleNewsComponent {
+export class AdminSimpleNewsComponent implements OnInit {
+  public operationType: AdminOperationType;
   public addSimpleNewsForm = new FormGroup(
     {
       russianTitle: new FormControl('', Validators.required),
@@ -23,7 +25,16 @@ export class AdminAddSimpleNewsComponent {
     this.postingTimeValidator(),
   );
 
-  constructor(private adminDataService: AdminDataService, private router: Router, private snackBar: MatSnackBar) {}
+  constructor(
+    private adminDataService: AdminDataService,
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private activatedRoute: ActivatedRoute,
+  ) {}
+
+  ngOnInit(): void {
+    this.operationType = this.activatedRoute.snapshot.params['action'];
+  }
 
   public submitNews(): void {
     Object.keys(this.addSimpleNewsForm.controls).forEach((key: string) =>

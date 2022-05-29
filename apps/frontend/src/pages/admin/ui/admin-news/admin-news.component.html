@@ -13,21 +13,29 @@
 <mat-card class="news-table-card">
   <div class="card-header">News list</div>
   <div *ngIf="news$ | async as news; else isLoading" class="news-table">
-      <div class="cell first table-head">Number</div>
-      <div class="cell table-head">Header</div>
-      <div class="cell table-head">Date</div>
-      <div class="cell table-head">Type</div>
-      <div class="cell table-head">Actions</div>
-    <ng-container *ngFor="let newsItem of news; let i = index;">
+    <div class="cell first table-head">Number</div>
+    <div class="cell table-head">Header</div>
+    <div class="cell table-head">Date</div>
+    <div class="cell table-head">Type</div>
+    <div class="cell table-head">Actions</div>
+    <ng-container *ngFor="let newsItem of news; let i = index">
       <div class="cell first">{{ news.length - i }}</div>
       <div class="cell header">{{ newsItem.headerEnglish }}</div>
       <div class="cell date">{{ newsItem.date }}</div>
-      <div class="cell type">{{ newsItem.type }}</div>
+      <div class="cell type">{{ newsItem.typeName }}</div>
       <div class="cell actions buttons">
-        <!-- <button mat-raised-button color="basic">Edit</button>
-        <button (click)="confirmDelete(newsItem)" mat-raised-button color="warn">Delete</button> -->
-        <!-- TODO -->
-        No actions available
+        <button
+          *ngIf="newsItem.type | invokeFunction: getNewsTypeRoute as newsTypeRoute; else noActionsAvailable"
+          [routerLink]="'/admin/news/edit/' + newsTypeRoute + '/' + newsItem.id"
+          mat-raised-button
+          color="basic"
+        >
+          Edit
+        </button>
+        <ng-template #noActionsAvailable>
+          No actions available
+        </ng-template>
+        <!-- <button (click)="confirmDelete(newsItem)" mat-raised-button color="warn">Delete</button> -->
       </div>
     </ng-container>
   </div>

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ReplaySubject, switchMap, take } from 'rxjs';
+import { NewsTypes } from '../../../../app/enums/news-types.enum';
 import { AdminDataService } from '../../business/admin-data.service';
 import { AdminNewsInterface } from '../../models/admin-news.interface';
 
@@ -40,5 +41,15 @@ export class AdminNewsComponent implements OnInit {
         this.adminDataService.setNews(this.news);
         this.snackBar.open(`Successfully deleted "${newsItem.headerEnglish}"!`, '', { duration: 1000 });
       });
+  }
+
+  public getNewsTypeRoute(newsType: NewsTypes): string | undefined {
+    // TODO Remove Partial and add all routes
+    const newsTypeRouteMap: Partial<Record<NewsTypes, string>> = {
+      [NewsTypes.OFFLINE_START]: 'offline-start',
+      [NewsTypes.SIMPLE]: 'simple',
+    };
+
+    return newsTypeRouteMap[newsType];
   }
 }

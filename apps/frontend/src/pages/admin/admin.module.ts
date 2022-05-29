@@ -15,8 +15,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AdminValidateComponent } from './ui/admin-validate/admin-validate.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AdminAddSimpleNewsComponent } from './ui/admin-add-simple-news/admin-add-simple-news.component';
-import { AdminAddMulticupRoundNewsComponent } from './ui/admin-add-multicup-round-news/admin-add-multicup-round-news.component';
+import { AdminSimpleNewsComponent } from './ui/admin-simple-news/admin-simple-news.component';
+import { AdminMulticupRoundNewsComponent } from './ui/admin-multicup-round-news/admin-multicup-round-news.component';
 import { QuillModule } from 'ngx-quill';
 
 const adminRoutes: Routes = [
@@ -34,15 +34,27 @@ const adminRoutes: Routes = [
             component: AdminNewsComponent,
           },
           {
-            path: 'add',
+            path: ':action',
             children: [
               {
                 path: 'simple',
-                component: AdminAddSimpleNewsComponent,
+                component: AdminSimpleNewsComponent,
+                children: [
+                  {
+                    path: ':id',
+                    component: AdminSimpleNewsComponent,
+                  },
+                ],
               },
               {
-                path: 'multicup-round',
-                component: AdminAddMulticupRoundNewsComponent,
+                path: 'multicup-round-start',
+                component: AdminMulticupRoundNewsComponent,
+                children: [
+                  {
+                    path: ':id',
+                    component: AdminMulticupRoundNewsComponent,
+                  },
+                ],
               },
             ],
           },
@@ -69,8 +81,8 @@ const adminRoutes: Routes = [
     AdminNewsComponent,
     AdminCupsComponent,
     AdminValidateComponent,
-    AdminAddSimpleNewsComponent,
-    AdminAddMulticupRoundNewsComponent,
+    AdminSimpleNewsComponent,
+    AdminMulticupRoundNewsComponent,
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
