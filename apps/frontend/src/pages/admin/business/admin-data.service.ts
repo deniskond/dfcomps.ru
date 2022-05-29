@@ -95,6 +95,7 @@ export class AdminDataService {
       text: formValue['russianText'],
       text_en: formValue['englishText'],
       type_id: '3',
+      youtube: formValue['youtube'],
     });
   }
 
@@ -111,6 +112,7 @@ export class AdminDataService {
       datetime: formValue['postingTime'],
       text: formValue['russianText'],
       text_en: formValue['englishText'],
+      youtube: formValue['youtube'],
     });
   }
 

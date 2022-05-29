@@ -16,7 +16,7 @@
           Field is required
         </div>
       </div>
-      <div class="input-title">Time to post<br><span class="comment">(MSK GMT +3:00)</span></div>
+      <div class="input-title">Time to post<br /><span class="comment">(MSK GMT +3:00)</span></div>
       <div class="radio-container">
         <mat-radio-group formControlName="timeOption">
           <div>
@@ -36,7 +36,7 @@
               class="field-error"
             >
               Field is required
-          </span>
+            </span>
           </div>
         </mat-radio-group>
       </div>
@@ -53,6 +53,17 @@
         <div *ngIf="hasFieldError(this.addSimpleNewsForm.get('englishText')!)" class="field-error">
           Field is required
         </div>
+      </div>
+      <div class="input-title">Youtube embed ID</div>
+      <div>
+        <input formControlName="youtube" class="input-field" />
+        <app-youtube
+          *ngIf="youtubeEmbedId$ | async as youtubeEmbedId"
+          [id]="youtubeEmbedId"
+          [width]="800"
+          [height]="450"
+          class="youtube"
+        ></app-youtube>
       </div>
     </div>
     <button (click)="submitNews()" mat-raised-button color="accent" class="submit-button">Save news</button>

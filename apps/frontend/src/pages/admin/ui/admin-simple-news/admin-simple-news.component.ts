@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AdminDataService } from '../../business/admin-data.service';
 import { AdminOperationType } from '../../models/admin-operation-type.enum';
 import * as moment from 'moment';
+import { debounceTime, Observable, startWith } from 'rxjs';
 
 @Component({
   selector: 'admin-add-simple-news',
@@ -15,6 +16,7 @@ import * as moment from 'moment';
 export class AdminSimpleNewsComponent implements OnInit {
   public operationType: AdminOperationType;
   public addSimpleNewsForm: FormGroup;
+  public youtubeEmbedId$: Observable<string>;
   private newsId: string;
 
   constructor(
@@ -29,40 +31,6 @@ export class AdminSimpleNewsComponent implements OnInit {
     this.operationType = this.activatedRoute.snapshot.params['action'];
     this.newsId = this.activatedRoute.snapshot.params['id'];
     this.initForm();
-  }
-
-  public initForm(): void {
-    if (this.operationType === AdminOperationType.ADD) {
-      this.addSimpleNewsForm = new FormGroup(
-        {
-          russianTitle: new FormControl('', Validators.required),
-          englishTitle: new FormControl('', Validators.required),
-          timeOption: new FormControl('now', Validators.required),
-          postingTime: new FormControl(''),
-          russianText: new FormControl('', Validators.required),
-          englishText: new FormControl('', Validators.required),
-        },
-        this.postingTimeValidator(),
-      );
-    }
-
-    if (this.operationType === AdminOperationType.EDIT) {
-      this.adminDataService.getSingleNews$(this.newsId).subscribe((singleNews: any) => {
-        this.addSimpleNewsForm = new FormGroup(
-          {
-            russianTitle: new FormControl(singleNews.news.header, Validators.required),
-            englishTitle: new FormControl(singleNews.news.header_en, Validators.required),
-            timeOption: new FormControl('custom', Validators.required),
-            postingTime: new FormControl(this.mapDateTimeZoneToInput(singleNews.news.datetimezone)),
-            russianText: new FormControl(singleNews.news.text, Validators.required),
-            englishText: new FormControl(singleNews.news.text_en, Validators.required),
-          },
-          this.postingTimeValidator(),
-        );
-
-        this.changeDetectorRef.markForCheck();
-      });
-    }
   }
 
   public submitNews(): void {
@@ -112,5 +80,51 @@ export class AdminSimpleNewsComponent implements OnInit {
   // TODO Move out to mappers after typization
   private mapDateTimeZoneToInput(datetimezone: string): string {
     return moment(datetimezone).format('YYYY-MM-DDTHH:mm');
+  }
+
+  private initForm(): void {
+    if (this.operationType === AdminOperationType.ADD) {
+      this.addSimpleNewsForm = new FormGroup(
+        {
+          russianTitle: new FormControl('', Validators.required),
+          englishTitle: new FormControl('', Validators.required),
+          timeOption: new FormControl('now', Validators.required),
+          postingTime: new FormControl(''),
+          russianText: new FormControl('', Validators.required),
+          englishText: new FormControl('', Validators.required),
+          youtube: new FormControl(''),
+        },
+        this.postingTimeValidator(),
+      );
+
+      this.setYoutubeFieldObservable();
+    }
+
+    if (this.operationType === AdminOperationType.EDIT) {
+      this.adminDataService.getSingleNews$(this.newsId).subscribe((singleNews: any) => {
+        this.addSimpleNewsForm = new FormGroup(
+          {
+            russianTitle: new FormControl(singleNews.news.header, Validators.required),
+            englishTitle: new FormControl(singleNews.news.header_en, Validators.required),
+            timeOption: new FormControl('custom', Validators.required),
+            postingTime: new FormControl(this.mapDateTimeZoneToInput(singleNews.news.datetimezone)),
+            russianText: new FormControl(singleNews.news.text, Validators.required),
+            englishText: new FormControl(singleNews.news.text_en, Validators.required),
+            youtube: new FormControl(singleNews.news.youtube),
+          },
+          this.postingTimeValidator(),
+        );
+
+        this.changeDetectorRef.markForCheck();
+        this.setYoutubeFieldObservable();
+      });
+    }
+  }
+
+  private setYoutubeFieldObservable(): void {
+    this.youtubeEmbedId$ = this.addSimpleNewsForm.get('youtube')!.valueChanges.pipe(
+      debounceTime(300),
+      startWith(this.addSimpleNewsForm.get('youtube')!.value),
+    );
   }
 }
