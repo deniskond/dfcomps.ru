@@ -1,0 +1,54 @@
+.header {
+  margin-bottom: 24px;
+}
+
+.main-form-card {
+  width: 100%;
+  height: 100%;
+  margin-top: 32px;
+}
+
+.input-field {
+  height: 32px;
+  font-size: 16px;
+  width: 100%;
+  padding-left: 4px;
+  border: 1px solid rgb(204, 204, 204);
+}
+
+.form {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 128px 1fr;
+  grid-row-gap: 12px;
+}
+
+.input-title {
+  display: flex;
+  padding-top: 8px;
+}
+
+.submit-button {
+  margin-top: 32px;
+}
+
+.wysiwyg-container {
+  min-height: 200px;
+
+  .quill {
+    display: block;
+
+    ::ng-deep .ql-container {
+      min-height: 152px;
+    }
+
+    ::ng-deep .ql-font {
+      display: none;
+    }
+  }
+}
+
+.field-error {
+  margin-top: 8px;
+  color: red;
+}

@@ -1,0 +1,33 @@
+<mat-card class="main-form-card">
+  <h3 class="header">Add simple news</h3>
+  <form [formGroup]="addSimpleNewsForm">
+    <div class="form">
+      <div class="input-title">Title (Russian)</div>
+      <div>
+        <input formControlName="russianTitle" class="input-field" />
+        <div *ngIf="hasFieldError(this.addSimpleNewsForm.get('russianTitle')!)" class="field-error">Field is required</div>
+      </div>
+      <div class="input-title">Title (English)</div>
+      <div>
+        <input formControlName="englishTitle" class="input-field" />
+        <div *ngIf="hasFieldError(this.addSimpleNewsForm.get('englishTitle')!)" class="field-error">Field is required</div>
+      </div>
+      <div class="input-title">Time to post</div>
+      <div>
+        <input formControlName="postingTime" class="input-field" type="datetime-local" />
+        <div *ngIf="hasFieldError(this.addSimpleNewsForm.get('postingTime')!)" class="field-error">Field is required</div>
+      </div>
+      <div class="input-title">Russian text</div>
+      <div class="wysiwyg-container">
+        <quill-editor formControlName="russianText" class="quill"></quill-editor>
+        <div *ngIf="hasFieldError(this.addSimpleNewsForm.get('russianText')!)" class="field-error">Field is required</div>
+      </div>
+      <div class="input-title">English text</div>
+      <div class="wysiwyg-container">
+        <quill-editor formControlName="englishText" class="quill"></quill-editor>
+        <div *ngIf="hasFieldError(this.addSimpleNewsForm.get('englishText')!)" class="field-error">Field is required</div>
+      </div>
+    </div>
+  </form>
+  <button (click)="submitNews()" mat-raised-button color="accent" class="submit-button">Add news</button>
+</mat-card>

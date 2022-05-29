@@ -15,6 +15,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AdminValidateComponent } from './ui/admin-validate/admin-validate.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AdminAddSimpleNewsComponent } from './ui/admin-add-simple-news/admin-add-simple-news.component';
+import { AdminAddMulticupRoundNewsComponent } from './ui/admin-add-multicup-round-news/admin-add-multicup-round-news.component';
+import { QuillModule } from 'ngx-quill';
 
 const adminRoutes: Routes = [
   {
@@ -23,7 +26,28 @@ const adminRoutes: Routes = [
     canActivate: [HasAdminPanelAccess],
     children: [
       { path: '', component: AdminNewsComponent },
-      { path: 'news', component: AdminNewsComponent },
+      {
+        path: 'news',
+        children: [
+          {
+            path: '',
+            component: AdminNewsComponent,
+          },
+          {
+            path: 'add',
+            children: [
+              {
+                path: 'simple',
+                component: AdminAddSimpleNewsComponent,
+              },
+              {
+                path: 'multicup-round',
+                component: AdminAddMulticupRoundNewsComponent,
+              },
+            ],
+          },
+        ],
+      },
       { path: 'cups', component: AdminCupsComponent },
       {
         path: 'validate',
@@ -45,6 +69,8 @@ const adminRoutes: Routes = [
     AdminNewsComponent,
     AdminCupsComponent,
     AdminValidateComponent,
+    AdminAddSimpleNewsComponent,
+    AdminAddMulticupRoundNewsComponent,
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
@@ -58,6 +84,7 @@ const adminRoutes: Routes = [
     MatRadioModule,
     FormsModule,
     ReactiveFormsModule,
+    QuillModule.forRoot(),
   ],
   providers: [HasAdminPanelAccess],
 })
