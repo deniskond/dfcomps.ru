@@ -21,8 +21,8 @@ export class AdminDataService {
 
   constructor(private backendService: BackendService) {}
 
-  public getAllNews$(): Observable<AdminNewsInterface[]> {
-    if (this.news) {
+  public getAllNews$(cache = true): Observable<AdminNewsInterface[]> {
+    if (this.news && cache) {
       return of(this.news);
     }
 

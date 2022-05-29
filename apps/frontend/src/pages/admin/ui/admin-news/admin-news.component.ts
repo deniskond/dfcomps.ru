@@ -1,7 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ReplaySubject, switchMap, take } from 'rxjs';
+import { filter, Observable, ReplaySubject, switchMap, take } from 'rxjs';
 import { NewsTypes } from '../../../../app/enums/news-types.enum';
+import { UserAccess } from '../../../../app/enums/user-access.enum';
+import { UserInterface } from '../../../../app/interfaces/user.interface';
+import { UserService } from '../../../../app/services/user-service/user.service';
+import { isNonNull } from '../../../../shared/helpers';
 import { AdminDataService } from '../../business/admin-data.service';
 import { AdminNewsInterface } from '../../models/admin-news.interface';
 
@@ -14,14 +18,22 @@ import { AdminNewsInterface } from '../../models/admin-news.interface';
 export class AdminNewsComponent implements OnInit {
   public news: AdminNewsInterface[];
   public news$ = new ReplaySubject<AdminNewsInterface[]>(1);
+  public user$: Observable<UserInterface>;
+  public userAccess = UserAccess;
 
-  constructor(private adminDataService: AdminDataService, private snackBar: MatSnackBar) {}
+  constructor(
+    private adminDataService: AdminDataService,
+    private snackBar: MatSnackBar,
+    private userService: UserService,
+  ) {}
 
   ngOnInit(): void {
     this.adminDataService.getAllNews$().subscribe((news: AdminNewsInterface[]) => {
       this.news = news;
       this.news$.next(news);
     });
+
+    this.user$ = this.userService.getCurrentUser$().pipe(filter(isNonNull));
   }
 
   public confirmDelete(newsItem: AdminNewsInterface): void {

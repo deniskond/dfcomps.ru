@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AdminDataService } from '../../business/admin-data.service';
 import { AdminOperationType } from '../../models/admin-operation-type.enum';
 import * as moment from 'moment';
-import { debounceTime, Observable, startWith } from 'rxjs';
+import { debounceTime, Observable, startWith, switchMap } from 'rxjs';
 
 @Component({
   selector: 'admin-add-simple-news',
@@ -43,17 +43,23 @@ export class AdminSimpleNewsComponent implements OnInit {
     }
 
     if (this.operationType === AdminOperationType.ADD) {
-      this.adminDataService.postSimpleNews$(this.addSimpleNewsForm.value).subscribe(() => {
-        this.router.navigate(['/admin/news']);
-        this.snackBar.open('News added successfully', 'OK', { duration: 3000 });
-      });
+      this.adminDataService
+        .postSimpleNews$(this.addSimpleNewsForm.value)
+        .pipe(switchMap(() => this.adminDataService.getAllNews$(false)))
+        .subscribe(() => {
+          this.router.navigate(['/admin/news']);
+          this.snackBar.open('News added successfully', 'OK', { duration: 3000 });
+        });
     }
 
     if (this.operationType === AdminOperationType.EDIT) {
-      this.adminDataService.editSimpleNews$(this.addSimpleNewsForm.value, this.newsId).subscribe(() => {
-        this.router.navigate(['/admin/news']);
-        this.snackBar.open('News edited successfully', 'OK', { duration: 3000 });
-      });
+      this.adminDataService
+        .editSimpleNews$(this.addSimpleNewsForm.value, this.newsId)
+        .pipe(switchMap(() => this.adminDataService.getAllNews$(false)))
+        .subscribe(() => {
+          this.router.navigate(['/admin/news']);
+          this.snackBar.open('News edited successfully', 'OK', { duration: 3000 });
+        });
     }
   }
 
@@ -122,9 +128,8 @@ export class AdminSimpleNewsComponent implements OnInit {
   }
 
   private setYoutubeFieldObservable(): void {
-    this.youtubeEmbedId$ = this.addSimpleNewsForm.get('youtube')!.valueChanges.pipe(
-      debounceTime(300),
-      startWith(this.addSimpleNewsForm.get('youtube')!.value),
-    );
+    this.youtubeEmbedId$ = this.addSimpleNewsForm
+      .get('youtube')!
+      .valueChanges.pipe(debounceTime(300), startWith(this.addSimpleNewsForm.get('youtube')!.value));
   }
 }
