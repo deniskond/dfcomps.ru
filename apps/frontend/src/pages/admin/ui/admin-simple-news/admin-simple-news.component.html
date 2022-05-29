@@ -1,6 +1,6 @@
 <mat-card class="main-form-card">
   <h3 class="header">{{ operationType | titlecase }} simple news</h3>
-  <form [formGroup]="addSimpleNewsForm">
+  <form *ngIf="addSimpleNewsForm; else loading" [formGroup]="addSimpleNewsForm">
     <div class="form">
       <div class="input-title">Title (Russian)</div>
       <div>
@@ -55,6 +55,11 @@
         </div>
       </div>
     </div>
+    <button (click)="submitNews()" mat-raised-button color="accent" class="submit-button">Save news</button>
   </form>
-  <button (click)="submitNews()" mat-raised-button color="accent" class="submit-button">Add news</button>
+  <ng-template #loading>
+    <div class="loading-block">
+      <mat-spinner diameter="75" strokeWidth="4" color="accent"></mat-spinner>
+    </div>
+  </ng-template>
 </mat-card>

@@ -38,8 +38,11 @@ const adminRoutes: Routes = [
             children: [
               {
                 path: 'simple',
-                component: AdminSimpleNewsComponent,
                 children: [
+                  {
+                    path: '',
+                    component: AdminSimpleNewsComponent,
+                  },
                   {
                     path: ':id',
                     component: AdminSimpleNewsComponent,
@@ -48,8 +51,11 @@ const adminRoutes: Routes = [
               },
               {
                 path: 'multicup-round-start',
-                component: AdminMulticupRoundNewsComponent,
                 children: [
+                  {
+                    path: '',
+                    component: AdminMulticupRoundNewsComponent,
+                  },
                   {
                     path: ':id',
                     component: AdminMulticupRoundNewsComponent,

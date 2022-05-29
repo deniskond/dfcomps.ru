@@ -98,6 +98,22 @@ export class AdminDataService {
     });
   }
 
+  // TODO Admin news typization
+  public getSingleNews$(newsId: string): Observable<any> {
+    return this.backendService.post$<any>(URL_PARAMS.ADMIN.GET_SINGLE_NEWS(newsId));
+  }
+
+  public editSimpleNews$(formValue: Record<string, any>, newsId: string): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.EDIT_NEWS(newsId), {
+      header: formValue['russianTitle'],
+      header_en: formValue['englishTitle'],
+      posting_time: formValue['timeOption'],
+      datetime: formValue['postingTime'],
+      text: formValue['russianText'],
+      text_en: formValue['englishText'],
+    });
+  }
+
   private getDemoValidationResult(value: boolean | null): string {
     if (value === null) {
       return '0';

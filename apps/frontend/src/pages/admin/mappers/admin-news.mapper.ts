@@ -4,7 +4,11 @@ import { AdminNewsInterface } from '../models/admin-news.interface';
 import { getHumanTime } from './get-human-time';
 
 export function mapAdminNewsDtoToInterface(adminNewsDtoArray: AdminNewsDto[]): AdminNewsInterface[] {
-  return adminNewsDtoArray.map((adminNewsDto: AdminNewsDto) => ({
+  return adminNewsDtoArray.map(mapAdminSingleNewsDtoToInterface);
+}
+
+function mapAdminSingleNewsDtoToInterface(adminNewsDto: AdminNewsDto): AdminNewsInterface {
+  return {
     id: adminNewsDto.id,
     headerRussian: adminNewsDto.header,
     headerEnglish: adminNewsDto.header_en,
@@ -13,7 +17,7 @@ export function mapAdminNewsDtoToInterface(adminNewsDtoArray: AdminNewsDto[]): A
     typeName: getNewsTypeName(+adminNewsDto.type_id),
     date: getHumanTime(adminNewsDto.datetimezone),
     type: getNewsType(+adminNewsDto.type_id),
-  }));
+  };
 }
 
 function getNewsTypeName(type: number): string {
