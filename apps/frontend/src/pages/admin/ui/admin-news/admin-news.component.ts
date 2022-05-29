@@ -46,7 +46,7 @@ export class AdminNewsComponent implements OnInit {
   public getNewsTypeRoute(newsType: NewsTypes): string | undefined {
     // TODO Remove Partial and add all routes
     const newsTypeRouteMap: Partial<Record<NewsTypes, string>> = {
-      [NewsTypes.OFFLINE_START]: 'offline-start',
+      // [NewsTypes.OFFLINE_START]: 'offline-start',
       [NewsTypes.SIMPLE]: 'simple',
     };
 
