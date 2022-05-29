@@ -86,6 +86,18 @@ export class AdminDataService {
     });
   }
 
+  public postSimpleNews$(formValue: Record<string, any>): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.POST_NEWS, {
+      header: formValue['russianTitle'],
+      header_en: formValue['englishTitle'],
+      posting_time: formValue['timeOption'],
+      datetime: formValue['postingTime'],
+      text: formValue['russianText'],
+      text_en: formValue['englishText'],
+      type_id: '3',
+    });
+  }
+
   private getDemoValidationResult(value: boolean | null): string {
     if (value === null) {
       return '0';

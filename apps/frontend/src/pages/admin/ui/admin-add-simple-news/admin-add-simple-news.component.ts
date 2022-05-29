@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { AdminDataService } from '../../business/admin-data.service';
 
 @Component({
   selector: 'dfcomps.ru-admin-add-simple-news',
@@ -8,14 +11,19 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminAddSimpleNewsComponent {
-  public addSimpleNewsForm = new FormGroup({
-    russianTitle: new FormControl('', Validators.required),
-    englishTitle: new FormControl('', Validators.required),
-    timeOption: new FormControl('now', Validators.required),
-    postingTime: new FormControl(''),
-    russianText: new FormControl('', Validators.required),
-    englishText: new FormControl('', Validators.required),
-  }, this.postingTimeValidator());
+  public addSimpleNewsForm = new FormGroup(
+    {
+      russianTitle: new FormControl('', Validators.required),
+      englishTitle: new FormControl('', Validators.required),
+      timeOption: new FormControl('now', Validators.required),
+      postingTime: new FormControl(''),
+      russianText: new FormControl('', Validators.required),
+      englishText: new FormControl('', Validators.required),
+    },
+    this.postingTimeValidator(),
+  );
+
+  constructor(private adminDataService: AdminDataService, private router: Router, private snackBar: MatSnackBar) {}
 
   public submitNews(): void {
     Object.keys(this.addSimpleNewsForm.controls).forEach((key: string) =>
@@ -26,7 +34,10 @@ export class AdminAddSimpleNewsComponent {
       return;
     }
 
-    alert('ok');
+    this.adminDataService.postSimpleNews$(this.addSimpleNewsForm.value).subscribe(() => {
+      this.router.navigate(['/admin/news']);
+      this.snackBar.open('News added successfully', 'OK', { duration: 3000 });
+    });
   }
 
   public hasFieldError(control: AbstractControl): boolean {

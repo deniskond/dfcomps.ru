@@ -161,6 +161,7 @@ export class URL_PARAMS {
     GET_CUPS: string;
     CUP_VALIDATION: (cupId: string) => string;
     PROCESS_VALIDATE: string;
+    POST_NEWS: string;
   } {
     return {
       GET_NEWS: `${API_URL}/admin/news/get_all_news`,
@@ -168,6 +169,7 @@ export class URL_PARAMS {
       GET_CUPS: `${API_URL}/admin/cups/get_all_cups`,
       CUP_VALIDATION: (cupId: string) => `${API_URL}/admin/cups/get_cup_validation_demos/${cupId}`,
       PROCESS_VALIDATE: `${API_URL}/admin/cups/process_validate_v2`,
+      POST_NEWS: `${API_URL}/admin/news/save_v2`,
     };
   }
 }
