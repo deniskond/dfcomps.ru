@@ -1,10 +1,10 @@
-<!-- <div class="actions-container">
+<div class="actions-container">
   <mat-card class="card">
-    <div class="card-header">Simple text news</div>
-    <div class="card-text">General news about any topic, which are not linked to any cup tables</div>
-    <button mat-raised-button color="accent">Add news</button>
+    <div class="card-header">Multicup round</div>
+    <div class="card-text">Round of tournament series</div>
+    <button routerLink="/admin/cups/add-multicup-round" mat-raised-button color="accent">Add multicup round</button>
   </mat-card>
-</div> -->
+</div>
 <mat-card class="cups-table-card">
   <div class="card-header">Cups list</div>
   <div *ngIf="cups$ | async as cups; else isLoading" class="cups-table">

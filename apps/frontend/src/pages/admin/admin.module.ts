@@ -18,6 +18,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminSimpleNewsComponent } from './ui/admin-simple-news/admin-simple-news.component';
 import { AdminMulticupRoundNewsComponent } from './ui/admin-multicup-round-news/admin-multicup-round-news.component';
 import { QuillModule } from 'ngx-quill';
+import { AdminAddMulticupRoundComponent } from './ui/admin-add-multicup-round/admin-add-multicup-round.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 const adminRoutes: Routes = [
   {
@@ -66,7 +69,13 @@ const adminRoutes: Routes = [
           },
         ],
       },
-      { path: 'cups', component: AdminCupsComponent },
+      {
+        path: 'cups',
+        children: [
+          { path: '', component: AdminCupsComponent },
+          { path: 'add-multicup-round', component: AdminAddMulticupRoundComponent },
+        ],
+      },
       {
         path: 'validate',
         children: [
@@ -89,6 +98,7 @@ const adminRoutes: Routes = [
     AdminValidateComponent,
     AdminSimpleNewsComponent,
     AdminMulticupRoundNewsComponent,
+    AdminAddMulticupRoundComponent,
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
@@ -102,6 +112,8 @@ const adminRoutes: Routes = [
     MatRadioModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSelectModule,
+    MatCheckboxModule,
     QuillModule.forRoot(),
   ],
   providers: [HasAdminPanelAccess],
