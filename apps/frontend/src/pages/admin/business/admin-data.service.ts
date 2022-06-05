@@ -11,6 +11,9 @@ import { AdminNewsDto } from '../models/admin-news.dto';
 import { AdminNewsInterface } from '../models/admin-news.interface';
 import { AdminValidationDto } from '../models/admin-validation.dto';
 import { mapAdminValidationDtoToInterface } from '../mappers/admin-validation.mapper';
+import { AdminActiveMulticupsDto } from '../models/admin-active-multicups.dto';
+import { AdminActiveMulticupInterface } from '../models/admin-active-multicup.interface';
+import { mapAdminActiveMulticupsCupsDtoToInterface } from '../mappers/admin-active-multicups.mapper';
 
 @Injectable({
   providedIn: 'root',
@@ -114,6 +117,12 @@ export class AdminDataService {
       text_en: formValue['englishText'],
       youtube: formValue['youtube'],
     });
+  }
+
+  public getAllActiveMulticups$(): Observable<AdminActiveMulticupInterface[]> {
+    return this.backendService
+      .post$<AdminActiveMulticupsDto>(URL_PARAMS.ADMIN.GET_ALL_ACTIVE_MULTICUPS)
+      .pipe(map(mapAdminActiveMulticupsCupsDtoToInterface));
   }
 
   private getDemoValidationResult(value: boolean | null): string {

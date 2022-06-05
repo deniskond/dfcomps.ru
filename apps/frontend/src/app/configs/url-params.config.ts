@@ -164,6 +164,7 @@ export class URL_PARAMS {
     POST_NEWS: string;
     GET_SINGLE_NEWS: (newsId: string) => string;
     EDIT_NEWS: (newsId: string) => string;
+    GET_ALL_ACTIVE_MULTICUPS: string;
   } {
     return {
       GET_NEWS: `${API_URL}/admin/news/get_all_news`,
@@ -174,6 +175,7 @@ export class URL_PARAMS {
       POST_NEWS: `${API_URL}/admin/news/save_v2`,
       GET_SINGLE_NEWS: (newsId: string) => `${API_URL}/admin/news/get_single_news/${newsId}`,
       EDIT_NEWS: (newsId: string) => `${API_URL}/admin/news/update_v2/${newsId}`,
+      GET_ALL_ACTIVE_MULTICUPS: `${API_URL}/admin/cups/get_all_active_multicups`,
     };
   }
 }

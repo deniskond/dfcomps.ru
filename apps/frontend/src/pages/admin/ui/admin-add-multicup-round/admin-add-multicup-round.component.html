@@ -34,7 +34,7 @@
       <div>
         <mat-radio-group formControlName="mapType">
           <div class="radio-container">
-            <mat-radio-button value="ws" color="primary"></mat-radio-button>
+            <mat-radio-button value="ws" color="primary" disabled></mat-radio-button>
             <span>ws.q3df.org</span>
           </div>
           <div class="radio-container">
@@ -54,17 +54,17 @@
         <div class="input-title">Map pk3</div>
         <div>
           <input formControlName="mapPk3" class="input-field file" type="file" />
-          <div class="field-error">Field is required</div>
+          <div *ngIf="hasFieldError(this.addMulticupRoundForm.get('mapPk3')!)" class="field-error">Field is required</div>
         </div>
         <div class="input-title">Map levelshot<br /><span class="comment">(512px * 384px)</span></div>
         <div>
           <input formControlName="mapLevelshot" class="input-field file" type="file" />
-          <div class="field-error">Field is required</div>
+          <div *ngIf="hasFieldError(this.addMulticupRoundForm.get('mapLevelshot')!)" class="field-error">Field is required</div>
         </div>
         <div class="input-title">Map author</div>
         <div>
           <input formControlName="mapAuthor" class="input-field" />
-          <div class="field-error">Field is required</div>
+          <div *ngIf="hasFieldError(this.addMulticupRoundForm.get('mapAuthor')!)" class="field-error">Field is required</div>
         </div>
         <div class="input-title">Map weapons</div>
         <div class="weapons-checkboxes">
@@ -111,14 +111,15 @@
         </div>
       </ng-container>
       <div class="input-title">Multicup</div>
-      <div>
-        <mat-form-field appearance="outline">
+      <div *ngIf="activeMulticups$ | async as activeMulticups">
+        <mat-form-field formControlName="multicup" appearance="outline">
           <mat-select>
-            <mat-option value="option1">Almera</mat-option>
-            <mat-option value="option2">Koz</mat-option>
-            <mat-option value="option3">SDC-UK</mat-option>
+            <mat-option *ngFor="let activeMulticup of activeMulticups" [value]="activeMulticup.multicupId">{{
+              activeMulticup.name
+            }}</mat-option>
           </mat-select>
         </mat-form-field>
+        <div *ngIf="hasFieldError(this.addMulticupRoundForm.get('multicup')!)" class="field-error">Field is required</div>
       </div>
       <div class="add-news-label">Add start and ending news</div>
       <div>
