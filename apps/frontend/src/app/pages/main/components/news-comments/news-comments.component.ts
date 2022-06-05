@@ -16,6 +16,7 @@ import {
   SimpleChanges,
   OnInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { CommentsService } from '../../services/comments/comments.service';
 import { ReplaySubject, Observable, combineLatest } from 'rxjs';
@@ -73,6 +74,7 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
     private dialog: MatDialog,
     private smilesService: SmilesService,
     private languageService: LanguageService,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -106,12 +108,30 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
       .sendComment$(text, this.newsId)
       .pipe(
         take(1),
-        finalize(() => (this.isLoading = false)),
+        finalize(() => {
+          this.isLoading = false;
+          this.changeDetectorRef.markForCheck();
+        }),
       )
-      .subscribe((updatedComments: CommentInterface[]) => {
-        this.comments$.next(updatedComments);
-        this.textarea.nativeElement.value = '';
-      });
+      .subscribe(
+        (updatedComments: CommentInterface[]) => {
+          this.comments$.next(updatedComments);
+          this.textarea.nativeElement.value = '';
+        },
+        (error) => {
+          const testForBan = error.error.match(/<p>Message: comments banned until (.*)<\/p>/);
+
+          if (testForBan) {
+            this.snackBar.open(`Comments banned until ${testForBan[1]}`, '', { duration: 3000 });
+          }
+
+          const testForNewUser = error.error.match(/can't post comments before participating in 3 competitions/);
+
+          if (testForNewUser) {
+            this.snackBar.open("Can't post comments before participating in 3 competitions", '', { duration: 3000 });
+          }
+        },
+      );
   }
 
   public formatDate(date: string): string {
