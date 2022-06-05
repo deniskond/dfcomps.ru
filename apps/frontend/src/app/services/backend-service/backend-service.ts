@@ -12,12 +12,14 @@ export class BackendService {
     return this.httpClient.post<T>(url, this.prepareHttpParams(postParams), { withCredentials: true });
   }
 
-  public uploadFile$(url: string, file: any, postParams?: Record<string, string>): Observable<any> {
+  public uploadFile$(
+    url: string,
+    fileKeyValues: { fileKey: string; file: any }[],
+    postParams?: Record<string, string>,
+  ): Observable<any> {
     const formData: FormData = new FormData();
 
-    if (file) {
-      formData.append('file', file, file.name);
-    }
+    fileKeyValues.forEach(({ fileKey, file }) => formData.append(fileKey, file, file.name));
 
     if (postParams) {
       Object.keys(postParams).forEach((key: string) => formData.append(key, postParams[key]));

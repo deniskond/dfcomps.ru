@@ -125,6 +125,25 @@ export class AdminDataService {
       .pipe(map(mapAdminActiveMulticupsCupsDtoToInterface));
   }
 
+  public addMulticupRound$(formValue: Record<string, any>, files: Record<string, any>): Observable<void> {
+    const mappedFiles: { fileKey: string; file: any }[] = Object.keys(files).map((key: string) => ({
+      fileKey: key,
+      file: files[key],
+    }));
+
+    return this.backendService.uploadFile$(URL_PARAMS.ADMIN.ADD_CUP, mappedFiles, {
+      fullName: formValue['fullName'],
+      shortName: formValue['shortName'],
+      startTime: formValue['startTime'],
+      endTime: formValue['endTime'],
+      multicupId: formValue['multicup'],
+      mapName: formValue['mapName'],
+      mapAuthor: formValue['mapAuthor'],
+      weapons: this.getWeaponsFromForm(formValue),
+      addNews: formValue['addNews'],
+    });
+  }
+
   private getDemoValidationResult(value: boolean | null): string {
     if (value === null) {
       return '0';
@@ -135,5 +154,21 @@ export class AdminDataService {
     }
 
     return '2';
+  }
+
+  private getWeaponsFromForm(formValue: Record<string, any>): string {
+    let result = '';
+
+    if (formValue['gauntlet']) result += 'U';
+    if (formValue['rocket']) result += 'R';
+    if (formValue['shotgun']) result += 'S';
+    if (formValue['railgun']) result += 'I';
+    if (formValue['lightning']) result += 'L';
+    if (formValue['grenade']) result += 'G';
+    if (formValue['plasma']) result += 'P';
+    if (formValue['bfg']) result += 'B';
+    if (formValue['grapplingHook']) result += 'H';
+
+    return result;
   }
 }

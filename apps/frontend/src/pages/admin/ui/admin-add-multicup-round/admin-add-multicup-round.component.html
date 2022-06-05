@@ -53,12 +53,12 @@
       <ng-container *ngIf="this.addMulticupRoundForm.get('mapType')!.value === 'custom'">
         <div class="input-title">Map pk3</div>
         <div>
-          <input formControlName="mapPk3" class="input-field file" type="file" />
+          <input #pk3FileInput formControlName="mapPk3" class="input-field file" type="file" />
           <div *ngIf="hasFieldError(this.addMulticupRoundForm.get('mapPk3')!)" class="field-error">Field is required</div>
         </div>
         <div class="input-title">Map levelshot<br /><span class="comment">(512px * 384px)</span></div>
         <div>
-          <input formControlName="mapLevelshot" class="input-field file" type="file" />
+          <input #levelshotFileInput formControlName="mapLevelshot" class="input-field file" type="file" />
           <div *ngIf="hasFieldError(this.addMulticupRoundForm.get('mapLevelshot')!)" class="field-error">Field is required</div>
         </div>
         <div class="input-title">Map author</div>
@@ -71,6 +71,11 @@
           <div class="checkbox-container">
             <mat-checkbox color="primary" formControlName="gauntlet">
               <app-weapons weapons="U" class="weapon-icons"></app-weapons>
+            </mat-checkbox>
+          </div>
+          <div class="checkbox-container">
+            <mat-checkbox color="primary" formControlName="grenade">
+              <app-weapons weapons="G" class="weapon-icons"></app-weapons>
             </mat-checkbox>
           </div>
           <div class="checkbox-container">
@@ -105,15 +110,15 @@
           </div>
           <div class="checkbox-container">
             <mat-checkbox color="primary" formControlName="grapplingHook">
-              <app-weapons weapons="G" class="weapon-icons"></app-weapons>
+              <app-weapons weapons="H" class="weapon-icons"></app-weapons>
             </mat-checkbox>
           </div>
         </div>
       </ng-container>
       <div class="input-title">Multicup</div>
       <div *ngIf="activeMulticups$ | async as activeMulticups">
-        <mat-form-field formControlName="multicup" appearance="outline">
-          <mat-select>
+        <mat-form-field appearance="outline">
+          <mat-select formControlName="multicup">
             <mat-option *ngFor="let activeMulticup of activeMulticups" [value]="activeMulticup.multicupId">{{
               activeMulticup.name
             }}</mat-option>

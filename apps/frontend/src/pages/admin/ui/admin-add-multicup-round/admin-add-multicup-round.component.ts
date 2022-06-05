@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { AdminDataService } from '../../business/admin-data.service';
@@ -11,6 +11,9 @@ import { AdminActiveMulticupInterface } from '../../models/admin-active-multicup
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminAddMulticupRoundComponent implements OnInit {
+  @ViewChild('pk3FileInput') pk3Input: ElementRef;
+  @ViewChild('levelshotFileInput') levelshotInput: ElementRef;
+
   public activeMulticups$: Observable<AdminActiveMulticupInterface[]>;
 
   public addMulticupRoundForm: FormGroup = new FormGroup({
@@ -24,6 +27,7 @@ export class AdminAddMulticupRoundComponent implements OnInit {
     mapAuthor: new FormControl('', Validators.required),
     gauntlet: new FormControl(false, Validators.required),
     rocket: new FormControl(false, Validators.required),
+    grenade: new FormControl(false, Validators.required),
     plasma: new FormControl(false, Validators.required),
     lignting: new FormControl(false, Validators.required),
     bfg: new FormControl(false, Validators.required),
@@ -49,6 +53,13 @@ export class AdminAddMulticupRoundComponent implements OnInit {
     if (!this.addMulticupRoundForm.valid) {
       return;
     }
+
+    this.adminDataService
+      .addMulticupRound$(this.addMulticupRoundForm.value, {
+        pk3: this.pk3Input.nativeElement.files[0],
+        levelshot: this.levelshotInput.nativeElement.files[0],
+      })
+      .subscribe();
   }
 
   public hasFieldError(control: AbstractControl): boolean {

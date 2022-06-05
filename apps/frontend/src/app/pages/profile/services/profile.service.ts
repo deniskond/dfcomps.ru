@@ -24,7 +24,7 @@ export class ProfileService extends BackendService {
   }
 
   public updateProfile$(nick: string, avatar: File | undefined, country: string): Observable<void> {
-    return this.uploadFile$(URL_PARAMS.PROFILE_UPDATE(), avatar, {
+    return this.uploadFile$(URL_PARAMS.PROFILE_UPDATE(), [{ fileKey: 'file', file: avatar }], {
       nick,
       country,
     });

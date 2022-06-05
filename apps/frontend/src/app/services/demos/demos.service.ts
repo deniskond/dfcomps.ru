@@ -16,7 +16,7 @@ export class DemosService extends BackendService {
     playerId: string,
     fileName: string,
   ): Observable<UploadDemoDtoInterface> {
-    return this.uploadFile$(URL_PARAMS.DEMOS.UPLOAD, demo, {
+    return this.uploadFile$(URL_PARAMS.DEMOS.UPLOAD, [{ fileKey: 'file', file: demo }], {
       cupId,
       mapName,
       playerId,
@@ -38,7 +38,7 @@ export class DemosService extends BackendService {
     playerId: string,
     fileName: string,
   ): Observable<UploadDemoDtoInterface> {
-    return this.uploadFile$(URL_PARAMS.DEMOS.REFLEX_UPLOAD, demo, {
+    return this.uploadFile$(URL_PARAMS.DEMOS.REFLEX_UPLOAD, [{ fileKey: 'file', file: demo }], {
       cupId,
       mapName,
       playerId,
@@ -47,6 +47,6 @@ export class DemosService extends BackendService {
   }
 
   public uploadDuelDemo$(demo: File): Observable<UploadDemoDtoInterface> {
-    return this.uploadFile$(URL_PARAMS.DEMOS.DUEL_UPLOAD, demo);
+    return this.uploadFile$(URL_PARAMS.DEMOS.DUEL_UPLOAD, [{ fileKey: 'file', file: demo }]);
   }
 }
