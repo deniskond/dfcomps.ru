@@ -60,6 +60,8 @@ export class AdminNewsComponent implements OnInit {
     const newsTypeRouteMap: Partial<Record<NewsTypes, string>> = {
       // [NewsTypes.OFFLINE_START]: 'offline-start',
       [NewsTypes.SIMPLE]: 'simple',
+      [NewsTypes.OFFLINE_START]: 'simple',
+      [NewsTypes.OFFLINE_RESULTS]: 'simple',
     };
 
     return newsTypeRouteMap[newsType];

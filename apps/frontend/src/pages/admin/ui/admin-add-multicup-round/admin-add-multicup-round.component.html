@@ -53,12 +53,12 @@
       <ng-container *ngIf="this.addMulticupRoundForm.get('mapType')!.value === 'custom'">
         <div class="input-title">Map pk3</div>
         <div>
-          <input #pk3FileInput formControlName="mapPk3" class="input-field file" type="file" />
+          <input #pk3FileInput formControlName="mapPk3" class="input-field file" type="file" accept=".pk3" />
           <div *ngIf="hasFieldError(this.addMulticupRoundForm.get('mapPk3')!)" class="field-error">Field is required</div>
         </div>
         <div class="input-title">Map levelshot<br /><span class="comment">(512px * 384px)</span></div>
         <div>
-          <input #levelshotFileInput formControlName="mapLevelshot" class="input-field file" type="file" />
+          <input #levelshotFileInput formControlName="mapLevelshot" class="input-field file" type="file" accept=".jpg" />
           <div *ngIf="hasFieldError(this.addMulticupRoundForm.get('mapLevelshot')!)" class="field-error">Field is required</div>
         </div>
         <div class="input-title">Map author</div>

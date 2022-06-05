@@ -39,8 +39,8 @@ export class AdminDataService {
     return this.backendService.post$<void>(URL_PARAMS.ADMIN.DELETE_NEWS(newsId));
   }
 
-  public getAllCups$(): Observable<AdminCupInterface[]> {
-    if (this.cups) {
+  public getAllCups$(cache = true): Observable<AdminCupInterface[]> {
+    if (this.cups && cache) {
       return of(this.cups);
     }
 

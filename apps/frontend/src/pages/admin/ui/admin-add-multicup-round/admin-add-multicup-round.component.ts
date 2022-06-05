@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { Observable, switchMap } from 'rxjs';
 import { AdminDataService } from '../../business/admin-data.service';
 import { AdminActiveMulticupInterface } from '../../models/admin-active-multicup.interface';
 
@@ -39,7 +41,7 @@ export class AdminAddMulticupRoundComponent implements OnInit {
     addNews: new FormControl(true),
   });
 
-  constructor(private adminDataService: AdminDataService) {}
+  constructor(private adminDataService: AdminDataService, private snackBar: MatSnackBar, private router: Router) {}
 
   ngOnInit(): void {
     this.activeMulticups$ = this.adminDataService.getAllActiveMulticups$();
@@ -59,7 +61,11 @@ export class AdminAddMulticupRoundComponent implements OnInit {
         pk3: this.pk3Input.nativeElement.files[0],
         levelshot: this.levelshotInput.nativeElement.files[0],
       })
-      .subscribe();
+      .pipe(switchMap(() => this.adminDataService.getAllCups$(false)))
+      .subscribe(() => {
+        this.router.navigate(['/admin/cups']);
+        this.snackBar.open('Cup added successfully', 'OK', { duration: 3000 });
+      });
   }
 
   public hasFieldError(control: AbstractControl): boolean {
