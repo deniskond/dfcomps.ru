@@ -7,6 +7,10 @@ export class PROFILE_REWARDS {
       [Rewards.SEASON_TWO_PARTICIPANT]: 's2',
       [Rewards.SEASON_THREE_PARTICIPANT]: 's3',
       [Rewards.SEASON_FOUR_PARTICIPANT]: 's4',
+      [Rewards.SEASON_FIVE_PARTICIPANT]: 's5',
+      [Rewards.SEASON_SIX_PARTICIPANT]: 's6',
+      [Rewards.SEASON_SEVEN_PARTICIPANT]: 's7',
+      [Rewards.SEASON_EIGHT_PARTICIPANT]: 's8',
       [Rewards.TOP1_VQ3_FIRST_SEASON]: 'top_1_vq3',
       [Rewards.TOP2_VQ3_FIRST_SEASON]: 'top_2_vq3',
       [Rewards.TOP3_VQ3_FIRST_SEASON]: 'top_3_vq3',
@@ -47,6 +51,7 @@ export class PROFILE_REWARDS {
       [Rewards.DDC2018_TOP4]: 'ddc2018-top4',
       [Rewards.DDC2018_PARTICIPANT]: 'ddc2018-part',
       [Rewards.DFWC2019_PARTICIPANT]: 'dfwc2019-participant',
+      [Rewards.DFWC2021_PARTICIPANT]: 'dfwc2021-participant',
       [Rewards.DFWC2019_WINNER_VQ3]: 'dfwc2019-1st',
       [Rewards.DFWC2019_WINNER_CPM]: 'dfwc2019-1st',
       [Rewards.DFWC2019_TOP2_VQ3]: 'dfwc2019-2nd',
@@ -56,6 +61,12 @@ export class PROFILE_REWARDS {
       [Rewards.DFWC2019_TOP3_CPM]: 'dfwc2019-3rd',
       [Rewards.PG_ULTIMATE]: 'pg-ultimate',
       [Rewards.DFWC_TRAINING_CUP_WINNER]: 'dfwc-training',
+      [Rewards.DFWC2021_WINNER_VQ3]: 'dfwc2019-1st',
+      [Rewards.DFWC2021_WINNER_CPM]: 'dfwc2019-1st',
+      [Rewards.DFWC2021_TOP2_VQ3]: 'dfwc2019-2nd',
+      [Rewards.DFWC2021_TOP2_CPM]: 'dfwc2019-2nd',
+      [Rewards.DFWC2021_TOP3_VQ3]: 'dfwc2019-3rd',
+      [Rewards.DFWC2021_TOP3_CPM]: 'dfwc2019-3rd',
     };
   }
 }
