@@ -67,6 +67,12 @@ export class PROFILE_REWARDS {
       [Rewards.DFWC2021_TOP2_CPM]: 'dfwc2019-2nd',
       [Rewards.DFWC2021_TOP3_VQ3]: 'dfwc2019-3rd',
       [Rewards.DFWC2021_TOP3_CPM]: 'dfwc2019-3rd',
+      [Rewards.SDCUK20_WINNER_VQ3]: 'sdc-uk-20-top1',
+      [Rewards.SDCUK20_WINNER_CPM]: 'sdc-uk-20-top1',
+      [Rewards.SDCUK20_TOP2_VQ3]: 'sdc-uk-20-top2',
+      [Rewards.SDCUK20_TOP2_CPM]: 'sdc-uk-20-top2',
+      [Rewards.SDCUK20_TOP3_VQ3]: 'sdc-uk-20-top3',
+      [Rewards.SDCUK20_TOP3_CPM]: 'sdc-uk-20-top3',
     };
   }
 }
