@@ -21,6 +21,7 @@ import { QuillModule } from 'ngx-quill';
 import { AdminAddMulticupRoundComponent } from './ui/admin-add-multicup-round/admin-add-multicup-round.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { AdminSeasonComponent } from './ui/admin-season/admin-season.component';
 
 const adminRoutes: Routes = [
   {
@@ -85,6 +86,12 @@ const adminRoutes: Routes = [
           },
         ],
       },
+      {
+        path: 'season',
+        children: [
+          { path: '', component: AdminSeasonComponent },
+        ],
+      },
     ],
   },
 ];
@@ -99,6 +106,7 @@ const adminRoutes: Routes = [
     AdminSimpleNewsComponent,
     AdminMulticupRoundNewsComponent,
     AdminAddMulticupRoundComponent,
+    AdminSeasonComponent,
   ],
   imports: [
     RouterModule.forChild(adminRoutes),

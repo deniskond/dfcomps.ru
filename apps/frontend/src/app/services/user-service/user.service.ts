@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BackendService } from '../backend-service/backend-service';
-import { URL_PARAMS } from '../../configs/url-params.config';
+import { BackendService, URL_PARAMS } from '@frontend/shared/rest-api';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { LoginAvailableDtoInterface } from './dto/login-available.dto';
 import { filter, map, tap } from 'rxjs/operators';

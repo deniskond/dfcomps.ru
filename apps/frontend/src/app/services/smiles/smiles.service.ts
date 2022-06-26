@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BackendService } from '../backend-service/backend-service';
-import { URL_PARAMS } from '../../configs/url-params.config';
+import { BackendService, URL_PARAMS } from '@frontend/shared/rest-api';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { PersonalSmileInterface } from './personal-smile.interface';
 import { tap, filter } from 'rxjs/operators';

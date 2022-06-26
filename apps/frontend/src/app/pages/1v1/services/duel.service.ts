@@ -1,4 +1,3 @@
-import { BackendService } from './../../../services/backend-service/backend-service';
 import { Physics } from '../../../enums/physics.enum';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
@@ -11,7 +10,7 @@ import { LeaveQueueMessageInterface } from './interfaces/leave-queue-message.int
 import { BanMapMessageInterface } from './interfaces/ban-map-message.interface';
 import { MatchResultAcceptedMessageInterface } from './interfaces/match-result-accepted-message.interface';
 import { DuelPlayersInfoInterface } from '../interfaces/duel-players-info.interface';
-import { URL_PARAMS } from '../../../configs/url-params.config';
+import { URL_PARAMS, BackendService } from '@frontend/shared/rest-api';
 import { DuelPlayersInfoDtoInterface } from '../interfaces/duel-players-info.dto';
 
 @Injectable({

@@ -1,4 +1,4 @@
-import { API_URL } from '../../../app/configs/url-params.config';
+import { API_URL } from '@frontend/shared/rest-api';
 import { AdminValidationDto, PlayerDemosValidationDto } from '../models/admin-validation.dto';
 import {
   AdminDemoValidationStatus,

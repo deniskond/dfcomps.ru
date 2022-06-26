@@ -1,6 +1,5 @@
-import { URL_PARAMS } from '../../../../configs/url-params.config';
 import { CommentInterface } from '../../../../interfaces/comments.interface';
-import { BackendService } from '../../../../services/backend-service/backend-service';
+import { BackendService, URL_PARAMS } from '@frontend/shared/rest-api';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CommentActionResultInterface } from './interfaces/comment-action.interface';

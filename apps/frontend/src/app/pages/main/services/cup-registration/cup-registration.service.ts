@@ -1,5 +1,4 @@
-import { URL_PARAMS } from '../../../../configs/url-params.config';
-import { BackendService } from '../../../../services/backend-service/backend-service';
+import { BackendService, URL_PARAMS } from '@frontend/shared/rest-api';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 

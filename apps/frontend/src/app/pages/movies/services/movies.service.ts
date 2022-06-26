@@ -1,7 +1,6 @@
-import { BackendService } from '../../../services/backend-service/backend-service';
+import { BackendService, URL_PARAMS } from '@frontend/shared/rest-api';
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, filter } from 'rxjs';
-import { URL_PARAMS } from '../../../configs/url-params.config';
 import { MovieInterface } from '../interfaces/movie.interface';
 import { isNonNull } from '../../../../shared/helpers';
 

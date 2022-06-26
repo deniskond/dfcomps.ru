@@ -1,5 +1,5 @@
 import { LanguageService } from './../../../../services/language/language.service';
-import { MAIN_URL } from '../../../../configs/url-params.config';
+import { MAIN_URL } from '@frontend/shared/rest-api';
 import { Languages } from '../../../../enums/languages.enum';
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';

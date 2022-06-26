@@ -1,7 +1,6 @@
-import { URL_PARAMS } from '../../configs/url-params.config';
 import { CupInterface } from '../../interfaces/cup.interface';
 import { Injectable } from '@angular/core';
-import { BackendService } from '../backend-service/backend-service';
+import { BackendService, URL_PARAMS } from '@frontend/shared/rest-api';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 

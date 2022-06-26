@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BackendService } from '../backend-service/backend-service';
-import { URL_PARAMS } from '../../configs/url-params.config';
+import { BackendService, URL_PARAMS } from '@frontend/shared/rest-api';
 import { Observable } from 'rxjs';
 import { UploadDemoDtoInterface } from './dto/upload-demo.dto';
 import { UploadedDemoInterface } from '../../interfaces/uploaded-demo.interface';

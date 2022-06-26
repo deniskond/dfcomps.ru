@@ -1,4 +1,4 @@
-import { API_URL } from '../../../../configs/url-params.config';
+import { API_URL } from '@frontend/shared/rest-api';
 import { UserInterface } from '../../../../interfaces/user.interface';
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';

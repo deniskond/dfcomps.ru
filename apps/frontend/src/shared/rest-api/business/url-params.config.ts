@@ -1,6 +1,6 @@
-import { environment } from '../../app/environments/environment';
-import { Physics } from '../enums/physics.enum';
-import { RatingTablesModes } from '../enums/rating-tables-modes.enum';
+import { environment } from '../../../app/environments/environment';
+import { Physics } from '../../../app/enums/physics.enum';
+import { RatingTablesModes } from '../../../app/enums/rating-tables-modes.enum';
 
 const envMap: Record<string, string> = {
   local: '',
@@ -99,6 +99,14 @@ export class URL_PARAMS {
       DELETE: `${API_URL}/comments/delete/`,
       UPDATE: `${API_URL}/comments/update/`,
       ADMIN_DELETE: `${API_URL}/comments/admin_delete/`,
+    };
+  }
+
+  public static get SEASON(): {
+    GET: string;
+  } {
+    return {
+      GET: `${API_URL}/rating/get_season`,
     };
   }
 

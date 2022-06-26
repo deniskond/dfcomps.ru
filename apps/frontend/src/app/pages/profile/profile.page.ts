@@ -1,5 +1,5 @@
 import { LanguageService } from '../../services/language/language.service';
-import { API_URL } from '../../configs/url-params.config';
+import { API_URL } from '@frontend/shared/rest-api';
 import { Physics } from '../../enums/physics.enum';
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';

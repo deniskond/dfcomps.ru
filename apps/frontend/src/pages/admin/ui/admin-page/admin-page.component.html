@@ -1,7 +1,7 @@
 <div class="admin-page">
   <div *ngIf="navigationPage$ | async as navigationPage" class="navigation">
     <div class="logo-container">
-      <img src="../../../../assets/images/admin/logo.png" />
+      <img src="../../../../images/admin/logo.png" />
     </div>
     <admin-menu-item
       [isActive]="navigationPage === 'news'"
@@ -14,6 +14,12 @@
       routerLink="/admin/cups"
       caption="Cups"
       icon="grade"
+    ></admin-menu-item>
+    <admin-menu-item
+      [isActive]="navigationPage === 'season'"
+      routerLink="/admin/season"
+      caption="Season"
+      icon="auto_mode"
     ></admin-menu-item>
   </div>
   <div class="content">

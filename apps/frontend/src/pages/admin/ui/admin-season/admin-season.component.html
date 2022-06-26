@@ -1,0 +1,11 @@
+<mat-card style="margin-top: 16px; font-family: elektra; height: 100px">
+  <ng-container *ngIf="currentSeason$ | async as currentSeason; else isLoading">
+    <div>Current season: {{ currentSeason }}</div>
+    <button mat-raised-button color="accent" style="margin-top: 16px">Finish season</button>
+  </ng-container>
+  <ng-template #isLoading>
+    <div class="spinner">
+      <mat-spinner diameter="75" strokeWidth="4" color="accent"></mat-spinner>
+    </div>
+  </ng-template>
+</mat-card>

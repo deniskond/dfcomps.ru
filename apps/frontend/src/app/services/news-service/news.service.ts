@@ -1,6 +1,5 @@
-import { URL_PARAMS } from '../../configs/url-params.config';
 import { Injectable } from '@angular/core';
-import { BackendService } from '../backend-service/backend-service';
+import { BackendService, URL_PARAMS } from '@frontend/shared/rest-api';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { NewsInterfaceUnion } from '../../types/news-union.type';
 import { tap, finalize } from 'rxjs/operators';

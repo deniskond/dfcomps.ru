@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { map, Observable, of, tap } from 'rxjs';
-import { URL_PARAMS } from '../../../app/configs/url-params.config';
-import { BackendService } from '../../../app/services/backend-service/backend-service';
 import { mapAdminCupsDtoToInterface } from '../mappers/admin-cups.mapper';
 import { mapAdminNewsDtoToInterface } from '../mappers/admin-news.mapper';
 import { AdminValidationInterface } from '../models/admin-validation.interface';
@@ -14,6 +12,7 @@ import { mapAdminValidationDtoToInterface } from '../mappers/admin-validation.ma
 import { AdminActiveMulticupsDto } from '../models/admin-active-multicups.dto';
 import { AdminActiveMulticupInterface } from '../models/admin-active-multicup.interface';
 import { mapAdminActiveMulticupsCupsDtoToInterface } from '../mappers/admin-active-multicups.mapper';
+import { BackendService, URL_PARAMS } from '@frontend/shared/rest-api';
 
 @Injectable({
   providedIn: 'root',
