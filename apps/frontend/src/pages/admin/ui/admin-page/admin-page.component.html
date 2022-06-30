@@ -1,7 +1,7 @@
 <div class="admin-page">
   <div *ngIf="navigationPage$ | async as navigationPage" class="navigation">
     <div class="logo-container">
-      <img src="../../../../images/admin/logo.png" />
+      <img src="../../../../assets/images/admin/logo.png" />
     </div>
     <admin-menu-item
       [isActive]="navigationPage === 'news'"
@@ -30,7 +30,7 @@
         <div>{{ user.nick }}</div>
         <div class="avatar">
           <div class="border-container">
-            <img [src]="apiUrl + '/assets/images/avatars/' + user.avatar + '.jpg'" />
+            <img [src]="apiUrl + '/images/avatars/' + user.avatar + '.jpg'" />
           </div>
         </div>
       </div>
