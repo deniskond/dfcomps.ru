@@ -16,6 +16,7 @@
       icon="grade"
     ></admin-menu-item>
     <admin-menu-item
+      *ngIf="(user$ | async)?.access === userAccess.ADMIN"
       [isActive]="navigationPage === 'season'"
       routerLink="/admin/season"
       caption="Season"

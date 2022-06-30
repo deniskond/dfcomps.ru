@@ -174,6 +174,10 @@ export class URL_PARAMS {
     EDIT_NEWS: (newsId: string) => string;
     GET_ALL_ACTIVE_MULTICUPS: string;
     ADD_CUP: string;
+    SET_SEASON_REWARDS: string;
+    SAVE_SEASON_RATINGS: string;
+    RESET_SEASON_RATINGS: string;
+    INCREMENT_SEASON: string;
   } {
     return {
       GET_NEWS: `${API_URL}/admin/news/get_all_news`,
@@ -186,6 +190,10 @@ export class URL_PARAMS {
       EDIT_NEWS: (newsId: string) => `${API_URL}/admin/news/update_v2/${newsId}`,
       GET_ALL_ACTIVE_MULTICUPS: `${API_URL}/admin/cups/get_all_active_multicups`,
       ADD_CUP: `${API_URL}/admin/cups/add_v2`,
+      SET_SEASON_REWARDS: `${API_URL}/admin/season/rewards`,
+      SAVE_SEASON_RATINGS: `${API_URL}/admin/season/save_season_ratings`,
+      RESET_SEASON_RATINGS: `${API_URL}/admin/season/reset_season_ratings`,
+      INCREMENT_SEASON: `${API_URL}/admin/season/increment`,
     };
   }
 }

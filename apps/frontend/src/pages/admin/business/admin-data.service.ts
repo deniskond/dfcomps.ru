@@ -63,6 +63,22 @@ export class AdminDataService {
     this.news = news;
   }
 
+  public saveSeasonRatings$(): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.SAVE_SEASON_RATINGS);
+  }
+
+  public setSeasonRewards$(): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.SET_SEASON_REWARDS);
+  }
+
+  public resetSeasonRatings$(): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.RESET_SEASON_RATINGS);
+  }
+
+  public incrementSeason$(): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.INCREMENT_SEASON);
+  }
+
   public sendValidationResult$(formValue: Record<string, boolean | string>, cupId: string): Observable<void> {
     const demosIds: string[] = Object.keys(formValue).reduce((acc: string[], controlKey) => {
       if (controlKey.match(/demo/)) {

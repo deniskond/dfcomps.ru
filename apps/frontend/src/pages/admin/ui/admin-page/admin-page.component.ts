@@ -5,6 +5,7 @@ import { UserInterface } from '../../../../app/interfaces/user.interface';
 import { UserService } from '../../../../app/services/user-service/user.service';
 import { isNonNull } from '../../../../shared/helpers/is-non-null';
 import { AdminCurrentPageService } from '../../business/admin-current-page.service';
+import { UserAccess } from '../../../../app/enums/user-access.enum';
 
 @Component({
   selector: 'admin-page',
@@ -17,6 +18,7 @@ export class AdminPageComponent implements OnInit {
   public navigationPage$: Observable<string>;
   public user$: Observable<UserInterface>;
   public apiUrl: string;
+  public userAccess = UserAccess;
 
   constructor(private adminCurrentPageService: AdminCurrentPageService, private userService: UserService) {}
 

@@ -22,6 +22,7 @@ import { AdminAddMulticupRoundComponent } from './ui/admin-add-multicup-round/ad
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AdminSeasonComponent } from './ui/admin-season/admin-season.component';
+import { HasAdminRights } from './has-admin-rights.guard';
 
 const adminRoutes: Routes = [
   {
@@ -91,6 +92,7 @@ const adminRoutes: Routes = [
         children: [
           { path: '', component: AdminSeasonComponent },
         ],
+        canActivate: [HasAdminRights],
       },
     ],
   },
@@ -124,6 +126,6 @@ const adminRoutes: Routes = [
     MatCheckboxModule,
     QuillModule.forRoot(),
   ],
-  providers: [HasAdminPanelAccess],
+  providers: [HasAdminPanelAccess, HasAdminRights],
 })
 export class AdminModule {}
