@@ -1,7 +1,7 @@
 import { LanguageService } from '../../services/language/language.service';
 import { API_URL } from '@frontend/shared/rest-api';
 import { Physics } from '../../enums/physics.enum';
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { switchMap, tap, takeUntil, map, withLatestFrom, filter } from 'rxjs/operators';
 import { Subject, Observable, combineLatest } from 'rxjs';
@@ -48,6 +48,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     private sanitizer: DomSanitizer,
     private userService: UserService,
     private dialog: MatDialog,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {
     this.isLoading$.next(true);
   }
@@ -117,6 +118,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     this.sanitizer.bypassSecurityTrustResourceUrl(`/assets/images/avatars/${this.mainInfo.avatar}.jpg`);
 
     this.isLoading$.next(false);
+    this.changeDetectorRef.markForCheck();
   }
 
   private mapCupsToView(cups: ProfileCupDtoInterface[]): ProfileCupInterface[] {

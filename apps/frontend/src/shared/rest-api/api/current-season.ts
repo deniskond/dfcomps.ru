@@ -10,6 +10,6 @@ export class CurrentSeasonService {
   constructor(protected backendService: BackendService) {}
 
   getCurrentSeason$(): Observable<number> {
-    return this.backendService.post$<{ season: number }>(URL_PARAMS.SEASON.GET).pipe(map(({ season }) => season));
+    return this.backendService.post$<{ season: number }>(URL_PARAMS.SEASON.GET).pipe(map(({ season }) => +season));
   }
 }

@@ -1,12 +1,12 @@
 import { LeaderTableInterface } from '../../interfaces/leader-table.interface';
 import { RatingTablesService } from '../../services/rating-tables-service/rating-tables-service';
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { ReplaySubject, Subject } from 'rxjs';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { switchMap, ReplaySubject, Subject } from 'rxjs';
 import { Physics } from '../../enums/physics.enum';
 import { range } from 'lodash';
 import { take, finalize } from 'rxjs/operators';
+import { CurrentSeasonService } from '@frontend/shared/rest-api';
 
-const CURRENT_SEASON = 5;
 const MAX_PLAYERS_PER_PAGE = 100;
 
 @Component({
@@ -16,8 +16,8 @@ const MAX_PLAYERS_PER_PAGE = 100;
 })
 export class RatingPageComponent implements OnInit {
   public currentPage = 1;
-  public currentSeason = CURRENT_SEASON;
-  public currentSeasonConst = CURRENT_SEASON;
+  public selectedSeason: number;
+  public currentSeason$ = new ReplaySubject<number>(1);
   public vq3Ratings$ = new ReplaySubject<LeaderTableInterface[]>(1);
   public cpmRatings$ = new ReplaySubject<LeaderTableInterface[]>(1);
   public pagesCount$ = new ReplaySubject<number>(1);
@@ -26,9 +26,14 @@ export class RatingPageComponent implements OnInit {
   public isLoadingCpm$ = new Subject<boolean>();
   public bias = 0;
 
-  constructor(private ratingTablesService: RatingTablesService) {}
+  constructor(
+    private ratingTablesService: RatingTablesService,
+    private changeDetectorRef: ChangeDetectorRef,
+    private currentSeasonService: CurrentSeasonService,
+  ) {}
 
   ngOnInit(): void {
+    this.loadCurrentSeason();
     this.loadCurrentSeasonPage(this.currentPage);
   }
 
@@ -41,7 +46,10 @@ export class RatingPageComponent implements OnInit {
     this.ratingTablesService
       .getRatingTablePagesCount$()
       .pipe(take(1))
-      .subscribe((pagesCount: number) => this.pagesCount$.next(pagesCount));
+      .subscribe((pagesCount: number) => {
+        this.pagesCount$.next(pagesCount);
+        this.changeDetectorRef.markForCheck();
+      });
 
     this.ratingTablesService
       .getRatingTablePage$(Physics.VQ3, page)
@@ -67,12 +75,12 @@ export class RatingPageComponent implements OnInit {
     this.bias = (page - 1) * MAX_PLAYERS_PER_PAGE;
 
     this.ratingTablesService
-      .getSeasonRatingTablePagesCount$(this.currentSeason)
+      .getSeasonRatingTablePagesCount$(this.selectedSeason)
       .pipe(take(1))
       .subscribe((pagesCount: number) => this.pagesCount$.next(pagesCount));
 
     this.ratingTablesService
-      .getSeasonRatingTablePage$(Physics.VQ3, page, this.currentSeason)
+      .getSeasonRatingTablePage$(Physics.VQ3, page, this.selectedSeason)
       .pipe(
         take(1),
         finalize(() => this.isLoadingVq3$.next(false)),
@@ -80,7 +88,7 @@ export class RatingPageComponent implements OnInit {
       .subscribe((ratingTable: LeaderTableInterface[]) => this.vq3Ratings$.next(ratingTable));
 
     this.ratingTablesService
-      .getSeasonRatingTablePage$(Physics.CPM, page, this.currentSeason)
+      .getSeasonRatingTablePage$(Physics.CPM, page, this.selectedSeason)
       .pipe(
         take(1),
         finalize(() => this.isLoadingCpm$.next(false)),
@@ -89,7 +97,23 @@ export class RatingPageComponent implements OnInit {
   }
 
   public setSeason(season: number): void {
-    this.currentSeason = season;
-    season === CURRENT_SEASON ? this.loadCurrentSeasonPage(1) : this.loadPreviousSeasonPage(1);
+    this.selectedSeason = season;
+
+    this.currentSeason$
+      .pipe(take(1))
+      .subscribe((currentSeason: number) =>
+        season === currentSeason ? this.loadCurrentSeasonPage(1) : this.loadPreviousSeasonPage(1),
+      );
+  }
+
+  public getRange(count: number): Array<null> {
+    return new Array(count).fill(null);
+  }
+
+  private loadCurrentSeason(): void {
+    this.currentSeasonService.getCurrentSeason$().subscribe((currentSeason: number) => {
+      this.selectedSeason = currentSeason;
+      this.currentSeason$.next(currentSeason);
+    });
   }
 }
