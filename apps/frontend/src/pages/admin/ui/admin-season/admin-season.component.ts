@@ -13,7 +13,7 @@ export class AdminSeasonComponent implements OnInit {
   public currentSeason$ = new BehaviorSubject<number | null>(null);
   public isFinishingSeason = false;
   public isLoadingQuery = false;
-  public currentFinishingStep = 3;
+  public currentFinishingStep = 1;
 
   constructor(
     private currentSeasonService: CurrentSeasonService,
