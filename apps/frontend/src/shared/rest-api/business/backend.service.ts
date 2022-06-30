@@ -19,7 +19,11 @@ export class BackendService {
   ): Observable<any> {
     const formData: FormData = new FormData();
 
-    fileKeyValues.forEach(({ fileKey, file }) => formData.append(fileKey, file, file.name));
+    fileKeyValues.forEach(({ fileKey, file }) => {
+      if (file) {
+        formData.append(fileKey, file, file.name);
+      }
+    });
 
     if (postParams) {
       Object.keys(postParams).forEach((key: string) => formData.append(key, postParams[key]));

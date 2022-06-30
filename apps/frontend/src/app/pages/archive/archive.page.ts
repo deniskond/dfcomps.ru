@@ -1,6 +1,6 @@
 import { Languages } from '../../enums/languages.enum';
 import { LanguageService } from '../../services/language/language.service';
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ArchiveService } from './services/archive/archive.service';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { range } from 'lodash';
@@ -30,12 +30,14 @@ export class ArchivePageComponent implements OnInit {
     private router: Router,
     private archiveService: ArchiveService,
     private languageService: LanguageService,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
     this.archiveService.getNewsCount$().subscribe((count: number) => {
       this.newsCount = count;
       this.pagesCount = Math.ceil(count / NEWS_ON_PAGE);
+      this.changeDetectorRef.markForCheck();
     });
 
     this.news$ = this.currentNewsRange$.pipe(
