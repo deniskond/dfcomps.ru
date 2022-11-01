@@ -28,15 +28,22 @@
   font-family: elektra;
 }
 
+html {
+  --base-background: rgb(24, 26, 27); // #fff
+  --base-background-hover-color: rgb(34, 36, 38); // #eee
+  --base-font-color: rgb(200, 195, 188); // #333
+  --base-border-color: rgb(57, 61, 64); // #ccc
+  --alternate-border-color: rgb(57, 61, 64); // #e0e0e0
+  --base-header-blue-color: rgb(153, 134, 216); // #392676
+  --base-link-blue-color: rgb(105, 166, 213); // #337ab7
+  --alternative-link-blue-color: rgb(151, 193, 226); // #1e476b
+  --navigation-color: rgb(232, 230, 227); // #000
+  --divider-border-color: rgba(140, 130, 115, 0.2); // rgba(0, 0, 0, 0.12);
+  --color-scheme: dark; // light
+  color-scheme: var(--color-scheme) !important;
+}
+
 body {
-  --base-background: rgb(24, 26, 27);
-  --base-background-hover-color: rgb(34, 36, 38);
-  --base-font-color: rgb(200, 195, 188);
-  --base-border-color: rgb(57, 61, 64);
-  --alternate-border-color: rgb(57, 61, 64);
-  --base-header-blue-color: rgb(153, 134, 216);
-  --base-link-blue-color: rgb(105, 166, 213);
-  --alternative-link-blue-color: rgb(151, 193, 226);
   font-size: 14px;
   color: var(--base-font-color);
 }
@@ -97,6 +104,10 @@ b {
 mat-dialog-container {
   padding: 20px 24px 16px !important;
   border: 6px solid #dddddd;
+}
+
+mat-divider {
+  border-top-color: var(--divider-border-color) !important;
 }
 
 .mat-expansion-panel-body {
