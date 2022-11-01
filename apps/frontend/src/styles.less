@@ -31,8 +31,11 @@
 html {
   --base-background: rgb(24, 26, 27); // #fff
   --base-background-hover-color: rgb(34, 36, 38); // #eee
-  --base-font-color: rgb(200, 195, 188); // #333
+  --base-font-color: rgb(200, 195, 188); // var(--base-font-color)
   --base-border-color: rgb(57, 61, 64); // #ccc
+  --table-header-color: rgba(232, 230, 227, 0.54); // #0000008a 
+  --comments-border-color: rgb(57, 62, 64); // #dedede
+  --comments-background-color: rgb(30, 32, 33); // whitesmoke
   --alternate-border-color: rgb(57, 61, 64); // #e0e0e0
   --base-header-blue-color: rgb(153, 134, 216); // #392676
   --base-link-blue-color: rgb(105, 166, 213); // #337ab7
@@ -40,6 +43,8 @@ html {
   --navigation-color: rgb(232, 230, 227); // #000
   --divider-border-color: rgba(140, 130, 115, 0.2); // rgba(0, 0, 0, 0.12);
   --color-scheme: dark; // light
+  --cup-timer-font-color: rgb(232, 230, 227); // white
+  --accent-button-color: #185a00; // #ffd740
   color-scheme: var(--color-scheme) !important;
 }
 
@@ -108,6 +113,16 @@ mat-dialog-container {
 
 mat-divider {
   border-top-color: var(--divider-border-color) !important;
+}
+
+.mat-raised-button {
+  &.mat-accent {
+    background-color: var(--accent-button-color) !important;
+  }
+}
+
+.mat-expansion-panel {
+  background: var(--base-background) !important;
 }
 
 .mat-expansion-panel-body {

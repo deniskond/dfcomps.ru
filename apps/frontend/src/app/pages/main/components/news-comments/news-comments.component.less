@@ -37,14 +37,18 @@
   margin-bottom: 10px;
 
   .comment-header {
-    background: whitesmoke;
-    border: 1px solid #dedede;
+    background: var(--comments-background-color);
+    border: 1px solid var(--comments-border-color);
     padding: 3px 8px;
     font-weight: bold;
     display: flex;
     justify-content: space-between;
     height: 28px;
     align-items: center;
+  }
+
+  .comment-header-right {
+    color: var(--base-font-color);
   }
 
   .comment-inner-gray {
@@ -127,7 +131,7 @@
 }
 
 .black-link {
-  color: #333;
+  color: var(--base-font-color);
   cursor: pointer;
 
   &.no-hover {

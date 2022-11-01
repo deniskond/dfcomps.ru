@@ -11,6 +11,11 @@ mat-header-cell {
 mat-row,
 mat-header-row {
   min-height: 32px !important;
+  border-bottom-color: var(--divider-border-color) !important;
+}
+
+mat-cell {
+  background: var(--base-background);
 }
 
 mat-cell,
@@ -24,9 +29,14 @@ mat-header-cell {
   }
 }
 
+mat-table {
+  background: var(--base-background) !important;
+}
+
 .number-column {
   width: 36px;
   justify-content: center;
+  color: var(--table-header-color);
 }
 
 .player-column {
@@ -34,6 +44,7 @@ mat-header-cell {
   border: @border;
   border-top: 0;
   border-bottom: 0;
+  color: var(--table-header-color);
 
   &.header {
     justify-content: center;
@@ -43,4 +54,5 @@ mat-header-cell {
 .rating-column {
   width: 80px;
   justify-content: center;
+  color: var(--table-header-color);
 }

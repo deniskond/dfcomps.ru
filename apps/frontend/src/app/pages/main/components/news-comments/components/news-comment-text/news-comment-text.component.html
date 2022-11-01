@@ -3,6 +3,6 @@
     <app-smile [smile]="$any(messagePart.content)"></app-smile>
   </div>
   <ng-template #text>
-    <span [innerHTML]="messagePart.content"></span>
+    <span [innerHTML]="messagePart.content" class="comment-text"></span>
   </ng-template>
 </ng-container>
