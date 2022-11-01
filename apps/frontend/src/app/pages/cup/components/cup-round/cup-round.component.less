@@ -41,7 +41,7 @@
   font-size: 40px;
   letter-spacing: 4px;
   text-transform: uppercase;
-  border: 2px solid #ccc;
+  border: 2px solid var(--base-border-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -60,7 +60,7 @@
 
 .levelshot {
   width: 516px;
-  border: 2px solid #ccc;
+  border: 2px solid var(--base-border-color);
   margin-top: 40px;
   background: rgba(74, 67, 164, 0.8);
 
@@ -74,11 +74,11 @@
   letter-spacing: 1px;
   text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
   background: rgba(74, 67, 164, 0.8);
-  border: 2px solid #ccc;
+  border: 2px solid var(--base-border-color);
 
   .row {
     display: flex;
-    border-top: 2px solid #ccc;
+    border-top: 2px solid var(--base-border-color);
 
     &:first-of-type {
       border-top: 0;
@@ -124,7 +124,7 @@
     }
 
     &.player {
-      border-left: 2px solid #ccc;
+      border-left: 2px solid var(--base-border-color);
       width: 0px;
       flex-grow: 1;
       justify-content: flex-start;
@@ -132,7 +132,7 @@
 
     &.result {
       width: 120px;
-      border-left: 2px solid #ccc;
+      border-left: 2px solid var(--base-border-color);
     }
   }
 }

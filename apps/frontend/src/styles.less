@@ -29,8 +29,16 @@
 }
 
 body {
+  --base-background: rgb(24, 26, 27);
+  --base-background-hover-color: rgb(34, 36, 38);
+  --base-font-color: rgb(200, 195, 188);
+  --base-border-color: rgb(57, 61, 64);
+  --alternate-border-color: rgb(57, 61, 64);
+  --base-header-blue-color: rgb(153, 134, 216);
+  --base-link-blue-color: rgb(105, 166, 213);
+  --alternative-link-blue-color: rgb(151, 193, 226);
   font-size: 14px;
-  color: #333;
+  color: var(--base-font-color);
 }
 
 .comment-inner img {
@@ -51,7 +59,7 @@ button {
 .shadowed-main-block {
   .shadowed();
   padding: 15px;
-  background: white;
+  background: var(--base-background);
 
   & + & {
     margin-top: 25px;
@@ -59,7 +67,7 @@ button {
 }
 
 a {
-  color: @link-blue;
+  color: var(--base-link-blue-color);
   text-decoration: none;
 
   &:hover {
@@ -73,7 +81,7 @@ b {
 }
 
 .blue-link {
-  color: #1e476b;
+  color: var(--alternative-link-blue-color);
   opacity: 0.8;
 
   &:hover {
