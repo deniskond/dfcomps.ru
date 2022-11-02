@@ -11,7 +11,7 @@ export const hoverableCellAnimation = trigger('hoveredCell', [
   state(
     HOVERABLE_CELL_HOVERED_STATE,
     style({
-      backgroundColor: isDarkTheme ? 'rgb(34, 36, 38)' : '#eeeeee',
+      backgroundColor: isDarkTheme ? 'rgb(34, 36, 38)' : 'var(--base-background-hover-color)',
     }),
   ),
   state(

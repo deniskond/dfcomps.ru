@@ -12,9 +12,9 @@
         <div class="comment">
           <div class="comment-header">
             <div class="comment-header-left">
-              <span [class.no-hover]="!(currentUser$ | async)" (click)="copyIdToComment(i + 1)" class="black-link"
-                >#{{ i + 1 }}</span
-              >
+              <span [class.no-hover]="!(currentUser$ | async)" (click)="copyIdToComment(i + 1)" class="black-link">
+                #{{ i + 1 }}
+              </span>
               <span class="separator"></span>
               <span>
                 <a routerLink="/profile/{{ comment.playerId }}" class="black-link">{{ comment.username }}</a>
@@ -48,8 +48,7 @@
               [comment]="comment"
               [personalSmiles]="personalSmiles"
               [currentUser]="(currentUser$ | async)!"
-            >
-            </app-news-comment-text>
+            ></app-news-comment-text>
           </ng-container>
           <ng-template #adminDeleted>
             <div class="comment-inner-gray">
@@ -63,8 +62,14 @@
   </ng-container>
 
   <ng-container *ngIf="currentUser$ | async; else notLogged">
-    <div *ngIf="editingCommentId" class="write-commentary"><span translate translation="editComment"></span>:</div>
-    <div *ngIf="!editingCommentId" class="write-commentary"><span translate translation="writeComment"></span>:</div>
+    <div *ngIf="editingCommentId" class="write-commentary">
+      <span translate translation="editComment"></span>
+      :
+    </div>
+    <div *ngIf="!editingCommentId" class="write-commentary">
+      <span translate translation="writeComment" class="write-comment"></span>
+      :
+    </div>
     <div class="textarea-container">
       <textarea #textarea class="comment-textarea"></textarea>
       <img (click)="openSmilesDropdown($event)" src="/assets/images/icons/smile-icon.png" class="smiles-icon" />
@@ -78,8 +83,7 @@
         (@smilesDialog.done)="onAnimationEnd($event)"
         (clickOutside)="closeSmilesDropdown()"
         (chooseSmile)="addSmile($event)"
-      >
-      </app-smiles-dropdown>
+      ></app-smiles-dropdown>
     </div>
 
     <div *ngIf="!editingCommentId; else isEditing" class="send-comment-button">

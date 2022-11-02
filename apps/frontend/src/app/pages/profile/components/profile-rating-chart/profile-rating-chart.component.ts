@@ -44,7 +44,7 @@ export class ProfileRatingChartComponent implements OnChanges {
           label: `${this.physics.toUpperCase()} Rating`,
           fill: true,
           borderColor: 'var(--base-link-blue-color)',
-          backgroundColor: '#eeeeee',
+          backgroundColor: 'var(--base-border-color)',
           borderWidth: 1,
           pointRadius: 3,
           pointBackgroundColor: 'var(--base-link-blue-color)',
