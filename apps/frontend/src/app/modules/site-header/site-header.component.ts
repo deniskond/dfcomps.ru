@@ -8,6 +8,8 @@ import { filter, take, takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { DownloadDfDialogComponent } from './components/download-df-dialog/download-df-dialog.component';
+import { Themes } from '@frontend/app/enums/themes.enum';
+import { ThemeService } from '@frontend/app/services/theme/theme.service';
 
 @Component({
   selector: 'app-site-header',
@@ -19,9 +21,11 @@ export class SiteHeaderComponent implements OnInit, OnDestroy {
   public pages = NavigationPages;
   public tabs = TABS_CONFIG.TABS;
   public languages = Languages;
+  public themes = Themes;
   public activePage: NavigationPages | null;
   public translations: Record<string, string>;
   public language$: Observable<Languages>;
+  public theme$: Observable<Themes>;
 
   private onDestroy$ = new Subject<void>();
 
@@ -29,6 +33,7 @@ export class SiteHeaderComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private router: Router,
     private languageService: LanguageService,
+    private themeService: ThemeService,
     private changeDetectorRef: ChangeDetectorRef,
   ) {}
 
@@ -36,6 +41,7 @@ export class SiteHeaderComponent implements OnInit, OnDestroy {
     this.setActivePage();
     this.initActivePageSubscription();
     this.language$ = this.languageService.getLanguage$();
+    this.theme$ = this.themeService.getTheme$();
   }
 
   ngOnDestroy(): void {
@@ -59,6 +65,17 @@ export class SiteHeaderComponent implements OnInit, OnDestroy {
         language === Languages.EN
           ? this.languageService.setLanguage(Languages.RU)
           : this.languageService.setLanguage(Languages.EN),
+      );
+  }
+
+  public toggleTheme(): void {
+    this.themeService
+      .getTheme$()
+      .pipe(take(1))
+      .subscribe((theme: Themes) =>
+        theme === Themes.LIGHT
+          ? this.themeService.setTheme(Themes.DARK)
+          : this.themeService.setTheme(Themes.LIGHT),
       );
   }
 
