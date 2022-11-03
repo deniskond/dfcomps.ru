@@ -14,6 +14,7 @@ import { RegisterDialogComponent } from './components/register-dialog/register-d
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared.module';
 import { DownloadDfDialogComponent } from './components/download-df-dialog/download-df-dialog.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { DownloadDfDialogComponent } from './components/download-df-dialog/downl
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
+    MatSlideToggleModule,
   ],
   declarations: [
     SiteHeaderComponent,

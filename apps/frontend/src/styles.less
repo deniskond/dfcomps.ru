@@ -33,7 +33,7 @@ html {
   --base-background-hover-color: rgb(34, 36, 38); // #eeeeee
   --base-font-color: rgb(200, 195, 188); // #333333
   --base-border-color: rgb(57, 61, 64); // #cccccc
-  --table-header-color: rgba(232, 230, 227, 0.54); // #0000008a 
+  --table-header-color: rgba(232, 230, 227, 0.54); // #0000008a
   --comments-border-color: rgb(57, 62, 64); // #dedede
   --comments-background-color: #333; // whitesmoke
   --alternate-border-color: rgb(57, 61, 64); // #e0e0e0
@@ -46,6 +46,7 @@ html {
   --cup-timer-font-color: rgb(232, 230, 227); // #ffffff
   --accent-button-color: #2f4f00; // #ffd740
   --timer-background-color: rgba(45, 36, 156, 0.37); // rgb(74, 67, 164, 0.7);
+  --toggle-background-color: #333; // #ffffff
   color-scheme: var(--color-scheme) !important;
 }
 
@@ -162,4 +163,29 @@ body {
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+mat-slide-toggle {
+  &.EN {
+    .mat-slide-toggle-thumb {
+      background: url('/assets/images/icons/langs/gb.png') !important;
+      background-size: 100% !important;
+    }
+  }
+
+  &.RU {
+    .mat-slide-toggle-thumb {
+      background: url('/assets/images/icons/langs/ru.png') !important;
+      background-size: 100% !important;
+    }
+  }
+}
+
+.mat-slide-toggle-thumb {
+  border: var(--toggle-background-color);
+  box-sizing: border-box;
+}
+
+.mat-slide-toggle-bar {
+  background: var(--toggle-background-color);
 }

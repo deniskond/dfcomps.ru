@@ -3,9 +3,9 @@ import { Languages } from '../../enums/languages.enum';
 import { NavigationPages } from '../../routing/enums/pages.enum';
 import { TABS_CONFIG, TabInterface } from '../../routing/config/tabs.config';
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { Router, RouterEvent, NavigationEnd } from '@angular/router';
-import { filter, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter, take, takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { DownloadDfDialogComponent } from './components/download-df-dialog/download-df-dialog.component';
 
@@ -21,6 +21,7 @@ export class SiteHeaderComponent implements OnInit, OnDestroy {
   public languages = Languages;
   public activePage: NavigationPages | null;
   public translations: Record<string, string>;
+  public language$: Observable<Languages>;
 
   private onDestroy$ = new Subject<void>();
 
@@ -34,6 +35,7 @@ export class SiteHeaderComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.setActivePage();
     this.initActivePageSubscription();
+    this.language$ = this.languageService.getLanguage$();
   }
 
   ngOnDestroy(): void {
@@ -49,8 +51,15 @@ export class SiteHeaderComponent implements OnInit, OnDestroy {
     this.dialog.open(DownloadDfDialogComponent);
   }
 
-  public setLanguage(language: Languages): void {
-    this.languageService.setLanguage(language);
+  public toggleLanguage(): void {
+    this.languageService
+      .getLanguage$()
+      .pipe(take(1))
+      .subscribe((language: Languages) =>
+        language === Languages.EN
+          ? this.languageService.setLanguage(Languages.RU)
+          : this.languageService.setLanguage(Languages.EN),
+      );
   }
 
   private initActivePageSubscription(): void {

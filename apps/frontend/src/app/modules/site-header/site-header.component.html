@@ -4,14 +4,15 @@
       <img class="ushastik" src="/assets/images/ushastik.png" />
       <div class="site-name">Dfcomps</div>
       <div class="slogan">
-        Quake 3 Defrag<br />
+        Quake 3 Defrag
+        <br />
         Competitions
       </div>
     </div>
 
-    <div class="langs">
-      <img (click)="setLanguage(languages.EN)" class="en" src="/assets/images/icons/lang/en.png" />
-      <img (click)="setLanguage(languages.RU)" class="ru" src="/assets/images/icons/lang/ru.png" />
+    
+    <div *ngIf="(language$ | async) as language" class="langs">
+      <mat-slide-toggle [class]="language" [checked]="language === languages.RU" (toggleChange)="toggleLanguage()" color="primary"></mat-slide-toggle>
     </div>
 
     <app-user-panel></app-user-panel>
