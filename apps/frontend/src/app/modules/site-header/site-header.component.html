@@ -11,7 +11,7 @@
     </div>
 
     <div *ngIf="(theme$ | async) as theme" class="themes">
-      <mat-slide-toggle [class]="theme" [checked]="theme === themes.LIGHT" (toggleChange)="toggleTheme()" color="primary"></mat-slide-toggle>
+      <mat-slide-toggle [class]="theme" [checked]="theme === themes.DARK" (toggleChange)="toggleTheme()" color="primary"></mat-slide-toggle>
     </div>
     
     <div *ngIf="(language$ | async) as language" class="langs">

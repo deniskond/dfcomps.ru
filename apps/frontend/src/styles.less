@@ -143,6 +143,7 @@ mat-slide-toggle {
     .mat-slide-toggle-thumb {
       background: url('/assets/images/icons/langs/gb.png') !important;
       background-size: 100% !important;
+      transform: scale(90%);
     }
   }
 
@@ -150,15 +151,31 @@ mat-slide-toggle {
     .mat-slide-toggle-thumb {
       background: url('/assets/images/icons/langs/ru.png') !important;
       background-size: 100% !important;
+      transform: scale(90%);
+    }
+  }
+
+  &.light {
+    .mat-slide-toggle-thumb {
+      background: url('/assets/images/icons/langs/light.png') !important;
+      background-size: 100% !important;
+      transform: scale(95%);
+    }
+  }
+
+  &.dark {
+    .mat-slide-toggle-thumb {
+      background: url('/assets/images/icons/langs/dark.png') !important;
+      background-size: 100% !important;
+      transform: scale(95%);
     }
   }
 }
 
 .mat-slide-toggle-thumb {
   border: var(--toggle-background-color);
-  box-sizing: border-box;
 }
 
 .mat-slide-toggle-bar {
-  background: var(--toggle-background-color);
+  background: var(--toggle-background-color) !important;
 }

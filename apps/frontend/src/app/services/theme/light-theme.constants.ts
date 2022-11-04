@@ -16,7 +16,7 @@ export const LIGHT_THEME_VARS = {
   '--cup-timer-font-color': '#ffffff',
   '--accent-button-color': '#ffd740',
   '--timer-background-color': 'rgb(74, 67, 164, 0.7)',
-  '--toggle-background-color': '#ffffff',
+  '--toggle-background-color': '#ccc',
   '--player-cell-transparent-hover-color': 'rgba(255, 255, 255, 0.4)',
   '--player-cell-transparent-normal-color': 'rgba(255, 255, 255, 0)',
 };
