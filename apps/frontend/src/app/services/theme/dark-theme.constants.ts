@@ -21,4 +21,5 @@ export const DARK_THEME_VARS = {
   '--player-cell-transparent-normal-color': 'rgba(24, 26, 27, 0)',
   '--rules-hightlight-color': '#333',
   '--button-disabled-color': '#333',
+  '--1v1-text-color': 'rgb(178, 172, 162)',
 };

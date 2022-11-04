@@ -21,4 +21,5 @@ export const LIGHT_THEME_VARS = {
   '--player-cell-transparent-normal-color': 'rgba(255, 255, 255, 0)',
   '--rules-hightlight-color': '#e8e8e8',
   '--button-disabled-color': 'rgba(0,0,0,.12)',
+  '--1v1-text-color': '#555',
 };
