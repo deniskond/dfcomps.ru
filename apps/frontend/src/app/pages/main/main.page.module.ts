@@ -37,6 +37,7 @@ import { NewsSocialLinksComponent } from './components/news-social-links/news-so
 import { NewsCommentTextComponent } from './components/news-comments/components/news-comment-text/news-comment-text.component';
 import { OverbouncesWarningDialogComponent } from './components/news-offline-start/overbounces-warning-dialog/overbounces-warning-dialog.component';
 import { SDCRulesDialogComponent } from './components/news-offline-start/sdc-rules-dialog/sdc-rules-dialog.component';
+import { MatIconModule } from '@angular/material/icon';
 
 const routes: Routes = [
   {
@@ -62,6 +63,7 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     MatExpansionModule,
+    MatIconModule,
   ],
   declarations: [
     MainPageComponent,

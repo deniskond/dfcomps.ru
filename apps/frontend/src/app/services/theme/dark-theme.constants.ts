@@ -1,11 +1,11 @@
 export const DARK_THEME_VARS = {
-  '--base-background': 'rgb(24, 26, 27)',
+  '--base-background': 'rgba(24, 26, 27, 0.9)',
   '--base-background-hover-color': 'rgb(34, 36, 38)',
   '--base-font-color': 'rgb(200, 195, 188)',
   '--base-border-color': 'rgb(57, 61, 64)',
   '--table-header-color': 'rgba(232, 230, 227, 0.54)',
   '--comments-border-color': 'rgb(57, 62, 64)',
-  '--comments-background-color': '#333',
+  '--comments-background-color': '#28282f',
   '--alternate-border-color': 'rgb(57, 61, 64)',
   '--base-header-blue-color': 'rgb(153, 134, 216)',
   '--base-link-blue-color': 'rgb(105, 166, 213)',
