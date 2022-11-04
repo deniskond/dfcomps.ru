@@ -1,5 +1,8 @@
 import { Physics } from '../../../../enums/physics.enum';
-import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { ThemeService } from '@frontend/app/services/theme/theme.service';
+import { combineLatest, ReplaySubject, Subject, takeUntil } from 'rxjs';
+import { Themes } from '@frontend/app/enums/themes.enum';
 
 @Component({
   selector: 'app-profile-rating-chart',
@@ -12,6 +15,37 @@ export class ProfileRatingChartComponent implements OnChanges {
   physics: Physics;
   @Input()
   chart: string[];
+
+  private onDestroy$ = new Subject<void>();
+  private chart$ = new ReplaySubject<any>(1);
+
+  constructor(private themeService: ThemeService, private changeDetectorRef: ChangeDetectorRef) {}
+
+  ngOnInit(): void {
+    combineLatest([this.themeService.getTheme$(), this.chart$])
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(([theme]: [Themes, any]) => {
+        this.barChartLabels = this.chart;
+        this.barChartData = [
+          {
+            data: this.chart.map((val) => +val),
+            label: `${this.physics.toUpperCase()} Rating`,
+            fill: true,
+            borderColor: theme === Themes.DARK ? 'rgb(105, 166, 213)' : '#337ab7',
+            backgroundColor: theme === Themes.DARK ? '#333' : '#eee',
+            borderWidth: 1,
+            pointRadius: 3,
+            pointBackgroundColor: 'var(--base-link-blue-color)',
+            pointBorderWidth: 0,
+          },
+        ];
+        this.changeDetectorRef.markForCheck();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+  }
 
   public barChartOptions: any = {
     scaleShowVerticalLines: true,
@@ -37,20 +71,7 @@ export class ProfileRatingChartComponent implements OnChanges {
 
   ngOnChanges({ chart }: SimpleChanges): void {
     if (chart) {
-      this.barChartLabels = this.chart;
-      this.barChartData = [
-        {
-          data: this.chart.map((val) => +val),
-          label: `${this.physics.toUpperCase()} Rating`,
-          fill: true,
-          borderColor: 'var(--base-link-blue-color)',
-          backgroundColor: 'var(--base-border-color)',
-          borderWidth: 1,
-          pointRadius: 3,
-          pointBackgroundColor: 'var(--base-link-blue-color)',
-          pointBorderWidth: 0,
-        },
-      ];
+      this.chart$.next(chart);
     }
   }
 }

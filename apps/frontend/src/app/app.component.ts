@@ -7,9 +7,6 @@ import { UserInterface } from './interfaces/user.interface';
 import { isEqual } from 'lodash';
 import { DuelService } from './pages/1v1/services/duel.service';
 import { ThemeService } from './services/theme/theme.service';
-import { LIGHT_THEME_VARS } from './services/theme/light-theme.constants';
-import { Themes } from './enums/themes.enum';
-import { DARK_THEME_VARS } from './services/theme/dark-theme.constants';
 
 @Component({
   selector: 'app-root',
@@ -36,7 +33,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.languageService.setLanguageFromCookie();
     this.themeService.setThemeFromCookie();
     this.initUserSubscriptions();
-    this.initThemeSubscription();
   }
 
   ngOnDestroy(): void {
@@ -55,15 +51,5 @@ export class AppComponent implements OnInit, OnDestroy {
 
       this.duelService.closeConnection();
     });
-  }
-
-  private initThemeSubscription(): void {
-    this.themeService
-      .getTheme$()
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe((theme: Themes) => {
-        this.themeColors = theme === Themes.LIGHT ? LIGHT_THEME_VARS : DARK_THEME_VARS;
-        (document.getElementsByTagName('html')[0] as HTMLElement).style.colorScheme = theme;
-      });
   }
 }

@@ -19,4 +19,6 @@ export const LIGHT_THEME_VARS = {
   '--toggle-background-color': '#ccc',
   '--player-cell-transparent-hover-color': 'rgba(255, 255, 255, 0.4)',
   '--player-cell-transparent-normal-color': 'rgba(255, 255, 255, 0)',
+  '--rules-hightlight-color': '#e8e8e8',
+  '--button-disabled-color': 'rgba(0,0,0,.12)',
 };

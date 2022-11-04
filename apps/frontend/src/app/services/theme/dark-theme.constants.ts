@@ -19,4 +19,6 @@ export const DARK_THEME_VARS = {
   '--toggle-background-color': '#333',
   '--player-cell-transparent-hover-color': 'rgba(24, 26, 27, 0.4)',
   '--player-cell-transparent-normal-color': 'rgba(24, 26, 27, 0)',
+  '--rules-hightlight-color': '#333',
+  '--button-disabled-color': '#333',
 };
