@@ -7,7 +7,7 @@
 }
 
 mat-header-row {
-  background: #eee;
+  background: var(--base-background-hover-color);
 }
 
 mat-header-cell {
@@ -17,6 +17,7 @@ mat-header-cell {
 mat-row,
 mat-header-row {
   min-height: 32px !important;
+  border-bottom-color: var(--divider-border-color) !important;
 }
 
 mat-cell,
@@ -30,28 +31,36 @@ mat-header-cell {
   }
 }
 
+mat-table {
+  background: var(--base-background) !important;
+}
+
 .cup-name-column {
   flex-grow: 1;
   justify-content: left;
   border-right: @border;
   padding-left: 16px !important;
+  color: var(--table-header-color);
 }
 
 .physics-column {
   width: 140px;
   justify-content: center;
   border-right: @border;
+  color: var(--table-header-color);
 }
 
 .result-column {
   width: 140px;
   justify-content: center;
   border-right: @border;
+  color: var(--table-header-color);
 }
 
 .rating-column {
   width: 140px;
   justify-content: center;
+  color: var(--table-header-color);
 }
 
 .left-4 {
@@ -59,6 +68,6 @@ mat-header-cell {
 }
 
 .cup-name {
-  color: #337ab7;
+  color: var(--base-link-blue-color);
   cursor: default;
 }

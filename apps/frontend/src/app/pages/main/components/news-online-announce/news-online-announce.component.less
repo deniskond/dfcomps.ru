@@ -1,4 +1,4 @@
-@border-color: #cccccc;
+@border-color: var(--base-border-color);
 
 .players-table {
   margin-top: 10px;
@@ -25,7 +25,7 @@
 
 .number {
   width: 28px;
-  background: #eeeeee;
+  background: var(--base-background-hover-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -67,7 +67,7 @@
 
 .pagination {
   border-radius: 4px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  border: 1px solid var(--divider-border-color);
   height: 28px;
   display: flex;
   text-align: center;
@@ -75,7 +75,7 @@
   margin-bottom: 12px;
 
   .page {
-    border-right: 1px solid rgba(0, 0, 0, 0.12);
+    border-right: 1px solid var(--divider-border-color);
     padding: 0 12px;
     font-size: 14px;
     line-height: 28px;
@@ -89,5 +89,5 @@
 }
 
 .selected {
-  background-color: #eee;
+  background-color: var(--base-background-hover-color);
 }

@@ -13,12 +13,12 @@
   background: #e3e3e3;
   width: 100%;
   text-align: center;
-  color: #337ab7;
+  color: var(--base-link-blue-color);
   font-weight: bold;
   padding-top: 8px;
 
   &:hover {
-    background: #e8e8e8;
+    background: var(--rules-hightlight-color);
   }
 }
 
@@ -28,7 +28,7 @@
   background: #e3e3e3;
   width: 100%;
   text-align: center;
-  color: #337ab7;
+  color: var(--base-link-blue-color);
   font-weight: bold;
   padding-top: 8px;
 }
@@ -37,14 +37,18 @@
   margin-bottom: 10px;
 
   .comment-header {
-    background: whitesmoke;
-    border: 1px solid #dedede;
+    background: var(--comments-background-color);
+    border: 1px solid var(--comments-border-color);
     padding: 3px 8px;
     font-weight: bold;
     display: flex;
     justify-content: space-between;
     height: 28px;
     align-items: center;
+  }
+
+  .comment-header-right {
+    color: var(--base-font-color);
   }
 
   .comment-inner-gray {
@@ -66,6 +70,7 @@
 .write-commentary {
   margin-bottom: 8px;
   font-weight: bold;
+  color: var(--base-font-color);
 }
 
 .comments-container {
@@ -76,7 +81,7 @@
   min-height: 40px;
   padding: 8px 32px 8px 8px;
   height: 100px;
-  border: 2px solid #dedede;
+  border: 2px solid var(--comments-border-color);
   width: 100%;
   resize: none;
   font-size: 14px;
@@ -124,10 +129,11 @@
   font-weight: bold;
   text-align: center;
   margin-top: 20px;
+  color: var(--base-font-color);
 }
 
 .black-link {
-  color: #333;
+  color: var(--base-font-color);
   cursor: pointer;
 
   &.no-hover {
@@ -173,11 +179,15 @@
 }
 
 .panel-title {
-  color: #337ab7;
+  color: var(--base-link-blue-color);
   font-size: 14px;
   font-weight: bold;
 }
 
 .overflow-visible {
   overflow: visible;
+}
+
+.write-comment {
+  color: var(--base-font-color);
 }

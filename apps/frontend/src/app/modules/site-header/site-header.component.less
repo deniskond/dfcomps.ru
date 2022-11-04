@@ -1,6 +1,6 @@
 .header {
   position: relative;
-  background: white;
+  background: var(--base-background);
   height: 115px;
   width: 1170px;
 }
@@ -29,7 +29,7 @@
   .site-name {
     margin-left: 8px;
     font-family: bebas;
-    color: #392676;
+    color: var(--base-header-blue-color);
   }
 
   .slogan {
@@ -39,23 +39,20 @@
     line-height: 20px;
     margin-left: 10px;
     margin-top: 2px;
-    color: #392676;
+    color: var(--base-header-blue-color);
   }
+}
+
+.themes {
+  position: absolute;
+  right: 64px;
+  top: 7px;
 }
 
 .langs {
   position: absolute;
-  right: 15px;
-  top: 11px;
-  text-align: right;
-
-  .ru {
-    margin-left: 6px;
-  }
-
-  img {
-    cursor: pointer;
-  }
+  right: 16px;
+  top: 7px;
 }
 
 .right-container {
@@ -111,12 +108,12 @@
     min-width: 90px;
     font-family: elektra;
     font-size: 16px;
-    color: black;
+    color: var(--navigation-color);
     height: 32px;
     padding: 0 12px;
 
     &:hover {
-      color: black;
+      color: var(--navigation-color);
       opacity: 1;
       text-decoration: none;
     }
@@ -130,6 +127,6 @@
   padding-top: 0px;
   line-height: 33px;
   font-family: elektra;
-  color: #333333;
+  color: var(--base-font-color);
   margin-left: 2px;
 }

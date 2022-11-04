@@ -30,7 +30,7 @@
 
 body {
   font-size: 14px;
-  color: #333;
+  color: var(--base-font-color);
 }
 
 .comment-inner img {
@@ -51,7 +51,7 @@ button {
 .shadowed-main-block {
   .shadowed();
   padding: 15px;
-  background: white;
+  background: var(--base-background);
 
   & + & {
     margin-top: 25px;
@@ -59,7 +59,7 @@ button {
 }
 
 a {
-  color: @link-blue;
+  color: var(--base-link-blue-color);
   text-decoration: none;
 
   &:hover {
@@ -73,7 +73,7 @@ b {
 }
 
 .blue-link {
-  color: #1e476b;
+  color: var(--alternative-link-blue-color);
   opacity: 0.8;
 
   &:hover {
@@ -88,7 +88,21 @@ b {
 
 mat-dialog-container {
   padding: 20px 24px 16px !important;
-  border: 6px solid #dddddd;
+  border: 6px solid var(--comments-border-color);
+}
+
+mat-divider {
+  border-top-color: var(--divider-border-color) !important;
+}
+
+.mat-raised-button {
+  &.mat-accent {
+    background-color: var(--accent-button-color) !important;
+  }
+}
+
+.mat-expansion-panel {
+  background: var(--base-background) !important;
 }
 
 .mat-expansion-panel-body {
@@ -127,4 +141,51 @@ body {
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+mat-slide-toggle {
+  &.EN {
+    .mat-slide-toggle-thumb {
+      background: url('/assets/images/icons/langs/gb.png') !important;
+      background-size: 100% !important;
+      transform: scale(90%);
+    }
+  }
+
+  &.RU {
+    .mat-slide-toggle-thumb {
+      background: url('/assets/images/icons/langs/ru.png') !important;
+      background-size: 100% !important;
+      transform: scale(90%);
+    }
+  }
+
+  &.light {
+    .mat-slide-toggle-thumb {
+      background: url('/assets/images/icons/langs/light.png') !important;
+      background-size: 100% !important;
+      transform: scale(95%);
+    }
+  }
+
+  &.dark {
+    .mat-slide-toggle-thumb {
+      background: url('/assets/images/icons/langs/dark.png') !important;
+      background-size: 100% !important;
+      transform: scale(95%);
+    }
+  }
+}
+
+.mat-slide-toggle-thumb {
+  border: var(--toggle-background-color);
+}
+
+.mat-slide-toggle-bar {
+  background: var(--toggle-background-color) !important;
+}
+
+.mat-dialog-container {
+  background: var(--base-background);
+  color: var(--base-font-color);
 }

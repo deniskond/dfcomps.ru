@@ -9,25 +9,25 @@ export const hoverableCellAnimation = trigger('hoveredCell', [
   state(
     HOVERABLE_CELL_HOVERED_STATE,
     style({
-      backgroundColor: '#eeeeee',
+      backgroundColor: 'var(--base-background-hover-color)',
     }),
   ),
   state(
     HOVERABLE_CELL_NORMAL_STATE,
     style({
-      backgroundColor: 'white',
+      backgroundColor: 'var(--base-background)',
     }),
   ),
   state(
     HOVERABLE_CELL_TRANSPARENT_HOVERED_STATE,
     style({
-      backgroundColor: 'rgba(255, 255, 255, 0.4)',
+      backgroundColor: 'var(--player-cell-transparent-hover-color)',
     }),
   ),
   state(
     HOVERABLE_CELL_TRANSPARENT_NORMAL_STATE,
     style({
-      backgroundColor: 'rgba(255, 255, 255, 0)',
+      backgroundColor: 'var(--player-cell-transparent-normal-color)',
     }),
   ),
   transition(`${HOVERABLE_CELL_HOVERED_STATE} => ${HOVERABLE_CELL_NORMAL_STATE}`, [animate(500)]),
