@@ -1,4 +1,4 @@
-import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from './services/user-service/user.service';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { LanguageService } from './services/language/language.service';
@@ -14,9 +14,6 @@ import { ThemeService } from './services/theme/theme.service';
   styleUrls: ['./app.component.less'],
 })
 export class AppComponent implements OnInit, OnDestroy {
-  @HostBinding('style')
-  themeColors: Record<string, string>;
-
   public user$: Observable<UserInterface | null>;
 
   private onDestroy$ = new Subject<void>();
