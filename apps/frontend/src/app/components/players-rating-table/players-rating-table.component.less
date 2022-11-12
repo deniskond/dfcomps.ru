@@ -36,7 +36,11 @@ mat-table {
 .number-column {
   width: 36px;
   justify-content: center;
-  color: var(--table-header-color);
+  color: var(--base-font-color);
+
+  &.header {
+    color: var(--table-header-color);
+  }
 }
 
 .player-column {
@@ -44,9 +48,10 @@ mat-table {
   border: @border;
   border-top: 0;
   border-bottom: 0;
-  color: var(--table-header-color);
+  color: var(--base-font-color);
 
   &.header {
+    color: var(--table-header-color);
     justify-content: center;
   }
 }
@@ -54,5 +59,9 @@ mat-table {
 .rating-column {
   width: 80px;
   justify-content: center;
-  color: var(--table-header-color);
+  color: var(--base-font-color);
+
+  &.header {
+    color: var(--table-header-color);
+  }
 }
