@@ -140,4 +140,5 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
   uploadDemo: 'Upload demo',
   difficulty: 'Difficulty',
   descriptionAndRules: 'Description and rules',
+  downloadForValidation: 'Download all demos for validation',
 };

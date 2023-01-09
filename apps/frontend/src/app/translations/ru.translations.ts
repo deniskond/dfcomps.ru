@@ -140,4 +140,5 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   uploadDemo: 'Загрузить демо',
   difficulty: 'Сложность',
   descriptionAndRules: 'Описание и правила',
+  downloadForValidation: 'Скачать все демки для валидации',
 };

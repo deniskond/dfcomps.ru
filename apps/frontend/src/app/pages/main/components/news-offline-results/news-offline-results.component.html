@@ -1,3 +1,6 @@
+<button mat-raised-button color="primary" class="validation-button">
+  <span translate translation="downloadForValidation"></span>
+</button>
 <div class="map-info">
   <div class="levelshot-container">
     <img [src]="news.levelshot" class="levelshot" />
@@ -10,8 +13,9 @@
           href="{{ news.cup.customMap || 'https://ws.q3df.org/map/' + news.cup.map1 + '/' }}"
           target="_blank"
           class="map-link"
-          >{{ news.cup.map1 }}</a
         >
+          {{ news.cup.map1 }}
+        </a>
       </div>
     </div>
     <div class="map-info-table-row">
@@ -37,7 +41,11 @@
 
 <div *ngIf="news.cup.archiveLink" style="margin-top: 15px; font-size: 17px; text-align: center">
   <a [href]="news.cup.archiveLink | invokeFunction: getArchiveLink" download>
-    <strong>&gt;&gt; <span translate translation="allDemosArchive"></span> &lt;&lt;</strong>
+    <strong>
+      &gt;&gt;
+      <span translate translation="allDemosArchive"></span>
+      &lt;&lt;
+    </strong>
   </a>
 </div>
 
@@ -50,8 +58,7 @@
       [cup]="news.cup"
       [maxDemosCount]="maxDemosCount"
       [customTable]="customTable"
-    >
-    </app-news-physics-table>
+    ></app-news-physics-table>
   </div>
   <div class="right-table">
     <app-news-physics-table
@@ -61,11 +68,10 @@
       [cup]="news.cup"
       [maxDemosCount]="maxDemosCount"
       [customTable]="customTable"
-    >
-    </app-news-physics-table>
+    ></app-news-physics-table>
   </div>
 </div>
 
-<app-invalid-demos-list [cupId]="news.cup.id" [invalidDemos]="invalidDemos"> </app-invalid-demos-list>
+<app-invalid-demos-list [cupId]="news.cup.id" [invalidDemos]="invalidDemos"></app-invalid-demos-list>
 
 <app-html-news [news]="news"></app-html-news>
