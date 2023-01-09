@@ -1,4 +1,10 @@
-<button mat-raised-button color="primary" class="validation-button">
+<button
+  *ngIf="showDemosForValidationLink$ | async"
+  (click)="getValidationArchive()"
+  mat-raised-button
+  color="primary"
+  class="validation-button"
+>
   <span translate translation="downloadForValidation"></span>
 </button>
 <div class="map-info">

@@ -115,12 +115,14 @@ export class URL_PARAMS {
     REFLEX_UPLOAD: string;
     DUEL_UPLOAD: string;
     DELETE: string;
+    VALIDATION_ARCHIVE_LINK: string;
   } {
     return {
       UPLOAD: `${API_URL}/cup/upload_demo`,
       REFLEX_UPLOAD: `${API_URL}/cup/reflex_upload_demo`,
       DUEL_UPLOAD: `${API_URL}/match/upload_demo`,
       DELETE: `${API_URL}/cup/delete_demo`,
+      VALIDATION_ARCHIVE_LINK: `${API_URL}/cup/get_demos_for_validation`,
     };
   }
 
