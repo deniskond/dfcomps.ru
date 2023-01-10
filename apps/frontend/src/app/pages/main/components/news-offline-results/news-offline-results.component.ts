@@ -30,7 +30,12 @@ export class NewsOfflineResultsComponent implements OnInit, OnChanges {
     this.maxDemosCount = this.getMaxDemosCount();
     this.showDemosForValidationLink$ = this.userService.getCurrentUser$().pipe(
       take(1),
-      map((user) => !!user && (user.access === UserAccess.ADMIN || user.access === UserAccess.VALIDATOR)),
+      map(
+        (user) =>
+          !!user &&
+          (user.access === UserAccess.ADMIN || user.access === UserAccess.VALIDATOR) &&
+          this.news.cup.demosValidated === '0',
+      ),
     );
   }
 
@@ -45,7 +50,11 @@ export class NewsOfflineResultsComponent implements OnInit, OnChanges {
   }
 
   public getValidationArchive(): void {
-    this.newsService.getDemosForValidation$(this.news.cup.id).subscribe(console.log);
+    this.newsService.getDemosForValidation$(this.news.cup.id).subscribe(({ url }) => {
+      const link = `${API_URL}${url}`;
+
+      window.open(link);
+    });
   }
 
   private getMaxDemosCount(): number {
