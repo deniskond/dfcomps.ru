@@ -8,7 +8,7 @@ import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core
 })
 export class RatingChangeComponent implements OnInit {
   @Input()
-  change: string;
+  change: string | null;
   @Input()
   zeroIfNull = false;
 
