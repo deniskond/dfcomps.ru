@@ -5,17 +5,33 @@
   <div class="place-column">#</div>
   <div class="player-column">Player</div>
   <div class="points-column">Points</div>
+  <div class="ratings-column">Rating</div>
 </div>
-<div *ngFor="let result of slicedPhysicsTable; let i = index" class="multicup-results-row">
+<div *ngFor="let result of physicsTable; let i = index" class="multicup-results-row">
   <div class="place-column">
     <app-player-place [place]="places[i]"></app-player-place>
   </div>
   <div class="player-column">
-    <app-player-cell [country]="result.playerCountry" [nick]="result.playerNick" [playerId]="result.playerId">
-    </app-player-cell>
+    <app-player-cell
+      [country]="result.playerCountry"
+      [nick]="result.playerNick"
+      [playerId]="result.playerId"
+    ></app-player-cell>
   </div>
   <div class="points-column">{{ result.overall }}</div>
+  <div class="ratings-column">
+    <app-rating-change [change]="result.ratingChange" [zeroIfNull]="false"></app-rating-change>
+  </div>
+</div>
+<div *ngFor="let cell of emptyCells" class="multicup-results-row">
+  <div class="place-column"></div>
+  <div class="player-column"></div>
+  <div class="points-column"></div>
+  <div class="ratings-column"></div>
 </div>
 <div class="multicup-footer">
-  <a translate translation="fullTable" (click)="navigateToMultiCup()" class="pointer"></a>
+  <button (click)="navigateToMultiCup()" mat-raised-button color="primary">
+    <span translate translation="fullTable"></span>
+    <span class="physics">&nbsp;{{ physics }}</span>
+  </button>
 </div>

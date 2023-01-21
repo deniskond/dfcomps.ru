@@ -14,15 +14,19 @@ export class MulticupPhysicsTableComponent implements OnInit {
   @Input() physics: Physics;
   @Input() physicsTable: MulticupResultInterface[];
   @Input() multicupId: string;
+  @Input() tableCellsCount: number;
 
-  public slicedPhysicsTable: MulticupResultInterface[];
   public places: number[];
+  public emptyCells: null[] = [];
 
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    this.slicedPhysicsTable = this.physicsTable.slice(0, 10);
-    this.places = getTablePlaces(this.slicedPhysicsTable.map(({ overall }: MulticupResultInterface) => overall));
+    this.places = getTablePlaces(this.physicsTable.map(({ overall }: MulticupResultInterface) => overall));
+
+    if (this.physicsTable.length < this.tableCellsCount) {
+      this.emptyCells = new Array(this.tableCellsCount - this.physicsTable.length).fill(null);
+    }
   }
 
   public navigateToMultiCup(): void {

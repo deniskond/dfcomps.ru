@@ -5,4 +5,5 @@ export interface MulticupResultInterface {
   roundResults: number[];
   overall: number;
   minround?: number;
+  ratingChange: string;
 }
