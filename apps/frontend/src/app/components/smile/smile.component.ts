@@ -13,7 +13,7 @@ export class SmileComponent {
 
   public getSmileStyle({ col, row }: SmileInterface): Record<string, string> {
     return {
-      background: `url('/assets/images/smiles/smiles.png')`,
+      background: `url('/assets/images/smiles/smiles2.png')`,
       'background-position-x': `-${(col - 1) * 32}px`,
       'background-position-y': `-${(row - 1) * 32}px`,
     };
