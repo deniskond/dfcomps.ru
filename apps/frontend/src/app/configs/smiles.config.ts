@@ -1213,6 +1213,42 @@ export class SMILES_CONFIG {
         col: 5,
         group: SmileGroups.PERSONAL,
       },
+      {
+        name: '4cid1',
+        row: 14,
+        col: 6,
+        group: SmileGroups.PERSONAL,
+      },
+      {
+        name: 'damnedlight1',
+        row: 14,
+        col: 7,
+        group: SmileGroups.PERSONAL,
+      },
+      {
+        name: 'enter1',
+        row: 14,
+        col: 8,
+        group: SmileGroups.PERSONAL,
+      },
+      {
+        name: 'nachos1',
+        row: 14,
+        col: 9,
+        group: SmileGroups.PERSONAL,
+      },
+      {
+        name: 'proky1',
+        row: 14,
+        col: 10,
+        group: SmileGroups.PERSONAL,
+      },
+      {
+        name: 'torner1',
+        row: 14,
+        col: 11,
+        group: SmileGroups.PERSONAL,
+      },
     ];
   }
 
