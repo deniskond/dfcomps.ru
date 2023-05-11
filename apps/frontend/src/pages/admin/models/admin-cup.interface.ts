@@ -1,5 +1,5 @@
-import { CupTypes } from '../../../app/enums/cup-types.enum';
-import { Physics } from '../../../app/enums/physics.enum';
+import { CupTypes } from "~shared/enums/cup-types.enum";
+import { Physics } from "~shared/enums/physics.enum";
 
 export interface AdminCupInterface {
   id: string;

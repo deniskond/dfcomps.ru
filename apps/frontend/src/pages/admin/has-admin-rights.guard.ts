@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { filter, map, Observable, tap } from 'rxjs';
-import { UserAccess } from '../../app/enums/user-access.enum';
-import { UserInterface } from '../../app/interfaces/user.interface';
-import { UserService } from '../../app/services/user-service/user.service';
 import { isNonNull } from '../../shared/helpers';
+import { UserService } from '~shared/services/user-service/user.service';
+import { UserInterface } from '~shared/interfaces/user.interface';
+import { UserAccess } from '~shared/enums/user-access.enum';
 
 @Injectable()
 export class HasAdminRights implements CanActivate {

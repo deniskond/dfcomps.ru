@@ -1,9 +1,9 @@
 import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 import { ReplaySubject, Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
-import { Themes } from '~app/enums/themes.enum';
 import { DARK_THEME_VARS } from './dark-theme.constants';
 import { LIGHT_THEME_VARS } from './light-theme.constants';
+import { Themes } from '~shared/enums/themes.enum';
 
 @Injectable({
   providedIn: 'root',

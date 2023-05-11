@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { filter, Observable } from 'rxjs';
 import { API_URL } from '~shared/rest-api';
-import { UserInterface } from '../../../../app/interfaces/user.interface';
-import { UserService } from '../../../../app/services/user-service/user.service';
 import { isNonNull } from '../../../../shared/helpers/is-non-null';
 import { AdminCurrentPageService } from '../../business/admin-current-page.service';
-import { UserAccess } from '../../../../app/enums/user-access.enum';
+import { UserService } from '~shared/services/user-service/user.service';
+import { UserInterface } from '~shared/interfaces/user.interface';
+import { UserAccess } from '~shared/enums/user-access.enum';
 
 @Component({
   selector: 'admin-page',

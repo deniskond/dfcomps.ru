@@ -4,10 +4,10 @@ import { Physics } from '../../../../enums/physics.enum';
 import { NewsOfflineResultsInterface } from '../../../../services/news-service/interfaces/news-offline-results.interface';
 import { Component, Input, OnInit, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { CUSTOM_TABLE_NEWS_LIMIT } from '../../config/news.config';
-import { NewsService } from '~app/services/news-service/news.service';
-import { UserService } from '~app/services/user-service/user.service';
 import { map, Observable, take } from 'rxjs';
-import { UserAccess } from '~app/enums/user-access.enum';
+import { UserService } from '~shared/services/user-service/user.service';
+import { NewsService } from '~shared/services/news-service/news.service';
+import { UserAccess } from '~shared/enums/user-access.enum';
 
 @Component({
   selector: 'app-news-offline-results',

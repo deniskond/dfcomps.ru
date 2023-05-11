@@ -8,8 +8,8 @@ import { filter, take, takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { DownloadDfDialogComponent } from './components/download-df-dialog/download-df-dialog.component';
-import { Themes } from '~app/enums/themes.enum';
-import { ThemeService } from '~app/services/theme/theme.service';
+import { Themes } from '~shared/enums/themes.enum';
+import { ThemeService } from '~shared/services/theme/theme.service';
 
 @Component({
   selector: 'app-site-header',
