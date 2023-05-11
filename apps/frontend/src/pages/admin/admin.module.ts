@@ -20,9 +20,9 @@ import { AdminAddMulticupRoundComponent } from './ui/admin-add-multicup-round/ad
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AdminSeasonComponent } from './ui/admin-season/admin-season.component';
-import { HasAdminRights } from './has-admin-rights.guard';
+import { HasAdminRights } from './business/has-admin-rights.guard';
 import { SharedModule } from '~shared/modules/shared.module';
-import { HasAdminPanelAccess } from './has-admin-panel-access.guard';
+import { HasAdminPanelAccess } from './business/has-admin-panel-access.guard';
 
 const adminRoutes: Routes = [
   {
