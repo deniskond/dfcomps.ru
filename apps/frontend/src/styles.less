@@ -1,26 +1,26 @@
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
-@import './assets/styles/colors.less';
-@import './assets/styles/typography.less';
+@import './../assets/styles/colors.less';
+@import './../assets/styles/typography.less';
 @import '~quill/dist/quill.snow.css';
 
 @font-face {
   font-family: bebas; /* Гарнитура шрифта */
-  src: url('./assets/fonts/BebasNeue.woff') format('woff'); /* Путь к файлу со шрифтом */
+  src: url('./../assets/fonts/BebasNeue.woff') format('woff'); /* Путь к файлу со шрифтом */
 }
 
 @font-face {
   font-family: elektra; /* Гарнитура шрифта */
-  src: url('./assets/fonts/ElektraTextPro.woff') format('woff'); /* Путь к файлу со шрифтом */
+  src: url('./../assets/fonts/ElektraTextPro.woff') format('woff'); /* Путь к файлу со шрифтом */
 }
 
 @font-face {
   font-family: elektra bold; /* Гарнитура шрифта */
-  src: url('./assets/fonts/ElektraTextPro-Bold.woff') format('woff'); /* Путь к файлу со шрифтом */
+  src: url('./../assets/fonts/ElektraTextPro-Bold.woff') format('woff'); /* Путь к файлу со шрифтом */
 }
 
 @font-face {
   font-family: orbitron; /* Гарнитура шрифта */
-  src: url('./assets/fonts/Orbitron-Regular.woff') format('woff'); /* Путь к файлу со шрифтом */
+  src: url('./../assets/fonts/Orbitron-Regular.woff') format('woff'); /* Путь к файлу со шрифтом */
 }
 
 * {
@@ -146,7 +146,7 @@ body {
 mat-slide-toggle {
   &.EN {
     .mat-slide-toggle-thumb {
-      background: url('/assets/images/icons/langs/gb.png') !important;
+      background: url('../assets/images/icons/langs/gb.png') !important;
       background-size: 100% !important;
       transform: scale(90%);
     }
@@ -154,7 +154,7 @@ mat-slide-toggle {
 
   &.RU {
     .mat-slide-toggle-thumb {
-      background: url('/assets/images/icons/langs/ru.png') !important;
+      background: url('../assets/images/icons/langs/ru.png') !important;
       background-size: 100% !important;
       transform: scale(90%);
     }
@@ -162,7 +162,7 @@ mat-slide-toggle {
 
   &.light {
     .mat-slide-toggle-thumb {
-      background: url('/assets/images/icons/langs/light.png') !important;
+      background: url('../assets/images/icons/langs/light.png') !important;
       background-size: 100% !important;
       transform: scale(95%);
     }
@@ -170,7 +170,7 @@ mat-slide-toggle {
 
   &.dark {
     .mat-slide-toggle-thumb {
-      background: url('/assets/images/icons/langs/dark.png') !important;
+      background: url('../assets/images/icons/langs/dark.png') !important;
       background-size: 100% !important;
       transform: scale(95%);
     }
