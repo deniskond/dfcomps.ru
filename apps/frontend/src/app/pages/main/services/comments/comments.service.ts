@@ -1,5 +1,5 @@
 import { CommentInterface } from '../../../../interfaces/comments.interface';
-import { BackendService, URL_PARAMS } from '@frontend/shared/rest-api';
+import { BackendService, URL_PARAMS } from '~shared/rest-api';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CommentActionResultInterface } from './interfaces/comment-action.interface';

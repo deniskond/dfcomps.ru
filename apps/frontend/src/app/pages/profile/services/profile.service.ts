@@ -1,4 +1,4 @@
-import { BackendService, URL_PARAMS } from '@frontend/shared/rest-api';
+import { BackendService, URL_PARAMS } from '~shared/rest-api';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { tap, map } from 'rxjs/operators';

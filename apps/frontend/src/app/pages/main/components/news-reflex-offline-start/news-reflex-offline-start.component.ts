@@ -1,5 +1,5 @@
 import { LanguageService } from '../../../../services/language/language.service';
-import { MAIN_URL } from '@frontend/shared/rest-api';
+import { MAIN_URL } from '~shared/rest-api';
 import { UploadDemoDtoInterface } from '../../../../services/demos/dto/upload-demo.dto';
 import { UserInterface } from '../../../../interfaces/user.interface';
 import { UserService } from '../../../../services/user-service/user.service';

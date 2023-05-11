@@ -10,7 +10,7 @@ import { LeaveQueueMessageInterface } from './interfaces/leave-queue-message.int
 import { BanMapMessageInterface } from './interfaces/ban-map-message.interface';
 import { MatchResultAcceptedMessageInterface } from './interfaces/match-result-accepted-message.interface';
 import { DuelPlayersInfoInterface } from '../interfaces/duel-players-info.interface';
-import { URL_PARAMS, BackendService } from '@frontend/shared/rest-api';
+import { URL_PARAMS, BackendService } from '~shared/rest-api';
 import { DuelPlayersInfoDtoInterface } from '../interfaces/duel-players-info.dto';
 
 @Injectable({

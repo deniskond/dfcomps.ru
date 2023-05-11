@@ -1,13 +1,13 @@
 import { InvalidDemoInterface } from '../../../../interfaces/invalid-demo.interface';
-import { API_URL } from '@frontend/shared/rest-api';
+import { API_URL } from '~shared/rest-api';
 import { Physics } from '../../../../enums/physics.enum';
 import { NewsOfflineResultsInterface } from '../../../../services/news-service/interfaces/news-offline-results.interface';
 import { Component, Input, OnInit, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { CUSTOM_TABLE_NEWS_LIMIT } from '../../config/news.config';
-import { NewsService } from '@frontend/app/services/news-service/news.service';
-import { UserService } from '@frontend/app/services/user-service/user.service';
+import { NewsService } from '~app/services/news-service/news.service';
+import { UserService } from '~app/services/user-service/user.service';
 import { map, Observable, take } from 'rxjs';
-import { UserAccess } from '@frontend/app/enums/user-access.enum';
+import { UserAccess } from '~app/enums/user-access.enum';
 
 @Component({
   selector: 'app-news-offline-results',

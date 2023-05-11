@@ -1,7 +1,7 @@
 import { Physics } from '../../enums/physics.enum';
 import { LeaderTableInterface } from '../../interfaces/leader-table.interface';
 import { Injectable } from '@angular/core';
-import { BackendService, URL_PARAMS } from '@frontend/shared/rest-api';
+import { BackendService, URL_PARAMS } from '~shared/rest-api';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { RatingTablesModes } from '../../enums/rating-tables-modes.enum';

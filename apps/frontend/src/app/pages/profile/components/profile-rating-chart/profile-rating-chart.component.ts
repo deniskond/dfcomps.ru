@@ -1,8 +1,8 @@
 import { Physics } from '../../../../enums/physics.enum';
 import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { ThemeService } from '@frontend/app/services/theme/theme.service';
+import { ThemeService } from '~app/services/theme/theme.service';
 import { combineLatest, ReplaySubject, Subject, takeUntil } from 'rxjs';
-import { Themes } from '@frontend/app/enums/themes.enum';
+import { Themes } from '~app/enums/themes.enum';
 
 @Component({
   selector: 'app-profile-rating-chart',

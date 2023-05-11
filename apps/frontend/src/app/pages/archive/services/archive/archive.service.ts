@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ArchiveNewsInterface } from '../../interfaces/archive-news.interface';
-import { BackendService, URL_PARAMS } from '@frontend/shared/rest-api';
+import { BackendService, URL_PARAMS } from '~shared/rest-api';
 
 @Injectable({
   providedIn: 'root',

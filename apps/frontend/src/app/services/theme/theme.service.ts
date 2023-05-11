@@ -1,7 +1,7 @@
 import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 import { ReplaySubject, Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
-import { Themes } from '@frontend/app/enums/themes.enum';
+import { Themes } from '~app/enums/themes.enum';
 import { DARK_THEME_VARS } from './dark-theme.constants';
 import { LIGHT_THEME_VARS } from './light-theme.constants';
 

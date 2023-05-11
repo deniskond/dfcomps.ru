@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { filter, Observable } from 'rxjs';
-import { API_URL } from '@frontend/shared/rest-api';
+import { API_URL } from '~shared/rest-api';
 import { UserInterface } from '../../../../app/interfaces/user.interface';
 import { UserService } from '../../../../app/services/user-service/user.service';
 import { isNonNull } from '../../../../shared/helpers/is-non-null';

@@ -4,7 +4,7 @@ import { LanguageService } from '../../../../services/language/language.service'
 import { map } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import { Languages } from '../../../../enums/languages.enum';
-import { MAIN_URL } from '@frontend/shared/rest-api';
+import { MAIN_URL } from '~shared/rest-api';
 
 @Component({
   selector: 'app-news-social-links',

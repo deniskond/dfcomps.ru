@@ -5,7 +5,7 @@ import { switchMap, ReplaySubject, Subject } from 'rxjs';
 import { Physics } from '../../enums/physics.enum';
 import { range } from 'lodash';
 import { take, finalize } from 'rxjs/operators';
-import { CurrentSeasonService } from '@frontend/shared/rest-api';
+import { CurrentSeasonService } from '~shared/rest-api';
 
 const MAX_PLAYERS_PER_PAGE = 100;
 

@@ -1,5 +1,5 @@
 import { InvalidDemoInterface } from '../../../../interfaces/invalid-demo.interface';
-import { API_URL } from '@frontend/shared/rest-api';
+import { API_URL } from '~shared/rest-api';
 import { Physics } from '../../../../enums/physics.enum';
 import { NewsOfflineResultsInterface } from '../../../../services/news-service/interfaces/news-offline-results.interface';
 import { Component, Input, OnInit, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
