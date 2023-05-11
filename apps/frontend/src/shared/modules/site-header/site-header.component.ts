@@ -1,7 +1,5 @@
 import { LanguageService } from './../../services/language/language.service';
 import { Languages } from '../../enums/languages.enum';
-import { NavigationPages } from '../../routing/enums/pages.enum';
-import { TABS_CONFIG, TabInterface } from '../../routing/config/tabs.config';
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter, take, takeUntil } from 'rxjs/operators';
@@ -10,6 +8,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { DownloadDfDialogComponent } from './components/download-df-dialog/download-df-dialog.component';
 import { Themes } from '~shared/enums/themes.enum';
 import { ThemeService } from '~shared/services/theme/theme.service';
+import { TABS_CONFIG, TabInterface } from '~shared/configs/tabs.config';
+import { NavigationPages } from '~shared/enums/pages.enum';
 
 @Component({
   selector: 'app-site-header',
