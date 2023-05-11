@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UserService } from './services/user-service/user.service';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
-import { LanguageService } from './services/language/language.service';
 import { Observable, Subject } from 'rxjs';
-import { UserInterface } from './interfaces/user.interface';
 import { isEqual } from 'lodash';
-import { DuelService } from './pages/1v1/services/duel.service';
-import { ThemeService } from './services/theme/theme.service';
+import { UserInterface } from '~shared/interfaces/user.interface';
+import { UserService } from '~shared/services/user-service/user.service';
+import { LanguageService } from '~shared/services/language/language.service';
+import { DuelService } from '~shared/pages/1v1/services/duel.service';
+import { ThemeService } from '~shared/services/theme/theme.service';
 
 @Component({
   selector: 'app-root',
