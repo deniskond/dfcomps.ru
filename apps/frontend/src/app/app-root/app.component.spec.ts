@@ -2,7 +2,7 @@ import { TestBed, fakeAsync, waitForAsync } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { instance, mock } from 'ts-mockito';
-import { UserService } from './services/user-service/user.service';
+import { UserService } from '~shared/services/user-service/user.service';
 
 describe('AppComponent', () => {
   beforeEach(waitForAsync(() => {
