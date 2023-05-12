@@ -16,7 +16,6 @@ import { ClickOutsideDirective } from '../directives/click-outside/click-outside
 import { SmileComponent } from '../components/smile/smile.component';
 import { TranslateDirective } from '../directives/translate/translate.directive';
 import { BigFlagComponent } from '../components/big-flag/big-flag.component';
-import { OnlineCupTimerComponent } from '../components/online-cup-timer/online-cup-timer.component';
 
 const COMPONENTS = [
   FlagComponent,
@@ -29,7 +28,6 @@ const COMPONENTS = [
   YoutubeComponent,
   SmileComponent,
   BigFlagComponent,
-  OnlineCupTimerComponent,
 ];
 
 const DIRECTIVES = [ClickOutsideDirective, TranslateDirective];
