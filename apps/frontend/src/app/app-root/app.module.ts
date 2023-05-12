@@ -5,8 +5,8 @@ import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { GlobalServicesModule } from '~shared/modules/global-services.module';
-import { ReflexComponent } from '~shared/pages/reflex/reflex.component';
 import { appRoutes } from '../routing/app.routing';
+import { ReflexComponent } from '~pages/reflex/reflex.component';
 
 @NgModule({
   declarations: [AppComponent, ReflexComponent],

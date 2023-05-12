@@ -1,0 +1,145 @@
+:host {
+  display: flex;
+  position: relative;
+  width: 130px;
+  height: 123px;
+  align-items: center;
+}
+
+.map {
+  width: 120px;
+  height: 90px;
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  z-index: 2;
+  pointer-events: none;
+  transition: 0.3s;
+  background-size: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &:last-of-type {
+    margin-right: 0;
+  }
+
+  .banned-border {
+    width: 130px;
+    height: 96px;
+    position: absolute;
+    left: -5px;
+    top: -5px;
+    z-index: 3;
+    background: url('../../../../../assets/images/1v1/ban.png') no-repeat;
+
+    &.banned-by-player {
+      transform: rotate(180deg);
+      top: -1px;
+    }
+  }
+
+  .picked-border {
+    width: 130px;
+    height: 96px;
+    position: absolute;
+    left: -5px;
+    top: -5px;
+    z-index: 3;
+    background: url('../../../../../assets/images/1v1/pick.png') no-repeat;
+
+    &.picked-by-player {
+      transform: rotate(180deg);
+      top: -1px;
+    }
+  }
+
+  .cross {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 120px;
+    height: 90px;
+    display: none;
+    background: url('../../../../../assets/images/icons/cross.png') no-repeat;
+    background-position: 50% 50%;
+    z-index: 5;
+  }
+
+  &.banned {
+    opacity: 0.8;
+
+    .cross {
+      display: block;
+    }
+  }
+
+  &.pointer-enabled {
+    cursor: pointer;
+    pointer-events: auto;
+  }
+
+  &:hover {
+    opacity: 0.8;
+
+    .border {
+      display: block;
+    }
+
+    .cross {
+      display: block;
+    }
+  }
+}
+
+.map-second-layer {
+  width: 120px;
+  height: 90px;
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  z-index: 1;
+  background: var(--base-background);
+}
+
+.map-name {
+  position: absolute;
+  top: 106px;
+  color: white;
+  text-align: center;
+  width: 130px;
+  font-family: bebas;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+}
+
+.weapons-container {
+  margin: 4px;
+  flex: 1;
+}
+
+.difficulty-container {
+  font-size: 13px;
+  text-shadow: 0px 0px 5px #000000;
+  margin: 4px;
+  text-align: center;
+}
+
+.gradient-shadow {
+  position: absolute;
+  width: 120px;
+  height: 90px;
+  background: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0) 45%,
+    rgba(0, 0, 0, 0) 45%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  z-index: -1;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}

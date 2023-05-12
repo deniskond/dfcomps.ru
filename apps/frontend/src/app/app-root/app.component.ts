@@ -5,8 +5,8 @@ import { isEqual } from 'lodash';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { UserService } from '~shared/services/user-service/user.service';
 import { LanguageService } from '~shared/services/language/language.service';
-import { DuelService } from '~shared/pages/1v1/services/duel.service';
 import { ThemeService } from '~shared/services/theme/theme.service';
+import { DuelService } from '~pages/1v1/services/duel.service';
 
 @Component({
   selector: 'app-root',

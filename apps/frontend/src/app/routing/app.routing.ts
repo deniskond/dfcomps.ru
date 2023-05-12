@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
+import { ReflexComponent } from '~pages/reflex/reflex.component';
 import { OnlineCupTimerComponent } from '~shared/components/online-cup-timer/online-cup-timer.component';
-import { ReflexComponent } from '~shared/pages/reflex/reflex.component';
 
 export const appRoutes: Routes = [
   {
