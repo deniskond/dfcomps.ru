@@ -7,7 +7,7 @@ export const appRoutes: Routes = [
     loadChildren: () =>
       import('~shared/upper-routing-modules/main-site/main-site.module').then((m) => m.MainSiteModule),
   },
-  { path: 'cup', loadChildren: () => import('~shared/upper-routing-modules/cup/cup.module').then((m) => m.CupModule) },
+  { path: 'cup', loadChildren: () => import('~pages/cup/cup.page.module').then((m) => m.CupPageModule) },
   { path: 'reflex', component: ReflexComponent },
   { path: 'admin', loadChildren: () => import('~pages/admin/admin.module').then((m) => m.AdminModule) },
   { path: 'timer', loadChildren: () => import('~pages/timer/timer.page.module').then((m) => m.TimerPageModule) },
