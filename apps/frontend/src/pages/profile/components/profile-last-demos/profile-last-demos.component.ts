@@ -1,4 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { ProfileDemosDtoInterface } from '~pages/profile/dto/profile-demos.dto';
 
 @Component({
   selector: 'app-profile-last-demos',
@@ -8,5 +9,5 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 })
 export class ProfileLastDemosComponent {
   @Input()
-  demos: string[];
+  demos: ProfileDemosDtoInterface[];
 }

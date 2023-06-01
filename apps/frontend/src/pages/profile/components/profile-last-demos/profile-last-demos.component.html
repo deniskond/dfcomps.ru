@@ -3,7 +3,7 @@
   <mat-table [dataSource]="demos">
     <ng-container cdkColumnDef="demo">
       <mat-cell *cdkCellDef="let demo" class="number-column">
-        <a href="/demos/{{ demo }}">{{ demo }}</a>
+        <a href="/demos/{{ demo.archive || demo.demopath }}">{{ demo.demopath }}</a>
       </mat-cell>
     </ng-container>
 

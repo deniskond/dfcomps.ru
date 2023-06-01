@@ -29,7 +29,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   public mainInfo: ProfileMainInfoInterface;
   public cpmChart: string[];
   public vq3Chart: string[];
-  public demos: string[];
+  public demos: ProfileDemosDtoInterface[];
   public cups: ProfileCupInterface[];
   public rewards: Rewards[];
   public isLoading$ = new Subject<boolean>();
@@ -111,7 +111,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     this.mainInfo = profileInfo.player;
     this.cpmChart = profileInfo.rating.cpm;
     this.vq3Chart = profileInfo.rating.vq3;
-    this.demos = profileInfo.demos.map(({ demopath }: ProfileDemosDtoInterface) => demopath);
+    this.demos = profileInfo.demos;
     this.cups = this.mapCupsToView(profileInfo.cups);
     this.rewards = profileInfo.rewards.map(({ name }: ProfileRewardsDtoInterface) => name);
 

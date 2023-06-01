@@ -3,7 +3,7 @@ export const LIGHT_THEME_VARS = {
   '--base-background-hover-color': '#eeeeee',
   '--base-font-color': '#333333',
   '--base-border-color': '#cccccc',
-  '--table-header-color': '#0000008a',
+  '--table-header-color': '#333333',
   '--comments-border-color': '#dedede',
   '--comments-background-color': 'whitesmoke',
   '--alternate-border-color': '#e0e0e0',
