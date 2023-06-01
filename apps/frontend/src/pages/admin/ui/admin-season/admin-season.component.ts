@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { CurrentSeasonService } from '@frontend/shared/rest-api';
+import { CurrentSeasonService } from '~shared/rest-api';
 import { BehaviorSubject, take, finalize } from 'rxjs';
 import { AdminDataService } from '../../business/admin-data.service';
 

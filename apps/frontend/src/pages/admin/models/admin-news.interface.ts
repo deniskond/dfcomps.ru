@@ -1,4 +1,4 @@
-import { NewsTypes } from '../../../app/enums/news-types.enum';
+import { NewsTypes } from "~shared/enums/news-types.enum";
 
 export interface AdminNewsInterface {
   id: string;

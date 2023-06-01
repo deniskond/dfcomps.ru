@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params } from '@angular/router';
-import { map, Observable, Subscription, switchMap, take, tap } from 'rxjs';
+import { map, Observable, switchMap, take, tap } from 'rxjs';
 import { AdminDataService } from '../../business/admin-data.service';
 import {
   AdminDemoValidationStatus,

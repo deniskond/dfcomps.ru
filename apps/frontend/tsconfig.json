@@ -20,7 +20,13 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "paths": {
+      "~app/*": ["apps/frontend/src/app/*"],
+      "~pages/*": ["apps/frontend/src/pages/*"],
+      "~features/*": ["apps/frontend/src/features/*"],
+      "~shared/*": ["apps/frontend/src/shared/*"]
+    }
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,

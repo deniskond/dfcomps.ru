@@ -1,14 +1,14 @@
 import { Routes } from '@angular/router';
-import { OnlineCupTimerComponent } from '../components/online-cup-timer/online-cup-timer.component';
-import { ReflexComponent } from '../pages/reflex/reflex.component';
+import { ReflexComponent } from '~pages/reflex/reflex.component';
 
 export const appRoutes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./../upper-routing-modules/main-site/main-site.module').then((m) => m.MainSiteModule),
+    loadChildren: () =>
+      import('~shared/upper-routing-modules/main-site/main-site.module').then((m) => m.MainSiteModule),
   },
-  { path: 'cup', loadChildren: () => import('./../upper-routing-modules/cup/cup.module').then((m) => m.CupModule) },
+  { path: 'cup', loadChildren: () => import('~pages/cup/cup.page.module').then((m) => m.CupPageModule) },
   { path: 'reflex', component: ReflexComponent },
-  { path: 'admin', loadChildren: () => import('./../../pages/admin/admin.module').then((m) => m.AdminModule) },
-  { path: 'timer', component: OnlineCupTimerComponent },
+  { path: 'admin', loadChildren: () => import('~pages/admin/admin.module').then((m) => m.AdminModule) },
+  { path: 'timer', loadChildren: () => import('~pages/timer/timer.page.module').then((m) => m.TimerPageModule) },
 ];

@@ -9,8 +9,6 @@ import { AdminNewsComponent } from './ui/admin-news/admin-news.component';
 import { AdminCupsComponent } from './ui/admin-cups/admin-cups.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { SharedModule } from '../../app/modules/shared.module';
-import { HasAdminPanelAccess } from './has-admin-panel-access.guard';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AdminValidateComponent } from './ui/admin-validate/admin-validate.component';
 import { MatRadioModule } from '@angular/material/radio';
@@ -22,7 +20,9 @@ import { AdminAddMulticupRoundComponent } from './ui/admin-add-multicup-round/ad
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AdminSeasonComponent } from './ui/admin-season/admin-season.component';
-import { HasAdminRights } from './has-admin-rights.guard';
+import { HasAdminRights } from './business/has-admin-rights.guard';
+import { SharedModule } from '~shared/modules/shared.module';
+import { HasAdminPanelAccess } from './business/has-admin-panel-access.guard';
 
 const adminRoutes: Routes = [
   {

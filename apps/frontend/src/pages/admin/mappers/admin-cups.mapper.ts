@@ -1,8 +1,8 @@
-import { CupTypes } from '../../../app/enums/cup-types.enum';
-import { Physics } from '../../../app/enums/physics.enum';
+import { Physics } from '~shared/enums/physics.enum';
 import { AdminCupDto } from '../models/admin-cup.dto';
 import { AdminCupInterface } from '../models/admin-cup.interface';
 import { getHumanTime } from './get-human-time';
+import { CupTypes } from '~shared/enums/cup-types.enum';
 
 export function mapAdminCupsDtoToInterface(cups: AdminCupDto[]): AdminCupInterface[] {
   return cups.map((cup: AdminCupDto) => ({

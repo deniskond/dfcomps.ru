@@ -12,7 +12,7 @@ import { mapAdminValidationDtoToInterface } from '../mappers/admin-validation.ma
 import { AdminActiveMulticupsDto } from '../models/admin-active-multicups.dto';
 import { AdminActiveMulticupInterface } from '../models/admin-active-multicup.interface';
 import { mapAdminActiveMulticupsCupsDtoToInterface } from '../mappers/admin-active-multicups.mapper';
-import { BackendService, URL_PARAMS } from '@frontend/shared/rest-api';
+import { BackendService, URL_PARAMS } from '~shared/rest-api';
 
 @Injectable({
   providedIn: 'root',

@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { filter, Observable, ReplaySubject, switchMap, take } from 'rxjs';
-import { NewsTypes } from '../../../../app/enums/news-types.enum';
-import { UserAccess } from '../../../../app/enums/user-access.enum';
-import { UserInterface } from '../../../../app/interfaces/user.interface';
-import { UserService } from '../../../../app/services/user-service/user.service';
 import { isNonNull } from '../../../../shared/helpers';
 import { AdminDataService } from '../../business/admin-data.service';
 import { AdminNewsInterface } from '../../models/admin-news.interface';
+import { UserInterface } from '~shared/interfaces/user.interface';
+import { UserService } from '~shared/services/user-service/user.service';
+import { UserAccess } from '~shared/enums/user-access.enum';
+import { NewsTypes } from '~shared/enums/news-types.enum';
 
 @Component({
   selector: 'admin-news',

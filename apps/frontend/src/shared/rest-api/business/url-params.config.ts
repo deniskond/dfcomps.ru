@@ -1,6 +1,6 @@
-import { environment } from '../../../app/environments/environment';
-import { Physics } from '../../../app/enums/physics.enum';
-import { RatingTablesModes } from '../../../app/enums/rating-tables-modes.enum';
+import { Physics } from '~shared/enums/physics.enum';
+import { RatingTablesModes } from '~shared/enums/rating-tables-modes.enum';
+import { environment } from '~app/environments/environment';
 
 const envMap: Record<string, string> = {
   local: '',
