@@ -118,7 +118,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     this.sanitizer.bypassSecurityTrustResourceUrl(`/assets/images/avatars/${this.mainInfo.avatar}.jpg`);
 
     this.isLoading$.next(false);
-    this.changeDetectorRef.markForCheck();
+    this.changeDetectorRef.detectChanges();
   }
 
   private mapCupsToView(cups: ProfileCupDtoInterface[]): ProfileCupInterface[] {
