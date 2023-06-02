@@ -76,4 +76,10 @@ export enum Rewards {
   SDCUK20_WINNER_CPM = 'SDC-UK20 - Winner (CPM)',
   SDCUK20_TOP2_CPM = 'SDC-UK20 - Top 2 (CPM)',
   SDCUK20_TOP3_CPM = 'SDC-UK20 - Top 3 (CPM)',
+  FPSCUP_WINNER_VQ3 = 'FPS Cup - Winner (VQ3)',
+  FPSCUP_TOP2_VQ3 = 'FPS Cup - Top 2 (VQ3)',
+  FPSCUP_TOP3_VQ3 = 'FPS Cup - Top 3 (VQ3)',
+  FPSCUP_WINNER_CPM = 'FPS Cup - Winner (CPM)',
+  FPSCUP_TOP2_CPM = 'FPS Cup - Top 2 (CPM)',
+  FPSCUP_TOP3_CPM = 'FPS Cup - Top 3 (CPM)',
 }

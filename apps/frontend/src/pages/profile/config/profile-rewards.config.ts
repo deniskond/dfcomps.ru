@@ -81,6 +81,12 @@ export class PROFILE_REWARDS {
       [Rewards.SDCUK20_TOP2_CPM]: 'sdc-uk-20-top2',
       [Rewards.SDCUK20_TOP3_VQ3]: 'sdc-uk-20-top3',
       [Rewards.SDCUK20_TOP3_CPM]: 'sdc-uk-20-top3',
+      [Rewards.FPSCUP_WINNER_VQ3]: 'fps-cup-top1',
+      [Rewards.FPSCUP_WINNER_CPM]: 'fps-cup-top1',
+      [Rewards.FPSCUP_TOP2_VQ3]: 'fps-cup-top2',
+      [Rewards.FPSCUP_TOP2_CPM]: 'fps-cup-top2',
+      [Rewards.FPSCUP_TOP3_VQ3]: 'fps-cup-top3',
+      [Rewards.FPSCUP_TOP3_CPM]: 'fps-cup-top3',
     };
   }
 }
