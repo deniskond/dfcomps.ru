@@ -87,6 +87,14 @@ export class PROFILE_REWARDS {
       [Rewards.FPSCUP_TOP2_CPM]: 'fps-cup-top2',
       [Rewards.FPSCUP_TOP3_VQ3]: 'fps-cup-top3',
       [Rewards.FPSCUP_TOP3_CPM]: 'fps-cup-top3',
+      [Rewards.TOP1_VQ3_SIXTH_SEASON]: 'top_1_vq3',
+      [Rewards.TOP2_VQ3_SIXTH_SEASON]: 'top_2_vq3',
+      [Rewards.TOP3_VQ3_SIXTH_SEASON]: 'top_3_vq3',
+      [Rewards.TOP1_CPM_SIXTH_SEASON]: 'top_1_cpm',
+      [Rewards.TOP2_CPM_SIXTH_SEASON]: 'top_2_cpm',
+      [Rewards.TOP3_CPM_SIXTH_SEASON]: 'top_3_cpm',
+      [Rewards.TOP10_VQ3_SIXTH_SEASON]: 'top10',
+      [Rewards.TOP10_CPM_SIXTH_SEASON]: 'top10',
     };
   }
 }
