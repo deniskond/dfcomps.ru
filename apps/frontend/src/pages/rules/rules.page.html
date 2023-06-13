@@ -97,36 +97,41 @@
         <span class="italic-console-command">df_ob_allslopes 1</span>.
       </p>
       <p>
-        <b>6.3.2</b> Не рандомными считаются только овербаунсы с одной горизонтальной поверхности на другую
+        <b>6.3.2</b> Разрешенными считаются только овербаунсы с одной горизонтальной поверхности на другую 
         горизонтальную поверхность, при этом возможны несколько вариантов:<br />
         &ndash; овербаунс до прыжка виден на овербаунс-детекторе (либо был бы виден, если бы поверхности были в прямой
         видимости);<br />
         &ndash; овербаунс был сделан после двойного прыжка в CPM от прямой поверхности (не рампы и не лестницы со
         ступеньками, меньше чем 16 юнитов);<br />
-        &ndash; овербаунс был сделан после другого нерандомного овербаунса;<br />
+        &ndash; овербаунс был сделан после другого разрешенного овербаунса;<br />
         &ndash; овербаунс был сделан после удара об прямой потолок, при этом высота прыжка была набрана без
         использования оружия и прыжков от рамп.
       </p>
       <p>
-        <b>6.3.3</b> Два вида овербаунсов всегда считаются рандомными, если в описании турнира напрямую не разрешены
-        такие овербаунсы:<br />
+        <b>6.3.3</b> Список напрямую запрещенных овербаунсов:<br />
         &ndash; овербаунсы с использованием нетвердых брашей (вода, лава, и т.п.);<br />
-        &ndash; sticky-овербаунсы, которые возникают только при определенных условиях, которые должны возникнуть до
-        начала прыжка.
+        &ndash; sticky-овербаунсы - овербаунсы, первоначальный прыжок в которых 
+        происходит с ненулевой высоты от поверхности.
       </p>
       <p>
-        <b>6.3.4</b> Рандомные овербаунсы являются причиной отклонения демо при валидации в двух случаях:<br />
+        <b>6.3.4</b> Неразрешенные овербаунсы являются причиной отклонения демо при валидации в двух случаях:<br />
         &ndash; овербаунс повлиял на распределение мест в таблице<br />
         &ndash; овербаунс повлиял на все распределение очков по
         <a href="https://docs.google.com/forms/d/e/1FAIpQLScdbpcs6rczpF1C_TQ4IFUxUqARq9MXygeP9Ru2sjZl3cdUDA/viewform"
           >EE-системе</a
         >.<br />
         <i>Примеры:</i> <br />
-        1) В турнире по ЕЕ-системе любой овербаунс, который дал плюс в топ1 демке повлияет на распределение очков во
-        всей таблице, потому что очки рассчитываются от времени первого места. Поэтому такая демка будет невалидна.<br />
-        2) Игрок использовал рандомный овербаунс, чтобы пропустить трикс на карте, но не получил достаточного
-        преимущества, чтобы встать на строчку выше в таблице. В этом случае демо также будет невалидным, потому что без
-        рандомного овербаунса игрок мог не пройти карту вообще, поэтому он бы вообще не попал в таблицу.
+        1) В турнире по ЕЕ-системе любой неразрешенный овербаунс, который дал плюс в топ1 демке повлияет 
+        на распределение очков во всей таблице, потому что очки рассчитываются от времени первого места. 
+        Поэтому такая демка будет невалидна.<br />
+        2) Игрок использовал неразрешенный овербаунс, чтобы пропустить трикс на карте, но не получил 
+        достаточного преимущества, чтобы встать на строчку выше в таблице. В этом случае демо также 
+        будет невалидным, потому что без неразрешенного овербаунса игрок мог не пройти карту вообще, 
+        поэтому он бы вообще не попал в таблицу.
+      </p>
+      <p>
+        <b>6.3.5</b> Любой овербаунс может быть напрямую разрешен в новости турнира, 
+        тогда правила 6.3.2 - 6.3.4 не применяются при валидации этого овербаунса.
       </p>
       <p>
         <b>6.4</b> Запрещен таймресет (обнуление стартового триггера, при котором уже запущенный таймер времени
@@ -254,34 +259,36 @@
         <i style="background: var(--comments-border-color)">df_ob_allslopes 1</i>.
       </p>
       <p>
-        <b>6.3.2</b> Overbounces are considered non-random only if they are performed from one horizontal surface to
-        another horizontal surface, and one of the following condition should be met:<br />
+        <b>6.3.2</b> Overbounces are considered allowed only if they are performed from one horizontal surface to another 
+        horizontal surface, and one of the following condition should be met:<br />
         &ndash; overbounce should be visible on the overbounce detector before the jump (or it would have been visible
         if the landing surface was in the direct view);<br />
         &ndash; overbounce was done after double jump in CPM from a horizontal surface (not a ramp or ladder with steps
         less than 16 units);<br />
-        &ndash; overbounce was done after another non-random overbounce;<br />
+        &ndash; overbounce was done after another allowed overbounce;<br />
         &ndash; overbounce was done after hitting horizontal ceiling, whereas jump height was gained without using
         weapons or ramps.
       </p>
       <p>
-        <b>6.3.3</b> Two types of overbounces are always considered random, if tournament rules don’t explicitly tell
-        otherwise:<br />
+        <b>6.3.3</b> List of explicitly unallowed overbounces:<br />
         &ndash; overbounces using non-solid brushes (water, lava, etc.);<br />
-        &ndash; sticky overbounces, which can be done only in certain conditions, which should happen before the
-        overbounce jump.
+        &ndash; sticky overbounces - overbounces, the initial jump in which occurs from a non-zero height from the surface.
       </p>
       <p>
-        <b>6.3.4</b> Random overbounces cause a demo to be rejected during validation in two cases:<br />
+        <b>6.3.4</b> Unallowed overbounces cause a demo to be rejected during validation in two cases:<br />
         &ndash; overbounce affected the distribution of places in the table<br />
         &ndash; overbounce affected the whole distribution of points according to the EE-system<br />
         <i>Examples:</i> <br />
-        1) In an EE-system tournament, any overbounce that gave a plus in the top1 demo will affect the distribution of
-        points in the entire table, because points are calculated from the time of the first place. Therefore, such demo
-        will be invalid.<br />
-        2) The player used a random overbounce to skip the trix on the map, but did not get enough advantage to move up
-        the table. In this case, the demo will also be invalid, because without a random overbounce, the player may not
-        have passed the map, so he would not have gotten into the table at all.
+        1) In an EE-system tournament, any unallowed overbounce that gave a plus in the top1 demo will affect the 
+        distribution of points in the entire table, because points are calculated from the time of the first place. 
+        Therefore, such demo will be invalid.<br />
+        2) The player used an unallowed overbounce to skip the trix on the map, but did not get enough advantage 
+        to move up the table. In this case, the demo will also be invalid, because without an unallowed overbounce, 
+        the player may not have passed the map, so he would not have gotten into the table at all.
+      </p>
+      <p>
+        <b>6.3.5</b> Any overbounce can be explicitly allowed in tournament news, in which case rules 6.3.2 - 6.3.4 
+        do not apply when validating that overbounce.
       </p>
       <p>
         <b>6.4</b> It is not allowed to use time reset (using the start trigger more than once, after which already
