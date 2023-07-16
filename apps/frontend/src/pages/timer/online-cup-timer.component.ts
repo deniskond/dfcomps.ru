@@ -11,11 +11,11 @@ export class OnlineCupTimerComponent {
   timerValue = 1800;
   interval: any;
   maps = [
-    'qportal-blue',
-    'tuffrun',
-    'pea_lshit',
-    'hangtime1-2',
-    'jjm21-prostrafe',
+    'lovet-cld-rocket',
+    'spr-bazz',
+    'nood-speed3-rl',
+    'bug66-rox',
+    'biotrix-final-rl',
   ];
 
   get minutes(): number {
