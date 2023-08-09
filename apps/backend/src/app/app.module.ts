@@ -13,7 +13,6 @@ import { Auth } from './auth/entities/auth.entity';
       username: 'user',
       entities: [Auth],
       database: 'dfcomps',
-      schema: 'dfcomps',
       synchronize: true,
       logging: true,
     }),
