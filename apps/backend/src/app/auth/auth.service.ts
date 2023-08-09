@@ -12,7 +12,7 @@ export class AuthService {
   create(createAuthDto: CreateAuthDto): Promise<Auth> {
     const auth: Auth = new Auth();
 
-    auth.name = createAuthDto.name;
+    auth.login = createAuthDto.login;
     auth.password = createAuthDto.password;
 
     return this.authRepository.save(auth);
@@ -29,7 +29,7 @@ export class AuthService {
   update(id: number, updateAuthDto: UpdateAuthDto) {
     const auth: Auth = new Auth();
 
-    auth.name = updateAuthDto.name;
+    auth.login = updateAuthDto.login;
     auth.password = updateAuthDto.password;
 
     return this.authRepository.save(auth);
