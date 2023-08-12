@@ -12,7 +12,7 @@ import { ReflexComponent } from '~pages/reflex/reflex.component';
   declarations: [AppComponent, ReflexComponent],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(appRoutes, { relativeLinkResolution: 'legacy' }),
+    RouterModule.forRoot(appRoutes),
     GlobalServicesModule,
     HttpClientModule,
     BrowserAnimationsModule,

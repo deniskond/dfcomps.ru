@@ -96,11 +96,5 @@ const routes: Routes = [
     SDCRulesDialogComponent,
   ],
   providers: [NewsService],
-  entryComponents: [
-    ValidationDialogComponent,
-    PlayerDemosDialogComponent,
-    ReflexPlayerDemosDialogComponent,
-    AdminDeleteCommentDialogComponent,
-  ],
 })
 export class MainPageModule {}

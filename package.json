@@ -42,6 +42,8 @@
     "@nestjs/mapped-types": "2.0.2",
     "@nestjs/platform-express": "10.0.2",
     "@nestjs/typeorm": "10.0.0",
+    "@nx/angular": "16.6.0",
+    "@nx/nest": "16.6.0",
     "chart.js": "4.3.3",
     "discord.js": "12.3.1",
     "express": "4.17.3",
@@ -59,9 +61,7 @@
     "typeorm": "0.3.17",
     "uuid": "9.0.0",
     "ws": "8.13.0",
-    "zone.js": "0.13.1",
-    "@nx/angular": "16.6.0",
-    "@nx/nest": "16.6.0"
+    "zone.js": "0.13.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "16.2.0",
@@ -75,6 +75,12 @@
     "@angular/language-service": "16.2.0",
     "@nestjs/schematics": "10.0.2",
     "@nestjs/testing": "10.0.2",
+    "@nx/cypress": "16.6.0",
+    "@nx/eslint-plugin": "16.6.0",
+    "@nx/jest": "16.6.0",
+    "@nx/linter": "16.6.0",
+    "@nx/nest": "16.6.0",
+    "@nx/node": "16.6.0",
     "@nx/workspace": "16.6.0",
     "@schematics/angular": "16.2.0",
     "@types/jest": "29.5.3",
@@ -102,12 +108,6 @@
     "ts-node": "10.9.1",
     "tslib": "2.6.1",
     "typescript": "5.1.6",
-    "wait-on": "7.0.1",
-    "@nx/cypress": "16.6.0",
-    "@nx/eslint-plugin": "16.6.0",
-    "@nx/jest": "16.6.0",
-    "@nx/linter": "16.6.0",
-    "@nx/nest": "16.6.0",
-    "@nx/node": "16.6.0"
+    "wait-on": "7.0.1"
   }
 }
