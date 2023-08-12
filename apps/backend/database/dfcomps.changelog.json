@@ -1,0 +1,54 @@
+{ "databaseChangeLog": [
+  {
+    "changeSet": {
+      "id": "1691860715196-1",
+      "author": "liquibase (generated)",
+      "changes": [
+        {
+          "createTable": {
+            "columns": [
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "login",
+                  "type": "VARCHAR"
+                }
+              },
+              {
+                "column": {
+                  "constraints": {
+                    "nullable": false
+                  },
+                  "name": "password",
+                  "type": "VARCHAR"
+                }
+              },
+              {
+                "column": {
+                  "autoIncrement": true,
+                  "constraints": {
+                    "nullable": false,
+                    "primaryKey": true,
+                    "primaryKeyName": "PK_7e416cf6172bc5aec04244f6459"
+                  },
+                  "name": "id",
+                  "type": "INTEGER"
+                }
+              },
+              {
+                "column": {
+                  "name": "discord",
+                  "type": "VARCHAR"
+                }
+              }]
+            ,
+            "tableName": "auth"
+          }
+        }]
+      
+    }
+  }
+  
+]}
