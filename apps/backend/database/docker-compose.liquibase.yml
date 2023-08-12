@@ -3,12 +3,11 @@ services:
   liquibase:    
     image: liquibase/liquibase:4.9.1
     container_name: liquibase_container
-    command: status --defaultsFile=liquibase.properties --changeLogFile=dfcomps.changelog.json
+    command: generateChangeLog --defaultsFile=liquibase.properties --changeLogFile=dfcomps.changelog.json
     networks:
       - db-network
     volumes:
       - ./liquibase.properties:/liquibase/liquibase.properties
-      - ./dfcomps.changelog.json:/liquibase/dfcomps.changelog.json
 
 networks:
   db-network:
