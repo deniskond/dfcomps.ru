@@ -24,18 +24,18 @@
   <mat-divider></mat-divider>
 
   <div class="header-second-row">
-    <nav mat-tab-nav-bar class="navigation">
+    <nav mat-tab-nav-bar [tabPanel]="tabPanel" class="navigation">
       <a
         *ngFor="let tab of tabs"
         mat-tab-link
         [active]="activePage === tab.page"
-        [class.active]="activePage === tab.page"
         (click)="navigate(tab.page)"
         class="navigation-link"
       >
         <span [translation]="tab.name" translate></span>
       </a>
     </nav>
+    <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
 
     <div class="right-container">
       <div class="social-link social-link_discord">

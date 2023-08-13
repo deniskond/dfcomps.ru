@@ -76,7 +76,7 @@
                 <div class="flex">
                   <app-big-flag [country]="playersInfo.firstPlayerInfo.country"></app-big-flag>
                   <div class="player-nick">
-                    {{ playersInfo.firstPlayerInfo?.nick }}
+                    {{ playersInfo.firstPlayerInfo.nick }}
                     <app-one-v-one-rating-change
                       [ratingChange]="playersInfo.firstPlayerRatingChange!"
                     ></app-one-v-one-rating-change>
@@ -98,7 +98,7 @@
                 <div class="flex">
                   <app-big-flag [country]="playersInfo.secondPlayerInfo!.country"></app-big-flag>
                   <div class="player-nick">
-                    {{ playersInfo.secondPlayerId === '-1' ? 'dfcomps bot' : playersInfo.secondPlayerInfo?.nick }}
+                    {{ playersInfo.secondPlayerId === '-1' ? 'dfcomps bot' : playersInfo.secondPlayerInfo.nick }}
                     <app-one-v-one-rating-change
                       [ratingChange]="playersInfo.secondPlayerRatingChange!"
                     ></app-one-v-one-rating-change>

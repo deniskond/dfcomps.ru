@@ -3,7 +3,7 @@
     {{ physics | uppercase }}&nbsp;<span translate translation="rating" class="lowercase"></span>
   </div>
   <div class="canvas-container">
-    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" chartType="bar">
+    <canvas baseChart type="line" [data]="barChartData" [options]="barChartOptions">
     </canvas>
   </div>
 </div>

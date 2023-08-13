@@ -26,7 +26,8 @@
       "~pages/*": ["apps/frontend/src/pages/*"],
       "~features/*": ["apps/frontend/src/features/*"],
       "~shared/*": ["apps/frontend/src/shared/*"]
-    }
+    },
+    "target": "es2020"
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,

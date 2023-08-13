@@ -4,7 +4,6 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Subject, Observable, timer } from 'rxjs';
 import { takeUntil, filter, map, switchMap, finalize } from 'rxjs/operators';
-import { RegisterDialogDataInterface } from '../../interfaces/register-dialog-data.interface';
 import { EMAIL_VALIDATION_REGEXP } from './configs/register-dialog.config';
 import { UserService } from '../../../../services/user-service/user.service';
 import { UserInterface } from '../../../../interfaces/user.interface';
@@ -108,9 +107,9 @@ export class RegisterDialogComponent implements OnInit, OnDestroy {
 
     this.userService
       .register$(
-        this.registerForm.get('login')!.value,
-        this.registerForm.get('password')!.value,
-        this.registerForm.get('email')!.value,
+        this.registerForm.get('login')!.value!,
+        this.registerForm.get('password')!.value!,
+        this.registerForm.get('email')!.value!,
       )
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe((user: UserInterface) => {
@@ -123,10 +122,7 @@ export class RegisterDialogComponent implements OnInit, OnDestroy {
   private initDisplayErrorsSubscription(): void {
     this.registerForm.valueChanges
       .pipe(
-        filter(
-          ({ login, password, email, validation }: RegisterDialogDataInterface) =>
-            !!login && !!password && !!email && !!validation,
-        ),
+        filter(({ login, password, email, validation }) => !!login && !!password && !!email && !!validation),
         takeUntil(this.onDestroy$),
       )
       .subscribe(() => (this.needToDisplayErrors = true));

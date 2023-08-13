@@ -52,13 +52,13 @@ export class SmilesDropdownComponent implements OnInit {
       this.languageService.getLanguage$(),
       this.smileSearchForm.get('smile')!.valueChanges.pipe(startWith('')),
     ]).pipe(
-      map(([language, searchInput]: [Languages, string]) => this.getSortedAndGroupedSmiles(language, searchInput)),
+      map(([language, searchInput]: [Languages, string | null]) => this.getSortedAndGroupedSmiles(language, searchInput)),
     );
   }
 
-  private getSortedAndGroupedSmiles(language: Languages, searchInput: string): SortedSmileGroupsInterface[] {
+  private getSortedAndGroupedSmiles(language: Languages, searchInput: string | null): SortedSmileGroupsInterface[] {
     const smilesFilteredBySearch: SmileInterface[] = SMILES_CONFIG.SMILES.filter(({ name }: SmileInterface) =>
-      name.includes(searchInput),
+      name.includes(searchInput || ''),
     );
     const smilesFilteredByPersonal: SmileInterface[] = this.filterPersonalSmiles(smilesFilteredBySearch);
 

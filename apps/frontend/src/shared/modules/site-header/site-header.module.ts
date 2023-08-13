@@ -39,6 +39,5 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     DownloadDfDialogComponent,
   ],
   exports: [SiteHeaderComponent],
-  entryComponents: [LoginDialogComponent, RegisterDialogComponent, DownloadDfDialogComponent],
 })
 export class SiteHeaderModule {}

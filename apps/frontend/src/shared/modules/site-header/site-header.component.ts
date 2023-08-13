@@ -73,9 +73,7 @@ export class SiteHeaderComponent implements OnInit, OnDestroy {
       .getTheme$()
       .pipe(take(1))
       .subscribe((theme: Themes) =>
-        theme === Themes.LIGHT
-          ? this.themeService.setTheme(Themes.DARK)
-          : this.themeService.setTheme(Themes.LIGHT),
+        theme === Themes.LIGHT ? this.themeService.setTheme(Themes.DARK) : this.themeService.setTheme(Themes.LIGHT),
       );
   }
 
@@ -97,7 +95,14 @@ export class SiteHeaderComponent implements OnInit, OnDestroy {
     );
 
     if (this.router.url === '/') {
-      this.activePage = NavigationPages.MAIN;
+      if (this.activePage === null) {
+        this.activePage = NavigationPages.MOVIES;
+      }
+
+      setTimeout(() => {
+        this.activePage = NavigationPages.MAIN;
+        this.changeDetectorRef.markForCheck();
+      }, 0); // nav-tab bug workaround: tab will be unfocused when switched from null value
 
       return;
     }

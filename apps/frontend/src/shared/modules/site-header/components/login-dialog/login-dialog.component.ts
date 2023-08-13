@@ -32,7 +32,7 @@ export class LoginDialogComponent {
     this.isLoading = true;
 
     this.userService
-      .login$(this.loginForm.controls['login'].value, this.loginForm.controls['password'].value)
+      .login$(this.loginForm.controls['login'].value!, this.loginForm.controls['password'].value!)
       .pipe(
         finalize(() => {
           this.isLoading = false;

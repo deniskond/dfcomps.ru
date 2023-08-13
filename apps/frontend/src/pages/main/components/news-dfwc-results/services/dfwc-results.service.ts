@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DfwcResultsDtoInterface } from '../dto/dfwc-results.dto';
 import { DfwcSingleResultDtoInterface } from '../dto/dfwc-single-result.dto';
-import { Html5Entities } from 'html-entities';
+import { decode } from 'html-entities';
 import { ResultsTableInterface } from '~shared/interfaces/results-table.interface';
 import { NewsOfflineResultsInterface } from '~shared/services/news-service/interfaces/news-offline-results.interface';
 
@@ -22,7 +22,6 @@ export class DfwcResultsService {
   private getPhysicsResults(results: Record<string, DfwcSingleResultDtoInterface>): ResultsTableInterface {
     const arrayResults: DfwcSingleResultDtoInterface[] = Object.values(results);
     const firstPlaceTime = +arrayResults[0].time_ms;
-    const entities = new Html5Entities();
 
     let currentPlace = 0; // used for detecting ties
 
@@ -35,7 +34,7 @@ export class DfwcResultsService {
         const k1 = firstPlaceTime / +result.time_ms;
         const k2 = (100 - currentPlace) / 100;
         const points = arrayResults[0].rank ? result.points : Math.round(1000 * k1 * k2).toString();
-        const demopath = entities.decode(result.demo);
+        const demopath = decode(result.demo);
 
         return {
           bonus: '0',
