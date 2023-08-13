@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-npm run backend:liquibase-changelog
-git add apps/backend/database/dfcomps.changelog.json

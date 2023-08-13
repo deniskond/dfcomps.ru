@@ -24,7 +24,6 @@ export class COUNTRIES_CONFIG {
       { fullName: 'Bangladesh', shortName: 'bd', col: 2, row: 2 },
       { fullName: 'Barbados', shortName: 'bb', col: 1, row: 2 },
       { fullName: 'Belarus', shortName: 'by', col: 16, row: 2 },
-      { fullName: 'Belarus-2020', shortName: 'by2020', col: 12, row: 15 },
       { fullName: 'Belgium', shortName: 'be', col: 3, row: 2 },
       { fullName: 'Belize', shortName: 'bz', col: 1, row: 3 },
       { fullName: 'Benin', shortName: 'bj', col: 8, row: 2 },
