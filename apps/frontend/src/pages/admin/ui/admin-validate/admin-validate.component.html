@@ -1,12 +1,17 @@
 <mat-card class="validation-table-card">
   <ng-container *ngIf="cupValidationInfo$ | async as cupValidationInfo; else isLoading">
-
     <div class="card-header">VQ3 Demos for {{ cupValidationInfo.cupInfo.fullName }}</div>
     <ng-container *ngTemplateOutlet="demosList; context: { $implicit: cupValidationInfo.vq3Demos }"></ng-container>
     <div class="card-header">CPM Demos for {{ cupValidationInfo.cupInfo.fullName }}</div>
     <ng-container *ngTemplateOutlet="demosList; context: { $implicit: cupValidationInfo.cpmDemos }"></ng-container>
-    <button (click)="setAllDemosValid()" color="accent" mat-raised-button class="action-button">Set all demos valid</button>
-    <button (click)="submit()" color="accent" mat-raised-button class="action-button">Submit validation result</button>
+    <div>
+      <button (click)="setAllDemosValid()" color="accent" mat-raised-button class="action-button">
+        Set all demos valid
+      </button>
+      <button (click)="submit()" color="accent" mat-raised-button class="action-button">
+        Submit validation result
+      </button>
+    </div>
   </ng-container>
   <ng-template #demosList let-players>
     <form [formGroup]="validationForm">
@@ -35,7 +40,7 @@
                 <mat-radio-button [value]="true" color="primary">Valid</mat-radio-button>
                 <mat-radio-button [value]="false" color="primary" class="invalid-radio">Invalid</mat-radio-button>
               </mat-radio-group>
-              <span>Reason: </span>
+              <span>Reason:</span>
               <input [formControlName]="'reason_' + demo.id" class="reason-input" />
             </div>
           </div>

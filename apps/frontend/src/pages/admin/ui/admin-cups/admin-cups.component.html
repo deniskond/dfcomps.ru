@@ -2,7 +2,9 @@
   <mat-card class="card">
     <div class="card-header">Multicup round</div>
     <div class="card-text">Round of tournament series</div>
-    <button routerLink="/admin/cups/add-multicup-round" mat-raised-button color="accent">Add multicup round</button>
+    <div>
+      <button routerLink="/admin/cups/add-multicup-round" mat-raised-button color="accent">Add multicup round</button>
+    </div>
   </mat-card>
 </div>
 <mat-card class="cups-table-card">
@@ -19,7 +21,14 @@
       <div class="cell">{{ cup.duration }}</div>
       <div class="cell type">{{ cup.type }}</div>
       <div class="cell actions buttons">
-        <button *ngIf="cup.validationAvailable; else noActions" [routerLink]="'/admin/validate/' + cup.id" mat-raised-button color="basic">Validate demos</button>
+        <button
+          *ngIf="cup.validationAvailable; else noActions"
+          [routerLink]="'/admin/validate/' + cup.id"
+          mat-raised-button
+          color="basic"
+        >
+          Validate demos
+        </button>
         <ng-template #noActions>No actions available</ng-template>
       </div>
     </ng-container>
