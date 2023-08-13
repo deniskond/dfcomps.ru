@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { ChartConfiguration } from 'chart.js';
 import { combineLatest, ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { Physics } from '~shared/enums/physics.enum';
 import { Themes } from '~shared/enums/themes.enum';
@@ -19,26 +20,29 @@ export class ProfileRatingChartComponent implements OnChanges {
   private onDestroy$ = new Subject<void>();
   private chart$ = new ReplaySubject<any>(1);
 
-  constructor(private themeService: ThemeService, private changeDetectorRef: ChangeDetectorRef) {}
+  constructor(
+    private themeService: ThemeService,
+    private changeDetectorRef: ChangeDetectorRef,
+  ) {}
 
   ngOnInit(): void {
     combineLatest([this.themeService.getTheme$(), this.chart$])
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(([theme]: [Themes, any]) => {
         this.barChartLabels = this.chart;
-        this.barChartData = [
-          {
-            data: this.chart.map((val) => +val),
-            label: `${this.physics.toUpperCase()} Rating`,
-            fill: true,
-            borderColor: theme === Themes.DARK ? 'rgb(105, 166, 213)' : '#337ab7',
-            backgroundColor: theme === Themes.DARK ? '#333' : '#eee',
-            borderWidth: 1,
-            pointRadius: 3,
-            pointBackgroundColor: 'var(--base-link-blue-color)',
-            pointBorderWidth: 0,
-          },
-        ];
+        this.barChartData = {
+          labels: this.barChartLabels,
+          datasets: [
+            {
+              data: this.chart.map((val) => +val),
+              fill: false,
+              borderColor: theme === Themes.DARK ? 'rgb(105, 166, 213)' : '#337ab7',
+              backgroundColor: theme === Themes.DARK ? '#333' : '#eee',
+              tension: 0.4,
+              borderWidth: 1,
+            },
+          ],
+        };
         this.changeDetectorRef.markForCheck();
       });
   }
@@ -52,22 +56,25 @@ export class ProfileRatingChartComponent implements OnChanges {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      xAxes: [
-        {
+      x: {
+        offset: true,
+        ticks: {
           display: false,
         },
-      ],
+      },
     },
     tooltips: {
       displayColors: false,
     },
-    legend: {
-      display: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
     },
   };
 
   public barChartLabels: string[];
-  public barChartData: any;
+  public barChartData: ChartConfiguration<'line'>['data'];
 
   ngOnChanges({ chart }: SimpleChanges): void {
     if (chart) {
