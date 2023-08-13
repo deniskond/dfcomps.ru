@@ -1,15 +1,11 @@
 <mat-card class="container">
   <ng-container *ngIf="currentSeason$ | async as currentSeason; else isLoading">
     <h3>Current season: {{ currentSeason }}</h3>
-    <button
-      *ngIf="!isFinishingSeason"
-      (click)="showEndSeasonButtons()"
-      mat-raised-button
-      color="accent"
-      style="margin-top: 16px"
-    >
-      Finish season
-    </button>
+    <div *ngIf="!isFinishingSeason">
+      <button (click)="showEndSeasonButtons()" mat-raised-button color="accent" style="margin-top: 16px">
+        Finish season
+      </button>
+    </div>
     <ng-container *ngIf="isFinishingSeason">
       <div>
         <span class="button-count">1.</span>

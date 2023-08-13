@@ -85,9 +85,12 @@ b {
   height: 18px;
 }
 
-mat-dialog-container {
+.mat-mdc-dialog-surface {
   padding: 20px 24px 16px !important;
   border: 6px solid var(--comments-border-color);
+  background: var(--base-background);
+  color: var(--base-font-color);
+  border-radius: 4px;
 }
 
 mat-divider {
@@ -192,11 +195,6 @@ mat-slide-toggle {
 
 .mdc-switch__shadow {
   display: none;
-}
-
-.mat-dialog-container {
-  background: var(--base-background);
-  color: var(--base-font-color);
 }
 
 .mat-expansion-indicator::after {
