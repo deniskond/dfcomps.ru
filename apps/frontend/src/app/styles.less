@@ -202,3 +202,23 @@ mat-slide-toggle {
 .mat-expansion-indicator::after {
   color: var(--base-font-color) !important;
 }
+
+.mat-mdc-tab-link {
+  flex-grow: 0 !important;
+}
+
+.mdc-tab {
+  .mdc-tab__text-label {
+    user-select: none;
+    font-family: elektra;
+    color: var(--navigation-color) !important;
+    opacity: 0.6;
+    letter-spacing: normal;
+  }
+
+  &--active {
+    .mdc-tab__text-label {
+      opacity: 1 !important;
+    }
+  }
+}
