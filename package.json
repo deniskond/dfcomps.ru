@@ -45,6 +45,7 @@
     "@nx/angular": "16.6.0",
     "@nx/nest": "16.6.0",
     "chart.js": "4.3.3",
+    "copy-webpack-plugin": "11.0.0",
     "discord.js": "12.3.1",
     "express": "4.17.3",
     "flag-icons": "6.9.5",

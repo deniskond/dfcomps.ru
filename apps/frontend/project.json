@@ -6,7 +6,7 @@
   "prefix": "dfcomps.ru",
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:browser",
+      "executor": "@nx/angular:webpack-browser",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/frontend",
@@ -15,12 +15,15 @@
         "polyfills": "apps/frontend/src/app/polyfills.ts",
         "tsConfig": "apps/frontend/tsconfig.app.json",
         "inlineStyleLanguage": "less",
-        "assets": ["apps/frontend/src/app/favicon.ico", "apps/frontend/assets"],
+        "assets": ["apps/frontend/assets"],
         "styles": [
           "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
           "apps/frontend/src/app/styles.less"
         ],
-        "scripts": []
+        "scripts": [],
+        "customWebpackConfig": {
+          "path": "apps/frontend/webpack.config.js"
+        }
       },
       "configurations": {
         "production": {
