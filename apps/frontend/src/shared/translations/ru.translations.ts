@@ -141,4 +141,7 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   difficulty: 'Сложность',
   descriptionAndRules: 'Описание и правила',
   downloadForValidation: 'Скачать все демки для валидации',
+  searchVQ3: 'Поиск VQ3',
+  searchCPM: 'Поиск CPM',
+  loginOrRegisterToPlay1v1: 'Войдите или зарегистрируйтесь, чтобы играть 1v1 матчи',
 };

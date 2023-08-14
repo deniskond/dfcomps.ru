@@ -141,4 +141,7 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
   difficulty: 'Difficulty',
   descriptionAndRules: 'Description and rules',
   downloadForValidation: 'Download all demos for validation',
+  searchVQ3: 'Search VQ3',
+  searchCPM: 'Search CPM',
+  loginOrRegisterToPlay1v1: 'Login or register to play 1v1 matches',
 };

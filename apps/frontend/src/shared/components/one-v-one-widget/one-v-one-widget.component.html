@@ -4,8 +4,14 @@
       <ng-container *ngSwitchCase="matchStates.WAITING_FOR_QUEUE">
         <div class="row first">
           <div class="text-column">
-            <div><span translate translation="currentMatchesIn"></span> VQ3: {{ queueInfo.vq3Matches }}</div>
-            <div><span translate translation="playersInQueue"></span> VQ3: {{ queueInfo.vq3PlayersInQueue }}</div>
+            <div>
+              <span translate translation="currentMatchesIn"></span>
+              VQ3: {{ queueInfo.vq3Matches }}
+            </div>
+            <div>
+              <span translate translation="playersInQueue"></span>
+              VQ3: {{ queueInfo.vq3PlayersInQueue }}
+            </div>
           </div>
           <button
             [disabled]="isWaitingForServerAnswer"
@@ -13,13 +19,19 @@
             mat-raised-button
             color="primary"
           >
-            Поиск VQ3
+            <span translate translation="searchVQ3"></span>
           </button>
         </div>
         <div class="row">
           <div class="text-column">
-            <div><span translate translation="currentMatchesIn"></span> CPM: {{ queueInfo.cpmMatches }}</div>
-            <div><span translate translation="playersInQueue"></span> CPM: {{ queueInfo.cpmPlayersInQueue }}</div>
+            <div>
+              <span translate translation="currentMatchesIn"></span>
+              CPM: {{ queueInfo.cpmMatches }}
+            </div>
+            <div>
+              <span translate translation="playersInQueue"></span>
+              CPM: {{ queueInfo.cpmPlayersInQueue }}
+            </div>
           </div>
           <button
             [disabled]="isWaitingForServerAnswer"
@@ -27,7 +39,7 @@
             mat-raised-button
             color="primary"
           >
-            Поиск CPM
+            <span translate translation="searchCPM"></span>
           </button>
         </div>
       </ng-container>
@@ -54,5 +66,5 @@
 </ng-template>
 
 <ng-template #notLogged>
-  <div class="block">Войдите или зарегистрируйтесь, чтобы играть 1v1 матчи</div>
+  <div class="block" translate translation="loginOrRegisterToPlay1v1"></div>
 </ng-template>
