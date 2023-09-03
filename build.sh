@@ -1,1 +1,0 @@
-docker build -t dfcomps https://github.com/deniskond/dfcomps.ru.git#master

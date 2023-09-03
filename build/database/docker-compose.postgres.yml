@@ -5,7 +5,7 @@ services:
     container_name: local_pgdb
     restart: always
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     environment:
       PGUSER: user
       POSTGRES_USER: user
@@ -24,7 +24,7 @@ services:
     container_name: pgadmin4_container
     restart: always
     ports:
-      - "5050:80"
+      - "127.0.0.1:4004:80"
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: admin
