@@ -1,7 +1,7 @@
 { "databaseChangeLog": [
   {
     "changeSet": {
-      "id": "1693779327341-1",
+      "id": "1693780590043-1",
       "author": "liquibase (generated)",
       "changes": [
         {
@@ -9,30 +9,7 @@
             "columns": [
               {
                 "column": {
-                  "name": "discord",
-                  "type": "varchar"
-                }
-              }]
-            ,
-            "tableName": "auth"
-          }
-        }]
-      
-    }
-  }
-  
-]}{ "databaseChangeLog": [
-  {
-    "changeSet": {
-      "id": "1693779543780-1",
-      "author": "liquibase (generated)",
-      "changes": [
-        {
-          "addColumn": {
-            "columns": [
-              {
-                "column": {
-                  "name": "discord",
+                  "name": "test",
                   "type": "varchar"
                 }
               }]
