@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  liquibase:    
+    image: liquibase/liquibase:4.9.1
+    container_name: liquibase_container
+    command: update --defaultsFile=liquibase.properties --changeLogFile=dfcomps.changelog.json
+    networks:
+      - db-network
+    volumes:
+      - /usr/local/bin/liquibase.properties:/liquibase/liquibase.properties
+      - /usr/local/bin/dfcomps.changelog.json:/liquibase/dfcomps.changelog.json
+
+networks:
+  db-network:
+    name: db-network
+    external: true

@@ -12,10 +12,12 @@
     "frontend:release": "docker build -t dfcomps . -f ./build/frontend/frontend.dockerfile && docker save dfcomps | ssh -C root@test.dfcomps.ru \"docker load && docker stop dfcomps || true && docker rm dfcomps || true && docker run -d -p 127.0.0.1:4000:80 --name dfcomps dfcomps\"",
     "backend": "nx serve backend",
     "backend:build": "nx build backend",
-    "backend:setup": "docker-compose -f build/database/docker-compose.postgres.yml up -d --wait && npm run backend:restore-db",
-    "backend:restore-db": "docker cp apps/backend/database/dev-database.tar local_pgdb:/var/lib/postgresql/dev-database.tar && docker exec local_pgdb createdb -h localhost -p 5432 -U user dfcomps && docker exec local_pgdb pg_restore -U user -d dfcomps /var/lib/postgresql/dev-database.tar",
-    "backend:save-db": "docker exec local_pgdb pg_dump -U user dfcomps -f /var/lib/postgresql/dev-database.tar -F t && docker cp local_pgdb:/var/lib/postgresql/dev-database.tar apps/backend/database/dev-database.tar",
-    "backend:liquibase-changelog": "docker-compose -f apps/backend/database/docker-compose.liquibase.yml up -d --wait && node -e \"setTimeout(()=>{},3000)\" && docker cp liquibase_container:/liquibase/dfcomps.changelog.json apps/backend/database/dfcomps.changelog.json",
+    "backend:release": "",
+    "database:setup": "docker-compose -f build/database/docker-compose.postgres.yml up -d --wait && npm run database:restore-db",
+    "database:restore-db": "docker cp build/database/dev-database.tar local_pgdb:/var/lib/postgresql/dev-database.tar && docker exec local_pgdb createdb -h localhost -p 5432 -U user dfcomps && docker exec local_pgdb pg_restore -U user -d dfcomps /var/lib/postgresql/dev-database.tar",
+    "database:save-db": "docker exec local_pgdb pg_dump -U user dfcomps -f /var/lib/postgresql/dev-database.tar -F t && docker cp local_pgdb:/var/lib/postgresql/dev-database.tar build/database/dev-database.tar",
+    "database:generate-migrations": "docker-compose -f build/database/docker-compose.liquibase-generate.yml up -d --wait && node -e \"setTimeout(()=>{},3000)\" && docker cp liquibase_container:/liquibase/dfcomps.changelog.json build/database/dfcomps.changelog.json",
+    "database:migrate-prod": "scp build/database/dfcomps.changelog.json root@test.dfcomps.ru:/usr/local/bin && ssh root@test.dfcomps.ru \"docker-compose -f /usr/local/bin/docker-compose.liquibase-update.yml up -d\"",
     "discord-bot": "nx serve discord-bot",
     "discord-bot:build": "nx build discord-bot",
     "1v1-server:prod": "cross-env ENV=prod nx serve 1v1-server",
@@ -24,7 +26,9 @@
     "1v1-server:test:ci": "concurrently \"cross-env LOGS=none npm run 1v1-server:local\" \"wait-on tcp:3000 && nx test 1v1-server --runInBand\"",
     "1v1-server:stress-test": "concurrently \"cross-env E2E=true npm run 1v1-server:local\" \"wait-on tcp:3000 && ts-node --project apps/1v1-server/tsconfig.app.json apps/1v1-server/src/app/1v1/tests/client-stress-testing.ts\"",
     "1v1-server:stress-test:ci": "concurrently \"cross-env LOGS=none E2E=true npm run 1v1-server:local\" \"wait-on tcp:3000 && ts-node --project apps/1v1-server/tsconfig.app.json apps/1v1-server/src/app/1v1/tests/client-stress-testing.ts\"",
-    "1v1-server:build": "nx build 1v1-server"
+    "1v1-server:build": "nx build 1v1-server",
+    "1v1-server:release": "",
+    "dfcomps:release": "npm run database:migrate-prod && npm run frontend:release && npm run backend:release && npm run 1v1-server:release"
   },
   "private": true,
   "dependencies": {
