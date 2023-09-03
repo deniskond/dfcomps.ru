@@ -10,8 +10,6 @@ services:
       PGUSER: user
       POSTGRES_USER: user
       POSTGRES_PASSWORD: admin
-    volumes:
-      - local_pgdata:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 1s
@@ -28,14 +26,8 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: admin
-    volumes:
-      - pgadmin-data:/var/lib/pgadmin
     networks:
       - db-network
-
-volumes:
-  local_pgdata:
-  pgadmin-data:
 
 networks:
   db-network:
