@@ -1,39 +1,39 @@
 { "databaseChangeLog": [
   {
     "changeSet": {
-      "id": "1693772186547-1",
+      "id": "1693779327341-1",
       "author": "liquibase (generated)",
       "changes": [
         {
-          "createTable": {
+          "addColumn": {
             "columns": [
               {
                 "column": {
-                  "constraints": {
-                    "nullable": false,
-                    "primaryKey": true,
-                    "primaryKeyName": "auth_pkey"
-                  },
-                  "name": "id",
-                  "type": "BIGINT"
+                  "name": "discord",
+                  "type": "varchar"
                 }
-              },
+              }]
+            ,
+            "tableName": "auth"
+          }
+        }]
+      
+    }
+  }
+  
+]}{ "databaseChangeLog": [
+  {
+    "changeSet": {
+      "id": "1693779543780-1",
+      "author": "liquibase (generated)",
+      "changes": [
+        {
+          "addColumn": {
+            "columns": [
               {
                 "column": {
-                  "constraints": {
-                    "nullable": false
-                  },
-                  "name": "login",
-                  "type": "VARCHAR"
-                }
-              },
-              {
-                "column": {
-                  "constraints": {
-                    "nullable": false
-                  },
-                  "name": "password",
-                  "type": "VARCHAR"
+                  "name": "discord",
+                  "type": "varchar"
                 }
               }]
             ,

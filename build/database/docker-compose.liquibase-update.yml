@@ -7,8 +7,8 @@ services:
     networks:
       - db-network
     volumes:
-      - /usr/local/bin/liquibase.properties:/liquibase/liquibase.properties
-      - /usr/local/bin/dfcomps.changelog.json:/liquibase/dfcomps.changelog.json
+      - ./liquibase.properties:/liquibase/liquibase.properties
+      - ./dfcomps.changelog.json:/liquibase/dfcomps.changelog.json
 
 networks:
   db-network:
