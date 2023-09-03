@@ -1,19 +1,12 @@
 { "databaseChangeLog": [
   {
     "changeSet": {
-      "id": "1693780590043-1",
+      "id": "1693781311832-1",
       "author": "liquibase (generated)",
       "changes": [
         {
-          "addColumn": {
-            "columns": [
-              {
-                "column": {
-                  "name": "test",
-                  "type": "varchar"
-                }
-              }]
-            ,
+          "dropColumn": {
+            "columnName": "test",
             "tableName": "auth"
           }
         }]
