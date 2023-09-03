@@ -9,7 +9,7 @@
     "frontend-local": "nx serve frontend --open --configuration=local-backend",
     "frontend:build": "nx build frontend",
     "frontend:server": "superstatic dist/apps/frontend",
-    "frontend:release": "docker build -t dfcomps . && docker save dfcomps | ssh -C root@test.dfcomps.ru \"docker load && docker stop dfcomps || true && docker rm dfcomps || true && docker run -d -p 127.0.0.1:4000:80 --name dfcomps dfcomps\"",
+    "frontend:release": "docker build -t dfcomps . -f ./build/frontend/frontend.dockerfile && docker save dfcomps | ssh -C root@test.dfcomps.ru \"docker load && docker stop dfcomps || true && docker rm dfcomps || true && docker run -d -p 127.0.0.1:4000:80 --name dfcomps dfcomps\"",
     "backend": "nx serve backend",
     "backend:build": "nx build backend",
     "backend:setup": "docker-compose -f build/database/docker-compose.postgres.yml up -d --wait && npm run backend:restore-db",

@@ -19,7 +19,7 @@ RUN npm run frontend:build
 
 FROM nginx:1.25-bookworm as dist
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY /build/frontend/frontend-nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /opt/app/dist/apps/frontend /var/www/html
 
 EXPOSE 80
