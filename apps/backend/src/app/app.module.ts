@@ -7,7 +7,7 @@ import { Auth } from './auth/entities/auth.entity';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: '127.0.0.1',
+      host: process.env.NODE_ENV === 'production' ? 'local_pgdb' : '127.0.0.1',
       port: 5432,
       username: 'user',
       password: process.env.DFCOMPS_POSTGRES_PASSWORD,

@@ -5,9 +5,9 @@ services:
     container_name: liquibase_container
     command: diff-changelog --changeLogFile=dfcomps.changelog.json --referenceUrl=jdbc:postgresql://local_pgdb:5432/dfcomps --referenceUsername=user --referencePassword=admin --url=jdbc:postgresql://local_pgdb_diff:5432/dfcomps --username=user --password=admin
     networks:
-      - db-network
+      - dfcomps-network
 
 networks:
-  db-network:
-    name: db-network
+  dfcomps-network:
+    name: dfcomps-network
     external: true

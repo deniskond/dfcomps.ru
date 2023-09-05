@@ -5,12 +5,12 @@ services:
     container_name: liquibase_container
     command: update --defaultsFile=liquibase.properties --changeLogFile=dfcomps.changelog.json
     networks:
-      - db-network
+      - dfcomps-network
     volumes:
       - ./liquibase.properties:/liquibase/liquibase.properties
       - ./dfcomps.changelog.json:/liquibase/dfcomps.changelog.json
 
 networks:
-  db-network:
-    name: db-network
+  dfcomps-network:
+    name: dfcomps-network
     external: true

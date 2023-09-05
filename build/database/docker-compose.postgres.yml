@@ -16,7 +16,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - db-network
+      - dfcomps-network
   diff-db:
     image: postgres
     container_name: local_pgdb_diff
@@ -33,7 +33,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - db-network
+      - dfcomps-network
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin4_container
@@ -44,8 +44,8 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: admin
     networks:
-      - db-network
+      - dfcomps-network
 
 networks:
-  db-network:
-    name: db-network
+  dfcomps-network:
+    name: dfcomps-network
