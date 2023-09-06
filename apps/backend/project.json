@@ -13,7 +13,8 @@
         "tsConfig": "apps/backend/tsconfig.app.json",
         "assets": ["apps/backend/src/assets"],
         "compiler": "tsc",
-        "target": "node"
+        "target": "node",
+        "webpackConfig": "apps/backend/webpack.config.js"
       },
       "configurations": {
         "production": {
