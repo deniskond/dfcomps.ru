@@ -1,5 +1,3 @@
-const config = require('./../config.json');
-
 import { DuelWebsocketClientActions } from './enums/duel-websocket-client-actions.enum';
 import { DuelClientMessage } from './types/duel-client-message.type';
 import * as WebSocket from 'ws';
@@ -135,7 +133,7 @@ export class OneVOneHandler {
       if (
         !this.eligiblePlayers.includes(message.playerId) &&
         message.playerId !== TEST_PLAYER_ID &&
-        process.env.ENV !== 'test'
+        process.env.NODE_ENV !== 'test'
       ) {
         this.send(socket, {
           action: DuelWebsocketServerActions.JOIN_QUEUE_FAILURE,
@@ -339,7 +337,7 @@ export class OneVOneHandler {
       firstPlayerId,
       secondPlayerId,
       physics,
-      secretKey: config.DUELS_SERVER_PRIVATE_KEY,
+      secretKey: process.env.DUELS_SERVER_PRIVATE_KEY || '',
     })
       .then(() => {
         console.log('rest backend answer ok');
@@ -512,7 +510,7 @@ export class OneVOneHandler {
           firstPlayerId: match.firstPlayerId,
           secondPlayerId: match.secondPlayerId,
           map: JSON.stringify(pickedMap.map),
-          secretKey: config.DUELS_SERVER_PRIVATE_KEY,
+          secretKey: process.env.DUELS_SERVER_PRIVATE_KEY || '',
         });
 
         if (match.firstPlayerId === '-1' || match.secondPlayerId === '-1') {
@@ -521,7 +519,7 @@ export class OneVOneHandler {
             secondPlayerId: match.secondPlayerId,
             physics: match.physics,
             wr: match.physics === Physics.CPM ? pickedMap.map.cpmRecord.toString() : pickedMap.map.vq3Record.toString(),
-            secretKey: config.DUELS_SERVER_PRIVATE_KEY,
+            secretKey: process.env.DUELS_SERVER_PRIVATE_KEY || '',
           });
         }
       }
@@ -605,7 +603,7 @@ export class OneVOneHandler {
             this.doAxiosPostRequest(`${this.getRoutePrefix()}/api/match/finish`, {
               firstPlayerId,
               secondPlayerId,
-              secretKey: config.DUELS_SERVER_PRIVATE_KEY,
+              secretKey: process.env.DUELS_SERVER_PRIVATE_KEY || '',
             }),
           ),
         ),
@@ -665,7 +663,7 @@ export class OneVOneHandler {
   }
 
   private getRoutePrefix(): string {
-    return process.env.ENV ? routes[process.env.ENV] : 'http://localhost';
+    return process.env.NODE_ENV ? routes[process.env.NODE_ENV] : 'http://localhost';
   }
 
   private sendUpdatedQueueInfoToAllClients(): Promise<void[]> {

@@ -10,7 +10,7 @@ import * as util from 'util';
 import { stressTestNumberOfMatchesInEachPhysics } from './1v1/constants/stress-test-clients-count';
 
 export class OneVOneServer {
-  private readonly SERVER_PORT = 3000;
+  private readonly SERVER_PORT = 4002;
   private server: http.Server;
   private webSocketServer: WebSocket.Server;
   private oneVOneHandler: OneVOneHandler;

@@ -13,7 +13,7 @@ const TEST_CONFIG: Record<string, number> = {
 };
 
 export class TimingsConfig {
-  private static targetConfig = process.env.ENV === 'prod' ? PROD_CONFIG : TEST_CONFIG;
+  private static targetConfig = process.env.NODE_ENV === 'prod' ? PROD_CONFIG : TEST_CONFIG;
 
   public static get BAN_TIMER_SECONDS(): number {
     return this.targetConfig.BAN_TIMER_SECONDS;
