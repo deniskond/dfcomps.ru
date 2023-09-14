@@ -29,6 +29,7 @@
     "1v1-server:stress-test:ci": "concurrently \"cross-env LOGS=none E2E=true npm run 1v1-server:local\" \"wait-on tcp:3000 && ts-node --project apps/1v1-server/tsconfig.app.json apps/1v1-server/src/app/1v1/tests/client-stress-testing.ts\"",
     "1v1-server:build": "nx build 1v1-server",
     "1v1-server:release": "docker build -t dfcomps-1v1-server . -f ./build/1v1-server/1v1-server.dockerfile && docker save dfcomps-1v1-server | ssh -C root@test.dfcomps.ru \"docker load && docker stop dfcomps-1v1-server || true && docker rm dfcomps-1v1-server || true && docker run -d -p 127.0.0.1:4002:4002 --name dfcomps-1v1-server --network dfcomps-network --env-file /usr/local/bin/secrets.env dfcomps-1v1-server\"",
+    "file-storage:release": "docker build -t dfcomps-file-storage . -f ./build/file-storage/file-storage.dockerfile && docker save dfcomps-file-storage | ssh -C root@test.dfcomps.ru \"docker load && docker run -d -p 127.0.0.1:4003:80 --name dfcomps-file-storage --network dfcomps-network --mount source=dfcomps-files,target=/var/www/html dfcomps-file-storage\"",
     "dfcomps:release": "npm run database:migrate-prod && npm run frontend:release && npm run backend:release && npm run 1v1-server:release"
   },
   "private": true,
