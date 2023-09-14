@@ -83,7 +83,8 @@
           "proxyConfig": "apps/frontend/proxy.conf.json"
         },
         "local-backend": {
-          "browserTarget": "frontend:build:local-backend"
+          "browserTarget": "frontend:build:local-backend",
+          "proxyConfig": "apps/frontend/proxy.conf.local.json"
         }
       },
       "defaultConfiguration": "development"

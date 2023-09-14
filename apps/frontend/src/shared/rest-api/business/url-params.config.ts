@@ -4,7 +4,7 @@ import { environment } from '~app/environments/environment';
 
 const envMap: Record<string, string> = {
   local: '',
-  'local-backend': 'http://localhost',
+  'local-backend': '',
   prod: 'https://dfcomps.ru',
 };
 
