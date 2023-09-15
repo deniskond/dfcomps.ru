@@ -3,13 +3,13 @@ import { RatingTablesModes } from '~shared/enums/rating-tables-modes.enum';
 import { environment } from '~app/environments/environment';
 
 const envMap: Record<string, string> = {
-  local: '',
-  'local-backend': '',
-  prod: 'https://dfcomps.ru',
+  local: '/api',
+  'local-backend': '/legacy-api',
+  prod: '/legacy-api',
 };
 
 export const MAIN_URL = envMap[environment.name];
-export const API_URL = `${MAIN_URL}/api`;
+export const API_URL = MAIN_URL;
 
 export class URL_PARAMS {
   public static get WEBSOCKET_1V1_URL(): string {

@@ -87,6 +87,9 @@
           "proxyConfig": "apps/frontend/proxy.conf.local.json"
         }
       },
+      "options": {
+        "port": 4000
+      },
       "defaultConfiguration": "development"
     },
     "extract-i18n": {
