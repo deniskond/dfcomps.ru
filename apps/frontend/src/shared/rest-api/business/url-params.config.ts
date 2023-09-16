@@ -3,7 +3,7 @@ import { RatingTablesModes } from '~shared/enums/rating-tables-modes.enum';
 import { environment } from '~app/environments/environment';
 
 const envMap: Record<string, string> = {
-  local: '/api',
+  local: '/legacy-api',
   'local-backend': '/legacy-api',
   prod: '/legacy-api',
 };
