@@ -1,4 +1,4 @@
 export const routes: Record<string, string> = {
-  production: 'https://test.dfcomps.ru',
+  production: 'https://dfcomps.ru',
   test: 'http://localhost',
 };

@@ -1,12 +1,12 @@
 {
     "/legacy-api": {
-        "target": "https://test.dfcomps.ru",
+        "target": "https://dfcomps.ru",
         "secure": false,
         "changeOrigin": true,
         "logLevel": "debug"
     },
     "/uploads": {
-        "target": "https://test.dfcomps.ru",
+        "target": "https://dfcomps.ru",
         "secure": false,
         "changeOrigin": true,
         "logLevel": "debug"
