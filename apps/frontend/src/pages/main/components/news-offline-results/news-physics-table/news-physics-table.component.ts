@@ -35,7 +35,7 @@ export class NewsPhysicsTableComponent implements OnInit {
   }
 
   public getDemoLink(result: ValidDemoInterface, cupId: string): string {
-    return result.absoluteLink ? result.demopath : `/api/uploads/demos/cup${cupId}/${result.demopath}`;
+    return result.absoluteLink ? result.demopath : `/uploads/demos/cup${cupId}/${result.demopath}`;
   }
 
   public openFullMulticupTable(): void {

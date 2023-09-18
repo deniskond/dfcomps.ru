@@ -24,7 +24,10 @@ export class NewsOfflineResultsComponent implements OnInit, OnChanges {
   public invalidDemos: InvalidDemoInterface[];
   public showDemosForValidationLink$: Observable<boolean>;
 
-  constructor(private newsService: NewsService, private userService: UserService) {}
+  constructor(
+    private newsService: NewsService,
+    private userService: UserService,
+  ) {}
 
   ngOnInit(): void {
     this.maxDemosCount = this.getMaxDemosCount();
@@ -45,16 +48,8 @@ export class NewsOfflineResultsComponent implements OnInit, OnChanges {
     }
   }
 
-  public getArchiveLink(archiveLink: string): string {
-    return `${API_URL}/${archiveLink}`;
-  }
-
   public getValidationArchive(): void {
-    this.newsService.getDemosForValidation$(this.news.cup.id).subscribe(({ url }) => {
-      const link = `${API_URL}${url}`;
-
-      window.open(link);
-    });
+    this.newsService.getDemosForValidation$(this.news.cup.id).subscribe(({ url }) => window.open(url));
   }
 
   private getMaxDemosCount(): number {

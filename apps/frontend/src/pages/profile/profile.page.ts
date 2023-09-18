@@ -65,7 +65,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   }
 
   public getAvatarSrc(avatar: string, apiUrl: string): string {
-    return avatar ? `${apiUrl}/images/avatars/${avatar}.jpg` : `${apiUrl}/images/avatars/no_avatar.png`;
+    return avatar ? `/uploads/images/avatars/${avatar}.jpg` : `/uploads/images/avatars/no_avatar.png`;
   }
 
   public openEditProfilePopup(): void {
