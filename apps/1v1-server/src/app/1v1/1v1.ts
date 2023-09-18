@@ -39,7 +39,7 @@ export class OneVOneHandler {
   private eligiblePlayers: string[] = [];
 
   public setEligiblePlayersSubscription(): void {
-    this.doAxiosPostRequest(`${this.getRoutePrefix()}/api/match/get_eligible_players`, {}).then(
+    this.doAxiosPostRequest(`${this.getRoutePrefix()}/legacy-api/match/get_eligible_players`, {}).then(
       ({ data }: AxiosResponse) => {
         console.log(`Setting eligible players: ${JSON.stringify(data)}`);
         this.eligiblePlayers = data.players;
@@ -47,7 +47,7 @@ export class OneVOneHandler {
     );
 
     setInterval(() => {
-      this.doAxiosPostRequest(`${this.getRoutePrefix()}/api/match/get_eligible_players`, {}).then(
+      this.doAxiosPostRequest(`${this.getRoutePrefix()}/legacy-api/match/get_eligible_players`, {}).then(
         ({ data }: AxiosResponse) => {
           console.log(`Setting eligible players: ${JSON.stringify(data)}`);
           this.eligiblePlayers = data.players;
@@ -333,7 +333,7 @@ export class OneVOneHandler {
       bannedMapsCount: 0,
     };
 
-    this.doAxiosPostRequest(`${this.getRoutePrefix()}/api/match/start`, {
+    this.doAxiosPostRequest(`${this.getRoutePrefix()}/legacy-api/match/start`, {
       firstPlayerId,
       secondPlayerId,
       physics,
@@ -506,7 +506,7 @@ export class OneVOneHandler {
         .find((map: PickbanMapServerInterface) => !map.isBannedByFirstPlayer && !map.isBannedBySecondPlayer);
 
       if (pickedMap) {
-        this.doAxiosPostRequest(`${this.getRoutePrefix()}/api/match/update_match_info`, {
+        this.doAxiosPostRequest(`${this.getRoutePrefix()}/legacy-api/match/update_match_info`, {
           firstPlayerId: match.firstPlayerId,
           secondPlayerId: match.secondPlayerId,
           map: JSON.stringify(pickedMap.map),
@@ -514,7 +514,7 @@ export class OneVOneHandler {
         });
 
         if (match.firstPlayerId === '-1' || match.secondPlayerId === '-1') {
-          this.doAxiosPostRequest(`${this.getRoutePrefix()}/api/match/update_bot_time`, {
+          this.doAxiosPostRequest(`${this.getRoutePrefix()}/legacy-api/match/update_bot_time`, {
             firstPlayerId: match.firstPlayerId,
             secondPlayerId: match.secondPlayerId,
             physics: match.physics,
@@ -600,7 +600,7 @@ export class OneVOneHandler {
       .pipe(
         switchMap(() =>
           from(
-            this.doAxiosPostRequest(`${this.getRoutePrefix()}/api/match/finish`, {
+            this.doAxiosPostRequest(`${this.getRoutePrefix()}/legacy-api/match/finish`, {
               firstPlayerId,
               secondPlayerId,
               secretKey: process.env.DUELS_SERVER_PRIVATE_KEY || '',

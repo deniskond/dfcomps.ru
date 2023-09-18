@@ -14,9 +14,9 @@ export const API_URL = MAIN_URL;
 export class URL_PARAMS {
   public static get WEBSOCKET_1V1_URL(): string {
     const websocketEnvMap: Record<string, string> = {
-      local: 'wss://dfcomps.ru/ws/1v1',
+      local: 'wss://test.dfcomps.ru/ws/1v1',
       'local-backend': 'ws://localhost:3000/1v1',
-      prod: 'wss://dfcomps.ru/ws/1v1',
+      prod: 'wss://test.dfcomps.ru/ws/1v1',
     };
 
     return websocketEnvMap[environment.name];
