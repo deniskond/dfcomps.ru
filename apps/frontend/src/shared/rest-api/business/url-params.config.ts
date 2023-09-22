@@ -76,12 +76,14 @@ export class URL_PARAMS {
 
   public static get NEWS(): {
     MAIN_PAGE: string;
+    THEME_PAGE: (theme: string) => string;
     COUNT: string;
     SINGLE_NEWS: (id: string) => string;
     ARCHIVE: (startIndex: number, endIndex: number) => string;
   } {
     return {
       MAIN_PAGE: `${API_URL}/news/mainpage`,
+      THEME_PAGE: (theme: string) => `${API_URL}/news/theme/${theme}`,
       COUNT: `${API_URL}/news/count`,
       SINGLE_NEWS: (id: string) => `${API_URL}/news/single/${id}`,
       ARCHIVE: (startIndex: number, endIndex: number) => `${API_URL}/news/archive/${startIndex}/${endIndex}`,

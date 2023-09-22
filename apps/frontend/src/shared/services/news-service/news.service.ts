@@ -7,9 +7,10 @@ import { tap, finalize } from 'rxjs/operators';
 @Injectable()
 export class NewsService extends BackendService {
   private _mainPageNews$ = new BehaviorSubject<NewsInterfaceUnion[] | null>(null);
+  private _themePageNews$ = new BehaviorSubject<NewsInterfaceUnion[] | null>(null);
   private isLoading = false;
 
-  // TODO эту штуку только в крайнем случае вызывать
+  // TODO This should be called as rare as possible
   public loadMainPageNews(): void {
     if (this.isLoading) {
       return;
@@ -26,6 +27,30 @@ export class NewsService extends BackendService {
       tap((news: NewsInterfaceUnion[] | null) => {
         if (!news) {
           this.loadMainPageNews();
+        }
+
+        return news;
+      }),
+    );
+  }
+
+  // TODO Not scalable at all, needs to be rewritten; for more than one theme there will be wrong caching
+  public loadThemePageNews(theme: string): void {
+    if (this.isLoading) {
+      return;
+    }
+
+    this.isLoading = true;
+    this.post$<NewsInterfaceUnion[]>(URL_PARAMS.NEWS.THEME_PAGE(theme))
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe((news: NewsInterfaceUnion[]) => this._themePageNews$.next(news));
+  }
+
+  public getThemePageNews$(theme: string): Observable<NewsInterfaceUnion[] | null> {
+    return this._themePageNews$.pipe(
+      tap((news: NewsInterfaceUnion[] | null) => {
+        if (!news) {
+          this.loadThemePageNews(theme);
         }
 
         return news;

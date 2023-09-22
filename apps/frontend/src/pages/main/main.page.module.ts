@@ -38,6 +38,7 @@ import { SDCRulesDialogComponent } from './components/news-offline-start/sdc-rul
 import { MatIconModule } from '@angular/material/icon';
 import { SharedModule } from '~shared/modules/shared.module';
 import { NewsService } from '~shared/services/news-service/news.service';
+import { ThemeNewsPageComponent } from './components/theme-news-page/theme-news-page.component';
 
 const routes: Routes = [
   {
@@ -49,6 +50,11 @@ const routes: Routes = [
     component: SingleNewsPageComponent,
     pathMatch: 'full',
   },
+  {
+    path: 'news/theme/:theme',
+    component: ThemeNewsPageComponent,
+    pathMatch: 'full',
+  }
 ];
 
 @NgModule({
@@ -94,6 +100,7 @@ const routes: Routes = [
     NewsCommentTextComponent,
     OverbouncesWarningDialogComponent,
     SDCRulesDialogComponent,
+    ThemeNewsPageComponent,
   ],
   providers: [NewsService],
 })
