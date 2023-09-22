@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { isEqual } from 'lodash';
-import { Observable, distinctUntilChanged, map } from 'rxjs';
+import { Observable, distinctUntilChanged, map, switchMap, take } from 'rxjs';
 import { Languages } from '~shared/enums/languages.enum';
 import { NewsTypes } from '~shared/enums/news-types.enum';
 import { LanguageService } from '~shared/services/language/language.service';
 import { NewsService } from '~shared/services/news-service/news.service';
 import { NewsInterfaceUnion } from '~shared/types/news-union.type';
 import * as moment from 'moment';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   templateUrl: './theme-news-page.component.html',
@@ -15,7 +16,6 @@ import * as moment from 'moment';
 })
 export class ThemeNewsPageComponent {
   public news$: Observable<NewsInterfaceUnion[]>;
-  public prepostedNews$: Observable<NewsInterfaceUnion[]>;
   public postedNews$: Observable<NewsInterfaceUnion[]>;
   public language$: Observable<Languages>;
   public newsTypes = NewsTypes;
@@ -24,10 +24,14 @@ export class ThemeNewsPageComponent {
   constructor(
     private newsService: NewsService,
     private languageService: LanguageService,
+    private activatedRoute: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
-    this.newsService.loadThemePageNews('hangtime3');
+    this.activatedRoute.params
+      .pipe(take(1))
+      .subscribe(({ theme }: Params) => this.newsService.loadThemePageNews(theme));
+
     this.initObservables();
   }
 
@@ -35,11 +39,18 @@ export class ThemeNewsPageComponent {
     return moment(date).format('DD.MM.YYYY HH:mm');
   }
   public reloadNews(): void {
-    this.newsService.loadThemePageNews('hangtime3');
+    this.activatedRoute.params
+      .pipe(take(1))
+      .subscribe(({ theme }: Params) => this.newsService.loadThemePageNews(theme));
   }
 
   private initObservables(): void {
-    this.news$ = this.newsService.getThemePageNews$('hangtime3').pipe(distinctUntilChanged(isEqual));
+    this.news$ = this.activatedRoute.params.pipe(
+      take(1),
+      switchMap(({ theme }: Params) => this.newsService.getThemePageNews$(theme)),
+      distinctUntilChanged(isEqual),
+    );
+
     this.postedNews$ = this.news$.pipe(
       map((news: NewsInterfaceUnion[]) => news.filter((newsElem: NewsInterfaceUnion) => !newsElem.preposted)),
     );
