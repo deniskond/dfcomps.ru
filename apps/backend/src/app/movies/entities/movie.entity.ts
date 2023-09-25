@@ -5,15 +5,15 @@ export class Movie {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'character varying' })
   name: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'character varying' })
   youtube: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'character varying' })
   author: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'character varying' })
   year: string;
 }

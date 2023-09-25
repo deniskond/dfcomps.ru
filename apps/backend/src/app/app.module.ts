@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
-import { Auth } from './auth/entities/auth.entity';
 import { MoviesModule } from './movies/movies.module';
 import { Movie } from './movies/entities/movie.entity';
+import { OldUser } from './auth/entities/old-user.entity';
+import { User } from './auth/entities/user.entity';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { Movie } from './movies/entities/movie.entity';
       port: 5432,
       username: 'user',
       password: process.env.DFCOMPS_POSTGRES_PASSWORD,
-      entities: [Auth, Movie],
+      entities: [User, OldUser, Movie],
       database: 'dfcomps',
       synchronize: true,
       logging: true,
