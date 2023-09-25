@@ -4,7 +4,7 @@ This is a repository for storing everything related to dfcomps.ru site, which is
 
 # Quick start
 
-The repository consists of several applications which are managed by [Nx Workspaces](https://nx.dev/). Every app is written in Typescript, recommended version of NodeJS is 18.x. To develop backend locally, you need to install Docker for working with database and migrations. Before running any projects locally, you need to install npm packages: 
+The repository consists of several applications which are managed by [Nx Workspaces](https://nx.dev/). Every app is written in [Typescript](https://www.typescriptlang.org/), recommended version of [NodeJS](https://nodejs.org/) is 18.x. To develop backend locally, you need to install [Docker](https://www.docker.com/) for working with database and migrations. Before running any projects locally, you need to install npm packages: 
 
 ```bash
 npm i
@@ -12,7 +12,7 @@ npm i
 
 ## Frontend
 
-Main site frontend written in Angular. To start frontend project locally:
+Main site frontend written in [Angular](https://angular.io/). To start frontend project locally:
 
 ```bash
 npm run frontend
@@ -28,7 +28,7 @@ Connection to different backends is managed in [url-params.config](https://githu
 
 ## Database
 
-There is a [PostgreSQL](https://www.postgresql.org/) database using [Liquibase](https://www.liquibase.org/) for migrations and [PgAdmin](https://www.pgadmin.org/) for database management. To setup database make sure [Docker](https://www.docker.com/) is installed and running, then execute this script once:
+There is a [PostgreSQL](https://www.postgresql.org/) database using [Liquibase](https://www.liquibase.org/) for migrations and [PgAdmin](https://www.pgadmin.org/) for database management. To setup database make sure Docker is installed and running, then execute this script once:
 
 ```bash
 npm run database:setup
@@ -60,7 +60,7 @@ There is also an image of database `build/database/dev-database.tar` which store
 
 ## Backend
 
-Main site backend written in NestJS. To start backend project locally you need to first ensure that you have local version of database initialized (as described in previous section). Start script:
+Main site backend written in [NestJS](https://nestjs.com/). To start backend project locally you need to first ensure that you have local version of database initialized (as described in previous section). Start script:
 
 ```bash
 npm run backend
