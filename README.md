@@ -56,7 +56,7 @@ npm run database:generate-migrations
 ```
 
 After that, a file `build/database/dfcomps.changelog.json` is generated with migrations, which will be then applied to production database. Don't forget to run migrations and commit changelog file if you made any changes to database structure.
-There is also an image of database `build/database/dev-database.tar` which stores database with test data. This file is also updated on running `npm run database:generate-migrations` script and also need to be committed.
+There is also an image of database `build/database/dev-database.tar` which stores database with test data. This file is also updated on running `npm run database:generate-migrations` script and also needs to be committed.
 
 ## Backend
 
