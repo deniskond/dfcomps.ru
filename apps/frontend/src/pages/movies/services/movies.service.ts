@@ -10,7 +10,7 @@ export class MoviesService extends BackendService {
 
   public loadMoviesIfNeeded(): void {
     if (!this._movies$.value) {
-      this.post$<MovieInterface[]>(URL_PARAMS.MOVIES).subscribe((movies: MovieInterface[]) =>
+      this.get$<MovieInterface[]>(URL_PARAMS.MOVIES).subscribe((movies: MovieInterface[]) =>
         this._movies$.next(movies),
       );
     }
