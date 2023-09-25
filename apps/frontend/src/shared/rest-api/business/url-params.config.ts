@@ -23,7 +23,7 @@ export class URL_PARAMS {
   }
 
   public static get MOVIES(): string {
-    return `${API_URL}/movies`;
+    return `/api/movies`;
   }
 
   public static get USER_ACTIONS(): {

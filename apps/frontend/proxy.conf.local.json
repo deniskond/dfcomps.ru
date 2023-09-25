@@ -1,4 +1,11 @@
 {
+    "/api": {
+        "target": "http://127.0.0.1:4005",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug",
+        "pathRewrite": { "^/api" : "" }
+    },
     "/legacy-api": {
         "target": "http://127.0.0.1:4005",
         "secure": false,
