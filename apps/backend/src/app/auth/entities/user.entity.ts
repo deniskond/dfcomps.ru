@@ -14,16 +14,16 @@ export class User {
   @Column({ type: 'character varying' })
   password: string;
 
-  @Column({ type: 'character varying' })
+  @Column({ type: 'character varying', nullable: true })
   discord_tag: string;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'timestamp', nullable: true })
   last_discord_prompt: string;
 
   @Column({ type: 'character varying' })
   access_token: string;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'timestamp', nullable: true })
   last_nick_change_time: string;
 
   @Column({ type: 'integer' })
@@ -44,6 +44,6 @@ export class User {
   @Column({ type: 'character varying' })
   avatar: string;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'timestamp', nullable: true })
   comments_ban_date: string;
 }

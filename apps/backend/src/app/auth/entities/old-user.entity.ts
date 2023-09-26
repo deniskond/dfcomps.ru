@@ -1,6 +1,6 @@
 import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
 
-@Entity({ name: 'old-users' })
+@Entity({ name: 'old_users' })
 export class OldUser {
   @PrimaryGeneratedColumn()
   id: number;
@@ -11,7 +11,7 @@ export class OldUser {
   @Column({ type: 'character varying' })
   displayed_nick: string;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'timestamp', nullable: true })
   last_nick_change_time: string;
 
   @Column({ type: 'character varying' })
@@ -47,6 +47,6 @@ export class OldUser {
   @Column({ type: 'character varying' })
   team_status: string;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'timestamp', nullable: true })
   comments_ban_date: string;
 }
