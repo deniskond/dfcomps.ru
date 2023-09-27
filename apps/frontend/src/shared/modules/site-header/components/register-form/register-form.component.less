@@ -1,61 +1,64 @@
-:host {
-  width: 300px;
-  height: 174px;
-  display: block;
-}
-
 .dialog-header {
   text-align: center;
   margin-bottom: 20px;
 }
 
-.method-buttons {
-  margin-top: 30px;
-}
-
 .input-container {
   font-size: 16px;
   display: flex;
-  height: 28px;
-  margin-top: 12px;
+  margin: 16px 0;
 
   .input-caption {
-    width: 68px;
-    margin-right: 16px;
+    margin-right: 32px;
     line-height: 28px;
+  }
+
+  .input-field-container {
+    width: 100%;
   }
 
   .input-field {
     height: 28px;
     font-size: 16px;
-    width: 216px;
     padding-left: 4px;
+    width: 100%;
 
     &.password {
       font-family: bebas;
       letter-spacing: 2px;
     }
   }
+
+  .field-error {
+    color: red;
+    margin-top: 6px;
+    font-size: 12px;
+  }
 }
 
 .dialog-button {
+  position: relative;
   display: flex;
   justify-content: center;
-  margin-top: 16px;
-  position: relative;
 
+  .mat-button-disabled {
+    color: var(--base-font-color) !important;
+    background: var(--comments-background-color) !important;
+  }
   button {
     width: 100%;
   }
 }
 
-.login-error {
-  color: red;
-  text-align: center;
-  margin-top: 12px;
-}
-
 .spinner {
   position: absolute;
   top: 8px;
+}
+
+.required {
+  color: red;
+
+  &::after {
+    content: '*';
+  }
 }

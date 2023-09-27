@@ -35,12 +35,10 @@ export class UserService {
       .pipe(map(({ loginAvailable }: LoginAvailableDtoInterface) => loginAvailable));
   }
 
-  public register$(login: string, password: string, email: string): Observable<boolean> {
+  public register$(login: string): Observable<boolean> {
     return this.backendService
       .post$<LoginResponseDto>(URL_PARAMS.USER_ACTIONS.REGISTER, {
         login,
-        password,
-        email,
       })
       .pipe(
         tap(({ user }: LoginResponseDto) => this.setCurrentUser(user)),

@@ -146,4 +146,13 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   loginOrRegisterToPlay1v1: 'Войдите или зарегистрируйтесь, чтобы играть 1v1 матчи',
   logInWithPassword: 'Войти по паролю',
   logInWithDiscord: 'Войти через Discord',
+  registerNewDiscordAccount: 'Зарегистрировать новый аккаунт Discord',
+  discordAccountNotFound: 'К указанному аккаунту Discord не привязан аккаунт Dfcomps. Зарегистрировать новый аккаунт?',
+  yes: 'Да',
+  no: 'Нет',
+  finishSignUp: 'Завершить регистрацию',
+  signUpOnlyWithDiscord: 'Регистрация на сайте в данный момент доступна только через аккаунт Discord',
+  registerWithDiscord: 'Зарегистрироваться через Discord',
+  signUpLoginCaption:
+    'Выберите логин, под которым другие пользователи будут видеть вас на сайте',
 };

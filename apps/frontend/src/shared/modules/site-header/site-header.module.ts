@@ -16,6 +16,8 @@ import { SharedModule } from '../shared.module';
 import { DownloadDfDialogComponent } from './components/download-df-dialog/download-df-dialog.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
+import { NewDiscordAccountComponent } from './components/new-discord-account/new-discord-account.component';
+import { RegisterFormComponent } from './components/register-form/register-form.component';
 
 @NgModule({
   imports: [
@@ -39,6 +41,8 @@ import { MatIconModule } from '@angular/material/icon';
     LoginDialogComponent,
     RegisterDialogComponent,
     DownloadDfDialogComponent,
+    NewDiscordAccountComponent,
+    RegisterFormComponent,
   ],
   exports: [SiteHeaderComponent],
 })

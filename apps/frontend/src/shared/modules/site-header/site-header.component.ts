@@ -10,6 +10,7 @@ import { Themes } from '~shared/enums/themes.enum';
 import { ThemeService } from '~shared/services/theme/theme.service';
 import { TABS_CONFIG, TabInterface } from '~shared/configs/tabs.config';
 import { NavigationPages } from '~shared/enums/pages.enum';
+import { NewDiscordAccountComponent } from './components/new-discord-account/new-discord-account.component';
 
 @Component({
   selector: 'app-site-header',
@@ -42,6 +43,13 @@ export class SiteHeaderComponent implements OnInit, OnDestroy {
     this.initActivePageSubscription();
     this.language$ = this.languageService.getLanguage$();
     this.theme$ = this.themeService.getTheme$();
+
+    // TODO Delete this; used for testing
+    this.dialog.open(NewDiscordAccountComponent, {
+      data: {
+        isFirstStep: true,
+      },
+    });
   }
 
   ngOnDestroy(): void {
