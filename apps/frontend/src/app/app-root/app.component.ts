@@ -7,6 +7,7 @@ import { UserService } from '~shared/services/user-service/user.service';
 import { LanguageService } from '~shared/services/language/language.service';
 import { ThemeService } from '~shared/services/theme/theme.service';
 import { DuelService } from '~pages/1v1/services/duel.service';
+import { MatIconRegistry } from '@angular/material/icon';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private languageService: LanguageService,
     private duelService: DuelService,
     private themeService: ThemeService,
+    private matIconRegistry: MatIconRegistry,
   ) {}
 
   ngOnInit(): void {
@@ -30,6 +32,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.languageService.setLanguageFromCookie();
     this.themeService.setThemeFromCookie();
     this.initUserSubscriptions();
+    this.registerMatIcons();
   }
 
   ngOnDestroy(): void {
@@ -48,5 +51,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
       this.duelService.closeConnection();
     });
+  }
+
+  private registerMatIcons(): void {
+    this.matIconRegistry.addSvgIcon('discord', 'apps/frontend/assets/images/discord.svg');
   }
 }

@@ -13,6 +13,7 @@ import { finalize } from 'rxjs/operators';
 export class LoginDialogComponent {
   public loginResult: boolean;
   public isLoading = false;
+  public isSelectingMethod = true;
 
   public loginForm = new FormGroup({
     login: new FormControl('', Validators.required),
@@ -43,5 +44,9 @@ export class LoginDialogComponent {
           this.changeDetectorRef.detectChanges();
         },
       });
+  }
+
+  public proceedToLoginPassword(): void {
+    this.isSelectingMethod = false;
   }
 }

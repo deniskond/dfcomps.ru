@@ -144,4 +144,6 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   searchVQ3: 'Поиск VQ3',
   searchCPM: 'Поиск CPM',
   loginOrRegisterToPlay1v1: 'Войдите или зарегистрируйтесь, чтобы играть 1v1 матчи',
+  logInWithPassword: 'Войти по паролю',
+  logInWithDiscord: 'Войти через Discord',
 };

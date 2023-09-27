@@ -15,6 +15,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared.module';
 import { DownloadDfDialogComponent } from './components/download-df-dialog/download-df-dialog.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     ReactiveFormsModule,
     SharedModule,
     MatSlideToggleModule,
+    MatIconModule,
   ],
   declarations: [
     SiteHeaderComponent,

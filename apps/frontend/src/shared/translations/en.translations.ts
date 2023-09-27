@@ -143,5 +143,7 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
   downloadForValidation: 'Download all demos for validation',
   searchVQ3: 'Search VQ3',
   searchCPM: 'Search CPM',
-  loginOrRegisterToPlay1v1: 'Login or register to play 1v1 matches',
+  loginOrRegisterToPlay1v1: 'Log in or register to play 1v1 matches',
+  logInWithPassword: 'Log in with password',
+  logInWithDiscord: 'Log in with Discord',
 };
