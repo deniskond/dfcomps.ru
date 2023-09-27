@@ -26,19 +26,17 @@ export class URL_PARAMS {
     return `/api/movies`;
   }
 
-  public static get USER_ACTIONS(): {
-    LOGIN: string;
-    REGISTER: string;
-    LOGOUT: string;
-    CHECK_ACCESS: string;
+  public static get AUTH(): {
+    GET_PASSWORD_TOKEN: string;
+    GET_DISCORD_TOKEN: string;
     CHECK_LOGIN: string;
+    REGISTER: string;
   } {
     return {
-      LOGIN: `${API_URL}/user/login`,
-      REGISTER: `${API_URL}/user/register`,
-      LOGOUT: `${API_URL}/user/logout`,
-      CHECK_ACCESS: `${API_URL}/user/check_access`,
-      CHECK_LOGIN: `${API_URL}/user/check_login`,
+      GET_PASSWORD_TOKEN: '/api/auth/get-password-token',
+      GET_DISCORD_TOKEN: '/api/auth/get-discord-token',
+      CHECK_LOGIN: '/api/auth/check-login',
+      REGISTER: '/api/auth/register',
     };
   }
 

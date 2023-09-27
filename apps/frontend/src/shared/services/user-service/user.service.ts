@@ -15,9 +15,9 @@ export class UserService {
     return this._currentUser$.asObservable();
   }
 
-  public login$(login: string, password: string): Observable<boolean> {
+  public loginByPassword$(login: string, password: string): Observable<boolean> {
     return this.backendService
-      .post$<LoginResponseDto>(URL_PARAMS.USER_ACTIONS.LOGIN, {
+      .post$<LoginResponseDto>(URL_PARAMS.AUTH.GET_PASSWORD_TOKEN, {
         login,
         password,
       })
@@ -27,9 +27,20 @@ export class UserService {
       );
   }
 
+  public loginByDiscord$(discordAccessToken: string): Observable<boolean> {
+    return this.backendService
+      .post$<LoginResponseDto>(URL_PARAMS.AUTH.GET_DISCORD_TOKEN, {
+        discordAccessToken,
+      })
+      .pipe(
+        tap(({ user }: LoginResponseDto) => this.setCurrentUser(user)),
+        map(() => true),
+      );
+  }
+
   public checkLogin$(login: string): Observable<boolean> {
     return this.backendService
-      .post$<LoginAvailableDtoInterface>(URL_PARAMS.USER_ACTIONS.CHECK_LOGIN, {
+      .post$<LoginAvailableDtoInterface>(URL_PARAMS.AUTH.CHECK_LOGIN, {
         login,
       })
       .pipe(map(({ loginAvailable }: LoginAvailableDtoInterface) => loginAvailable));
@@ -37,7 +48,7 @@ export class UserService {
 
   public register$(login: string): Observable<boolean> {
     return this.backendService
-      .post$<LoginResponseDto>(URL_PARAMS.USER_ACTIONS.REGISTER, {
+      .post$<LoginResponseDto>(URL_PARAMS.AUTH.REGISTER, {
         login,
       })
       .pipe(

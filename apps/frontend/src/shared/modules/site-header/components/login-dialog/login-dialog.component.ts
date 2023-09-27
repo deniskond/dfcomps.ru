@@ -30,7 +30,7 @@ export class LoginDialogComponent {
     this.isLoading = true;
 
     this.userService
-      .login$(this.loginForm.controls['login'].value!, this.loginForm.controls['password'].value!)
+      .loginByPassword$(this.loginForm.controls['login'].value!, this.loginForm.controls['password'].value!)
       .pipe(
         finalize(() => {
           this.isLoading = false;
@@ -48,5 +48,9 @@ export class LoginDialogComponent {
 
   public proceedToLoginPassword(): void {
     this.isSelectingMethod = false;
+  }
+
+  public startDiscordOAuth(): void {
+    window.location.href = 'https://discord.com/oauth2/authorize?response_type=token&client_id=1154028126783946772&scope=identify';
   }
 }
