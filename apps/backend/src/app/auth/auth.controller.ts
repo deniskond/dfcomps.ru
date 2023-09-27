@@ -7,7 +7,7 @@ import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { sha256 } from 'js-sha256';
 import * as moment from 'moment';
-import * as md5 from 'md5';
+import { v4 } from 'uuid';
 
 @Controller('auth')
 export class AuthController {
@@ -48,10 +48,10 @@ export class AuthController {
         id,
         login: nick,
         displayed_nick,
-        password: sha256(password),
+        password: sha256(password + process.env.SALT),
         discord_tag: null,
         last_discord_prompt: null,
-        access_token: sha256(sha256(password)),
+        access_token: v4(),
         last_nick_change_time,
         initial_cpm_rating,
         cpm_rating,
