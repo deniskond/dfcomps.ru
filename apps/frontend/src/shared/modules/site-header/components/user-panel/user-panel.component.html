@@ -4,7 +4,7 @@
     <span>&nbsp;{{ user.nick }}</span>
   </span>
   <div class="profile-links">
-    <a *ngIf="!!user && (user.access === 'admin' || user.access === 'cup_organizer')" matRipple href="/admin" class="profile-link blue-link">
+    <a *ngIf="hasAdminPanelAccess(user)" matRipple href="/admin" class="profile-link blue-link">
       <span translate translation="adminPanel"></span>
     </a>
     <!-- TODO [DFRU-30] Страница команды -->

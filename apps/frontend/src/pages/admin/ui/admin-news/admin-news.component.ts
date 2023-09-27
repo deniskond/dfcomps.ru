@@ -6,8 +6,9 @@ import { AdminDataService } from '../../business/admin-data.service';
 import { AdminNewsInterface } from '../../models/admin-news.interface';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { UserService } from '~shared/services/user-service/user.service';
-import { UserAccess } from '~shared/enums/user-access.enum';
 import { NewsTypes } from '~shared/enums/news-types.enum';
+import { checkUserRoles } from '~shared/helpers/check-roles';
+import { UserRole } from '@dfcomps/contracts';
 
 @Component({
   selector: 'admin-news',
@@ -19,7 +20,6 @@ export class AdminNewsComponent implements OnInit {
   public news: AdminNewsInterface[];
   public news$ = new ReplaySubject<AdminNewsInterface[]>(1);
   public user$: Observable<UserInterface>;
-  public userAccess = UserAccess;
 
   constructor(
     private adminDataService: AdminDataService,
@@ -65,5 +65,9 @@ export class AdminNewsComponent implements OnInit {
     };
 
     return newsTypeRouteMap[newsType];
+  }
+
+  public hasNewsDeleteAccess(user: UserInterface): boolean {
+    return checkUserRoles(user, [UserRole.ADMIN]);
   }
 }

@@ -1,13 +1,11 @@
-import { UserAccess } from '../enums/user-access.enum';
+import { UserRole } from '@dfcomps/contracts';
 
 export interface UserInterface {
-  access: UserAccess;
   avatar: string;
   country: string;
-  cpmRating: string;
+  cpmRating: number;
   id: string;
   nick: string;
-  teamId: string;
-  teamStatus: string;
-  vq3Rating: string;
+  vq3Rating: number;
+  roles: UserRole[];
 }

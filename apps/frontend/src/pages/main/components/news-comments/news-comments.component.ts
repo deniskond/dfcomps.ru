@@ -27,13 +27,14 @@ import {
 import { AnimationEvent } from '@angular/animations';
 import { SmilesDropdownComponent } from './components/smiles-dropdown/smiles-dropdown.component';
 import { SmileInterface } from '~shared/configs/smiles.config';
-import { UserAccess } from '~shared/enums/user-access.enum';
 import { CommentInterface } from '~shared/interfaces/comments.interface';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { LanguageService } from '~shared/services/language/language.service';
 import { PersonalSmileInterface } from '~shared/services/smiles/personal-smile.interface';
 import { SmilesService } from '~shared/services/smiles/smiles.service';
 import { UserService } from '~shared/services/user-service/user.service';
+import { UserRole } from '@dfcomps/contracts';
+import { checkUserRoles } from '~shared/helpers/check-roles';
 
 const COMMENT_ACTION_PERIOD_MINUTES = 2;
 
@@ -243,7 +244,7 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
       .add(COMMENT_ACTION_PERIOD_MINUTES, 'minutes')
       .isAfter(moment());
     const isEditable: boolean = !!user && comment.playerId === user.id && isNewComment;
-    const isAdminDeletable: boolean = !comment.reason && !isEditable && !!user && user.access === UserAccess.ADMIN;
+    const isAdminDeletable: boolean = !comment.reason && !isEditable && !!user && checkUserRoles(user, [UserRole.ADMIN]);
 
     return { ...comment, isEditable, isAdminDeletable };
   }

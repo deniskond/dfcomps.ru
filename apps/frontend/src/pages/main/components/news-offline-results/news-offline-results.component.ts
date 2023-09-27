@@ -1,13 +1,13 @@
-import { API_URL } from '~shared/rest-api';
 import { Component, Input, OnInit, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { CUSTOM_TABLE_NEWS_LIMIT } from '../../config/news.config';
 import { map, Observable, take } from 'rxjs';
 import { UserService } from '~shared/services/user-service/user.service';
 import { NewsService } from '~shared/services/news-service/news.service';
-import { UserAccess } from '~shared/enums/user-access.enum';
 import { NewsOfflineResultsInterface } from '~shared/services/news-service/interfaces/news-offline-results.interface';
 import { Physics } from '~shared/enums/physics.enum';
 import { InvalidDemoInterface } from '~shared/interfaces/invalid-demo.interface';
+import { checkUserRoles } from '~shared/helpers/check-roles';
+import { UserRole } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-news-offline-results',
@@ -35,9 +35,7 @@ export class NewsOfflineResultsComponent implements OnInit, OnChanges {
       take(1),
       map(
         (user) =>
-          !!user &&
-          (user.access === UserAccess.ADMIN || user.access === UserAccess.VALIDATOR) &&
-          this.news.cup.demosValidated === '0',
+          !!user && checkUserRoles(user, [UserRole.VALIDATOR]) && this.news.cup.demosValidated === '0',
       ),
     );
   }

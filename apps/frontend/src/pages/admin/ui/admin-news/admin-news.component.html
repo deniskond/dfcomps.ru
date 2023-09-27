@@ -39,7 +39,7 @@
             Edit
           </button>
           <ng-container *ngIf="(user$ | async) as user">
-            <button *ngIf="user.access === userAccess.ADMIN" (click)="confirmDelete(newsItem)" mat-raised-button color="warn">Delete</button>
+            <button *ngIf="hasNewsDeleteAccess(user)" (click)="confirmDelete(newsItem)" mat-raised-button color="warn">Delete</button>
           </ng-container>
         </ng-container>
         <ng-template #noActionsAvailable> No actions available </ng-template>

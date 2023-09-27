@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { GetDiscordTokenDto, GetPasswordTokenDto, TokenDto } from '@dfcomps/contracts';
+import { GetDiscordTokenDto, GetPasswordTokenDto, LoginResponseDto } from '@dfcomps/contracts';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OldUser } from './entities/old-user.entity';
 import { Repository } from 'typeorm';
@@ -8,22 +8,37 @@ import { User } from './entities/user.entity';
 import { sha256 } from 'js-sha256';
 import * as moment from 'moment';
 import { v4 } from 'uuid';
+import { UserRole } from '@dfcomps/contracts';
 
 @Controller('auth')
 export class AuthController {
+  // TODO Delete mock
+  private loginResponseMock: LoginResponseDto = {
+    user: {
+      avatar: '',
+      country: 'ru',
+      cpmRating: 1500,
+      vq3Rating: 1500,
+      id: '10',
+      nick: 'Nosf',
+      roles: [UserRole.SUPERADMIN],
+    },
+    token: '123',
+  };
+
   constructor(
     private readonly authService: AuthService,
     @InjectRepository(OldUser) private readonly oldUserRepository: Repository<OldUser>,
   ) {}
 
   @Post('get-password-token')
-  getPasswordToken(@Body() getPasswordTokenDto: GetPasswordTokenDto): Promise<TokenDto> {
-    return Promise.resolve({ token: '', roles: [] });
+  getPasswordToken(@Body() getPasswordTokenDto: GetPasswordTokenDto): Promise<LoginResponseDto> {
+    return Promise.resolve(this.loginResponseMock);
   }
 
   @Post('get-password-token')
-  getDiscordToken(@Body() getDiscordTokenDto: GetDiscordTokenDto): Promise<TokenDto> {
-    return Promise.resolve({ token: '', roles: [] });
+  getDiscordToken(@Body() getDiscordTokenDto: GetDiscordTokenDto): Promise<LoginResponseDto> {
+    return Promise.resolve(this.loginResponseMock);
   }
 
   @Post('convert-table')

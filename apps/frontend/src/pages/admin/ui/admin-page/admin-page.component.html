@@ -15,13 +15,15 @@
       caption="Cups"
       icon="grade"
     ></admin-menu-item>
-    <admin-menu-item
-      *ngIf="(user$ | async)?.access === userAccess.ADMIN"
-      [isActive]="navigationPage === 'season'"
-      routerLink="/admin/season"
-      caption="Season"
-      icon="auto_mode"
-    ></admin-menu-item>
+    <ng-container *ngIf="user$ | async as user">
+      <admin-menu-item
+        *ngIf="hasSeasonAccess(user)"
+        [isActive]="navigationPage === 'season'"
+        routerLink="/admin/season"
+        caption="Season"
+        icon="auto_mode"
+      ></admin-menu-item>
+    </ng-container>
   </div>
   <div class="content">
     <div class="content-header">

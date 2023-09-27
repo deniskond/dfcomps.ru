@@ -6,7 +6,6 @@ import { Subject, Observable, timer } from 'rxjs';
 import { takeUntil, filter, map, switchMap, finalize } from 'rxjs/operators';
 import { EMAIL_VALIDATION_REGEXP } from './configs/register-dialog.config';
 import { UserService } from '../../../../services/user-service/user.service';
-import { UserInterface } from '../../../../interfaces/user.interface';
 
 const DEBOUNCE_TIME = 300;
 
@@ -112,11 +111,7 @@ export class RegisterDialogComponent implements OnInit, OnDestroy {
         this.registerForm.get('email')!.value!,
       )
       .pipe(finalize(() => (this.isLoading = false)))
-      .subscribe((user: UserInterface) => {
-        // TODO should be moved into userService
-        this.userService.setCurrentUser(user);
-        this.dialogRef.close();
-      });
+      .subscribe(() => this.dialogRef.close());
   }
 
   private initDisplayErrorsSubscription(): void {

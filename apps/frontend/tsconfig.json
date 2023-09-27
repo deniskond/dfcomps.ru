@@ -25,7 +25,8 @@
       "~app/*": ["apps/frontend/src/app/*"],
       "~pages/*": ["apps/frontend/src/pages/*"],
       "~features/*": ["apps/frontend/src/features/*"],
-      "~shared/*": ["apps/frontend/src/shared/*"]
+      "~shared/*": ["apps/frontend/src/shared/*"],
+      "@dfcomps/contracts": ["libs/contracts/src/index.ts"]
     },
     "target": "es2020"
   },
