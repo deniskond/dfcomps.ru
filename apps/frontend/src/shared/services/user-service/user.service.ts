@@ -3,7 +3,7 @@ import { BackendService, URL_PARAMS } from '~shared/rest-api';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { UserInterface } from '../../interfaces/user.interface';
-import { LoginAvailableDtoInterface, LoginResponseDto } from '@dfcomps/contracts';
+import { LoginAvailableDto, LoginResponseDto } from '@dfcomps/contracts';
 
 @Injectable()
 export class UserService {
@@ -40,10 +40,10 @@ export class UserService {
 
   public checkLogin$(login: string): Observable<boolean> {
     return this.backendService
-      .post$<LoginAvailableDtoInterface>(URL_PARAMS.AUTH.CHECK_LOGIN, {
+      .post$<LoginAvailableDto>(URL_PARAMS.AUTH.CHECK_LOGIN, {
         login,
       })
-      .pipe(map(({ loginAvailable }: LoginAvailableDtoInterface) => loginAvailable));
+      .pipe(map(({ loginAvailable }: LoginAvailableDto) => loginAvailable));
   }
 
   public register$(login: string, discordAccessToken: string): Observable<boolean> {

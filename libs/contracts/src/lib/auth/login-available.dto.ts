@@ -1,3 +1,3 @@
-export interface LoginAvailableDtoInterface {
+export interface LoginAvailableDto {
   loginAvailable: boolean;
 }

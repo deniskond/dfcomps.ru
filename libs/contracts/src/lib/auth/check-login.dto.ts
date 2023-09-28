@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class GetDiscordTokenDto {
+export class CheckLoginDto {
   @IsNotEmpty()
-  discordAccessToken: string;
+  login: string;
 }

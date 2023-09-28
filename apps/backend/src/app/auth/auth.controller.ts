@@ -1,12 +1,20 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { GetDiscordTokenDto, GetPasswordTokenDto, LoginResponseDto } from '@dfcomps/contracts';
+import {
+  CheckLoginDto,
+  GetDiscordTokenDto,
+  GetPasswordTokenDto,
+  LoginAvailableDto,
+  LoginResponseDto,
+  RegisterDto,
+} from '@dfcomps/contracts';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OldUser } from './entities/old-user.entity';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { sha256 } from 'js-sha256';
 import * as moment from 'moment';
+import * as md5 from 'md5';
 import { v4 } from 'uuid';
 import { UserRole } from '@dfcomps/contracts';
 
@@ -32,12 +40,24 @@ export class AuthController {
   ) {}
 
   @Post('get-password-token')
-  getPasswordToken(@Body() getPasswordTokenDto: GetPasswordTokenDto): Promise<LoginResponseDto> {
+  getPasswordToken(@Body() { login, password }: GetPasswordTokenDto): Promise<LoginResponseDto> {
     return Promise.resolve(this.loginResponseMock);
   }
 
   @Post('get-password-token')
-  getDiscordToken(@Body() getDiscordTokenDto: GetDiscordTokenDto): Promise<LoginResponseDto> {
+  getDiscordToken(@Body() { discordAccessToken }: GetDiscordTokenDto): Promise<LoginResponseDto> {
+    return Promise.resolve(this.loginResponseMock);
+  }
+
+  @Post('check-login')
+  checkLogin(@Body() { login }: CheckLoginDto): Promise<LoginAvailableDto> {
+    return Promise.resolve({
+      loginAvailable: true,
+    });
+  }
+
+  @Post('register')
+  register(@Body() { login, discordAccessToken }: RegisterDto): Promise<LoginResponseDto> {
     return Promise.resolve(this.loginResponseMock);
   }
 
