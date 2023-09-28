@@ -8,12 +8,12 @@ describe('testing connection', () => {
     Cookie: 'login=admin; password=admin',
   };
   it('create competition', async () => {
-    let resp = await fetch('http://localhost:4004/competitions', {
+    let resp = await fetch('http://localhost:4006/competitions', {
       headers: adminHeaders,
       method: 'POST',
     });
     expect(resp.status).toEqual(400);
-    resp = await fetch('http://localhost:4004/competitions', {
+    resp = await fetch('http://localhost:4006/competitions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -21,7 +21,7 @@ describe('testing connection', () => {
       body: JSON.stringify({ numBans: 2 }),
     });
     expect(resp.status).toEqual(403);
-    resp = await fetch('http://localhost:4004/competitions', {
+    resp = await fetch('http://localhost:4006/competitions', {
       method: 'POST',
       headers: {
         ...adminHeaders,
@@ -34,7 +34,7 @@ describe('testing connection', () => {
   });
 
   it('listing competition', async () => {
-    let resp = await fetch('http://localhost:4004/competitions', {
+    let resp = await fetch('http://localhost:4006/competitions', {
       method: 'POST',
       headers: {
         ...adminHeaders,
@@ -45,17 +45,17 @@ describe('testing connection', () => {
     expect(resp.status).toEqual(200);
     const competitionId: string = (await resp.json()).id;
     // get list
-    resp = await fetch('http://localhost:4004/competitions', { method: 'GET' });
+    resp = await fetch('http://localhost:4006/competitions', { method: 'GET' });
     expect(resp.status).toEqual(200);
     expect(await resp.json()).toEqual(expect.arrayContaining([competitionId]));
-    resp = await fetch('http://localhost:4004/competitions', { method: 'GET', headers: { ...adminHeaders } });
+    resp = await fetch('http://localhost:4006/competitions', { method: 'GET', headers: { ...adminHeaders } });
     expect(resp.status).toEqual(200);
     expect(await resp.json()).toEqual(expect.arrayContaining([competitionId]));
     // get exact
-    resp = await fetch(`http://localhost:4004/competitions/${competitionId}`, { method: 'GET' });
+    resp = await fetch(`http://localhost:4006/competitions/${competitionId}`, { method: 'GET' });
     expect(resp.status).toEqual(200);
     expect(await resp.json()).toEqual(expect.objectContaining({ id: competitionId }));
-    resp = await fetch(`http://localhost:4004/competitions/${competitionId}`, {
+    resp = await fetch(`http://localhost:4006/competitions/${competitionId}`, {
       method: 'GET',
       headers: { ...adminHeaders },
     });
@@ -63,7 +63,7 @@ describe('testing connection', () => {
     expect(await resp.json()).toEqual(expect.objectContaining({ id: competitionId }));
   });
   it('adding players', async () => {
-    let resp = await fetch('http://localhost:4004/competitions', {
+    let resp = await fetch('http://localhost:4006/competitions', {
       method: 'POST',
       headers: {
         ...adminHeaders,
@@ -74,32 +74,32 @@ describe('testing connection', () => {
     expect(resp.status).toEqual(200);
     const competitionId: string = (await resp.json()).id;
     // check errors
-    resp = await fetch(`http://localhost:4004/competitions/${competitionId}/players`, { method: 'PUT' });
+    resp = await fetch(`http://localhost:4006/competitions/${competitionId}/players`, { method: 'PUT' });
     expect(resp.status).toEqual(400);
-    resp = await fetch(`http://localhost:4004/competitions/${competitionId}/players?nick=player`, { method: 'PUT' });
+    resp = await fetch(`http://localhost:4006/competitions/${competitionId}/players?nick=player`, { method: 'PUT' });
     expect(resp.status).toEqual(404);
-    resp = await fetch(`http://localhost:4004/competitions/${competitionId}/players`, {
+    resp = await fetch(`http://localhost:4006/competitions/${competitionId}/players`, {
       method: 'PUT',
       headers: { ...adminHeaders },
     });
     expect(resp.status).toEqual(400);
     // success
-    resp = await fetch(`http://localhost:4004/competitions/${competitionId}/players?nick=player`, {
+    resp = await fetch(`http://localhost:4006/competitions/${competitionId}/players?nick=player`, {
       method: 'PUT',
       headers: { ...adminHeaders },
     });
     expect(resp.status).toEqual(200);
-    resp = await fetch(`http://localhost:4004/competitions/${competitionId}/players?nick=player`, {
+    resp = await fetch(`http://localhost:4006/competitions/${competitionId}/players?nick=player`, {
       method: 'PUT',
       headers: { ...adminHeaders },
     });
     expect(resp.status).toEqual(409);
-    resp = await fetch(`http://localhost:4004/competitions/${competitionId}/players`, { method: 'GET' });
+    resp = await fetch(`http://localhost:4006/competitions/${competitionId}/players`, { method: 'GET' });
     expect(resp.status).toEqual(200);
     expect(await resp.json()).toEqual(expect.arrayContaining([expect.objectContaining({ playerName: 'player' })]));
   });
-  it.skip('adding maps', async () => {
-    let resp = await fetch('http://localhost:4004/competitions', {
+  it('adding maps', async () => {
+    let resp = await fetch('http://localhost:4006/competitions', {
       method: 'POST',
       headers: {
         ...adminHeaders,
@@ -110,32 +110,32 @@ describe('testing connection', () => {
     expect(resp.status).toEqual(200);
     const competitionId: string = (await resp.json()).id;
     // check errors
-    resp = await fetch(`http://localhost:4004/competitions/${competitionId}/maps`, { method: 'PUT' });
+    resp = await fetch(`http://localhost:4006/competitions/${competitionId}/maps`, { method: 'PUT' });
     expect(resp.status).toEqual(400);
-    resp = await fetch(`http://localhost:4004/competitions/${competitionId}/maps?name=st1`, { method: 'PUT' });
+    resp = await fetch(`http://localhost:4006/competitions/${competitionId}/maps?name=st1`, { method: 'PUT' });
     expect(resp.status).toEqual(404);
-    resp = await fetch(`http://localhost:4004/competitions/${competitionId}/maps`, {
+    resp = await fetch(`http://localhost:4006/competitions/${competitionId}/maps`, {
       method: 'PUT',
       headers: { ...adminHeaders },
     });
     expect(resp.status).toEqual(400);
-    resp = await fetch(`http://localhost:4004/competitions/${competitionId}/maps?name=_____`, {
+    resp = await fetch(`http://localhost:4006/competitions/${competitionId}/maps?name=_____`, {
       method: 'PUT',
       headers: { ...adminHeaders },
     });
     expect(resp.status).toEqual(400);
     // success
-    resp = await fetch(`http://localhost:4004/competitions/${competitionId}/maps?name=st1`, {
+    resp = await fetch(`http://localhost:4006/competitions/${competitionId}/maps?name=st1`, {
       method: 'PUT',
       headers: { ...adminHeaders },
     });
     expect(resp.status).toEqual(200);
-    resp = await fetch(`http://localhost:4004/competitions/${competitionId}/maps`, { method: 'GET' });
+    resp = await fetch(`http://localhost:4006/competitions/${competitionId}/maps`, { method: 'GET' });
     expect(resp.status).toEqual(200);
     expect(await resp.json()).toEqual(expect.arrayContaining([expect.objectContaining({ mapName: 'st1' })]));
   });
   it('starting competition', async () => {
-    let resp = await fetch('http://localhost:4004/competitions', {
+    let resp = await fetch('http://localhost:4006/competitions', {
       method: 'POST',
       headers: {
         ...adminHeaders,
@@ -148,7 +148,7 @@ describe('testing connection', () => {
     const players = [];
     for (let i = 0; i < 4; ++i) {
       players.push(`p${i}`);
-      resp = await fetch(`http://localhost:4004/competitions/${competitionId}/players?nick=p${i}`, {
+      resp = await fetch(`http://localhost:4006/competitions/${competitionId}/players?nick=p${i}`, {
         method: 'PUT',
         headers: { ...adminHeaders },
       });
@@ -156,20 +156,20 @@ describe('testing connection', () => {
     }
     const maplist = ['st1', 'st2', 'pornstar-bless', 'cityrocket', 'vorue-grind', '=53='];
     for (const i of maplist) {
-      resp = await fetch(`http://localhost:4004/competitions/${competitionId}/maps?name=${encodeURI(i)}`, {
+      resp = await fetch(`http://localhost:4006/competitions/${competitionId}/maps?name=${encodeURI(i)}`, {
         method: 'PUT',
         headers: { ...adminHeaders },
       });
       expect(resp.status).toEqual(200);
     }
     // [TODO] add error handling checkers
-    resp = await fetch(`http://localhost:4004/competitions/${competitionId}/start`, {
+    resp = await fetch(`http://localhost:4006/competitions/${competitionId}/start`, {
       method: 'POST',
       headers: { ...adminHeaders },
     });
     expect(resp.status).toEqual(200);
     expect(await resp.json()).toEqual(3);
-    resp = await fetch(`http://localhost:4004/competitions/${competitionId}`, {
+    resp = await fetch(`http://localhost:4006/competitions/${competitionId}`, {
       method: 'GET',
       headers: { ...adminHeaders },
     });
@@ -189,7 +189,7 @@ describe('testing connection', () => {
       }),
     );
 
-    resp = await fetch(`http://localhost:4004/competitions/${competitionId}/rounds/1`, {
+    resp = await fetch(`http://localhost:4006/competitions/${competitionId}/rounds/1`, {
       method: 'POST',
       headers: { ...adminHeaders },
     });
@@ -199,12 +199,12 @@ describe('testing connection', () => {
     console.log(round);
     console.log('==============================');
     const p0ws = new WebSocket(
-      `ws://localhost:4004/bracket/${competitionId}/rounds/1?token=${encodeURI(round.tokens[0].token)}`,
+      `ws://localhost:4006/bracket/${competitionId}/rounds/1?token=${encodeURI(round.tokens[0].token)}`,
     );
     const p1ws = new WebSocket(
-      `ws://localhost:4004/bracket/${competitionId}/rounds/1?token=${encodeURI(round.tokens[1].token)}`,
+      `ws://localhost:4006/bracket/${competitionId}/rounds/1?token=${encodeURI(round.tokens[1].token)}`,
     );
-    const adminWs = new WebSocket(`ws://localhost:4004/bracket/${competitionId}/rounds/1`, { headers: adminHeaders });
+    const adminWs = new WebSocket(`ws://localhost:4006/bracket/${competitionId}/rounds/1`, { headers: adminHeaders });
     // [TODO] fix async logic to replace sleep
     await new Promise((r) => {
       p0ws.on('open', () => {
@@ -250,7 +250,7 @@ describe('testing connection', () => {
       { result: expect.objectContaining({ stage: 'Running' }) },
       { result: expect.objectContaining({ stage: 'Completed' }) },
     ]);
-    resp = await fetch(`http://localhost:4004/competitions/${competitionId}`);
+    resp = await fetch(`http://localhost:4006/competitions/${competitionId}`);
     expect(resp.status).toEqual(200);
     const res = await resp.json();
     expect(res).toEqual(
@@ -260,7 +260,7 @@ describe('testing connection', () => {
     );
   });
   // it('test', async () => {
-  //   const wsloop = new WebSocket(`ws://localhost:4004/loop/asd`, { headers: adminHeaders });
+  //   const wsloop = new WebSocket(`ws://localhost:4006/loop/asd`, { headers: adminHeaders });
   //   wsloop.on('open', () => {
   //     wsloop.send(JSON.stringify({ action: 'Ban', mapIndex: 0 }));
   //   });
@@ -270,27 +270,27 @@ describe('testing connection', () => {
 });
 
 // creating competition
-// curl -X POST -H "Content-Type: application/json" -d '{"numBans": 2}' http://localhost:4004/competitions          -> "You must be logged in to create competitions"
-// curl -X POST -H "Cookie: login=admin; password=admin" http://localhost:4004/competitions                         -> CompetitionRules expected at body
-// curl -X POST -H "Cookie: login=admin; password=admin" -H "Content-Type: application/json" -d '{"numBans": 2}' http://localhost:4004/competitions
+// curl -X POST -H "Content-Type: application/json" -d '{"numBans": 2}' http://localhost:4006/competitions          -> "You must be logged in to create competitions"
+// curl -X POST -H "Cookie: login=admin; password=admin" http://localhost:4006/competitions                         -> CompetitionRules expected at body
+// curl -X POST -H "Cookie: login=admin; password=admin" -H "Content-Type: application/json" -d '{"numBans": 2}' http://localhost:4006/competitions
 
 // listing competitions
-// curl -X GET http://localhost:4004/competitions
-// ID=$(curl -X GET -H "Cookie: login=admin; password=admin" http://localhost:4004/competitions | jq -r '.[0]')
-// curl -X GET "http://localhost:4004/competitions/$ID"
-// curl -X GET -H "Cookie: login=admin; password=admin" "http://localhost:4004/competitions/$ID"
+// curl -X GET http://localhost:4006/competitions
+// ID=$(curl -X GET -H "Cookie: login=admin; password=admin" http://localhost:4006/competitions | jq -r '.[0]')
+// curl -X GET "http://localhost:4006/competitions/$ID"
+// curl -X GET -H "Cookie: login=admin; password=admin" "http://localhost:4006/competitions/$ID"
 
 // adding players
-// curl -X PUT -H "Cookie: login=admin; password=admin" "http://localhost:4004/competitions/$ID/players"            -> "Expected 'nick' query string parameter"
-// curl -X PUT "http://localhost:4004/competitions/$ID/players?nick=rantrave"                                       -> "Competition with id='.*' is not found"
-// curl -X PUT -H "Cookie: login=admin; password=admin" "http://localhost:4004/competitions/$ID/players?nick=rantrave"
-// curl -X PUT -H "Cookie: login=admin; password=admin" "http://localhost:4004/competitions/$ID/players?nick=--w00deh--"
-// curl -X PUT -H "Cookie: login=admin; password=admin" "http://localhost:4004/competitions/$ID/players?nick=n0sf"
-// curl -X PUT -H "Cookie: login=admin; password=admin" "http://localhost:4004/competitions/$ID/players?nick=raven"
+// curl -X PUT -H "Cookie: login=admin; password=admin" "http://localhost:4006/competitions/$ID/players"            -> "Expected 'nick' query string parameter"
+// curl -X PUT "http://localhost:4006/competitions/$ID/players?nick=rantrave"                                       -> "Competition with id='.*' is not found"
+// curl -X PUT -H "Cookie: login=admin; password=admin" "http://localhost:4006/competitions/$ID/players?nick=rantrave"
+// curl -X PUT -H "Cookie: login=admin; password=admin" "http://localhost:4006/competitions/$ID/players?nick=--w00deh--"
+// curl -X PUT -H "Cookie: login=admin; password=admin" "http://localhost:4006/competitions/$ID/players?nick=n0sf"
+// curl -X PUT -H "Cookie: login=admin; password=admin" "http://localhost:4006/competitions/$ID/players?nick=raven"
 
 // adding maps
-// curl -X PUT "http://localhost:4004/competitions/$ID/maps?name=st1"                                               -> "Competition with id='.*' is not found"
-// curl -X PUT -H "Cookie: login=admin; password=admin" "http://localhost:4004/competitions/$ID/maps?name=_____"    -> "Map _____ is not found"
-// curl -X PUT -H "Cookie: login=admin; password=admin" "http://localhost:4004/competitions/$ID/maps?name=st1"
+// curl -X PUT "http://localhost:4006/competitions/$ID/maps?name=st1"                                               -> "Competition with id='.*' is not found"
+// curl -X PUT -H "Cookie: login=admin; password=admin" "http://localhost:4006/competitions/$ID/maps?name=_____"    -> "Map _____ is not found"
+// curl -X PUT -H "Cookie: login=admin; password=admin" "http://localhost:4006/competitions/$ID/maps?name=st1"
 
 // starting competition

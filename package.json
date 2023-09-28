@@ -30,7 +30,7 @@
     "1v1-server:build": "nx build 1v1-server",
     "1v1-server:release": "docker build -t dfcomps-1v1-server . -f ./build/1v1-server/1v1-server.dockerfile && docker save dfcomps-1v1-server | ssh -C root@dfcomps.ru \"docker load && docker stop dfcomps-1v1-server || true && docker rm dfcomps-1v1-server || true && docker run -d -p 127.0.0.1:4002:4002 --name dfcomps-1v1-server --network dfcomps-network --env-file /usr/local/bin/secrets.env dfcomps-1v1-server\"",
     "race:local": "cross-env NODE_ENV=test nx serve race",
-    "race:test": "concurrently \"npm run race:local\" \"wait-on tcp:4004 && nx test race --runInBand\"",
+    "race:test": "concurrently \"npm run race:local\" \"wait-on tcp:4006 && nx test race --runInBand\"",
     "file-storage:release": "docker build -t dfcomps-file-storage . -f ./build/file-storage/file-storage.dockerfile && docker save dfcomps-file-storage | ssh -C root@dfcomps.ru \"docker load && docker run -d -p 127.0.0.1:4003:80 --name dfcomps-file-storage --network dfcomps-network --mount source=dfcomps-files,target=/var/www/html dfcomps-file-storage\"",
     "full-local-test:build": "docker build -t dfcomps-nginx-local . -f ./build/local-nginx/local-nginx.dockerfile",
     "full-local-test:run": "docker run -d -p 127.0.0.1:80:80 --name dfcomps-nginx-local --network dfcomps-network dfcomps-nginx-local",

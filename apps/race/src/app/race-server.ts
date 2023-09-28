@@ -13,7 +13,7 @@ import { isCompetitionRules } from './race/interfaces/views.iterface';
 // import { ParsedQs } from 'qs';
 
 export class RaceServer {
-  private readonly SERVER_PORT = 4004;
+  private readonly SERVER_PORT = 4006;
   private raceController: RaceController;
   private log_file = fs.createWriteStream(__dirname + '/debug.log', { flags: 'w' });
   private log_stdout = process.stdout;
