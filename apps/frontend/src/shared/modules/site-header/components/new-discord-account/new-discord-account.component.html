@@ -13,4 +13,4 @@
   </div>
 </ng-container>
 
-<dfcomps-register-form *ngIf="!isFirstStep" (closeDialog)="closeModal()"></dfcomps-register-form>
+<dfcomps-register-form *ngIf="!isFirstStep" [discordAccessToken]="data.discordAccessToken" (closeDialog)="closeModal()"></dfcomps-register-form>

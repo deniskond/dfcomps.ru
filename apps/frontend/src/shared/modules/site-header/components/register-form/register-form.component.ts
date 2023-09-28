@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subject, filter, finalize, map, switchMap, takeUntil, timer } from 'rxjs';
 import { LanguageService } from '~shared/services/language/language.service';
@@ -12,6 +12,7 @@ const DEBOUNCE_TIME = 300;
   styleUrls: ['./register-form.component.less'],
 })
 export class RegisterFormComponent {
+  @Input() discordAccessToken: string;
   @Output() closeDialog = new EventEmitter<void>();
 
   public needToDisplayErrors = false;
@@ -58,7 +59,7 @@ export class RegisterFormComponent {
     this.isLoading = true;
 
     this.userService
-      .register$(this.registerForm.get('login')!.value!)
+      .register$(this.registerForm.get('login')!.value!, this.discordAccessToken)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe(() => this.closeDialog.emit());
   }

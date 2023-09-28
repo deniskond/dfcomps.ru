@@ -9,6 +9,9 @@ import { Languages } from '~shared/enums/languages.enum';
 import { NewsTypes } from '~shared/enums/news-types.enum';
 import { LanguageService } from '~shared/services/language/language.service';
 import { NewsService } from '~shared/services/news-service/news.service';
+import { MatDialog } from '@angular/material/dialog';
+import { NewDiscordAccountComponent } from '~shared/modules/site-header';
+import { UserService } from '~shared/services/user-service/user.service';
 
 @Component({
   templateUrl: './main.page.html',
@@ -24,11 +27,18 @@ export class MainPageComponent implements OnInit {
   public languages = Languages;
   public showPrepostedNews = false;
 
-  constructor(private router: Router, private newsService: NewsService, private languageService: LanguageService) {}
+  constructor(
+    private router: Router,
+    private newsService: NewsService,
+    private languageService: LanguageService,
+    private dialog: MatDialog,
+    private userService: UserService,
+  ) {}
 
   ngOnInit(): void {
     this.newsService.loadMainPageNews();
     this.initObservables();
+    this.checkDiscordOauth();
   }
 
   public formatDate(date: string): string {
@@ -52,5 +62,37 @@ export class MainPageComponent implements OnInit {
       map((news: NewsInterfaceUnion[]) => news.filter((newsElem: NewsInterfaceUnion) => newsElem.preposted)),
     );
     this.language$ = this.languageService.getLanguage$();
+  }
+
+  private checkDiscordOauth(): void {
+    const discordAccessToken: string | null = localStorage.getItem('discordAccessToken');
+    const discordOAuthState: string | null = localStorage.getItem('discordOAuthState');
+
+    if (!discordAccessToken || !discordOAuthState) {
+      return;
+    }
+
+    localStorage.removeItem('discordAccessToken');
+    localStorage.removeItem('discordOAuthState');
+
+    if (discordOAuthState === 'login') {
+      this.userService.loginByDiscord$(discordAccessToken).subscribe({
+        error: () => {
+          this.dialog.open(NewDiscordAccountComponent, {
+            data: {
+              isFirstStep: true,
+              discordAccessToken,
+            },
+          });
+        },
+      });
+    } else if (discordOAuthState === 'register') {
+      this.dialog.open(NewDiscordAccountComponent, {
+        data: {
+          isFirstStep: false,
+          discordAccessToken,
+        },
+      });
+    }
   }
 }

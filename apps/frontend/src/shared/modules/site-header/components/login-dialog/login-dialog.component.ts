@@ -41,7 +41,7 @@ export class LoginDialogComponent {
         next: () => this.dialogRef.close(),
         error: () => {
           this.loginResult = false;
-          this.changeDetectorRef.detectChanges();
+          this.changeDetectorRef.markForCheck();
         },
       });
   }
@@ -51,6 +51,6 @@ export class LoginDialogComponent {
   }
 
   public startDiscordOAuth(): void {
-    window.location.href = 'https://discord.com/oauth2/authorize?response_type=token&client_id=1154028126783946772&scope=identify';
+    window.location.href = 'https://discord.com/oauth2/authorize?response_type=token&client_id=1154028126783946772&scope=identify&state=login';
   }
 }

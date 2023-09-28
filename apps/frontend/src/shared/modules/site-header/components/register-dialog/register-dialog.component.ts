@@ -8,4 +8,9 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class RegisterDialogComponent {
   constructor(public dialogRef: MatDialogRef<RegisterDialogComponent>) {}
+
+  public registerWithDiscord(): void {
+    window.location.href =
+      'https://discord.com/oauth2/authorize?response_type=token&client_id=1154028126783946772&scope=identify&state=register';
+  }
 }

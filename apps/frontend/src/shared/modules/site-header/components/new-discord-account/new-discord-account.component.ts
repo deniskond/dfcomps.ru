@@ -11,7 +11,7 @@ export class NewDiscordAccountComponent {
 
   constructor(
     public dialogRef: MatDialogRef<NewDiscordAccountComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { isFirstStep: boolean },
+    @Inject(MAT_DIALOG_DATA) public data: { isFirstStep: boolean; discordAccessToken: string },
   ) {}
 
   ngOnInit(): void {

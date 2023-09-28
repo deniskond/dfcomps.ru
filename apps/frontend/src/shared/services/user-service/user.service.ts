@@ -46,10 +46,11 @@ export class UserService {
       .pipe(map(({ loginAvailable }: LoginAvailableDtoInterface) => loginAvailable));
   }
 
-  public register$(login: string): Observable<boolean> {
+  public register$(login: string, discordAccessToken: string): Observable<boolean> {
     return this.backendService
       .post$<LoginResponseDto>(URL_PARAMS.AUTH.REGISTER, {
         login,
+        discordAccessToken,
       })
       .pipe(
         tap(({ user }: LoginResponseDto) => this.setCurrentUser(user)),
