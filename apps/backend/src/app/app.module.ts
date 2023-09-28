@@ -5,6 +5,7 @@ import { MoviesModule } from './movies/movies.module';
 import { Movie } from './movies/entities/movie.entity';
 import { OldUser } from './auth/entities/old-user.entity';
 import { User } from './auth/entities/user.entity';
+import { AuthRole } from './auth/entities/auth-role.entity';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { User } from './auth/entities/user.entity';
       port: 5432,
       username: 'user',
       password: process.env.DFCOMPS_POSTGRES_PASSWORD,
-      entities: [User, OldUser, Movie],
+      entities: [User, OldUser, Movie, AuthRole],
       database: 'dfcomps',
       synchronize: true,
       logging: true,

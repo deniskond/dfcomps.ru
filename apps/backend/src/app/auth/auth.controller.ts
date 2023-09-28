@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body, NotFoundException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {
   CheckLoginDto,
@@ -17,6 +17,7 @@ import * as moment from 'moment';
 import * as md5 from 'md5';
 import { v4 } from 'uuid';
 import { UserRole } from '@dfcomps/contracts';
+import { AuthRole } from './entities/auth-role.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -27,7 +28,7 @@ export class AuthController {
       country: 'ru',
       cpmRating: 1500,
       vq3Rating: 1500,
-      id: '10',
+      id: 10,
       nick: 'Nosf',
       roles: [UserRole.SUPERADMIN],
     },
@@ -36,12 +37,34 @@ export class AuthController {
 
   constructor(
     private readonly authService: AuthService,
+    @InjectRepository(AuthRole) private readonly authRoleRepository: Repository<AuthRole>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
     @InjectRepository(OldUser) private readonly oldUserRepository: Repository<OldUser>,
   ) {}
 
   @Post('get-password-token')
-  getPasswordToken(@Body() { login, password }: GetPasswordTokenDto): Promise<LoginResponseDto> {
-    return Promise.resolve(this.loginResponseMock);
+  async getPasswordToken(@Body() { login, password }: GetPasswordTokenDto): Promise<LoginResponseDto> {
+    const user: User = await this.userRepository.findOneBy({ login });
+    const hashedPassword = sha256(md5(md5(password)) + process.env.SALT);
+
+    if (user.password === hashedPassword) {
+      const userRoles: AuthRole[] = await this.authRoleRepository.findBy({ user_id: user.id });
+
+      return {
+        user: {
+          avatar: user.avatar,
+          country: user.country,
+          cpmRating: user.cpm_rating,
+          vq3Rating: user.vq3_rating,
+          id: user.id,
+          nick: user.displayed_nick,
+          roles: userRoles.map(({ role }: AuthRole) => role),
+        },
+        token: user.access_token,
+      };
+    }
+
+    throw new NotFoundException('User not found');
   }
 
   @Post('get-password-token')
@@ -99,7 +122,7 @@ export class AuthController {
     );
 
     // Uncomment when migrating
-    // await this.oldUserRepository.createQueryBuilder('users').insert().into(User).values(newUsers).execute();
+    // await this.userRepository.createQueryBuilder().insert().into(User).values(newUsers).execute();
 
     return 'ok';
   }

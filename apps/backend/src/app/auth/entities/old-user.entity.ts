@@ -18,19 +18,19 @@ export class OldUser {
   password: string;
 
   @Column({ type: 'integer' })
-  initial_cpm_rating: string;
+  initial_cpm_rating: number;
 
   @Column({ type: 'integer' })
-  cpm_rating: string;
+  cpm_rating: number;
 
   @Column({ type: 'integer' })
-  initial_vq3_rating: string;
+  initial_vq3_rating: number;
 
   @Column({ type: 'integer' })
-  vq3_rating: string;
+  vq3_rating: number;
 
   @Column({ type: 'integer' })
-  random: string;
+  random: number;
 
   @Column({ type: 'character varying' })
   access: string;
