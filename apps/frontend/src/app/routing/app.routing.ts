@@ -11,4 +11,13 @@ export const appRoutes: Routes = [
   { path: 'reflex', component: ReflexComponent },
   { path: 'admin', loadChildren: () => import('~pages/admin/admin.module').then((m) => m.AdminModule) },
   { path: 'timer', loadChildren: () => import('~pages/timer/timer.page.module').then((m) => m.TimerPageModule) },
+  {
+    path: 'oauth',
+    children: [
+      {
+        path: 'discord',
+        loadChildren: () => import('~features/discord-oauth/discord-oauth.module').then((m) => m.DiscordOauthModule),
+      },
+    ],
+  },
 ];
