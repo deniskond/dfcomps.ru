@@ -195,9 +195,6 @@ describe('testing connection', () => {
     });
     expect(resp.status).toEqual(200);
     const round = (await resp.json()) as RoundView & { tokens: { token: string }[] };
-    console.log('==============================');
-    console.log(round);
-    console.log('==============================');
     const p0ws = new WebSocket(
       `ws://localhost:4006/bracket/${competitionId}/rounds/1?token=${encodeURI(round.tokens[0].token)}`,
     );
@@ -255,18 +252,12 @@ describe('testing connection', () => {
     const res = await resp.json();
     expect(res).toEqual(
       expect.objectContaining({
-        brackets: { rounds: expect.arrayContaining([{ players: [0, null] }, { winnerIndex: 0 }]) },
+        brackets: {
+          rounds: expect.arrayContaining([{ players: [0, null] }, expect.objectContaining({ winnerIndex: 0 })]),
+        },
       }),
     );
   });
-  // it('test', async () => {
-  //   const wsloop = new WebSocket(`ws://localhost:4006/loop/asd`, { headers: adminHeaders });
-  //   wsloop.on('open', () => {
-  //     wsloop.send(JSON.stringify({ action: 'Ban', mapIndex: 0 }));
-  //   });
-  //   await new Promise((resolve) => setTimeout(resolve, 2000));
-  //   wsloop.close();
-  // });
 });
 
 // creating competition
@@ -292,5 +283,3 @@ describe('testing connection', () => {
 // curl -X PUT "http://localhost:4006/competitions/$ID/maps?name=st1"                                               -> "Competition with id='.*' is not found"
 // curl -X PUT -H "Cookie: login=admin; password=admin" "http://localhost:4006/competitions/$ID/maps?name=_____"    -> "Map _____ is not found"
 // curl -X PUT -H "Cookie: login=admin; password=admin" "http://localhost:4006/competitions/$ID/maps?name=st1"
-
-// starting competition

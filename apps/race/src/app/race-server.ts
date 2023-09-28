@@ -67,7 +67,6 @@ export class RaceServer {
         this.response(res, this.raceController.createCompetition(req.body, token));
       })
       .get((req: express.Request, res: express.Response) => {
-        this.log('request');
         const token = this.getAdminToken(req);
         this.response(res, this.raceController.listCompetitions(token));
       });
@@ -157,8 +156,7 @@ export class RaceServer {
       this.response(res, this.raceController.createRound(req.params.competitionId, token, roundId));
     });
     app.ws('/bracket/:competitionId/rounds/:roundId', (ws, req: express.Request) => {
-      this.log('new connection to socket');
-      // this.raceController.;
+      this.log(`new connection to ${req.params.competitionId}/${req.params.roundId}`);
       const competitionId = req.params.competitionId;
       const roundId = parseInt(req.params.roundId);
       const adminToken = this.getAdminToken(req);
@@ -175,7 +173,6 @@ export class RaceServer {
         return;
       }
       const subscription = this.raceController.subscribeRound(competitionId, roundId, (x) => {
-        // this.log(`on update ${JSON.stringify(result(x))} ${userToken}`);
         ws.send(JSON.stringify(result(x)));
       });
       if (subscription.err !== undefined) {
@@ -187,10 +184,9 @@ export class RaceServer {
       });
 
       ws.on('message', (msg) => {
-        // this.log(`${msg.toString('utf-8')} token: ${adminToken ?? userToken} ${req.query.token}`);
         const message = JSON.parse(msg.toString('utf-8'));
         if (!isInMessage(message)) {
-          this.log('unknown message');
+          this.log(`unknown message: ${msg.toString('utf-8')} from ${adminToken ?? userToken}`);
           return;
         }
         let res;
@@ -233,8 +229,6 @@ export class RaceServer {
         this.log(`WebSocket closed [${code}]: ${reason?.toString('utf-8')}`);
         subscription.result.unsubscribe();
       });
-
-      this.log('connected to socket');
     });
     const listener = app.listen(this.SERVER_PORT, () => {
       const serverAddress = listener.address();
