@@ -1,19 +1,23 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { AuthService } from '~shared/services/auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BackendService {
-  constructor(protected httpClient: HttpClient) {}
+  constructor(
+    protected httpClient: HttpClient,
+    private authService: AuthService,
+  ) {}
 
   public get$<T>(url: string): Observable<T> {
-    return this.httpClient.get<T>(url, { withCredentials: true });
+    return this.httpClient.get<T>(url, this.getCustomHeaders());
   }
 
   public post$<T>(url: string, postParams?: Record<string, string>): Observable<T> {
-    return this.httpClient.post<T>(url, this.prepareHttpParams(postParams), { withCredentials: true });
+    return this.httpClient.post<T>(url, this.prepareHttpParams(postParams), this.getCustomHeaders());
   }
 
   public uploadFile$(
@@ -44,5 +48,11 @@ export class BackendService {
     }
 
     return httpParams;
+  }
+
+  private getCustomHeaders(): { headers: Record<string, string> } {
+    const accessToken: string | null = this.authService.getToken();
+
+    return { headers: accessToken ? { 'X-Auth': accessToken } : {} };
   }
 }

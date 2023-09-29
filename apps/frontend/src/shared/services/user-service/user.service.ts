@@ -4,20 +4,19 @@ import { Observable, BehaviorSubject, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { UserInterface } from '../../interfaces/user.interface';
 import { LoginAvailableDto, LoginResponseDto } from '@dfcomps/contracts';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class UserService {
   private currentUser$ = new BehaviorSubject<UserInterface | null>(null);
-  private accessToken$ = new BehaviorSubject<string | null>(null);
 
-  constructor(private backendService: BackendService) {}
+  constructor(
+    private backendService: BackendService,
+    private authService: AuthService,
+  ) {}
 
   public getCurrentUser$(): Observable<UserInterface | null> {
     return this.currentUser$.asObservable();
-  }
-
-  public getAccessToken$(): Observable<string | null> {
-    return this.accessToken$.asObservable();
   }
 
   public loginByPassword$(login: string, password: string): Observable<boolean> {
@@ -65,7 +64,7 @@ export class UserService {
 
   public logout(): void {
     this.currentUser$.next(null);
-    this.accessToken$.next(null);
+    this.authService.setToken(null);
     localStorage.removeItem('user');
     localStorage.removeItem('token');
   }
@@ -77,14 +76,14 @@ export class UserService {
 
       if (user && token) {
         this.currentUser$.next(JSON.parse(user));
-        this.accessToken$.next(JSON.parse(token));
+        this.authService.setToken(JSON.parse(token));
       }
     } catch (e) {}
   }
 
   private setAuthInfo({ user, token }: LoginResponseDto) {
     this.currentUser$.next(user);
-    this.accessToken$.next(token);
+    this.authService.setToken(token);
     localStorage.setItem('user', JSON.stringify(user));
     localStorage.setItem('token', JSON.stringify(token));
   }
