@@ -5,16 +5,14 @@ import { User } from './entities/user.entity';
 import { AuthRole } from './entities/auth-role.entity';
 import { OldUser } from './entities/old-user.entity';
 import { HttpService } from '@nestjs/axios';
-import {
-  LoginAvailableDto,
-  LoginResponseDto,
-} from '@dfcomps/contracts';
+import { LoginAvailableDto, LoginResponseDto } from '@dfcomps/contracts';
 import { sha256 } from 'js-sha256';
 import * as md5 from 'md5';
 import { catchError, firstValueFrom, map } from 'rxjs';
 import { AxiosResponse } from 'axios';
 import { v4 } from 'uuid';
 import * as moment from 'moment';
+import { UserAccessInterface } from '../interfaces/user-access.interface';
 
 @Injectable()
 export class AuthService {
@@ -211,5 +209,15 @@ export class AuthService {
     // await this.userRepository.createQueryBuilder().insert().into(User).values(newUsers).execute();
 
     return 'ok';
+  }
+
+  public async getUserInfoByAccessToken(accessToken: string): Promise<UserAccessInterface> {
+    const user = await this.userRepository.findOneBy({ access_token: accessToken });
+    const authRoles = await this.authRoleRepository.findBy({ user_id: user.id });
+
+    return {
+      userId: user.id.toString(),
+      roles: authRoles.map(({ role }: AuthRole) => role),
+    };
   }
 }
