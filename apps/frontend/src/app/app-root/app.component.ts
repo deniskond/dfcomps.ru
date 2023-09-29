@@ -28,6 +28,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.userService.restoreAuthInfo();
     this.user$ = this.userService.getCurrentUser$();
     this.languageService.setLanguageFromCookie();
     this.themeService.setThemeFromCookie();

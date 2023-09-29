@@ -7,12 +7,17 @@ import { LoginAvailableDto, LoginResponseDto } from '@dfcomps/contracts';
 
 @Injectable()
 export class UserService {
-  private _currentUser$ = new BehaviorSubject<UserInterface | null>(null);
+  private currentUser$ = new BehaviorSubject<UserInterface | null>(null);
+  private accessToken$ = new BehaviorSubject<string | null>(null);
 
   constructor(private backendService: BackendService) {}
 
   public getCurrentUser$(): Observable<UserInterface | null> {
-    return this._currentUser$.asObservable();
+    return this.currentUser$.asObservable();
+  }
+
+  public getAccessToken$(): Observable<string | null> {
+    return this.accessToken$.asObservable();
   }
 
   public loginByPassword$(login: string, password: string): Observable<boolean> {
@@ -22,7 +27,7 @@ export class UserService {
         password,
       })
       .pipe(
-        tap(({ user }: LoginResponseDto) => this.setCurrentUser(user)),
+        tap((loginResponseDto: LoginResponseDto) => this.setAuthInfo(loginResponseDto)),
         map(() => true),
       );
   }
@@ -33,7 +38,7 @@ export class UserService {
         discordAccessToken,
       })
       .pipe(
-        tap(({ user }: LoginResponseDto) => this.setCurrentUser(user)),
+        tap((loginResponseDto: LoginResponseDto) => this.setAuthInfo(loginResponseDto)),
         map(() => true),
       );
   }
@@ -53,16 +58,34 @@ export class UserService {
         discordAccessToken,
       })
       .pipe(
-        tap(({ user }: LoginResponseDto) => this.setCurrentUser(user)),
+        tap((loginResponseDto: LoginResponseDto) => this.setAuthInfo(loginResponseDto)),
         map(() => true),
       );
   }
 
   public logout(): void {
-    this._currentUser$.next(null);
+    this.currentUser$.next(null);
+    this.accessToken$.next(null);
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
   }
 
-  private setCurrentUser(user: UserInterface): void {
-    this._currentUser$.next(user);
+  public restoreAuthInfo(): void {
+    try {
+      const user: string | null = localStorage.getItem('user');
+      const token: string | null = localStorage.getItem('token');
+
+      if (user && token) {
+        this.currentUser$.next(JSON.parse(user));
+        this.accessToken$.next(JSON.parse(token));
+      }
+    } catch (e) {}
+  }
+
+  private setAuthInfo({ user, token }: LoginResponseDto) {
+    this.currentUser$.next(user);
+    this.accessToken$.next(token);
+    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('token', JSON.stringify(token));
   }
 }
