@@ -6,7 +6,7 @@ export interface LoginResponseDto {
     country: string;
     cpmRating: number;
     vq3Rating: number;
-    id: number;
+    id: string;
     nick: string;
     roles: UserRole[];
   };

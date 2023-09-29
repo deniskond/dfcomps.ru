@@ -1,6 +1,5 @@
 import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 import { ReplaySubject, Observable } from 'rxjs';
-import { CookieService } from 'ngx-cookie-service';
 import { DARK_THEME_VARS } from './dark-theme.constants';
 import { LIGHT_THEME_VARS } from './light-theme.constants';
 import { Themes } from '~shared/enums/themes.enum';
@@ -12,8 +11,8 @@ export class ThemeService {
   private theme$ = new ReplaySubject<Themes>(1);
   private renderer: Renderer2;
 
-  constructor(private cookieService: CookieService, private rendererFactory: RendererFactory2) {
-    this.renderer = rendererFactory.createRenderer(null, null);
+  constructor(private rendererFactory: RendererFactory2) {
+    this.renderer = this.rendererFactory.createRenderer(null, null);
   }
 
   public getTheme$(): Observable<Themes> {
@@ -21,7 +20,7 @@ export class ThemeService {
   }
 
   public setTheme(theme: Themes): void {
-    this.cookieService.set('theme', theme);
+    localStorage.setItem('theme', theme);
     this.theme$.next(theme);
 
     this.renderer.setProperty(document.body, 'style', this.getThemeStyles(theme));
@@ -32,8 +31,8 @@ export class ThemeService {
     this.setTheme((this.getThemeFromCookie() as Themes) || Themes.LIGHT);
   }
 
-  private getThemeFromCookie(): unknown {
-    return this.cookieService.get('theme');
+  private getThemeFromCookie(): Themes {
+    return localStorage.getItem('theme') as Themes;
   }
 
   private getThemeStyles(theme: Themes): string {

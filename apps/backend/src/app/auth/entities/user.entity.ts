@@ -11,7 +11,7 @@ export class User {
   @Column({ type: 'character varying' })
   displayed_nick: string;
 
-  @Column({ type: 'character varying' })
+  @Column({ type: 'character varying', nullable: true })
   password: string;
 
   @Column({ type: 'character varying', nullable: true })
@@ -38,10 +38,10 @@ export class User {
   @Column({ type: 'integer' })
   vq3_rating: number;
 
-  @Column({ type: 'character varying' })
+  @Column({ type: 'character varying', nullable: true })
   country: string;
 
-  @Column({ type: 'character varying' })
+  @Column({ type: 'character varying', nullable: true })
   avatar: string;
 
   @Column({ type: 'timestamp', nullable: true })

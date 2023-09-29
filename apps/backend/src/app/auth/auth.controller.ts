@@ -1,4 +1,11 @@
-import { Controller, Post, Body, NotFoundException } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  NotFoundException,
+  InternalServerErrorException,
+  BadRequestException,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {
   CheckLoginDto,
@@ -18,6 +25,9 @@ import * as md5 from 'md5';
 import { v4 } from 'uuid';
 import { UserRole } from '@dfcomps/contracts';
 import { AuthRole } from './entities/auth-role.entity';
+import { HttpService } from '@nestjs/axios';
+import { Observable, catchError, firstValueFrom, from, map, switchMap } from 'rxjs';
+import { AxiosResponse } from 'axios';
 
 @Controller('auth')
 export class AuthController {
@@ -28,7 +38,7 @@ export class AuthController {
       country: 'ru',
       cpmRating: 1500,
       vq3Rating: 1500,
-      id: 10,
+      id: '10',
       nick: 'Nosf',
       roles: [UserRole.SUPERADMIN],
     },
@@ -40,6 +50,7 @@ export class AuthController {
     @InjectRepository(AuthRole) private readonly authRoleRepository: Repository<AuthRole>,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @InjectRepository(OldUser) private readonly oldUserRepository: Repository<OldUser>,
+    private readonly httpService: HttpService,
   ) {}
 
   @Post('get-password-token')
@@ -48,7 +59,7 @@ export class AuthController {
     const hashedPassword = sha256(md5(md5(password)) + process.env.SALT);
 
     if (user.password === hashedPassword) {
-      const userRoles: AuthRole[] = await this.authRoleRepository.findBy({ user_id: user.id });
+      const authRoles: AuthRole[] = await this.authRoleRepository.findBy({ user_id: user.id });
 
       return {
         user: {
@@ -56,9 +67,9 @@ export class AuthController {
           country: user.country,
           cpmRating: user.cpm_rating,
           vq3Rating: user.vq3_rating,
-          id: user.id,
+          id: user.id.toString(),
           nick: user.displayed_nick,
-          roles: userRoles.map(({ role }: AuthRole) => role),
+          roles: authRoles.map(({ role }: AuthRole) => role),
         },
         token: user.access_token,
       };
@@ -67,21 +78,130 @@ export class AuthController {
     throw new NotFoundException('User not found');
   }
 
-  @Post('get-password-token')
-  getDiscordToken(@Body() { discordAccessToken }: GetDiscordTokenDto): Promise<LoginResponseDto> {
-    return Promise.resolve(this.loginResponseMock);
+  @Post('get-discord-token')
+  async getDiscordToken(@Body() { discordAccessToken }: GetDiscordTokenDto): Promise<LoginResponseDto> {
+    // 1. Getting discord user info
+    const discordUserInfo = await firstValueFrom(
+      this.httpService
+        .get('https://discord.com/api/users/@me', {
+          headers: {
+            authorization: `Bearer ${discordAccessToken}`,
+          },
+        })
+        .pipe(
+          map(({ data }: AxiosResponse) => data),
+          catchError(() => {
+            throw new InternalServerErrorException('Discord auth error');
+          }),
+        ),
+    );
+
+    // 2. Finding user by discord username
+    const user: User = await this.userRepository.findOneBy({ discord_tag: discordUserInfo.username });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    // 3. Getting user roles and mapping final response
+    const authRoles = await this.authRoleRepository.findBy({ user_id: user.id });
+
+    return {
+      user: {
+        avatar: user.avatar,
+        country: user.country,
+        cpmRating: user.cpm_rating,
+        vq3Rating: user.vq3_rating,
+        id: user.id.toString(),
+        nick: user.displayed_nick,
+        roles: authRoles.map(({ role }: AuthRole) => role),
+      },
+      token: user.access_token,
+    };
   }
 
   @Post('check-login')
-  checkLogin(@Body() { login }: CheckLoginDto): Promise<LoginAvailableDto> {
-    return Promise.resolve({
-      loginAvailable: true,
-    });
+  async checkLogin(@Body() { login }: CheckLoginDto): Promise<LoginAvailableDto> {
+    const user: User | undefined = await this.userRepository.findOneBy({ login });
+
+    return {
+      loginAvailable: !user,
+    };
   }
 
   @Post('register')
-  register(@Body() { login, discordAccessToken }: RegisterDto): Promise<LoginResponseDto> {
-    return Promise.resolve(this.loginResponseMock);
+  async register(@Body() { login, discordAccessToken }: RegisterDto): Promise<LoginResponseDto> {
+    // 1. Checking there's no user with passed login
+    const userWithSameLogin: User | null = await this.userRepository.findOneBy({ login });
+
+    if (userWithSameLogin) {
+      throw new BadRequestException('User with this login already exists');
+    }
+
+    // 2. Getting discord tag associated with token
+    const discordUsername = await firstValueFrom(
+      this.httpService
+        .get('https://discord.com/api/users/@me', {
+          headers: {
+            authorization: `Bearer ${discordAccessToken}`,
+          },
+        })
+        .pipe(
+          map(({ data }: AxiosResponse) => data.username),
+          catchError(() => {
+            throw new InternalServerErrorException('Discord auth error');
+          }),
+        ),
+    );
+
+    // 3. Checking there's no user associated with passed discordAccessToken
+    const userWithSameDiscord: User | null = await this.userRepository.findOneBy({ discord_tag: discordUsername });
+
+    if (userWithSameDiscord) {
+      throw new BadRequestException('User with this discord already exists');
+    }
+
+    // 4. Inserting user into database
+    const userAccessToken = v4();
+    const queryResult = await this.userRepository
+      .createQueryBuilder()
+      .insert()
+      .into(User)
+      .values([
+        {
+          login,
+          displayed_nick: login,
+          password: null,
+          discord_tag: discordUsername,
+          last_discord_prompt: null,
+          access_token: userAccessToken,
+          last_nick_change_time: null,
+          initial_cpm_rating: 1500,
+          cpm_rating: 1500,
+          initial_vq3_rating: 1500,
+          vq3_rating: 1500,
+          country: null,
+          avatar: null,
+          comments_ban_date: null,
+        },
+      ])
+      .execute();
+
+    const userId: number = queryResult.identifiers[0].id;
+
+    // 5. Builiding login response
+    return {
+      user: {
+        avatar: null,
+        country: null,
+        cpmRating: 1500,
+        vq3Rating: 1500,
+        id: userId.toString(),
+        nick: login,
+        roles: [],
+      },
+      token: userAccessToken,
+    };
   }
 
   @Post('convert-table')
