@@ -247,6 +247,16 @@ export class RaceController {
     return result(round.subscription.subscribe(onUpdate));
   }
 
+  public getRoundView(competitionId: string, roundId: number): Result<RoundView> {
+    const { err, result: competitionData } = this.validateCompetition(competitionId, undefined, false);
+    if (err !== undefined) return error(err);
+    const round = competitionData.rounds[roundId];
+    if (round === undefined) {
+      return notFound(`Round with id='${roundId}' is not found in competition ${competitionId}`);
+    }
+    return result(round.view);
+  }
+
   public roundBan(
     competitionId: string,
     roundId: number,

@@ -239,6 +239,7 @@ describe('testing connection', () => {
     adminWs.send(JSON.stringify({ action: 'Complete', winner: 0 }));
     await new Promise((resolve) => setTimeout(resolve, 2000));
     expect(recv).toEqual([
+      { result: expect.objectContaining({ bans: {} }) },
       { result: expect.objectContaining({ bans: { 0: 0 } }) },
       { result: expect.objectContaining({ bans: { 0: 0, 1: 1 } }) },
       // { result: expect.objectContaining({ bans: { 0: 0, 1: 1, 2: 0 } }) },

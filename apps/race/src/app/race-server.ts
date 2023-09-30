@@ -179,6 +179,7 @@ export class RaceServer {
         ws.close(RaceServer.statusMap[subscription.err.code], JSON.stringify(subscription));
         return;
       }
+      ws.send(JSON.stringify(this.raceController.getRoundView(competitionId, roundId)));
       subscription.result.add(() => {
         ws.close(200);
       });
@@ -191,6 +192,10 @@ export class RaceServer {
         }
         let res;
         switch (message.action) {
+          case 'Update':
+            ws.send(JSON.stringify(this.raceController.getRoundView(competitionId, roundId)));
+            break;
+          // ws.send();
           case 'Ban':
             res = this.raceController.roundBan(competitionId, roundId, adminToken ?? userToken, message.mapIndex);
             if (res.err !== undefined) {
