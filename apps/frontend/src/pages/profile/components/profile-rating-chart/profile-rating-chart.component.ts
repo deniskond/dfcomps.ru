@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Physics } from '@dfcomps/contracts';
 import { ChartConfiguration } from 'chart.js';
 import { combineLatest, ReplaySubject, Subject, takeUntil } from 'rxjs';
-import { Physics } from '~shared/enums/physics.enum';
 import { Themes } from '~shared/enums/themes.enum';
 import { ThemeService } from '~shared/services/theme/theme.service';
 

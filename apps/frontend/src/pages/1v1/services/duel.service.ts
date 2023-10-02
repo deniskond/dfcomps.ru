@@ -11,7 +11,7 @@ import { MatchResultAcceptedMessageInterface } from './interfaces/match-result-a
 import { DuelPlayersInfoInterface } from '../interfaces/duel-players-info.interface';
 import { URL_PARAMS, BackendService } from '~shared/rest-api';
 import { DuelPlayersInfoDtoInterface } from '../interfaces/duel-players-info.dto';
-import { Physics } from '~shared/enums/physics.enum';
+import { Physics } from '@dfcomps/contracts';
 
 @Injectable({
   providedIn: 'root',

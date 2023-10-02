@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MulticupResultInterface } from '../../../../../pages/cup/interfaces/multicup-result.interface';
-import { Physics } from '~shared/enums/physics.enum';
 import { getTablePlaces } from '~shared/helpers/table-places.helper';
+import { Physics } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-multicup-physics-table',

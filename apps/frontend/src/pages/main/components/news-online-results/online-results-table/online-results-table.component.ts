@@ -1,9 +1,9 @@
 import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { range } from 'lodash';
 import { Router } from '@angular/router';
-import { Physics } from '~shared/enums/physics.enum';
 import { getTablePlaces } from '~shared/helpers/table-places.helper';
 import { OnlineCupResultInterface } from '~shared/interfaces/online-cup-result.interface';
+import { Physics } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-online-results-table',

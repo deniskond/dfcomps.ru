@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MulticupRoundInterface } from '../interfaces/multicup-round.interface';
 import { MulticupTableInterface } from '../interfaces/multicup-table.interface';
-import { Physics } from '~shared/enums/physics.enum';
+import { Physics } from '@dfcomps/contracts';
 
 @Injectable({
   providedIn: 'root',

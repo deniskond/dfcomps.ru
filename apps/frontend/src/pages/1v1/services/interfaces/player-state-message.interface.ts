@@ -2,7 +2,7 @@ import { DuelWebsocketServerActions } from './../enums/duel-websocket-server-act
 import { DuelWebsocketServerMessageInterface } from './duel-websocket-server-message.interface';
 import { MatchStates } from '../enums/match-states.enum';
 import { MatchInterface } from './match.interface';
-import { Physics } from '~shared/enums/physics.enum';
+import { Physics } from '@dfcomps/contracts';
 
 export interface PlayerStateMessageInterface extends DuelWebsocketServerMessageInterface {
   action: DuelWebsocketServerActions.PLAYER_STATE;

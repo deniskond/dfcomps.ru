@@ -1,6 +1,6 @@
-import { Physics } from '~shared/enums/physics.enum';
 import { RatingTablesModes } from '~shared/enums/rating-tables-modes.enum';
 import { environment } from '~app/environments/environment';
+import { Physics } from '@dfcomps/contracts';
 
 const envMap: Record<string, string> = {
   local: '/legacy-api',

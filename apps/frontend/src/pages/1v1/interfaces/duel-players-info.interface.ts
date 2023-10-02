@@ -1,4 +1,4 @@
-import { Physics } from '~shared/enums/physics.enum';
+import { Physics } from '@dfcomps/contracts';
 import { MapInterface } from '../services/interfaces/map.interface';
 import { DuelPlayerInfoInterface } from './duel-player-info.interface';
 

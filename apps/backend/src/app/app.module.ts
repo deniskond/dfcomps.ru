@@ -6,6 +6,7 @@ import { Movie } from './movies/entities/movie.entity';
 import { OldUser } from './auth/entities/old-user.entity';
 import { User } from './auth/entities/user.entity';
 import { AuthRole } from './auth/entities/auth-role.entity';
+import { TablesModule } from './tables/tables.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AuthRole } from './auth/entities/auth-role.entity';
     }),
     AuthModule,
     MoviesModule,
+    TablesModule,
   ],
 })
 export class AppModule {}

@@ -4,10 +4,9 @@ import { map, Observable, take } from 'rxjs';
 import { UserService } from '~shared/services/user-service/user.service';
 import { NewsService } from '~shared/services/news-service/news.service';
 import { NewsOfflineResultsInterface } from '~shared/services/news-service/interfaces/news-offline-results.interface';
-import { Physics } from '~shared/enums/physics.enum';
 import { InvalidDemoInterface } from '~shared/interfaces/invalid-demo.interface';
 import { checkUserRoles } from '~shared/helpers/check-roles';
-import { UserRole } from '@dfcomps/contracts';
+import { Physics, UserRole } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-news-offline-results',

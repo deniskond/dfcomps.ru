@@ -1,6 +1,6 @@
-import { LeaderTableInterface } from '../../interfaces/leader-table.interface';
 import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { getTablePlaces } from '../../helpers/table-places.helper';
+import { LeaderTableInterface } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-players-rating-table',

@@ -6,7 +6,7 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil, take, map } from 'rxjs/operators';
 import { MulticupRoundInterface } from './interfaces/multicup-round.interface';
 import { MulticupTableInterface } from './interfaces/multicup-table.interface';
-import { Physics } from '~shared/enums/physics.enum';
+import { Physics } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-cup-page',

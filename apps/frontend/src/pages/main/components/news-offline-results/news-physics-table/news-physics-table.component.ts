@@ -1,11 +1,11 @@
 import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { range } from 'lodash';
 import { CUSTOM_TABLE_NEWS_LIMIT } from '../../../config/news.config';
-import { Physics } from '~shared/enums/physics.enum';
 import { formatResultTime } from '~shared/helpers/result-time.helper';
 import { getTablePlaces } from '~shared/helpers/table-places.helper';
 import { CupInterface } from '~shared/interfaces/cup.interface';
 import { ValidDemoInterface } from '~shared/interfaces/valid-demo.interface';
+import { Physics } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-news-physics-table',

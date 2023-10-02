@@ -14,11 +14,11 @@ import { ProfileDemosDtoInterface } from './dto/profile-demos.dto';
 import { ProfileRewardsDtoInterface } from './dto/profile-rewards.dto';
 import { MatDialog } from '@angular/material/dialog';
 import { EditProfileDialogComponent } from './components/edit-profile-dialog/edit-profile-dialog';
-import { Physics } from '~shared/enums/physics.enum';
 import { isNonNull } from '~shared/helpers';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { LanguageService } from '~shared/services/language/language.service';
 import { UserService } from '~shared/services/user-service/user.service';
+import { Physics } from '@dfcomps/contracts';
 
 @Component({
   templateUrl: './profile.page.html',

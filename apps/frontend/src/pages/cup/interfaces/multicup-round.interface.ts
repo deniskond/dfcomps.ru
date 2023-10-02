@@ -1,4 +1,4 @@
-import { Physics } from '~shared/enums/physics.enum';
+import { Physics } from '@dfcomps/contracts';
 import { MulticupRoundResultInterface } from './multicup-round-result.interface';
 
 export interface MulticupRoundInterface {

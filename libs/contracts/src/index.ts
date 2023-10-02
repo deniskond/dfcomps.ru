@@ -5,3 +5,6 @@ export { UserRole } from './lib/auth/user-roles.enum';
 export { LoginAvailableDto } from './lib/auth/login-available.dto';
 export { CheckLoginDto } from './lib/auth/check-login.dto';
 export { RegisterDto } from './lib/auth/register.dto';
+export { LeaderTableInterface } from './lib/tables/leader-table.interface';
+export { Physics } from './lib/physics.enum';
+export { GetTop10Dto } from './lib/auth/get-top10.dto';

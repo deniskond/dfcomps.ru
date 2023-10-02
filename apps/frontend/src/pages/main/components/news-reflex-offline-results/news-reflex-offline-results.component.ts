@@ -1,9 +1,9 @@
 import { API_URL } from '~shared/rest-api';
 import { Component, Input, OnInit, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { CUSTOM_TABLE_NEWS_LIMIT } from '../../config/news.config';
-import { Physics } from '~shared/enums/physics.enum';
 import { InvalidDemoInterface } from '~shared/interfaces/invalid-demo.interface';
 import { NewsOfflineResultsInterface } from '~shared/services/news-service/interfaces/news-offline-results.interface';
+import { Physics } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-news-reflex-offline-results',

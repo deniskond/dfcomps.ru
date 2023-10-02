@@ -1,4 +1,4 @@
-import { Physics } from '~shared/enums/physics.enum';
+import { Physics } from '@dfcomps/contracts';
 import { AdminCupDto } from '../models/admin-cup.dto';
 import { AdminCupInterface } from '../models/admin-cup.interface';
 import { getHumanTime } from './get-human-time';

@@ -1,4 +1,4 @@
-import { Physics } from '../enums/physics.enum';
+import { Physics } from '@dfcomps/contracts';
 
 export interface CupInterface {
   archiveLink: string;

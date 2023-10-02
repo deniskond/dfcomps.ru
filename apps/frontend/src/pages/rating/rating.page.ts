@@ -3,9 +3,8 @@ import { switchMap, ReplaySubject, Subject } from 'rxjs';
 import { range } from 'lodash';
 import { take, finalize } from 'rxjs/operators';
 import { CurrentSeasonService } from '~shared/rest-api';
-import { Physics } from '~shared/enums/physics.enum';
-import { LeaderTableInterface } from '~shared/interfaces/leader-table.interface';
 import { RatingTablesService } from '~shared/services/rating-tables-service/rating-tables-service';
+import { LeaderTableInterface, Physics } from '@dfcomps/contracts';
 
 const MAX_PLAYERS_PER_PAGE = 100;
 

@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { Physics } from '~shared/enums/physics.enum';
+import { Physics } from '@dfcomps/contracts';
 import { NewsMulticupResultsInterface } from '~shared/services/news-service/interfaces/news-multicup-results.interface';
 
 @Component({

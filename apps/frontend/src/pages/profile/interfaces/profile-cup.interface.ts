@@ -1,4 +1,4 @@
-import { Physics } from "~shared/enums/physics.enum";
+import { Physics } from '@dfcomps/contracts';
 
 export interface ProfileCupInterface {
   newsId: string;
