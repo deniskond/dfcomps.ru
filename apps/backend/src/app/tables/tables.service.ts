@@ -1,72 +1,40 @@
-import { LeaderTableInterface, Physics } from '@dfcomps/contracts';
+import { LeaderTableInterface, Physics, RatingTablesModes } from '@dfcomps/contracts';
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from '../auth/entities/user.entity';
+import { Repository } from 'typeorm';
+import { OneVOneRating } from './entities/1v1-rating.entity';
 
 @Injectable()
 export class TablesService {
-  constructor() {}
+  constructor(
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(OneVOneRating) private readonly oneVOneRatingRepository: Repository<OneVOneRating>,
+  ) {}
 
-  getTop10(physics: Physics, mode: '1v1' | 'classic'): Promise<LeaderTableInterface[]> {
-    return Promise.resolve([
-      {
-        playerId: 82,
-        nick: 'ket.',
-        country: 'hu',
-        rating: 2064,
-      },
-      {
-        playerId: 192,
-        nick: 'effect',
-        country: 'ru',
-        rating: '2019',
-      },
-      {
-        playerId: 504,
-        nick: '<acc/Shihua',
-        country: 'af',
-        rating: '1927',
-      },
-      {
-        playerId: 437,
-        nick: 'tofu',
-        country: 'us',
-        rating: '1899',
-      },
-      {
-        playerId: 93,
-        nick: '[fps]Proky',
-        country: 'ru',
-        rating: '1889',
-      },
-      {
-        playerId: 763,
-        nick: 'Mikendo',
-        country: 'de',
-        rating: '1864',
-      },
-      {
-        playerId: 533,
-        nick: 'Zeppelin',
-        country: 'us',
-        rating: '1840',
-      },
-      {
-        playerId: 575,
-        nick: 'Anselmo',
-        country: 'pl',
-        rating: '1837',
-      },
-      {
-        playerId: 415,
-        nick: 'Arent',
-        country: 'ru',
-        rating: '1822',
-      },
-      {
-        playerId: 282,
-        nick: 'RunX',
-        country: 'ru',
-        rating: '1816',
-      },
-    ]) as any;
+  async getTop10(physics: Physics, mode: RatingTablesModes): Promise<LeaderTableInterface[]> {
+    if (mode === RatingTablesModes.CLASSIC) {
+      const top10Users: User[] = await this.userRepository
+        .createQueryBuilder()
+        .orderBy(`${physics}_rating`, 'DESC')
+        .limit(10)
+        .getMany();
+
+      return top10Users.map(({ displayed_nick, cpm_rating, vq3_rating, id, country }: User) => ({
+        playerId: id,
+        nick: displayed_nick,
+        country,
+        rating: physics === Physics.CPM ? cpm_rating : vq3_rating,
+      }));
+    }
+
+    const top10Users: OneVOneRating[] = await this.oneVOneRatingRepository
+      .createQueryBuilder('1v1_rating')
+      .leftJoinAndSelect("1v1_rating.playerId", "users", "users.id = 1v1_rating.playerId")
+      .orderBy(`${physics}`, 'DESC')
+      .limit(10)
+      .getMany();
+
+    return top10Users as any;
   }
 }

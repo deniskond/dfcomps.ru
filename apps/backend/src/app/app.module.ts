@@ -7,6 +7,7 @@ import { OldUser } from './auth/entities/old-user.entity';
 import { User } from './auth/entities/user.entity';
 import { AuthRole } from './auth/entities/auth-role.entity';
 import { TablesModule } from './tables/tables.module';
+import { OneVOneRating } from './tables/entities/1v1-rating.entity';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { TablesModule } from './tables/tables.module';
       port: 5432,
       username: 'user',
       password: process.env.DFCOMPS_POSTGRES_PASSWORD,
-      entities: [User, OldUser, Movie, AuthRole],
+      entities: [User, OldUser, Movie, AuthRole, OneVOneRating],
       database: 'dfcomps',
       synchronize: true,
       logging: true,
