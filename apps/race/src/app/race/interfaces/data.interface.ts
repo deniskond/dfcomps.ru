@@ -1,9 +1,9 @@
 import { Subject } from 'rxjs';
-import { RoundView, CompetitionView } from './views.iterface';
+import { RoundView, CompetitionView } from './views.interface';
 
 export interface RoundData {
   view: RoundView;
-  subscription: Subject<RoundView>;
+  stream: Subject<RoundView>;
   players: { token: string }[];
   competitionId: string;
   round: number;

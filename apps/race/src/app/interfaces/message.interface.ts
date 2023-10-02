@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { RoundView } from '../race/interfaces/views.iterface';
+import { RoundView } from '../race/interfaces/views.interface';
 import { ErrorMessage } from '../race/types/result';
 
 export interface InUpdate {

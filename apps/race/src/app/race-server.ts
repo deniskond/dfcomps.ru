@@ -9,7 +9,8 @@ import { ErrorCode, Result, result } from './race/types/result';
 import { isInMessage } from './interfaces/message.interface';
 import { createHash } from 'crypto';
 import { SecretsConfig } from './race/config/secret';
-import { isCompetitionRules } from './race/interfaces/views.iterface';
+import { isCompetitionRules } from './race/interfaces/views.interface';
+import { AddressInfo } from 'net';
 // import { ParsedQs } from 'qs';
 
 export class RaceServer {
@@ -236,8 +237,8 @@ export class RaceServer {
       });
     });
     const listener = app.listen(this.SERVER_PORT, () => {
-      const serverAddress = listener.address();
-      console.log(`Server started on ${serverAddress} :)`);
+      const serverAddress = listener.address() as AddressInfo;
+      console.log(`Server started on ${serverAddress.port} :>`);
     });
   }
   private log(message: string): void {

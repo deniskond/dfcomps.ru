@@ -1,6 +1,6 @@
 import { WebSocket } from 'ws';
 import * as http from 'http';
-import { RoundView } from '../race/interfaces/views.iterface';
+import { RoundView } from '../race/interfaces/views.interface';
 import { inspect } from 'util';
 
 describe('testing connection', () => {

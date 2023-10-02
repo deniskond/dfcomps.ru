@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: '1v1-server',
+  displayName: 'race',
   preset: '../../jest.preset.js',
   globals: {},
   testEnvironment: 'node',
@@ -13,5 +13,5 @@ export default {
     ],
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/apps/1v1-server',
+  coverageDirectory: '../../coverage/apps/race',
 };

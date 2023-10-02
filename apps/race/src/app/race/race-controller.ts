@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Subject, Subscription } from 'rxjs';
 import { v4 } from 'uuid';
 import { AsyncResult, Result, badRequest, duplicate, error, notAllowed, notFound, result } from './types/result';
-import { CompetitionRules, CompetitionView, Round, RoundView, MapInfo, PlayerInfo } from './interfaces/views.iterface';
+import { CompetitionRules, CompetitionView, Round, RoundView, MapInfo, PlayerInfo } from './interfaces/views.interface';
 import { CompetitionData, RoundData } from './interfaces/data.interface';
 import { createHash } from 'crypto';
 
@@ -41,7 +41,7 @@ export class RaceController {
     const toRemove = [];
     for (const [id, round] of Object.entries(competition.rounds)) {
       if (round.competitionId === competitionId) {
-        round.subscription.complete();
+        round.stream.complete();
         toRemove.push(id);
       }
     }
@@ -226,7 +226,7 @@ export class RaceController {
     };
     competitionData.rounds[round] = {
       view: roundView,
-      subscription: new Subject<RoundView>(),
+      stream: new Subject<RoundView>(),
       players: [{ token: v4() }, { token: v4() }],
       competitionId,
       round,
@@ -244,7 +244,7 @@ export class RaceController {
     if (round === undefined) {
       return notFound(`Round with id='${roundId}' is not found in competition ${competitionId}`);
     }
-    return result(round.subscription.subscribe(onUpdate));
+    return result(round.stream.subscribe(onUpdate));
   }
 
   public getRoundView(competitionId: string, roundId: number): Result<RoundView> {
@@ -379,7 +379,7 @@ export class RaceController {
 
     if (competition === undefined || competition.brackets === undefined) {
       // dangling round by any reason (hasn't to be happened)
-      round.subscription.complete();
+      round.stream.complete();
       delete competitionData.rounds[roundId];
       return notFound(`Round with id='${roundId}' is not associated with any competition`);
     }
@@ -391,7 +391,7 @@ export class RaceController {
   }
 
   private notifyRoundUpdate(round: RoundData) {
-    round.subscription.next(round.view);
+    round.stream.next(round.view);
   }
 
   private updateBracket(competition: CompetitionView) {
