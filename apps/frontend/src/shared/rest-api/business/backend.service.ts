@@ -12,8 +12,8 @@ export class BackendService {
     private authService: AuthService,
   ) {}
 
-  public get$<T>(url: string): Observable<T> {
-    return this.httpClient.get<T>(url, this.getCustomHeaders());
+  public get$<T>(url: string, params?: Record<string, string>): Observable<T> {
+    return this.httpClient.get<T>(url, { ...this.getCustomHeaders(), params });
   }
 
   public post$<T>(url: string, postParams?: Record<string, string>): Observable<T> {

@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { BackendService, URL_PARAMS } from '~shared/rest-api';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { RatingTablesModes } from '../../enums/rating-tables-modes.enum';
-import { LeaderTableInterface, Physics } from '@dfcomps/contracts';
+import { LeaderTableInterface, Physics, RatingTablesModes } from '@dfcomps/contracts';
 
 const MAX_PLAYERS_PER_PAGE = 100;
 
@@ -18,7 +17,7 @@ export class RatingTablesService extends BackendService {
       return of(this.cachedTables[`${physics}${mode}`]);
     }
 
-    return this.post$<LeaderTableInterface[]>(URL_PARAMS.TOP_TEN_TABLE(physics, mode)).pipe(
+    return this.get$<LeaderTableInterface[]>(URL_PARAMS.TOP_TEN_TABLE(), { physics, mode }).pipe(
       tap((table: LeaderTableInterface[]) => (this.cachedTables[`${physics}${mode}`] = table)),
     );
   }

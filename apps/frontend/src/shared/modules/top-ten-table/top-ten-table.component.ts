@@ -1,8 +1,7 @@
 import { RatingTablesService } from '../../services/rating-tables-service/rating-tables-service';
 import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
-import { RatingTablesModes } from '../../enums/rating-tables-modes.enum';
-import { LeaderTableInterface, Physics } from '@dfcomps/contracts';
+import { LeaderTableInterface, Physics, RatingTablesModes } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-top-ten-table',

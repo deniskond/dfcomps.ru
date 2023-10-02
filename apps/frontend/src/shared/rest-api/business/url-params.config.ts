@@ -1,4 +1,3 @@
-import { RatingTablesModes } from '~shared/enums/rating-tables-modes.enum';
 import { environment } from '~app/environments/environment';
 import { Physics } from '@dfcomps/contracts';
 
@@ -40,8 +39,8 @@ export class URL_PARAMS {
     };
   }
 
-  public static TOP_TEN_TABLE(physics: Physics, mode: RatingTablesModes): string {
-    return `${API_URL}/tables/top10/${physics}/${mode}`;
+  public static TOP_TEN_TABLE(): string {
+    return `${API_URL}/tables/top10`;
   }
 
   public static RATING_TABLE_PAGE(physics: Physics, page: number): string {
