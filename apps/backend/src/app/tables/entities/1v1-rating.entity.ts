@@ -1,4 +1,4 @@
-import { PrimaryGeneratedColumn, Column, Entity, OneToOne, JoinColumn } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
 
 @Entity({ name: '1v1_rating' })
 export class OneVOneRating {
@@ -6,7 +6,7 @@ export class OneVOneRating {
   id: number;
 
   @Column({ type: 'integer' })
-  playerId: string;
+  playerId: number;
 
   @Column({ type: 'integer' })
   cpm: string;
