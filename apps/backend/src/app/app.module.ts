@@ -8,6 +8,8 @@ import { User } from './auth/entities/user.entity';
 import { AuthRole } from './auth/entities/auth-role.entity';
 import { TablesModule } from './tables/tables.module';
 import { OneVOneRating } from './tables/entities/1v1-rating.entity';
+import { Cup } from './cup/entities/cup.entity';
+import { CupModule } from './cup/cup.module';
 
 @Module({
   imports: [
@@ -17,7 +19,7 @@ import { OneVOneRating } from './tables/entities/1v1-rating.entity';
       port: 5432,
       username: 'user',
       password: process.env.DFCOMPS_POSTGRES_PASSWORD,
-      entities: [User, OldUser, Movie, AuthRole, OneVOneRating],
+      entities: [User, OldUser, Movie, AuthRole, OneVOneRating, Cup],
       database: 'dfcomps',
       synchronize: true,
       logging: true,
@@ -25,6 +27,7 @@ import { OneVOneRating } from './tables/entities/1v1-rating.entity';
     AuthModule,
     MoviesModule,
     TablesModule,
+    CupModule,
   ],
 })
 export class AppModule {}

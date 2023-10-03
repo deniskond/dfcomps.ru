@@ -9,3 +9,4 @@ export { LeaderTableInterface } from './lib/tables/leader-table.interface';
 export { Physics } from './lib/physics.enum';
 export { GetTop10Dto } from './lib/tables/get-top10.dto';
 export { RatingTablesModes } from './lib/tables/rating-tables-modes.enum';
+export { CupInterface } from './lib/cup/cup.interface';

@@ -1,5 +1,4 @@
 import { CupsService } from '../../services/cups/cups.service';
-import { CupInterface } from '../../interfaces/cup.interface';
 import { CupTypes } from '../../enums/cup-types.enum';
 import { Component, OnInit } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
@@ -7,7 +6,7 @@ import { UserService } from '../../services/user-service/user.service';
 import { withLatestFrom, map, filter, switchMap } from 'rxjs/operators';
 import { UserInterface } from '../../interfaces/user.interface';
 import { isNonNull } from '../../../shared/helpers';
-import { Physics, RatingTablesModes } from '@dfcomps/contracts';
+import { CupInterface, Physics, RatingTablesModes } from '@dfcomps/contracts';
 @Component({
   templateUrl: './main-site.component.html',
   styleUrls: ['./main-site.component.less'],

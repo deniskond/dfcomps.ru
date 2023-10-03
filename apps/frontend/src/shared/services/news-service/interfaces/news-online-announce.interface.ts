@@ -1,5 +1,5 @@
 import { RegisteredPlayerInterface } from '../../../interfaces/registered-player.interface';
-import { CupInterface } from '../../../interfaces/cup.interface';
+import { CupInterface } from '@dfcomps/contracts';
 import { NewsTypes } from '../../../enums/news-types.enum';
 import { NewsInterface } from './news.interface';
 
