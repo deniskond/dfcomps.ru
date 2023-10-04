@@ -10,7 +10,7 @@ import { UploadedDemoInterface } from '../../interfaces/uploaded-demo.interface'
 export class DemosService extends BackendService {
   public uploadDemo$(
     demo: File,
-    cupId: string,
+    cupId: number,
     mapName: string,
     playerId: string,
     fileName: string,
@@ -27,21 +27,6 @@ export class DemosService extends BackendService {
     return this.post$(URL_PARAMS.DEMOS.DELETE, {
       demo,
       cupId,
-    });
-  }
-
-  public reflexUploadDemo$(
-    demo: File,
-    cupId: string,
-    mapName: string,
-    playerId: string,
-    fileName: string,
-  ): Observable<UploadDemoDtoInterface> {
-    return this.uploadFile$(URL_PARAMS.DEMOS.REFLEX_UPLOAD, [{ fileKey: 'file', file: demo }], {
-      cupId,
-      mapName,
-      playerId,
-      fileName,
     });
   }
 

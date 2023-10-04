@@ -16,14 +16,14 @@ export class BackendService {
     return this.httpClient.get<T>(url, { ...this.getCustomHeaders(), params });
   }
 
-  public post$<T>(url: string, postParams?: Record<string, string>): Observable<T> {
+  public post$<T>(url: string, postParams?: Record<string, any>): Observable<T> {
     return this.httpClient.post<T>(url, this.prepareHttpParams(postParams), this.getCustomHeaders());
   }
 
   public uploadFile$(
     url: string,
     fileKeyValues: { fileKey: string; file: any }[],
-    postParams?: Record<string, string>,
+    postParams?: Record<string, any>,
   ): Observable<any> {
     const formData: FormData = new FormData();
 

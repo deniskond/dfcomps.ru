@@ -20,9 +20,9 @@ export class CupTimerComponent {
   @Input()
   mapLink: string;
   @Input()
-  newsId: string | undefined;
+  newsId: number | null;
   @Input()
-  customNews: string | undefined;
+  customNews: string | null;
   @Input()
   server: string | undefined | null;
 

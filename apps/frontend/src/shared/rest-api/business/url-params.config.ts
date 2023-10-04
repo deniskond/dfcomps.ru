@@ -40,7 +40,7 @@ export class URL_PARAMS {
   }
 
   public static TOP_TEN_TABLE(): string {
-    return `${API_URL}/tables/top10`;
+    return `/api/tables/top10`;
   }
 
   public static RATING_TABLE_PAGE(physics: Physics, page: number): string {
@@ -141,10 +141,10 @@ export class URL_PARAMS {
     MULTICUP_ROUND: (cupId: string, physics: Physics, roundNumber: string) => string;
     REGISTER: (cupId: string) => string;
     CANCEL_REGISTRATION: (cupId: string) => string;
-    CHECK_REGISTRATION: (cupId: string, playerId: string) => string;
+    CHECK_REGISTRATION: (cupId: number, playerId: string) => string;
   } {
     return {
-      GET_NEXTCUP: `${API_URL}/cup/next_cup_info`,
+      GET_NEXTCUP: `/api/cup/next-cup-info`,
       ONLINE_FULL_TABLE: (cupId: string) => `${API_URL}/cup/online/${cupId}`,
       ONLINE_ROUND: (cupId: string, roundNumber: string) => `${API_URL}/cup/online/${cupId}/round/${roundNumber}`,
       MULTICUP_FULL_TABLE: (cupId: string, physics: Physics) => `${API_URL}/cup/multi/${cupId}/${physics}`,
@@ -152,7 +152,7 @@ export class URL_PARAMS {
         `${API_URL}/cup/multi/${cupId}/${physics}/round/${roundNumber}`,
       REGISTER: (cupId: string) => `${API_URL}/cup/register/${cupId}`,
       CANCEL_REGISTRATION: (cupId: string) => `${API_URL}/cup/cancel_registration/${cupId}`,
-      CHECK_REGISTRATION: (cupId: string, playerId: string) => `${API_URL}/cup/isRegistered/${cupId}/${playerId}`,
+      CHECK_REGISTRATION: (cupId: number, playerId: string) => `${API_URL}/cup/isRegistered/${cupId}/${playerId}`,
     };
   }
 

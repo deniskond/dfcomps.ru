@@ -34,7 +34,7 @@ export class NewsOfflineResultsComponent implements OnInit, OnChanges {
       take(1),
       map(
         (user) =>
-          !!user && checkUserRoles(user, [UserRole.VALIDATOR]) && this.news.cup.demosValidated === '0',
+          !!user && checkUserRoles(user, [UserRole.VALIDATOR]) && !this.news.cup.demosValidated,
       ),
     );
   }

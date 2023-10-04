@@ -70,32 +70,6 @@ export class NewsReflexOfflineStartComponent implements OnInit {
     }
 
     this.isUploading = true;
-
-    this.user$
-      .pipe(
-        filter(isNonNull),
-        take(1),
-        switchMap((user: UserInterface) =>
-          this.demosService.reflexUploadDemo$(demo, this.news.cup.id, this.news.cup.map1, user.id, demo.name),
-        ),
-        finalize(() => {
-          this.fileInput.nativeElement.value = null;
-          this.isUploading = false;
-        }),
-        catchError(() => {
-          this.openSnackBar('error', 'uploadFailed');
-
-          return of();
-        }),
-      )
-      .subscribe(({ status, message }: UploadDemoDtoInterface) => {
-        if (status === 'Success') {
-          this.openSnackBar('success', 'demoSent');
-          this.reloadNews.emit();
-        } else if (status === 'Error') {
-          this.openSnackBar('error', message!, false);
-        }
-      });
   }
 
   public openPlayerDemosDialog(): void {

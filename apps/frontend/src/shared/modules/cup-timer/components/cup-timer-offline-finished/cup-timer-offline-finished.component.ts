@@ -20,7 +20,7 @@ export class CupTimerOfflineFinishedComponent implements OnInit, OnChanges {
   @Input()
   endTime: string;
   @Input()
-  customNews: string | undefined;
+  customNews: string | null;
 
   public formattedTime$: Observable<string>;
 

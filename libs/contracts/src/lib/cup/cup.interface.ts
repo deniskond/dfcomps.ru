@@ -29,7 +29,7 @@ export interface CupInterface {
   type: string;
   useTwoServers: string;
   youtube: string;
-  newsId: string | null;
+  newsId: number | null;
   customMap: string | null;
   customNews: string | null;
   cupId: number | null;

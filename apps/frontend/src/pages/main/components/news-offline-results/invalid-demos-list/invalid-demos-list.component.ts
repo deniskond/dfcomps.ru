@@ -8,6 +8,6 @@ import { InvalidDemoInterface } from '~shared/interfaces/invalid-demo.interface'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InvalidDemosListComponent {
-  @Input() cupId: string;
+  @Input() cupId: number;
   @Input() invalidDemos: InvalidDemoInterface[];
 }

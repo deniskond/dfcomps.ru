@@ -62,7 +62,7 @@ export class NewsService extends BackendService {
     return this.post$(URL_PARAMS.NEWS.SINGLE_NEWS(id));
   }
 
-  public getDemosForValidation$(cupId: string): Observable<{ url: string }> {
+  public getDemosForValidation$(cupId: number): Observable<{ url: string }> {
     return this.post$(URL_PARAMS.DEMOS.VALIDATION_ARCHIVE_LINK, {
       cupId,
     });

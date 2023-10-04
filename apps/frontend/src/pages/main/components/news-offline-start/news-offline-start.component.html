@@ -74,7 +74,7 @@
           <a href="/assets/files/offline-rules.cfg" target="_blank">
             <span translate translation="config"></span>
           </a>
-          <ng-container *ngIf="news.cup.multicupId === '10'">
+          <ng-container *ngIf="news.cup.multicupId === 10">
             <span class="separator">|</span>
             <a (click)="openSDCPopup()" class="popup-link" target="_blank">
               SDC
@@ -148,7 +148,7 @@
   </div>
 </div>
 
-<div *ngIf="news.cup.bonusRating !== '0'" class="bonus-rating">
+<div *ngIf="news.cup.bonusRating !== 0" class="bonus-rating">
   <span translate translation="bonusRating"></span>: +{{ news.cup.bonusRating }}.
 </div>
 

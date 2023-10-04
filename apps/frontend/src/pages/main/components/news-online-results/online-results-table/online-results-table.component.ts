@@ -13,7 +13,7 @@ import { Physics } from '@dfcomps/contracts';
 })
 export class NewsOnlineResultsTableComponent implements OnInit {
   @Input() table: OnlineCupResultInterface[];
-  @Input() cupId: string;
+  @Input() cupId: number;
   @Input() physics: Physics;
 
   public places: number[];

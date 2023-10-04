@@ -23,7 +23,7 @@
   </ng-template>
   <div class="rating-column">
     <ng-container *ngIf="!customTable">
-      <app-rating-change [change]="result.change" [zeroIfNull]="cup.ratingCalculated === '1'"></app-rating-change>
+      <app-rating-change [change]="result.change" [zeroIfNull]="cup.ratingCalculated"></app-rating-change>
       <img *ngIf="result.bonus === '1'" class="bonus-plus" src="/assets/images/icons/plus.png" />
     </ng-container>
     <span *ngIf="customTable" [class.preliminary]="result.isPreliminaryResult">{{ result.rating || '-' }}</span>
