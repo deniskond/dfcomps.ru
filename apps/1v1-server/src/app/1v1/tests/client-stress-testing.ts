@@ -45,7 +45,7 @@ function getClientsFunctionsBatch(): Promise<void>[] {
 }
 
 async function testClientActions(playerId: string, physics: Physics): Promise<void> {
-  const webSocket = new WebSocket('ws://localhost:3000/1v1');
+  const webSocket = new WebSocket('ws://localhost:4002/1v1');
   const websocketMessages$: Subject<DuelServerMessageType> = new Subject();
 
   await new Promise<void>((resolve) => {

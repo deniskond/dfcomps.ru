@@ -14,7 +14,7 @@ export class URL_PARAMS {
   public static get WEBSOCKET_1V1_URL(): string {
     const websocketEnvMap: Record<string, string> = {
       local: 'wss://dfcomps.ru/ws/1v1',
-      'local-backend': 'ws://localhost:3000/1v1',
+      'local-backend': 'ws://localhost:4002/1v1',
       prod: 'wss://dfcomps.ru/ws/1v1',
     };
 

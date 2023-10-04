@@ -14,9 +14,9 @@ describe('end-to-end: case 3 - double browser page', () => {
   const webSocketSecondMessagesStream$: Subject<DuelServerMessageType> = new Subject();
 
   beforeAll(() => {
-    webSocketFirst = new WebSocket('ws://localhost:3000/1v1');
+    webSocketFirst = new WebSocket('ws://localhost:4002/1v1');
     playerId = faker.datatype.uuid();
-    webSocketSecond = new WebSocket('ws://localhost:3000/1v1');
+    webSocketSecond = new WebSocket('ws://localhost:4002/1v1');
 
     webSocketFirst.onmessage = (message: MessageEvent) => {
       const parsedMessage: DuelServerMessageType = JSON.parse(message.data as string);
