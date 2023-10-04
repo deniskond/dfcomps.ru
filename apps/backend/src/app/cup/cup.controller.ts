@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Headers } from '@nestjs/common';
 import { CupService } from './cup.service';
 import { CupInterface } from '@dfcomps/contracts';
 
@@ -7,7 +7,7 @@ export class CupController {
   constructor(private readonly cupService: CupService) {}
 
   @Get('next-cup-info')
-  nextCupInfo(): Promise<CupInterface> {
-    return this.cupService.getNextCupInfo();
+  nextCupInfo(@Headers('X-Auth') accessToken: string): Promise<CupInterface> {
+    return this.cupService.getNextCupInfo(accessToken);
   }
 }

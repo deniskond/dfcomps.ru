@@ -92,15 +92,15 @@ export class Cup {
   @Column({ type: 'integer' })
   end_time: number;
 
-  @Column({ type: 'integer' })
-  timer: number;
+  @Column({ type: 'boolean' })
+  timer: boolean;
 
-  @Column({ type: 'integer' })
-  rating_calculated: number;
+  @Column({ type: 'boolean' })
+  rating_calculated: boolean;
 
-  @Column({ type: 'integer' })
-  use_two_servers: number;
+  @Column({ type: 'boolean' })
+  use_two_servers: boolean;
 
-  @Column({ type: 'integer' })
-  demos_validated: number;
+  @Column({ type: 'boolean' })
+  demos_validated: boolean;
 }
