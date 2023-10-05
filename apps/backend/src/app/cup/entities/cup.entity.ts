@@ -1,6 +1,7 @@
 import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
 import { CupResult } from './cup-result.entity';
 import { News } from '../../news/entities/news.entity';
+import { RatingChange } from '../../news/entities/rating-change.entity';
 
 @Entity({ name: 'cups' })
 export class Cup {
@@ -27,7 +28,7 @@ export class Cup {
 
   @Column({ type: 'timestamp with time zone' })
   end_datetime: string;
-  
+
   @Column({ type: 'character varying' })
   server1: string;
 
@@ -106,9 +107,12 @@ export class Cup {
   @Column({ type: 'boolean' })
   demos_validated: boolean;
 
-  @OneToMany(() => CupResult, cupResult => cupResult.cup, { nullable: true })
+  @OneToMany(() => CupResult, (cupResult) => cupResult.cup, { nullable: true })
   cupResults: CupResult[];
 
-  @OneToMany(() => News, news => news.cup, { nullable: true })
+  @OneToMany(() => News, (news) => news.cup, { nullable: true })
   news: News[];
+
+  @OneToMany(() => RatingChange, (ratingChange) => ratingChange.cup)
+  ratingChange: RatingChange[];
 }

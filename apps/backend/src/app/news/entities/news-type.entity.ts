@@ -1,5 +1,6 @@
 import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
 import { News } from './news.entity';
+import { NewsTypes } from '@dfcomps/contracts';
 
 @Entity({ name: 'news_types' })
 export class NewsType {
@@ -7,7 +8,7 @@ export class NewsType {
   id: number;
 
   @Column({ type: 'character varying' })
-  name: string;
+  name: NewsTypes;
 
   @Column({ type: 'character varying' })
   name_rus: string;

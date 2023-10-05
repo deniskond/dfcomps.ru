@@ -50,5 +50,5 @@ export class CupResult {
   cup: Cup;
 
   @ManyToOne(() => User)
-  user: Cup;
+  user: User;
 }

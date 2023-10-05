@@ -1,8 +1,7 @@
 export interface OnlineCupResultInterface {
   country: string;
-  cpmChange: string;
-  finalSum: string;
-  id: string;
+  cpmChange: number;
+  finalSum: number;
   nick: string;
-  vq3Change: string;
+  vq3Change: number;
 }

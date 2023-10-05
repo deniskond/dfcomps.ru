@@ -1,6 +1,7 @@
 import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
 import { CupResult } from '../../cup/entities/cup-result.entity';
 import { News } from '../../news/entities/news.entity';
+import { RatingChange } from '../../news/entities/rating-change.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -49,9 +50,12 @@ export class User {
   @Column({ type: 'timestamp', nullable: true })
   comments_ban_date: string;
 
-  @OneToMany(() => CupResult, cupResult => cupResult.user)
+  @OneToMany(() => CupResult, (cupResult) => cupResult.user)
   cupResults: CupResult[];
 
-  @OneToMany(() => News, news => news.user, { nullable: true })
+  @OneToMany(() => News, (news) => news.user, { nullable: true })
   news: News[];
+
+  @OneToMany(() => RatingChange, (ratingChange) => ratingChange.user)
+  ratingChanges: RatingChange[];
 }

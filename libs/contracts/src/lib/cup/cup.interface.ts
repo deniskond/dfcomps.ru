@@ -21,7 +21,7 @@ export interface CupInterface {
   multicupId: number;
   physics: Physics;
   ratingCalculated: boolean;
-  server: string;
+  server: string | null;
   shortName: string;
   system: string;
   timer: boolean;

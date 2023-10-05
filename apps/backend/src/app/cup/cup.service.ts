@@ -7,6 +7,7 @@ import { CupResult } from './entities/cup-result.entity';
 import { AuthService } from '../auth/auth.service';
 import { UserAccessInterface } from '../interfaces/user-access.interface';
 import * as moment from 'moment';
+import { mapCupEntityToInterface } from '../mappers/cup.mapper';
 
 @Injectable()
 export class CupService {
@@ -38,40 +39,7 @@ export class CupService {
 
     const isFutureCup: boolean = moment(nextCup.start_datetime).isAfter(moment());
 
-    return {
-      archiveLink: nextCup.archive_link,
-      bonusRating: nextCup.bonus_rating,
-      currentRound: nextCup.current_round,
-      demosValidated: nextCup.demos_validated,
-      startDateTime: nextCup.start_datetime,
-      endDateTime: nextCup.end_datetime,
-      fullName: nextCup.full_name,
-      id: nextCup.id,
-      map1: isFutureCup ? null : nextCup.map1,
-      map2: nextCup.map2,
-      map3: nextCup.map3,
-      map4: nextCup.map4,
-      map5: nextCup.map5,
-      mapAuthor: isFutureCup ? null : nextCup.map_author,
-      mapPk3: isFutureCup ? null : nextCup.map_pk3,
-      mapSize: isFutureCup ? null : nextCup.map_size,
-      mapWeapons: isFutureCup ? null : nextCup.map_weapons,
-      multicupId: nextCup.multicup_id,
-      physics: nextCup.physics as Physics,
-      ratingCalculated: nextCup.rating_calculated,
-      server,
-      shortName: nextCup.short_name,
-      system: nextCup.system,
-      timer: nextCup.timer,
-      twitch: nextCup.twitch,
-      type: nextCup.type,
-      useTwoServers: nextCup.use_two_servers,
-      youtube: nextCup.youtube,
-      newsId: nextCup.news[0].id,
-      customMap: isFutureCup ? null : nextCup.custom_map,
-      customNews: isFutureCup ? null : nextCup.custom_news,
-      cupId: nextCup.id,
-    };
+    return mapCupEntityToInterface(nextCup, isFutureCup, server, nextCup.news[0].id);
   }
 
   private async getNextCup(): Promise<Cup> {

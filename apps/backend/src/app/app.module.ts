@@ -14,6 +14,8 @@ import { News } from './news/entities/news.entity';
 import { CupResult } from './cup/entities/cup-result.entity';
 import { NewsModule } from './news/news.module';
 import { NewsType } from './news/entities/news-type.entity';
+import { Multicup } from './cup/entities/multicup.entity';
+import { RatingChange } from './news/entities/rating-change.entity';
 
 @Module({
   imports: [
@@ -23,7 +25,7 @@ import { NewsType } from './news/entities/news-type.entity';
       port: 5432,
       username: 'user',
       password: process.env.DFCOMPS_POSTGRES_PASSWORD,
-      entities: [User, OldUser, Movie, AuthRole, OneVOneRating, Cup, News, CupResult, NewsType],
+      entities: [User, OldUser, Movie, AuthRole, OneVOneRating, Cup, News, CupResult, NewsType, Multicup, RatingChange],
       database: 'dfcomps',
       synchronize: true,
       logging: true,
