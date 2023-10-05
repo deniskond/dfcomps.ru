@@ -1,4 +1,6 @@
-import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
+import { CupResult } from './cup-result.entity';
+import { News } from '../../news/entities/news.entity';
 
 @Entity({ name: 'cups' })
 export class Cup {
@@ -103,4 +105,10 @@ export class Cup {
 
   @Column({ type: 'boolean' })
   demos_validated: boolean;
+
+  @OneToMany(() => CupResult, cupResult => cupResult.cup, { nullable: true })
+  cupResults: CupResult[];
+
+  @OneToMany(() => News, news => news.cup, { nullable: true })
+  news: News[];
 }

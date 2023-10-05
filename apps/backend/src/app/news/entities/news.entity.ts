@@ -1,4 +1,5 @@
-import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, ManyToOne } from 'typeorm';
+import { Cup } from '../../cup/entities/cup.entity';
 
 @Entity({ name: 'news' })
 export class News {
@@ -58,4 +59,7 @@ export class News {
 
   @Column({ type: 'boolean' })
   hide_on_main: boolean;
+
+  @ManyToOne(() => Cup, { nullable: true })
+  cup: Cup;
 }

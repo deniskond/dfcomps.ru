@@ -27,7 +27,7 @@ export interface CupInterface {
   timer: boolean;
   twitch: string;
   type: string;
-  useTwoServers: string;
+  useTwoServers: boolean;
   youtube: string;
   newsId: number | null;
   customMap: string | null;

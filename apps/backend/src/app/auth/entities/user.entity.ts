@@ -1,4 +1,5 @@
-import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
+import { CupResult } from '../../cup/entities/cup-result.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -46,4 +47,7 @@ export class User {
 
   @Column({ type: 'timestamp', nullable: true })
   comments_ban_date: string;
+
+  @OneToMany(() => CupResult, cupResult => cupResult.user)
+  cupResults: CupResult[];
 }
