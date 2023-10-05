@@ -1,4 +1,5 @@
-import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, OneToOne, JoinColumn } from 'typeorm';
+import { User } from '../../auth/entities/user.entity';
 
 @Entity({ name: '1v1_rating' })
 export class OneVOneRating {
@@ -6,11 +7,12 @@ export class OneVOneRating {
   id: number;
 
   @Column({ type: 'integer' })
-  playerId: number;
+  cpm: number;
 
   @Column({ type: 'integer' })
-  cpm: string;
+  vq3: number;
 
-  @Column({ type: 'integer' })
-  vq3: string;
+  @OneToOne(() => User)
+  @JoinColumn()
+  user: User;
 }

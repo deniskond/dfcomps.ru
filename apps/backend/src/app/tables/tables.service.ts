@@ -28,18 +28,18 @@ export class TablesService {
       }));
     }
 
-    const top10Users: any = await this.oneVOneRatingRepository
+    const top10Users: OneVOneRating[] = await this.oneVOneRatingRepository
       .createQueryBuilder('1v1_rating')
-      .innerJoinAndSelect(User, 'users', 'users.id = 1v1_rating.playerId')
+      .innerJoinAndSelect('1v1_rating.user', 'user')
       .orderBy(`${physics}`, 'DESC')
       .limit(10)
-      .getRawMany();
+      .getMany();
 
-    return top10Users.map((rawResult) => ({
-      playerId: rawResult['1v1_rating_playerId'],
-      nick: rawResult['users_displayed_nick'],
-      country: rawResult['users_country'],
-      rating: physics === Physics.CPM ? rawResult['1v1_rating_cpm'] : rawResult['1v1_rating_vq3'],
+    return top10Users.map((result) => ({
+      playerId: result.user.id,
+      nick: result.user.displayed_nick,
+      country: result.user.country,
+      rating: physics === Physics.CPM ? result.cpm : result.vq3,
     }));
   }
 }
