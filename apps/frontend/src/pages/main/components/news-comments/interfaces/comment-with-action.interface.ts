@@ -1,4 +1,4 @@
-import { CommentInterface } from "~shared/interfaces/comments.interface";
+import { CommentInterface } from '@dfcomps/contracts';
 
 export interface CommentWithActionInterface extends CommentInterface {
   isEditable: boolean;

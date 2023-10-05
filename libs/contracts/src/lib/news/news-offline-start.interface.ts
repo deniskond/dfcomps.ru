@@ -1,7 +1,7 @@
-import { UploadedDemoInterface } from '../../../interfaces/uploaded-demo.interface';
 import { CupInterface } from '@dfcomps/contracts';
-import { NewsTypes } from '../../../enums/news-types.enum';
 import { NewsInterface } from './news.interface';
+import { NewsTypes } from './news-types.enum';
+import { UploadedDemoInterface } from './uploaded-demo.interface';
 
 export interface NewsOfflineStartInterface extends NewsInterface {
   type: NewsTypes.OFFLINE_START;

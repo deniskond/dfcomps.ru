@@ -3,7 +3,7 @@ import { DfwcResultsDtoInterface } from '../dto/dfwc-results.dto';
 import { DfwcSingleResultDtoInterface } from '../dto/dfwc-single-result.dto';
 import { decode } from 'html-entities';
 import { ResultsTableInterface } from '~shared/interfaces/results-table.interface';
-import { NewsOfflineResultsInterface } from '~shared/services/news-service/interfaces/news-offline-results.interface';
+import { NewsOfflineResultsInterface } from '@dfcomps/contracts';
 
 @Injectable({
   providedIn: 'root',

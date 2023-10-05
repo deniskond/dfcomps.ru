@@ -1,4 +1,4 @@
-import { CommentInterface } from '~shared/interfaces/comments.interface';
+import { CommentInterface } from '@dfcomps/contracts';
 import { CommentActionResult } from '../enums/comment-action-result.enum';
 
 export interface CommentActionResultInterface {

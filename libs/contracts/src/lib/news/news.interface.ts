@@ -1,5 +1,5 @@
-import { CommentInterface } from '../../../interfaces/comments.interface';
-import { NewsTypes } from '../../../enums/news-types.enum';
+import { CommentInterface } from './comments.interface';
+import { NewsTypes } from './news-types.enum';
 
 export interface NewsInterface {
   type: NewsTypes;

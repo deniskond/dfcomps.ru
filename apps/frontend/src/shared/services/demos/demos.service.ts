@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { BackendService, URL_PARAMS } from '~shared/rest-api';
 import { Observable } from 'rxjs';
 import { UploadDemoDtoInterface } from './dto/upload-demo.dto';
-import { UploadedDemoInterface } from '../../interfaces/uploaded-demo.interface';
+import { UploadedDemoInterface } from '@dfcomps/contracts';
+
 
 @Injectable({
   providedIn: 'root',

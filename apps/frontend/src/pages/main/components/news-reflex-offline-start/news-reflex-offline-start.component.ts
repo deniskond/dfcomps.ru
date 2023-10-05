@@ -16,13 +16,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ReflexPlayerDemosDialogComponent } from './reflex-player-demos-dialog/reflex-player-demos-dialog.component';
 import { CupStates } from '~shared/enums/cup-states.enum';
-import { isNonNull } from '~shared/helpers';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { DemosService } from '~shared/services/demos/demos.service';
-import { UploadDemoDtoInterface } from '~shared/services/demos/dto/upload-demo.dto';
 import { LanguageService } from '~shared/services/language/language.service';
-import { NewsOfflineStartInterface } from '~shared/services/news-service/interfaces/news-offline-start.interface';
 import { UserService } from '~shared/services/user-service/user.service';
+import { NewsOfflineStartInterface } from '@dfcomps/contracts';
 
 const SNACKBAR_DURATION = 3000;
 

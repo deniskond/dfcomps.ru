@@ -1,4 +1,4 @@
-import { NewsTypes } from "~shared/enums/news-types.enum";
+import { NewsTypes } from '@dfcomps/contracts';
 
 export interface AdminNewsInterface {
   id: string;

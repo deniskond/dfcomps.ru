@@ -1,5 +1,5 @@
+import { Physics } from '../physics.enum';
 import { MulticupRoundResultInterface } from './multicup-round-result.interface';
-import { Physics } from './physics.enum';
 
 export interface MulticupRoundInterface {
   fullName: string;

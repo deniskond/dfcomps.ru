@@ -2,12 +2,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { isEqual } from 'lodash';
 import { Observable, distinctUntilChanged, map, switchMap, take } from 'rxjs';
 import { Languages } from '~shared/enums/languages.enum';
-import { NewsTypes } from '~shared/enums/news-types.enum';
 import { LanguageService } from '~shared/services/language/language.service';
 import { NewsService } from '~shared/services/news-service/news.service';
-import { NewsInterfaceUnion } from '~shared/types/news-union.type';
 import * as moment from 'moment';
 import { ActivatedRoute, Params } from '@angular/router';
+import { NewsInterfaceUnion, NewsTypes } from '@dfcomps/contracts';
 
 @Component({
   templateUrl: './theme-news-page.component.html',

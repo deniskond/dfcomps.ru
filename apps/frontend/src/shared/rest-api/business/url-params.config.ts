@@ -22,7 +22,7 @@ export class URL_PARAMS {
   }
 
   public static get MOVIES(): string {
-    return `/api/movies`;
+    return `${API_URL}/movies`;
   }
 
   public static get AUTH(): {
@@ -32,15 +32,15 @@ export class URL_PARAMS {
     REGISTER: string;
   } {
     return {
-      GET_PASSWORD_TOKEN: '/api/auth/get-password-token',
-      GET_DISCORD_TOKEN: '/api/auth/get-discord-token',
-      CHECK_LOGIN: '/api/auth/check-login',
-      REGISTER: '/api/auth/register',
+      GET_PASSWORD_TOKEN: `${API_URL}/auth/get-password-token`,
+      GET_DISCORD_TOKEN: `${API_URL}/auth/get-discord-token`,
+      CHECK_LOGIN: `${API_URL}/auth/check-login`,
+      REGISTER: `${API_URL}/auth/register`,
     };
   }
 
   public static TOP_TEN_TABLE(): string {
-    return `/api/tables/top10`;
+    return `${API_URL}/tables/top10`;
   }
 
   public static RATING_TABLE_PAGE(physics: Physics, page: number): string {
@@ -144,7 +144,7 @@ export class URL_PARAMS {
     CHECK_REGISTRATION: (cupId: number, playerId: string) => string;
   } {
     return {
-      GET_NEXTCUP: `/api/cup/next-cup-info`,
+      GET_NEXTCUP: `/legacy-api/cup/next-cup-info`,
       ONLINE_FULL_TABLE: (cupId: string) => `${API_URL}/cup/online/${cupId}`,
       ONLINE_ROUND: (cupId: string, roundNumber: string) => `${API_URL}/cup/online/${cupId}/round/${roundNumber}`,
       MULTICUP_FULL_TABLE: (cupId: string, physics: Physics) => `${API_URL}/cup/multi/${cupId}/${physics}`,

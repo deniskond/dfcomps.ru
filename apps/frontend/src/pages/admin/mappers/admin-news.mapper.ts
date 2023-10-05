@@ -1,4 +1,4 @@
-import { NewsTypes } from '~shared/enums/news-types.enum';
+import { NewsTypes } from '@dfcomps/contracts';
 import { AdminNewsDto } from '../models/admin-news.dto';
 import { AdminNewsInterface } from '../models/admin-news.interface';
 import { getHumanTime } from './get-human-time';

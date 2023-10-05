@@ -3,10 +3,9 @@ import { CUSTOM_TABLE_NEWS_LIMIT } from '../../config/news.config';
 import { map, Observable, take } from 'rxjs';
 import { UserService } from '~shared/services/user-service/user.service';
 import { NewsService } from '~shared/services/news-service/news.service';
-import { NewsOfflineResultsInterface } from '~shared/services/news-service/interfaces/news-offline-results.interface';
 import { InvalidDemoInterface } from '~shared/interfaces/invalid-demo.interface';
 import { checkUserRoles } from '~shared/helpers/check-roles';
-import { Physics, UserRole } from '@dfcomps/contracts';
+import { NewsOfflineResultsInterface, Physics, UserRole } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-news-offline-results',

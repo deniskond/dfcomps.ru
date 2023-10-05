@@ -6,9 +6,8 @@ import { AdminDataService } from '../../business/admin-data.service';
 import { AdminNewsInterface } from '../../models/admin-news.interface';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { UserService } from '~shared/services/user-service/user.service';
-import { NewsTypes } from '~shared/enums/news-types.enum';
 import { checkUserRoles } from '~shared/helpers/check-roles';
-import { UserRole } from '@dfcomps/contracts';
+import { NewsTypes, UserRole } from '@dfcomps/contracts';
 
 @Component({
   selector: 'admin-news',

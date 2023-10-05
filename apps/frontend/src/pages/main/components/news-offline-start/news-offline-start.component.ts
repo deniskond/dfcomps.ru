@@ -26,8 +26,8 @@ import { DemosService } from '~shared/services/demos/demos.service';
 import { UploadDemoDtoInterface } from '~shared/services/demos/dto/upload-demo.dto';
 import { DemoUploadResult } from '~shared/services/demos/enums/demo-upload-result.enum';
 import { LanguageService } from '~shared/services/language/language.service';
-import { NewsOfflineStartInterface } from '~shared/services/news-service/interfaces/news-offline-start.interface';
 import { UserService } from '~shared/services/user-service/user.service';
+import { NewsOfflineStartInterface } from '@dfcomps/contracts';
 
 const SNACKBAR_DURATION = 3000;
 

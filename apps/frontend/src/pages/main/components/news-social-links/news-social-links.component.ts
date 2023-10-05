@@ -4,7 +4,7 @@ import { Subject, Observable } from 'rxjs';
 import { MAIN_URL } from '~shared/rest-api';
 import { Languages } from '~shared/enums/languages.enum';
 import { LanguageService } from '~shared/services/language/language.service';
-import { NewsInterfaceUnion } from '~shared/types/news-union.type';
+import { NewsInterfaceUnion } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-news-social-links',

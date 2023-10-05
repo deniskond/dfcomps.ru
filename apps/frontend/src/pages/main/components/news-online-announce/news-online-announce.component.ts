@@ -13,10 +13,9 @@ import { filter, withLatestFrom } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { isNonNull } from '~shared/helpers';
-import { RegisteredPlayerInterface } from '~shared/interfaces/registered-player.interface';
 import { UserInterface } from '~shared/interfaces/user.interface';
-import { NewsOnlineAnnounceInterface } from '~shared/services/news-service/interfaces/news-online-announce.interface';
 import { UserService } from '~shared/services/user-service/user.service';
+import { NewsOnlineAnnounceInterface, RegisteredPlayerInterface } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-news-online-announce',

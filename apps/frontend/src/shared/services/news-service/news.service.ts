@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BackendService, URL_PARAMS } from '~shared/rest-api';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { NewsInterfaceUnion } from '../../types/news-union.type';
 import { tap, finalize } from 'rxjs/operators';
+import { NewsInterfaceUnion } from '@dfcomps/contracts';
 
 @Injectable()
 export class NewsService extends BackendService {

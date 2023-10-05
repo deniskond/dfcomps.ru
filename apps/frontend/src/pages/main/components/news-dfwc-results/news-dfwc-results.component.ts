@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DfwcResultsService } from './services/dfwc-results.service';
-import { NewsOfflineResultsInterface } from '~shared/services/news-service/interfaces/news-offline-results.interface';
+import { NewsOfflineResultsInterface } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-news-dfwc-results',

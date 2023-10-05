@@ -27,13 +27,12 @@ import {
 import { AnimationEvent } from '@angular/animations';
 import { SmilesDropdownComponent } from './components/smiles-dropdown/smiles-dropdown.component';
 import { SmileInterface } from '~shared/configs/smiles.config';
-import { CommentInterface } from '~shared/interfaces/comments.interface';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { LanguageService } from '~shared/services/language/language.service';
 import { PersonalSmileInterface } from '~shared/services/smiles/personal-smile.interface';
 import { SmilesService } from '~shared/services/smiles/smiles.service';
 import { UserService } from '~shared/services/user-service/user.service';
-import { UserRole } from '@dfcomps/contracts';
+import { CommentInterface, UserRole } from '@dfcomps/contracts';
 import { checkUserRoles } from '~shared/helpers/check-roles';
 
 const COMMENT_ACTION_PERIOD_MINUTES = 2;

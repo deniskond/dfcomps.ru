@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
-import { NewsSimpleInterface } from '~shared/services/news-service/interfaces/news-simple.interface';
+import { NewsSimpleInterface } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-news-simple',
