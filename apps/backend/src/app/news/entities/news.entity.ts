@@ -1,5 +1,7 @@
-import { PrimaryGeneratedColumn, Column, Entity, ManyToOne } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
 import { Cup } from '../../cup/entities/cup.entity';
+import { User } from '../../auth/entities/user.entity';
+import { NewsType } from './news-type.entity';
 
 @Entity({ name: 'news' })
 export class News {
@@ -21,20 +23,11 @@ export class News {
   @Column({ type: 'character varying', nullable: true })
   youtube: string;
 
-  @Column({ type: 'integer', nullable: true })
-  cup_id: string;
-
-  @Column({ type: 'integer' })
-  type_id: string;
-
   @Column({ type: 'timestamp without time zone', nullable: true })
   datetime: string;
 
   @Column({ type: 'timestamp with time zone' })
   datetimezone: string;
-
-  @Column({ type: 'integer' })
-  author_id: number;
 
   @Column({ type: 'integer' })
   comments_count: number;
@@ -62,4 +55,10 @@ export class News {
 
   @ManyToOne(() => Cup, { nullable: true })
   cup: Cup;
+
+  @ManyToOne(() => User)
+  user: User;
+
+  @ManyToOne(() => NewsType)
+  newsType: NewsType;
 }

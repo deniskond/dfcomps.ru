@@ -12,6 +12,8 @@ import { Cup } from './cup/entities/cup.entity';
 import { CupModule } from './cup/cup.module';
 import { News } from './news/entities/news.entity';
 import { CupResult } from './cup/entities/cup-result.entity';
+import { NewsModule } from './news/news.module';
+import { NewsType } from './news/entities/news-type.entity';
 
 @Module({
   imports: [
@@ -21,7 +23,7 @@ import { CupResult } from './cup/entities/cup-result.entity';
       port: 5432,
       username: 'user',
       password: process.env.DFCOMPS_POSTGRES_PASSWORD,
-      entities: [User, OldUser, Movie, AuthRole, OneVOneRating, Cup, News, CupResult],
+      entities: [User, OldUser, Movie, AuthRole, OneVOneRating, Cup, News, CupResult, NewsType],
       database: 'dfcomps',
       synchronize: true,
       logging: true,
@@ -30,6 +32,7 @@ import { CupResult } from './cup/entities/cup-result.entity';
     MoviesModule,
     TablesModule,
     CupModule,
+    NewsModule,
   ],
 })
 export class AppModule {}

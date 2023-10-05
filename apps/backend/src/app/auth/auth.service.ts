@@ -203,6 +203,7 @@ export class AuthService {
         avatar,
         comments_ban_date: comments_ban_date ? moment(comments_ban_date).format('X') : null,
         cupResults: [],
+        news: [],
       }),
     );
 

@@ -1,5 +1,6 @@
 import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
 import { CupResult } from '../../cup/entities/cup-result.entity';
+import { News } from '../../news/entities/news.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -50,4 +51,7 @@ export class User {
 
   @OneToMany(() => CupResult, cupResult => cupResult.user)
   cupResults: CupResult[];
+
+  @OneToMany(() => News, news => news.user, { nullable: true })
+  news: News[];
 }
