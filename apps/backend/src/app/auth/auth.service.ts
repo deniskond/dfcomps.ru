@@ -215,7 +215,14 @@ export class AuthService {
     return 'ok';
   }
 
-  public async getUserInfoByAccessToken(accessToken: string): Promise<UserAccessInterface> {
+  public async getUserInfoByAccessToken(accessToken: string | undefined): Promise<UserAccessInterface> {
+    if (!accessToken) {
+      return {
+        userId: null,
+        roles: [],
+      };
+    }
+
     const user = await this.userRepository.findOneBy({ access_token: accessToken });
     const authRoles = await this.authRoleRepository.findBy({ user_id: user.id });
 

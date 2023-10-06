@@ -2,6 +2,7 @@ import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
 import { CupResult } from './cup-result.entity';
 import { News } from '../../news/entities/news.entity';
 import { RatingChange } from '../../news/entities/rating-change.entity';
+import { CupTypes } from '@dfcomps/contracts';
 
 @Entity({ name: 'cups' })
 export class Cup {
@@ -54,7 +55,7 @@ export class Cup {
   physics: string;
 
   @Column({ type: 'character varying' })
-  type: string;
+  type: CupTypes;
 
   @Column({ type: 'character varying' })
   map_weapons: string;

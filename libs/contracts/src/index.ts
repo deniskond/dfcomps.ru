@@ -26,3 +26,6 @@ export { NewsOnlineResultsInterface } from './lib/news/news-online-results.inter
 export { RegisteredPlayerInterface } from './lib/news/registered-player.interface';
 export { NewsOnlineAnnounceInterface } from './lib/news/news-online-announce.interface';
 export { OnlineCupResultInterface } from './lib/news/online-cup-result.interface';
+export { CheckCupRegistrationInterface } from './lib/cup/check-cup-registration.interface';
+export { CheckCupRegistrationDto } from './lib/cup/check-cup-registration.dto';
+export { CupTypes } from './lib/cup/cup-types.enum';

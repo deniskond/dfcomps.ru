@@ -1,4 +1,4 @@
-import { Physics } from '@dfcomps/contracts';
+import { CupTypes, Physics } from '@dfcomps/contracts';
 
 export interface CupInterface {
   archiveLink: string;
@@ -26,7 +26,7 @@ export interface CupInterface {
   system: string;
   timer: boolean;
   twitch: string;
-  type: string;
+  type: CupTypes;
   useTwoServers: boolean;
   youtube: string;
   newsId: number | null;

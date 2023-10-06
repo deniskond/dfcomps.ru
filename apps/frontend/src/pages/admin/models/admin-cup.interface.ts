@@ -1,5 +1,4 @@
-import { Physics } from "@dfcomps/contracts";
-import { CupTypes } from "~shared/enums/cup-types.enum";
+import { CupTypes, Physics } from '@dfcomps/contracts';
 
 export interface AdminCupInterface {
   id: string;

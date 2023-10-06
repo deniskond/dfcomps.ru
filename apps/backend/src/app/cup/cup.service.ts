@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cup } from './entities/cup.entity';
-import { CupInterface, Physics } from '@dfcomps/contracts';
+import { CheckCupRegistrationInterface, CupInterface } from '@dfcomps/contracts';
 import { CupResult } from './entities/cup-result.entity';
 import { AuthService } from '../auth/auth.service';
 import { UserAccessInterface } from '../interfaces/user-access.interface';
@@ -40,6 +40,21 @@ export class CupService {
     const isFutureCup: boolean = moment(nextCup.start_datetime).isAfter(moment());
 
     return mapCupEntityToInterface(nextCup, isFutureCup, server, nextCup.news[0].id);
+  }
+
+  public async checkIfPlayerRegistered(
+    accessToken: string | undefined,
+    cupId: number,
+  ): Promise<CheckCupRegistrationInterface> {
+    const { userId }: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    const playerCupRecordCount: number = await this.cupResultRepository
+      .createQueryBuilder('cups_results')
+      .where('cups_results.cupId = :cupId', { cupId })
+      .andWhere('cups_results.userId = :userId', { userId })
+      .getCount();
+
+    return { isRegistered: !!playerCupRecordCount };
   }
 
   private async getNextCup(): Promise<Cup> {

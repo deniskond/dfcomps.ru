@@ -1,5 +1,5 @@
 import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
-import { CupTypes } from '../../enums/cup-types.enum';
+import { CupTypes } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-cup-timer',
