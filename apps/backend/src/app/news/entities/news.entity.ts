@@ -1,7 +1,8 @@
-import { PrimaryGeneratedColumn, Column, Entity, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, ManyToOne, JoinColumn, OneToOne, OneToMany } from 'typeorm';
 import { Cup } from '../../cup/entities/cup.entity';
 import { User } from '../../auth/entities/user.entity';
 import { NewsType } from './news-type.entity';
+import { NewsComment } from './news-comment.entity';
 
 @Entity({ name: 'news' })
 export class News {
@@ -61,4 +62,7 @@ export class News {
 
   @ManyToOne(() => NewsType)
   newsType: NewsType;
+
+  @OneToMany(() => NewsComment, newsComment => newsComment.news)
+  newsComments: NewsComment[];
 }

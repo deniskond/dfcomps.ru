@@ -205,6 +205,7 @@ export class AuthService {
         cupResults: [],
         news: [],
         ratingChanges: [],
+        newsComments: [],
       }),
     );
 

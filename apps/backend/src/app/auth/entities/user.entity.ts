@@ -2,6 +2,7 @@ import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
 import { CupResult } from '../../cup/entities/cup-result.entity';
 import { News } from '../../news/entities/news.entity';
 import { RatingChange } from '../../news/entities/rating-change.entity';
+import { NewsComment } from '../../news/entities/news-comment.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -58,4 +59,7 @@ export class User {
 
   @OneToMany(() => RatingChange, (ratingChange) => ratingChange.user)
   ratingChanges: RatingChange[];
+
+  @OneToMany(() => NewsComment, (newsComment) => newsComment.user)
+  newsComments: NewsComment[];
 }

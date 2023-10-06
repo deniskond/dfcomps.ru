@@ -17,11 +17,13 @@ import { AuthService } from '../auth/auth.service';
 import * as moment from 'moment';
 import { CupResult } from '../cup/entities/cup-result.entity';
 import { mapCupEntityToInterface } from '../mappers/cup.mapper';
+import { NewsComment } from './entities/news-comment.entity';
 
 @Injectable()
 export class NewsService {
   constructor(
     @InjectRepository(News) private readonly newsRepository: Repository<News>,
+    @InjectRepository(NewsComment) private readonly newsCommentsRepository: Repository<NewsComment>,
     @InjectRepository(CupResult) private readonly cupsResultsRepository: Repository<CupResult>,
     private readonly authService: AuthService,
   ) {}
@@ -104,6 +106,15 @@ export class NewsService {
       .addOrderBy('displayed_nick', 'ASC')
       .getMany();
 
+    const comments: NewsComment[] = await this.newsCommentsRepository
+      .createQueryBuilder('news_comments')
+      .leftJoinAndSelect('news_comments.user', 'user')
+      .where({ news: { id: news.id } })
+      .orderBy('news_comments.id', 'ASC')
+      .getMany();
+
+    const preposted: boolean = moment(news.datetimezone).isAfter(moment());
+
     return {
       type: NewsTypes.ONLINE_RESULTS,
       id: news.id,
@@ -123,8 +134,14 @@ export class NewsService {
       tableJson: news.table_json,
       twitch1: news.twitch_1,
       twitch2: news.twitch_2,
-      comments: [], // TODO
-      preposted: false,
+      comments: comments.map((newsComment: NewsComment) => ({
+        comment: newsComment.comment,
+        datetimezone: newsComment.datetimezone,
+        playerId: newsComment.user.id,
+        reason: newsComment.reason,
+        username: newsComment.user.displayed_nick,
+      })),
+      preposted,
       cup: mapCupEntityToInterface(news.cup, false, null, news.id),
       results: cupResults.map((cupResult: CupResult) => ({
         country: cupResult.user.country,
