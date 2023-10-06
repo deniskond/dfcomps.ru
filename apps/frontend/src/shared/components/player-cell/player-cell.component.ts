@@ -19,7 +19,7 @@ import { PlayerCellStyles } from './enums/player-cell-styles.enum';
 export class PlayerCellComponent {
   @Input() country: string;
   @Input() nick: string;
-  @Input() playerId: string;
+  @Input() playerId: number;
   @Input() style = PlayerCellStyles.LIGHT;
 
   constructor(private router: Router) {}
@@ -43,7 +43,7 @@ export class PlayerCellComponent {
     return hovered ? HOVERABLE_CELL_TRANSPARENT_HOVERED_STATE : HOVERABLE_CELL_TRANSPARENT_NORMAL_STATE;
   }
 
-  public navigateToPlayerProfile(playerId: string): void {
+  public navigateToPlayerProfile(playerId: number): void {
     if (playerId) {
       this.router.navigate([`/profile/${playerId}`]);
     }

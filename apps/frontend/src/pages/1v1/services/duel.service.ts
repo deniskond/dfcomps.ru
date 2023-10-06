@@ -44,11 +44,11 @@ export class DuelService {
     this.webSocket.onmessage = (event: MessageEvent) => this.onMessage(event);
   }
 
-  public sendRestoreStateMessage(playerId: string): void {
+  public sendRestoreStateMessage(playerId: number): void {
     this.send({ playerId, action: DuelWebsocketClientActions.GET_PLAYER_STATE });
   }
 
-  public joinQueue(playerId: string, physics: Physics): void {
+  public joinQueue(playerId: number, physics: Physics): void {
     const joinQueueRequest: JoinQueueMessageInterface = {
       playerId,
       action: DuelWebsocketClientActions.JOIN_QUEUE,
@@ -60,7 +60,7 @@ export class DuelService {
     this.send(joinQueueRequest);
   }
 
-  public leaveQueue(playerId: string): void {
+  public leaveQueue(playerId: number): void {
     const leaveQueueRequest: LeaveQueueMessageInterface = {
       playerId,
       action: DuelWebsocketClientActions.LEAVE_QUEUE,
@@ -69,7 +69,7 @@ export class DuelService {
     this.send(leaveQueueRequest);
   }
 
-  public banMap(playerId: string, mapName: string): void {
+  public banMap(playerId: number, mapName: string): void {
     const banMapRequest: BanMapMessageInterface = {
       playerId,
       action: DuelWebsocketClientActions.BAN_MAP,
@@ -89,7 +89,7 @@ export class DuelService {
     this.isWebSocketOpened$.next(false);
   }
 
-  public acceptResult(playerId: string): void {
+  public acceptResult(playerId: number): void {
     const acceptResultRequest: MatchResultAcceptedMessageInterface = {
       playerId,
       action: DuelWebsocketClientActions.MATCH_RESULT_ACCEPTED,

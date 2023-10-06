@@ -125,8 +125,8 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
       return '';
     }
 
-    const firstPlayerNick = playersInfo.firstPlayerId === '-1' ? 'dfcomps bot' : playersInfo.firstPlayerInfo?.nick;
-    const secondPlayerNick = playersInfo.secondPlayerId === '-1' ? 'dfcomps bot' : playersInfo.secondPlayerInfo?.nick;
+    const firstPlayerNick = playersInfo.firstPlayerId === -1 ? 'dfcomps bot' : playersInfo.firstPlayerInfo?.nick;
+    const secondPlayerNick = playersInfo.secondPlayerId === -1 ? 'dfcomps bot' : playersInfo.secondPlayerInfo?.nick;
 
     return firstPlayerTime < secondPlayerTime ? firstPlayerNick : secondPlayerNick;
   }

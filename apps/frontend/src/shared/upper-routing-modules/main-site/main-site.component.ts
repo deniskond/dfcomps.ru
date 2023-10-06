@@ -15,7 +15,7 @@ export class MainSiteComponent implements OnInit {
   public cupTypes = CupTypes;
   public physics = Physics;
   public nextCupInfo$ = new ReplaySubject<CupInterface>(1);
-  public server$: Observable<string>;
+  public server$: Observable<string | null>;
   public activePage = Math.random() > 0.5 ? 1 : 2;
   public ratingtablesModes = RatingTablesModes;
 

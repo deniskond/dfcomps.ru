@@ -25,3 +25,4 @@ export { NewsOfflineStartInterface } from './lib/news/news-offline-start.interfa
 export { NewsOnlineResultsInterface } from './lib/news/news-online-results.interface';
 export { RegisteredPlayerInterface } from './lib/news/registered-player.interface';
 export { NewsOnlineAnnounceInterface } from './lib/news/news-online-announce.interface';
+export { OnlineCupResultInterface } from './lib/news/online-cup-result.interface';

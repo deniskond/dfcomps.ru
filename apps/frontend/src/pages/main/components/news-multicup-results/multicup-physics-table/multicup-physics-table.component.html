@@ -21,7 +21,7 @@
   <div class="points-column">{{ result.overall }}</div>
   <div class="ratings-column">
     <app-rating-change
-      [change]="result.ratingChange === '0' ? null : result.ratingChange"
+      [change]="result.ratingChange === 0 ? null : result.ratingChange"
       [zeroIfNull]="false"
     ></app-rating-change>
   </div>

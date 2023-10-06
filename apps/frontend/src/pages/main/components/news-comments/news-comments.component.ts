@@ -48,7 +48,7 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
   @Input()
   comments: CommentInterface[];
   @Input()
-  newsId: string;
+  newsId: number;
   @Input()
   expanded = false;
 
@@ -60,7 +60,7 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
   public commentsWithActions$: Observable<CommentWithActionInterface[]>;
   public personalSmiles$: Observable<PersonalSmileInterface[]>;
   public isLoading = false;
-  public editingCommentId: string | null = null;
+  public editingCommentId: number | null = null;
   public smilesDropdownOpened = false;
   public smilesDropdownDisplayHidden = true;
   public openedAnimationState = SMILES_DIALOG_OPENED;
@@ -138,7 +138,7 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
     return moment(date).format('DD.MM.YYYY HH:mm:ss');
   }
 
-  public deleteComment(commentId: string): void {
+  public deleteComment(commentId: number): void {
     this.commentsService
       .deleteComment$(commentId)
       .subscribe((commentActionResult: CommentActionResultInterface) =>
@@ -146,7 +146,7 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
       );
   }
 
-  public adminDeleteComment(commentId: string): void {
+  public adminDeleteComment(commentId: number): void {
     this.dialog
       .open(AdminDeleteCommentDialogComponent)
       .afterClosed()
@@ -157,7 +157,7 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
       });
   }
 
-  public editComment(id: string): void {
+  public editComment(id: number): void {
     this.editingCommentId = id;
 
     this.comments$
@@ -165,7 +165,7 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
       .subscribe(
         (comments: CommentInterface[]) =>
           (this.textarea.nativeElement.value = comments.find(
-            (comment: CommentInterface) => comment.id === this.editingCommentId,
+            (comment: CommentInterface) => comment.commentId === this.editingCommentId,
           )!.comment),
       );
   }

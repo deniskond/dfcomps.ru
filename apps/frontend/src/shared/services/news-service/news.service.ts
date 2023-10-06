@@ -17,7 +17,7 @@ export class NewsService extends BackendService {
     }
 
     this.isLoading = true;
-    this.post$<NewsInterfaceUnion[]>(URL_PARAMS.NEWS.MAIN_PAGE)
+    this.get$<NewsInterfaceUnion[]>(URL_PARAMS.NEWS.MAIN_PAGE)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe((news: NewsInterfaceUnion[]) => this._mainPageNews$.next(news));
   }

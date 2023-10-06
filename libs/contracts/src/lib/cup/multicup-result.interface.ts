@@ -1,9 +1,9 @@
 export interface MulticupResultInterface {
-  playerId: string;
+  playerId: number;
   playerNick: string;
   playerCountry: string;
   roundResults: number[];
   overall: number;
   minround?: number;
-  ratingChange: string;
+  ratingChange: number;
 }

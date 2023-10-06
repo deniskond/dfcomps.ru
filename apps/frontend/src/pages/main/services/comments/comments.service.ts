@@ -8,27 +8,27 @@ import { CommentInterface } from '@dfcomps/contracts';
   providedIn: 'root',
 })
 export class CommentsService extends BackendService {
-  public sendComment$(text: string, newsId: string): Observable<CommentInterface[]> {
+  public sendComment$(text: string, newsId: number): Observable<CommentInterface[]> {
     return this.post$(URL_PARAMS.COMMENTS.ADD, {
       text,
       newsId,
     });
   }
 
-  public deleteComment$(commentId: string): Observable<CommentActionResultInterface> {
+  public deleteComment$(commentId: number): Observable<CommentActionResultInterface> {
     return this.post$(URL_PARAMS.COMMENTS.DELETE, {
       commentId,
     });
   }
 
-  public updateComment$(text: string, commentId: string): Observable<CommentActionResultInterface> {
+  public updateComment$(text: string, commentId: number): Observable<CommentActionResultInterface> {
     return this.post$(URL_PARAMS.COMMENTS.UPDATE, {
       text,
       commentId,
     });
   }
 
-  public adminDeleteComment$(commentId: string, reason: string): Observable<CommentInterface[]> {
+  public adminDeleteComment$(commentId: number, reason: string): Observable<CommentInterface[]> {
     return this.post$(URL_PARAMS.COMMENTS.ADMIN_DELETE, {
       commentId,
       reason,

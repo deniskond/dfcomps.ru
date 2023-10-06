@@ -139,9 +139,9 @@ export class URL_PARAMS {
     ONLINE_ROUND: (cupId: string, roundNumber: string) => string;
     MULTICUP_FULL_TABLE: (cupId: string, physics: Physics) => string;
     MULTICUP_ROUND: (cupId: string, physics: Physics, roundNumber: string) => string;
-    REGISTER: (cupId: string) => string;
-    CANCEL_REGISTRATION: (cupId: string) => string;
-    CHECK_REGISTRATION: (cupId: number, playerId: string) => string;
+    REGISTER: (cupId: number) => string;
+    CANCEL_REGISTRATION: (cupId: number) => string;
+    CHECK_REGISTRATION: (cupId: number, playerId: number) => string;
   } {
     return {
       GET_NEXTCUP: `/legacy-api/cup/next-cup-info`,
@@ -150,9 +150,9 @@ export class URL_PARAMS {
       MULTICUP_FULL_TABLE: (cupId: string, physics: Physics) => `${API_URL}/cup/multi/${cupId}/${physics}`,
       MULTICUP_ROUND: (cupId: string, physics: Physics, roundNumber: string) =>
         `${API_URL}/cup/multi/${cupId}/${physics}/round/${roundNumber}`,
-      REGISTER: (cupId: string) => `${API_URL}/cup/register/${cupId}`,
-      CANCEL_REGISTRATION: (cupId: string) => `${API_URL}/cup/cancel_registration/${cupId}`,
-      CHECK_REGISTRATION: (cupId: number, playerId: string) => `${API_URL}/cup/isRegistered/${cupId}/${playerId}`,
+      REGISTER: (cupId: number) => `${API_URL}/cup/register/${cupId}`,
+      CANCEL_REGISTRATION: (cupId: number) => `${API_URL}/cup/cancel_registration/${cupId}`,
+      CHECK_REGISTRATION: (cupId: number, playerId: number) => `${API_URL}/cup/isRegistered/${cupId}/${playerId}`,
     };
   }
 

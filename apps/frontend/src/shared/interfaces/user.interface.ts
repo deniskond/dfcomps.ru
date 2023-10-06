@@ -4,7 +4,7 @@ export interface UserInterface {
   avatar: string;
   country: string;
   cpmRating: number;
-  id: string;
+  id: number;
   nick: string;
   vq3Rating: number;
   roles: UserRole[];

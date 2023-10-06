@@ -1,12 +1,12 @@
 export interface ValidDemoInterface {
   bonus: string;
-  change: string;
+  change: number;
   col: string;
   country: string;
   demopath: string;
   impressive: string;
   nick: string;
-  playerId: string;
+  playerId: number;
   rating: string;
   row: string;
   time: string;

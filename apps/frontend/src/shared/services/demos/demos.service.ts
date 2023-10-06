@@ -13,7 +13,7 @@ export class DemosService extends BackendService {
     demo: File,
     cupId: number,
     mapName: string,
-    playerId: string,
+    playerId: number,
     fileName: string,
   ): Observable<UploadDemoDtoInterface> {
     return this.uploadFile$(URL_PARAMS.DEMOS.UPLOAD, [{ fileKey: 'file', file: demo }], {

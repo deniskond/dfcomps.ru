@@ -135,6 +135,7 @@ export class NewsService {
       twitch1: news.twitch_1,
       twitch2: news.twitch_2,
       comments: comments.map((newsComment: NewsComment) => ({
+        commentId: newsComment.id,
         comment: newsComment.comment,
         datetimezone: newsComment.datetimezone,
         playerId: newsComment.user.id,
@@ -144,6 +145,7 @@ export class NewsService {
       preposted,
       cup: mapCupEntityToInterface(news.cup, false, null, news.id),
       results: cupResults.map((cupResult: CupResult) => ({
+        playerId: cupResult.user.id,
         country: cupResult.user.country,
         cpmChange: cupResult.user.ratingChanges[0]?.cpm_change || 0,
         finalSum: cupResult.final_sum,

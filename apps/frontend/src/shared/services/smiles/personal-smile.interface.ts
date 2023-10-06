@@ -1,4 +1,4 @@
 export interface PersonalSmileInterface {
-  playerId: string;
+  playerId: number;
   smileAlias: string;
 }

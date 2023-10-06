@@ -12,7 +12,7 @@ export class CupsService extends BackendService {
     return this.get$(URL_PARAMS.CUP.GET_NEXTCUP);
   }
 
-  public checkIfPlayerRegistered$(cupId: number, playerId: string): Observable<boolean> {
+  public checkIfPlayerRegistered$(cupId: number, playerId: number): Observable<boolean> {
     return this.post$<{ isRegistered: boolean }>(URL_PARAMS.CUP.CHECK_REGISTRATION(cupId, playerId)).pipe(
       map(({ isRegistered }) => isRegistered),
     );

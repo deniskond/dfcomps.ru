@@ -38,13 +38,13 @@ export class DfwcResultsService {
 
         return {
           bonus: '0',
-          change: '0',
+          change: 0,
           col: '',
           country: result.flag,
           demopath,
           impressive: '0',
           nick: result.name,
-          playerId: '',
+          playerId: 0,
           rating: points,
           row: '',
           time: this.convertDemoTime(result.time),

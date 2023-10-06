@@ -21,19 +21,19 @@
               </span>
               <span *ngIf="comment.isEditable">
                 <span class="separator"></span>
-                <a (click)="editComment(comment.id)" class="bluelink hoverable">
+                <a (click)="editComment(comment.commentId)" class="bluelink hoverable">
                   <span translate translation="edit"></span>
                 </a>
               </span>
               <span *ngIf="comment.isEditable">
                 <span class="separator"></span>
-                <a (click)="deleteComment(comment.id)" class="bluelink hoverable">
+                <a (click)="deleteComment(comment.commentId)" class="bluelink hoverable">
                   <span translate translation="delete"></span>
                 </a>
               </span>
               <span *ngIf="comment.isAdminDeletable">
                 <span class="separator"></span>
-                <a (click)="adminDeleteComment(comment.id)" class="bluelink hoverable">
+                <a (click)="adminDeleteComment(comment.commentId)" class="bluelink hoverable">
                   <span translate translation="delete"></span>
                 </a>
               </span>
