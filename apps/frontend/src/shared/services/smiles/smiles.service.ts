@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BackendService, URL_PARAMS } from '~shared/rest-api';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { PersonalSmileInterface } from './personal-smile.interface';
 import { tap, filter } from 'rxjs/operators';
 import { isNonNull } from '../../../shared/helpers';
+import { PersonalSmileInterface } from '@dfcomps/contracts';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +25,7 @@ export class SmilesService extends BackendService {
   }
 
   private fetchPersonalSmiles(): void {
-    this.post$<PersonalSmileInterface[]>(URL_PARAMS.SMILES.GET_PERSONAL_SMILES).subscribe(
+    this.get$<PersonalSmileInterface[]>(URL_PARAMS.SMILES.GET_PERSONAL_SMILES).subscribe(
       (personalSmiles: PersonalSmileInterface[]) => {
         this.personalSmiles$.next(personalSmiles);
         this.isLoading = false;

@@ -2,7 +2,8 @@ import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
 import { CupResult } from '../../cup/entities/cup-result.entity';
 import { News } from '../../news/entities/news.entity';
 import { RatingChange } from '../../news/entities/rating-change.entity';
-import { NewsComment } from '../../news/entities/news-comment.entity';
+import { NewsComment } from '../../comments/entities/news-comment.entity';
+import { Smile } from '../../comments/entities/smile.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -62,4 +63,7 @@ export class User {
 
   @OneToMany(() => NewsComment, (newsComment) => newsComment.user)
   newsComments: NewsComment[];
+
+  @OneToMany(() => Smile, (smile) => smile.user)
+  smiles: Smile[];
 }

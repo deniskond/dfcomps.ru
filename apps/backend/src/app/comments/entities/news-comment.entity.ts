@@ -1,6 +1,6 @@
 import { PrimaryGeneratedColumn, Column, Entity, ManyToOne } from 'typeorm';
 import { User } from '../../auth/entities/user.entity';
-import { News } from './news.entity';
+import { News } from '../../news/entities/news.entity';
 
 @Entity({ name: 'news_comments' })
 export class NewsComment {

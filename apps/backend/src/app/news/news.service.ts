@@ -17,7 +17,7 @@ import { AuthService } from '../auth/auth.service';
 import * as moment from 'moment';
 import { CupResult } from '../cup/entities/cup-result.entity';
 import { mapCupEntityToInterface } from '../mappers/cup.mapper';
-import { NewsComment } from './entities/news-comment.entity';
+import { NewsComment } from '../comments/entities/news-comment.entity';
 
 @Injectable()
 export class NewsService {

@@ -1,8 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, OnInit } from '@angular/core';
-import { CommentInterface } from '@dfcomps/contracts';
+import { CommentInterface, PersonalSmileInterface } from '@dfcomps/contracts';
 import { SmileInterface, SMILES_CONFIG, SmileGroups } from '~shared/configs/smiles.config';
 import { UserInterface } from '~shared/interfaces/user.interface';
-import { PersonalSmileInterface } from '~shared/services/smiles/personal-smile.interface';
 
 enum MessagePartTypes {
   SMILE,

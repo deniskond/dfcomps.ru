@@ -160,7 +160,7 @@ export class URL_PARAMS {
     GET_PERSONAL_SMILES: string;
   } {
     return {
-      GET_PERSONAL_SMILES: `${API_URL}/comments/get_personal_smiles`,
+      GET_PERSONAL_SMILES: `${API_URL}/comments/personal-smiles`,
     };
   }
 

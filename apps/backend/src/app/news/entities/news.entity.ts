@@ -2,7 +2,7 @@ import { PrimaryGeneratedColumn, Column, Entity, ManyToOne, JoinColumn, OneToOne
 import { Cup } from '../../cup/entities/cup.entity';
 import { User } from '../../auth/entities/user.entity';
 import { NewsType } from './news-type.entity';
-import { NewsComment } from './news-comment.entity';
+import { NewsComment } from '../../comments/entities/news-comment.entity';
 
 @Entity({ name: 'news' })
 export class News {

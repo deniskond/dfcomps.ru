@@ -16,7 +16,9 @@ import { NewsModule } from './news/news.module';
 import { NewsType } from './news/entities/news-type.entity';
 import { Multicup } from './cup/entities/multicup.entity';
 import { RatingChange } from './news/entities/rating-change.entity';
-import { NewsComment } from './news/entities/news-comment.entity';
+import { NewsComment } from './comments/entities/news-comment.entity';
+import { CommentsModule } from './comments/comments.module';
+import { Smile } from './comments/entities/smile.entity';
 
 @Module({
   imports: [
@@ -26,7 +28,21 @@ import { NewsComment } from './news/entities/news-comment.entity';
       port: 5432,
       username: 'user',
       password: process.env.DFCOMPS_POSTGRES_PASSWORD,
-      entities: [User, OldUser, Movie, AuthRole, OneVOneRating, Cup, News, CupResult, NewsType, Multicup, RatingChange, NewsComment],
+      entities: [
+        User,
+        OldUser,
+        Movie,
+        AuthRole,
+        OneVOneRating,
+        Cup,
+        News,
+        CupResult,
+        NewsType,
+        Multicup,
+        RatingChange,
+        NewsComment,
+        Smile,
+      ],
       database: 'dfcomps',
       synchronize: true,
       logging: true,
@@ -36,6 +52,7 @@ import { NewsComment } from './news/entities/news-comment.entity';
     TablesModule,
     CupModule,
     NewsModule,
+    CommentsModule,
   ],
 })
 export class AppModule {}

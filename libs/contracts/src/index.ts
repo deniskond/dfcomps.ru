@@ -29,3 +29,4 @@ export { OnlineCupResultInterface } from './lib/news/online-cup-result.interface
 export { CheckCupRegistrationInterface } from './lib/cup/check-cup-registration.interface';
 export { CheckCupRegistrationDto } from './lib/cup/check-cup-registration.dto';
 export { CupTypes } from './lib/cup/cup-types.enum';
+export { PersonalSmileInterface } from './lib/comments/personal-smile.interface';
