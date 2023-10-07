@@ -1,6 +1,6 @@
 export interface OnlineCupResultInterface {
   playerId: number;
-  country: string;
+  country: string | null;
   cpmChange: number;
   finalSum: number;
   nick: string;

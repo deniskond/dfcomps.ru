@@ -75,7 +75,7 @@ export class NewsOfflineStartComponent implements OnInit {
       return;
     }
 
-    if (!demo.name.toLowerCase().includes(this.news.cup.map1.toLowerCase())) {
+    if (!demo.name.toLowerCase().includes(this.news.cup.map1!.toLowerCase())) {
       this.openSnackBar('error', 'wrongMap');
 
       return;
@@ -88,7 +88,7 @@ export class NewsOfflineStartComponent implements OnInit {
         filter(isNonNull),
         take(1),
         switchMap((user: UserInterface) =>
-          this.demosService.uploadDemo$(demo, this.news.cup.id, this.news.cup.map1, user.id, demo.name),
+          this.demosService.uploadDemo$(demo, this.news.cup.id, this.news.cup.map1!, user.id, demo.name),
         ),
         finalize(() => {
           this.fileInput.nativeElement.value = null;

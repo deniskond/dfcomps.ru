@@ -18,7 +18,7 @@ export class CupTimerComponent {
   @Input()
   endTime: string;
   @Input()
-  mapLink: string;
+  mapLink: string | null;
   @Input()
   newsId: number | null;
   @Input()

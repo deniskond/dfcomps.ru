@@ -10,15 +10,15 @@ import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } f
 })
 export class FlagComponent implements OnChanges {
   @Input()
-  country: string;
+  country: string | null;
 
   public flagStyle: Record<string, string>;
 
-  ngOnChanges({ country }: SimpleChanges): void {
+  ngOnChanges(): void {
     this.flagStyle = this.getFlagStyle(this.country);
   }
 
-  private getFlagStyle(countryShortName: string): Record<string, string> {
+  private getFlagStyle(countryShortName: string | null): Record<string, string> {
     const country = COUNTRIES_CONFIG.COUNTRIES.find(
       ({ shortName }: CountryInterface) => shortName === countryShortName,
     );

@@ -1,8 +1,10 @@
-import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, OneToMany, ManyToOne } from 'typeorm';
 import { CupResult } from './cup-result.entity';
 import { News } from '../../news/entities/news.entity';
 import { RatingChange } from '../../news/entities/rating-change.entity';
 import { CupTypes } from '@dfcomps/contracts';
+import { Multicup } from './multicup.entity';
+import { CupDemo } from './cup-demo.entity';
 
 @Entity({ name: 'cups' })
 export class Cup {
@@ -69,9 +71,6 @@ export class Cup {
   @Column({ type: 'character varying' })
   map_size: string;
 
-  @Column({ type: 'integer' })
-  multicup_id: number;
-
   @Column({ type: 'character varying' })
   archive_link: string;
 
@@ -108,12 +107,18 @@ export class Cup {
   @Column({ type: 'boolean' })
   demos_validated: boolean;
 
-  @OneToMany(() => CupResult, (cupResult) => cupResult.cup, { nullable: true })
+  @OneToMany(() => CupResult, (cupResult) => cupResult.cup)
   cupResults: CupResult[];
 
-  @OneToMany(() => News, (news) => news.cup, { nullable: true })
+  @OneToMany(() => News, (news) => news.cup)
   news: News[];
 
   @OneToMany(() => RatingChange, (ratingChange) => ratingChange.cup)
   ratingChange: RatingChange[];
+
+  @OneToMany(() => CupDemo, (cupDemo) => cupDemo.cup)
+  cupDemos: CupDemo[];
+
+  @ManyToOne(() => Multicup)
+  multicup: Multicup;
 }

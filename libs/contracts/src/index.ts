@@ -30,3 +30,4 @@ export { CheckCupRegistrationInterface } from './lib/cup/check-cup-registration.
 export { CheckCupRegistrationDto } from './lib/cup/check-cup-registration.dto';
 export { CupTypes } from './lib/cup/cup-types.enum';
 export { PersonalSmileInterface } from './lib/comments/personal-smile.interface';
+export { NewsInterface } from './lib/news/news.interface';

@@ -16,7 +16,7 @@ export class CupTimerOfflineFinishedComponent implements OnInit, OnChanges {
   @Input()
   newsId: number;
   @Input()
-  mapLink: string;
+  mapLink: string | null;
   @Input()
   endTime: string;
   @Input()

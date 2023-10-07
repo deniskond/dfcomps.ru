@@ -12,7 +12,7 @@ export interface NewsInterface {
   headerEn: string;
   image: string;
   cupId: number;
-  multicupId: number;
+  multicupId: number | null;
   startTime: string;
   text: string;
   textEn: string;

@@ -1,7 +1,13 @@
 import { CupInterface, Physics } from '@dfcomps/contracts';
 import { Cup } from '../cup/entities/cup.entity';
 
-export function mapCupEntityToInterface(cup: Cup, isFutureCup: boolean, server: string, newsId: number | null): CupInterface {
+export function mapCupEntityToInterface(
+  cup: Cup,
+  isFutureCup: boolean,
+  server: string | null,
+  newsId: number | null,
+  multicupId: number | null,
+): CupInterface {
   return {
     archiveLink: cup.archive_link,
     bonusRating: cup.bonus_rating,
@@ -20,7 +26,7 @@ export function mapCupEntityToInterface(cup: Cup, isFutureCup: boolean, server: 
     mapPk3: isFutureCup ? null : cup.map_pk3,
     mapSize: isFutureCup ? null : cup.map_size,
     mapWeapons: isFutureCup ? null : cup.map_weapons,
-    multicupId: cup.multicup_id,
+    multicupId,
     physics: cup.physics as Physics,
     ratingCalculated: cup.rating_calculated,
     server,

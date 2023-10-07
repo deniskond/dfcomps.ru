@@ -1,5 +1,5 @@
 export interface RegisteredPlayerInterface {
-  country: string;
+  country: string | null;
   id: number;
   nick: string;
 }

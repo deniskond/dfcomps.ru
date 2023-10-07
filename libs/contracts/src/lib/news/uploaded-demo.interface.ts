@@ -1,5 +1,7 @@
+import { Physics } from '../physics.enum';
+
 export interface UploadedDemoInterface {
   demopath: string;
-  physics: string;
-  time: string;
+  physics: Physics;
+  time: number;
 }

@@ -19,6 +19,7 @@ import { RatingChange } from './news/entities/rating-change.entity';
 import { NewsComment } from './comments/entities/news-comment.entity';
 import { CommentsModule } from './comments/comments.module';
 import { Smile } from './comments/entities/smile.entity';
+import { CupDemo } from './cup/entities/cup-demo.entity';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { Smile } from './comments/entities/smile.entity';
         RatingChange,
         NewsComment,
         Smile,
+        CupDemo,
       ],
       database: 'dfcomps',
       synchronize: true,

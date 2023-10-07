@@ -1,4 +1,10 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
@@ -24,7 +30,12 @@ export class AuthService {
   ) {}
 
   public async getPasswordToken(login: string, password: string): Promise<LoginResponseDto> {
-    const user: User = await this.userRepository.findOneBy({ login });
+    const user: User | null = await this.userRepository.findOneBy({ login });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
     const hashedPassword = sha256(md5(md5(password)) + process.env.SALT);
 
     if (user.password === hashedPassword) {
@@ -42,9 +53,9 @@ export class AuthService {
         },
         token: user.access_token,
       };
+    } else {
+      throw new UnauthorizedException('Wrong password');
     }
-
-    throw new NotFoundException('User not found');
   }
 
   public async getDiscordToken(discordAccessToken: string): Promise<LoginResponseDto> {
@@ -65,7 +76,7 @@ export class AuthService {
     );
 
     // 2. Finding user by discord username
-    const user: User = await this.userRepository.findOneBy({ discord_tag: discordUserInfo.username });
+    const user: User | null = await this.userRepository.findOneBy({ discord_tag: discordUserInfo.username });
 
     if (!user) {
       throw new NotFoundException('User not found');
@@ -89,7 +100,7 @@ export class AuthService {
   }
 
   public async checkLogin(login: string): Promise<LoginAvailableDto> {
-    const user: User | undefined = await this.userRepository.findOneBy({ login });
+    const user: User | null = await this.userRepository.findOneBy({ login });
 
     return {
       loginAvailable: !user,
@@ -207,6 +218,7 @@ export class AuthService {
         ratingChanges: [],
         newsComments: [],
         smiles: [],
+        cupDemos: [],
       }),
     );
 
@@ -224,8 +236,13 @@ export class AuthService {
       };
     }
 
-    const user = await this.userRepository.findOneBy({ access_token: accessToken });
-    const authRoles = await this.authRoleRepository.findBy({ user_id: user.id });
+    const user: User | null = await this.userRepository.findOneBy({ access_token: accessToken });
+
+    if (!user) {
+      throw new UnauthorizedException('User with such accessToken not found');
+    }
+
+    const authRoles: AuthRole[] = await this.authRoleRepository.findBy({ user_id: user.id });
 
     return {
       userId: user.id.toString(),

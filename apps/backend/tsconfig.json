@@ -2,6 +2,11 @@
   "extends": "../../tsconfig.base.json",
   "files": [],
   "include": [],
+  "compilerOptions": {
+    "strict": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": false
+  },
   "references": [
     {
       "path": "./tsconfig.app.json"

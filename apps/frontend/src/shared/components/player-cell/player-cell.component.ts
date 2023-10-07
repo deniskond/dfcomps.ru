@@ -17,7 +17,7 @@ import { PlayerCellStyles } from './enums/player-cell-styles.enum';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayerCellComponent {
-  @Input() country: string;
+  @Input() country: string | null;
   @Input() nick: string;
   @Input() playerId: number;
   @Input() style = PlayerCellStyles.LIGHT;

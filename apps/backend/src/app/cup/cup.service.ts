@@ -20,7 +20,7 @@ export class CupService {
   public async getNextCupInfo(accessToken: string): Promise<CupInterface> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
     const nextCup: Cup = await this.getNextCup();
-    const serverInfo: CupResult = await this.cupResultRepository
+    const serverInfo: CupResult | null = await this.cupResultRepository
       .createQueryBuilder('cups_results')
       .select('server')
       .where({
@@ -39,7 +39,7 @@ export class CupService {
 
     const isFutureCup: boolean = moment(nextCup.start_datetime).isAfter(moment());
 
-    return mapCupEntityToInterface(nextCup, isFutureCup, server, nextCup.news[0].id);
+    return mapCupEntityToInterface(nextCup, isFutureCup, server, nextCup.news[0].id, nextCup.multicup.id);
   }
 
   public async checkIfPlayerRegistered(
@@ -58,9 +58,10 @@ export class CupService {
   }
 
   private async getNextCup(): Promise<Cup> {
-    const cupWithTimer: Cup = await this.cupRepository
+    const cupWithTimer: Cup | null = await this.cupRepository
       .createQueryBuilder('cups')
       .leftJoinAndSelect('cups.news', 'news')
+      .leftJoinAndSelect('cups.multicup', 'multicups')
       .where({ timer: true })
       .limit(1)
       .getOne();
@@ -69,9 +70,10 @@ export class CupService {
       return cupWithTimer;
     }
 
-    const nextFutureCup: Cup = await this.cupRepository
+    const nextFutureCup: Cup | null = await this.cupRepository
       .createQueryBuilder('cups')
       .leftJoinAndSelect('cups.news', 'news')
+      .leftJoinAndSelect('cups.multicup', 'multicups')
       .where('end_datetime > now()')
       .orderBy('end_datetime', 'ASC')
       .limit(1)
@@ -81,12 +83,13 @@ export class CupService {
       return nextFutureCup;
     }
 
-    const previousStartedCup: Cup = await this.cupRepository
+    const previousStartedCup: Cup = (await this.cupRepository
       .createQueryBuilder('cups')
       .leftJoinAndSelect('cups.news', 'news')
+      .leftJoinAndSelect('cups.multicup', 'multicups')
       .orderBy('end_datetime', 'DESC')
       .limit(1)
-      .getOne();
+      .getOne())!;
 
     return previousStartedCup;
   }

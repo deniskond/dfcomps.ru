@@ -1,8 +1,8 @@
 import { UserRole } from '@dfcomps/contracts';
 
 export interface UserInterface {
-  avatar: string;
-  country: string;
+  avatar: string | null;
+  country: string | null;
   cpmRating: number;
   id: number;
   nick: string;
