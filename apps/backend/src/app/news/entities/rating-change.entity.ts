@@ -20,8 +20,8 @@ export class RatingChange {
   @Column({ type: 'integer', nullable: true })
   vq3_place: number;
 
-  @Column({ type: 'integer', nullable: true })
-  bonus: number;
+  @Column({ type: 'boolean' })
+  bonus: boolean;
 
   @Column({ type: 'integer', nullable: true })
   season: number;

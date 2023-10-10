@@ -43,7 +43,5 @@ function getNewsType(type: number): NewsTypes {
     5: NewsTypes.OFFLINE_RESULTS,
     6: NewsTypes.MULTICUP_RESULTS,
     7: NewsTypes.DFWC_RESULTS,
-    8: NewsTypes.REFLEX_OFFLINE_RESULTS,
-    9: NewsTypes.REFLEX_OFFLINE_START,
   }[type]!;
 }

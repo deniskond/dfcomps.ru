@@ -1,5 +1,5 @@
 export interface ValidDemoInterface {
-  bonus: number | null;
+  bonus: boolean | null;
   change: number | null;
   country: string | null;
   demopath: string;

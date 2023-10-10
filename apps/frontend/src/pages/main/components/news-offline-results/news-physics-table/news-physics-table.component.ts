@@ -3,8 +3,7 @@ import { range } from 'lodash';
 import { CUSTOM_TABLE_NEWS_LIMIT } from '../../../config/news.config';
 import { formatResultTime } from '~shared/helpers/result-time.helper';
 import { getTablePlaces } from '~shared/helpers/table-places.helper';
-import { CupInterface } from '@dfcomps/contracts';
-import { ValidDemoInterface } from '~shared/interfaces/valid-demo.interface';
+import { CupInterface, ValidDemoInterface } from '@dfcomps/contracts';
 import { Physics } from '@dfcomps/contracts';
 
 @Component({

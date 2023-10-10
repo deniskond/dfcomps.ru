@@ -1,5 +1,3 @@
-import { NewsReflexOfflineResultsComponent } from './components/news-reflex-offline-results/news-reflex-offline-results.component';
-import { NewsReflexOfflineStartComponent } from './components/news-reflex-offline-start/news-reflex-offline-start.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MainPageComponent } from './main.page';
@@ -24,9 +22,6 @@ import { PlayerDemosDialogComponent } from './components/news-offline-start/play
 import { SingleNewsPageComponent } from './components/single-news-page/single-news-page.component';
 import { InvalidDemosListComponent } from './components/news-offline-results/invalid-demos-list/invalid-demos-list.component';
 import { NewsDfwcResultsComponent } from './components/news-dfwc-results/news-dfwc-results.component';
-import { ReflexPlayerDemosDialogComponent } from './components/news-reflex-offline-start/reflex-player-demos-dialog/reflex-player-demos-dialog.component';
-import { NewsReflexPhysicsTableComponent } from './components/news-reflex-offline-results/news-reflex-physics-table/news-reflex-physics-table.component';
-import { ReflexInvalidDemosListComponent } from './components/news-reflex-offline-results/reflex-invalid-demos-list/reflex-invalid-demos-list.component';
 import { AdminDeleteCommentDialogComponent } from './components/news-comments/components/admin-delete-comment-dialog/admin-delete-comment-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SmilesDropdownComponent } from './components/news-comments/components/smiles-dropdown/smiles-dropdown.component';
@@ -86,14 +81,9 @@ const routes: Routes = [
     NewsCommentsComponent,
     ValidationDialogComponent,
     PlayerDemosDialogComponent,
-    ReflexPlayerDemosDialogComponent,
     SingleNewsPageComponent,
     InvalidDemosListComponent,
     NewsDfwcResultsComponent,
-    NewsReflexOfflineStartComponent,
-    NewsReflexOfflineResultsComponent,
-    NewsReflexPhysicsTableComponent,
-    ReflexInvalidDemosListComponent,
     AdminDeleteCommentDialogComponent,
     SmilesDropdownComponent,
     NewsSocialLinksComponent,

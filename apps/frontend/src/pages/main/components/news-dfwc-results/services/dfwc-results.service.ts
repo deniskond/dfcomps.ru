@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { DfwcResultsDtoInterface } from '../dto/dfwc-results.dto';
 import { DfwcSingleResultDtoInterface } from '../dto/dfwc-single-result.dto';
 import { decode } from 'html-entities';
-import { ResultsTableInterface } from '~shared/interfaces/results-table.interface';
-import { NewsOfflineResultsInterface } from '@dfcomps/contracts';
+import { NewsOfflineResultsInterface, ResultsTableInterface } from '@dfcomps/contracts';
 
 @Injectable({
   providedIn: 'root',
@@ -33,16 +32,16 @@ export class DfwcResultsService {
 
         const k1 = firstPlaceTime / +result.time_ms;
         const k2 = (100 - currentPlace) / 100;
-        const points = arrayResults[0].rank ? result.points : Math.round(1000 * k1 * k2).toString();
+        const points: number = arrayResults[0].rank ? parseInt(result.points) : Math.round(1000 * k1 * k2);
         const demopath = decode(result.demo);
 
         return {
-          bonus: '0',
+          bonus: false,
           change: 0,
           col: '',
           country: result.flag,
           demopath,
-          impressive: '0',
+          impressive: false,
           nick: result.name,
           playerId: 0,
           rating: points,
@@ -56,13 +55,13 @@ export class DfwcResultsService {
     };
   }
 
-  private convertDemoTime(time: string): string {
+  private convertDemoTime(time: string): number {
     const timeSplit = time.split(':');
 
     if (timeSplit.length > 2) {
-      return `${+timeSplit[0] * 60 + +timeSplit[1]}.${timeSplit[2]}`;
+      return parseFloat(`${+timeSplit[0] * 60 + +timeSplit[1]}.${timeSplit[2]}`);
     }
 
-    return time.replace(/\:/, '.');
+    return parseFloat(time.replace(/\:/, '.'));
   }
 }

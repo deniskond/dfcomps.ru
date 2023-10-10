@@ -56,7 +56,7 @@ export class NewsService {
       .where('news.datetimezone < :targetTime', { targetTime })
       .andWhere('news.hide_on_main = :hideOnMain', { hideOnMain: false })
       .andWhere({ newsType: { name: NewsTypes.OFFLINE_RESULTS } }) // test
-      .limit(1) // 10
+      .limit(10) // 10
       .getMany();
 
     // return news as any;
