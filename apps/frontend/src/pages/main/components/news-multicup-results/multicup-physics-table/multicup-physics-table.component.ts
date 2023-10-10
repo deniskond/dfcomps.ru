@@ -1,8 +1,7 @@
 import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
-import { MulticupResultInterface } from '../../../../../pages/cup/interfaces/multicup-result.interface';
 import { getTablePlaces } from '~shared/helpers/table-places.helper';
-import { Physics } from '@dfcomps/contracts';
+import { MulticupResultInterface, Physics } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-multicup-physics-table',
@@ -13,7 +12,7 @@ import { Physics } from '@dfcomps/contracts';
 export class MulticupPhysicsTableComponent implements OnInit {
   @Input() physics: Physics;
   @Input() physicsTable: MulticupResultInterface[];
-  @Input() multicupId: string;
+  @Input() multicupId: number;
   @Input() tableCellsCount: number;
 
   public places: number[];

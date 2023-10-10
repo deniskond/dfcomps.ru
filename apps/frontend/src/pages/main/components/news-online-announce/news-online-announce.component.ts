@@ -62,7 +62,7 @@ export class NewsOnlineAnnounceComponent implements OnInit, OnChanges {
   public toggleRegistration(): void {
     if (this.isRegistered) {
       this.cupRegistrationService
-        .cancelRegistrationForCup$(this.news.cupId)
+        .cancelRegistrationForCup$(this.news.cupId!)
         .pipe(
           withLatestFrom(this.userService.getCurrentUser$().pipe(filter(isNonNull))),
           filter(([, user]: [void, UserInterface]) => !!user),
@@ -74,7 +74,7 @@ export class NewsOnlineAnnounceComponent implements OnInit, OnChanges {
         });
     } else {
       this.cupRegistrationService
-        .registerForCup$(this.news.cupId)
+        .registerForCup$(this.news.cupId!)
         .pipe(
           withLatestFrom(this.userService.getCurrentUser$().pipe(filter(isNonNull))),
           filter(([, user]: [void, UserInterface]) => !!user),

@@ -8,11 +8,10 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { MulticupTableInterface } from '../../interfaces/multicup-table.interface';
-import { MulticupResultInterface } from '../../interfaces/multicup-result.interface';
 import { PlayerCellStyles } from '~shared/components/player-cell/enums/player-cell-styles.enum';
 import { CupSystems } from '~shared/enums/cup-systems.enum';
 import { getTablePlaces } from '~shared/helpers/table-places.helper';
-import { Physics } from '@dfcomps/contracts';
+import { MulticupResultInterface, Physics } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-cup-full-table',

@@ -71,7 +71,7 @@ export class NewsService {
       .addOrderBy('news_types.id', 'ASC')
       .where('news.datetimezone < :targetTime', { targetTime })
       .andWhere('news.hide_on_main = :hideOnMain', { hideOnMain: false })
-      .andWhere({ newsType: { name: NewsTypes.ONLINE_RESULTS } }) // test
+      .andWhere({ newsType: { name: NewsTypes.MULTICUP_RESULTS } }) // test
       // .andWhere('news.multicup_id = 11') // test
       .limit(1) // 10
       .getMany();
