@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { News } from './entities/news.entity';
 import {
+  InvalidDemoInterface,
   NewsInterface,
   NewsInterfaceUnion,
   NewsMulticupResultsInterface,
@@ -12,7 +13,10 @@ import {
   NewsOnlineResultsInterface,
   NewsTypes,
   Physics,
+  ResultsTableInterface,
   UserRole,
+  ValidDemoInterface,
+  VerifiedStatuses,
 } from '@dfcomps/contracts';
 import { UserAccessInterface } from '../interfaces/user-access.interface';
 import { AuthService } from '../auth/auth.service';
@@ -51,8 +55,8 @@ export class NewsService {
       .addOrderBy('news_types.id', 'ASC')
       .where('news.datetimezone < :targetTime', { targetTime })
       .andWhere('news.hide_on_main = :hideOnMain', { hideOnMain: false })
-      .andWhere({ newsType: { name: 'offline_start' } }) // test
-      .limit(10)
+      .andWhere({ newsType: { name: NewsTypes.OFFLINE_RESULTS } }) // test
+      .limit(1) // 10
       .getMany();
 
     // return news as any;
@@ -142,7 +146,31 @@ export class NewsService {
   }
 
   private async mapOfflineResultsNews(news: News): Promise<NewsOfflineResultsInterface> {
-    return {} as any;
+    const baseNews: Omit<NewsInterface, 'type'> = await this.mapBaseNews(news);
+    const levelshot: string = getMapLevelshot(news.cup.map1);
+    const cup: Cup = (await this.cupsRepository
+      .createQueryBuilder('cups')
+      .leftJoinAndSelect('cups.multicup', 'multicups')
+      .where({ id: news.cup.id })
+      .getOne())!;
+
+    const isFinishedCup: boolean = moment().isAfter(moment(news.cup.end_datetime));
+    const emptyResults: ResultsTableInterface = { valid: [], invalid: [] };
+    const cpmResults: ResultsTableInterface = isFinishedCup
+      ? await this.getOfflineCupTable(cup, Physics.CPM)
+      : emptyResults;
+    const vq3Results: ResultsTableInterface = isFinishedCup
+      ? await this.getOfflineCupTable(cup, Physics.VQ3)
+      : emptyResults;
+
+    return {
+      ...baseNews,
+      type: NewsTypes.OFFLINE_RESULTS,
+      cup: mapCupEntityToInterface(news.cup, false, null, news.id, news.cup.multicup?.id || null),
+      levelshot,
+      cpmResults,
+      vq3Results,
+    };
   }
 
   private async mapOnlineAnnounceNews(news: News): Promise<NewsOnlineAnnounceInterface> {
@@ -235,5 +263,62 @@ export class NewsService {
 
       return cupDemo;
     }, undefined);
+  }
+
+  private async getOfflineCupTable(cup: Cup, physics: Physics): Promise<ResultsTableInterface> {
+    const cupDemos: CupDemo[] = await this.cupsDemosRepository
+      .createQueryBuilder('cups_demos')
+      .leftJoinAndSelect('cups_demos.user', 'users')
+      .leftJoinAndSelect('users.ratingChanges', 'rating_changes', 'cups_demos.cupId = rating_changes.cupId')
+      .where('cups_demos.physics = :physics', { physics })
+      .andWhere('cups_demos.cupId = :cupId', { cupId: cup.id })
+      .getMany();
+
+    const invalidDemos: InvalidDemoInterface[] = cupDemos
+      .filter(({ verified_status }: CupDemo) => verified_status === VerifiedStatuses.INVALID)
+      .map((cupDemo: CupDemo) => ({
+        demopath: cupDemo.demopath,
+        nick: cupDemo.user.displayed_nick,
+        reason: cupDemo.reason,
+        time: cupDemo.time,
+      }));
+
+    const validDemos: ValidDemoInterface[] = cupDemos
+      .filter(
+        ({ verified_status }: CupDemo) =>
+          verified_status === VerifiedStatuses.VALID || verified_status === VerifiedStatuses.UNWATCHED,
+      )
+      .reduce((demos: ValidDemoInterface[], demo: CupDemo) => {
+        const ratingChange: number | null =
+          physics === Physics.CPM
+            ? demo.user.ratingChanges[0]?.cpm_change || null
+            : demo.user.ratingChanges[0]?.vq3_change || null;
+
+        const mappedDemo: ValidDemoInterface = {
+          bonus: demo.user.ratingChanges[0]?.bonus || null,
+          change: ratingChange,
+          country: demo.user.country,
+          demopath: demo.demopath,
+          impressive: demo.impressive,
+          nick: demo.user.displayed_nick,
+          playerId: demo.user.id,
+          rating: physics === Physics.CPM ? demo.user.cpm_rating : demo.user.vq3_rating,
+          time: demo.time,
+        };
+
+        const previousBestDemo: ValidDemoInterface | undefined = demos.find(
+          ({ playerId }: ValidDemoInterface) => playerId === demo.user.id,
+        );
+
+        return !previousBestDemo || previousBestDemo.time > mappedDemo.time ? [...demos, mappedDemo] : demos;
+      }, [])
+      .sort((demo1: ValidDemoInterface, demo2: ValidDemoInterface) => demo1.time - demo2.time);
+
+    const result: ResultsTableInterface = {
+      valid: validDemos,
+      invalid: invalidDemos,
+    };
+
+    return result;
   }
 }

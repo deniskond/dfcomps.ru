@@ -31,3 +31,7 @@ export { CheckCupRegistrationDto } from './lib/cup/check-cup-registration.dto';
 export { CupTypes } from './lib/cup/cup-types.enum';
 export { PersonalSmileInterface } from './lib/comments/personal-smile.interface';
 export { NewsInterface } from './lib/news/news.interface';
+export { ResultsTableInterface } from './lib/tables/results-table.interface';
+export { VerifiedStatuses } from './lib/cup/verified-statuses.enum';
+export { InvalidDemoInterface } from './lib/tables/invalid-demo.interface';
+export { ValidDemoInterface } from './lib/tables/valid-demo.interface';

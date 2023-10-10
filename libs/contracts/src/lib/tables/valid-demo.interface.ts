@@ -1,15 +1,13 @@
 export interface ValidDemoInterface {
-  bonus: string;
-  change: number;
-  col: string;
-  country: string;
+  bonus: number | null;
+  change: number | null;
+  country: string | null;
   demopath: string;
-  impressive: string;
+  impressive: boolean;
   nick: string;
   playerId: number;
-  rating: string;
-  row: string;
-  time: string;
+  rating: number;
+  time: number;
   isPreliminaryResult?: boolean;
   absoluteLink?: boolean;
 }

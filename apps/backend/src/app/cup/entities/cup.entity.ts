@@ -114,7 +114,7 @@ export class Cup {
   news: News[];
 
   @OneToMany(() => RatingChange, (ratingChange) => ratingChange.cup)
-  ratingChange: RatingChange[];
+  ratingChanges: RatingChange[];
 
   @OneToMany(() => CupDemo, (cupDemo) => cupDemo.cup)
   cupDemos: CupDemo[];

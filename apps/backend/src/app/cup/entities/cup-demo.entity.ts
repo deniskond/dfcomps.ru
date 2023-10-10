@@ -1,7 +1,7 @@
 import { PrimaryGeneratedColumn, Column, Entity, ManyToOne } from 'typeorm';
 import { Cup } from './cup.entity';
 import { User } from '../../auth/entities/user.entity';
-import { Physics } from '@dfcomps/contracts';
+import { Physics, VerifiedStatuses } from '@dfcomps/contracts';
 
 @Entity({ name: 'cups_demos' })
 export class CupDemo {
@@ -20,8 +20,8 @@ export class CupDemo {
   @Column({ type: 'character varying' })
   physics: Physics;
 
-  @Column({ type: 'boolean' })
-  verified: boolean;
+  @Column({ type: 'character varying' })
+  verified_status: VerifiedStatuses;
 
   @Column({ type: 'character varying' })
   reason: string;
