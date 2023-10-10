@@ -310,7 +310,13 @@ export class NewsService {
           ({ playerId }: ValidDemoInterface) => playerId === demo.user.id,
         );
 
-        return !previousBestDemo || previousBestDemo.time > mappedDemo.time ? [...demos, mappedDemo] : demos;
+        if (!previousBestDemo) {
+          return [...demos, mappedDemo];
+        }
+
+        return previousBestDemo.time > mappedDemo.time
+          ? [...demos.filter(({ playerId }: ValidDemoInterface) => playerId != demo.user.id), mappedDemo]
+          : demos;
       }, [])
       .sort((demo1: ValidDemoInterface, demo2: ValidDemoInterface) => demo1.time - demo2.time);
 
