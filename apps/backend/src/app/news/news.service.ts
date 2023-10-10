@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { News } from './entities/news.entity';
@@ -51,10 +51,6 @@ export class NewsService {
     private readonly authService: AuthService,
   ) {}
 
-  public async getAllThemeNews(accessToken: string, theme: string): Promise<NewsInterfaceUnion[]> {
-    return {} as any;
-  }
-
   public async getAllMainPageNews(accessToken: string): Promise<NewsInterfaceUnion[]> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
     const targetTime: string = userAccess?.roles.some((role) => role === UserRole.ADMIN || role === UserRole.SUPERADMIN)
@@ -71,30 +67,76 @@ export class NewsService {
       .addOrderBy('news_types.id', 'ASC')
       .where('news.datetimezone < :targetTime', { targetTime })
       .andWhere('news.hide_on_main = :hideOnMain', { hideOnMain: false })
-      .andWhere({ newsType: { name: NewsTypes.ONLINE_ANNOUNCE } }) // test
-      // .andWhere('news.multicup_id = 11') // test
-      .limit(1) // 10
+      .limit(10)
       .getMany();
 
-    return await Promise.all(
-      news.map((newsItem: News) => {
-        switch (newsItem.newsType.name) {
-          case NewsTypes.OFFLINE_START:
-            return this.mapOfflineStartNews(newsItem, userAccess);
-          case NewsTypes.OFFLINE_RESULTS:
-          case NewsTypes.DFWC_RESULTS:
-            return this.mapOfflineResultsNews(newsItem);
-          case NewsTypes.ONLINE_ANNOUNCE:
-            return this.mapOnlineAnnounceNews(newsItem, userAccess);
-          case NewsTypes.ONLINE_RESULTS:
-            return this.mapOnlineResultsNews(newsItem);
-          case NewsTypes.MULTICUP_RESULTS:
-            return this.mapMulticupResultsNews(newsItem);
-          case NewsTypes.SIMPLE:
-            return this.mapSimpleNews(newsItem);
-        }
-      }),
-    );
+    return await Promise.all(news.map((newsItem: News) => this.mapNewsType(newsItem, userAccess)));
+  }
+
+  public async getThemeNews(accessToken: string, theme: string): Promise<NewsInterfaceUnion[]> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+    const targetTime: string = userAccess?.roles.some((role) => role === UserRole.ADMIN || role === UserRole.SUPERADMIN)
+      ? moment().add(7, 'days').format()
+      : moment().format();
+
+    const news: News[] = await this.newsRepository
+      .createQueryBuilder('news')
+      .leftJoinAndSelect('news.user', 'user')
+      .leftJoinAndSelect('news.newsType', 'news_types')
+      .leftJoinAndSelect('news.cup', 'cups')
+      .leftJoinAndSelect('cups.multicup', 'multicups')
+      .orderBy('news.datetimezone', 'DESC')
+      .addOrderBy('news_types.id', 'ASC')
+      .where('news.datetimezone < :targetTime', { targetTime })
+      .andWhere('news.theme = :theme', { theme })
+      .limit(10)
+      .getMany();
+
+    return await Promise.all(news.map((newsItem: News) => this.mapNewsType(newsItem, userAccess)));
+  }
+
+  public async getSingleNews(accessToken: string, newsId: number): Promise<NewsInterfaceUnion> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+    const targetTime: string = userAccess?.roles.some((role) => role === UserRole.ADMIN || role === UserRole.SUPERADMIN)
+      ? moment().add(7, 'days').format()
+      : moment().format();
+
+    const newsItem: News | null = await this.newsRepository
+      .createQueryBuilder('news')
+      .leftJoinAndSelect('news.user', 'user')
+      .leftJoinAndSelect('news.newsType', 'news_types')
+      .leftJoinAndSelect('news.cup', 'cups')
+      .leftJoinAndSelect('cups.multicup', 'multicups')
+      .orderBy('news.datetimezone', 'DESC')
+      .addOrderBy('news_types.id', 'ASC')
+      .where('news.datetimezone < :targetTime', { targetTime })
+      .andWhere('news.id = :newsId', { newsId })
+      .limit(10)
+      .getOne();
+
+    if (!newsItem) {
+      throw new NotFoundException(`News with id = ${newsId} not found!`);
+    }
+
+    return await this.mapNewsType(newsItem, userAccess);
+  }
+
+  private async mapNewsType(newsItem: News, userAccess: UserAccessInterface): Promise<NewsInterfaceUnion> {
+    switch (newsItem.newsType.name) {
+      case NewsTypes.OFFLINE_START:
+        return this.mapOfflineStartNews(newsItem, userAccess);
+      case NewsTypes.OFFLINE_RESULTS:
+      case NewsTypes.DFWC_RESULTS:
+        return this.mapOfflineResultsNews(newsItem);
+      case NewsTypes.ONLINE_ANNOUNCE:
+        return this.mapOnlineAnnounceNews(newsItem, userAccess);
+      case NewsTypes.ONLINE_RESULTS:
+        return this.mapOnlineResultsNews(newsItem);
+      case NewsTypes.MULTICUP_RESULTS:
+        return this.mapMulticupResultsNews(newsItem);
+      case NewsTypes.SIMPLE:
+        return this.mapSimpleNews(newsItem);
+    }
   }
 
   private async mapOfflineStartNews(news: News, userAccess: UserAccessInterface): Promise<NewsOfflineStartInterface> {

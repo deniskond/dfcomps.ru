@@ -41,7 +41,7 @@ export class NewsService extends BackendService {
     }
 
     this.isLoading = true;
-    this.post$<NewsInterfaceUnion[]>(URL_PARAMS.NEWS.THEME_PAGE(theme))
+    this.get$<NewsInterfaceUnion[]>(URL_PARAMS.NEWS.THEME_PAGE(theme))
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe((news: NewsInterfaceUnion[]) => this._themePageNews$.next(news));
   }
@@ -59,7 +59,7 @@ export class NewsService extends BackendService {
   }
 
   public getSingleNews$(id: string): Observable<NewsInterfaceUnion> {
-    return this.post$(URL_PARAMS.NEWS.SINGLE_NEWS(id));
+    return this.get$(URL_PARAMS.NEWS.SINGLE_NEWS(id));
   }
 
   public getDemosForValidation$(cupId: number): Observable<{ url: string }> {
