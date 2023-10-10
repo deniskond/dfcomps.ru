@@ -35,3 +35,4 @@ export { ResultsTableInterface } from './lib/tables/results-table.interface';
 export { VerifiedStatuses } from './lib/cup/verified-statuses.enum';
 export { InvalidDemoInterface } from './lib/tables/invalid-demo.interface';
 export { ValidDemoInterface } from './lib/tables/valid-demo.interface';
+export { MulticupSystems } from './lib/cup/multicup-systems.enum';

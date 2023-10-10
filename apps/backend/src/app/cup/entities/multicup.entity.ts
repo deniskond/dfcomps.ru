@@ -1,6 +1,7 @@
 import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
 import { RatingChange } from '../../news/entities/rating-change.entity';
 import { Cup } from './cup.entity';
+import { MulticupSystems } from '@dfcomps/contracts';
 
 @Entity({ name: 'multicups' })
 export class Multicup {
@@ -14,7 +15,7 @@ export class Multicup {
   rounds: number;
 
   @Column({ type: 'character varying' })
-  system: string;
+  system: MulticupSystems;
 
   @OneToMany(() => RatingChange, (ratingChange) => ratingChange.multicup)
   ratingChanges: RatingChange[];

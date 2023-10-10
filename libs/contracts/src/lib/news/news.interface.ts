@@ -6,14 +6,14 @@ export interface NewsInterface {
   id: number;
   authorId: number;
   authorName: string;
-  currentRound: number;
+  currentRound: number | null;
   datetimezone: string;
   header: string;
   headerEn: string;
   image: string;
-  cupId: number;
+  cupId: number | null;
   multicupId: number | null;
-  startTime: string;
+  startTime: string | null;
   text: string;
   textEn: string;
   youtube: string;

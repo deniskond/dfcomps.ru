@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { News } from './entities/news.entity';
 import {
   InvalidDemoInterface,
+  MulticupResultInterface,
+  MulticupSystems,
   NewsInterface,
   NewsInterfaceUnion,
   NewsMulticupResultsInterface,
@@ -11,6 +13,7 @@ import {
   NewsOfflineStartInterface,
   NewsOnlineAnnounceInterface,
   NewsOnlineResultsInterface,
+  NewsSimpleInterface,
   NewsTypes,
   Physics,
   ResultsTableInterface,
@@ -27,6 +30,13 @@ import { NewsComment } from '../comments/entities/news-comment.entity';
 import { Cup } from '../cup/entities/cup.entity';
 import { getMapLevelshot } from '../helpers/get-map-levelshot';
 import { CupDemo } from '../cup/entities/cup-demo.entity';
+import { Multicup } from '../cup/entities/multicup.entity';
+import { RatingChange } from './entities/rating-change.entity';
+
+type MultiCupTableWithPoints = {
+  valid: (ValidDemoInterface & { eePoints: number })[];
+  invalid: InvalidDemoInterface[];
+};
 
 @Injectable()
 export class NewsService {
@@ -36,8 +46,14 @@ export class NewsService {
     @InjectRepository(Cup) private readonly cupsRepository: Repository<Cup>,
     @InjectRepository(CupResult) private readonly cupsResultsRepository: Repository<CupResult>,
     @InjectRepository(CupDemo) private readonly cupsDemosRepository: Repository<CupDemo>,
+    @InjectRepository(Multicup) private readonly multicupRepository: Repository<Multicup>,
+    @InjectRepository(RatingChange) private readonly ratingChangeRepository: Repository<RatingChange>,
     private readonly authService: AuthService,
   ) {}
+
+  public async getAllThemeNews(accessToken: string, theme: string): Promise<NewsInterfaceUnion[]> {
+    return {} as any;
+  }
 
   public async getAllMainPageNews(accessToken: string): Promise<NewsInterfaceUnion[]> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
@@ -55,8 +71,9 @@ export class NewsService {
       .addOrderBy('news_types.id', 'ASC')
       .where('news.datetimezone < :targetTime', { targetTime })
       .andWhere('news.hide_on_main = :hideOnMain', { hideOnMain: false })
-      .andWhere({ newsType: { name: NewsTypes.OFFLINE_RESULTS } }) // test
-      .limit(10) // 10
+      .andWhere({ newsType: { name: NewsTypes.ONLINE_RESULTS } }) // test
+      // .andWhere('news.multicup_id = 11') // test
+      .limit(1) // 10
       .getMany();
 
     // return news as any;
@@ -204,11 +221,46 @@ export class NewsService {
   }
 
   private async mapMulticupResultsNews(news: News): Promise<NewsMulticupResultsInterface> {
-    return {} as any;
+    const baseNews: Omit<NewsInterface, 'type'> = await this.mapBaseNews(news);
+    const multicup: Multicup = (await this.multicupRepository
+      .createQueryBuilder('multicups')
+      .where({ id: news.multicup_id })
+      .getOne())!;
+
+    const cups: Cup[] = await this.cupsRepository
+      .createQueryBuilder('cups')
+      .where('cups.multicupId = :multicupId', { multicupId: news.multicup_id })
+      .andWhere('cups.rating_calculated = true')
+      .orderBy('cups.id', 'ASC')
+      .getMany();
+
+    const vq3Results: MulticupResultInterface[] = await this.getMulticupTable(
+      news.multicup_id,
+      cups,
+      Physics.VQ3,
+      multicup.system,
+    );
+    const cpmResults: MulticupResultInterface[] = await this.getMulticupTable(
+      news.multicup_id,
+      cups,
+      Physics.CPM,
+      multicup.system,
+    );
+
+    return {
+      ...baseNews,
+      type: NewsTypes.MULTICUP_RESULTS,
+      multicup: { id: multicup.id, name: multicup.name, rounds: multicup.rounds, system: multicup.system },
+      vq3Results,
+      cpmResults,
+    };
   }
 
-  private async mapSimpleNews(news: News): Promise<NewsMulticupResultsInterface> {
-    return {} as any;
+  private async mapSimpleNews(news: News): Promise<NewsSimpleInterface> {
+    return {
+      ...(await this.mapBaseNews(news)),
+      type: NewsTypes.SIMPLE,
+    };
   }
 
   private async mapBaseNews(news: News): Promise<Omit<NewsInterface, 'type'>> {
@@ -225,14 +277,14 @@ export class NewsService {
       id: news.id,
       authorId: news.user.id,
       authorName: news.user.displayed_nick,
-      currentRound: news.cup.current_round,
+      currentRound: news.cup?.current_round || null,
       datetimezone: news.datetimezone,
       header: news.header,
       headerEn: news.header_en,
       image: news.image,
-      cupId: news.cup.id,
-      multicupId: news.cup.multicup?.id || null,
-      startTime: news.cup.start_datetime,
+      cupId: news.cup?.id || null,
+      multicupId: news.cup?.multicup?.id || null,
+      startTime: news.cup?.start_datetime || null,
       text: news.text,
       textEn: news.text_en,
       youtube: news.youtube,
@@ -326,5 +378,239 @@ export class NewsService {
     };
 
     return result;
+  }
+
+  private async getMulticupTable(
+    multicupId: number,
+    cups: Cup[],
+    physics: Physics,
+    system: MulticupSystems,
+  ): Promise<MulticupResultInterface[]> {
+    const singleCupTables: ResultsTableInterface[] = await Promise.all(
+      cups.map((cup: Cup) => this.getOfflineCupTable(cup, physics)),
+    );
+
+    const tablesWithPoints: MultiCupTableWithPoints[] =
+      system === MulticupSystems.SDC
+        ? await this.getSdcMulticupTable(singleCupTables)
+        : await this.getEEMulticupTable(singleCupTables, system);
+
+    // results without subtraction of min round and rating changes
+    let multicupResults: MulticupResultInterface[] = [];
+
+    tablesWithPoints.forEach((table: MultiCupTableWithPoints, roundIndex: number) => {
+      table.valid.forEach((result: ValidDemoInterface & { eePoints: number }) => {
+        const playerRecordIndex: number = multicupResults.findIndex(
+          (playerRecord: MulticupResultInterface) => playerRecord.playerId === result.playerId,
+        );
+
+        if (playerRecordIndex !== -1) {
+          multicupResults[playerRecordIndex].roundResults[roundIndex] = result.eePoints;
+          multicupResults[playerRecordIndex].overall += result.eePoints;
+        } else {
+          const roundResults: number[] = [];
+
+          roundResults[roundIndex] = result.eePoints;
+
+          multicupResults.push({
+            playerId: result.playerId,
+            playerNick: result.nick,
+            playerCountry: result.country,
+            roundResults,
+            overall: result.eePoints,
+            minround: null, // is mapped after
+            ratingChange: null, // is mapped after
+          });
+        }
+      });
+    });
+
+    if ((system === MulticupSystems.EE_ALMERA || system === MulticupSystems.EE_KOZ) && singleCupTables.length > 3) {
+      multicupResults = this.subtractMinRound(multicupResults);
+    }
+
+    multicupResults = await this.mapRatingChanges(multicupResults, multicupId, physics);
+
+    return multicupResults.sort((a: MulticupResultInterface, b: MulticupResultInterface) => b.overall - a.overall);
+  }
+
+  private subtractMinRound(multicupResults: MulticupResultInterface[]): MulticupResultInterface[] {
+    return multicupResults.map((multicupResult: MulticupResultInterface) => {
+      let minRoundResult: number = Infinity;
+      let minRoundIndex: number | null = null;
+
+      multicupResult.roundResults.forEach((result: number | null, index: number) => {
+        if (result !== null && result < minRoundResult) {
+          minRoundResult = result;
+          minRoundIndex = index;
+        }
+      });
+
+      return {
+        ...multicupResult,
+        overall: multicupResult.overall - minRoundResult,
+        minround: minRoundIndex === null ? null : minRoundIndex + 1,
+      };
+    });
+  }
+
+  private async mapRatingChanges(
+    multicupResults: MulticupResultInterface[],
+    multicupId: number,
+    physics: Physics,
+  ): Promise<MulticupResultInterface[]> {
+    const ratingChanges: RatingChange[] = await this.ratingChangeRepository
+      .createQueryBuilder('rating_changes')
+      .leftJoinAndSelect('rating_changes.user', 'users')
+      .where('rating_changes.multicupId = :multicupId', { multicupId })
+      .getMany();
+
+    return multicupResults.map((multicupResult: MulticupResultInterface) => {
+      const playerRatingChangeRecord: RatingChange | undefined = ratingChanges.find(
+        (ratingChange: RatingChange) => ratingChange.user.id === multicupResult.playerId,
+      );
+      let ratingChange: number | null = null;
+
+      if (playerRatingChangeRecord) {
+        ratingChange =
+          physics === Physics.CPM ? playerRatingChangeRecord.cpm_change : playerRatingChangeRecord.vq3_change;
+      }
+
+      return { ...multicupResult, ratingChange };
+    });
+  }
+
+  private async getSdcMulticupTable(singleCupTables: ResultsTableInterface[]): Promise<MultiCupTableWithPoints[]> {
+    return singleCupTables.map((table: ResultsTableInterface) => {
+      const topTime: number = table.valid[0].time;
+
+      return {
+        valid: table.valid.map((validDemo: ValidDemoInterface) => {
+          let eePoints = Number((20 - (validDemo.time - topTime)).toFixed(3));
+
+          if (eePoints < 0) {
+            eePoints = 0;
+          }
+
+          return { ...validDemo, eePoints };
+        }),
+        invalid: table.invalid,
+      };
+    });
+  }
+
+  private async getEEMulticupTable(
+    singleCupTables: ResultsTableInterface[],
+    system: MulticupSystems,
+  ): Promise<MultiCupTableWithPoints[]> {
+    return singleCupTables.map((table: ResultsTableInterface) => {
+      const topTime: number = table.valid[0].time;
+      let currentPlace = 1;
+
+      return {
+        valid: table.valid.map((validDemo: ValidDemoInterface, index: number) => {
+          let eePoints: number;
+
+          if (index === 0) {
+            eePoints = 1000;
+          } else {
+            if (table.valid[index].time !== table.valid[index - 1].time) {
+              currentPlace++;
+            }
+
+            const k1 = topTime / validDemo.time;
+            const k2 = this.countK2(currentPlace, system);
+
+            eePoints = Math.round(k1 * k2 * 1000);
+          }
+
+          return {
+            ...validDemo,
+            eePoints,
+          };
+        }),
+        invalid: [],
+      };
+    });
+  }
+
+  private countK2(place: number, system: MulticupSystems): number {
+    let k2: number;
+
+    if (system === MulticupSystems.EE_ALMERA) {
+      if (place === 1) {
+        k2 = 1;
+      } else if (place === 2) {
+        k2 = 0.97;
+      } else if (place === 3) {
+        k2 = 0.94;
+      } else if (place === 4) {
+        k2 = 0.92;
+      } else if (place === 5) {
+        k2 = 0.9;
+      } else if (place <= 50) {
+        k2 = 0.9 - (place - 5) / 100;
+      } else if (place <= 100) {
+        k2 = 0.9 - 45 / 100 - (place - 50) / 200;
+      } else {
+        k2 = 0.9 - 45 / 100 - (100 - 50) / 200 - (place - 100) / 400;
+      }
+
+      if (k2 <= 0.01) {
+        k2 = 0.01;
+      }
+
+      return k2;
+    } else if (system === MulticupSystems.EE_KOZ) {
+      if (place === 1) {
+        k2 = 1;
+      } else if (place === 2) {
+        k2 = 0.98;
+      } else if (place === 3) {
+        k2 = 0.965;
+      } else if (place === 4) {
+        k2 = 0.953;
+      } else if (place === 5) {
+        k2 = 0.942;
+      } else if (place <= 50) {
+        k2 = 0.942 - (place - 5) / 100;
+      } else if (place <= 100) {
+        k2 = 0.942 - 45 / 100 - (place - 50) / 200;
+      } else {
+        k2 = 0.942 - 45 / 100 - (100 - 50) / 200 - (place - 100) / 400;
+      }
+
+      if (k2 <= 0.01) {
+        k2 = 0.01;
+      }
+
+      return k2;
+    } else if (system === MulticupSystems.EE_DFWC) {
+      if (place === 1) {
+        k2 = 1;
+      } else if (place === 2) {
+        k2 = 0.99;
+      } else if (place === 3) {
+        k2 = 0.98;
+      } else if (place === 4) {
+        k2 = 0.97;
+      } else if (place === 5) {
+        k2 = 0.96;
+      } else if (place <= 50) {
+        k2 = 0.96 - (place - 5) / 100;
+      } else if (place <= 100) {
+        k2 = 0.96 - 45 / 100 - (place - 50) / 200;
+      } else {
+        k2 = 0.96 - 45 / 100 - (100 - 50) / 200 - (place - 100) / 400;
+      }
+
+      if (k2 <= 0.01) {
+        k2 = 0.01;
+      }
+
+      return k2;
+    }
+
+    return 0;
   }
 }

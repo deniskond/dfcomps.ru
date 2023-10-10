@@ -1,6 +1,6 @@
 export interface MulticupInterface {
-  id: string;
+  id: number;
   name: string;
-  rounds: string;
+  rounds: number;
   system: string;
 }
