@@ -10,6 +10,7 @@ const envMap: Record<string, string> = {
 export const MAIN_URL = envMap[environment.name];
 export const API_URL = MAIN_URL;
 
+// New backend status: 11 / 40 endpoints done
 export class URL_PARAMS {
   public static get WEBSOCKET_1V1_URL(): string {
     const websocketEnvMap: Record<string, string> = {
@@ -22,7 +23,7 @@ export class URL_PARAMS {
   }
 
   public static get MOVIES(): string {
-    return `${API_URL}/movies`;
+    return `${API_URL}/movies`; // New backend done
   }
 
   public static get AUTH(): {
@@ -32,43 +33,43 @@ export class URL_PARAMS {
     REGISTER: string;
   } {
     return {
-      GET_PASSWORD_TOKEN: `${API_URL}/auth/get-password-token`,
-      GET_DISCORD_TOKEN: `${API_URL}/auth/get-discord-token`,
-      CHECK_LOGIN: `${API_URL}/auth/check-login`,
-      REGISTER: `${API_URL}/auth/register`,
+      GET_PASSWORD_TOKEN: `${API_URL}/auth/get-password-token`, // New backend done
+      GET_DISCORD_TOKEN: `${API_URL}/auth/get-discord-token`, // New backend done
+      CHECK_LOGIN: `${API_URL}/auth/check-login`, // New backend done
+      REGISTER: `${API_URL}/auth/register`, // New backend done
     };
   }
 
   public static TOP_TEN_TABLE(): string {
-    return `${API_URL}/tables/top10`;
+    return `${API_URL}/tables/top10`; // New backend done
   }
 
   public static RATING_TABLE_PAGE(physics: Physics, page: number): string {
-    return `${API_URL}/tables/rating/${physics}/${page}`;
+    return `${API_URL}/tables/rating/${physics}/${page}`; // Not done
   }
 
   public static RATING_TABLE_PLAYERS_COUNT(): string {
-    return `${API_URL}/tables/rating_table_players_count`;
+    return `${API_URL}/tables/rating_table_players_count`; // Not done
   }
 
   public static SEASON_RATING_TABLE_PAGE(physics: Physics, page: number, season: number): string {
-    return `${API_URL}/tables/season_rating/${physics}/${page}/${season}`;
+    return `${API_URL}/tables/season_rating/${physics}/${page}/${season}`; // Not done
   }
 
   public static SEASON_RATING_TABLE_PLAYERS_COUNT(season: number): string {
-    return `${API_URL}/tables/season_rating_table_players_count/${season}`;
+    return `${API_URL}/tables/season_rating_table_players_count/${season}`; // Not done
   }
 
   public static PROFILE(playerId: string): string {
-    return `${API_URL}/profile/${playerId}`;
+    return `${API_URL}/profile/${playerId}`; // Not done
   }
 
   public static PROFILE_CHECK_NICK_CHANGE(): string {
-    return `${API_URL}/profile/check_last_nick_change_time`;
+    return `${API_URL}/profile/check_last_nick_change_time`; // Not done
   }
 
   public static PROFILE_UPDATE(): string {
-    return `${API_URL}/profile/update`;
+    return `${API_URL}/profile/update`; // Not done
   }
 
   public static get NEWS(): {
@@ -79,11 +80,11 @@ export class URL_PARAMS {
     ARCHIVE: (startIndex: number, endIndex: number) => string;
   } {
     return {
-      MAIN_PAGE: `${API_URL}/news/mainpage`,
-      THEME_PAGE: (theme: string) => `${API_URL}/news/theme/${theme}`,
-      COUNT: `${API_URL}/news/count`,
-      SINGLE_NEWS: (id: string) => `${API_URL}/news/single/${id}`,
-      ARCHIVE: (startIndex: number, endIndex: number) => `${API_URL}/news/archive/${startIndex}/${endIndex}`,
+      MAIN_PAGE: `${API_URL}/news/mainpage`, // New backend done
+      THEME_PAGE: (theme: string) => `${API_URL}/news/theme/${theme}`, // New backend done
+      COUNT: `${API_URL}/news/count`, // Not done
+      SINGLE_NEWS: (id: string) => `${API_URL}/news/single/${id}`, // New backend done
+      ARCHIVE: (startIndex: number, endIndex: number) => `${API_URL}/news/archive/${startIndex}/${endIndex}`, // Not done
     };
   }
 
@@ -94,10 +95,10 @@ export class URL_PARAMS {
     ADMIN_DELETE: string;
   } {
     return {
-      ADD: `${API_URL}/comments/add`,
-      DELETE: `${API_URL}/comments/delete/`,
-      UPDATE: `${API_URL}/comments/update/`,
-      ADMIN_DELETE: `${API_URL}/comments/admin_delete/`,
+      ADD: `${API_URL}/comments/add`, // Not done
+      DELETE: `${API_URL}/comments/delete/`, // Not done
+      UPDATE: `${API_URL}/comments/update/`, // Not done
+      ADMIN_DELETE: `${API_URL}/comments/admin_delete/`, // Not done
     };
   }
 
@@ -105,7 +106,7 @@ export class URL_PARAMS {
     GET: string;
   } {
     return {
-      GET: `${API_URL}/rating/get_season`,
+      GET: `${API_URL}/rating/get_season`, // Not done
     };
   }
 
@@ -116,10 +117,10 @@ export class URL_PARAMS {
     VALIDATION_ARCHIVE_LINK: string;
   } {
     return {
-      UPLOAD: `${API_URL}/cup/upload_demo`,
-      DUEL_UPLOAD: `${API_URL}/match/upload_demo`,
-      DELETE: `${API_URL}/cup/delete_demo`,
-      VALIDATION_ARCHIVE_LINK: `${API_URL}/cup/get_demos_for_validation`,
+      UPLOAD: `${API_URL}/cup/upload_demo`, // Not done
+      DUEL_UPLOAD: `${API_URL}/match/upload_demo`, // Not done
+      DELETE: `${API_URL}/cup/delete_demo`, // Not done
+      VALIDATION_ARCHIVE_LINK: `${API_URL}/cup/get_demos_for_validation`, // Not done
     };
   }
 
@@ -127,7 +128,7 @@ export class URL_PARAMS {
     GET_PLAYERS_INFO: string;
   } {
     return {
-      GET_PLAYERS_INFO: `${API_URL}/match/get`,
+      GET_PLAYERS_INFO: `${API_URL}/match/get`, // Not done
     };
   }
 
@@ -142,15 +143,15 @@ export class URL_PARAMS {
     CHECK_REGISTRATION: () => string;
   } {
     return {
-      GET_NEXTCUP: `/legacy-api/cup/next-cup-info`,
-      ONLINE_FULL_TABLE: (cupId: string) => `${API_URL}/cup/online/${cupId}`,
-      ONLINE_ROUND: (cupId: string, roundNumber: string) => `${API_URL}/cup/online/${cupId}/round/${roundNumber}`,
-      MULTICUP_FULL_TABLE: (cupId: string, physics: Physics) => `${API_URL}/cup/multi/${cupId}/${physics}`,
+      GET_NEXTCUP: `/legacy-api/cup/next-cup-info`, // New backend done
+      ONLINE_FULL_TABLE: (cupId: string) => `${API_URL}/cup/online/${cupId}`, // Not done
+      ONLINE_ROUND: (cupId: string, roundNumber: string) => `${API_URL}/cup/online/${cupId}/round/${roundNumber}`, // Not done
+      MULTICUP_FULL_TABLE: (cupId: string, physics: Physics) => `${API_URL}/cup/multi/${cupId}/${physics}`, // Not done
       MULTICUP_ROUND: (cupId: string, physics: Physics, roundNumber: string) =>
-        `${API_URL}/cup/multi/${cupId}/${physics}/round/${roundNumber}`,
-      REGISTER: (cupId: number) => `${API_URL}/cup/register/${cupId}`,
-      CANCEL_REGISTRATION: (cupId: number) => `${API_URL}/cup/cancel_registration/${cupId}`,
-      CHECK_REGISTRATION: () => `${API_URL}/cup/is-registered`,
+        `${API_URL}/cup/multi/${cupId}/${physics}/round/${roundNumber}`, // Not done
+      REGISTER: (cupId: number) => `${API_URL}/cup/register/${cupId}`, // Not done
+      CANCEL_REGISTRATION: (cupId: number) => `${API_URL}/cup/cancel_registration/${cupId}`, // Not done
+      CHECK_REGISTRATION: () => `${API_URL}/cup/is-registered`, // Not done
     };
   }
 
@@ -158,7 +159,7 @@ export class URL_PARAMS {
     GET_PERSONAL_SMILES: string;
   } {
     return {
-      GET_PERSONAL_SMILES: `${API_URL}/comments/personal-smiles`,
+      GET_PERSONAL_SMILES: `${API_URL}/comments/personal-smiles`, // New backend done
     };
   }
 
@@ -179,20 +180,20 @@ export class URL_PARAMS {
     INCREMENT_SEASON: string;
   } {
     return {
-      GET_NEWS: `${API_URL}/admin/news/get_all_news`,
-      DELETE_NEWS: (newsId: string) => `${API_URL}/admin/news/delete_v2/${newsId}`,
-      GET_CUPS: `${API_URL}/admin/cups/get_all_cups`,
-      CUP_VALIDATION: (cupId: string) => `${API_URL}/admin/cups/get_cup_validation_demos/${cupId}`,
-      PROCESS_VALIDATE: `${API_URL}/admin/cups/process_validate_v2`,
-      POST_NEWS: `${API_URL}/admin/news/save_v2`,
-      GET_SINGLE_NEWS: (newsId: string) => `${API_URL}/admin/news/get_single_news/${newsId}`,
-      EDIT_NEWS: (newsId: string) => `${API_URL}/admin/news/update_v2/${newsId}`,
-      GET_ALL_ACTIVE_MULTICUPS: `${API_URL}/admin/cups/get_all_active_multicups`,
-      ADD_CUP: `${API_URL}/admin/cups/add_v2`,
-      SET_SEASON_REWARDS: `${API_URL}/admin/season/rewards`,
-      SAVE_SEASON_RATINGS: `${API_URL}/admin/season/save_season_ratings`,
-      RESET_SEASON_RATINGS: `${API_URL}/admin/season/reset_season_ratings`,
-      INCREMENT_SEASON: `${API_URL}/admin/season/increment`,
+      GET_NEWS: `${API_URL}/admin/news/get_all_news`, // Not done
+      DELETE_NEWS: (newsId: string) => `${API_URL}/admin/news/delete_v2/${newsId}`, // Not done
+      GET_CUPS: `${API_URL}/admin/cups/get_all_cups`, // Not done
+      CUP_VALIDATION: (cupId: string) => `${API_URL}/admin/cups/get_cup_validation_demos/${cupId}`, // Not done
+      PROCESS_VALIDATE: `${API_URL}/admin/cups/process_validate_v2`, // Not done
+      POST_NEWS: `${API_URL}/admin/news/save_v2`, // Not done
+      GET_SINGLE_NEWS: (newsId: string) => `${API_URL}/admin/news/get_single_news/${newsId}`, // Not done
+      EDIT_NEWS: (newsId: string) => `${API_URL}/admin/news/update_v2/${newsId}`, // Not done
+      GET_ALL_ACTIVE_MULTICUPS: `${API_URL}/admin/cups/get_all_active_multicups`, // Not done
+      ADD_CUP: `${API_URL}/admin/cups/add_v2`, // Not done
+      SET_SEASON_REWARDS: `${API_URL}/admin/season/rewards`, // Not done
+      SAVE_SEASON_RATINGS: `${API_URL}/admin/season/save_season_ratings`, // Not done
+      RESET_SEASON_RATINGS: `${API_URL}/admin/season/reset_season_ratings`, // Not done
+      INCREMENT_SEASON: `${API_URL}/admin/season/increment`, // Not done
     };
   }
 }
