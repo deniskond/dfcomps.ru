@@ -71,46 +71,30 @@ export class NewsService {
       .addOrderBy('news_types.id', 'ASC')
       .where('news.datetimezone < :targetTime', { targetTime })
       .andWhere('news.hide_on_main = :hideOnMain', { hideOnMain: false })
-      .andWhere({ newsType: { name: NewsTypes.MULTICUP_RESULTS } }) // test
+      .andWhere({ newsType: { name: NewsTypes.ONLINE_ANNOUNCE } }) // test
       // .andWhere('news.multicup_id = 11') // test
       .limit(1) // 10
       .getMany();
 
-    // return news as any;
-
-    const mappedNews: NewsInterfaceUnion[] = [];
-
-    await new Promise<void>((resolve) =>
-      news.forEach(async (newsItem: News, index: number) => {
+    return await Promise.all(
+      news.map((newsItem: News) => {
         switch (newsItem.newsType.name) {
           case NewsTypes.OFFLINE_START:
-            mappedNews.push(await this.mapOfflineStartNews(newsItem, userAccess));
-            break;
+            return this.mapOfflineStartNews(newsItem, userAccess);
           case NewsTypes.OFFLINE_RESULTS:
           case NewsTypes.DFWC_RESULTS:
-            mappedNews.push(await this.mapOfflineResultsNews(newsItem));
-            break;
+            return this.mapOfflineResultsNews(newsItem);
           case NewsTypes.ONLINE_ANNOUNCE:
-            mappedNews.push(await this.mapOnlineAnnounceNews(newsItem));
-            break;
+            return this.mapOnlineAnnounceNews(newsItem, userAccess);
           case NewsTypes.ONLINE_RESULTS:
-            mappedNews.push(await this.mapOnlineResultsNews(newsItem));
-            break;
+            return this.mapOnlineResultsNews(newsItem);
           case NewsTypes.MULTICUP_RESULTS:
-            mappedNews.push(await this.mapMulticupResultsNews(newsItem));
-            break;
+            return this.mapMulticupResultsNews(newsItem);
           case NewsTypes.SIMPLE:
-            mappedNews.push(await this.mapSimpleNews(newsItem));
-            break;
-        }
-
-        if (index === news.length - 1) {
-          resolve();
+            return this.mapSimpleNews(newsItem);
         }
       }),
     );
-
-    return mappedNews;
   }
 
   private async mapOfflineStartNews(news: News, userAccess: UserAccessInterface): Promise<NewsOfflineStartInterface> {
@@ -190,8 +174,30 @@ export class NewsService {
     };
   }
 
-  private async mapOnlineAnnounceNews(news: News): Promise<NewsOnlineAnnounceInterface> {
-    return {} as any;
+  private async mapOnlineAnnounceNews(
+    news: News,
+    userAccess: UserAccessInterface,
+  ): Promise<NewsOnlineAnnounceInterface> {
+    const baseNews: Omit<NewsInterface, 'type'> = await this.mapBaseNews(news);
+    const registeredPlayers: CupResult[] = await this.cupsResultsRepository
+      .createQueryBuilder('cups_results')
+      .leftJoinAndSelect('cups_results.user', 'users')
+      .where('cups_results.cupId = :cupId', { cupId: news.cup.id })
+      .orderBy('cups_results.id')
+      .getMany();
+    const isRegistered = !!registeredPlayers.find((cupResult: CupResult) => cupResult.user.id === userAccess.userId);
+
+    return {
+      ...baseNews,
+      type: NewsTypes.ONLINE_ANNOUNCE,
+      isRegistered,
+      cup: mapCupEntityToInterface(news.cup, true, null, news.id, null),
+      registeredPlayers: registeredPlayers.map((cupResult: CupResult) => ({
+        country: cupResult.user.country,
+        id: cupResult.user.id,
+        nick: cupResult.user.displayed_nick,
+      })),
+    };
   }
 
   private async mapOnlineResultsNews(news: News): Promise<NewsOnlineResultsInterface> {

@@ -245,7 +245,7 @@ export class AuthService {
     const authRoles: AuthRole[] = await this.authRoleRepository.findBy({ user_id: user.id });
 
     return {
-      userId: user.id.toString(),
+      userId: user.id,
       roles: authRoles.map(({ role }: AuthRole) => role),
     };
   }
