@@ -10,10 +10,24 @@ import { RatingChange } from './entities/rating-change.entity';
 import { NewsComment } from '../comments/entities/news-comment.entity';
 import { Cup } from '../cup/entities/cup.entity';
 import { CupDemo } from '../cup/entities/cup-demo.entity';
+import { TablesService } from '../tables/tables.service';
+import { OneVOneRating } from '../tables/entities/1v1-rating.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([News, NewsType, Cup, CupResult, Multicup, RatingChange, NewsComment, CupDemo])],
+  imports: [
+    TypeOrmModule.forFeature([
+      News,
+      NewsType,
+      Cup,
+      CupResult,
+      Multicup,
+      RatingChange,
+      NewsComment,
+      CupDemo,
+      OneVOneRating,
+    ]),
+  ],
   controllers: [NewsController],
-  providers: [NewsService],
+  providers: [NewsService, TablesService],
 })
 export class NewsModule {}
