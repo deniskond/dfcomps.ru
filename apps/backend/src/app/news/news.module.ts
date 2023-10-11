@@ -12,6 +12,7 @@ import { Cup } from '../cup/entities/cup.entity';
 import { CupDemo } from '../cup/entities/cup-demo.entity';
 import { TablesService } from '../tables/tables.service';
 import { OneVOneRating } from '../tables/entities/1v1-rating.entity';
+import { OldRating } from '../tables/entities/old-rating.entity';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { OneVOneRating } from '../tables/entities/1v1-rating.entity';
       NewsComment,
       CupDemo,
       OneVOneRating,
+      OldRating,
     ]),
   ],
   controllers: [NewsController],

@@ -18,6 +18,7 @@ import { OneVOneRating } from './entities/1v1-rating.entity';
 import { Cup } from '../cup/entities/cup.entity';
 import { CupDemo } from '../cup/entities/cup-demo.entity';
 import { RatingChange } from '../news/entities/rating-change.entity';
+import { OldRating } from './entities/old-rating.entity';
 
 type MultiCupTableWithPoints = {
   valid: (ValidDemoInterface & { eePoints: number })[];
@@ -33,6 +34,7 @@ export class TablesService {
     @InjectRepository(OneVOneRating) private readonly oneVOneRatingRepository: Repository<OneVOneRating>,
     @InjectRepository(RatingChange) private readonly ratingChangeRepository: Repository<RatingChange>,
     @InjectRepository(CupDemo) private readonly cupsDemosRepository: Repository<CupDemo>,
+    @InjectRepository(OldRating) private readonly oldRatingsRepository: Repository<OldRating>,
   ) {}
 
   public async getTop10(physics: Physics, mode: RatingTablesModes): Promise<LeaderTableInterface[]> {
@@ -129,6 +131,7 @@ export class TablesService {
     return result;
   }
 
+  // TODO Move to a new module which will be used be News And Tables services
   public async getMulticupTable(
     multicupId: number,
     cups: Cup[],
@@ -199,6 +202,31 @@ export class TablesService {
       nick: user.displayed_nick,
       country: user.country,
       rating: user[`${physics}_rating`],
+    }));
+  }
+
+  public async getSeasonPhysicsRatingByPage(
+    physics: Physics,
+    page: number,
+    season: number,
+  ): Promise<LeaderTableInterface[]> {
+    const limitStart: number = this.PLAYERS_ON_RATING_PAGE * (page - 1);
+    const oldRatings: OldRating[] = await this.oldRatingsRepository
+      .createQueryBuilder('old_ratings')
+      .leftJoinAndSelect('old_ratings.user', 'users')
+      .where(`old_ratings.${physics}_rating != 0`)
+      .andWhere(`old_ratings.${physics}_rating != 1500`)
+      .andWhere('old_ratings.season = :season', { season })
+      .orderBy(`old_ratings.${physics}_rating`, 'DESC')
+      .offset(limitStart)
+      .limit(this.PLAYERS_ON_RATING_PAGE)
+      .getMany();
+
+    return oldRatings.map((oldRating: OldRating) => ({
+      playerId: oldRating.user.id,
+      nick: oldRating.user.displayed_nick,
+      country: oldRating.user.country,
+      rating: oldRating[`${physics}_rating`],
     }));
   }
 

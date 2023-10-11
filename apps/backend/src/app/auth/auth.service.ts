@@ -219,6 +219,7 @@ export class AuthService {
         newsComments: [],
         smiles: [],
         cupDemos: [],
+        oldRatings: [],
       }),
     );
 

@@ -6,9 +6,10 @@ import { User } from '../auth/entities/user.entity';
 import { OneVOneRating } from './entities/1v1-rating.entity';
 import { RatingChange } from '../news/entities/rating-change.entity';
 import { CupDemo } from '../cup/entities/cup-demo.entity';
+import { OldRating } from './entities/old-rating.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, OneVOneRating, RatingChange, CupDemo])],
+  imports: [TypeOrmModule.forFeature([User, OneVOneRating, RatingChange, CupDemo, OldRating])],
   controllers: [TablesController],
   providers: [TablesService],
 })

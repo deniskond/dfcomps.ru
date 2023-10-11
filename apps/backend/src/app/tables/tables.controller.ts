@@ -27,4 +27,17 @@ export class TablesController {
   getRatingTablePlayersCount(): Promise<PlayersCountInterface> {
     return this.tablesService.getRatingTablePlayersCount();
   }
+
+  @Get('season_rating/:physics/:page/:season')
+  getSeasonPhysicsRatingByPage(
+    @Param('physics') physics: Physics,
+    @Param('page', new ParseIntPipe()) page: number,
+    @Param('season', new ParseIntPipe()) season: number,
+  ): Promise<LeaderTableInterface[]> {
+    if (physics !== Physics.CPM && physics !== Physics.VQ3) {
+      throw new BadRequestException('Wrong physics name');
+    }
+
+    return this.tablesService.getSeasonPhysicsRatingByPage(physics, page, season);
+  }
 }

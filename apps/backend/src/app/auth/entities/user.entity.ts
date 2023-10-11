@@ -5,6 +5,7 @@ import { RatingChange } from '../../news/entities/rating-change.entity';
 import { NewsComment } from '../../comments/entities/news-comment.entity';
 import { Smile } from '../../comments/entities/smile.entity';
 import { CupDemo } from '../../cup/entities/cup-demo.entity';
+import { OldRating } from '../../tables/entities/old-rating.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -70,4 +71,7 @@ export class User {
 
   @OneToMany(() => Smile, (smile) => smile.user)
   smiles: Smile[];
+
+  @OneToMany(() => OldRating, (oldRating) => oldRating.user)
+  oldRatings: OldRating[];
 }
