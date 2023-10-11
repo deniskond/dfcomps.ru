@@ -110,10 +110,6 @@ export class CommentsService {
     }));
   }
 
-  public async deleteComment(commentId: number): Promise<CommentActionResultInterface> {
-    return {} as any;
-  }
-
   public async updateComment(
     accessToken: string,
     text: string,
@@ -154,6 +150,59 @@ export class CommentsService {
         .createQueryBuilder()
         .update(NewsComment)
         .set({ comment: trimmedText })
+        .where({ id: commentId })
+        .execute();
+
+      result = CommentActionResult.SUCCESS;
+    } else {
+      result = CommentActionResult.TWO_MINUTES;
+    }
+
+    const updatedComments: NewsComment[] = await this.newsCommentsRepository
+      .createQueryBuilder('news_comments')
+      .leftJoinAndSelect('news_comments.user', 'users')
+      .where('news_comments.newsId = :newsId', { newsId: newsComment.news.id })
+      .getMany();
+
+    return {
+      result,
+      comments: updatedComments.map((newsComment: NewsComment) => ({
+        commentId: newsComment.id,
+        comment: newsComment.comment,
+        datetimezone: newsComment.datetimezone,
+        playerId: newsComment.user.id,
+        reason: newsComment.reason,
+        username: newsComment.user.displayed_nick,
+      })),
+    };
+  }
+
+  public async deleteComment(accessToken: string, commentId: number): Promise<CommentActionResultInterface> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!userAccess.userId) {
+      throw new UnauthorizedException('Cannot post as anonymous user');
+    }
+
+    const newsComment: NewsComment | null = await this.newsCommentsRepository
+      .createQueryBuilder('news_comments')
+      .leftJoinAndSelect('news_comments.news', 'news')
+      .where({ id: commentId })
+      .andWhere('news_comments.userId = :userId', { userId: userAccess.userId })
+      .getOne();
+
+    if (!newsComment) {
+      throw new UnauthorizedException(`No access to deleting comment with id ${commentId}`);
+    }
+
+    const isTooLateToDelete: boolean = moment().isAfter(moment(newsComment.datetimezone).add(2, 'minute'));
+    let result: CommentActionResult;
+
+    if (!isTooLateToDelete) {
+      await this.newsCommentsRepository
+        .createQueryBuilder('news_comments')
+        .delete()
+        .from(NewsComment)
         .where({ id: commentId })
         .execute();
 
