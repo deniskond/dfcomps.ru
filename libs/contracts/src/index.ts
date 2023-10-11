@@ -39,3 +39,5 @@ export { MulticupSystems } from './lib/cup/multicup-systems.enum';
 export { PaginationCountInterface } from './lib/global/pagination-count.interface';
 export { SeasonNumberInterface } from './lib/rating/season-number.interface';
 export { ArchiveNewsInterface } from './lib/news/archive-news.interface';
+export { CommentActionResultInterface } from './lib/comments/comment-action.interface';
+export { CommentActionResult } from './lib/comments/comment-action-result.enum';

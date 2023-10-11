@@ -10,7 +10,7 @@ const envMap: Record<string, string> = {
 export const MAIN_URL = envMap[environment.name];
 export const API_URL = MAIN_URL;
 
-// New backend status: 18 / 40 endpoints done
+// New backend status: 19 / 40 endpoints done
 export class URL_PARAMS {
   public static get WEBSOCKET_1V1_URL(): string {
     const websocketEnvMap: Record<string, string> = {
@@ -95,7 +95,7 @@ export class URL_PARAMS {
     ADMIN_DELETE: string;
   } {
     return {
-      ADD: `${API_URL}/comments/add`, // Not done
+      ADD: `${API_URL}/comments/add`, // New backend done
       DELETE: `${API_URL}/comments/delete/`, // Not done
       UPDATE: `${API_URL}/comments/update/`, // Not done
       ADMIN_DELETE: `${API_URL}/comments/admin_delete/`, // Not done

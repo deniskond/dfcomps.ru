@@ -233,6 +233,7 @@ export class AuthService {
     if (!accessToken) {
       return {
         userId: null,
+        commentsBanDate: null,
         roles: [],
       };
     }
@@ -247,6 +248,7 @@ export class AuthService {
 
     return {
       userId: user.id,
+      commentsBanDate: user.comments_ban_date,
       roles: authRoles.map(({ role }: AuthRole) => role),
     };
   }

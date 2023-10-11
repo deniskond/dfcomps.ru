@@ -1,4 +1,3 @@
-import { CommentActionResult } from './../../services/comments/enums/comment-action-result.enum';
 import { CommentWithActionInterface } from './interfaces/comment-with-action.interface';
 import {
   Component,
@@ -15,7 +14,6 @@ import { CommentsService } from '../../services/comments/comments.service';
 import { ReplaySubject, Observable, combineLatest } from 'rxjs';
 import { take, finalize, map, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
-import { CommentActionResultInterface } from '../../services/comments/interfaces/comment-action.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AdminDeleteCommentDialogComponent } from './components/admin-delete-comment-dialog/admin-delete-comment-dialog.component';
@@ -31,7 +29,7 @@ import { UserInterface } from '~shared/interfaces/user.interface';
 import { LanguageService } from '~shared/services/language/language.service';
 import { SmilesService } from '~shared/services/smiles/smiles.service';
 import { UserService } from '~shared/services/user-service/user.service';
-import { CommentInterface, PersonalSmileInterface, UserRole } from '@dfcomps/contracts';
+import { CommentActionResult, CommentActionResultInterface, CommentInterface, PersonalSmileInterface, UserRole } from '@dfcomps/contracts';
 import { checkUserRoles } from '~shared/helpers/check-roles';
 
 const COMMENT_ACTION_PERIOD_MINUTES = 2;
