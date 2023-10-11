@@ -40,4 +40,9 @@ export class TablesController {
 
     return this.tablesService.getSeasonPhysicsRatingByPage(physics, page, season);
   }
+
+  @Get('season_rating_table_players_count/:season')
+  getSeasonRatingPlayersCount(@Param('season', new ParseIntPipe()) season: number): Promise<PlayersCountInterface> {
+    return this.tablesService.getSeasonRatingTablePlayersCount(season);
+  }
 }

@@ -10,7 +10,7 @@ const envMap: Record<string, string> = {
 export const MAIN_URL = envMap[environment.name];
 export const API_URL = MAIN_URL;
 
-// New backend status: 14 / 40 endpoints done
+// New backend status: 16 / 40 endpoints done
 export class URL_PARAMS {
   public static get WEBSOCKET_1V1_URL(): string {
     const websocketEnvMap: Record<string, string> = {
@@ -57,7 +57,7 @@ export class URL_PARAMS {
   }
 
   public static SEASON_RATING_TABLE_PLAYERS_COUNT(season: number): string {
-    return `${API_URL}/tables/season_rating_table_players_count/${season}`; // Not done
+    return `${API_URL}/tables/season_rating_table_players_count/${season}`; // New backend done
   }
 
   public static PROFILE(playerId: string): string {
@@ -106,7 +106,7 @@ export class URL_PARAMS {
     GET: string;
   } {
     return {
-      GET: `${API_URL}/rating/get_season`, // Not done
+      GET: `${API_URL}/rating/get_season`, // New backend done
     };
   }
 

@@ -23,22 +23,22 @@ export class RatingTablesService extends BackendService {
   }
 
   public getRatingTablePage$(physics: Physics, page: number): Observable<LeaderTableInterface[]> {
-    return this.post$(URL_PARAMS.RATING_TABLE_PAGE(physics, page));
+    return this.get$(URL_PARAMS.RATING_TABLE_PAGE(physics, page));
   }
 
   public getRatingTablePagesCount$(): Observable<number> {
-    return this.post$<PlayersCountInterface>(URL_PARAMS.RATING_TABLE_PLAYERS_COUNT()).pipe(
+    return this.get$<PlayersCountInterface>(URL_PARAMS.RATING_TABLE_PLAYERS_COUNT()).pipe(
       map((response: PlayersCountInterface) => response.count),
       map((playersCount: number) => Math.ceil(playersCount / MAX_PLAYERS_PER_PAGE)),
     );
   }
 
   public getSeasonRatingTablePage$(physics: Physics, page: number, season: number): Observable<LeaderTableInterface[]> {
-    return this.post$(URL_PARAMS.SEASON_RATING_TABLE_PAGE(physics, page, season));
+    return this.get$(URL_PARAMS.SEASON_RATING_TABLE_PAGE(physics, page, season));
   }
 
   public getSeasonRatingTablePagesCount$(season: number): Observable<number> {
-    return this.post$<PlayersCountInterface>(URL_PARAMS.SEASON_RATING_TABLE_PLAYERS_COUNT(season)).pipe(
+    return this.get$<PlayersCountInterface>(URL_PARAMS.SEASON_RATING_TABLE_PLAYERS_COUNT(season)).pipe(
       map((response: PlayersCountInterface) => +response.count),
       map((playersCount: number) => Math.ceil(playersCount / MAX_PLAYERS_PER_PAGE)),
     );

@@ -248,6 +248,26 @@ export class TablesService {
     };
   }
 
+  public async getSeasonRatingTablePlayersCount(season: number): Promise<PlayersCountInterface> {
+    const vq3PlayersCount: number = await this.oldRatingsRepository
+      .createQueryBuilder('old_ratings')
+      .where('vq3_rating != 0')
+      .andWhere('vq3_rating != 1500')
+      .andWhere('season = :season', { season })
+      .getCount();
+
+    const cpmPlayersCount: number = await this.oldRatingsRepository
+      .createQueryBuilder('old_ratings')
+      .where('cpm_rating != 0')
+      .andWhere('cpm_rating != 1500')
+      .andWhere('season = :season', { season })
+      .getCount();
+
+    return {
+      count: vq3PlayersCount > cpmPlayersCount ? vq3PlayersCount : cpmPlayersCount,
+    };
+  }
+
   private subtractMinRound(multicupResults: MulticupResultInterface[]): MulticupResultInterface[] {
     return multicupResults.map((multicupResult: MulticupResultInterface) => {
       let minRoundResult: number = Infinity;

@@ -37,3 +37,4 @@ export { InvalidDemoInterface } from './lib/tables/invalid-demo.interface';
 export { ValidDemoInterface } from './lib/tables/valid-demo.interface';
 export { MulticupSystems } from './lib/cup/multicup-systems.enum';
 export { PlayersCountInterface } from './lib/tables/players-count.interface';
+export { SeasonNumberInterface } from './lib/rating/season-number.interface';

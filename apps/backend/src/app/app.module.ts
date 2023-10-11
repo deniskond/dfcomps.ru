@@ -21,6 +21,8 @@ import { CommentsModule } from './comments/comments.module';
 import { Smile } from './comments/entities/smile.entity';
 import { CupDemo } from './cup/entities/cup-demo.entity';
 import { OldRating } from './tables/entities/old-rating.entity';
+import { Season } from './rating/entities/season.entity';
+import { RatingModule } from './rating/rating.module';
 
 @Module({
   imports: [
@@ -46,6 +48,7 @@ import { OldRating } from './tables/entities/old-rating.entity';
         Smile,
         CupDemo,
         OldRating,
+        Season,
       ],
       database: 'dfcomps',
       synchronize: true,
@@ -57,6 +60,7 @@ import { OldRating } from './tables/entities/old-rating.entity';
     CupModule,
     NewsModule,
     CommentsModule,
+    RatingModule,
   ],
 })
 export class AppModule {}
