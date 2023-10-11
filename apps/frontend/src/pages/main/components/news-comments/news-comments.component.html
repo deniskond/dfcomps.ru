@@ -31,9 +31,9 @@
                   <span translate translation="delete"></span>
                 </a>
               </span>
-              <span *ngIf="comment.isAdminDeletable">
+              <span *ngIf="comment.isModeratorDeletable">
                 <span class="separator"></span>
-                <a (click)="adminDeleteComment(comment.commentId)" class="bluelink hoverable">
+                <a (click)="moderatorDeleteComment(comment.commentId)" class="bluelink hoverable">
                   <span translate translation="delete"></span>
                 </a>
               </span>
@@ -42,7 +42,7 @@
               {{ comment.datetimezone | invokeFunction: formatDate }}
             </div>
           </div>
-          <ng-container *ngIf="!comment.reason; else adminDeleted">
+          <ng-container *ngIf="!comment.reason; else moderatorDeleted">
             <app-news-comment-text
               *ngIf="personalSmiles$ | async as personalSmiles"
               [comment]="comment"
@@ -50,10 +50,10 @@
               [currentUser]="(currentUser$ | async)!"
             ></app-news-comment-text>
           </ng-container>
-          <ng-template #adminDeleted>
+          <ng-template #moderatorDeleted>
             <div class="comment-inner-gray">
-              <span translate translation="commentDeletedByAdmin"></span>
-              <span>{{ comment.reason }}</span>
+              <span translate translation="commentDeletedByModerator"></span>
+              <span>&nbsp;{{ comment.reason }}</span>
             </div>
           </ng-template>
         </div>

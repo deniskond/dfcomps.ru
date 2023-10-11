@@ -101,7 +101,7 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
   fillDeleteReason: 'Fill reason for deleting comment',
   reason: 'Reason',
   edit: 'Edit',
-  commentDeletedByAdmin: 'Comment was deleted by admin. Reason:',
+  commentDeletedByModerator: 'Comment was deleted by moderator. Reason:',
   personalSmiles: 'Personal',
   defragSmiles: 'Defrag',
   mainSmiles: 'Smileys & People',

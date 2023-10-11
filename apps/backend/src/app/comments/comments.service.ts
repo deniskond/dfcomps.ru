@@ -7,6 +7,7 @@ import {
   CommentActionResultInterface,
   CommentInterface,
   PersonalSmileInterface,
+  UserRole,
 } from '@dfcomps/contracts';
 import { Smile } from './entities/smile.entity';
 import { AuthService } from '../auth/auth.service';
@@ -230,7 +231,48 @@ export class CommentsService {
     };
   }
 
-  public async adminDeleteComment(accessToken: string, commentId: number): Promise<CommentInterface[]> {
-    return {} as any;
+  public async moderatorDeleteComment(
+    accessToken: string,
+    commentId: number,
+    reason: string,
+  ): Promise<CommentInterface[]> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!userAccess.roles.some((role: UserRole) => role === UserRole.MODERATOR)) {
+      throw new UnauthorizedException('No access to moderate comment');
+    }
+
+    const newsComment: NewsComment | null = await this.newsCommentsRepository
+      .createQueryBuilder('news_comments')
+      .leftJoinAndSelect('news_comments.news', 'news')
+      .where({ id: commentId })
+      .andWhere('news_comments.userId = :userId', { userId: userAccess.userId })
+      .getOne();
+
+    if (!newsComment) {
+      throw new UnauthorizedException(`No access to deleting comment with id ${commentId}`);
+    }
+
+    await this.newsCommentsRepository
+      .createQueryBuilder()
+      .update(NewsComment)
+      .set({ reason })
+      .where({ id: commentId })
+      .execute();
+
+    const updatedComments: NewsComment[] = await this.newsCommentsRepository
+      .createQueryBuilder('news_comments')
+      .leftJoinAndSelect('news_comments.user', 'users')
+      .where('news_comments.newsId = :newsId', { newsId: newsComment.news.id })
+      .getMany();
+
+    return updatedComments.map((newsComment: NewsComment) => ({
+      commentId: newsComment.id,
+      comment: newsComment.comment,
+      datetimezone: newsComment.datetimezone,
+      playerId: newsComment.user.id,
+      reason: newsComment.reason,
+      username: newsComment.user.displayed_nick,
+    }));
   }
 }

@@ -22,7 +22,7 @@ import { PlayerDemosDialogComponent } from './components/news-offline-start/play
 import { SingleNewsPageComponent } from './components/single-news-page/single-news-page.component';
 import { InvalidDemosListComponent } from './components/news-offline-results/invalid-demos-list/invalid-demos-list.component';
 import { NewsDfwcResultsComponent } from './components/news-dfwc-results/news-dfwc-results.component';
-import { AdminDeleteCommentDialogComponent } from './components/news-comments/components/admin-delete-comment-dialog/admin-delete-comment-dialog.component';
+import { ModeratorDeleteCommentDialogComponent } from './components/news-comments/components/moderator-delete-comment-dialog/moderator-delete-comment-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SmilesDropdownComponent } from './components/news-comments/components/smiles-dropdown/smiles-dropdown.component';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -84,7 +84,7 @@ const routes: Routes = [
     SingleNewsPageComponent,
     InvalidDemosListComponent,
     NewsDfwcResultsComponent,
-    AdminDeleteCommentDialogComponent,
+    ModeratorDeleteCommentDialogComponent,
     SmilesDropdownComponent,
     NewsSocialLinksComponent,
     NewsCommentTextComponent,

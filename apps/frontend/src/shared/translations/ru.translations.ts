@@ -101,7 +101,7 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   fillDeleteReason: 'Заполните причину удаления коммента',
   reason: 'Причина',
   edit: 'Редактировать',
-  commentDeletedByAdmin: 'Комментарий удален админом. Причина:',
+  commentDeletedByModerator: 'Комментарий удален модератором. Причина:',
   personalSmiles: 'Персональные',
   defragSmiles: 'Defrag',
   mainSmiles: 'Смайлы',

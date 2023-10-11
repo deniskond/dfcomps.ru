@@ -4,6 +4,7 @@ import { CommentActionResultInterface, CommentInterface, PersonalSmileInterface 
 import { AddCommentDto } from './dto/add-comment.dto';
 import { DeleteCommentDto } from './dto/delete-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
+import { ModeratorDeleteCommentDto } from './dto/moderator-delete-comment.dto';
 
 @Controller('comments')
 export class CommentsController {
@@ -38,11 +39,11 @@ export class CommentsController {
     return this.commentsService.updateComment(accessToken, text, commentId);
   }
 
-  @Post('admin_delete')
-  adminDeleteComment(
-    @Body() { commentId }: DeleteCommentDto,
+  @Post('moderator_delete')
+  moderatorDeleteComment(
+    @Body() { commentId, reason }: ModeratorDeleteCommentDto,
     @Headers('X-Auth') accessToken: string,
   ): Promise<CommentInterface[]> {
-    return this.commentsService.adminDeleteComment(accessToken, commentId);
+    return this.commentsService.moderatorDeleteComment(accessToken, commentId, reason);
   }
 }

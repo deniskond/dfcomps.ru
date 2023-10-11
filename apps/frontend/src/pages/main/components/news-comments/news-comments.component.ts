@@ -16,7 +16,7 @@ import { take, finalize, map, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AdminDeleteCommentDialogComponent } from './components/admin-delete-comment-dialog/admin-delete-comment-dialog.component';
+import { ModeratorDeleteCommentDialogComponent } from './components/moderator-delete-comment-dialog/moderator-delete-comment-dialog.component';
 import {
   smilesDialogAnimation,
   SMILES_DIALOG_OPENED,
@@ -29,7 +29,13 @@ import { UserInterface } from '~shared/interfaces/user.interface';
 import { LanguageService } from '~shared/services/language/language.service';
 import { SmilesService } from '~shared/services/smiles/smiles.service';
 import { UserService } from '~shared/services/user-service/user.service';
-import { CommentActionResult, CommentActionResultInterface, CommentInterface, PersonalSmileInterface, UserRole } from '@dfcomps/contracts';
+import {
+  CommentActionResult,
+  CommentActionResultInterface,
+  CommentInterface,
+  PersonalSmileInterface,
+  UserRole,
+} from '@dfcomps/contracts';
 import { checkUserRoles } from '~shared/helpers/check-roles';
 
 const COMMENT_ACTION_PERIOD_MINUTES = 2;
@@ -143,11 +149,11 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
       );
   }
 
-  public adminDeleteComment(commentId: number): void {
+  public moderatorDeleteComment(commentId: number): void {
     this.dialog
-      .open(AdminDeleteCommentDialogComponent)
+      .open(ModeratorDeleteCommentDialogComponent)
       .afterClosed()
-      .pipe(switchMap((reason: string) => this.commentsService.adminDeleteComment$(commentId, reason)))
+      .pipe(switchMap((reason: string) => this.commentsService.moderatorDeleteComment$(commentId, reason)))
       .subscribe((updatedComments: CommentInterface[]) => {
         this.comments$.next(updatedComments);
         this.textarea.nativeElement.value = '';
@@ -240,9 +246,10 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
       .add(COMMENT_ACTION_PERIOD_MINUTES, 'minutes')
       .isAfter(moment());
     const isEditable: boolean = !!user && comment.playerId === user.id && isNewComment;
-    const isAdminDeletable: boolean = !comment.reason && !isEditable && !!user && checkUserRoles(user, [UserRole.ADMIN]);
+    const isModeratorDeletable: boolean =
+      !comment.reason && !isEditable && !!user && checkUserRoles(user, [UserRole.MODERATOR]);
 
-    return { ...comment, isEditable, isAdminDeletable };
+    return { ...comment, isEditable, isModeratorDeletable };
   }
 
   private processCommentActionResult({ result, comments }: CommentActionResultInterface): void {
