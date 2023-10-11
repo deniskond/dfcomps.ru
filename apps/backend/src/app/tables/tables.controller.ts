@@ -1,6 +1,6 @@
 import { BadRequestException, Body, Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { TablesService } from './tables.service';
-import { GetTop10Dto, LeaderTableInterface, Physics } from '@dfcomps/contracts';
+import { GetTop10Dto, LeaderTableInterface, Physics, PlayersCountInterface } from '@dfcomps/contracts';
 
 @Controller('tables')
 export class TablesController {
@@ -21,5 +21,10 @@ export class TablesController {
     }
 
     return this.tablesService.getPhysicsRatingByPage(physics, page);
+  }
+
+  @Get('rating_table_players_count')
+  getRatingTablePlayersCount(): Promise<PlayersCountInterface> {
+    return this.tablesService.getRatingTablePlayersCount();
   }
 }

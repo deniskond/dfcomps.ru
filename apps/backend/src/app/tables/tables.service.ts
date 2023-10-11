@@ -4,6 +4,7 @@ import {
   MulticupResultInterface,
   MulticupSystems,
   Physics,
+  PlayersCountInterface,
   RatingTablesModes,
   ResultsTableInterface,
   ValidDemoInterface,
@@ -199,6 +200,24 @@ export class TablesService {
       country: user.country,
       rating: user[`${physics}_rating`],
     }));
+  }
+
+  public async getRatingTablePlayersCount(): Promise<PlayersCountInterface> {
+    const vq3PlayersCount: number = await this.userRepository
+      .createQueryBuilder('users')
+      .where('vq3_rating != 0')
+      .andWhere('vq3_rating != 1500')
+      .getCount();
+
+    const cpmPlayersCount: number = await this.userRepository
+      .createQueryBuilder('users')
+      .where('cpm_rating != 0')
+      .andWhere('cpm_rating != 1500')
+      .getCount();
+
+    return {
+      count: vq3PlayersCount > cpmPlayersCount ? vq3PlayersCount : cpmPlayersCount,
+    };
   }
 
   private subtractMinRound(multicupResults: MulticupResultInterface[]): MulticupResultInterface[] {
