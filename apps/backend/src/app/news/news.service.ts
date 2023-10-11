@@ -13,6 +13,7 @@ import {
   NewsOnlineResultsInterface,
   NewsSimpleInterface,
   NewsTypes,
+  PaginationCountInterface,
   Physics,
   ResultsTableInterface,
   UserRole,
@@ -110,6 +111,14 @@ export class NewsService {
     }
 
     return await this.mapNewsType(newsItem, userAccess);
+  }
+
+  public async getNewsCount(): Promise<PaginationCountInterface> {
+    const newsCount: number = await this.newsRepository.createQueryBuilder('news').getCount();
+
+    return {
+      count: newsCount,
+    };
   }
 
   private async mapNewsType(newsItem: News, userAccess: UserAccessInterface): Promise<NewsInterfaceUnion> {

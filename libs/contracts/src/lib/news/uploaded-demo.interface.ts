@@ -1,4 +1,4 @@
-import { Physics } from '../physics.enum';
+import { Physics } from '../global/physics.enum';
 
 export interface UploadedDemoInterface {
   demopath: string;

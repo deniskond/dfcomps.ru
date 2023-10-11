@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BackendService, URL_PARAMS } from '~shared/rest-api';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { LeaderTableInterface, Physics, PlayersCountInterface, RatingTablesModes } from '@dfcomps/contracts';
+import { LeaderTableInterface, Physics, PaginationCountInterface, RatingTablesModes } from '@dfcomps/contracts';
 
 const MAX_PLAYERS_PER_PAGE = 100;
 
@@ -27,8 +27,8 @@ export class RatingTablesService extends BackendService {
   }
 
   public getRatingTablePagesCount$(): Observable<number> {
-    return this.get$<PlayersCountInterface>(URL_PARAMS.RATING_TABLE_PLAYERS_COUNT()).pipe(
-      map((response: PlayersCountInterface) => response.count),
+    return this.get$<PaginationCountInterface>(URL_PARAMS.RATING_TABLE_PLAYERS_COUNT()).pipe(
+      map((response: PaginationCountInterface) => response.count),
       map((playersCount: number) => Math.ceil(playersCount / MAX_PLAYERS_PER_PAGE)),
     );
   }
@@ -38,8 +38,8 @@ export class RatingTablesService extends BackendService {
   }
 
   public getSeasonRatingTablePagesCount$(season: number): Observable<number> {
-    return this.get$<PlayersCountInterface>(URL_PARAMS.SEASON_RATING_TABLE_PLAYERS_COUNT(season)).pipe(
-      map((response: PlayersCountInterface) => +response.count),
+    return this.get$<PaginationCountInterface>(URL_PARAMS.SEASON_RATING_TABLE_PLAYERS_COUNT(season)).pipe(
+      map((response: PaginationCountInterface) => +response.count),
       map((playersCount: number) => Math.ceil(playersCount / MAX_PLAYERS_PER_PAGE)),
     );
   }

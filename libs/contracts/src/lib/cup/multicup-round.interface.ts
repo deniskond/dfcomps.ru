@@ -1,4 +1,4 @@
-import { Physics } from '../physics.enum';
+import { Physics } from '../global/physics.enum';
 import { MulticupRoundResultInterface } from './multicup-round-result.interface';
 
 export interface MulticupRoundInterface {

@@ -4,7 +4,7 @@ import {
   MulticupResultInterface,
   MulticupSystems,
   Physics,
-  PlayersCountInterface,
+  PaginationCountInterface,
   RatingTablesModes,
   ResultsTableInterface,
   ValidDemoInterface,
@@ -230,7 +230,7 @@ export class TablesService {
     }));
   }
 
-  public async getRatingTablePlayersCount(): Promise<PlayersCountInterface> {
+  public async getRatingTablePlayersCount(): Promise<PaginationCountInterface> {
     const vq3PlayersCount: number = await this.userRepository
       .createQueryBuilder('users')
       .where('vq3_rating != 0')
@@ -248,7 +248,7 @@ export class TablesService {
     };
   }
 
-  public async getSeasonRatingTablePlayersCount(season: number): Promise<PlayersCountInterface> {
+  public async getSeasonRatingTablePlayersCount(season: number): Promise<PaginationCountInterface> {
     const vq3PlayersCount: number = await this.oldRatingsRepository
       .createQueryBuilder('old_ratings')
       .where('vq3_rating != 0')

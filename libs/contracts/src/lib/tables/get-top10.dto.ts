@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
-import { Physics } from '../physics.enum';
 import { RatingTablesModes } from './rating-tables-modes.enum';
+import { Physics } from '../global/physics.enum';
 
 export class GetTop10Dto {
   @IsNotEmpty()

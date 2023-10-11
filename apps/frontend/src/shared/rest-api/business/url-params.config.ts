@@ -10,7 +10,7 @@ const envMap: Record<string, string> = {
 export const MAIN_URL = envMap[environment.name];
 export const API_URL = MAIN_URL;
 
-// New backend status: 16 / 40 endpoints done
+// New backend status: 17 / 40 endpoints done
 export class URL_PARAMS {
   public static get WEBSOCKET_1V1_URL(): string {
     const websocketEnvMap: Record<string, string> = {
@@ -82,7 +82,7 @@ export class URL_PARAMS {
     return {
       MAIN_PAGE: `${API_URL}/news/mainpage`, // New backend done
       THEME_PAGE: (theme: string) => `${API_URL}/news/theme/${theme}`, // New backend done
-      COUNT: `${API_URL}/news/count`, // Not done
+      COUNT: `${API_URL}/news/count`, // New backend done
       SINGLE_NEWS: (id: string) => `${API_URL}/news/single/${id}`, // New backend done
       ARCHIVE: (startIndex: number, endIndex: number) => `${API_URL}/news/archive/${startIndex}/${endIndex}`, // Not done
     };
