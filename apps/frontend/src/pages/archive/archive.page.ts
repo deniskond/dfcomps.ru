@@ -3,11 +3,11 @@ import { ArchiveService } from './services/archive/archive.service';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { range } from 'lodash';
 import { switchMap } from 'rxjs/operators';
-import { ArchiveNewsInterface } from './interfaces/archive-news.interface';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { Languages } from '~shared/enums/languages.enum';
 import { LanguageService } from '~shared/services/language/language.service';
+import { ArchiveNewsInterface } from '@dfcomps/contracts';
 
 const NEWS_ON_PAGE = 50;
 
