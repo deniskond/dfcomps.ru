@@ -28,8 +28,11 @@ export class CommentsController {
   }
 
   @Post('update')
-  updateComment(@Body() { text, commentId }: UpdateCommentDto): Promise<CommentActionResultInterface> {
-    return this.commentsService.updateComment(text, commentId);
+  updateComment(
+    @Body() { text, commentId }: UpdateCommentDto,
+    @Headers('X-Auth') accessToken: string,
+  ): Promise<CommentActionResultInterface> {
+    return this.commentsService.updateComment(accessToken, text, commentId);
   }
 
   @Post('admin_delete')

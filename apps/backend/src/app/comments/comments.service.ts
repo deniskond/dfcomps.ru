@@ -2,7 +2,12 @@ import { BadRequestException, Injectable, NotFoundException, UnauthorizedExcepti
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { NewsComment } from './entities/news-comment.entity';
-import { CommentActionResultInterface, CommentInterface, PersonalSmileInterface } from '@dfcomps/contracts';
+import {
+  CommentActionResult,
+  CommentActionResultInterface,
+  CommentInterface,
+  PersonalSmileInterface,
+} from '@dfcomps/contracts';
 import { Smile } from './entities/smile.entity';
 import { AuthService } from '../auth/auth.service';
 import { UserAccessInterface } from '../interfaces/user-access.interface';
@@ -89,7 +94,6 @@ export class CommentsService {
       ])
       .execute();
 
-
     const updatedComments: NewsComment[] = await this.newsCommentsRepository
       .createQueryBuilder('news_comments')
       .leftJoinAndSelect('news_comments.user', 'users')
@@ -110,8 +114,71 @@ export class CommentsService {
     return {} as any;
   }
 
-  public async updateComment(text: string, commentId: number): Promise<CommentActionResultInterface> {
-    return {} as any;
+  public async updateComment(
+    accessToken: string,
+    text: string,
+    commentId: number,
+  ): Promise<CommentActionResultInterface> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!userAccess.userId) {
+      throw new UnauthorizedException('Cannot post as anonymous user');
+    }
+
+    if (moment(userAccess.commentsBanDate).isAfter(moment())) {
+      throw new BadRequestException(`Comments banned until ${userAccess.commentsBanDate}`);
+    }
+
+    const newsComment: NewsComment | null = await this.newsCommentsRepository
+      .createQueryBuilder('news_comments')
+      .leftJoinAndSelect('news_comments.news', 'news')
+      .where({ id: commentId })
+      .andWhere('news_comments.userId = :userId', { userId: userAccess.userId })
+      .getOne();
+
+    if (!newsComment) {
+      throw new UnauthorizedException(`No access to updating comment with id ${commentId}`);
+    }
+
+    const trimmedText = text.trim();
+
+    if (!trimmedText) {
+      throw new BadRequestException('Comment is empty');
+    }
+
+    const isTooLateToEdit: boolean = moment().isAfter(moment(newsComment.datetimezone).add(2, 'minute'));
+    let result: CommentActionResult;
+
+    if (!isTooLateToEdit) {
+      await this.newsCommentsRepository
+        .createQueryBuilder()
+        .update(NewsComment)
+        .set({ comment: trimmedText })
+        .where({ id: commentId })
+        .execute();
+
+      result = CommentActionResult.SUCCESS;
+    } else {
+      result = CommentActionResult.TWO_MINUTES;
+    }
+
+    const updatedComments: NewsComment[] = await this.newsCommentsRepository
+      .createQueryBuilder('news_comments')
+      .leftJoinAndSelect('news_comments.user', 'users')
+      .where('news_comments.newsId = :newsId', { newsId: newsComment.news.id })
+      .getMany();
+
+    return {
+      result,
+      comments: updatedComments.map((newsComment: NewsComment) => ({
+        commentId: newsComment.id,
+        comment: newsComment.comment,
+        datetimezone: newsComment.datetimezone,
+        playerId: newsComment.user.id,
+        reason: newsComment.reason,
+        username: newsComment.user.displayed_nick,
+      })),
+    };
   }
 
   public async adminDeleteComment(accessToken: string, commentId: number): Promise<CommentInterface[]> {
