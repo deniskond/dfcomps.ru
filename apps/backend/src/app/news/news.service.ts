@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { News } from './entities/news.entity';
 import {
+  ArchiveNewsInterface,
   MulticupResultInterface,
   NewsInterface,
   NewsInterfaceUnion,
@@ -119,6 +120,27 @@ export class NewsService {
     return {
       count: newsCount,
     };
+  }
+
+  public async getNewsArchive(startIndex: number, endIndex: number): Promise<ArchiveNewsInterface[]> {
+    const time: string = moment().format();
+    const archiveNews: News[] = await this.newsRepository
+      .createQueryBuilder('news')
+      .leftJoinAndSelect('news.user', 'users')
+      .where('news.datetimezone < :time', { time })
+      .orderBy('datetimezone', 'DESC')
+      .offset(startIndex)
+      .limit(endIndex - startIndex)
+      .getMany();
+
+    return archiveNews.map((archiveNewsItem: News) => ({
+      authorId: archiveNewsItem.user.id,
+      authorName: archiveNewsItem.user.displayed_nick,
+      datetimezone: archiveNewsItem.datetimezone,
+      header: archiveNewsItem.header,
+      headerEn: archiveNewsItem.header_en,
+      id: archiveNewsItem.id,
+    }));
   }
 
   private async mapNewsType(newsItem: News, userAccess: UserAccessInterface): Promise<NewsInterfaceUnion> {

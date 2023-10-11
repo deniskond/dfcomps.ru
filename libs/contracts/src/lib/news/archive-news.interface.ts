@@ -1,8 +1,8 @@
 export interface ArchiveNewsInterface {
-  authorId: string;
+  authorId: number;
   authorName: string;
   datetimezone: string;
   header: string;
   headerEn: string;
-  id: string;
+  id: number;
 }

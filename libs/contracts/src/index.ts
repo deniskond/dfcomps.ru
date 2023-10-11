@@ -38,3 +38,4 @@ export { ValidDemoInterface } from './lib/tables/valid-demo.interface';
 export { MulticupSystems } from './lib/cup/multicup-systems.enum';
 export { PaginationCountInterface } from './lib/global/pagination-count.interface';
 export { SeasonNumberInterface } from './lib/rating/season-number.interface';
+export { ArchiveNewsInterface } from './lib/news/archive-news.interface';

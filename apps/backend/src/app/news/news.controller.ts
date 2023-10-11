@@ -1,6 +1,6 @@
 import { Controller, Get, Headers, Param, ParseIntPipe } from '@nestjs/common';
 import { NewsService } from './news.service';
-import { NewsInterfaceUnion, PaginationCountInterface } from '@dfcomps/contracts';
+import { ArchiveNewsInterface, NewsInterfaceUnion, PaginationCountInterface } from '@dfcomps/contracts';
 
 @Controller('news')
 export class NewsController {
@@ -27,5 +27,13 @@ export class NewsController {
   @Get('count')
   getNewsCount(): Promise<PaginationCountInterface> {
     return this.newsService.getNewsCount();
+  }
+
+  @Get('archive/:startIndex/:endIndex')
+  getNewsArchive(
+    @Param('startIndex', new ParseIntPipe()) startIndex: number,
+    @Param('endIndex', new ParseIntPipe()) endIndex: number,
+  ): Promise<ArchiveNewsInterface[]> {
+    return this.newsService.getNewsArchive(startIndex, endIndex);
   }
 }
