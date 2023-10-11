@@ -25,6 +25,8 @@ type MultiCupTableWithPoints = {
 
 @Injectable()
 export class TablesService {
+  private readonly PLAYERS_ON_RATING_PAGE = 100;
+
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @InjectRepository(OneVOneRating) private readonly oneVOneRatingRepository: Repository<OneVOneRating>,
@@ -178,6 +180,25 @@ export class TablesService {
     multicupResults = await this.mapRatingChanges(multicupResults, multicupId, physics);
 
     return multicupResults.sort((a: MulticupResultInterface, b: MulticupResultInterface) => b.overall - a.overall);
+  }
+
+  public async getPhysicsRatingByPage(physics: Physics, page: number): Promise<LeaderTableInterface[]> {
+    const limitStart = this.PLAYERS_ON_RATING_PAGE * (page - 1);
+    const users: User[] = await this.userRepository
+      .createQueryBuilder('users')
+      .where(`users.${physics}_rating != 0`)
+      .andWhere(`users.${physics}_rating != 1500`)
+      .orderBy(`users.${physics}_rating`, 'DESC')
+      .offset(limitStart)
+      .limit(this.PLAYERS_ON_RATING_PAGE)
+      .getMany();
+
+    return users.map((user: User) => ({
+      playerId: user.id,
+      nick: user.displayed_nick,
+      country: user.country,
+      rating: user[`${physics}_rating`],
+    }));
   }
 
   private subtractMinRound(multicupResults: MulticupResultInterface[]): MulticupResultInterface[] {
