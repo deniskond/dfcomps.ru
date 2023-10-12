@@ -142,12 +142,7 @@ export class ProfileService {
     };
   }
 
-  public async updateProfile(
-    accessToken: string,
-    nick: string,
-    country: string | undefined,
-    avatar: Express.Multer.File | undefined,
-  ): Promise<void> {
+  public async updateProfileInfo(accessToken: string, nick: string, country: string | undefined): Promise<void> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!userAccess.userId) {
@@ -160,30 +155,7 @@ export class ProfileService {
       .getOne())!;
 
     let newUserName: string = user.displayed_nick;
-    let newAvatarFileName: string | null = user.avatar;
     let lastNickChangeTime: string | null = user.last_nick_change_time;
-
-    if (avatar) {
-      const previousAvatar = user.avatar;
-      newAvatarFileName = `${user.id}_${moment().format('x')}`;
-
-      if (fs.existsSync(process.env.DFCOMPS_FILE_UPLOAD_PATH + `\\images\\avatars\\${previousAvatar}.jpg`)) {
-        fs.rmSync(process.env.DFCOMPS_FILE_UPLOAD_PATH + `\\images\\avatars\\${previousAvatar}.jpg`);
-      }
-
-      const resizedImage: Buffer = await sharp(avatar.buffer)
-        .resize(150, 150)
-        .jpeg()
-        .toBuffer()
-        .catch(() => {
-          throw new InternalServerErrorException('Failed to resize image');
-        });
-
-      fs.writeFileSync(
-        process.env.DFCOMPS_FILE_UPLOAD_PATH + '\\images\\avatars\\' + newAvatarFileName + '.jpg',
-        resizedImage,
-      );
-    }
 
     if (user.displayed_nick !== nick) {
       if (user.last_nick_change_time && moment().isBefore(moment(user.last_nick_change_time).add(1, 'month'))) {
@@ -201,6 +173,47 @@ export class ProfileService {
         displayed_nick: newUserName,
         country,
         last_nick_change_time: lastNickChangeTime,
+      })
+      .where({ id: user.id })
+      .execute();
+  }
+
+  public async updateProfileAvatar(accessToken: string, avatar: Express.Multer.File): Promise<void> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!userAccess.userId) {
+      throw new UnauthorizedException("Can't update profile while unauthorized");
+    }
+
+    const user: User = (await this.userRepository
+      .createQueryBuilder('users')
+      .where({ id: userAccess.userId })
+      .getOne())!;
+
+    const previousAvatar = user.avatar;
+    const newAvatarFileName = `${user.id}_${moment().format('x')}`;
+
+    if (fs.existsSync(process.env.DFCOMPS_FILE_UPLOAD_PATH + `\\images\\avatars\\${previousAvatar}.jpg`)) {
+      fs.rmSync(process.env.DFCOMPS_FILE_UPLOAD_PATH + `\\images\\avatars\\${previousAvatar}.jpg`);
+    }
+
+    const resizedImage: Buffer = await sharp(avatar.buffer)
+      .resize(150, 150)
+      .jpeg()
+      .toBuffer()
+      .catch(() => {
+        throw new InternalServerErrorException('Failed to resize image');
+      });
+
+    fs.writeFileSync(
+      process.env.DFCOMPS_FILE_UPLOAD_PATH + '\\images\\avatars\\' + newAvatarFileName + '.jpg',
+      resizedImage,
+    );
+
+    await this.userRepository
+      .createQueryBuilder()
+      .update(User)
+      .set({
         avatar: newAvatarFileName,
       })
       .where({ id: user.id })

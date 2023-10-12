@@ -10,7 +10,7 @@ const envMap: Record<string, string> = {
 export const MAIN_URL = envMap[environment.name];
 export const API_URL = MAIN_URL;
 
-// New backend status: 22 / 40 endpoints done
+// New backend status: 26 / 52 endpoints done
 export class URL_PARAMS {
   public static get WEBSOCKET_1V1_URL(): string {
     const websocketEnvMap: Record<string, string> = {
@@ -60,16 +60,18 @@ export class URL_PARAMS {
     return `${API_URL}/tables/season_rating_table_players_count/${season}`; // New backend done
   }
 
-  public static PROFILE(playerId: string): string {
-    return `${API_URL}/profile/get/${playerId}`; // Not done
-  }
-
-  public static PROFILE_CHECK_NICK_CHANGE(): string {
-    return `${API_URL}/profile/check_last_nick_change_time`; // Not done
-  }
-
-  public static PROFILE_UPDATE(): string {
-    return `${API_URL}/profile/update`; // Not done
+  public static get PROFILE(): {
+    GET_PROFILE: (id: number) => string;
+    CHECK_NICK_CHANGE: string;
+    UPDATE_INFO: string;
+    UPDATE_AVATAR: string;
+  } {
+    return {
+      GET_PROFILE: (id: number) => `${API_URL}/profile/get/${id}`, // New backend done
+      CHECK_NICK_CHANGE: `${API_URL}/profile/check_last_nick_change_time`, // New backend done
+      UPDATE_INFO: `${API_URL}/profile/update-info`, // New backend done
+      UPDATE_AVATAR: `${API_URL}/profile/update-avatar`, // New backend done
+    };
   }
 
   public static get NEWS(): {

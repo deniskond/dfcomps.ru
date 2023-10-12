@@ -30,9 +30,17 @@ export class ProfileController {
     return this.profileService.checkLastNickChangeTime(accessToken);
   }
 
-  @Post('update')
+  @Post('update-info')
+  updateProfileInfo(
+    @Headers('X-Auth') accessToken: string,
+    @Body() { nick, country }: ProfileUpdateDto,
+  ): Promise<void> {
+    return this.profileService.updateProfileInfo(accessToken, nick, country);
+  }
+
+  @Post('update-avatar')
   @UseInterceptors(FileInterceptor('file'))
-  updateProfile(
+  updateProfileAvatar(
     @Headers('X-Auth') accessToken: string,
     @UploadedFile(
       new ParseFilePipeBuilder()
@@ -46,9 +54,8 @@ export class ProfileController {
           errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
         }),
     )
-    avatar: Express.Multer.File | undefined,
-    @Body() { nick, country }: ProfileUpdateDto,
+    avatar: Express.Multer.File,
   ): Promise<void> {
-    return this.profileService.updateProfile(accessToken, nick, country, avatar);
+    return this.profileService.updateProfileAvatar(accessToken, avatar);
   }
 }
