@@ -89,7 +89,7 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   nick: 'Ник',
   nickChangeMessage: 'Может быть изменен раз в месяц, логин остается прежним',
   avatar: 'Аватар',
-  avatarChangeMessage: 'Макс. размер - 1MB',
+  avatarChangeMessage: 'Макс. размер - 5MB',
   save: 'Сохранить',
   registerForCup: 'Зарегистрироваться',
   cancelRegistration: 'Отменить регистрацию',

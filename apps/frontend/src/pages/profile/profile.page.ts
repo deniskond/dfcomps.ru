@@ -85,7 +85,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     this.isEditProfileAvailable$ = combineLatest([
       this.activatedRoute.params,
       this.userService.getCurrentUser$().pipe(filter(isNonNull)),
-    ]).pipe(map(([{ id }, user]: [Params, UserInterface]) => (user ? id === user.id : false)));
+    ]).pipe(map(([{ id }, user]: [Params, UserInterface]) => (user ? +id === user.id : false)));
   }
 
   private setRouteSubscription(): void {

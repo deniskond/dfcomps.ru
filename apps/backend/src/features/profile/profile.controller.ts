@@ -8,6 +8,8 @@ import {
   UploadedFile,
   UseInterceptors,
   Headers,
+  ParseFilePipeBuilder,
+  HttpStatus,
 } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { NickChangeResponseInterface, ProfileInterface } from '@dfcomps/contracts';
@@ -32,7 +34,19 @@ export class ProfileController {
   @UseInterceptors(FileInterceptor('file'))
   updateProfile(
     @Headers('X-Auth') accessToken: string,
-    @UploadedFile() avatar: Express.Multer.File,
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: /jpg|png|gif|jpeg/,
+        })
+        .addMaxSizeValidator({
+          maxSize: 5000000,
+        })
+        .build({
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        }),
+    )
+    avatar: Express.Multer.File | undefined,
     @Body() { nick, country }: ProfileUpdateDto,
   ): Promise<void> {
     return this.profileService.updateProfile(accessToken, nick, country, avatar);

@@ -89,7 +89,7 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
   nick: 'Nick',
   nickChangeMessage: 'Can be changed once per month, login remains the same',
   avatar: 'Avatar',
-  avatarChangeMessage: 'Max size - 1MB',
+  avatarChangeMessage: 'Max size - 5MB',
   save: 'Save',
   registerForCup: 'Register for cup',
   cancelRegistration: 'Cancel registration',

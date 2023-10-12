@@ -1,5 +1,11 @@
 import { NickChangeResponseInterface, Physics, ProfileDemosInterface, ProfileInterface } from '@dfcomps/contracts';
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../../shared/entities/user.entity';
@@ -10,6 +16,8 @@ import { Reward } from '../../shared/entities/reward.entity';
 import { UserAccessInterface } from '../../shared/interfaces/user-access.interface';
 import { AuthService } from '../auth/auth.service';
 import * as moment from 'moment';
+import * as fs from 'fs';
+import * as sharp from 'sharp';
 
 @Injectable()
 export class ProfileService {
@@ -138,9 +146,65 @@ export class ProfileService {
     accessToken: string,
     nick: string,
     country: string | undefined,
-    avatar: Express.Multer.File,
+    avatar: Express.Multer.File | undefined,
   ): Promise<void> {
-    return {} as any;
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!userAccess.userId) {
+      throw new UnauthorizedException("Can't update profile while unauthorized");
+    }
+
+    const user: User = (await this.userRepository
+      .createQueryBuilder('users')
+      .where({ id: userAccess.userId })
+      .getOne())!;
+
+    let newUserName: string = user.displayed_nick;
+    let newAvatarFileName: string | null = user.avatar;
+    let lastNickChangeTime: string | null = user.last_nick_change_time;
+
+    if (avatar) {
+      const previousAvatar = user.avatar;
+      newAvatarFileName = `${user.id}_${moment().format('x')}`;
+
+      if (fs.existsSync(process.env.DFCOMPS_FILE_UPLOAD_PATH + `\\images\\avatars\\${previousAvatar}.jpg`)) {
+        fs.rmSync(process.env.DFCOMPS_FILE_UPLOAD_PATH + `\\images\\avatars\\${previousAvatar}.jpg`);
+      }
+
+      const resizedImage: Buffer = await sharp(avatar.buffer)
+        .resize(150, 150)
+        .jpeg()
+        .toBuffer()
+        .catch(() => {
+          throw new InternalServerErrorException('Failed to resize image');
+        });
+
+      fs.writeFileSync(
+        process.env.DFCOMPS_FILE_UPLOAD_PATH + '\\images\\avatars\\' + newAvatarFileName + '.jpg',
+        resizedImage,
+      );
+    }
+
+    if (user.displayed_nick !== nick) {
+      if (user.last_nick_change_time && moment().isBefore(moment(user.last_nick_change_time).add(1, 'month'))) {
+        throw new BadRequestException('Too soon to change nickname');
+      }
+
+      newUserName = nick;
+      lastNickChangeTime = moment().format();
+    }
+
+    await this.userRepository
+      .createQueryBuilder()
+      .update(User)
+      .set({
+        displayed_nick: newUserName,
+        country,
+        last_nick_change_time: lastNickChangeTime,
+        avatar: newAvatarFileName,
+      })
+      .where({ id: user.id })
+      .execute();
   }
 
   private getPhysicsRatingChanges(physics: Physics, ratingChanges: RatingChange[], player: User): number[] {
