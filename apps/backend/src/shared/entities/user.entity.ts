@@ -6,6 +6,7 @@ import { NewsComment } from './news-comment.entity';
 import { CupDemo } from './cup-demo.entity';
 import { Smile } from './smile.entity';
 import { OldRating } from './old-rating.entity';
+import { Reward } from './reward.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -74,4 +75,7 @@ export class User {
 
   @OneToMany(() => OldRating, (oldRating) => oldRating.user)
   oldRatings: OldRating[];
+
+  @OneToMany(() => Reward, (reward) => reward.user)
+  rewards: Reward[];
 }

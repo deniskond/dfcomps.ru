@@ -220,6 +220,7 @@ export class AuthService {
         smiles: [],
         cupDemos: [],
         oldRatings: [],
+        rewards: [],
       }),
     );
 

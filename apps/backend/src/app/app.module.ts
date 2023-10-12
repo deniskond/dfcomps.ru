@@ -24,6 +24,7 @@ import { RatingChange } from '../shared/entities/rating-change.entity';
 import { Season } from '../shared/entities/season.entity';
 import { Smile } from '../shared/entities/smile.entity';
 import { ProfileModule } from '../features/profile/profile.module';
+import { Reward } from '../shared/entities/reward.entity';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { ProfileModule } from '../features/profile/profile.module';
         CupDemo,
         OldRating,
         Season,
+        Reward,
       ],
       database: 'dfcomps',
       synchronize: true,

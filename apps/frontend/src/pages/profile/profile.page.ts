@@ -29,8 +29,8 @@ import {
 })
 export class ProfilePageComponent implements OnInit, OnDestroy {
   public mainInfo: ProfileMainInfoInterface;
-  public cpmChart: string[];
-  public vq3Chart: string[];
+  public cpmChart: number[];
+  public vq3Chart: number[];
   public demos: ProfileDemosInterface[];
   public cups: ProfileCupInterface[];
   public rewards: Rewards[];
@@ -127,15 +127,15 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
   private mapCupsToView(cups: ProfileCupResponseInterface[]): ProfileCupInterface[] {
     return cups.map((cup: ProfileCupResponseInterface) => {
-      const physics = cup.cpm_place === '0' ? Physics.VQ3 : Physics.CPM;
+      const physics = cup.cpm_place === 0 ? Physics.VQ3 : Physics.CPM;
 
       return {
         newsId: cup.news_id,
         fullName: cup.full_name,
         shortName: cup.short_name,
         physics,
-        resultPlace: physics === Physics.CPM ? +cup.cpm_place : +cup.vq3_place,
-        ratingChange: physics === Physics.CPM ? +cup.cpm_change : +cup.vq3_change,
+        resultPlace: physics === Physics.CPM ? cup.cpm_place! : cup.vq3_place!,
+        ratingChange: physics === Physics.CPM ? cup.cpm_change! : cup.vq3_change!,
       };
     });
   }

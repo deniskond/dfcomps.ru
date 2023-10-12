@@ -1,7 +1,7 @@
 import { Physics } from '@dfcomps/contracts';
 
 export interface ProfileCupInterface {
-  newsId: string;
+  newsId: number;
   fullName: string;
   shortName: string;
   physics: Physics;

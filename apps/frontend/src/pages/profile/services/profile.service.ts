@@ -11,7 +11,7 @@ export class ProfileService extends BackendService {
   public getProfile$(playerId: string, caching = true): Observable<ProfileInterface> {
     return this.profiles[playerId] && caching
       ? of(this.profiles[playerId])
-      : this.post$<ProfileInterface>(URL_PARAMS.PROFILE(playerId)).pipe(
+      : this.get$<ProfileInterface>(URL_PARAMS.PROFILE(playerId)).pipe(
           tap((profile: ProfileInterface) => (this.profiles[playerId] = profile)),
         );
   }

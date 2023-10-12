@@ -1,7 +1,7 @@
 export interface ProfileMainInfoInterface {
-  avatar: string;
+  avatar: string | null;
   nick: string;
-  vq3Rating: string;
-  cpmRating: string;
-  country: string;
+  vq3Rating: number;
+  cpmRating: number;
+  country: string | null;
 }

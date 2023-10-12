@@ -6,8 +6,8 @@ import { ProfileRewardsInterface } from './profile-rewards.interface';
 export interface ProfileInterface {
   player: ProfileMainInfoInterface;
   rating: {
-    cpm: string[];
-    vq3: string[];
+    cpm: number[];
+    vq3: number[];
   };
   demos: ProfileDemosInterface[];
   cups: ProfileCupResponseInterface[];

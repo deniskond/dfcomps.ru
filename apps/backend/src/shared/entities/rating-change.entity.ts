@@ -9,16 +9,16 @@ export class RatingChange {
   id: number;
 
   @Column({ type: 'integer', nullable: true })
-  cpm_change: number;
+  cpm_change: number | null;
 
   @Column({ type: 'integer', nullable: true })
-  vq3_change: number;
+  vq3_change: number | null;
 
   @Column({ type: 'integer', nullable: true })
-  cpm_place: number;
+  cpm_place: number | null;
 
   @Column({ type: 'integer', nullable: true })
-  vq3_place: number;
+  vq3_place: number | null;
 
   @Column({ type: 'boolean' })
   bonus: boolean;
