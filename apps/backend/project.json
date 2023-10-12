@@ -9,9 +9,8 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/backend",
-        "main": "apps/backend/src/main.ts",
+        "main": "apps/backend/src/app/main.ts",
         "tsConfig": "apps/backend/tsconfig.app.json",
-        "assets": ["apps/backend/src/assets"],
         "compiler": "tsc",
         "target": "node",
         "webpackConfig": "apps/backend/webpack.config.js"
@@ -23,8 +22,8 @@
           "inspect": false,
           "fileReplacements": [
             {
-              "replace": "apps/backend/src/environments/environment.ts",
-              "with": "apps/backend/src/environments/environment.prod.ts"
+              "replace": "apps/backend/src/shared/environments/environment.ts",
+              "with": "apps/backend/src/shared/environments/environment.prod.ts"
             }
           ]
         }

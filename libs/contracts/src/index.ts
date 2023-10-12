@@ -1,13 +1,6 @@
-export { LoginResponseDto } from './lib/auth/login-response.dto';
-export { GetPasswordTokenDto } from './lib/auth/get-password-token.dto';
-export { GetDiscordTokenDto } from './lib/auth/get-discord-token.dto';
 export { UserRole } from './lib/auth/user-roles.enum';
-export { LoginAvailableDto } from './lib/auth/login-available.dto';
-export { CheckLoginDto } from './lib/auth/check-login.dto';
-export { RegisterDto } from './lib/auth/register.dto';
 export { LeaderTableInterface } from './lib/tables/leader-table.interface';
 export { Physics } from './lib/global/physics.enum';
-export { GetTop10Dto } from './lib/tables/get-top10.dto';
 export { RatingTablesModes } from './lib/tables/rating-tables-modes.enum';
 export { CupInterface } from './lib/cup/cup.interface';
 export { MulticupResultInterface } from './lib/cup/multicup-result.interface';
@@ -27,7 +20,6 @@ export { RegisteredPlayerInterface } from './lib/news/registered-player.interfac
 export { NewsOnlineAnnounceInterface } from './lib/news/news-online-announce.interface';
 export { OnlineCupResultInterface } from './lib/news/online-cup-result.interface';
 export { CheckCupRegistrationInterface } from './lib/cup/check-cup-registration.interface';
-export { CheckCupRegistrationDto } from './lib/cup/check-cup-registration.dto';
 export { CupTypes } from './lib/cup/cup-types.enum';
 export { PersonalSmileInterface } from './lib/comments/personal-smile.interface';
 export { NewsInterface } from './lib/news/news.interface';
