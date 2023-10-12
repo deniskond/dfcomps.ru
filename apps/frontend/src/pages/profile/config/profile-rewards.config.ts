@@ -1,4 +1,4 @@
-import { Rewards } from '../enums/rewards.enum';
+import { Rewards } from '@dfcomps/contracts';
 
 export class PROFILE_REWARDS {
   public static get ICONS_MAP(): Record<Rewards, string> {

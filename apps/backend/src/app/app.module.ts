@@ -23,6 +23,7 @@ import { OldRating } from '../shared/entities/old-rating.entity';
 import { RatingChange } from '../shared/entities/rating-change.entity';
 import { Season } from '../shared/entities/season.entity';
 import { Smile } from '../shared/entities/smile.entity';
+import { ProfileModule } from '../features/profile/profile.module';
 
 @Module({
   imports: [
@@ -61,6 +62,7 @@ import { Smile } from '../shared/entities/smile.entity';
     NewsModule,
     CommentsModule,
     RatingModule,
+    ProfileModule,
   ],
 })
 export class AppModule {}

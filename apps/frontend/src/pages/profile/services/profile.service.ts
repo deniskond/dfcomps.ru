@@ -2,7 +2,7 @@ import { BackendService, URL_PARAMS } from '~shared/rest-api';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
-import { ProfileInterface } from '../interfaces/profile.interface';
+import { ProfileInterface } from '@dfcomps/contracts';
 
 @Injectable()
 export class ProfileService extends BackendService {

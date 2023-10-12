@@ -17,9 +17,8 @@ import * as moment from 'moment';
 import { AuthRole } from '../../shared/entities/auth-role.entity';
 import { User } from '../../shared/entities/user.entity';
 import { OldUser } from '../../shared/entities/old-user.entity';
-import { LoginResponseDto } from './dto/login-response.dto';
-import { LoginAvailableDto } from './dto/login-available.dto';
 import { UserAccessInterface } from '../../shared/interfaces/user-access.interface';
+import { LoginAvailableInterface, LoginResponseInterface } from '@dfcomps/contracts';
 
 @Injectable()
 export class AuthService {
@@ -30,7 +29,7 @@ export class AuthService {
     private readonly httpService: HttpService,
   ) {}
 
-  public async getPasswordToken(login: string, password: string): Promise<LoginResponseDto> {
+  public async getPasswordToken(login: string, password: string): Promise<LoginResponseInterface> {
     const user: User | null = await this.userRepository.findOneBy({ login });
 
     if (!user) {
@@ -59,7 +58,7 @@ export class AuthService {
     }
   }
 
-  public async getDiscordToken(discordAccessToken: string): Promise<LoginResponseDto> {
+  public async getDiscordToken(discordAccessToken: string): Promise<LoginResponseInterface> {
     // 1. Getting discord user info
     const discordUserInfo = await firstValueFrom(
       this.httpService
@@ -100,7 +99,7 @@ export class AuthService {
     };
   }
 
-  public async checkLogin(login: string): Promise<LoginAvailableDto> {
+  public async checkLogin(login: string): Promise<LoginAvailableInterface> {
     const user: User | null = await this.userRepository.findOneBy({ login });
 
     return {
@@ -108,7 +107,7 @@ export class AuthService {
     };
   }
 
-  public async register(login: string, discordAccessToken: string): Promise<LoginResponseDto> {
+  public async register(login: string, discordAccessToken: string): Promise<LoginResponseInterface> {
     // 1. Checking there's no user with passed login
     const userWithSameLogin: User | null = await this.userRepository.findOneBy({ login });
 

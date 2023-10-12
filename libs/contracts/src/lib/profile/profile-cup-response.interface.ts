@@ -1,4 +1,4 @@
-export interface ProfileCupDtoInterface {
+export interface ProfileCupResponseInterface {
   full_name: string;
   short_name: string;
   news_id: string;

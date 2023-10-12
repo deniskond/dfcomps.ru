@@ -1,6 +1,6 @@
 import { UserRole } from '@dfcomps/contracts';
 
-export interface LoginResponseDto {
+export interface LoginResponseInterface {
   user: {
     avatar: string | null;
     country: string | null;

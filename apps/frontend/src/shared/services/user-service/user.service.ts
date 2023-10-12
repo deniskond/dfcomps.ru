@@ -3,8 +3,8 @@ import { BackendService, URL_PARAMS } from '~shared/rest-api';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { UserInterface } from '../../interfaces/user.interface';
-import { LoginAvailableDto, LoginResponseDto } from '@dfcomps/contracts';
 import { AuthService } from '../auth/auth.service';
+import { LoginAvailableInterface, LoginResponseInterface } from '@dfcomps/contracts';
 
 @Injectable()
 export class UserService {
@@ -21,43 +21,43 @@ export class UserService {
 
   public loginByPassword$(login: string, password: string): Observable<boolean> {
     return this.backendService
-      .post$<LoginResponseDto>(URL_PARAMS.AUTH.GET_PASSWORD_TOKEN, {
+      .post$<LoginResponseInterface>(URL_PARAMS.AUTH.GET_PASSWORD_TOKEN, {
         login,
         password,
       })
       .pipe(
-        tap((loginResponseDto: LoginResponseDto) => this.setAuthInfo(loginResponseDto)),
+        tap((loginResponseDto: LoginResponseInterface) => this.setAuthInfo(loginResponseDto)),
         map(() => true),
       );
   }
 
   public loginByDiscord$(discordAccessToken: string): Observable<boolean> {
     return this.backendService
-      .post$<LoginResponseDto>(URL_PARAMS.AUTH.GET_DISCORD_TOKEN, {
+      .post$<LoginResponseInterface>(URL_PARAMS.AUTH.GET_DISCORD_TOKEN, {
         discordAccessToken,
       })
       .pipe(
-        tap((loginResponseDto: LoginResponseDto) => this.setAuthInfo(loginResponseDto)),
+        tap((loginResponseDto: LoginResponseInterface) => this.setAuthInfo(loginResponseDto)),
         map(() => true),
       );
   }
 
   public checkLogin$(login: string): Observable<boolean> {
     return this.backendService
-      .post$<LoginAvailableDto>(URL_PARAMS.AUTH.CHECK_LOGIN, {
+      .post$<LoginAvailableInterface>(URL_PARAMS.AUTH.CHECK_LOGIN, {
         login,
       })
-      .pipe(map(({ loginAvailable }: LoginAvailableDto) => loginAvailable));
+      .pipe(map(({ loginAvailable }: LoginAvailableInterface) => loginAvailable));
   }
 
   public register$(login: string, discordAccessToken: string): Observable<boolean> {
     return this.backendService
-      .post$<LoginResponseDto>(URL_PARAMS.AUTH.REGISTER, {
+      .post$<LoginResponseInterface>(URL_PARAMS.AUTH.REGISTER, {
         login,
         discordAccessToken,
       })
       .pipe(
-        tap((loginResponseDto: LoginResponseDto) => this.setAuthInfo(loginResponseDto)),
+        tap((loginResponseDto: LoginResponseInterface) => this.setAuthInfo(loginResponseDto)),
         map(() => true),
       );
   }
@@ -81,7 +81,7 @@ export class UserService {
     } catch (e) {}
   }
 
-  private setAuthInfo({ user, token }: LoginResponseDto) {
+  private setAuthInfo({ user, token }: LoginResponseInterface) {
     this.currentUser$.next(user);
     this.authService.setToken(token);
     localStorage.setItem('user', JSON.stringify(user));

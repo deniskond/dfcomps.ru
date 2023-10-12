@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
-import { ProfileDemosDtoInterface } from '~pages/profile/dto/profile-demos.dto';
+import { ProfileDemosInterface } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-profile-last-demos',
@@ -9,5 +9,5 @@ import { ProfileDemosDtoInterface } from '~pages/profile/dto/profile-demos.dto';
 })
 export class ProfileLastDemosComponent {
   @Input()
-  demos: ProfileDemosDtoInterface[];
+  demos: ProfileDemosInterface[];
 }

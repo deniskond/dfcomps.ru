@@ -37,7 +37,7 @@ export class BackendService {
       Object.keys(postParams).forEach((key: string) => formData.append(key, postParams[key]));
     }
 
-    return this.httpClient.post(url, formData, { withCredentials: true });
+    return this.httpClient.post(url, formData, this.getCustomHeaders());
   }
 
   private prepareHttpParams(params?: Record<string, string>): HttpParams {
