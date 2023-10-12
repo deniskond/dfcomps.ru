@@ -1,5 +1,5 @@
 import { NickChangeResponseInterface, Physics, ProfileDemosInterface, ProfileInterface } from '@dfcomps/contracts';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../../shared/entities/user.entity';
@@ -7,6 +7,9 @@ import { Season } from '../../shared/entities/season.entity';
 import { RatingChange } from '../../shared/entities/rating-change.entity';
 import { CupDemo } from '../../shared/entities/cup-demo.entity';
 import { Reward } from '../../shared/entities/reward.entity';
+import { UserAccessInterface } from '../../shared/interfaces/user-access.interface';
+import { AuthService } from '../auth/auth.service';
+import * as moment from 'moment';
 
 @Injectable()
 export class ProfileService {
@@ -18,6 +21,7 @@ export class ProfileService {
     @InjectRepository(RatingChange) private readonly ratingChangeRepository: Repository<RatingChange>,
     @InjectRepository(CupDemo) private readonly cupsDemosRepository: Repository<CupDemo>,
     @InjectRepository(Reward) private readonly rewardRepository: Repository<Reward>,
+    private readonly authService: AuthService,
   ) {}
 
   public async getPlayerProfile(userId: number): Promise<ProfileInterface> {
@@ -98,7 +102,7 @@ export class ProfileService {
       cups: cups.map((ratingChange: RatingChange) => ({
         full_name: ratingChange.cup.full_name,
         short_name: ratingChange.cup.short_name,
-        news_id: ratingChange.cup.news[0].id,
+        news_id: ratingChange.cup.news[0]?.id || null,
         cpm_place: ratingChange.cpm_place,
         vq3_place: ratingChange.vq3_place,
         cpm_change: ratingChange.cpm_change,
@@ -111,7 +115,23 @@ export class ProfileService {
   }
 
   public async checkLastNickChangeTime(accessToken: string): Promise<NickChangeResponseInterface> {
-    return {} as any;
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+    const user: User | null = await this.userRepository
+      .createQueryBuilder('users')
+      .where({ id: userAccess.userId })
+      .getOne();
+
+    if (!user) {
+      throw new UnauthorizedException("Can't check unauthorized user");
+    }
+
+    const isChangeAllowed: boolean = user.last_nick_change_time
+      ? moment().isAfter(moment(user.last_nick_change_time).add(1, 'month'))
+      : true;
+
+    return {
+      change_allowed: isChangeAllowed,
+    };
   }
 
   public async updateProfile(

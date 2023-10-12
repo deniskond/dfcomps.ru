@@ -18,7 +18,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
-  @Get(':id')
+  @Get('get/:id')
   getPlayerProfile(@Param('id', new ParseIntPipe()) playerId: number): Promise<ProfileInterface> {
     return this.profileService.getPlayerProfile(playerId);
   }

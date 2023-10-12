@@ -61,7 +61,7 @@ export class URL_PARAMS {
   }
 
   public static PROFILE(playerId: string): string {
-    return `${API_URL}/profile/${playerId}`; // Not done
+    return `${API_URL}/profile/get/${playerId}`; // Not done
   }
 
   public static PROFILE_CHECK_NICK_CHANGE(): string {
