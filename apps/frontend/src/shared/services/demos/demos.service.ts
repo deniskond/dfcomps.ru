@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BackendService, URL_PARAMS } from '~shared/rest-api';
 import { Observable } from 'rxjs';
-import { UploadDemoDtoInterface } from './dto/upload-demo.dto';
-import { UploadedDemoInterface } from '@dfcomps/contracts';
-
+import { UploadDemoResponseInterface, UploadedDemoInterface } from '@dfcomps/contracts';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +13,7 @@ export class DemosService extends BackendService {
     mapName: string,
     playerId: number,
     fileName: string,
-  ): Observable<UploadDemoDtoInterface> {
+  ): Observable<UploadDemoResponseInterface> {
     return this.uploadFile$(URL_PARAMS.DEMOS.UPLOAD, [{ fileKey: 'file', file: demo }], {
       cupId,
       mapName,
@@ -31,7 +29,7 @@ export class DemosService extends BackendService {
     });
   }
 
-  public uploadDuelDemo$(demo: File): Observable<UploadDemoDtoInterface> {
+  public uploadDuelDemo$(demo: File): Observable<UploadDemoResponseInterface> {
     return this.uploadFile$(URL_PARAMS.DEMOS.DUEL_UPLOAD, [{ fileKey: 'file', file: demo }]);
   }
 }

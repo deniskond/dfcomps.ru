@@ -23,7 +23,7 @@ import { CupStates } from '~shared/enums/cup-states.enum';
 import { isNonNull } from '~shared/helpers';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { DemosService } from '~shared/services/demos/demos.service';
-import { UploadDemoDtoInterface } from '~shared/services/demos/dto/upload-demo.dto';
+import { UploadDemoResponseInterface } from '~shared/services/demos/dto/upload-demo.dto';
 import { DemoUploadResult } from '~shared/services/demos/enums/demo-upload-result.enum';
 import { LanguageService } from '~shared/services/language/language.service';
 import { UserService } from '~shared/services/user-service/user.service';
@@ -101,7 +101,7 @@ export class NewsOfflineStartComponent implements OnInit {
           return of();
         }),
       )
-      .subscribe(({ status, errors, warnings, message }: UploadDemoDtoInterface) => {
+      .subscribe(({ status, errors, warnings, message }: UploadDemoResponseInterface) => {
         if (status === DemoUploadResult.SUCCESS) {
           this.openSnackBar('success', 'demoSent');
           this.reloadNews.emit();

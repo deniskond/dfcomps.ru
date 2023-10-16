@@ -42,3 +42,5 @@ export { Rewards } from './lib/profile/rewards.enum';
 export { ProfileRewardsInterface } from './lib/profile/profile-rewards.interface';
 export { ProfileCupResponseInterface } from './lib/profile/profile-cup-response.interface';
 export { NickChangeResponseInterface } from './lib/profile/nick-change-response.interface';
+export { DemoUploadResult } from './lib/demos/demo-upload-result.enum';
+export { UploadDemoResponseInterface } from './lib/demos/upload-demo.interface';

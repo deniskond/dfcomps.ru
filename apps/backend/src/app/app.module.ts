@@ -25,6 +25,7 @@ import { Season } from '../shared/entities/season.entity';
 import { Smile } from '../shared/entities/smile.entity';
 import { ProfileModule } from '../features/profile/profile.module';
 import { Reward } from '../shared/entities/reward.entity';
+import { DemosModule } from '../features/demos/demos.module';
 
 @Module({
   imports: [
@@ -65,6 +66,7 @@ import { Reward } from '../shared/entities/reward.entity';
     CommentsModule,
     RatingModule,
     ProfileModule,
+    DemosModule,
   ],
 })
 export class AppModule {}

@@ -21,7 +21,7 @@ import { DuelPlayersInfoInterface } from '../../interfaces/duel-players-info.int
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { LanguageService } from '~shared/services/language/language.service';
 import { DemosService } from '~shared/services/demos/demos.service';
-import { UploadDemoDtoInterface } from '~shared/services/demos/dto/upload-demo.dto';
+import { UploadDemoResponseInterface } from '~shared/services/demos/dto/upload-demo.dto';
 
 @Component({
   selector: 'app-match-progress',
@@ -113,7 +113,7 @@ export class MatchProgressComponent implements OnChanges {
         }),
       )
       .subscribe(
-        ({ status, errors, message }: UploadDemoDtoInterface) => {
+        ({ status, errors, message }: UploadDemoResponseInterface) => {
           if (status === 'Success') {
             this.openSnackBar('success', 'demoSent');
             this.bestDemoTime = +message!;
