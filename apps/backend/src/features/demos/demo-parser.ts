@@ -1,4 +1,3 @@
-import { unpack } from './unpack';
 import * as fs from 'fs';
 
 const Q3_MESSAGE_MAX_SIZE = 0x4000;
@@ -7,8 +6,8 @@ const Q3_BIG_INFO_STRING = 8192;
 const Q3_PERCENT_CHAR_BYTE = 37;
 const Q3_DOT_CHAR_BYTE = 46;
 
-export class Myparser {
-  public parsedemo(demoName: string) {
+export class DemoParser {
+  public parseDemo(demoName: string) {
     return Q3DemoParser.getFriendlyConfig(demoName);
   }
 }
@@ -142,10 +141,6 @@ class Q3HuffmanReader {
     return this.readStringBase(Q3_BIG_INFO_STRING, false);
   }
 
-  readStringLine(): string {
-    return this.readStringBase(Q3_MAX_STRING_CHARS, true);
-  }
-
   readServerCommand(): { sequence: number; command: string } {
     return {
       sequence: this.readLong(),
@@ -156,13 +151,13 @@ class Q3HuffmanReader {
 
 class BitStreamReader {
   private data: number[];
-  private bit_length: number;
+  private bitLength: number;
   private currentBits: number;
   private bitIdx: number;
 
   constructor(data: Buffer) {
-    this.bit_length = data.length * 8;
-    this.data = unpack(data);
+    this.bitLength = data.length * 8;
+    this.data = Q3Utils.unpack(data);
     this.reset();
   }
 
@@ -172,11 +167,11 @@ class BitStreamReader {
   }
 
   isEOD(): boolean {
-    return this.bitIdx >= this.bit_length;
+    return this.bitIdx >= this.bitLength;
   }
 
   readBits(bits: number): number {
-    if (bits < 0 || bits > 32 || this.bitIdx + bits > this.bit_length) {
+    if (bits < 0 || bits > 32 || this.bitIdx + bits > this.bitLength) {
       return -1;
     }
 
@@ -184,7 +179,6 @@ class BitStreamReader {
     let setBit = 1;
     let intIdx = this.bitIdx;
     let intBits = this.currentBits;
-
     let currAmount = 32 - (intIdx & 31);
     let tread = bits > currAmount ? currAmount : bits;
 
@@ -221,7 +215,7 @@ class BitStreamReader {
   }
 
   nextBit(): number {
-    if (this.bitIdx >= this.bit_length) {
+    if (this.bitIdx >= this.bitLength) {
       return -1;
     }
 
@@ -239,7 +233,7 @@ class BitStreamReader {
   }
 
   skipBits(skip: number): number {
-    if (skip < 0 || skip > 32 || this.bitIdx + skip > this.bit_length) {
+    if (skip < 0 || skip > 32 || this.bitIdx + skip > this.bitLength) {
       return -1;
     }
 
@@ -262,6 +256,17 @@ class Q3HuffmanMapper {
   private root: Q3HuffmanNode | null = null;
 
   constructor() {
+    /*
+     * this is packed map of q3-huffman tree
+     * array contains bits sequences in reverse order, prefixed by bit. each value is the bit-coded path in tree,
+     * while index of this array is the decoded value
+     *
+     * for example, the first one (having index 0) is '0x6' in hex and '110' in binary,
+     * read them right-to-left : 0 (left node), 1 (right-node) => 0 (decoded value)
+     *
+     * second example: value  0x00A5 at index 16, 0xA5 = 10100101b, read bits in right-to-left order:
+     * 1 (right), 0 (left), 1 (right), 0 (left), 0 (left), 1 (right), 0 (left) => 16 (decoded value)
+     */
     const symtab: number[] = [
       0x0006, 0x003b, 0x00c8, 0x00ec, 0x01a1, 0x0111, 0x0090, 0x007f, 0x0035, 0x00b4, 0x00e9, 0x008b, 0x0093, 0x006d,
       0x0139, 0x02ac, 0x00a5, 0x0258, 0x03f0, 0x03f8, 0x05dd, 0x07f3, 0x062b, 0x0723, 0x02f4, 0x058d, 0x04ab, 0x0763,
@@ -287,7 +292,7 @@ class Q3HuffmanMapper {
     this.root = new Q3HuffmanNode();
 
     for (const [sym, path] of symtab.entries()) {
-      this._put_sym(sym, path);
+      this.putSym(sym, path);
     }
   }
 
@@ -305,7 +310,7 @@ class Q3HuffmanMapper {
     return node === null ? Q3_HUFFMAN_NYT_SYM : node.symbol;
   }
 
-  private _put_sym(sym: number, path: number): void {
+  private putSym(sym: number, path: number): void {
     let node = this.root;
 
     while (path > 1) {
@@ -341,10 +346,10 @@ class Q3HuffmanNode {
 }
 
 export class Q3DemoParser {
-  private file_name: string;
+  private fileName: string;
 
-  constructor(file_name: string) {
-    this.file_name = file_name;
+  constructor(fileName: string) {
+    this.fileName = fileName;
   }
 
   public parseConfig(): any {
@@ -355,8 +360,8 @@ export class Q3DemoParser {
     return msgParser.hasConfigs() ? msgParser.getRawConfigs() : null;
   }
 
-  private doParse(msgParser: Q3DemoConfigParser | Q3EmptyParser): Q3DemoConfigParser | Q3EmptyParser {
-    const messageStream = new Q3MessageStream(this.file_name);
+  private doParse(msgParser: Q3DemoConfigParser): Q3DemoConfigParser {
+    const messageStream = new Q3MessageStream(this.fileName);
 
     try {
       let msg: Q3DemoMessage | null = null;
@@ -388,17 +393,17 @@ export class Q3DemoParser {
     const result: any = {};
 
     if (conf[Q3Const.Q3_DEMO_CFG_FIELD_CLIENT]) {
-      result.client = Q3Utils.split_config(conf[Q3Const.Q3_DEMO_CFG_FIELD_CLIENT]);
+      result.client = Q3Utils.splitConfig(conf[Q3Const.Q3_DEMO_CFG_FIELD_CLIENT]);
       result.client_version = result.client.version;
       result.physic = result.client.df_promode === 0 ? 'vq3' : 'cpm';
     }
 
     if (conf[Q3Const.Q3_DEMO_CFG_FIELD_GAME]) {
-      result.game = Q3Utils.split_config(conf[Q3Const.Q3_DEMO_CFG_FIELD_GAME]);
+      result.game = Q3Utils.splitConfig(conf[Q3Const.Q3_DEMO_CFG_FIELD_GAME]);
     }
 
     if (conf[Q3Const.Q3_DEMO_CFG_FIELD_PLAYER]) {
-      result.player = Q3Utils.split_config(conf[Q3Const.Q3_DEMO_CFG_FIELD_PLAYER]);
+      result.player = Q3Utils.splitConfig(conf[Q3Const.Q3_DEMO_CFG_FIELD_PLAYER]);
     }
 
     result.raw = conf;
@@ -419,7 +424,7 @@ class Q3DemoMessage {
 }
 
 class Q3MessageStream {
-  private fileHandle: any = null;
+  private fileHandle: number | null = null;
   private readBytes: number = 0;
   private readMessages: number = 0;
 
@@ -434,9 +439,10 @@ class Q3MessageStream {
     }
   }
 
-  private openFile(file_name: string): any {
-    const handle = fs.openSync(file_name, 'r');
-    if (handle === null) throw new Error(`Can't open demofile ${file_name}...`);
+  private openFile(fileName: string): number {
+    const handle = fs.openSync(fileName, 'r');
+
+    if (handle === null) throw new Error(`Can't open demofile ${fileName}...`);
 
     return handle;
   }
@@ -446,7 +452,9 @@ class Q3MessageStream {
    * @throws Error in case stream is corrupted
    */
   public nextMessage(): Q3DemoMessage | null {
-    if (!this.fileHandle) return null;
+    if (!this.fileHandle) {
+      return null;
+    }
 
     const header_buffer = this.readFromFile(8);
 
@@ -471,7 +479,9 @@ class Q3MessageStream {
     const msg = new Q3DemoMessage(sequence, msgLength);
     msg.data = this.readFromFile(msgLength);
 
-    if (!msg.data) throw new Error('Unable to read demo-message, corrupted file?');
+    if (!msg.data) {
+      throw new Error('Unable to read demo-message, corrupted file?');
+    }
 
     this.readBytes += msgLength;
     this.readMessages++;
@@ -480,12 +490,16 @@ class Q3MessageStream {
   }
 
   private readFromFile(bytes: number): Buffer {
-    if (!this.fileHandle) return Buffer.alloc(0);
+    if (!this.fileHandle) {
+      return Buffer.alloc(0);
+    }
 
     const buffer = Buffer.alloc(bytes);
     const bytesRead = fs.readSync(this.fileHandle, buffer, 0, bytes, null);
 
-    if (bytesRead !== bytes) return Buffer.alloc(0);
+    if (bytesRead !== bytes) {
+      return Buffer.alloc(0);
+    }
 
     return buffer;
   }
@@ -518,22 +532,7 @@ class Q3MessageStream {
 }
 
 class Q3Utils {
-  public static ANGLE2SHORT(x: number): number {
-    return Math.floor((x * 65536.0) / 360.0) & 65535;
-  }
-
-  public static SHORT2ANGLE(x: number): number {
-    return x * (360.0 / 65536.0);
-  }
-
-  public static rawBitsToFloat(bits: number): number {
-    const sign = bits & 0x80000000 ? -1 : 1;
-    const e = (bits >> 23) & 0xff;
-    const m = e ? (bits & 0x7fffff) | 0x800000 : (bits & 0x7fffff) << 1;
-    return sign * m * Math.pow(2, e - 150);
-  }
-
-  public static split_config(src: string): Record<string, string> {
+  public static splitConfig(src: string): Record<string, string> {
     const begin_ind = src[0] === '\\' ? 1 : 0;
     const srcParts = src.split('\\');
     const result: Record<string, string> = {};
@@ -544,22 +543,30 @@ class Q3Utils {
 
     return result;
   }
-}
 
-interface AbstractDemoMessageParser {
-  parse(message: Q3DemoMessage): boolean;
-}
+  public static unpack(data: Buffer): number[] {
+    const result: number[] = [];
+    const dataView = new DataView(data.buffer);
 
-class Q3EmptyParser implements AbstractDemoMessageParser {
-  public count: number = 0;
+    for (let i = 0; i < Math.floor(data.length / 4); i++) {
+      result.push(Q3Utils.emulatePHPOverflow(dataView.getUint32(i * 4, true)));
+    }
 
-  parse(_message: Q3DemoMessage): boolean {
-    this.count++;
-    return true;
+    return result;
+  }
+
+  public static emulatePHPOverflow(value: number): number {
+    const maxInt32 = 2147483647;
+
+    if (value > maxInt32) {
+      value = -(maxInt32 - (value % maxInt32)) - 2;
+    }
+
+    return value;
   }
 }
 
-class Q3DemoConfigParser implements AbstractDemoMessageParser {
+class Q3DemoConfigParser {
   private configs?: { [key: number]: string };
 
   hasConfigs(): boolean {

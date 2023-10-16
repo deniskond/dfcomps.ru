@@ -2,8 +2,7 @@ import { Controller, UploadedFile, Headers, UseInterceptors, Post, ParseFilePipe
 import { DemosService } from './demos.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadDemoResponseInterface } from '@dfcomps/contracts';
-import * as fs from 'fs';
-import { Myparser } from './demo-parser';
+import { DemoParser } from './demo-parser';
 
 @Controller('demos')
 export class DemosController {
@@ -21,11 +20,7 @@ export class DemosController {
 
   @Post('test')
   test(): any {
-    // const demoBuffer: Buffer = fs.readFileSync(
-    //   process.env.DFCOMPS_FILE_UPLOAD_PATH + '\\demos\\by_gvn5-[df.cpm]00.00.168(Nosf.Russia).dm_68',
-    // );
-
-    return new Myparser().parsedemo(
+    return new DemoParser().parseDemo(
       process.env.DFCOMPS_FILE_UPLOAD_PATH + '\\demos\\by_gvn5-[df.cpm]00.00.168(Nosf.Russia).dm_68',
     );
   }
