@@ -1,4 +1,5 @@
 import { unpack } from './unpack';
+import * as fs from 'fs';
 
 const Q3_MESSAGE_MAX_SIZE = 0x4000;
 const Q3_MAX_STRING_CHARS = 1024;
@@ -48,8 +49,6 @@ class Q3HuffmanReader {
   }
 
   readNumBits(bits: number): number {
-    console.log(`readNumBits input: ${bits}`);
-
     let value = 0;
     const neg = bits < 0;
 
@@ -68,7 +67,6 @@ class Q3HuffmanReader {
       let decoded = 0;
       for (let i = 0; i < bits; i += 8) {
         const sym = Q3HuffmanMapperInstance.decodeSymbol(this.stream)!;
-        console.log(`readNumBits sym: ${sym}`);
 
         if (sym === Q3_HUFFMAN_NYT_SYM) {
           return -1;
@@ -90,7 +88,6 @@ class Q3HuffmanReader {
       }
     }
 
-    console.log(`readNumBits output: ${value}`);
     return value;
   }
 
@@ -99,19 +96,7 @@ class Q3HuffmanReader {
   }
 
   readByte(): number {
-    console.log(`stream: ${JSON.stringify(this.stream)}`);
-
-    const value = Q3HuffmanMapperInstance.decodeSymbol(this.stream)!;
-
-    console.log(`readByte value: ${value}`);
-
-    return value;
-
-    // const value = this.readNumBits(2);
-
-    // console.log(`readByte value: ${value}`);
-
-    // return value;
+    return Q3HuffmanMapperInstance.decodeSymbol(this.stream)!;
   }
 
   readShort(): number {
@@ -124,14 +109,6 @@ class Q3HuffmanReader {
 
   readLong(): number {
     return this.readNumBits(32);
-  }
-
-  readFloat(): number {
-    return Q3Utils.rawBitsToFloat(this.readNumBits(32));
-  }
-
-  readAngle16(): number {
-    return Q3Utils.SHORT2ANGLE(this.readNumBits(16));
   }
 
   readStringBase(limit: number, stopAtNewLine: boolean): string {
@@ -184,33 +161,21 @@ class BitStreamReader {
   private bitIdx: number;
 
   constructor(data: Buffer) {
-    console.log(`bit_length: ${data.length * 8}`);
-
     this.bit_length = data.length * 8;
-    // this.data = Array.from(data.values());
-    // console.log(data);
-
     this.data = unpack(data);
-    // console.log(unpack(data));
-
     this.reset();
   }
 
   reset(): void {
     this.bitIdx = 0;
-    console.log(`setting currentBits: ${this.data[0]}`);
     this.currentBits = this.data[0];
   }
 
   isEOD(): boolean {
-    console.log(`isEOD: ${this.bitIdx >= this.bit_length}`);
-
     return this.bitIdx >= this.bit_length;
   }
 
   readBits(bits: number): number {
-    console.log(`readBits: ${bits}`);
-
     if (bits < 0 || bits > 32 || this.bitIdx + bits > this.bit_length) {
       return -1;
     }
@@ -251,49 +216,24 @@ class BitStreamReader {
 
     this.currentBits = intBits;
     this.bitIdx = intIdx;
-    console.log(`setting currentBits: ${this.currentBits}`);
-    console.log(`setting bitIdx: ${this.bitIdx}`);
-
-    console.log(`readBits return ${value}`);
 
     return value;
   }
 
   nextBit(): number {
-    const fullLogging = this.bitIdx === 63;
-    // console.log(`nextBit currentBits: ${this.currentBits}`);
-
     if (this.bitIdx >= this.bit_length) {
       return -1;
     }
 
     const rez = this.currentBits & 1;
 
-    if (fullLogging) {
-      console.log(`0: ${rez}`);
-    }
-
     ++this.bitIdx;
 
-    console.log(`setting bitIdx: ${this.bitIdx}`);
-
     if (this.bitIdx & 31) {
-      
-
       this.currentBits >>= 1;
-
-      if (fullLogging) {
-        console.log(`1: ${this.currentBits}`);
-      }
     } else {
       this.currentBits = this.data[Math.floor(this.bitIdx / 32)];
-
-      if (fullLogging) {
-        console.log(`2: ${this.currentBits}`);
-      }
     }
-
-    console.log(`setting currentBits: ${this.currentBits}`);
 
     return rez;
   }
@@ -349,8 +289,6 @@ class Q3HuffmanMapper {
     for (const [sym, path] of symtab.entries()) {
       this._put_sym(sym, path);
     }
-
-    console.log(this.root);
   }
 
   public decodeSymbol(reader: BitStreamReader): number | null {
@@ -359,24 +297,12 @@ class Q3HuffmanMapper {
     while (node !== null && node.symbol === Q3_HUFFMAN_NYT_SYM) {
       const bit = reader.nextBit();
 
-      console.log(`decodeSymbol bit: ${bit}`);
-
       if (bit < 0) return null;
 
       node = bit == 0 ? node.left : node.right;
-
-      // if (node?.symbol === Q3_HUFFMAN_NYT_SYM) {
-      //   console.log(`decodeSymbol node: ${JSON.stringify(node)}`);
-      // }
-      // console.log(`decodeSymbol node: ${JSON.stringify(node)}`);
-      console.log(`decodeSymbol node.symbol: ${node?.symbol}`);
     }
 
-    const value = node === null ? Q3_HUFFMAN_NYT_SYM : node.symbol;
-
-    console.log(`decodeSymbol output: ${value}`);
-
-    return value;
+    return node === null ? Q3_HUFFMAN_NYT_SYM : node.symbol;
   }
 
   private _put_sym(sym: number, path: number): void {
@@ -414,7 +340,7 @@ class Q3HuffmanNode {
   }
 }
 
-class Q3DemoParser {
+export class Q3DemoParser {
   private file_name: string;
 
   constructor(file_name: string) {
@@ -423,9 +349,8 @@ class Q3DemoParser {
 
   public parseConfig(): any {
     const msgParser = new Q3DemoConfigParser();
-    this.doParse(msgParser);
 
-    // console.log(msgParser);
+    this.doParse(msgParser);
 
     return msgParser.hasConfigs() ? msgParser.getRawConfigs() : null;
   }
@@ -436,8 +361,6 @@ class Q3DemoParser {
     try {
       let msg: Q3DemoMessage | null = null;
       while ((msg = messageStream.nextMessage()) !== null) {
-        // console.log(`msg: ${JSON.stringify(msg)}`);
-
         if (!msgParser.parse(msg)) {
           break;
         }
@@ -457,8 +380,6 @@ class Q3DemoParser {
 
   public static getFriendlyConfig(file_name: string): any | null {
     const conf = Q3DemoParser.getRawConfigStrings(file_name);
-
-    // return conf as any;
 
     if (!conf) {
       return null;
@@ -502,11 +423,6 @@ class Q3MessageStream {
   private readBytes: number = 0;
   private readMessages: number = 0;
 
-  /**
-   * Q3DemoParser constructor.
-   * @param file_name - name of demo-file
-   * @throws Error in case file is failed to open
-   */
   constructor(file_name: string) {
     this.readBytes = 0;
     this.readMessages = 0;
@@ -519,7 +435,6 @@ class Q3MessageStream {
   }
 
   private openFile(file_name: string): any {
-    const fs = require('fs');
     const handle = fs.openSync(file_name, 'r');
     if (handle === null) throw new Error(`Can't open demofile ${file_name}...`);
 
@@ -531,8 +446,6 @@ class Q3MessageStream {
    * @throws Error in case stream is corrupted
    */
   public nextMessage(): Q3DemoMessage | null {
-    // console.log(this.fileHandle);
-
     if (!this.fileHandle) return null;
 
     const header_buffer = this.readFromFile(8);
@@ -569,7 +482,6 @@ class Q3MessageStream {
   private readFromFile(bytes: number): Buffer {
     if (!this.fileHandle) return Buffer.alloc(0);
 
-    const fs = require('fs');
     const buffer = Buffer.alloc(bytes);
     const bytesRead = fs.readSync(this.fileHandle, buffer, 0, bytes, null);
 
@@ -587,7 +499,6 @@ class Q3MessageStream {
 
   public close(): void {
     if (this.fileHandle) {
-      const fs = require('fs');
       fs.closeSync(this.fileHandle);
       this.fileHandle = null;
     }
@@ -661,40 +572,30 @@ class Q3DemoConfigParser implements AbstractDemoMessageParser {
 
   parse(message: Q3DemoMessage): boolean {
     const reader = new Q3HuffmanReader(message.data);
-    // console.log(message.data);
-    console.log('Parse:');
-    console.log(reader.readLong());
+
+    reader.readLong();
 
     while (!reader.isEOD()) {
-      //   console.log('reading');
-      //   console.log(reader.readByte());
-
       switch (reader.readByte()) {
         case Q3_SVC.BAD:
         case Q3_SVC.NOP:
-          console.log('readByte BAD | NOP');
           return false;
 
         case Q3_SVC.EOF:
-          console.log('readByte EOF');
           return this.configs !== undefined;
 
         case Q3_SVC.SERVERCOMMAND:
-          console.log('readByte SERVERCOMMAND');
           reader.readServerCommand();
           break;
 
         case Q3_SVC.GAMESTATE:
-          console.log('readByte GAMESTATE');
           this.parseGameState(reader);
           return this.configs !== undefined;
 
         case Q3_SVC.SNAPSHOT:
-          console.log('readByte SNAPSHOT');
           return false;
 
         default:
-          console.log('readByte default');
           return false;
       }
     }
@@ -711,7 +612,6 @@ class Q3DemoConfigParser implements AbstractDemoMessageParser {
 
       switch (cmd) {
         case Q3_SVC.CONFIGSTRING:
-          console.log(`parseGameState: CONFIGSTRING`);
           const key = reader.readShort();
 
           if (key < 0 || key > Q3Const.MAX_CONFIGSTRINGS) {
@@ -723,16 +623,13 @@ class Q3DemoConfigParser implements AbstractDemoMessageParser {
           break;
 
         case Q3_SVC.BASELINE:
-          console.log(`parseGameState: BASELINE`);
           return;
 
         default:
-          console.log(`parseGameState: DEFAULT`);
           return;
       }
     }
 
-    console.log(`parseGameState: 5`);
     reader.readLong();
     reader.readLong();
   }
