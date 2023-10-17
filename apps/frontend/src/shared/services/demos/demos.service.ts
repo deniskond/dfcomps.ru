@@ -22,9 +22,9 @@ export class DemosService extends BackendService {
     });
   }
 
-  public deleteDemo$(demo: string, cupId: string): Observable<UploadedDemoInterface[]> {
+  public deleteDemo$(demoName: string, cupId: string): Observable<UploadedDemoInterface[]> {
     return this.post$(URL_PARAMS.DEMOS.DELETE, {
-      demo,
+      demoName,
       cupId,
     });
   }

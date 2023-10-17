@@ -4,10 +4,11 @@ import {
   MulticupSystems,
   Physics,
   UploadDemoResponseInterface,
+  UploadedDemoInterface,
   ValidationErrorInterface,
   VerifiedStatuses,
 } from '@dfcomps/contracts';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cup } from '../../shared/entities/cup.entity';
@@ -268,14 +269,57 @@ export class DemosService {
         status: DemoUploadResult.SUCCESS,
         message: demoTime.toString(),
       };
-    }
-
-    else {
+    } else {
       return {
         status: DemoUploadResult.INVALID,
         errors: demoCheckResult.errors,
       };
     }
+  }
+
+  public async deleteDemo(accessToken: string, cupId: number, demoName: string): Promise<UploadedDemoInterface[]> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!userAccess.userId) {
+      throw new UnauthorizedException("Can't delete demo while unauthorized");
+    }
+
+    const cup: Cup | null = await this.cupRepository.createQueryBuilder('cups').where({ id: cupId }).getOne();
+
+    if (!cup) {
+      throw new BadRequestException(`No cup with id = ${cupId}`);
+    }
+
+    if (moment().isAfter(moment(cup.end_datetime))) {
+      throw new BadRequestException('Cup already finished');
+    }
+
+    const demoPath: string = process.env.DFCOMPS_FILE_UPLOAD_PATH + `\\demos\\cup${cup.id}\\${demoName}`;
+
+    if (fs.existsSync(demoPath)) {
+      fs.rmSync(demoPath);
+    } else {
+      throw new BadRequestException(`No demo with name = ${demoName}`);
+    }
+
+    await this.cupsDemosRepository
+      .createQueryBuilder('cups_demos')
+      .delete()
+      .from(CupDemo)
+      .where({ demopath: demoName })
+      .execute();
+
+    const remainingDemos: CupDemo[] = await this.cupsDemosRepository
+      .createQueryBuilder('cups_demos')
+      .where('cups_demos.cupId = :cupId', { cupId: cup.id })
+      .andWhere('cups_demos.userId = :userId', { userId: userAccess.userId })
+      .getMany();
+
+    return remainingDemos.map(({ demopath, physics, time }: CupDemo) => ({
+      demopath,
+      physics,
+      time,
+    }));
   }
 
   private checkDemo(

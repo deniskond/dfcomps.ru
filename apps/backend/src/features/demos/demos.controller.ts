@@ -1,8 +1,9 @@
 import { Controller, UploadedFile, Headers, UseInterceptors, Post, ParseFilePipe, Body } from '@nestjs/common';
 import { DemosService } from './demos.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UploadDemoResponseInterface } from '@dfcomps/contracts';
+import { UploadDemoResponseInterface, UploadedDemoInterface } from '@dfcomps/contracts';
 import { DemoUploadDto } from './dto/demo-upload.dto';
+import { DemoDeleteDto } from './dto/demo-delete.dto';
 
 @Controller('demos')
 export class DemosController {
@@ -21,11 +22,19 @@ export class DemosController {
 
   @Post('match-upload')
   @UseInterceptors(FileInterceptor('file'))
-  updateProfileAvatar(
+  uploadMatchDemo(
     @Headers('X-Auth') accessToken: string,
     @UploadedFile(new ParseFilePipe())
     demo: Express.Multer.File,
   ): Promise<UploadDemoResponseInterface> {
     return this.demosService.matchUpload(accessToken, demo);
+  }
+
+  @Post('delete')
+  deleteDemo(
+    @Headers('X-Auth') accessToken: string,
+    @Body() { cupId, demoName }: DemoDeleteDto,
+  ): Promise<UploadedDemoInterface[]> {
+    return this.demosService.deleteDemo(accessToken, cupId, demoName);
   }
 }
