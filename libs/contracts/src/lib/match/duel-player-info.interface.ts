@@ -1,5 +1,5 @@
 export interface DuelPlayerInfoInterface {
   nick: string;
-  country: string;
-  rating: string;
+  country: string | null;
+  rating: number;
 }

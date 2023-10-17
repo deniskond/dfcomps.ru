@@ -1,6 +1,6 @@
-import { DuelPlayerInfoInterface, MapInterface, Physics } from '@dfcomps/contracts';
+import { DuelPlayerInfoInterface, Physics } from '@dfcomps/contracts';
 
-export interface DuelPlayersInfoInterface {
+export interface DuelPlayersInfoResponseInterface {
   matchId: number;
   firstPlayerId: number;
   secondPlayerId: number;
@@ -11,7 +11,7 @@ export interface DuelPlayersInfoInterface {
   startDatetime: string;
   isFinished: boolean;
   physics: Physics;
-  map: MapInterface | null;
+  map: string;
   firstPlayerInfo: DuelPlayerInfoInterface;
   secondPlayerInfo: DuelPlayerInfoInterface;
   firstPlayerRatingChange: number | null;

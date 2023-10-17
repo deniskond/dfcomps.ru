@@ -17,11 +17,11 @@ import { PickbanMapServerInterface } from '../../services/interfaces/pickban-map
 import { take, finalize } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
-import { DuelPlayersInfoInterface } from '../../interfaces/duel-players-info.interface';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { LanguageService } from '~shared/services/language/language.service';
 import { DemosService } from '~shared/services/demos/demos.service';
 import { UploadDemoResponseInterface } from '@dfcomps/contracts';
+import { DuelPlayersInfoInterface } from '~pages/1v1/interfaces/duel-players-info.interface';
 
 @Component({
   selector: 'app-match-progress',
@@ -46,10 +46,10 @@ export class MatchProgressComponent implements OnChanges {
   public bestDemoTime: number | undefined;
   public playerRating: number;
   public playerNick: string;
-  public playerCountry: string;
+  public playerCountry: string | null;
   public opponentRating: number;
   public opponentNick: string;
-  public opponentCountry: string;
+  public opponentCountry: string | null;
   public securityCode: string;
 
   constructor(

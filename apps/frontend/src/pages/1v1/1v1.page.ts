@@ -7,7 +7,6 @@ import { DuelWebsocketServerActions } from './services/enums/duel-websocket-serv
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatchStates } from './services/enums/match-states.enum';
 import { MatchInterface } from './services/interfaces/match.interface';
-import { DuelPlayersInfoInterface } from './interfaces/duel-players-info.interface';
 import { PickbanPhases } from './enums/pickban-phases.enum';
 import { MatchFinishedService } from './services/match-finsihed.service';
 import { JoinQueueService } from './services/join-queue.service';
@@ -16,6 +15,7 @@ import { UserService } from '~shared/services/user-service/user.service';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { LanguageService } from '~shared/services/language/language.service';
 import { Physics } from '@dfcomps/contracts';
+import { DuelPlayersInfoInterface } from './interfaces/duel-players-info.interface';
 
 @Component({
   templateUrl: './1v1.page.html',
@@ -102,8 +102,8 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
       return '';
     }
 
-    const firstPlayerTime = parseFloat(playersInfo.firstPlayerTime!) || 10000;
-    const secondPlayerTime = parseFloat(playersInfo.secondPlayerTime!) || 10000;
+    const firstPlayerTime = playersInfo.firstPlayerTime! || 10000;
+    const secondPlayerTime = playersInfo.secondPlayerTime! || 10000;
 
     if (firstPlayerTime === secondPlayerTime) {
       return 'draw';
@@ -118,8 +118,8 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
       return '';
     }
 
-    const firstPlayerTime = parseFloat(playersInfo.firstPlayerTime!) || 10000;
-    const secondPlayerTime = parseFloat(playersInfo.secondPlayerTime!) || 10000;
+    const firstPlayerTime = playersInfo.firstPlayerTime! || 10000;
+    const secondPlayerTime = playersInfo.secondPlayerTime! || 10000;
 
     if (firstPlayerTime === secondPlayerTime) {
       return '';

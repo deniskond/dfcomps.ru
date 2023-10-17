@@ -25,7 +25,7 @@ export class Match {
   second_player_demo: string | null;
 
   @Column({ type: 'timestamp with time zone' })
-  start_datetime: string | null;
+  start_datetime: string;
 
   @Column({ type: 'boolean' })
   is_finished: boolean;

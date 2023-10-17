@@ -47,3 +47,5 @@ export { UploadDemoResponseInterface } from './lib/demos/upload-demo.interface';
 export { ValidationErrorInterface } from './lib/demos/validation-error.interface';
 export { MapInterface } from './lib/match/map.interface';
 export { Difficulty } from './lib/match/difficulty.enum';
+export { DuelPlayerInfoInterface } from './lib/match/duel-player-info.interface';
+export { DuelPlayersInfoResponseInterface } from './lib/match/duel-players-info-response.interface';

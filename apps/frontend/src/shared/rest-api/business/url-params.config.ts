@@ -10,7 +10,7 @@ const envMap: Record<string, string> = {
 export const MAIN_URL = envMap[environment.name];
 export const API_URL = MAIN_URL;
 
-// New backend status: 29 / 52 endpoints done
+// New backend status: 30 / 52 endpoints done
 export class URL_PARAMS {
   public static get WEBSOCKET_1V1_URL(): string {
     const websocketEnvMap: Record<string, string> = {
@@ -116,13 +116,11 @@ export class URL_PARAMS {
     UPLOAD: string;
     DUEL_UPLOAD: string;
     DELETE: string;
-    VALIDATION_ARCHIVE_LINK: string;
   } {
     return {
       UPLOAD: `${API_URL}/demos/upload`, // New backend done
       DUEL_UPLOAD: `${API_URL}/demos/match-upload`, // New backend done
       DELETE: `${API_URL}/demos/delete`, // New backend done
-      VALIDATION_ARCHIVE_LINK: `${API_URL}/cup/get_demos_for_validation`, // Not done
     };
   }
 
@@ -130,7 +128,7 @@ export class URL_PARAMS {
     GET_PLAYERS_INFO: string;
   } {
     return {
-      GET_PLAYERS_INFO: `${API_URL}/match/get`, // Not done
+      GET_PLAYERS_INFO: `${API_URL}/match/info`, // New backend done
     };
   }
 
@@ -143,6 +141,7 @@ export class URL_PARAMS {
     REGISTER: (cupId: number) => string;
     CANCEL_REGISTRATION: (cupId: number) => string;
     CHECK_REGISTRATION: () => string;
+    VALIDATION_ARCHIVE_LINK: string;
   } {
     return {
       GET_NEXTCUP: `/legacy-api/cup/next-cup-info`, // New backend done
@@ -154,6 +153,7 @@ export class URL_PARAMS {
       REGISTER: (cupId: number) => `${API_URL}/cup/register/${cupId}`, // Not done
       CANCEL_REGISTRATION: (cupId: number) => `${API_URL}/cup/cancel_registration/${cupId}`, // Not done
       CHECK_REGISTRATION: () => `${API_URL}/cup/is-registered`, // Not done
+      VALIDATION_ARCHIVE_LINK: `${API_URL}/cup/validation-archive-link`, // Not done
     };
   }
 

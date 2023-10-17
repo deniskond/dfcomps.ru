@@ -8,10 +8,9 @@ import { DuelServerMessageType } from './types/duel-server-message.type';
 import { LeaveQueueMessageInterface } from './interfaces/leave-queue-message.interface';
 import { BanMapMessageInterface } from './interfaces/ban-map-message.interface';
 import { MatchResultAcceptedMessageInterface } from './interfaces/match-result-accepted-message.interface';
-import { DuelPlayersInfoInterface } from '../interfaces/duel-players-info.interface';
 import { URL_PARAMS, BackendService } from '~shared/rest-api';
-import { DuelPlayersInfoDtoInterface } from '../interfaces/duel-players-info.dto';
-import { Physics } from '@dfcomps/contracts';
+import { DuelPlayersInfoResponseInterface, Physics } from '@dfcomps/contracts';
+import { DuelPlayersInfoInterface } from '../interfaces/duel-players-info.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +27,7 @@ export class DuelService {
   }
 
   public getPlayersInfo$(): Observable<DuelPlayersInfoInterface> {
-    return this.backendService.post$<DuelPlayersInfoDtoInterface>(URL_PARAMS.DUEL.GET_PLAYERS_INFO).pipe(
+    return this.backendService.post$<DuelPlayersInfoResponseInterface>(URL_PARAMS.DUEL.GET_PLAYERS_INFO).pipe(
       map((duelPlayersInfoDto) => ({
         ...duelPlayersInfoDto,
         map: duelPlayersInfoDto.map ? JSON.parse(duelPlayersInfoDto.map) : null,
