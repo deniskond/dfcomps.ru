@@ -82,7 +82,7 @@ export class TablesService {
       .map((cupDemo: CupDemo) => ({
         demopath: cupDemo.demopath,
         nick: cupDemo.user.displayed_nick,
-        reason: cupDemo.reason,
+        reason: cupDemo.reason!,
         time: cupDemo.time,
       }));
 

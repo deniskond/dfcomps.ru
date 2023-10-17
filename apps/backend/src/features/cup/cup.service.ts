@@ -39,7 +39,7 @@ export class CupService {
 
     const isFutureCup: boolean = moment(nextCup.start_datetime).isAfter(moment());
 
-    return mapCupEntityToInterface(nextCup, isFutureCup, server, nextCup.news[0].id, nextCup.multicup.id);
+    return mapCupEntityToInterface(nextCup, isFutureCup, server, nextCup.news[0].id, nextCup.multicup?.id || null);
   }
 
   public async checkIfPlayerRegistered(

@@ -23,8 +23,8 @@ export class CupDemo {
   @Column({ type: 'character varying' })
   verified_status: VerifiedStatuses;
 
-  @Column({ type: 'character varying' })
-  reason: string;
+  @Column({ type: 'character varying', nullable: true })
+  reason: string | null;
 
   @Column({ type: 'boolean' })
   obs: boolean;

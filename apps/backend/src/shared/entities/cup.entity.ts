@@ -119,6 +119,6 @@ export class Cup {
   @OneToMany(() => CupDemo, (cupDemo) => cupDemo.cup)
   cupDemos: CupDemo[];
 
-  @ManyToOne(() => Multicup)
-  multicup: Multicup;
+  @ManyToOne(() => Multicup, { nullable: true })
+  multicup: Multicup | null;
 }

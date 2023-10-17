@@ -23,11 +23,9 @@ import { CupStates } from '~shared/enums/cup-states.enum';
 import { isNonNull } from '~shared/helpers';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { DemosService } from '~shared/services/demos/demos.service';
-import { UploadDemoResponseInterface } from '~shared/services/demos/dto/upload-demo.dto';
-import { DemoUploadResult } from '~shared/services/demos/enums/demo-upload-result.enum';
 import { LanguageService } from '~shared/services/language/language.service';
 import { UserService } from '~shared/services/user-service/user.service';
-import { NewsOfflineStartInterface } from '@dfcomps/contracts';
+import { DemoUploadResult, NewsOfflineStartInterface, UploadDemoResponseInterface } from '@dfcomps/contracts';
 
 const SNACKBAR_DURATION = 3000;
 

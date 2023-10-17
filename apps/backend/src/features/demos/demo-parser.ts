@@ -379,12 +379,12 @@ export class Q3DemoParser {
     return msgParser;
   }
 
-  public static getRawConfigStrings(file_name: string): any[] | null {
-    return new Q3DemoParser(file_name).parseConfig();
+  public static getRawConfigStrings(fileName: string): any[] | null {
+    return new Q3DemoParser(fileName).parseConfig();
   }
 
-  public static getFriendlyConfig(file_name: string): any | null {
-    const conf = Q3DemoParser.getRawConfigStrings(file_name);
+  public static getFriendlyConfig(fileName: string): any | null {
+    const conf = Q3DemoParser.getRawConfigStrings(fileName);
 
     if (!conf) {
       return null;
@@ -395,7 +395,7 @@ export class Q3DemoParser {
     if (conf[Q3Const.Q3_DEMO_CFG_FIELD_CLIENT]) {
       result.client = Q3Utils.splitConfig(conf[Q3Const.Q3_DEMO_CFG_FIELD_CLIENT]);
       result.client_version = result.client.version;
-      result.physic = result.client.df_promode === 0 ? 'vq3' : 'cpm';
+      result.physic = result.client.df_promode === '0' ? 'vq3' : 'cpm';
     }
 
     if (conf[Q3Const.Q3_DEMO_CFG_FIELD_GAME]) {
@@ -428,14 +428,14 @@ class Q3MessageStream {
   private readBytes: number = 0;
   private readMessages: number = 0;
 
-  constructor(file_name: string) {
+  constructor(fileName: string) {
     this.readBytes = 0;
     this.readMessages = 0;
 
     try {
-      this.fileHandle = this.openFile(file_name);
+      this.fileHandle = this.openFile(fileName);
     } catch (error) {
-      throw new Error(`Can't open demofile ${file_name}...`);
+      throw new Error(`Can't open demofile ${fileName}...`);
     }
   }
 

@@ -44,3 +44,4 @@ export { ProfileCupResponseInterface } from './lib/profile/profile-cup-response.
 export { NickChangeResponseInterface } from './lib/profile/nick-change-response.interface';
 export { DemoUploadResult } from './lib/demos/demo-upload-result.enum';
 export { UploadDemoResponseInterface } from './lib/demos/upload-demo.interface';
+export { ValidationErrorInterface } from './lib/demos/validation-error.interface';

@@ -119,7 +119,7 @@ export class URL_PARAMS {
     VALIDATION_ARCHIVE_LINK: string;
   } {
     return {
-      UPLOAD: `${API_URL}/cup/upload_demo`, // Not done
+      UPLOAD: `${API_URL}/demos/upload`, // Not done
       DUEL_UPLOAD: `${API_URL}/match/upload_demo`, // Not done
       DELETE: `${API_URL}/cup/delete_demo`, // Not done
       VALIDATION_ARCHIVE_LINK: `${API_URL}/cup/get_demos_for_validation`, // Not done
