@@ -1,5 +1,6 @@
 import {
   DemoUploadResult,
+  MapInterface,
   MulticupSystems,
   Physics,
   UploadDemoResponseInterface,
@@ -19,12 +20,14 @@ import { DemoParser } from './demo-parser';
 import { DemoAcceptMode } from './demo-upload-mode.enum';
 import { DemoCheckResultInterface } from './demo-check-result.interface';
 import { DemoConfigInterface } from './demo-config.interface';
+import { Match } from '../../shared/entities/match.entity';
 
 @Injectable()
 export class DemosService {
   constructor(
     @InjectRepository(Cup) private readonly cupRepository: Repository<Cup>,
     @InjectRepository(CupDemo) private readonly cupsDemosRepository: Repository<CupDemo>,
+    @InjectRepository(Match) private readonly matchRepository: Repository<Match>,
     private readonly authService: AuthService,
   ) {}
 
@@ -103,10 +106,11 @@ export class DemosService {
       };
     }
 
-    const demoTime = parseInt(patternMatch[3]) * 60 + parseInt(patternMatch[4]) + parseInt(patternMatch[5]) / 1000;
-    const randomSuffix = Math.floor(Math.random() * (99999 - 10001) + 10001);
-    const resultFilename = fileName.replace(/#/g, '').replace('.dm_68', '') + `_${randomSuffix}.dm_68`;
-    const demoFullName = demoDirectory + '\\' + resultFilename;
+    const demoTime: number =
+      parseInt(patternMatch[3]) * 60 + parseInt(patternMatch[4]) + parseInt(patternMatch[5]) / 1000;
+    const randomSuffix: string = Math.floor(Math.random() * (99999 - 10001) + 10001).toString();
+    const resultFilename: string = fileName.replace(/#/g, '').replace('.dm_68', '') + `_${randomSuffix}.dm_68`;
+    const demoFullName: string = demoDirectory + '\\' + resultFilename;
 
     fs.writeFileSync(demoFullName, demo.buffer);
 
@@ -146,8 +150,7 @@ export class DemosService {
         errors: demoCheckResult.errors,
         warnings: demoCheckResult.warnings,
       };
-    }
-    else {
+    } else {
       fs.rmSync(demoFullName);
 
       return {
@@ -158,11 +161,128 @@ export class DemosService {
     }
   }
 
+  public async matchUpload(accessToken: string, demo: Express.Multer.File): Promise<UploadDemoResponseInterface> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!userAccess.userId) {
+      return {
+        status: DemoUploadResult.ERROR,
+        message: 'Not authorized',
+      };
+    }
+
+    const match: Match | null = await this.matchRepository
+      .createQueryBuilder('matches')
+      .where({ is_finished: true })
+      .andWhere('first_player_id = :userId OR second_player_id = :userId', { userId: userAccess.userId })
+      .getOne();
+
+    if (!match) {
+      return {
+        status: DemoUploadResult.ERROR,
+        message: 'Match not found',
+      };
+    }
+
+    const demoDirectory = process.env.DFCOMPS_FILE_UPLOAD_PATH + `\\demos\\matches\\match${match.id}`;
+
+    if (!fs.existsSync(demoDirectory)) {
+      fs.mkdirSync(demoDirectory);
+    }
+
+    const matchMap: MapInterface = JSON.parse(match.map);
+    const mapName = matchMap.name;
+    const fileName = demo.originalname;
+    const pattern = new RegExp(`${mapName}\\[(.*)df\\.(.*)\\](\\d+)\\.(\\d+)\\.(\\d+)\\((.*)\\)\\.dm_68`);
+    const patternMatch: RegExpMatchArray | null = fileName.match(pattern);
+
+    if (!patternMatch) {
+      return {
+        status: DemoUploadResult.ERROR,
+        message: 'Wrong demo name',
+      };
+    }
+
+    const physics: Physics | string = patternMatch[2];
+
+    if (physics !== match.physics) {
+      return {
+        status: DemoUploadResult.ERROR,
+        message: 'Wrong physics',
+      };
+    }
+
+    const demoTime: number =
+      parseInt(patternMatch[3]) * 60 + parseInt(patternMatch[4]) + parseInt(patternMatch[5]) / 1000;
+
+    const previousPlayerTime: number | null =
+      userAccess.userId === match.first_player_id ? match.first_player_time : match.second_player_time;
+
+    if (previousPlayerTime && demoTime > previousPlayerTime) {
+      return {
+        status: DemoUploadResult.SUCCESS,
+        message: previousPlayerTime.toString(),
+      };
+    }
+
+    const randomSuffix: string = Math.floor(Math.random() * (99999 - 10001) + 10001).toString();
+    const resultFilename: string = fileName.replace(/#/g, '').replace('.dm_68', '') + `_${randomSuffix}.dm_68`;
+    const demoFullName: string = demoDirectory + '\\' + resultFilename;
+
+    fs.writeFileSync(demoFullName, demo.buffer);
+
+    const demoCheckResult: DemoCheckResultInterface = this.checkDemo(
+      demoFullName,
+      mapName,
+      physics,
+      match.security_code,
+      DemoAcceptMode.OFFLINE_AND_ONLINE,
+    );
+
+    if (demoCheckResult.valid) {
+      if (userAccess.userId === match.first_player_id) {
+        await this.matchRepository
+          .createQueryBuilder()
+          .update(Match)
+          .set({
+            first_player_time: demoTime,
+            first_player_demo: resultFilename,
+          })
+          .where({ first_player_id: userAccess.userId })
+          .andWhere({ is_finished: false })
+          .execute();
+      } else {
+        await this.matchRepository
+          .createQueryBuilder()
+          .update(Match)
+          .set({
+            second_player_time: demoTime,
+            second_player_demo: resultFilename,
+          })
+          .where({ second_player_id: userAccess.userId })
+          .andWhere({ is_finished: false })
+          .execute();
+      }
+
+      return {
+        status: DemoUploadResult.SUCCESS,
+        message: demoTime.toString(),
+      };
+    }
+
+    else {
+      return {
+        status: DemoUploadResult.INVALID,
+        errors: demoCheckResult.errors,
+      };
+    }
+  }
+
   private checkDemo(
     demoPath: string,
     mapName: string,
     physics: Physics,
-    securityCode = null,
+    securityCode: string | null = null,
     demoAcceptMode = DemoAcceptMode.OFFLINE_AND_ONLINE,
   ): DemoCheckResultInterface {
     const demoConfig: DemoConfigInterface = new DemoParser().parseDemo(demoPath);

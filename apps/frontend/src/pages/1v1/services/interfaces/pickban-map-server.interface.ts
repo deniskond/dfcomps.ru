@@ -1,4 +1,4 @@
-import { MapInterface } from './map.interface';
+import { MapInterface } from '@dfcomps/contracts';
 
 export interface PickbanMapServerInterface {
   map: MapInterface;

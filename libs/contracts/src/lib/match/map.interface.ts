@@ -1,4 +1,4 @@
-import { Difficulty } from '../enums/difficulty.enum';
+import { Difficulty } from './difficulty.enum';
 
 export interface MapInterface {
   name: string;

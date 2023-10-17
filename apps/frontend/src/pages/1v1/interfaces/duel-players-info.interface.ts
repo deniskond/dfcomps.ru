@@ -1,5 +1,4 @@
-import { Physics } from '@dfcomps/contracts';
-import { MapInterface } from '../services/interfaces/map.interface';
+import { MapInterface, Physics } from '@dfcomps/contracts';
 import { DuelPlayerInfoInterface } from './duel-player-info.interface';
 
 export interface DuelPlayersInfoInterface {

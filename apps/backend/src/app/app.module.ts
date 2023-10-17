@@ -26,6 +26,7 @@ import { Smile } from '../shared/entities/smile.entity';
 import { ProfileModule } from '../features/profile/profile.module';
 import { Reward } from '../shared/entities/reward.entity';
 import { DemosModule } from '../features/demos/demos.module';
+import { Match } from '../shared/entities/match.entity';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { DemosModule } from '../features/demos/demos.module';
         OldRating,
         Season,
         Reward,
+        Match,
       ],
       database: 'dfcomps',
       synchronize: true,

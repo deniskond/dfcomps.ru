@@ -45,3 +45,5 @@ export { NickChangeResponseInterface } from './lib/profile/nick-change-response.
 export { DemoUploadResult } from './lib/demos/demo-upload-result.enum';
 export { UploadDemoResponseInterface } from './lib/demos/upload-demo.interface';
 export { ValidationErrorInterface } from './lib/demos/validation-error.interface';
+export { MapInterface } from './lib/match/map.interface';
+export { Difficulty } from './lib/match/difficulty.enum';
