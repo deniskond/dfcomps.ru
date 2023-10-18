@@ -73,4 +73,13 @@ export class TablesController {
   ): Promise<MulticupTableInterface> {
     return this.tablesService.getMulticupTableForMulticupPage(multicupId, physics);
   }
+
+  @Get('multicup-round/:multicupId/:physics/:roundNumber')
+  getMulticupTableSingleRound(
+    @Param('multicupId', new ParseIntPipe()) multicupId: number,
+    @Param('physics', new ParseEnumPipe(Physics)) physics: Physics,
+    @Param('roundNumber', new ParseIntPipe()) roundNumber: number,
+  ): Promise<MulticupRoundInterface> {
+    return this.tablesService.getMulticupTableSingleRound(multicupId, physics, roundNumber);
+  }
 }

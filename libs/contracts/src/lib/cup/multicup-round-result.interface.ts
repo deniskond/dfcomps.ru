@@ -3,5 +3,5 @@ export interface MulticupRoundResultInterface {
   time: number;
   nick: string;
   country: string | null;
-  points?: string;
+  points?: number;
 }

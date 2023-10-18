@@ -167,6 +167,60 @@ export class TablesService {
     return multicupResults;
   }
 
+  public async getMulticupTableSingleRound(
+    multicupId: number,
+    physics: Physics,
+    roundNumber: number,
+  ): Promise<MulticupRoundInterface> {
+    const multicup: Multicup | null = await this.multicupsRepository
+      .createQueryBuilder('multicups')
+      .where({ id: multicupId })
+      .getOne();
+
+    if (!multicup) {
+      throw new NotFoundException(`Multicup with id = ${multicupId} not found`);
+    }
+
+    if (roundNumber < 1 || roundNumber > multicup.rounds) {
+      throw new BadRequestException(`Round number should be from 1 to ${multicup.rounds}`);
+    }
+
+    const cups: Cup[] = await this.cupsRepository
+      .createQueryBuilder('cups')
+      .where('cups.multicupId = :multicupId', { multicupId })
+      .andWhere('cups.rating_calculated = true')
+      .orderBy('cups.id', 'ASC')
+      .getMany();
+
+    const targetCup: Cup | undefined = cups[roundNumber - 1];
+
+    if (!targetCup) {
+      throw new BadRequestException(`Round ${roundNumber} of multicup with id ${multicupId} haven't been played yet`);
+    }
+
+    const singleCupTables: ResultsTableInterface[] = [await this.getOfflineCupTable(targetCup, physics)];
+
+    const tableWithPoints: MultiCupTableWithPoints =
+      multicup.system === MulticupSystems.SDC
+        ? this.getSdcMulticupTable(singleCupTables)[0]
+        : this.getEEMulticupTable(singleCupTables, multicup.system)[0];
+
+    return {
+      fullName: multicup.name,
+      map: targetCup.map1!,
+      levelshot: getMapLevelshot(targetCup.map1!),
+      resultsTable: tableWithPoints.valid.map((result: ValidDemoInterface & { eePoints: number }) => ({
+        playerId: result.playerId,
+        time: result.time,
+        nick: result.nick,
+        country: result.country,
+        points: result.eePoints,
+      })),
+      physics,
+      hasPoints: true,
+    };
+  }
+
   public async getPhysicsRatingByPage(physics: Physics, page: number): Promise<LeaderTableInterface[]> {
     const limitStart = this.PLAYERS_ON_RATING_PAGE * (page - 1);
     const users: User[] = await this.userRepository

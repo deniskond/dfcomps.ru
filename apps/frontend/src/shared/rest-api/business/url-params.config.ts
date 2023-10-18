@@ -143,7 +143,7 @@ export class URL_PARAMS {
       ONLINE_ROUND: (cupId: string, roundNumber: string) => `${API_URL}/tables/online-round/${cupId}/${roundNumber}`, // New backend done
       MULTICUP_FULL_TABLE: (cupId: string, physics: Physics) => `${API_URL}/tables/multicup/${cupId}/${physics}`, // New backend done
       MULTICUP_ROUND: (cupId: string, physics: Physics, round: string) =>
-        `${API_URL}/tables/multicup-round/${cupId}/${physics}/${round}`, // Not done
+        `${API_URL}/tables/multicup-round/${cupId}/${physics}/${round}`, // New backend done
     };
   }
 
