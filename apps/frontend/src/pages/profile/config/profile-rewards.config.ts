@@ -94,6 +94,10 @@ export class PROFILE_REWARDS {
       [Rewards.TOP3_CPM_SIXTH_SEASON]: 'top_3_cpm',
       [Rewards.TOP10_VQ3_SIXTH_SEASON]: 'top10',
       [Rewards.TOP10_CPM_SIXTH_SEASON]: 'top10',
+      [Rewards.HANGTIME3_WINNER_CPM]: 'ht3-top1',
+      [Rewards.HANGTIME3_TOP2_CPM]: 'ht3-top2',
+      [Rewards.HANGTIME3_WINNER_VQ3]: 'ht3-top1',
+      [Rewards.HANGTIME3_TOP2_VQ3]: 'ht3-top2',
     };
   }
 }

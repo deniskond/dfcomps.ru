@@ -90,4 +90,8 @@ export enum Rewards {
   TOP3_CPM_SIXTH_SEASON = 'Top 3 CPM (season 6)',
   TOP10_VQ3_SIXTH_SEASON = 'Top 10 VQ3 (season 6)',
   TOP10_CPM_SIXTH_SEASON = 'Top 10 CPM (season 6)',
+  HANGTIME3_WINNER_CPM = 'Hangtime3 Cup - Winner (CPM)',
+  HANGTIME3_TOP2_CPM = 'Hangtime3 Cup - Top 2 (CPM)',
+  HANGTIME3_WINNER_VQ3 = 'Hangtime3 Cup - Winner (VQ3)',
+  HANGTIME3_TOP2_VQ3 = 'Hangtime3 Cup - Top 2 (VQ3)',
 }
