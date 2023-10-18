@@ -132,24 +132,30 @@ export class URL_PARAMS {
     };
   }
 
-  public static get CUP(): {
-    GET_NEXTCUP: string;
+  public static get TABLES(): {
     ONLINE_FULL_TABLE: (cupId: string) => string;
     ONLINE_ROUND: (cupId: string, roundNumber: string) => string;
     MULTICUP_FULL_TABLE: (cupId: string, physics: Physics) => string;
     MULTICUP_ROUND: (cupId: string, physics: Physics, roundNumber: string) => string;
+  } {
+    return {
+      ONLINE_FULL_TABLE: (cupId: string) => `${API_URL}/tables/online/${cupId}`, // Not done
+      ONLINE_ROUND: (cupId: string, roundNumber: string) => `${API_URL}/tables/online-round/${cupId}/${roundNumber}`, // Not done
+      MULTICUP_FULL_TABLE: (cupId: string, physics: Physics) => `${API_URL}/tables/multicup/${cupId}/${physics}`, // Not done
+      MULTICUP_ROUND: (cupId: string, physics: Physics, round: string) =>
+        `${API_URL}/tables/multicup-round/${cupId}/${physics}/${round}`, // Not done
+    };
+  }
+
+  public static get CUP(): {
+    GET_NEXTCUP: string;
     REGISTER: (cupId: number) => string;
     CANCEL_REGISTRATION: (cupId: number) => string;
     CHECK_REGISTRATION: () => string;
     VALIDATION_ARCHIVE_LINK: string;
   } {
     return {
-      GET_NEXTCUP: `/legacy-api/cup/next-cup-info`, // New backend done
-      ONLINE_FULL_TABLE: (cupId: string) => `${API_URL}/cup/online/${cupId}`, // Not done
-      ONLINE_ROUND: (cupId: string, roundNumber: string) => `${API_URL}/cup/online/${cupId}/round/${roundNumber}`, // Not done
-      MULTICUP_FULL_TABLE: (cupId: string, physics: Physics) => `${API_URL}/cup/multi/${cupId}/${physics}`, // Not done
-      MULTICUP_ROUND: (cupId: string, physics: Physics, roundNumber: string) =>
-        `${API_URL}/cup/multi/${cupId}/${physics}/round/${roundNumber}`, // Not done
+      GET_NEXTCUP: `${API_URL}/cup/next-cup-info`, // New backend done
       REGISTER: (cupId: number) => `${API_URL}/cup/register/${cupId}`, // Not done
       CANCEL_REGISTRATION: (cupId: number) => `${API_URL}/cup/cancel_registration/${cupId}`, // Not done
       CHECK_REGISTRATION: () => `${API_URL}/cup/is-registered`, // Not done

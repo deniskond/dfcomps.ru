@@ -9,8 +9,9 @@ import {
   ResultsTableInterface,
   ValidDemoInterface,
   VerifiedStatuses,
+  MulticupTableInterface,
 } from '@dfcomps/contracts';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../../shared/entities/user.entity';
@@ -19,6 +20,7 @@ import { RatingChange } from '../../shared/entities/rating-change.entity';
 import { CupDemo } from '../../shared/entities/cup-demo.entity';
 import { OldRating } from '../../shared/entities/old-rating.entity';
 import { Cup } from '../../shared/entities/cup.entity';
+import { CupResult } from '../../shared/entities/cup-result.entity';
 
 type MultiCupTableWithPoints = {
   valid: (ValidDemoInterface & { eePoints: number })[];
@@ -33,6 +35,8 @@ export class TablesService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @InjectRepository(OneVOneRating) private readonly oneVOneRatingRepository: Repository<OneVOneRating>,
     @InjectRepository(RatingChange) private readonly ratingChangeRepository: Repository<RatingChange>,
+    @InjectRepository(Cup) private readonly cupsRepository: Repository<Cup>,
+    @InjectRepository(CupResult) private readonly cupsResultsRepository: Repository<CupResult>,
     @InjectRepository(CupDemo) private readonly cupsDemosRepository: Repository<CupDemo>,
     @InjectRepository(OldRating) private readonly oldRatingsRepository: Repository<OldRating>,
   ) {}
@@ -144,38 +148,11 @@ export class TablesService {
 
     const tablesWithPoints: MultiCupTableWithPoints[] =
       system === MulticupSystems.SDC
-        ? await this.getSdcMulticupTable(singleCupTables)
-        : await this.getEEMulticupTable(singleCupTables, system);
+        ? this.getSdcMulticupTable(singleCupTables)
+        : this.getEEMulticupTable(singleCupTables, system);
 
     // results without subtraction of min round and rating changes
-    let multicupResults: MulticupResultInterface[] = [];
-
-    tablesWithPoints.forEach((table: MultiCupTableWithPoints, roundIndex: number) => {
-      table.valid.forEach((result: ValidDemoInterface & { eePoints: number }) => {
-        const playerRecordIndex: number = multicupResults.findIndex(
-          (playerRecord: MulticupResultInterface) => playerRecord.playerId === result.playerId,
-        );
-
-        if (playerRecordIndex !== -1) {
-          multicupResults[playerRecordIndex].roundResults[roundIndex] = result.eePoints;
-          multicupResults[playerRecordIndex].overall += result.eePoints;
-        } else {
-          const roundResults: number[] = [];
-
-          roundResults[roundIndex] = result.eePoints;
-
-          multicupResults.push({
-            playerId: result.playerId,
-            playerNick: result.nick,
-            playerCountry: result.country,
-            roundResults,
-            overall: result.eePoints,
-            minround: null, // is mapped after
-            ratingChange: null, // is mapped after
-          });
-        }
-      });
-    });
+    let multicupResults: MulticupResultInterface[] = this.getFullMulticupResultTable(tablesWithPoints);
 
     if ((system === MulticupSystems.EE_ALMERA || system === MulticupSystems.EE_KOZ) && singleCupTables.length > 3) {
       multicupResults = this.subtractMinRound(multicupResults);
@@ -183,7 +160,7 @@ export class TablesService {
 
     multicupResults = await this.mapRatingChanges(multicupResults, multicupId, physics);
 
-    return multicupResults.sort((a: MulticupResultInterface, b: MulticupResultInterface) => b.overall - a.overall);
+    return multicupResults;
   }
 
   public async getPhysicsRatingByPage(physics: Physics, page: number): Promise<LeaderTableInterface[]> {
@@ -268,6 +245,157 @@ export class TablesService {
     };
   }
 
+  public async getOnlineCupFullTable(cupId: number): Promise<MulticupTableInterface> {
+    const cup: Cup | null = await this.cupsRepository.createQueryBuilder('cups').where({ id: cupId }).getOne();
+
+    if (!cup) {
+      throw new NotFoundException(`Cup with id = ${cupId} not found`);
+    }
+
+    const cupResults: CupResult[] = await this.cupsResultsRepository
+      .createQueryBuilder('cups_results')
+      .leftJoinAndSelect('cups_results.user', 'users')
+      .where('cups_results.cupId = :cupId', { cupId })
+      .getMany();
+
+    if (cup.system === MulticupSystems.LEGACY) {
+      const playersResults: MulticupResultInterface[] = cupResults
+        .map((cupResult: CupResult) => {
+          const roundResults: number[] = [
+            cupResult.round1,
+            cupResult.round2,
+            cupResult.round3,
+            cupResult.round4,
+            cupResult.round5,
+          ];
+
+          const overall = roundResults.reduce<number>(
+            (sum, roundResult) => (roundResult === 0 ? sum : sum + cupResults.length - roundResult + 1),
+            0,
+          );
+
+          return {
+            playerId: cupResult.user.id,
+            playerNick: cupResult.user.displayed_nick,
+            playerCountry: cupResult.user.country,
+            roundResults,
+            overall,
+            minround: null,
+            ratingChange: null,
+          };
+        })
+        .sort((playerResult1, playerResult2) => playerResult2.overall - playerResult1.overall);
+
+      return {
+        fullName: cup.full_name,
+        rounds: 5,
+        currentRound: 6, // legacy value, used as indicator that cup is finished
+        physics: cup.physics as Physics,
+        system: MulticupSystems.LEGACY,
+        players: playersResults,
+        shortName: cup.short_name,
+      };
+    }
+
+    // Last EE_KOZ online cup was CPM Rocketruns (was not changed to EE_DFWC previously because of legacy code)
+    const system = cup.id <= 380 ? MulticupSystems.EE_KOZ : MulticupSystems.EE_DFWC;
+
+    const playersResults: MulticupResultInterface[] = await this.getOnlineCupResults(cup, cupResults, system);
+
+    return {
+      fullName: cup.full_name,
+      rounds: 5,
+      currentRound: cup.current_round,
+      physics: cup.physics as Physics,
+      system,
+      players: playersResults,
+      shortName: cup.short_name,
+    };
+  }
+
+  public async getOnlineCupResults(
+    cup: Cup,
+    cupResults: CupResult[],
+    system: MulticupSystems,
+  ): Promise<MulticupResultInterface[]> {
+    const cupMaps: string[] = [cup.map1, cup.map2, cup.map3, cup.map4, cup.map5];
+    const roundsPlayed: number = cupMaps.filter((map) => !!map).length;
+
+    if (roundsPlayed === 0) {
+      return cupResults.map((cupResult: CupResult) => ({
+        playerId: cupResult.user.id,
+        playerNick: cupResult.user.displayed_nick,
+        playerCountry: cupResult.user.country,
+        roundResults: [],
+        overall: 0,
+        minround: null,
+        ratingChange: null,
+      }));
+    }
+
+    // Hack to emulate several offline cups from one online cup and use getEEMulticupTable method
+    const onlineCupAdaptedTables: ResultsTableInterface[] = new Array(roundsPlayed).fill(null).map((_, index) => {
+      return {
+        valid: cupResults
+          .map((cupResult: CupResult) => ({
+            bonus: null,
+            change: null,
+            country: cupResult.user.country,
+            demopath: '',
+            impressive: false,
+            nick: cupResult.user.displayed_nick,
+            playerId: cupResult.user.id,
+            rating: 0,
+            time: cupResult[`time${index + 1}` as keyof CupResult] as number,
+          }))
+          .filter((result: ValidDemoInterface) => !!result.time)
+          .sort((result1, result2) => result1.time - result2.time),
+        invalid: [],
+      };
+    });
+
+    const onlineCupAdaptedTablesWithPoints: MultiCupTableWithPoints[] = this.getEEMulticupTable(
+      onlineCupAdaptedTables,
+      system,
+    );
+
+    return this.getFullMulticupResultTable(onlineCupAdaptedTablesWithPoints);
+  }
+
+  private getFullMulticupResultTable(tablesWithPoints: MultiCupTableWithPoints[]): MulticupResultInterface[] {
+    let multicupResults: MulticupResultInterface[] = [];
+
+    tablesWithPoints.forEach((table: MultiCupTableWithPoints, roundIndex: number) => {
+      table.valid.forEach((result: ValidDemoInterface & { eePoints: number }) => {
+        const playerRecordIndex: number = multicupResults.findIndex(
+          (playerRecord: MulticupResultInterface) => playerRecord.playerId === result.playerId,
+        );
+
+        if (playerRecordIndex !== -1) {
+          multicupResults[playerRecordIndex].roundResults[roundIndex] = result.eePoints;
+          multicupResults[playerRecordIndex].overall += result.eePoints;
+        } else {
+          const roundResults: number[] = [];
+
+          roundResults[roundIndex] = result.eePoints;
+
+          multicupResults.push({
+            playerId: result.playerId,
+            playerNick: result.nick,
+            playerCountry: result.country,
+            roundResults,
+            overall: result.eePoints,
+            minround: null, // is mapped after if needed
+            ratingChange: null, // is mapped after if needed
+          });
+        }
+      });
+    });
+
+    return multicupResults.sort((a: MulticupResultInterface, b: MulticupResultInterface) => b.overall - a.overall);
+  }
+
+  /** Legacy, only used by old systems (EE_KOZ, EE_ALMERA) */
   private subtractMinRound(multicupResults: MulticupResultInterface[]): MulticupResultInterface[] {
     return multicupResults.map((multicupResult: MulticupResultInterface) => {
       let minRoundResult: number = Infinity;
@@ -314,7 +442,7 @@ export class TablesService {
     });
   }
 
-  private async getSdcMulticupTable(singleCupTables: ResultsTableInterface[]): Promise<MultiCupTableWithPoints[]> {
+  private getSdcMulticupTable(singleCupTables: ResultsTableInterface[]): MultiCupTableWithPoints[] {
     return singleCupTables.map((table: ResultsTableInterface) => {
       const topTime: number = table.valid[0].time;
 
@@ -333,10 +461,10 @@ export class TablesService {
     });
   }
 
-  private async getEEMulticupTable(
+  private getEEMulticupTable(
     singleCupTables: ResultsTableInterface[],
     system: MulticupSystems,
-  ): Promise<MultiCupTableWithPoints[]> {
+  ): MultiCupTableWithPoints[] {
     return singleCupTables.map((table: ResultsTableInterface) => {
       const topTime: number = table.valid[0].time;
       let currentPlace = 1;

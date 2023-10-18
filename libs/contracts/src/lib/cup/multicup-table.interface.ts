@@ -2,7 +2,7 @@ import { MulticupResultInterface, MulticupSystems, Physics } from '@dfcomps/cont
 
 export interface MulticupTableInterface {
   fullName: string;
-  rounds: string;
+  rounds: number;
   currentRound: number;
   physics: Physics;
   system: MulticupSystems;
