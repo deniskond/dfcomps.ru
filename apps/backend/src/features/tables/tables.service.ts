@@ -10,8 +10,9 @@ import {
   ValidDemoInterface,
   VerifiedStatuses,
   MulticupTableInterface,
+  MulticupRoundInterface,
 } from '@dfcomps/contracts';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../../shared/entities/user.entity';
@@ -21,6 +22,7 @@ import { CupDemo } from '../../shared/entities/cup-demo.entity';
 import { OldRating } from '../../shared/entities/old-rating.entity';
 import { Cup } from '../../shared/entities/cup.entity';
 import { CupResult } from '../../shared/entities/cup-result.entity';
+import { getMapLevelshot } from '../../shared/helpers/get-map-levelshot';
 
 type MultiCupTableWithPoints = {
   valid: (ValidDemoInterface & { eePoints: number })[];
@@ -318,7 +320,7 @@ export class TablesService {
     cupResults: CupResult[],
     system: MulticupSystems,
   ): Promise<MulticupResultInterface[]> {
-    const cupMaps: string[] = [cup.map1, cup.map2, cup.map3, cup.map4, cup.map5];
+    const cupMaps: (string | null)[] = [cup.map1, cup.map2, cup.map3, cup.map4, cup.map5];
     const roundsPlayed: number = cupMaps.filter((map) => !!map).length;
 
     if (roundsPlayed === 0) {
@@ -360,6 +362,46 @@ export class TablesService {
     );
 
     return this.getFullMulticupResultTable(onlineCupAdaptedTablesWithPoints);
+  }
+
+  public async getOnlineCupRound(cupId: number, roundNumber: number): Promise<MulticupRoundInterface> {
+    if (roundNumber < 1 || roundNumber > 5) {
+      throw new BadRequestException('Round number should be from 1 to 5');
+    }
+
+    const cupResults: CupResult[] = await this.cupsResultsRepository
+      .createQueryBuilder('cups_results')
+      .leftJoinAndSelect('cups_results.user', 'users')
+      .where('cups_results.cupId = :cupId', { cupId })
+      .andWhere(`cups_results.time${roundNumber} != 0`)
+      .orderBy(`cups_results.time${roundNumber}`)
+      .getMany();
+
+    if (!cupResults.length) {
+      throw new NotFoundException(`Cup results for cup with id ${cupId} not found`);
+    }
+
+    const cup: Cup = (await this.cupsRepository.createQueryBuilder('cups').where({ id: cupId }).getOne())!;
+    const map: string | null = cup[`map${roundNumber}` as keyof Cup] as string | null;
+
+    if (!map) {
+      throw new BadRequestException("Round haven't been played yet");
+    }
+
+    return {
+      fullName: cup.full_name,
+      map,
+      levelshot: getMapLevelshot(map),
+      resultsTable: cupResults.map((cupResult: CupResult) => ({
+        playerId: cupResult.user.id,
+        time: cupResult[`time${roundNumber}` as keyof CupResult] as number,
+        nick: cupResult.user.displayed_nick,
+        country: cupResult.user.country,
+      })),
+      physics: cup.physics as Physics,
+      hasPoints: false,
+      shortName: cup.short_name,
+    };
   }
 
   private getFullMulticupResultTable(tablesWithPoints: MultiCupTableWithPoints[]): MulticupResultInterface[] {

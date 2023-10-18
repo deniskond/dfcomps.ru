@@ -1,6 +1,12 @@
 import { BadRequestException, Body, Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { TablesService } from './tables.service';
-import { LeaderTableInterface, Physics, PaginationCountInterface, MulticupTableInterface } from '@dfcomps/contracts';
+import {
+  LeaderTableInterface,
+  Physics,
+  PaginationCountInterface,
+  MulticupTableInterface,
+  MulticupRoundInterface,
+} from '@dfcomps/contracts';
 import { GetTop10Dto } from './dto/get-top10.dto';
 
 @Controller('tables')
@@ -50,5 +56,13 @@ export class TablesController {
   @Get('online/:id')
   getOnlineCupFullTable(@Param('id', new ParseIntPipe()) cupId: number): Promise<MulticupTableInterface> {
     return this.tablesService.getOnlineCupFullTable(cupId);
+  }
+
+  @Get('online-round/:cupId/:roundNumber')
+  getOnlineCupRound(
+    @Param('cupId', new ParseIntPipe()) cupId: number,
+    @Param('roundNumber', new ParseIntPipe()) roundNumber: number,
+  ): Promise<MulticupRoundInterface> {
+    return this.tablesService.getOnlineCupRound(cupId, roundNumber);
   }
 }

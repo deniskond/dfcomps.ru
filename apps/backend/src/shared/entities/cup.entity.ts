@@ -38,20 +38,20 @@ export class Cup {
   @Column({ type: 'character varying' })
   server2: string;
 
-  @Column({ type: 'character varying' })
-  map1: string;
+  @Column({ type: 'character varying', nullable: true })
+  map1: string | null;
 
-  @Column({ type: 'character varying' })
-  map2: string;
+  @Column({ type: 'character varying', nullable: true })
+  map2: string | null;
 
-  @Column({ type: 'character varying' })
-  map3: string;
+  @Column({ type: 'character varying', nullable: true })
+  map3: string | null;
 
-  @Column({ type: 'character varying' })
-  map4: string;
+  @Column({ type: 'character varying', nullable: true })
+  map4: string | null;
 
-  @Column({ type: 'character varying' })
-  map5: string;
+  @Column({ type: 'character varying', nullable: true })
+  map5: string | null;
 
   @Column({ type: 'character varying' })
   physics: string;

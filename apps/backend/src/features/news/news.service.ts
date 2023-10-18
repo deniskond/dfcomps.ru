@@ -169,7 +169,7 @@ export class NewsService {
       .where({ id: news.cup.id })
       .getOne())!;
 
-    const levelshot = getMapLevelshot(news.cup.map1);
+    const levelshot = getMapLevelshot(news.cup.map1!);
     const isFutureCup: boolean = moment(cup.start_datetime).isAfter(moment());
     let cpmDemo: string | null = null;
     let cpmRes: number | null = null;
@@ -212,7 +212,7 @@ export class NewsService {
 
   private async mapOfflineResultsNews(news: News): Promise<NewsOfflineResultsInterface> {
     const baseNews: Omit<NewsInterface, 'type'> = await this.mapBaseNews(news);
-    const levelshot: string = getMapLevelshot(news.cup.map1);
+    const levelshot: string = getMapLevelshot(news.cup.map1!);
     const cup: Cup = (await this.cupsRepository
       .createQueryBuilder('cups')
       .leftJoinAndSelect('cups.multicup', 'multicups')

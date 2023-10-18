@@ -10,10 +10,10 @@ export interface CupInterface {
   fullName: string;
   id: number;
   map1: string | null;
-  map2: string;
-  map3: string;
-  map4: string;
-  map5: string;
+  map2: string | null;
+  map3: string | null;
+  map4: string | null;
+  map5: string | null;
   mapAuthor: string | null;
   mapPk3: string | null;
   mapSize: string | null;

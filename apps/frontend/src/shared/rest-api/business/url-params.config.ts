@@ -10,7 +10,7 @@ const envMap: Record<string, string> = {
 export const MAIN_URL = envMap[environment.name];
 export const API_URL = MAIN_URL;
 
-// New backend status: 30 / 52 endpoints done
+// New backend status: 32 / 52 endpoints done
 export class URL_PARAMS {
   public static get WEBSOCKET_1V1_URL(): string {
     const websocketEnvMap: Record<string, string> = {
@@ -139,8 +139,8 @@ export class URL_PARAMS {
     MULTICUP_ROUND: (cupId: string, physics: Physics, roundNumber: string) => string;
   } {
     return {
-      ONLINE_FULL_TABLE: (cupId: string) => `${API_URL}/tables/online/${cupId}`, // Not done
-      ONLINE_ROUND: (cupId: string, roundNumber: string) => `${API_URL}/tables/online-round/${cupId}/${roundNumber}`, // Not done
+      ONLINE_FULL_TABLE: (cupId: string) => `${API_URL}/tables/online/${cupId}`, // New backend done
+      ONLINE_ROUND: (cupId: string, roundNumber: string) => `${API_URL}/tables/online-round/${cupId}/${roundNumber}`, // New backend done
       MULTICUP_FULL_TABLE: (cupId: string, physics: Physics) => `${API_URL}/tables/multicup/${cupId}/${physics}`, // Not done
       MULTICUP_ROUND: (cupId: string, physics: Physics, round: string) =>
         `${API_URL}/tables/multicup-round/${cupId}/${physics}/${round}`, // Not done

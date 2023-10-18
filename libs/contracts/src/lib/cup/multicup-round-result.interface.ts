@@ -1,7 +1,7 @@
 export interface MulticupRoundResultInterface {
-  playerId: string;
-  time: string;
+  playerId: number;
+  time: number;
   nick: string;
-  country: string;
+  country: string | null;
   points?: string;
 }
