@@ -23,6 +23,7 @@ import { OldRating } from '../../shared/entities/old-rating.entity';
 import { Cup } from '../../shared/entities/cup.entity';
 import { CupResult } from '../../shared/entities/cup-result.entity';
 import { getMapLevelshot } from '../../shared/helpers/get-map-levelshot';
+import { Multicup } from '../../shared/entities/multicup.entity';
 
 type MultiCupTableWithPoints = {
   valid: (ValidDemoInterface & { eePoints: number })[];
@@ -37,6 +38,7 @@ export class TablesService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @InjectRepository(OneVOneRating) private readonly oneVOneRatingRepository: Repository<OneVOneRating>,
     @InjectRepository(RatingChange) private readonly ratingChangeRepository: Repository<RatingChange>,
+    @InjectRepository(Multicup) private readonly multicupsRepository: Repository<Multicup>,
     @InjectRepository(Cup) private readonly cupsRepository: Repository<Cup>,
     @InjectRepository(CupResult) private readonly cupsResultsRepository: Repository<CupResult>,
     @InjectRepository(CupDemo) private readonly cupsDemosRepository: Repository<CupDemo>,
@@ -404,6 +406,40 @@ export class TablesService {
     };
   }
 
+  public async getMulticupTableForMulticupPage(multicupId: number, physics: Physics): Promise<MulticupTableInterface> {
+    const multicup: Multicup | null = await this.multicupsRepository
+      .createQueryBuilder('multicups')
+      .where({ id: multicupId })
+      .getOne();
+
+    if (!multicup) {
+      throw new NotFoundException(`Multicup with id = ${multicupId} not found`);
+    }
+
+    const cups: Cup[] = await this.cupsRepository
+      .createQueryBuilder('cups')
+      .where('cups.multicupId = :multicupId', { multicupId })
+      .andWhere('cups.rating_calculated = true')
+      .orderBy('cups.id', 'ASC')
+      .getMany();
+
+    const multicupResults: MulticupResultInterface[] = await this.getMulticupTable(
+      multicupId,
+      cups,
+      physics,
+      multicup.system,
+    );
+
+    return {
+      fullName: multicup.name,
+      rounds: multicup.rounds,
+      currentRound: cups.length + 1,
+      physics,
+      system: multicup.system,
+      players: multicupResults,
+    };
+  }
+
   private getFullMulticupResultTable(tablesWithPoints: MultiCupTableWithPoints[]): MulticupResultInterface[] {
     let multicupResults: MulticupResultInterface[] = [];
 
@@ -439,23 +475,29 @@ export class TablesService {
 
   /** Legacy, only used by old systems (EE_KOZ, EE_ALMERA) */
   private subtractMinRound(multicupResults: MulticupResultInterface[]): MulticupResultInterface[] {
-    return multicupResults.map((multicupResult: MulticupResultInterface) => {
-      let minRoundResult: number = Infinity;
-      let minRoundIndex: number | null = null;
+    return multicupResults
+      .map((multicupResult: MulticupResultInterface) => {
+        let minRoundResult: number = Infinity;
+        let minRoundIndex: number | null = null;
 
-      multicupResult.roundResults.forEach((result: number | null, index: number) => {
-        if (result !== null && result < minRoundResult) {
-          minRoundResult = result;
-          minRoundIndex = index;
+        if (multicupResult.roundResults.filter((result: number | null) => !!result).length <= 1) {
+          return multicupResult;
         }
-      });
 
-      return {
-        ...multicupResult,
-        overall: multicupResult.overall - minRoundResult,
-        minround: minRoundIndex === null ? null : minRoundIndex + 1,
-      };
-    });
+        multicupResult.roundResults.forEach((result: number | null, index: number) => {
+          if (result !== null && result < minRoundResult) {
+            minRoundResult = result;
+            minRoundIndex = index;
+          }
+        });
+
+        return {
+          ...multicupResult,
+          overall: multicupResult.overall - minRoundResult,
+          minround: minRoundIndex === null ? null : minRoundIndex + 1,
+        };
+      })
+      .sort((multicupResult1, multicupResult2) => multicupResult2.overall - multicupResult1.overall);
   }
 
   private async mapRatingChanges(

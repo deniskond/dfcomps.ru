@@ -9,9 +9,12 @@ import { CupDemo } from '../../shared/entities/cup-demo.entity';
 import { OldRating } from '../../shared/entities/old-rating.entity';
 import { Cup } from '../../shared/entities/cup.entity';
 import { CupResult } from '../../shared/entities/cup-result.entity';
+import { Multicup } from '../../shared/entities/multicup.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, OneVOneRating, RatingChange, Cup, CupDemo, OldRating, CupResult])],
+  imports: [
+    TypeOrmModule.forFeature([User, OneVOneRating, RatingChange, Cup, CupDemo, OldRating, CupResult, Multicup]),
+  ],
   controllers: [TablesController],
   providers: [TablesService],
 })

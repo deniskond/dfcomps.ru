@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, ParseEnumPipe, ParseIntPipe, Query } from '@nestjs/common';
 import { TablesService } from './tables.service';
 import {
   LeaderTableInterface,
@@ -20,7 +20,7 @@ export class TablesController {
 
   @Get('rating/:physics/:page')
   getPhysicsRatingByPage(
-    @Param('physics') physics: Physics,
+    @Param('physics', new ParseEnumPipe(Physics)) physics: Physics,
     @Param('page', new ParseIntPipe()) page: number,
   ): Promise<LeaderTableInterface[]> {
     if (physics !== Physics.CPM && physics !== Physics.VQ3) {
@@ -37,7 +37,7 @@ export class TablesController {
 
   @Get('season_rating/:physics/:page/:season')
   getSeasonPhysicsRatingByPage(
-    @Param('physics') physics: Physics,
+    @Param('physics', new ParseEnumPipe(Physics)) physics: Physics,
     @Param('page', new ParseIntPipe()) page: number,
     @Param('season', new ParseIntPipe()) season: number,
   ): Promise<LeaderTableInterface[]> {
@@ -64,5 +64,13 @@ export class TablesController {
     @Param('roundNumber', new ParseIntPipe()) roundNumber: number,
   ): Promise<MulticupRoundInterface> {
     return this.tablesService.getOnlineCupRound(cupId, roundNumber);
+  }
+
+  @Get('multicup/:multicupId/:physics')
+  getMulticupFullTable(
+    @Param('multicupId', new ParseIntPipe()) multicupId: number,
+    @Param('physics', new ParseEnumPipe(Physics)) physics: Physics,
+  ): Promise<MulticupTableInterface> {
+    return this.tablesService.getMulticupTableForMulticupPage(multicupId, physics);
   }
 }
