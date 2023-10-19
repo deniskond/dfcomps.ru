@@ -50,3 +50,4 @@ export { Difficulty } from './lib/match/difficulty.enum';
 export { DuelPlayerInfoInterface } from './lib/match/duel-player-info.interface';
 export { DuelPlayersInfoResponseInterface } from './lib/match/duel-players-info-response.interface';
 export { MulticupTableInterface } from './lib/cup/multicup-table.interface';
+export { ValidationArchiveLinkInterface } from './lib/cup/validation-archive-link.interface';

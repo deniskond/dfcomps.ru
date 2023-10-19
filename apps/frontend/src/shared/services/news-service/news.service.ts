@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BackendService, URL_PARAMS } from '~shared/rest-api';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap, finalize } from 'rxjs/operators';
-import { NewsInterfaceUnion } from '@dfcomps/contracts';
+import { NewsInterfaceUnion, ValidationArchiveLinkInterface } from '@dfcomps/contracts';
 
 @Injectable()
 export class NewsService extends BackendService {
@@ -62,9 +62,7 @@ export class NewsService extends BackendService {
     return this.get$(URL_PARAMS.NEWS.SINGLE_NEWS(id));
   }
 
-  public getDemosForValidation$(cupId: number): Observable<{ url: string }> {
-    return this.post$(URL_PARAMS.CUP.VALIDATION_ARCHIVE_LINK, {
-      cupId,
-    });
+  public getDemosForValidation$(cupId: number): Observable<ValidationArchiveLinkInterface> {
+    return this.post$(URL_PARAMS.CUP.VALIDATION_ARCHIVE_LINK(cupId));
   }
 }

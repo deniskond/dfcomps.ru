@@ -10,7 +10,7 @@ const envMap: Record<string, string> = {
 export const MAIN_URL = envMap[environment.name];
 export const API_URL = MAIN_URL;
 
-// New backend status: 33 / 52 endpoints done
+// New backend status: 33 / 44 endpoints done
 export class URL_PARAMS {
   public static get WEBSOCKET_1V1_URL(): string {
     const websocketEnvMap: Record<string, string> = {
@@ -152,14 +152,14 @@ export class URL_PARAMS {
     REGISTER: (cupId: number) => string;
     CANCEL_REGISTRATION: (cupId: number) => string;
     CHECK_REGISTRATION: () => string;
-    VALIDATION_ARCHIVE_LINK: string;
+    VALIDATION_ARCHIVE_LINK: (cupId: number) => string;
   } {
     return {
       GET_NEXTCUP: `${API_URL}/cup/next-cup-info`, // New backend done
-      REGISTER: (cupId: number) => `${API_URL}/cup/register/${cupId}`, // Not done
-      CANCEL_REGISTRATION: (cupId: number) => `${API_URL}/cup/cancel_registration/${cupId}`, // Not done
-      CHECK_REGISTRATION: () => `${API_URL}/cup/is-registered`, // Not done
-      VALIDATION_ARCHIVE_LINK: `${API_URL}/cup/validation-archive-link`, // Not done
+      REGISTER: (cupId: number) => `${API_URL}/cup/register/${cupId}`, // Not blocking
+      CANCEL_REGISTRATION: (cupId: number) => `${API_URL}/cup/cancel_registration/${cupId}`, // Not blocking
+      CHECK_REGISTRATION: () => `${API_URL}/cup/is-registered`, // Not blocking
+      VALIDATION_ARCHIVE_LINK: (cupId: number) => `${API_URL}/cup/validation-archive-link/${cupId}`, // Not done
     };
   }
 
@@ -198,10 +198,10 @@ export class URL_PARAMS {
       EDIT_NEWS: (newsId: string) => `${API_URL}/admin/news/update_v2/${newsId}`, // Not done
       GET_ALL_ACTIVE_MULTICUPS: `${API_URL}/admin/cups/get_all_active_multicups`, // Not done
       ADD_CUP: `${API_URL}/admin/cups/add_v2`, // Not done
-      SET_SEASON_REWARDS: `${API_URL}/admin/season/rewards`, // Not done
-      SAVE_SEASON_RATINGS: `${API_URL}/admin/season/save_season_ratings`, // Not done
-      RESET_SEASON_RATINGS: `${API_URL}/admin/season/reset_season_ratings`, // Not done
-      INCREMENT_SEASON: `${API_URL}/admin/season/increment`, // Not done
+      SET_SEASON_REWARDS: `${API_URL}/admin/season/rewards`, // Not blocking
+      SAVE_SEASON_RATINGS: `${API_URL}/admin/season/save_season_ratings`, // Not blocking
+      RESET_SEASON_RATINGS: `${API_URL}/admin/season/reset_season_ratings`, // Not blocking
+      INCREMENT_SEASON: `${API_URL}/admin/season/increment`, // Not blocking
     };
   }
 }

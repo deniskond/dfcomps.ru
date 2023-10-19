@@ -1,7 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CheckCupRegistrationInterface, CupInterface } from '@dfcomps/contracts';
+import {
+  CheckCupRegistrationInterface,
+  CupInterface,
+  UserRole,
+  ValidationArchiveLinkInterface,
+} from '@dfcomps/contracts';
 import { AuthService } from '../auth/auth.service';
 import * as moment from 'moment';
 import { Cup } from '../../shared/entities/cup.entity';
@@ -55,6 +60,19 @@ export class CupService {
       .getCount();
 
     return { isRegistered: !!playerCupRecordCount };
+  }
+
+  public async getValidationArchiveLink(
+    accessToken: string | undefined,
+    cupId: number,
+  ): Promise<ValidationArchiveLinkInterface> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!userAccess.userId || !userAccess.roles.includes(UserRole.VALIDATOR)) {
+      throw new UnauthorizedException("Can't get demos for validation without VALIDATOR role");
+    }
+
+    return { accessToken, cupId } as any;
   }
 
   private async getNextCup(): Promise<Cup> {
