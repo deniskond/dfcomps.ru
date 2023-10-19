@@ -52,3 +52,4 @@ export { DuelPlayersInfoResponseInterface } from './lib/match/duel-players-info-
 export { MulticupTableInterface } from './lib/cup/multicup-table.interface';
 export { ValidationArchiveLinkInterface } from './lib/cup/validation-archive-link.interface';
 export { AdminNewsInterface } from './lib/admin/admin-news.interface';
+export { PostNewsDto } from './lib/admin/post-news.dto';

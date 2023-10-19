@@ -16,7 +16,7 @@ export interface NewsInterface {
   startTime: string | null;
   text: string;
   textEn: string;
-  youtube: string;
+  youtube: string | null;
   tableJson: string;
   twitch1: string;
   twitch2: string;

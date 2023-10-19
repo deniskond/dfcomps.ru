@@ -10,7 +10,8 @@ import { AdminActiveMulticupsDto } from '../models/admin-active-multicups.dto';
 import { AdminActiveMulticupInterface } from '../models/admin-active-multicup.interface';
 import { mapAdminActiveMulticupsCupsDtoToInterface } from '../mappers/admin-active-multicups.mapper';
 import { BackendService, URL_PARAMS } from '~shared/rest-api';
-import { AdminNewsInterface } from '@dfcomps/contracts';
+import { AdminNewsInterface, NewsTypes, PostNewsDto } from '@dfcomps/contracts';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root',
@@ -103,16 +104,17 @@ export class AdminDataService {
   }
 
   public postSimpleNews$(formValue: Record<string, any>): Observable<void> {
-    return this.backendService.post$<void>(URL_PARAMS.ADMIN.POST_NEWS, {
-      header: formValue['russianTitle'],
-      header_en: formValue['englishTitle'],
-      posting_time: formValue['timeOption'],
-      datetime: formValue['postingTime'],
-      text: formValue['russianText'],
-      text_en: formValue['englishText'],
-      type_id: '3',
+    const postNewsDto: PostNewsDto = {
+      russianTitle: formValue['russianTitle'],
+      englishTitle: formValue['englishTitle'],
+      postingTime: formValue['timeOption'] === 'now' ? moment().format() : formValue['postingTime'],
+      russianText: formValue['russianText'],
+      englishText: formValue['englishText'],
+      type: NewsTypes.SIMPLE,
       youtube: formValue['youtube'],
-    });
+    };
+
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.POST_NEWS, postNewsDto);
   }
 
   // TODO Admin news typization

@@ -71,6 +71,6 @@ export class AdminNewsComponent implements OnInit {
   }
 
   public hasNewsDeleteAccess(user: UserInterface): boolean {
-    return checkUserRoles(user, [UserRole.ADMIN]);
+    return checkUserRoles(user, [UserRole.NEWSMAKER]);
   }
 }

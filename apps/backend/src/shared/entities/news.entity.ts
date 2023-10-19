@@ -22,7 +22,7 @@ export class News {
   text_en: string;
 
   @Column({ type: 'character varying', nullable: true })
-  youtube: string;
+  youtube: string | null;
 
   @Column({ type: 'timestamp without time zone', nullable: true })
   datetime: string;

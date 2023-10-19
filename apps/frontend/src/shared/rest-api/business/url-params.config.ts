@@ -173,13 +173,13 @@ export class URL_PARAMS {
 
   public static get ADMIN(): {
     GET_NEWS: string;
+    POST_NEWS: string;
+    EDIT_NEWS: (newsId: string) => string;
     DELETE_NEWS: (newsId: number) => string;
     GET_CUPS: string;
     CUP_VALIDATION: (cupId: string) => string;
     PROCESS_VALIDATE: string;
-    POST_NEWS: string;
     GET_SINGLE_NEWS: (newsId: string) => string;
-    EDIT_NEWS: (newsId: string) => string;
     GET_ALL_ACTIVE_MULTICUPS: string;
     ADD_CUP: string;
     SET_SEASON_REWARDS: string;
@@ -188,14 +188,14 @@ export class URL_PARAMS {
     INCREMENT_SEASON: string;
   } {
     return {
-      GET_NEWS: `${API_URL}/admin/news/get-all-news`, // Not done
+      GET_NEWS: `${API_URL}/admin/news/get-all-news`, // New backend done
+      POST_NEWS: `${API_URL}/admin/news/post`, // Not done
+      EDIT_NEWS: (newsId: string) => `${API_URL}/admin/news/update_v2/${newsId}`, // Not done
       DELETE_NEWS: (newsId: number) => `${API_URL}/admin/news/delete_v2/${newsId}`, // Not done
       GET_CUPS: `${API_URL}/admin/cups/get_all_cups`, // Not done
       CUP_VALIDATION: (cupId: string) => `${API_URL}/admin/cups/get_cup_validation_demos/${cupId}`, // Not done
       PROCESS_VALIDATE: `${API_URL}/admin/cups/process_validate_v2`, // Not done
-      POST_NEWS: `${API_URL}/admin/news/save_v2`, // Not done
       GET_SINGLE_NEWS: (newsId: string) => `${API_URL}/admin/news/get_single_news/${newsId}`, // Not done
-      EDIT_NEWS: (newsId: string) => `${API_URL}/admin/news/update_v2/${newsId}`, // Not done
       GET_ALL_ACTIVE_MULTICUPS: `${API_URL}/admin/cups/get_all_active_multicups`, // Not done
       ADD_CUP: `${API_URL}/admin/cups/add_v2`, // Not done
       SET_SEASON_REWARDS: `${API_URL}/admin/season/rewards`, // Not blocking
