@@ -18,7 +18,7 @@ export class CommentsController {
   @Post('add')
   addComment(
     @Body() { text, newsId }: AddCommentDto,
-    @Headers('X-Auth') accessToken: string,
+    @Headers('X-Auth') accessToken: string | undefined,
   ): Promise<CommentInterface[]> {
     return this.commentsService.addComment(accessToken, text, newsId);
   }
@@ -26,7 +26,7 @@ export class CommentsController {
   @Post('delete')
   deleteComment(
     @Body() { commentId }: DeleteCommentDto,
-    @Headers('X-Auth') accessToken: string,
+    @Headers('X-Auth') accessToken: string | undefined,
   ): Promise<CommentActionResultInterface> {
     return this.commentsService.deleteComment(accessToken, commentId);
   }
@@ -34,7 +34,7 @@ export class CommentsController {
   @Post('update')
   updateComment(
     @Body() { text, commentId }: UpdateCommentDto,
-    @Headers('X-Auth') accessToken: string,
+    @Headers('X-Auth') accessToken: string | undefined,
   ): Promise<CommentActionResultInterface> {
     return this.commentsService.updateComment(accessToken, text, commentId);
   }
@@ -42,7 +42,7 @@ export class CommentsController {
   @Post('moderator_delete')
   moderatorDeleteComment(
     @Body() { commentId, reason }: ModeratorDeleteCommentDto,
-    @Headers('X-Auth') accessToken: string,
+    @Headers('X-Auth') accessToken: string | undefined,
   ): Promise<CommentInterface[]> {
     return this.commentsService.moderatorDeleteComment(accessToken, commentId, reason);
   }

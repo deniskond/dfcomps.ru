@@ -142,7 +142,11 @@ export class ProfileService {
     };
   }
 
-  public async updateProfileInfo(accessToken: string, nick: string, country: string | undefined): Promise<void> {
+  public async updateProfileInfo(
+    accessToken: string | undefined,
+    nick: string,
+    country: string | undefined,
+  ): Promise<void> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!userAccess.userId) {
@@ -178,7 +182,7 @@ export class ProfileService {
       .execute();
   }
 
-  public async updateProfileAvatar(accessToken: string, avatar: Express.Multer.File): Promise<void> {
+  public async updateProfileAvatar(accessToken: string | undefined, avatar: Express.Multer.File): Promise<void> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!userAccess.userId) {

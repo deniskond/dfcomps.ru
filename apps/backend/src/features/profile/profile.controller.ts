@@ -32,7 +32,7 @@ export class ProfileController {
 
   @Post('update-info')
   updateProfileInfo(
-    @Headers('X-Auth') accessToken: string,
+    @Headers('X-Auth') accessToken: string | undefined,
     @Body() { nick, country }: ProfileUpdateDto,
   ): Promise<void> {
     return this.profileService.updateProfileInfo(accessToken, nick, country);
@@ -41,7 +41,7 @@ export class ProfileController {
   @Post('update-avatar')
   @UseInterceptors(FileInterceptor('file'))
   updateProfileAvatar(
-    @Headers('X-Auth') accessToken: string,
+    @Headers('X-Auth') accessToken: string | undefined,
     @UploadedFile(
       new ParseFilePipeBuilder()
         .addFileTypeValidator({

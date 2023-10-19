@@ -1,18 +1,16 @@
 import { Injectable } from '@angular/core';
 import { map, Observable, of, tap } from 'rxjs';
 import { mapAdminCupsDtoToInterface } from '../mappers/admin-cups.mapper';
-import { mapAdminNewsDtoToInterface } from '../mappers/admin-news.mapper';
 import { AdminValidationInterface } from '../models/admin-validation.interface';
 import { AdminCupDto } from '../models/admin-cup.dto';
 import { AdminCupInterface } from '../models/admin-cup.interface';
-import { AdminNewsDto } from '../models/admin-news.dto';
-import { AdminNewsInterface } from '../models/admin-news.interface';
 import { AdminValidationDto } from '../models/admin-validation.dto';
 import { mapAdminValidationDtoToInterface } from '../mappers/admin-validation.mapper';
 import { AdminActiveMulticupsDto } from '../models/admin-active-multicups.dto';
 import { AdminActiveMulticupInterface } from '../models/admin-active-multicup.interface';
 import { mapAdminActiveMulticupsCupsDtoToInterface } from '../mappers/admin-active-multicups.mapper';
 import { BackendService, URL_PARAMS } from '~shared/rest-api';
+import { AdminNewsInterface } from '@dfcomps/contracts';
 
 @Injectable({
   providedIn: 'root',
@@ -28,13 +26,13 @@ export class AdminDataService {
       return of(this.news);
     }
 
-    return this.backendService.post$<AdminNewsDto[]>(URL_PARAMS.ADMIN.GET_NEWS).pipe(
-      map(mapAdminNewsDtoToInterface),
+    return this.backendService.get$<AdminNewsInterface[]>(URL_PARAMS.ADMIN.GET_NEWS).pipe(
+      // map(mapAdminNewsDtoToInterface),
       tap((news: AdminNewsInterface[]) => (this.news = news)),
     );
   }
 
-  public deleteNewsItem$(newsId: string): Observable<void> {
+  public deleteNewsItem$(newsId: number): Observable<void> {
     return this.backendService.post$<void>(URL_PARAMS.ADMIN.DELETE_NEWS(newsId));
   }
 

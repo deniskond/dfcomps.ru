@@ -28,6 +28,7 @@ import { Reward } from '../shared/entities/reward.entity';
 import { DemosModule } from '../features/demos/demos.module';
 import { Match } from '../shared/entities/match.entity';
 import { MatchModule } from '../features/match/match.module';
+import { AdminModule } from '../features/admin/admin.module';
 
 @Module({
   imports: [
@@ -71,6 +72,7 @@ import { MatchModule } from '../features/match/match.module';
     ProfileModule,
     DemosModule,
     MatchModule,
+    AdminModule,
   ],
 })
 export class AppModule {}

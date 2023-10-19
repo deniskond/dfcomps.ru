@@ -66,7 +66,7 @@ export class NewsService {
     return await Promise.all(news.map((newsItem: News) => this.mapNewsType(newsItem, userAccess)));
   }
 
-  public async getThemeNews(accessToken: string, theme: string): Promise<NewsInterfaceUnion[]> {
+  public async getThemeNews(accessToken: string | undefined, theme: string): Promise<NewsInterfaceUnion[]> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
     const targetTime: string = userAccess?.roles.some((role) => role === UserRole.ADMIN || role === UserRole.SUPERADMIN)
       ? moment().add(7, 'days').format()
@@ -88,7 +88,7 @@ export class NewsService {
     return await Promise.all(news.map((newsItem: News) => this.mapNewsType(newsItem, userAccess)));
   }
 
-  public async getSingleNews(accessToken: string, newsId: number): Promise<NewsInterfaceUnion> {
+  public async getSingleNews(accessToken: string | undefined, newsId: number): Promise<NewsInterfaceUnion> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
     const targetTime: string = userAccess?.roles.some((role) => role === UserRole.ADMIN || role === UserRole.SUPERADMIN)
       ? moment().add(7, 'days').format()

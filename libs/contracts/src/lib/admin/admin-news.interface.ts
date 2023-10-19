@@ -1,7 +1,7 @@
 import { NewsTypes } from '@dfcomps/contracts';
 
 export interface AdminNewsInterface {
-  id: string;
+  id: number;
   headerRussian: string;
   headerEnglish: string;
   textRussian: string;

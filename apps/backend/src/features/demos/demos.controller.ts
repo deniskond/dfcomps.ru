@@ -12,7 +12,7 @@ export class DemosController {
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   uploadDemo(
-    @Headers('X-Auth') accessToken: string,
+    @Headers('X-Auth') accessToken: string | undefined,
     @UploadedFile(new ParseFilePipe())
     demo: Express.Multer.File,
     @Body() { cupId, mapName }: DemoUploadDto,
@@ -23,7 +23,7 @@ export class DemosController {
   @Post('match-upload')
   @UseInterceptors(FileInterceptor('file'))
   uploadMatchDemo(
-    @Headers('X-Auth') accessToken: string,
+    @Headers('X-Auth') accessToken: string | undefined,
     @UploadedFile(new ParseFilePipe())
     demo: Express.Multer.File,
   ): Promise<UploadDemoResponseInterface> {
@@ -32,7 +32,7 @@ export class DemosController {
 
   @Post('delete')
   deleteDemo(
-    @Headers('X-Auth') accessToken: string,
+    @Headers('X-Auth') accessToken: string | undefined,
     @Body() { cupId, demoName }: DemoDeleteDto,
   ): Promise<UploadedDemoInterface[]> {
     return this.demosService.deleteDemo(accessToken, cupId, demoName);

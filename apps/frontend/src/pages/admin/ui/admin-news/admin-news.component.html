@@ -25,7 +25,7 @@
     <ng-container *ngFor="let newsItem of news; let i = index">
       <div class="cell first">{{ news.length - i }}</div>
       <div class="cell header">{{ newsItem.headerEnglish }}</div>
-      <div class="cell date">{{ newsItem.date }}</div>
+      <div class="cell date">{{ newsItem.date | invokeFunction : formatDateToLocal }}</div>
       <div class="cell type">{{ newsItem.typeName }}</div>
       <div class="cell actions buttons">
         <ng-container

@@ -173,7 +173,7 @@ export class URL_PARAMS {
 
   public static get ADMIN(): {
     GET_NEWS: string;
-    DELETE_NEWS: (newsId: string) => string;
+    DELETE_NEWS: (newsId: number) => string;
     GET_CUPS: string;
     CUP_VALIDATION: (cupId: string) => string;
     PROCESS_VALIDATE: string;
@@ -188,8 +188,8 @@ export class URL_PARAMS {
     INCREMENT_SEASON: string;
   } {
     return {
-      GET_NEWS: `${API_URL}/admin/news/get_all_news`, // Not done
-      DELETE_NEWS: (newsId: string) => `${API_URL}/admin/news/delete_v2/${newsId}`, // Not done
+      GET_NEWS: `${API_URL}/admin/news/get-all-news`, // Not done
+      DELETE_NEWS: (newsId: number) => `${API_URL}/admin/news/delete_v2/${newsId}`, // Not done
       GET_CUPS: `${API_URL}/admin/cups/get_all_cups`, // Not done
       CUP_VALIDATION: (cupId: string) => `${API_URL}/admin/cups/get_cup_validation_demos/${cupId}`, // Not done
       PROCESS_VALIDATE: `${API_URL}/admin/cups/process_validate_v2`, // Not done

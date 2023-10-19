@@ -39,7 +39,7 @@ export class CommentsService {
     }));
   }
 
-  public async addComment(accessToken: string, text: string, newsId: number): Promise<CommentInterface[]> {
+  public async addComment(accessToken: string | undefined, text: string, newsId: number): Promise<CommentInterface[]> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!userAccess.userId) {
@@ -112,7 +112,7 @@ export class CommentsService {
   }
 
   public async updateComment(
-    accessToken: string,
+    accessToken: string | undefined,
     text: string,
     commentId: number,
   ): Promise<CommentActionResultInterface> {
@@ -178,7 +178,10 @@ export class CommentsService {
     };
   }
 
-  public async deleteComment(accessToken: string, commentId: number): Promise<CommentActionResultInterface> {
+  public async deleteComment(
+    accessToken: string | undefined,
+    commentId: number,
+  ): Promise<CommentActionResultInterface> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!userAccess.userId) {
@@ -232,7 +235,7 @@ export class CommentsService {
   }
 
   public async moderatorDeleteComment(
-    accessToken: string,
+    accessToken: string | undefined,
     commentId: number,
     reason: string,
   ): Promise<CommentInterface[]> {

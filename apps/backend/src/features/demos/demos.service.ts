@@ -33,7 +33,7 @@ export class DemosService {
   ) {}
 
   public async upload(
-    accessToken: string,
+    accessToken: string | undefined,
     demo: Express.Multer.File,
     cupId: number,
     mapName: string,
@@ -162,7 +162,10 @@ export class DemosService {
     }
   }
 
-  public async matchUpload(accessToken: string, demo: Express.Multer.File): Promise<UploadDemoResponseInterface> {
+  public async matchUpload(
+    accessToken: string | undefined,
+    demo: Express.Multer.File,
+  ): Promise<UploadDemoResponseInterface> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!userAccess.userId) {
@@ -277,7 +280,11 @@ export class DemosService {
     }
   }
 
-  public async deleteDemo(accessToken: string, cupId: number, demoName: string): Promise<UploadedDemoInterface[]> {
+  public async deleteDemo(
+    accessToken: string | undefined,
+    cupId: number,
+    demoName: string,
+  ): Promise<UploadedDemoInterface[]> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!userAccess.userId) {

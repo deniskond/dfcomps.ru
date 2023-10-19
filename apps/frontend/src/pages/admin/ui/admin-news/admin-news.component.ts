@@ -3,11 +3,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { filter, Observable, ReplaySubject, switchMap, take } from 'rxjs';
 import { isNonNull } from '../../../../shared/helpers';
 import { AdminDataService } from '../../business/admin-data.service';
-import { AdminNewsInterface } from '../../models/admin-news.interface';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { UserService } from '~shared/services/user-service/user.service';
 import { checkUserRoles } from '~shared/helpers/check-roles';
-import { NewsTypes, UserRole } from '@dfcomps/contracts';
+import { AdminNewsInterface, NewsTypes, UserRole } from '@dfcomps/contracts';
+import * as moment from 'moment';
 
 @Component({
   selector: 'admin-news',
@@ -33,6 +33,10 @@ export class AdminNewsComponent implements OnInit {
     });
 
     this.user$ = this.userService.getCurrentUser$().pipe(filter(isNonNull));
+  }
+
+  public formatDateToLocal(date: string): string {
+    return moment(date).local().format('YYYY-MM-DD HH:mm:ss') + ' (local)';
   }
 
   public confirmDelete(newsItem: AdminNewsInterface): void {
