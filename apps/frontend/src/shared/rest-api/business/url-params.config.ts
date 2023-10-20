@@ -193,7 +193,7 @@ export class URL_PARAMS {
       POST_NEWS: `${API_URL}/admin/news/post`, // New backend done
       UPDATE_NEWS: (newsId: string) => `${API_URL}/admin/news/update/${newsId}`, // New backend done
       DELETE_NEWS: (newsId: number) => `${API_URL}/admin/news/delete/${newsId}`, // New backend done
-      GET_CUPS: `${API_URL}/admin/cups/get_all_cups`, // Not done
+      GET_CUPS: `${API_URL}/admin/cups/get-all-cups`, // Not done
       CUP_VALIDATION: (cupId: string) => `${API_URL}/admin/cups/get_cup_validation_demos/${cupId}`, // Not done
       PROCESS_VALIDATE: `${API_URL}/admin/cups/process_validate_v2`, // Not done
       GET_ALL_ACTIVE_MULTICUPS: `${API_URL}/admin/cups/get_all_active_multicups`, // Not done

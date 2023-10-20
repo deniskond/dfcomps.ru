@@ -1,7 +1,7 @@
 import { IsEnum, IsNotEmpty } from 'class-validator';
 import { NewsTypes } from '../news/news-types.enum';
 
-export class PostNewsDto {
+export class AdminNewsDto {
   @IsNotEmpty()
   russianTitle: string;
 

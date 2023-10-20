@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Headers, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { AdminNewsService } from './admin-news.service';
-import { AdminEditNewsInterface, AdminNewsListInterface, PostNewsDto } from '@dfcomps/contracts';
+import { AdminEditNewsInterface, AdminNewsListInterface, AdminNewsDto } from '@dfcomps/contracts';
 
 @Controller('admin/news')
 export class AdminNewsController {
@@ -28,16 +28,16 @@ export class AdminNewsController {
   }
 
   @Post('post')
-  postNews(@Headers('X-Auth') accessToken: string | undefined, @Body() postNewsDto: PostNewsDto): Promise<void> {
-    return this.adminNewsService.postNews(accessToken, postNewsDto);
+  postNews(@Headers('X-Auth') accessToken: string | undefined, @Body() AdminNewsDto: AdminNewsDto): Promise<void> {
+    return this.adminNewsService.postNews(accessToken, AdminNewsDto);
   }
 
   @Post('update/:newsId')
   updateNews(
     @Headers('X-Auth') accessToken: string | undefined,
-    @Body() postNewsDto: PostNewsDto,
+    @Body() AdminNewsDto: AdminNewsDto,
     @Param('newsId', new ParseIntPipe()) newsId: number,
   ): Promise<void> {
-    return this.adminNewsService.updateNews(accessToken, postNewsDto, newsId);
+    return this.adminNewsService.updateNews(accessToken, AdminNewsDto, newsId);
   }
 }

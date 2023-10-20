@@ -10,7 +10,7 @@ import { AdminActiveMulticupsDto } from '../models/admin-active-multicups.dto';
 import { AdminActiveMulticupInterface } from '../models/admin-active-multicup.interface';
 import { mapAdminActiveMulticupsCupsDtoToInterface } from '../mappers/admin-active-multicups.mapper';
 import { BackendService, URL_PARAMS } from '~shared/rest-api';
-import { AdminEditNewsInterface, AdminNewsListInterface, NewsTypes, PostNewsDto } from '@dfcomps/contracts';
+import { AdminEditNewsInterface, AdminNewsListInterface, NewsTypes, AdminNewsDto } from '@dfcomps/contracts';
 import * as moment from 'moment';
 
 @Injectable({
@@ -104,7 +104,7 @@ export class AdminDataService {
   }
 
   public postSimpleNews$(formValue: Record<string, any>): Observable<void> {
-    return this.backendService.post$<void>(URL_PARAMS.ADMIN.POST_NEWS, this.getPostNewsDto(formValue));
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.POST_NEWS, this.getAdminNewsDto(formValue));
   }
 
   public getSingleNews$(newsId: string): Observable<AdminEditNewsInterface> {
@@ -112,7 +112,7 @@ export class AdminDataService {
   }
 
   public editSimpleNews$(formValue: Record<string, any>, newsId: string): Observable<void> {
-    return this.backendService.post$<void>(URL_PARAMS.ADMIN.UPDATE_NEWS(newsId), this.getPostNewsDto(formValue));
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.UPDATE_NEWS(newsId), this.getAdminNewsDto(formValue));
   }
 
   public getAllActiveMulticups$(): Observable<AdminActiveMulticupInterface[]> {
@@ -140,7 +140,7 @@ export class AdminDataService {
     });
   }
 
-  private getPostNewsDto(formValue: Record<string, any>): PostNewsDto {
+  private getAdminNewsDto(formValue: Record<string, any>): AdminNewsDto {
     return {
       russianTitle: formValue['russianTitle'],
       englishTitle: formValue['englishTitle'],
