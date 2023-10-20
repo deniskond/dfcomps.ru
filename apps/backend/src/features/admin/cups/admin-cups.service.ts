@@ -48,7 +48,7 @@ export class AdminCupsService {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!checkUserRoles(userAccess.roles, [UserRoles.VALIDATOR])) {
-      throw new UnauthorizedException('Unauthorized to get validator role');
+      throw new UnauthorizedException('Unauthorized to get validation demos, VALIDATOR role needed');
     }
 
     return { accessToken, cupId } as any;
