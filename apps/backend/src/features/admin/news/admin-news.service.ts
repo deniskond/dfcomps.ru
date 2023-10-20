@@ -4,9 +4,10 @@ import { Repository } from 'typeorm';
 import { News } from '../../../shared/entities/news.entity';
 import { UserAccessInterface } from '../../../shared/interfaces/user-access.interface';
 import { AuthService } from '../../auth/auth.service';
-import { AdminEditNewsInterface, AdminNewsListInterface, AdminNewsDto, UserRole } from '@dfcomps/contracts';
+import { AdminEditNewsInterface, AdminNewsListInterface, AdminNewsDto } from '@dfcomps/contracts';
 import { mapNewsTypeEnumToDBNewsTypeId } from '../../../shared/mappers/news-types.mapper';
 import { NewsComment } from '../../../shared/entities/news-comment.entity';
+import { UserRoles, checkUserRoles } from '@dfcomps/auth';
 
 @Injectable()
 export class AdminNewsService {
@@ -19,7 +20,7 @@ export class AdminNewsService {
   public async getAllNews(accessToken: string | undefined): Promise<AdminNewsListInterface[]> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
-    if (!userAccess.roles.includes(UserRole.NEWSMAKER)) {
+    if (!checkUserRoles(userAccess.roles, [UserRoles.NEWSMAKER])) {
       throw new UnauthorizedException('Unauthorized to get admin news list without NEWSMAKER role');
     }
 
@@ -45,7 +46,7 @@ export class AdminNewsService {
   public async getSingleNews(accessToken: string | undefined, newsId: number): Promise<AdminEditNewsInterface> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
-    if (!userAccess.roles.includes(UserRole.NEWSMAKER)) {
+    if (!checkUserRoles(userAccess.roles, [UserRoles.NEWSMAKER])) {
       throw new UnauthorizedException('Unauthorized to get admin news list without NEWSMAKER role');
     }
 
@@ -76,7 +77,7 @@ export class AdminNewsService {
   public async postNews(accessToken: string | undefined, AdminNewsDto: AdminNewsDto): Promise<void> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
-    if (!userAccess.userId || !userAccess.roles.includes(UserRole.NEWSMAKER)) {
+    if (!userAccess.userId || !checkUserRoles(userAccess.roles, [UserRoles.NEWSMAKER])) {
       throw new UnauthorizedException('Unauthorized to get admin news list without NEWSMAKER role');
     }
 
@@ -104,7 +105,7 @@ export class AdminNewsService {
   public async updateNews(accessToken: string | undefined, AdminNewsDto: AdminNewsDto, newsId: number): Promise<void> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
-    if (!userAccess.userId || !userAccess.roles.includes(UserRole.NEWSMAKER)) {
+    if (!userAccess.userId || !checkUserRoles(userAccess.roles, [UserRoles.NEWSMAKER])) {
       throw new UnauthorizedException('Unauthorized to get admin news list without NEWSMAKER role');
     }
 
@@ -130,7 +131,7 @@ export class AdminNewsService {
   public async deleteNews(accessToken: string | undefined, newsId: number): Promise<void> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
-    if (!userAccess.userId || !userAccess.roles.includes(UserRole.NEWSMAKER)) {
+    if (!userAccess.userId || !checkUserRoles(userAccess.roles, [UserRoles.NEWSMAKER])) {
       throw new UnauthorizedException('Unauthorized to get admin news list without NEWSMAKER role');
     }
 

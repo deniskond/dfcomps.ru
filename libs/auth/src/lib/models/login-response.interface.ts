@@ -1,4 +1,4 @@
-import { UserRole } from '@dfcomps/contracts';
+import { UserRoles } from './user-roles.enum';
 
 export interface LoginResponseInterface {
   user: {
@@ -8,7 +8,7 @@ export interface LoginResponseInterface {
     vq3Rating: number;
     id: number;
     nick: string;
-    roles: UserRole[];
+    roles: UserRoles[];
   };
   token: string;
 }

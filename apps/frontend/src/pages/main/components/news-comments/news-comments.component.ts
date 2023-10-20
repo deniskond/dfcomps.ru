@@ -34,9 +34,8 @@ import {
   CommentActionResultInterface,
   CommentInterface,
   PersonalSmileInterface,
-  UserRole,
 } from '@dfcomps/contracts';
-import { checkUserRoles } from '~shared/helpers/check-roles';
+import { UserRoles, checkUserRoles } from '@dfcomps/auth';
 
 const COMMENT_ACTION_PERIOD_MINUTES = 2;
 
@@ -247,7 +246,7 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
       .isAfter(moment());
     const isEditable: boolean = !!user && comment.playerId === user.id && isNewComment;
     const isModeratorDeletable: boolean =
-      !comment.reason && !isEditable && !!user && checkUserRoles(user, [UserRole.MODERATOR]);
+      !comment.reason && !isEditable && !!user && checkUserRoles(user.roles, [UserRoles.MODERATOR]);
 
     return { ...comment, isEditable, isModeratorDeletable };
   }

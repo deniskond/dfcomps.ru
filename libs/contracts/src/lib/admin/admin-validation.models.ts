@@ -1,15 +1,15 @@
-export enum AdminDemoValidationStatus {
+export enum AdminDemoValidationStatuses {
   NOT_CHECKED,
   VALIDATED_OK,
   VALIDATED_FAILED,
 }
 
-export interface PlayerDemosValidationInterface {
+export interface AdminPlayerDemosValidationInterface {
   nick: string;
   country: string;
   demos: {
     time: string;
-    validationStatus: AdminDemoValidationStatus;
+    validationStatus: AdminDemoValidationStatuses;
     validationFailedReason: string;
     demoLink: string;
     id: string;
@@ -17,8 +17,8 @@ export interface PlayerDemosValidationInterface {
 }
 
 export interface AdminValidationInterface {
-  vq3Demos: PlayerDemosValidationInterface[];
-  cpmDemos: PlayerDemosValidationInterface[];
+  vq3Demos: AdminPlayerDemosValidationInterface[];
+  cpmDemos: AdminPlayerDemosValidationInterface[];
   cupInfo: {
     id: string;
     fullName: string;

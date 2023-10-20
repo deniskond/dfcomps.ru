@@ -18,6 +18,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@dfcomps/auth": [
+        "libs/auth/src/index.ts"
+      ],
       "@dfcomps/contracts": [
         "libs/contracts/src/index.ts"
       ]

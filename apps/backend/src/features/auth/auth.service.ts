@@ -18,7 +18,7 @@ import { AuthRole } from '../../shared/entities/auth-role.entity';
 import { User } from '../../shared/entities/user.entity';
 import { OldUser } from '../../shared/entities/old-user.entity';
 import { UserAccessInterface } from '../../shared/interfaces/user-access.interface';
-import { LoginAvailableInterface, LoginResponseInterface } from '@dfcomps/contracts';
+import { LoginAvailableInterface, LoginResponseInterface } from '@dfcomps/auth';
 
 @Injectable()
 export class AuthService {

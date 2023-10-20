@@ -3,8 +3,8 @@ import { CUSTOM_TABLE_NEWS_LIMIT } from '../../config/news.config';
 import { map, Observable, take } from 'rxjs';
 import { UserService } from '~shared/services/user-service/user.service';
 import { NewsService } from '~shared/services/news-service/news.service';
-import { checkUserRoles } from '~shared/helpers/check-roles';
-import { InvalidDemoInterface, NewsOfflineResultsInterface, Physics, UserRole } from '@dfcomps/contracts';
+import { InvalidDemoInterface, NewsOfflineResultsInterface, Physics } from '@dfcomps/contracts';
+import { UserRoles, checkUserRoles } from '@dfcomps/auth';
 
 @Component({
   selector: 'app-news-offline-results',
@@ -32,7 +32,7 @@ export class NewsOfflineResultsComponent implements OnInit, OnChanges {
       take(1),
       map(
         (user) =>
-          !!user && checkUserRoles(user, [UserRole.VALIDATOR]) && !this.news.cup.demosValidated,
+          !!user && checkUserRoles(user.roles, [UserRoles.VALIDATOR]) && !this.news.cup.demosValidated,
       ),
     );
   }

@@ -9,8 +9,7 @@ import { filter, take } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { isNonNull } from '../../../../../shared/helpers/is-non-null';
-import { UserRole } from '@dfcomps/contracts';
-import { checkUserRoles } from '~shared/helpers/check-roles';
+import { UserRoles, checkUserRoles } from '@dfcomps/auth';
 
 @Component({
   selector: 'app-user-panel',
@@ -58,12 +57,10 @@ export class UserPanelComponent implements OnInit, OnDestroy {
   }
 
   public hasAdminPanelAccess(user: UserInterface): boolean {
-    return checkUserRoles(user, [
-      UserRole.ADMIN,
-      UserRole.SUPERADMIN,
-      UserRole.VALIDATOR,
-      UserRole.CUP_ORGANIZER,
-      UserRole.NEWSMAKER,
+    return checkUserRoles(user.roles, [
+      UserRoles.VALIDATOR,
+      UserRoles.CUP_ORGANIZER,
+      UserRoles.NEWSMAKER,
     ]);
   }
 }

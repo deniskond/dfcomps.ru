@@ -5,10 +5,10 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { map, Observable, switchMap, take, tap } from 'rxjs';
 import { AdminDataService } from '../../business/admin-data.service';
 import {
-  AdminDemoValidationStatus,
+  AdminDemoValidationStatuses,
+  AdminPlayerDemosValidationInterface,
   AdminValidationInterface,
-  PlayerDemosValidationInterface,
-} from '../../models/admin-validation.interface';
+} from '@dfcomps/contracts';
 
 @Component({
   selector: 'dfcomps.ru-admin-validate',
@@ -18,7 +18,7 @@ import {
 })
 export class AdminValidateComponent implements OnInit {
   public cupValidationInfo$: Observable<AdminValidationInterface>;
-  public adminDemoValidationStatuses = AdminDemoValidationStatus;
+  public adminDemoValidationStatuses = AdminDemoValidationStatuses;
   public validationForm: FormGroup;
 
   constructor(
@@ -65,18 +65,18 @@ export class AdminValidateComponent implements OnInit {
     this.changeDetectorRef.markForCheck();
   }
 
-  private getValidationControlValue(validationStatus: AdminDemoValidationStatus): boolean | null {
-    const validationStatusMap: Record<AdminDemoValidationStatus, boolean | null> = {
-      [AdminDemoValidationStatus.NOT_CHECKED]: null,
-      [AdminDemoValidationStatus.VALIDATED_OK]: true,
-      [AdminDemoValidationStatus.VALIDATED_FAILED]: false,
+  private getValidationControlValue(validationStatus: AdminDemoValidationStatuses): boolean | null {
+    const validationStatusMap: Record<AdminDemoValidationStatuses, boolean | null> = {
+      [AdminDemoValidationStatuses.NOT_CHECKED]: null,
+      [AdminDemoValidationStatuses.VALIDATED_OK]: true,
+      [AdminDemoValidationStatuses.VALIDATED_FAILED]: false,
     };
 
     return validationStatusMap[validationStatus];
   }
 
-  private getFormPhysicsControls(playerDemos: PlayerDemosValidationInterface[]): Record<string, AbstractControl> {
-    return playerDemos.reduce((accumulator, playerDemos: PlayerDemosValidationInterface) => {
+  private getFormPhysicsControls(playerDemos: AdminPlayerDemosValidationInterface[]): Record<string, AbstractControl> {
+    return playerDemos.reduce((accumulator, playerDemos: AdminPlayerDemosValidationInterface) => {
       const playerDemosControls = playerDemos.demos.reduce(
         (acc, demo) => ({
           ...acc,

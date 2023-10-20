@@ -1,7 +1,7 @@
-import { UserRole } from '@dfcomps/contracts';
+import { UserRoles } from '@dfcomps/auth';
 
 export interface UserAccessInterface {
   userId: number | null;
   commentsBanDate: string | null;
-  roles: UserRole[];
+  roles: UserRoles[];
 }

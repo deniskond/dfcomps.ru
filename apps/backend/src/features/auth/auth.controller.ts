@@ -4,7 +4,7 @@ import { GetPasswordTokenDto } from './dto/get-password-token.dto';
 import { GetDiscordTokenDto } from './dto/get-discord-token.dto';
 import { CheckLoginDto } from './dto/check-login.dto';
 import { RegisterDto } from './dto/register.dto';
-import { LoginAvailableInterface, LoginResponseInterface } from '@dfcomps/contracts';
+import { LoginAvailableInterface, LoginResponseInterface } from '@dfcomps/auth';
 
 @Controller('auth')
 export class AuthController {

@@ -1,4 +1,4 @@
-import { UserRole } from '@dfcomps/contracts';
+import { UserRoles } from '@dfcomps/auth';
 import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
 
 @Entity({ name: 'auth_roles' })
@@ -10,5 +10,5 @@ export class AuthRole {
   user_id: number;
 
   @Column({ type: 'character varying' })
-  role: UserRole;
+  role: UserRoles;
 }

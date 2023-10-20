@@ -6,7 +6,6 @@ import {
   CommentActionResultInterface,
   CommentInterface,
   PersonalSmileInterface,
-  UserRole,
 } from '@dfcomps/contracts';
 import { AuthService } from '../auth/auth.service';
 import * as moment from 'moment';
@@ -15,6 +14,7 @@ import { NewsComment } from '../../shared/entities/news-comment.entity';
 import { Smile } from '../../shared/entities/smile.entity';
 import { CupDemo } from '../../shared/entities/cup-demo.entity';
 import { UserAccessInterface } from '../../shared/interfaces/user-access.interface';
+import { UserRoles, checkUserRoles } from '@dfcomps/auth';
 
 @Injectable()
 export class CommentsService {
@@ -241,7 +241,7 @@ export class CommentsService {
   ): Promise<CommentInterface[]> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
-    if (!userAccess.roles.some((role: UserRole) => role === UserRole.MODERATOR)) {
+    if (!checkUserRoles(userAccess.roles, [UserRoles.MODERATOR])) {
       throw new UnauthorizedException('No access to moderate comment');
     }
 

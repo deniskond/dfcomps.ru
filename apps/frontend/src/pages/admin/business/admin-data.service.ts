@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { map, Observable, of, tap } from 'rxjs';
-import { AdminValidationInterface } from '../models/admin-validation.interface';
 import { AdminValidationDto } from '../models/admin-validation.dto';
 import { mapAdminValidationDtoToInterface } from '../mappers/admin-validation.mapper';
 import { AdminActiveMulticupsDto } from '../models/admin-active-multicups.dto';
@@ -13,6 +12,7 @@ import {
   NewsTypes,
   AdminNewsDto,
   AdminCupInterface,
+  AdminValidationInterface,
 } from '@dfcomps/contracts';
 import * as moment from 'moment';
 

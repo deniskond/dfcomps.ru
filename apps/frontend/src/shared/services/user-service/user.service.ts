@@ -4,7 +4,7 @@ import { Observable, BehaviorSubject, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { UserInterface } from '../../interfaces/user.interface';
 import { AuthService } from '../auth/auth.service';
-import { LoginAvailableInterface, LoginResponseInterface } from '@dfcomps/contracts';
+import { LoginAvailableInterface, LoginResponseInterface } from '@dfcomps/auth';
 
 @Injectable()
 export class UserService {

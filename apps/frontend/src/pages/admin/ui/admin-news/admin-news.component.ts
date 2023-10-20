@@ -5,9 +5,9 @@ import { isNonNull } from '../../../../shared/helpers';
 import { AdminDataService } from '../../business/admin-data.service';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { UserService } from '~shared/services/user-service/user.service';
-import { checkUserRoles } from '~shared/helpers/check-roles';
-import { AdminNewsListInterface, NewsTypes, UserRole } from '@dfcomps/contracts';
+import { AdminNewsListInterface, NewsTypes } from '@dfcomps/contracts';
 import * as moment from 'moment';
+import { UserRoles, checkUserRoles } from '@dfcomps/auth';
 
 @Component({
   selector: 'admin-news',
@@ -71,6 +71,6 @@ export class AdminNewsComponent implements OnInit {
   }
 
   public hasNewsDeleteAccess(user: UserInterface): boolean {
-    return checkUserRoles(user, [UserRole.NEWSMAKER]);
+    return checkUserRoles(user.roles, [UserRoles.NEWSMAKER]);
   }
 }

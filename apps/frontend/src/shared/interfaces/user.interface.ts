@@ -1,4 +1,4 @@
-import { UserRole } from '@dfcomps/contracts';
+import { UserRoles } from '@dfcomps/auth';
 
 export interface UserInterface {
   avatar: string | null;
@@ -7,5 +7,5 @@ export interface UserInterface {
   id: number;
   nick: string;
   vq3Rating: number;
-  roles: UserRole[];
+  roles: UserRoles[];
 }

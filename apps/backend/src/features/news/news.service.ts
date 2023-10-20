@@ -16,7 +16,6 @@ import {
   PaginationCountInterface,
   Physics,
   ResultsTableInterface,
-  UserRole,
 } from '@dfcomps/contracts';
 import { AuthService } from '../auth/auth.service';
 import * as moment from 'moment';
@@ -30,6 +29,7 @@ import { Multicup } from '../../shared/entities/multicup.entity';
 import { UserAccessInterface } from '../../shared/interfaces/user-access.interface';
 import { getMapLevelshot } from '../../shared/helpers/get-map-levelshot';
 import { mapCupEntityToInterface } from '../../shared/mappers/cup.mapper';
+import { UserRoles, checkUserRoles } from '@dfcomps/auth';
 
 @Injectable()
 export class NewsService {
@@ -46,7 +46,7 @@ export class NewsService {
 
   public async getAllMainPageNews(accessToken: string): Promise<NewsInterfaceUnion[]> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
-    const targetTime: string = userAccess?.roles.some((role) => role === UserRole.ADMIN || role === UserRole.SUPERADMIN)
+    const targetTime: string = checkUserRoles(userAccess.roles, [UserRoles.NEWSMAKER])
       ? moment().add(7, 'days').format()
       : moment().format();
 
@@ -68,7 +68,7 @@ export class NewsService {
 
   public async getThemeNews(accessToken: string | undefined, theme: string): Promise<NewsInterfaceUnion[]> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
-    const targetTime: string = userAccess?.roles.some((role) => role === UserRole.ADMIN || role === UserRole.SUPERADMIN)
+    const targetTime: string = checkUserRoles(userAccess.roles, [UserRoles.NEWSMAKER])
       ? moment().add(7, 'days').format()
       : moment().format();
 
@@ -90,7 +90,7 @@ export class NewsService {
 
   public async getSingleNews(accessToken: string | undefined, newsId: number): Promise<NewsInterfaceUnion> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
-    const targetTime: string = userAccess?.roles.some((role) => role === UserRole.ADMIN || role === UserRole.SUPERADMIN)
+    const targetTime: string = checkUserRoles(userAccess.roles, [UserRoles.NEWSMAKER])
       ? moment().add(7, 'days').format()
       : moment().format();
 

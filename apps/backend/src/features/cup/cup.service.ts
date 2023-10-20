@@ -1,18 +1,14 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import {
-  CheckCupRegistrationInterface,
-  CupInterface,
-  UserRole,
-  ValidationArchiveLinkInterface,
-} from '@dfcomps/contracts';
+import { CheckCupRegistrationInterface, CupInterface, ValidationArchiveLinkInterface } from '@dfcomps/contracts';
 import { AuthService } from '../auth/auth.service';
 import * as moment from 'moment';
 import { Cup } from '../../shared/entities/cup.entity';
 import { CupResult } from '../../shared/entities/cup-result.entity';
 import { UserAccessInterface } from '../../shared/interfaces/user-access.interface';
 import { mapCupEntityToInterface } from '../../shared/mappers/cup.mapper';
+import { UserRoles, checkUserRoles } from '@dfcomps/auth';
 
 @Injectable()
 export class CupService {
@@ -68,7 +64,7 @@ export class CupService {
   ): Promise<ValidationArchiveLinkInterface> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
-    if (!userAccess.userId || !userAccess.roles.includes(UserRole.VALIDATOR)) {
+    if (!userAccess.userId || !checkUserRoles(userAccess.roles, [UserRoles.VALIDATOR])) {
       throw new UnauthorizedException("Can't get demos for validation without VALIDATOR role");
     }
 

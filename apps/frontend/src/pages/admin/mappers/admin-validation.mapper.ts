@@ -1,15 +1,14 @@
-import { API_URL } from '~shared/rest-api';
-import { AdminValidationDto, PlayerDemosValidationDto } from '../models/admin-validation.dto';
 import {
-  AdminDemoValidationStatus,
+  AdminDemoValidationStatuses,
+  AdminPlayerDemosValidationInterface,
   AdminValidationInterface,
-  PlayerDemosValidationInterface,
-} from '../models/admin-validation.interface';
+} from '@dfcomps/contracts';
+import { AdminValidationDto, PlayerDemosValidationDto } from '../models/admin-validation.dto';
 
-const validationStatusesMap: Record<string, AdminDemoValidationStatus> = {
-  '0': AdminDemoValidationStatus.NOT_CHECKED,
-  '1': AdminDemoValidationStatus.VALIDATED_OK,
-  '2': AdminDemoValidationStatus.VALIDATED_FAILED,
+const validationStatusesMap: Record<string, AdminDemoValidationStatuses> = {
+  '0': AdminDemoValidationStatuses.NOT_CHECKED,
+  '1': AdminDemoValidationStatuses.VALIDATED_OK,
+  '2': AdminDemoValidationStatuses.VALIDATED_FAILED,
 };
 
 export function mapAdminValidationDtoToInterface(validationInfo: AdminValidationDto): AdminValidationInterface {
@@ -27,7 +26,7 @@ export function mapAdminValidationDtoToInterface(validationInfo: AdminValidation
   };
 }
 
-function mapPlayerDemo(playerDemos: PlayerDemosValidationDto, cupId: string): PlayerDemosValidationInterface {
+function mapPlayerDemo(playerDemos: PlayerDemosValidationDto, cupId: string): AdminPlayerDemosValidationInterface {
   return {
     nick: playerDemos.nick,
     country: playerDemos.country,
