@@ -40,4 +40,12 @@ export class AdminPageComponent implements OnInit {
   public hasSeasonAccess(user: UserInterface): boolean {
     return checkUserRoles(user, [UserRole.ADMIN]);
   }
+
+  public hasNewsAccess(user: UserInterface): boolean {
+    return checkUserRoles(user, [UserRole.NEWSMAKER]);
+  }
+
+  public hasCupsAccess(user: UserInterface): boolean {
+    return checkUserRoles(user, [UserRole.CUP_ORGANIZER]);
+  }
 }

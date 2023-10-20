@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
 import { map, Observable, of, tap } from 'rxjs';
-import { mapAdminCupsDtoToInterface } from '../mappers/admin-cups.mapper';
 import { AdminValidationInterface } from '../models/admin-validation.interface';
-import { AdminCupDto } from '../models/admin-cup.dto';
-import { AdminCupInterface } from '../models/admin-cup.interface';
 import { AdminValidationDto } from '../models/admin-validation.dto';
 import { mapAdminValidationDtoToInterface } from '../mappers/admin-validation.mapper';
 import { AdminActiveMulticupsDto } from '../models/admin-active-multicups.dto';
 import { AdminActiveMulticupInterface } from '../models/admin-active-multicup.interface';
 import { mapAdminActiveMulticupsCupsDtoToInterface } from '../mappers/admin-active-multicups.mapper';
 import { BackendService, URL_PARAMS } from '~shared/rest-api';
-import { AdminEditNewsInterface, AdminNewsListInterface, NewsTypes, AdminNewsDto } from '@dfcomps/contracts';
+import {
+  AdminEditNewsInterface,
+  AdminNewsListInterface,
+  NewsTypes,
+  AdminNewsDto,
+  AdminCupInterface,
+} from '@dfcomps/contracts';
 import * as moment from 'moment';
 
 @Injectable({
@@ -42,10 +45,9 @@ export class AdminDataService {
       return of(this.cups);
     }
 
-    return this.backendService.post$<AdminCupDto[]>(URL_PARAMS.ADMIN.GET_CUPS).pipe(
-      map(mapAdminCupsDtoToInterface),
-      tap((cups: AdminCupInterface[]) => (this.cups = cups)),
-    );
+    return this.backendService
+      .get$<AdminCupInterface[]>(URL_PARAMS.ADMIN.GET_CUPS)
+      .pipe(tap((cups: AdminCupInterface[]) => (this.cups = cups)));
   }
 
   public getCupValidationInfo$(newsId: string): Observable<AdminValidationInterface> {

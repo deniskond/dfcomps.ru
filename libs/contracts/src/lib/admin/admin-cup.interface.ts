@@ -1,7 +1,8 @@
-import { CupTypes, Physics } from '@dfcomps/contracts';
+import { CupTypes } from '../cup/cup-types.enum';
+import { Physics } from '../global/physics.enum';
 
 export interface AdminCupInterface {
-  id: string;
+  id: number;
   fullName: string;
   duration: string;
   physics: Physics | 'mixed';

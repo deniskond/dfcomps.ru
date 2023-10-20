@@ -55,3 +55,4 @@ export { AdminNewsListInterface } from './lib/admin/admin-news-list.interface';
 export { AdminNewsDto } from './lib/admin/admin-news.dto';
 export { AdminEditNewsInterface } from './lib/admin/admin-edit-news.interface';
 export { AdminCupDto } from './lib/admin/admin-cup.dto';
+export { AdminCupInterface } from './lib/admin/admin-cup.interface';

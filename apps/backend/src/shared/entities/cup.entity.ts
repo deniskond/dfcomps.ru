@@ -1,6 +1,6 @@
 import { PrimaryGeneratedColumn, Column, Entity, OneToMany, ManyToOne } from 'typeorm';
 import { CupResult } from './cup-result.entity';
-import { CupTypes } from '@dfcomps/contracts';
+import { CupTypes, Physics } from '@dfcomps/contracts';
 import { Multicup } from './multicup.entity';
 import { CupDemo } from './cup-demo.entity';
 import { RatingChange } from './rating-change.entity';
@@ -54,7 +54,7 @@ export class Cup {
   map5: string | null;
 
   @Column({ type: 'character varying' })
-  physics: string;
+  physics: Physics | 'mixed';
 
   @Column({ type: 'character varying' })
   type: CupTypes;

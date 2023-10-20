@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { AdminDataService } from '../../business/admin-data.service';
-import { AdminCupInterface } from '../../models/admin-cup.interface';
+import { AdminCupInterface } from '@dfcomps/contracts';
 
 @Component({
   selector: 'admin-cups',
