@@ -6,11 +6,13 @@ import { UserAccessInterface } from '../../../shared/interfaces/user-access.inte
 import { AuthService } from '../../auth/auth.service';
 import { AdminEditNewsInterface, AdminNewsListInterface, PostNewsDto, UserRole } from '@dfcomps/contracts';
 import { mapNewsTypeEnumToDBNewsTypeId } from '../../../shared/mappers/news-types.mapper';
+import { NewsComment } from '../../../shared/entities/news-comment.entity';
 
 @Injectable()
 export class AdminNewsService {
   constructor(
     @InjectRepository(News) private readonly newsRepository: Repository<News>,
+    @InjectRepository(NewsComment) private readonly newsCommentsRepository: Repository<NewsComment>,
     private readonly authService: AuthService,
   ) {}
 
@@ -123,5 +125,22 @@ export class AdminNewsService {
       })
       .where({ id: newsId })
       .execute();
+  }
+
+  public async deleteNews(accessToken: string | undefined, newsId: number): Promise<void> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!userAccess.userId || !userAccess.roles.includes(UserRole.NEWSMAKER)) {
+      throw new UnauthorizedException('Unauthorized to get admin news list without NEWSMAKER role');
+    }
+
+    await this.newsCommentsRepository
+      .createQueryBuilder('news_comments')
+      .delete()
+      .from(NewsComment)
+      .where({ news: { id: newsId } })
+      .execute();
+
+    await this.newsRepository.createQueryBuilder('news').delete().from(News).where({ id: newsId }).execute();
   }
 }

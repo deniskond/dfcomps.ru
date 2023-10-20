@@ -19,6 +19,14 @@ export class AdminNewsController {
     return this.adminNewsService.getSingleNews(accessToken, newsId);
   }
 
+  @Post('delete/:newsId')
+  deleteNews(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Param('newsId', new ParseIntPipe()) newsId: number,
+  ): Promise<void> {
+    return this.adminNewsService.deleteNews(accessToken, newsId);
+  }
+
   @Post('post')
   postNews(@Headers('X-Auth') accessToken: string | undefined, @Body() postNewsDto: PostNewsDto): Promise<void> {
     return this.adminNewsService.postNews(accessToken, postNewsDto);
