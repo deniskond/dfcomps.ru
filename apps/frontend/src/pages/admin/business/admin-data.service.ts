@@ -10,26 +10,26 @@ import { AdminActiveMulticupsDto } from '../models/admin-active-multicups.dto';
 import { AdminActiveMulticupInterface } from '../models/admin-active-multicup.interface';
 import { mapAdminActiveMulticupsCupsDtoToInterface } from '../mappers/admin-active-multicups.mapper';
 import { BackendService, URL_PARAMS } from '~shared/rest-api';
-import { AdminNewsInterface, NewsTypes, PostNewsDto } from '@dfcomps/contracts';
+import { AdminEditNewsInterface, AdminNewsListInterface, NewsTypes, PostNewsDto } from '@dfcomps/contracts';
 import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminDataService {
-  private news: AdminNewsInterface[];
+  private news: AdminNewsListInterface[];
   private cups: AdminCupInterface[];
 
   constructor(private backendService: BackendService) {}
 
-  public getAllNews$(cache = true): Observable<AdminNewsInterface[]> {
+  public getAllNews$(cache = true): Observable<AdminNewsListInterface[]> {
     if (this.news && cache) {
       return of(this.news);
     }
 
-    return this.backendService.get$<AdminNewsInterface[]>(URL_PARAMS.ADMIN.GET_NEWS).pipe(
+    return this.backendService.get$<AdminNewsListInterface[]>(URL_PARAMS.ADMIN.GET_NEWS).pipe(
       // map(mapAdminNewsDtoToInterface),
-      tap((news: AdminNewsInterface[]) => (this.news = news)),
+      tap((news: AdminNewsListInterface[]) => (this.news = news)),
     );
   }
 
@@ -58,7 +58,7 @@ export class AdminDataService {
     this.cups = cups;
   }
 
-  public setNews(news: AdminNewsInterface[]): void {
+  public setNews(news: AdminNewsListInterface[]): void {
     this.news = news;
   }
 
@@ -104,34 +104,15 @@ export class AdminDataService {
   }
 
   public postSimpleNews$(formValue: Record<string, any>): Observable<void> {
-    const postNewsDto: PostNewsDto = {
-      russianTitle: formValue['russianTitle'],
-      englishTitle: formValue['englishTitle'],
-      postingTime: formValue['timeOption'] === 'now' ? moment().format() : formValue['postingTime'],
-      russianText: formValue['russianText'],
-      englishText: formValue['englishText'],
-      type: NewsTypes.SIMPLE,
-      youtube: formValue['youtube'],
-    };
-
-    return this.backendService.post$<void>(URL_PARAMS.ADMIN.POST_NEWS, postNewsDto);
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.POST_NEWS, this.getPostNewsDto(formValue));
   }
 
-  // TODO Admin news typization
-  public getSingleNews$(newsId: string): Observable<any> {
-    return this.backendService.post$<any>(URL_PARAMS.ADMIN.GET_SINGLE_NEWS(newsId));
+  public getSingleNews$(newsId: string): Observable<AdminEditNewsInterface> {
+    return this.backendService.get$<any>(URL_PARAMS.ADMIN.GET_SINGLE_NEWS(newsId));
   }
 
   public editSimpleNews$(formValue: Record<string, any>, newsId: string): Observable<void> {
-    return this.backendService.post$<void>(URL_PARAMS.ADMIN.EDIT_NEWS(newsId), {
-      header: formValue['russianTitle'],
-      header_en: formValue['englishTitle'],
-      posting_time: formValue['timeOption'],
-      datetime: formValue['postingTime'],
-      text: formValue['russianText'],
-      text_en: formValue['englishText'],
-      youtube: formValue['youtube'],
-    });
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.UPDATE_NEWS(newsId), this.getPostNewsDto(formValue));
   }
 
   public getAllActiveMulticups$(): Observable<AdminActiveMulticupInterface[]> {
@@ -157,6 +138,18 @@ export class AdminDataService {
       weapons: this.getWeaponsFromForm(formValue),
       addNews: formValue['addNews'],
     });
+  }
+
+  private getPostNewsDto(formValue: Record<string, any>): PostNewsDto {
+    return {
+      russianTitle: formValue['russianTitle'],
+      englishTitle: formValue['englishTitle'],
+      postingTime: formValue['timeOption'] === 'now' ? moment().format() : formValue['postingTime'],
+      russianText: formValue['russianText'],
+      englishText: formValue['englishText'],
+      type: NewsTypes.SIMPLE,
+      youtube: formValue['youtube'],
+    };
   }
 
   private getDemoValidationResult(value: boolean | null): string {

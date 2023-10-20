@@ -1,6 +1,6 @@
 import { NewsTypes } from '@dfcomps/contracts';
 
-export interface AdminNewsInterface {
+export interface AdminNewsListInterface {
   id: number;
   headerRussian: string;
   headerEnglish: string;

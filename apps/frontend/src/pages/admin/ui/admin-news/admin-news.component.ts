@@ -6,7 +6,7 @@ import { AdminDataService } from '../../business/admin-data.service';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { UserService } from '~shared/services/user-service/user.service';
 import { checkUserRoles } from '~shared/helpers/check-roles';
-import { AdminNewsInterface, NewsTypes, UserRole } from '@dfcomps/contracts';
+import { AdminNewsListInterface, NewsTypes, UserRole } from '@dfcomps/contracts';
 import * as moment from 'moment';
 
 @Component({
@@ -16,8 +16,8 @@ import * as moment from 'moment';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminNewsComponent implements OnInit {
-  public news: AdminNewsInterface[];
-  public news$ = new ReplaySubject<AdminNewsInterface[]>(1);
+  public news: AdminNewsListInterface[];
+  public news$ = new ReplaySubject<AdminNewsListInterface[]>(1);
   public user$: Observable<UserInterface>;
 
   constructor(
@@ -27,7 +27,7 @@ export class AdminNewsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.adminDataService.getAllNews$().subscribe((news: AdminNewsInterface[]) => {
+    this.adminDataService.getAllNews$().subscribe((news: AdminNewsListInterface[]) => {
       this.news = news;
       this.news$.next(news);
     });
@@ -39,7 +39,7 @@ export class AdminNewsComponent implements OnInit {
     return moment(date).local().format('YYYY-MM-DD HH:mm:ss') + ' (local)';
   }
 
-  public confirmDelete(newsItem: AdminNewsInterface): void {
+  public confirmDelete(newsItem: AdminNewsListInterface): void {
     const snackBar = this.snackBar.open(`Are you sure you want to delete "${newsItem.headerEnglish}"?`, 'Yes', {
       duration: 3000,
     });
@@ -51,7 +51,7 @@ export class AdminNewsComponent implements OnInit {
         switchMap(() => this.adminDataService.deleteNewsItem$(newsItem.id)),
       )
       .subscribe(() => {
-        this.news = this.news.filter((item: AdminNewsInterface) => item.id !== newsItem.id);
+        this.news = this.news.filter((item: AdminNewsListInterface) => item.id !== newsItem.id);
         this.news$.next(this.news);
         this.adminDataService.setNews(this.news);
         this.snackBar.open(`Successfully deleted "${newsItem.headerEnglish}"!`, '', { duration: 1000 });

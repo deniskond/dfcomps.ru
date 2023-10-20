@@ -6,6 +6,7 @@ import { AdminDataService } from '../../business/admin-data.service';
 import { AdminOperationType } from '../../models/admin-operation-type.enum';
 import * as moment from 'moment';
 import { debounceTime, Observable, startWith, switchMap } from 'rxjs';
+import { AdminEditNewsInterface } from '@dfcomps/contracts';
 
 @Component({
   selector: 'admin-add-simple-news',
@@ -107,16 +108,16 @@ export class AdminSimpleNewsComponent implements OnInit {
     }
 
     if (this.operationType === AdminOperationType.EDIT) {
-      this.adminDataService.getSingleNews$(this.newsId).subscribe((singleNews: any) => {
+      this.adminDataService.getSingleNews$(this.newsId).subscribe((singleNews: AdminEditNewsInterface) => {
         this.addSimpleNewsForm = new FormGroup(
           {
-            russianTitle: new FormControl(singleNews.news.header, Validators.required),
-            englishTitle: new FormControl(singleNews.news.header_en, Validators.required),
+            russianTitle: new FormControl(singleNews.newsItem.headerRussian, Validators.required),
+            englishTitle: new FormControl(singleNews.newsItem.headerEnglish, Validators.required),
             timeOption: new FormControl('custom', Validators.required),
-            postingTime: new FormControl(this.mapDateTimeZoneToInput(singleNews.news.datetimezone)),
-            russianText: new FormControl(singleNews.news.text, Validators.required),
-            englishText: new FormControl(singleNews.news.text_en, Validators.required),
-            youtube: new FormControl(singleNews.news.youtube),
+            postingTime: new FormControl(this.mapDateTimeZoneToInput(singleNews.newsItem.date)),
+            russianText: new FormControl(singleNews.newsItem.textRussian, Validators.required),
+            englishText: new FormControl(singleNews.newsItem.textEnglish, Validators.required),
+            youtube: new FormControl(singleNews.newsItem.youtube),
           },
           this.postingTimeValidator(),
         );
