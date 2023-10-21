@@ -94,7 +94,7 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
   }
 
   public getDemoLink(demoName: string, matchId: string): string {
-    return `/api/uploads/demos/matches/match${matchId}/${demoName}`;
+    return `/uploads/demos/matches/match${matchId}/${demoName}`;
   }
 
   public getMatchResult(playersInfo: DuelPlayersInfoInterface): string {
