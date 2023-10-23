@@ -23,4 +23,6 @@ export class AdminCupsComponent implements OnInit {
   }
 
   public confirmDelete(): void {}
+
+  public calculateRatings(cupId: number): void {}
 }

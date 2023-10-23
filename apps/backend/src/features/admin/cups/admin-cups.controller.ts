@@ -57,4 +57,12 @@ export class AdminCupsController {
   ): Promise<void> {
     return this.adminCupsService.processValidation(accessToken, processValidationDto, cupId);
   }
+
+  @Post('calculate-rating/:cupId')
+  calculateRating(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Param('cupId', new ParseIntPipe()) cupId: number,
+  ): Promise<void> {
+    return this.adminCupsService.calculateRating(accessToken, cupId);
+  }
 }

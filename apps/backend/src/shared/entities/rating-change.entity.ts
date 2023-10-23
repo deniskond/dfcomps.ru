@@ -32,6 +32,6 @@ export class RatingChange {
   @ManyToOne(() => Cup)
   cup: Cup;
 
-  @ManyToOne(() => Multicup)
-  multicup: Multicup;
+  @ManyToOne(() => Multicup, { nullable: true })
+  multicup: Multicup | null;
 }

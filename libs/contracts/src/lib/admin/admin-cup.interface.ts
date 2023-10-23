@@ -8,4 +8,5 @@ export interface AdminCupInterface {
   physics: Physics | 'mixed';
   type: CupTypes;
   validationAvailable: boolean;
+  calculateRatingsAvailable: boolean;
 }
