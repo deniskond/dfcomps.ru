@@ -31,10 +31,9 @@ export class AdminDataService {
       return of(this.news);
     }
 
-    return this.backendService.get$<AdminNewsListInterface[]>(URL_PARAMS.ADMIN.GET_NEWS).pipe(
-      // map(mapAdminNewsDtoToInterface),
-      tap((news: AdminNewsListInterface[]) => (this.news = news)),
-    );
+    return this.backendService
+      .get$<AdminNewsListInterface[]>(URL_PARAMS.ADMIN.GET_NEWS)
+      .pipe(tap((news: AdminNewsListInterface[]) => (this.news = news)));
   }
 
   public deleteNewsItem$(newsId: number): Observable<void> {
@@ -107,7 +106,7 @@ export class AdminDataService {
   }
 
   public getSingleNews$(newsId: string): Observable<AdminEditNewsInterface> {
-    return this.backendService.get$<any>(URL_PARAMS.ADMIN.GET_SINGLE_NEWS(newsId));
+    return this.backendService.get$<AdminEditNewsInterface>(URL_PARAMS.ADMIN.GET_SINGLE_NEWS(newsId));
   }
 
   public editSimpleNews$(formValue: Record<string, any>, newsId: string): Observable<void> {
@@ -137,6 +136,10 @@ export class AdminDataService {
       weapons: this.getWeaponsFromForm(formValue),
       addNews: formValue['addNews'],
     });
+  }
+
+  public calculateCupRating$(cupId: number): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.CALCULATE_CUP_RATING(cupId));
   }
 
   private getAdminNewsDto(formValue: Record<string, any>): AdminNewsDto {

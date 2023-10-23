@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject, switchMap } from 'rxjs';
 import { AdminDataService } from '../../business/admin-data.service';
 import { AdminCupInterface } from '@dfcomps/contracts';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'admin-cups',
@@ -13,7 +14,10 @@ export class AdminCupsComponent implements OnInit {
   public cups: AdminCupInterface[];
   public cups$ = new ReplaySubject<AdminCupInterface[]>(1);
 
-  constructor(private adminDataService: AdminDataService) {}
+  constructor(
+    private adminDataService: AdminDataService,
+    private snackBar: MatSnackBar,
+  ) {}
 
   ngOnInit(): void {
     this.adminDataService.getAllCups$().subscribe((cups: AdminCupInterface[]) => {
@@ -24,5 +28,13 @@ export class AdminCupsComponent implements OnInit {
 
   public confirmDelete(): void {}
 
-  public calculateRatings(cupId: number): void {}
+  public calculateRatings(cupId: number): void {
+    this.adminDataService
+      .calculateCupRating$(cupId)
+      .pipe(switchMap(() => this.adminDataService.getAllCups$(false)))
+      .subscribe((cups: AdminCupInterface[]) => {
+        this.cups$.next(cups);
+        this.snackBar.open('Ratings calculated successfully', 'OK', { duration: 2000 });
+      });
+  }
 }
