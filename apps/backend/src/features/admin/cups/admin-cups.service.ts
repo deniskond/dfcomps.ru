@@ -7,6 +7,8 @@ import {
   AdminValidationInterface,
   CupTypes,
   Physics,
+  ProcessValidationDto,
+  ValidationResultInterface,
 } from '@dfcomps/contracts';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cup } from '../../../shared/entities/cup.entity';
@@ -79,6 +81,43 @@ export class AdminCupsService {
       vq3Demos: await this.getPhysicsDemos(cupId, Physics.VQ3),
       cpmDemos: await this.getPhysicsDemos(cupId, Physics.CPM),
     };
+  }
+
+  public async processValidation(
+    accessToken: string | undefined,
+    { validationResults, allDemosCount }: ProcessValidationDto,
+    cupId: number,
+  ): Promise<void> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.VALIDATOR])) {
+      throw new UnauthorizedException('Unauthorized to set validation results, VALIDATOR role needed');
+    }
+
+    const cup: Cup | null = await this.cupsRepository.createQueryBuilder('cups').where({ id: cupId }).getOne();
+
+    if (!cup) {
+      throw new NotFoundException(`Cup with id = ${cupId} not found`);
+    }
+
+    const targetEntries: Partial<CupDemo>[] = validationResults.map(
+      ({ id, validationStatus, reason }: ValidationResultInterface) => ({
+        id,
+        reason,
+        verified_status: validationStatus,
+      }),
+    );
+
+    await this.cupsDemosRepository.save(targetEntries);
+
+    if (moment().isAfter(moment(cup.end_datetime)) && targetEntries.length === allDemosCount) {
+      await this.cupsRepository
+        .createQueryBuilder()
+        .update(Cup)
+        .set({ demos_validated: true })
+        .where({ id: cupId })
+        .execute();
+    }
   }
 
   private async getPhysicsDemos(cupId: number, physics: Physics): Promise<AdminPlayerDemosValidationInterface[]> {

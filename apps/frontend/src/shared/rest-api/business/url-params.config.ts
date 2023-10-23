@@ -178,8 +178,8 @@ export class URL_PARAMS {
     UPDATE_NEWS: (newsId: string) => string;
     DELETE_NEWS: (newsId: number) => string;
     GET_CUPS: string;
-    CUP_VALIDATION: (cupId: string) => string;
-    PROCESS_VALIDATE: string;
+    CUP_VALIDATION: (cupId: number) => string;
+    PROCESS_VALIDATION: (cupId: number) => string;
     CALCULATE_CUP_RATING: string;
     FINISH_CUP: string;
     GET_ALL_ACTIVE_MULTICUPS: string;
@@ -198,8 +198,8 @@ export class URL_PARAMS {
       UPDATE_NEWS: (newsId: string) => `${API_URL}/admin/news/update/${newsId}`, // New backend done
       DELETE_NEWS: (newsId: number) => `${API_URL}/admin/news/delete/${newsId}`, // New backend done
       GET_CUPS: `${API_URL}/admin/cups/get-all-cups`, // New backend done
-      CUP_VALIDATION: (cupId: string) => `${API_URL}/admin/cups/get-validation-demos/${cupId}`, // New backend done
-      PROCESS_VALIDATE: `${API_URL}/admin/cups/process_validate_v2`, // Not done
+      CUP_VALIDATION: (cupId: number) => `${API_URL}/admin/cups/get-validation-demos/${cupId}`, // New backend done
+      PROCESS_VALIDATION: (cupId: number) => `${API_URL}/admin/cups/process-validation/${cupId}`, // Not done
       CALCULATE_CUP_RATING: ``, // Not done
       FINISH_CUP: ``, // Not done
       GET_ALL_ACTIVE_MULTICUPS: `${API_URL}/admin/cups/get_all_active_multicups`, // Not done

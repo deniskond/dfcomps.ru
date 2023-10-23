@@ -11,6 +11,9 @@ import {
   AdminNewsDto,
   AdminCupInterface,
   AdminValidationInterface,
+  ValidationResultInterface,
+  VerifiedStatuses,
+  ProcessValidationDto,
 } from '@dfcomps/contracts';
 import * as moment from 'moment';
 
@@ -48,7 +51,7 @@ export class AdminDataService {
       .pipe(tap((cups: AdminCupInterface[]) => (this.cups = cups)));
   }
 
-  public getCupValidationInfo$(newsId: string): Observable<AdminValidationInterface> {
+  public getCupValidationInfo$(newsId: number): Observable<AdminValidationInterface> {
     return this.backendService.get$<AdminValidationInterface>(URL_PARAMS.ADMIN.CUP_VALIDATION(newsId));
   }
 
@@ -76,29 +79,27 @@ export class AdminDataService {
     return this.backendService.post$<void>(URL_PARAMS.ADMIN.INCREMENT_SEASON);
   }
 
-  public sendValidationResult$(formValue: Record<string, boolean | string>, cupId: string): Observable<void> {
-    const demosIds: string[] = Object.keys(formValue).reduce((acc: string[], controlKey) => {
+  public sendValidationResult$(formValue: Record<string, boolean | string | null>, cupId: number): Observable<void> {
+    const demosIds: number[] = Object.keys(formValue).reduce((acc: number[], controlKey) => {
       if (controlKey.match(/demo/)) {
-        acc.push(controlKey.split('_')[1]);
+        acc.push(parseInt(controlKey.split('_')[1]));
       }
 
       return acc;
     }, []);
 
-    const postParams: Record<string, string> = demosIds.reduce((acc, demoId: string, index) => {
-      return {
-        ...acc,
-        [index + 1 + '_id']: demoId,
-        [index + 1 + '_valid']: this.getDemoValidationResult(formValue['demo_' + demoId] as boolean | null),
-        [index + 1 + '_reason']: formValue['reason_' + demoId].toString(),
-      };
-    }, {});
+    const validationResults: ValidationResultInterface[] = demosIds.map((demoId: number) => ({
+      id: demoId,
+      validationStatus: this.getDemoValidationResult(formValue['demo_' + demoId] as boolean | null),
+      reason: formValue['reason_' + demoId]!.toString(),
+    }));
 
-    return this.backendService.post$<void>(URL_PARAMS.ADMIN.PROCESS_VALIDATE, {
-      ...postParams,
-      count: demosIds.length.toString(),
-      cup_id: cupId,
-    });
+    const processValidationDto = {
+      validationResults: JSON.stringify(validationResults) as any,
+      allDemosCount: demosIds.length,
+    };
+
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.PROCESS_VALIDATION(cupId), processValidationDto);
   }
 
   public postSimpleNews$(formValue: Record<string, any>): Observable<void> {
@@ -150,16 +151,16 @@ export class AdminDataService {
     };
   }
 
-  private getDemoValidationResult(value: boolean | null): string {
+  private getDemoValidationResult(value: boolean | null): VerifiedStatuses {
     if (value === null) {
-      return '0';
+      return VerifiedStatuses.UNWATCHED;
     }
 
     if (value === true) {
-      return '1';
+      return VerifiedStatuses.VALID;
     }
 
-    return '2';
+    return VerifiedStatuses.INVALID;
   }
 
   private getWeaponsFromForm(formValue: Record<string, any>): string {

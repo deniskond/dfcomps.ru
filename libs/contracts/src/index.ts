@@ -55,3 +55,5 @@ export { AdminCupDto } from './lib/admin/admin-cup.dto';
 export { AdminCupInterface } from './lib/admin/admin-cup.interface';
 export { AdminValidationInterface } from './lib/admin/admin-validation.models';
 export { AdminPlayerDemosValidationInterface } from './lib/admin/admin-validation.models';
+export { ProcessValidationDto } from './lib/admin/process-validation.dto';
+export { ValidationResultInterface } from './lib/admin/validation-result.interface';

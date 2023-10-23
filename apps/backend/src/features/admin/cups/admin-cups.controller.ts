@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Headers, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { AdminCupsService } from './admin-cups.service';
-import { AdminCupDto, AdminValidationInterface } from '@dfcomps/contracts';
+import { AdminCupDto, AdminValidationInterface, ProcessValidationDto } from '@dfcomps/contracts';
 
 @Controller('admin/cups')
 export class AdminCupsController {
@@ -47,5 +47,14 @@ export class AdminCupsController {
     @Param('cupId', new ParseIntPipe()) cupId: number,
   ): Promise<AdminValidationInterface> {
     return this.adminCupsService.getValidationDemos(accessToken, cupId);
+  }
+
+  @Post('process-validation/:cupId')
+  processValidate(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Body() processValidationDto: ProcessValidationDto,
+    @Param('cupId', new ParseIntPipe()) cupId: number,
+  ): Promise<void> {
+    return this.adminCupsService.processValidation(accessToken, processValidationDto, cupId);
   }
 }

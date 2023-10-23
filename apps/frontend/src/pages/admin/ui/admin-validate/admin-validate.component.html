@@ -1,9 +1,5 @@
 <mat-card class="validation-table-card">
   <ng-container *ngIf="cupValidationInfo$ | async as cupValidationInfo; else isLoading">
-    <div class="card-header">VQ3 Demos for {{ cupValidationInfo.cupInfo.fullName }}</div>
-    <ng-container *ngTemplateOutlet="demosList; context: { $implicit: cupValidationInfo.vq3Demos }"></ng-container>
-    <div class="card-header">CPM Demos for {{ cupValidationInfo.cupInfo.fullName }}</div>
-    <ng-container *ngTemplateOutlet="demosList; context: { $implicit: cupValidationInfo.cpmDemos }"></ng-container>
     <div>
       <button (click)="setAllDemosValid()" color="accent" mat-raised-button class="action-button">
         Set all demos valid
@@ -12,6 +8,10 @@
         Submit validation result
       </button>
     </div>
+    <div class="card-header">VQ3 Demos for {{ cupValidationInfo.cupInfo.fullName }}</div>
+    <ng-container *ngTemplateOutlet="demosList; context: { $implicit: cupValidationInfo.vq3Demos }"></ng-container>
+    <div class="card-header">CPM Demos for {{ cupValidationInfo.cupInfo.fullName }}</div>
+    <ng-container *ngTemplateOutlet="demosList; context: { $implicit: cupValidationInfo.cpmDemos }"></ng-container>
   </ng-container>
   <ng-template #demosList let-players>
     <form [formGroup]="validationForm">
@@ -31,7 +31,7 @@
           </div>
           <div class="cell demos">
             <div *ngFor="let demo of player.demos" class="demo-cell">
-              <a [href]="demo.demoLink" download>{{ demo.time | invokeFunction : formatTime }}</a>
+              <a [href]="demo.demoLink" download>{{ demo.time | invokeFunction: formatTime }}</a>
             </div>
           </div>
           <div class="cell demos">
