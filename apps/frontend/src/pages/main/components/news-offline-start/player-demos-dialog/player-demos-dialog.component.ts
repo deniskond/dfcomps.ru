@@ -1,9 +1,9 @@
 import { Component, Inject, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UploadedDemoInterface } from '@dfcomps/contracts';
+import { formatResultTime } from '@dfcomps/helpers';
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { formatResultTime } from '~shared/helpers/result-time.helper';
 import { DemosService } from '~shared/services/demos/demos.service';
 import { LanguageService } from '~shared/services/language/language.service';
 

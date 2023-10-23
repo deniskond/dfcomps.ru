@@ -31,7 +31,7 @@
           </div>
           <div class="cell demos">
             <div *ngFor="let demo of player.demos" class="demo-cell">
-              <a [href]="demo.demoLink" download>{{ demo.time }}</a>
+              <a [href]="demo.demoLink" download>{{ demo.time | invokeFunction : formatTime }}</a>
             </div>
           </div>
           <div class="cell demos">

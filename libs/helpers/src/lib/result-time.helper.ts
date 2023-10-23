@@ -1,6 +1,6 @@
-export function formatResultTime(stringTime: string): string {
+export function formatResultTime(stringTime: string | number): string {
   let result = '';
-  let time = parseFloat(stringTime);
+  let time = parseFloat(stringTime.toString());
   const minutes = Math.floor(time / 60);
 
   if (minutes !== 0) {

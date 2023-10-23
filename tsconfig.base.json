@@ -23,6 +23,9 @@
       ],
       "@dfcomps/contracts": [
         "libs/contracts/src/index.ts"
+      ],
+      "@dfcomps/helpers": [
+        "libs/helpers/src/index.ts"
       ]
     }
   },

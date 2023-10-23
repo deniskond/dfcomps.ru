@@ -4,11 +4,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params } from '@angular/router';
 import { map, Observable, switchMap, take, tap } from 'rxjs';
 import { AdminDataService } from '../../business/admin-data.service';
-import {
-  AdminDemoValidationStatuses,
-  AdminPlayerDemosValidationInterface,
-  AdminValidationInterface,
-} from '@dfcomps/contracts';
+import { AdminPlayerDemosValidationInterface, AdminValidationInterface, VerifiedStatuses } from '@dfcomps/contracts';
+import { formatResultTime } from '@dfcomps/helpers';
 
 @Component({
   selector: 'dfcomps.ru-admin-validate',
@@ -18,7 +15,7 @@ import {
 })
 export class AdminValidateComponent implements OnInit {
   public cupValidationInfo$: Observable<AdminValidationInterface>;
-  public adminDemoValidationStatuses = AdminDemoValidationStatuses;
+  public demoValidationStatuses = VerifiedStatuses;
   public validationForm: FormGroup;
 
   constructor(
@@ -57,6 +54,10 @@ export class AdminValidateComponent implements OnInit {
       .subscribe(() => this.snackBar.open('Validation results submitted successfully!', '', { duration: 2000 }));
   }
 
+  public formatTime(time: number): string {
+    return formatResultTime(time);
+  }
+
   private initValidationForm(cupValidationInfo: AdminValidationInterface): void {
     const cpmControls = this.getFormPhysicsControls(cupValidationInfo.cpmDemos);
     const vq3Controls = this.getFormPhysicsControls(cupValidationInfo.vq3Demos);
@@ -65,11 +66,11 @@ export class AdminValidateComponent implements OnInit {
     this.changeDetectorRef.markForCheck();
   }
 
-  private getValidationControlValue(validationStatus: AdminDemoValidationStatuses): boolean | null {
-    const validationStatusMap: Record<AdminDemoValidationStatuses, boolean | null> = {
-      [AdminDemoValidationStatuses.NOT_CHECKED]: null,
-      [AdminDemoValidationStatuses.VALIDATED_OK]: true,
-      [AdminDemoValidationStatuses.VALIDATED_FAILED]: false,
+  private getValidationControlValue(validationStatus: VerifiedStatuses): boolean | null {
+    const validationStatusMap: Record<VerifiedStatuses, boolean | null> = {
+      [VerifiedStatuses.UNWATCHED]: null,
+      [VerifiedStatuses.VALID]: true,
+      [VerifiedStatuses.INVALID]: false,
     };
 
     return validationStatusMap[validationStatus];

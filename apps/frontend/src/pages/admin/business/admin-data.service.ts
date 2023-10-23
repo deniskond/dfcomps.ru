@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { map, Observable, of, tap } from 'rxjs';
-import { AdminValidationDto } from '../models/admin-validation.dto';
-import { mapAdminValidationDtoToInterface } from '../mappers/admin-validation.mapper';
 import { AdminActiveMulticupsDto } from '../models/admin-active-multicups.dto';
 import { AdminActiveMulticupInterface } from '../models/admin-active-multicup.interface';
 import { mapAdminActiveMulticupsCupsDtoToInterface } from '../mappers/admin-active-multicups.mapper';
@@ -51,9 +49,7 @@ export class AdminDataService {
   }
 
   public getCupValidationInfo$(newsId: string): Observable<AdminValidationInterface> {
-    return this.backendService
-      .post$<AdminValidationDto>(URL_PARAMS.ADMIN.CUP_VALIDATION(newsId))
-      .pipe(map(mapAdminValidationDtoToInterface));
+    return this.backendService.get$<AdminValidationInterface>(URL_PARAMS.ADMIN.CUP_VALIDATION(newsId));
   }
 
   public setCups(cups: AdminCupInterface[]): void {

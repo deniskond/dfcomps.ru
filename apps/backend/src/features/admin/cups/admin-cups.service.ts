@@ -1,18 +1,28 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from '../../auth/auth.service';
-import { AdminCupDto, AdminCupInterface, AdminValidationInterface, CupTypes } from '@dfcomps/contracts';
+import {
+  AdminCupDto,
+  AdminCupInterface,
+  AdminPlayerDemosValidationInterface,
+  AdminValidationInterface,
+  CupTypes,
+  Physics,
+} from '@dfcomps/contracts';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cup } from '../../../shared/entities/cup.entity';
 import { Repository } from 'typeorm';
 import { getHumanTime } from '../../../shared/helpers/get-human-time';
 import { UserAccessInterface } from '../../../shared/interfaces/user-access.interface';
-import { UserRoles, checkUserRoles } from '@dfcomps/auth';
+import { UserRoles, checkUserRoles, isSuperadmin } from '@dfcomps/auth';
+import * as moment from 'moment';
+import { CupDemo } from '../../../shared/entities/cup-demo.entity';
 
 @Injectable()
 export class AdminCupsService {
   constructor(
     private readonly authService: AuthService,
     @InjectRepository(Cup) private readonly cupsRepository: Repository<Cup>,
+    @InjectRepository(CupDemo) private readonly cupsDemosRepository: Repository<CupDemo>,
   ) {}
 
   public async getAllCups(accessToken: string | undefined): Promise<AdminCupInterface[]> {
@@ -51,8 +61,82 @@ export class AdminCupsService {
       throw new UnauthorizedException('Unauthorized to get validation demos, VALIDATOR role needed');
     }
 
-    return { accessToken, cupId } as any;
+    const cup: Cup | null = await this.cupsRepository.createQueryBuilder('cups').where({ id: cupId }).getOne();
+
+    if (!cup) {
+      throw new NotFoundException(`Cup with id = ${cupId} not found`);
+    }
+
+    if (moment().isBefore(cup.end_datetime) && !isSuperadmin(userAccess.roles)) {
+      throw new UnauthorizedException('Unauthorized to get demos before competition end');
+    }
+
+    return {
+      cupInfo: {
+        id: cupId,
+        fullName: cup.full_name,
+      },
+      vq3Demos: await this.getPhysicsDemos(cupId, Physics.VQ3),
+      cpmDemos: await this.getPhysicsDemos(cupId, Physics.CPM),
+    };
   }
 
-  private async getPhysicsDemos(): Promise<any> {}
+  private async getPhysicsDemos(cupId: number, physics: Physics): Promise<AdminPlayerDemosValidationInterface[]> {
+    const demos: CupDemo[] = await this.cupsDemosRepository
+      .createQueryBuilder('cups_demos')
+      .leftJoinAndSelect('cups_demos.user', 'users')
+      .where('cups_demos.cupId = :cupId', { cupId })
+      .andWhere('cups_demos.physics = :physics', { physics })
+      .getMany();
+
+    const demosByPlayer: AdminPlayerDemosValidationInterface[] = demos.reduce<AdminPlayerDemosValidationInterface[]>(
+      (demos: AdminPlayerDemosValidationInterface[], playerDemo: CupDemo) => {
+        const playerDemoIndex = demos.findIndex(
+          (demo: AdminPlayerDemosValidationInterface) => demo.nick === playerDemo.user.displayed_nick,
+        );
+
+        if (playerDemoIndex !== -1) {
+          type Unpacked<T> = T extends (infer U)[] ? U : T;
+
+          const addedDemo: Unpacked<AdminPlayerDemosValidationInterface['demos']> = {
+            time: playerDemo.time,
+            validationStatus: playerDemo.verified_status,
+            validationFailedReason: playerDemo.reason,
+            demoLink: `/uploads/demos/cup${cupId}/${playerDemo.demopath}`,
+            id: playerDemo.id,
+          };
+
+          demos[playerDemoIndex].demos.push(addedDemo);
+
+          return demos;
+        }
+
+        const addedDemo: AdminPlayerDemosValidationInterface = {
+          nick: playerDemo.user.displayed_nick,
+          country: playerDemo.user.country,
+          demos: [
+            {
+              time: playerDemo.time,
+              validationStatus: playerDemo.verified_status,
+              validationFailedReason: playerDemo.reason,
+              demoLink: `/uploads/demos/cup${cupId}/${playerDemo.demopath}`,
+              id: playerDemo.id,
+            },
+          ],
+        };
+
+        return [...demos, addedDemo];
+      },
+      [],
+    );
+
+    const sortedDemos: AdminPlayerDemosValidationInterface[] = demosByPlayer
+      .map((playerDemos: AdminPlayerDemosValidationInterface) => ({
+        ...playerDemos,
+        demos: playerDemos.demos.sort((demo1, demo2) => demo1.time - demo2.time),
+      }))
+      .sort((player1, player2) => player1.demos[0].time - player2.demos[0].time);
+
+    return sortedDemos;
+  }
 }

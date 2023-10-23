@@ -11,6 +11,6 @@ export function checkUserRoles(userRoles: UserRoles[], rolesToCheck: UserRoles[]
   return userRoles.some((userRole: UserRoles) => targetRolesToCheck.some((role: UserRoles) => role === userRole));
 }
 
-export function checkIfSuperadmin(userRoles: UserRoles[]): boolean {
+export function isSuperadmin(userRoles: UserRoles[]): boolean {
   return userRoles.some((userRole: UserRoles) => userRole === UserRoles.SUPERADMIN);
 }

@@ -5,7 +5,7 @@ import { isNonNull } from '../../../../shared/helpers/is-non-null';
 import { AdminCurrentPageService } from '../../business/admin-current-page.service';
 import { UserService } from '~shared/services/user-service/user.service';
 import { UserInterface } from '~shared/interfaces/user.interface';
-import { UserRoles, checkIfSuperadmin, checkUserRoles } from '@dfcomps/auth';
+import { UserRoles, checkUserRoles, isSuperadmin } from '@dfcomps/auth';
 
 @Component({
   selector: 'admin-page',
@@ -37,7 +37,7 @@ export class AdminPageComponent implements OnInit {
   }
 
   public hasSeasonAccess(user: UserInterface): boolean {
-    return checkIfSuperadmin(user.roles);
+    return isSuperadmin(user.roles);
   }
 
   public hasNewsAccess(user: UserInterface): boolean {

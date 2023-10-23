@@ -2,8 +2,8 @@ import { Component, Input, OnInit, OnChanges, SimpleChanges, ChangeDetectionStra
 import { MulticupRoundInterface } from '../../interfaces/multicup-round.interface';
 import { MulticupRoundResultInterface } from '../../interfaces/multicup-round-result.interface';
 import { PlayerCellStyles } from '~shared/components/player-cell/enums/player-cell-styles.enum';
-import { formatResultTime } from '~shared/helpers/result-time.helper';
 import { getTablePlaces } from '~shared/helpers/table-places.helper';
+import { formatResultTime } from '@dfcomps/helpers';
 
 @Component({
   selector: 'app-cup-round',
