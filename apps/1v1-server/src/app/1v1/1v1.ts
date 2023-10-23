@@ -13,12 +13,12 @@ import { MatchInterface } from './interfaces/match.interface';
 import { PickbanMapServerInterface } from './interfaces/pickban-map-server.interface';
 import { ServerMatchInterface } from './interfaces/server-match.interface';
 import { maps } from './constants/maps';
-import { routes } from './config/routes';
 import { TimingsConfig } from './config/timing';
 import { QueueInfoMessageInterface } from './interfaces/queue-info-message.interface';
 import { QueueInfoInterface } from './interfaces/queue-info.interface';
 import { TEST_PLAYER_ID } from './constants/test-player-id';
 import { MapInterface } from './interfaces/map.interface';
+import { URLS } from './config/urls';
 
 interface QueueInterface {
   playerId: string;
@@ -39,21 +39,20 @@ export class OneVOneHandler {
   private eligiblePlayers: string[] = [];
 
   public setEligiblePlayersSubscription(): void {
-    this.doAxiosPostRequest(`${this.getRoutePrefix()}/legacy-api/match/get_eligible_players`, {}).then(
-      ({ data }: AxiosResponse) => {
-        console.log(`Setting eligible players: ${JSON.stringify(data)}`);
-        this.eligiblePlayers = data.players;
-      },
-    );
+    this.doAxiosPostRequest(URLS.MATCH.GET_ELIGIBLE_PLAYERS, {}).then(({ data }: AxiosResponse) => {
+      console.log(`Setting eligible players: ${JSON.stringify(data)}`);
+      this.eligiblePlayers = data.players;
+    });
 
-    setInterval(() => {
-      this.doAxiosPostRequest(`${this.getRoutePrefix()}/legacy-api/match/get_eligible_players`, {}).then(
-        ({ data }: AxiosResponse) => {
+    setInterval(
+      () => {
+        this.doAxiosPostRequest(URLS.MATCH.GET_ELIGIBLE_PLAYERS, {}).then(({ data }: AxiosResponse) => {
           console.log(`Setting eligible players: ${JSON.stringify(data)}`);
           this.eligiblePlayers = data.players;
-        },
-      );
-    }, 1000 * 60 * 60 * 24);
+        });
+      },
+      1000 * 60 * 60 * 24,
+    );
   }
 
   public addClient(playerId: string, socket: WebSocket, uniqueId: string): void {
@@ -333,7 +332,7 @@ export class OneVOneHandler {
       bannedMapsCount: 0,
     };
 
-    this.doAxiosPostRequest(`${this.getRoutePrefix()}/legacy-api/match/start`, {
+    this.doAxiosPostRequest(URLS.MATCH.START, {
       firstPlayerId,
       secondPlayerId,
       physics,
@@ -506,7 +505,7 @@ export class OneVOneHandler {
         .find((map: PickbanMapServerInterface) => !map.isBannedByFirstPlayer && !map.isBannedBySecondPlayer);
 
       if (pickedMap) {
-        this.doAxiosPostRequest(`${this.getRoutePrefix()}/legacy-api/match/update_match_info`, {
+        this.doAxiosPostRequest(URLS.MATCH.UPDATE_MATCH_INFO, {
           firstPlayerId: match.firstPlayerId,
           secondPlayerId: match.secondPlayerId,
           map: JSON.stringify(pickedMap.map),
@@ -514,7 +513,7 @@ export class OneVOneHandler {
         });
 
         if (match.firstPlayerId === '-1' || match.secondPlayerId === '-1') {
-          this.doAxiosPostRequest(`${this.getRoutePrefix()}/legacy-api/match/update_bot_time`, {
+          this.doAxiosPostRequest(URLS.MATCH.UPDATE_BOT_TIME, {
             firstPlayerId: match.firstPlayerId,
             secondPlayerId: match.secondPlayerId,
             physics: match.physics,
@@ -600,7 +599,7 @@ export class OneVOneHandler {
       .pipe(
         switchMap(() =>
           from(
-            this.doAxiosPostRequest(`${this.getRoutePrefix()}/legacy-api/match/finish`, {
+            this.doAxiosPostRequest(URLS.MATCH.FINISH, {
               firstPlayerId,
               secondPlayerId,
               secretKey: process.env.DUELS_SERVER_PRIVATE_KEY || '',
@@ -660,10 +659,6 @@ export class OneVOneHandler {
     Object.entries(formData).forEach(([key, value]: [string, any]) => params.append(key, value));
 
     return axios.post(url, params);
-  }
-
-  private getRoutePrefix(): string {
-    return process.env.NODE_ENV ? routes[process.env.NODE_ENV] : 'http://localhost';
   }
 
   private sendUpdatedQueueInfoToAllClients(): Promise<void[]> {

@@ -10,7 +10,7 @@ const envMap: Record<string, string> = {
 export const MAIN_URL = envMap[environment.name];
 export const API_URL = MAIN_URL;
 
-// New backend status: 40 / 45 endpoints done
+// New backend status: 41 / 49 endpoints done
 export class URL_PARAMS {
   public static get WEBSOCKET_1V1_URL(): string {
     const websocketEnvMap: Record<string, string> = {
@@ -180,8 +180,12 @@ export class URL_PARAMS {
     GET_CUPS: string;
     CUP_VALIDATION: (cupId: string) => string;
     PROCESS_VALIDATE: string;
+    CALCULATE_CUP_RATING: string;
+    FINISH_CUP: string;
     GET_ALL_ACTIVE_MULTICUPS: string;
     ADD_CUP: string;
+    EDIT_CUP: string;
+    DELETE_CUP: string;
     SET_SEASON_REWARDS: string;
     SAVE_SEASON_RATINGS: string;
     RESET_SEASON_RATINGS: string;
@@ -194,10 +198,14 @@ export class URL_PARAMS {
       UPDATE_NEWS: (newsId: string) => `${API_URL}/admin/news/update/${newsId}`, // New backend done
       DELETE_NEWS: (newsId: number) => `${API_URL}/admin/news/delete/${newsId}`, // New backend done
       GET_CUPS: `${API_URL}/admin/cups/get-all-cups`, // New backend done
-      CUP_VALIDATION: (cupId: string) => `${API_URL}/admin/cups/get-validation-demos/${cupId}`, // Not done
+      CUP_VALIDATION: (cupId: string) => `${API_URL}/admin/cups/get-validation-demos/${cupId}`, // New backend done
       PROCESS_VALIDATE: `${API_URL}/admin/cups/process_validate_v2`, // Not done
+      CALCULATE_CUP_RATING: ``, // Not done
+      FINISH_CUP: ``, // Not done
       GET_ALL_ACTIVE_MULTICUPS: `${API_URL}/admin/cups/get_all_active_multicups`, // Not done
       ADD_CUP: `${API_URL}/admin/cups/add_v2`, // Not done
+      EDIT_CUP: ``, // Not done
+      DELETE_CUP: ``, // Not done
       SET_SEASON_REWARDS: `${API_URL}/admin/season/rewards`, // Not blocking
       SAVE_SEASON_RATINGS: `${API_URL}/admin/season/save_season_ratings`, // Not blocking
       RESET_SEASON_RATINGS: `${API_URL}/admin/season/reset_season_ratings`, // Not blocking
