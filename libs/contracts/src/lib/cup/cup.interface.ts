@@ -1,7 +1,7 @@
 import { CupTypes, Physics } from '@dfcomps/contracts';
 
 export interface CupInterface {
-  archiveLink: string;
+  archiveLink: string | null;
   bonusRating: number;
   currentRound: number;
   demosValidated: boolean;

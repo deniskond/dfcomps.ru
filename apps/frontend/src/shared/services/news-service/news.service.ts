@@ -63,6 +63,6 @@ export class NewsService extends BackendService {
   }
 
   public getDemosForValidation$(cupId: number): Observable<ValidationArchiveLinkInterface> {
-    return this.post$(URL_PARAMS.CUP.VALIDATION_ARCHIVE_LINK(cupId));
+    return this.get$(URL_PARAMS.CUP.VALIDATION_ARCHIVE_LINK(cupId));
   }
 }

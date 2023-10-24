@@ -71,8 +71,8 @@ export class Cup {
   @Column({ type: 'character varying' })
   map_size: string;
 
-  @Column({ type: 'character varying' })
-  archive_link: string;
+  @Column({ type: 'character varying', nullable: true })
+  archive_link: string | null;
 
   @Column({ type: 'integer' })
   bonus_rating: number;
@@ -86,8 +86,8 @@ export class Cup {
   @Column({ type: 'character varying' })
   custom_news: string;
 
-  @Column({ type: 'character varying' })
-  validation_archive_link: string;
+  @Column({ type: 'character varying', nullable: true })
+  validation_archive_link: string | null;
 
   @Column({ type: 'integer' })
   start_time: number;
