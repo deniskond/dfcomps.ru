@@ -80,7 +80,11 @@ export class TablesService {
     const cupDemos: CupDemo[] = await this.cupsDemosRepository
       .createQueryBuilder('cups_demos')
       .leftJoinAndSelect('cups_demos.user', 'users')
-      .leftJoinAndSelect('users.ratingChanges', 'rating_changes', 'cups_demos.cupId = rating_changes.cupId')
+      .leftJoinAndSelect(
+        'users.ratingChanges',
+        'rating_changes',
+        'cups_demos.cupId = rating_changes.cupId AND cups_demos.userId = rating_changes.userId',
+      )
       .where('cups_demos.physics = :physics', { physics })
       .andWhere('cups_demos.cupId = :cupId', { cupId: cup.id })
       .getMany();
@@ -100,13 +104,17 @@ export class TablesService {
           verified_status === VerifiedStatuses.VALID || verified_status === VerifiedStatuses.UNWATCHED,
       )
       .reduce((demos: ValidDemoInterface[], demo: CupDemo) => {
+        const userPhysicsRatingChanges: RatingChange[] = demo.user.ratingChanges.filter(
+          (ratingChange: RatingChange) => !!ratingChange[`${physics}_change`],
+        );
+
         const ratingChange: number | null =
           physics === Physics.CPM
-            ? demo.user.ratingChanges[0]?.cpm_change || null
-            : demo.user.ratingChanges[0]?.vq3_change || null;
+            ? userPhysicsRatingChanges[0]?.cpm_change || null
+            : userPhysicsRatingChanges[0]?.vq3_change || null;
 
         const mappedDemo: ValidDemoInterface = {
-          bonus: demo.user.ratingChanges[0]?.bonus || null,
+          bonus: userPhysicsRatingChanges[0]?.bonus || null,
           change: ratingChange,
           country: demo.user.country,
           demopath: demo.demopath,
