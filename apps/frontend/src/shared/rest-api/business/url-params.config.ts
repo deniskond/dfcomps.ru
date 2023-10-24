@@ -10,7 +10,7 @@ const envMap: Record<string, string> = {
 export const MAIN_URL = envMap[environment.name];
 export const API_URL = MAIN_URL;
 
-// New backend status: 43 / 49 endpoints done
+// New backend status: 45 / 49 endpoints done
 export class URL_PARAMS {
   public static get WEBSOCKET_1V1_URL(): string {
     const websocketEnvMap: Record<string, string> = {
@@ -159,7 +159,7 @@ export class URL_PARAMS {
       REGISTER: (cupId: number) => `${API_URL}/cup/register/${cupId}`, // Not blocking
       CANCEL_REGISTRATION: (cupId: number) => `${API_URL}/cup/cancel_registration/${cupId}`, // Not blocking
       CHECK_REGISTRATION: () => `${API_URL}/cup/is-registered`, // Not blocking
-      VALIDATION_ARCHIVE_LINK: (cupId: number) => `${API_URL}/cup/validation-archive-link/${cupId}`, // Not done
+      VALIDATION_ARCHIVE_LINK: (cupId: number) => `${API_URL}/cup/validation-archive-link/${cupId}`, // New backend done
     };
   }
 
@@ -181,7 +181,7 @@ export class URL_PARAMS {
     CUP_VALIDATION: (cupId: number) => string;
     PROCESS_VALIDATION: (cupId: number) => string;
     CALCULATE_CUP_RATING: (cupId: number) => string;
-    FINISH_CUP: string;
+    FINISH_OFFLINE_CUP: (cupId: number) => string;
     GET_ALL_ACTIVE_MULTICUPS: string;
     ADD_CUP: string;
     EDIT_CUP: string;
@@ -201,7 +201,7 @@ export class URL_PARAMS {
       CUP_VALIDATION: (cupId: number) => `${API_URL}/admin/cups/get-validation-demos/${cupId}`, // New backend done
       PROCESS_VALIDATION: (cupId: number) => `${API_URL}/admin/cups/process-validation/${cupId}`, // New backend done
       CALCULATE_CUP_RATING: (cupId: number) => `${API_URL}/admin/cups/calculate-rating/${cupId}`, // New backend done
-      FINISH_CUP: ``, // Not done
+      FINISH_OFFLINE_CUP: (cupId: number) => `${API_URL}/admin/cups/finish-offline-cup/${cupId}`, // New backend done
       GET_ALL_ACTIVE_MULTICUPS: `${API_URL}/admin/cups/get_all_active_multicups`, // Not done
       ADD_CUP: `${API_URL}/admin/cups/add_v2`, // Not done
       EDIT_CUP: ``, // Not done

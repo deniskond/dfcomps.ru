@@ -51,6 +51,7 @@ export class AdminValidateComponent implements OnInit {
         take(1),
         map((params: Params) => parseInt(params['id'])),
         switchMap((cupId: number) => this.adminDataService.sendValidationResult$(this.validationForm.value, cupId)),
+        switchMap(() => this.adminDataService.getAllCups$(false)),
       )
       .subscribe(() => {
         this.router.navigate(['/admin/cups']);

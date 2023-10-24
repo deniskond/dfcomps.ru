@@ -31,11 +31,11 @@
         </button>
         <button
           *ngIf="cup.calculateRatingsAvailable"
-          (click)="calculateRatings(cup.id)"
+          (click)="finishCup(cup.id)"
           mat-raised-button
           color="primary"
         >
-          Calculate ratings
+          Finish cup
         </button>
         <ng-container *ngIf="!cup.validationAvailable && !cup.calculateRatingsAvailable">
           No actions available

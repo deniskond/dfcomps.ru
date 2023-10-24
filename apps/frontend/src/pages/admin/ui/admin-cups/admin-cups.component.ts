@@ -28,13 +28,16 @@ export class AdminCupsComponent implements OnInit {
 
   public confirmDelete(): void {}
 
-  public calculateRatings(cupId: number): void {
+  public finishCup(cupId: number): void {
     this.adminDataService
       .calculateCupRating$(cupId)
-      .pipe(switchMap(() => this.adminDataService.getAllCups$(false)))
+      .pipe(
+        switchMap(() => this.adminDataService.finishOfflineCup$(cupId)),
+        switchMap(() => this.adminDataService.getAllCups$(false)),
+      )
       .subscribe((cups: AdminCupInterface[]) => {
         this.cups$.next(cups);
-        this.snackBar.open('Ratings calculated successfully', 'OK', { duration: 2000 });
+        this.snackBar.open('Cup finished successfully', 'OK', { duration: 2000 });
       });
   }
 }

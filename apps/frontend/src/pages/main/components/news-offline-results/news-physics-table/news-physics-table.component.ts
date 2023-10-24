@@ -15,7 +15,7 @@ import { formatResultTime } from '@dfcomps/helpers';
 export class NewsPhysicsTableComponent implements OnInit {
   @Input() physics: Physics;
   @Input() physicsTable: ValidDemoInterface[];
-  @Input() archiveLink: string;
+  @Input() archiveLink: string | null;
   @Input() maxDemosCount: number;
   @Input() cup: CupInterface;
   @Input() customTable: boolean;

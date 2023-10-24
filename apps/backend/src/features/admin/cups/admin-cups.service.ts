@@ -14,8 +14,10 @@ import {
   CupTypes,
   Physics,
   ProcessValidationDto,
+  ResultsTableInterface,
   ValidDemoInterface,
   ValidationResultInterface,
+  VerifiedStatuses,
 } from '@dfcomps/contracts';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cup } from '../../../shared/entities/cup.entity';
@@ -30,6 +32,8 @@ import { User } from '../../../shared/entities/user.entity';
 import { TableEntryWithRatingInterface } from './table-entry-with-rating.interface';
 import { RatingChange } from '../../../shared/entities/rating-change.entity';
 import { Season } from '../../../shared/entities/season.entity';
+import * as Zip from 'adm-zip';
+import * as fs from 'fs';
 
 @Injectable()
 export class AdminCupsService {
@@ -155,7 +159,7 @@ export class AdminCupsService {
     }
 
     if (!cup.demos_validated) {
-      throw new BadRequestException("Can't calculate rating (demos are not validated yet)");
+      throw new BadRequestException("Can't calculate rating - demos are not validated yet");
     }
 
     if (cup.type === CupTypes.OFFLINE) {
@@ -173,6 +177,70 @@ export class AdminCupsService {
       .set({ rating_calculated: true })
       .where({ id: cupId })
       .execute();
+  }
+
+  public async finishOfflineCup(accessToken: string | undefined, cupId: number): Promise<void> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.VALIDATOR])) {
+      throw new UnauthorizedException('Unauthorized to finish cup, VALIDATOR role needed');
+    }
+
+    const cup: Cup | null = await this.cupsRepository.createQueryBuilder('cups').where({ id: cupId }).getOne();
+
+    if (!cup) {
+      throw new NotFoundException(`No cup with cup id = ${cupId}`);
+    }
+
+    if (!cup.rating_calculated) {
+      throw new BadRequestException("Can't finish cup - rating was not calculated yet");
+    }
+
+    if (!cup.demos_validated) {
+      throw new BadRequestException("Can't finish cup - demos are not validated yet");
+    }
+
+    const vq3Table: ResultsTableInterface = await this.tablesService.getOfflineCupTable(cup, Physics.VQ3);
+    const cpmTable: ResultsTableInterface = await this.tablesService.getOfflineCupTable(cup, Physics.CPM);
+    const cupName: string = cup.full_name.replace(/#/g, '').replace(/\s/g, '_');
+    const zip = new Zip();
+    const archiveFileName = `${cupName}_all_demos.zip`;
+    const archiveFilePath = process.env.DFCOMPS_FILE_UPLOAD_PATH + `/demos/cup${cupId}/${archiveFileName}`;
+
+    if (fs.existsSync(archiveFilePath)) {
+      fs.rmSync(archiveFilePath);
+    }
+
+    vq3Table.valid.forEach((demo: ValidDemoInterface) => {
+      zip.addLocalFile(process.env.DFCOMPS_FILE_UPLOAD_PATH + `/demos/cup${cupId}/${demo.demopath}`, 'vq3');
+    });
+
+    cpmTable.valid.forEach((demo: ValidDemoInterface) => {
+      zip.addLocalFile(process.env.DFCOMPS_FILE_UPLOAD_PATH + `/demos/cup${cupId}/${demo.demopath}`, 'cpm');
+    });
+
+    zip.writeZip(archiveFilePath);
+
+    const allValidDemos: CupDemo[] = await this.cupsDemosRepository
+      .createQueryBuilder('cups_demos')
+      .where('cups_demos.cupId = :cupId', { cupId })
+      .andWhere({ verified_status: VerifiedStatuses.VALID })
+      .getMany();
+
+    allValidDemos.forEach(({ demopath }: CupDemo) => {
+      const fileName = process.env.DFCOMPS_FILE_UPLOAD_PATH + `/demos/cup${cupId}/${demopath}`;
+
+      if (fs.existsSync(fileName)) {
+        fs.rmSync(fileName);
+      }
+    });
+
+    const cupValidationArchiveFileName =
+      process.env.DFCOMPS_FILE_UPLOAD_PATH + `/demos/cup${cupId}/${cup.validation_archive_link}`;
+
+    if (fs.existsSync(cupValidationArchiveFileName)) {
+      fs.rmSync(cupValidationArchiveFileName);
+    }
   }
 
   private async getPhysicsDemos(cupId: number, physics: Physics): Promise<AdminPlayerDemosValidationInterface[]> {

@@ -142,6 +142,10 @@ export class AdminDataService {
     return this.backendService.post$<void>(URL_PARAMS.ADMIN.CALCULATE_CUP_RATING(cupId));
   }
 
+  public finishOfflineCup$(cupId: number): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.FINISH_OFFLINE_CUP(cupId));
+  }
+
   private getAdminNewsDto(formValue: Record<string, any>): AdminNewsDto {
     return {
       russianTitle: formValue['russianTitle'],

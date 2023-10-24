@@ -89,7 +89,7 @@ export class CupService {
 
     if (cup.validation_archive_link) {
       return {
-        url: cup.validation_archive_link,
+        filename: cup.validation_archive_link,
       };
     }
 
@@ -97,11 +97,12 @@ export class CupService {
     const cpmTable: ResultsTableInterface = await this.tablesService.getOfflineCupTable(cup, Physics.CPM);
     const cupName: string = cup.full_name.replace(/#/g, '').replace(/\s/g, '_');
     const zip = new Zip();
-    const validationArchiveLink =
-      process.env.DFCOMPS_FILE_UPLOAD_PATH + `/demos/cup${cupId}/${cupName}_all_demos_validation.zip`;
+    const validationArchiveFileName = `${cupName}_all_demos_validation.zip`;
+    const validationArchiveFilePath = 
+      process.env.DFCOMPS_FILE_UPLOAD_PATH + `/demos/cup${cupId}/${validationArchiveFileName}`;
 
-    if (fs.existsSync(validationArchiveLink)) {
-      fs.rmSync(validationArchiveLink);
+    if (fs.existsSync(validationArchiveFilePath)) {
+      fs.rmSync(validationArchiveFilePath);
     }
 
     const allCupDemos: CupDemo[] = await this.cupDemosRepository
@@ -129,17 +130,17 @@ export class CupService {
       zip.addLocalFile(process.env.DFCOMPS_FILE_UPLOAD_PATH + `/demos/cup${cupId}/${demo.demopath}`, 'bonus');
     });
 
-    zip.writeZip(validationArchiveLink);
+    zip.writeZip(validationArchiveFilePath);
 
     await this.cupRepository
       .createQueryBuilder()
       .update(Cup)
-      .set({ validation_archive_link: validationArchiveLink })
+      .set({ validation_archive_link: validationArchiveFileName })
       .where({ id: cupId })
       .execute();
 
     return {
-      url: validationArchiveLink,
+      filename: validationArchiveFileName,
     };
   }
 
