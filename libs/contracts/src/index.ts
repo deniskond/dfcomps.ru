@@ -57,3 +57,4 @@ export { AdminValidationInterface } from './lib/admin/admin-validation.models';
 export { AdminPlayerDemosValidationInterface } from './lib/admin/admin-validation.models';
 export { ProcessValidationDto } from './lib/admin/process-validation.dto';
 export { ValidationResultInterface } from './lib/admin/validation-result.interface';
+export { AdminActiveMulticupInterface } from './lib/admin/admin-active-multicup.interface';

@@ -10,7 +10,7 @@ const envMap: Record<string, string> = {
 export const MAIN_URL = envMap[environment.name];
 export const API_URL = MAIN_URL;
 
-// New backend status: 45 / 49 endpoints done
+// New backend status: 46 / 49 endpoints done
 export class URL_PARAMS {
   public static get WEBSOCKET_1V1_URL(): string {
     const websocketEnvMap: Record<string, string> = {
@@ -202,7 +202,7 @@ export class URL_PARAMS {
       PROCESS_VALIDATION: (cupId: number) => `${API_URL}/admin/cups/process-validation/${cupId}`, // New backend done
       CALCULATE_CUP_RATING: (cupId: number) => `${API_URL}/admin/cups/calculate-rating/${cupId}`, // New backend done
       FINISH_OFFLINE_CUP: (cupId: number) => `${API_URL}/admin/cups/finish-offline-cup/${cupId}`, // New backend done
-      GET_ALL_ACTIVE_MULTICUPS: `${API_URL}/admin/cups/get_all_active_multicups`, // Not done
+      GET_ALL_ACTIVE_MULTICUPS: `${API_URL}/admin/cups/get-all-active-multicups`, // New backend done
       ADD_CUP: `${API_URL}/admin/cups/add_v2`, // Not done
       EDIT_CUP: ``, // Not done
       DELETE_CUP: ``, // Not done

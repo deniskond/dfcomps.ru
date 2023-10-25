@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 import { map, Observable, of, tap } from 'rxjs';
-import { AdminActiveMulticupsDto } from '../models/admin-active-multicups.dto';
-import { AdminActiveMulticupInterface } from '../models/admin-active-multicup.interface';
-import { mapAdminActiveMulticupsCupsDtoToInterface } from '../mappers/admin-active-multicups.mapper';
 import { BackendService, URL_PARAMS } from '~shared/rest-api';
 import {
   AdminEditNewsInterface,
@@ -13,7 +10,7 @@ import {
   AdminValidationInterface,
   ValidationResultInterface,
   VerifiedStatuses,
-  ProcessValidationDto,
+  AdminActiveMulticupInterface,
 } from '@dfcomps/contracts';
 import * as moment from 'moment';
 
@@ -114,9 +111,7 @@ export class AdminDataService {
   }
 
   public getAllActiveMulticups$(): Observable<AdminActiveMulticupInterface[]> {
-    return this.backendService
-      .post$<AdminActiveMulticupsDto>(URL_PARAMS.ADMIN.GET_ALL_ACTIVE_MULTICUPS)
-      .pipe(map(mapAdminActiveMulticupsCupsDtoToInterface));
+    return this.backendService.post$<AdminActiveMulticupInterface[]>(URL_PARAMS.ADMIN.GET_ALL_ACTIVE_MULTICUPS);
   }
 
   public addMulticupRound$(formValue: Record<string, any>, files: Record<string, any>): Observable<void> {

@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable, switchMap } from 'rxjs';
 import { AdminDataService } from '../../business/admin-data.service';
-import { AdminActiveMulticupInterface } from '../../models/admin-active-multicup.interface';
+import { AdminActiveMulticupInterface } from '@dfcomps/contracts';
 
 @Component({
   selector: 'admin-add-multicup-round',
@@ -41,7 +41,11 @@ export class AdminAddMulticupRoundComponent implements OnInit {
     addNews: new FormControl(true),
   });
 
-  constructor(private adminDataService: AdminDataService, private snackBar: MatSnackBar, private router: Router) {}
+  constructor(
+    private adminDataService: AdminDataService,
+    private snackBar: MatSnackBar,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.activeMulticups$ = this.adminDataService.getAllActiveMulticups$();

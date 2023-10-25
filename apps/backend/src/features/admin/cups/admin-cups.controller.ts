@@ -1,6 +1,11 @@
 import { Body, Controller, Get, Headers, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { AdminCupsService } from './admin-cups.service';
-import { AdminCupDto, AdminValidationInterface, ProcessValidationDto } from '@dfcomps/contracts';
+import {
+  AdminActiveMulticupInterface,
+  AdminCupDto,
+  AdminValidationInterface,
+  ProcessValidationDto,
+} from '@dfcomps/contracts';
 
 @Controller('admin/cups')
 export class AdminCupsController {
@@ -72,5 +77,10 @@ export class AdminCupsController {
     @Param('cupId', new ParseIntPipe()) cupId: number,
   ): Promise<void> {
     return this.adminCupsService.finishOfflineCup(accessToken, cupId);
+  }
+
+  @Get('get-all-active-multicups')
+  getAllActiveMulticups(): Promise<AdminActiveMulticupInterface[]> {
+    return this.adminCupsService.getAllActiveMulticups();
   }
 }

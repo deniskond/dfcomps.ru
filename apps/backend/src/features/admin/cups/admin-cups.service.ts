@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from '../../auth/auth.service';
 import {
+  AdminActiveMulticupInterface,
   AdminCupDto,
   AdminCupInterface,
   AdminPlayerDemosValidationInterface,
@@ -34,6 +35,7 @@ import { RatingChange } from '../../../shared/entities/rating-change.entity';
 import { Season } from '../../../shared/entities/season.entity';
 import * as Zip from 'adm-zip';
 import * as fs from 'fs';
+import { Multicup } from '../../../shared/entities/multicup.entity';
 
 @Injectable()
 export class AdminCupsService {
@@ -41,6 +43,7 @@ export class AdminCupsService {
     private readonly authService: AuthService,
     private readonly tablesService: TablesService,
     @InjectRepository(Cup) private readonly cupsRepository: Repository<Cup>,
+    @InjectRepository(Multicup) private readonly multicupsRepository: Repository<Multicup>,
     @InjectRepository(CupDemo) private readonly cupsDemosRepository: Repository<CupDemo>,
     @InjectRepository(Season) private readonly seasonRepository: Repository<Season>,
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
@@ -241,6 +244,20 @@ export class AdminCupsService {
     if (fs.existsSync(cupValidationArchiveFileName)) {
       fs.rmSync(cupValidationArchiveFileName);
     }
+  }
+
+  public async getAllActiveMulticups(): Promise<AdminActiveMulticupInterface[]> {
+    const multicups: Multicup[] = await this.multicupsRepository
+      .createQueryBuilder('multicups')
+      .leftJoinAndSelect('multicups.cups', 'cups')
+      .getMany();
+
+    return multicups
+      .filter((multicup: Multicup) => multicup.cups.length !== multicup.rounds)
+      .map((multicup: Multicup) => ({
+        multicupId: multicup.id,
+        name: multicup.name,
+      }));
   }
 
   private async getPhysicsDemos(cupId: number, physics: Physics): Promise<AdminPlayerDemosValidationInterface[]> {

@@ -1,4 +1,4 @@
 export interface AdminActiveMulticupInterface {
-  multicupId: string;
+  multicupId: number;
   name: string;
 }
