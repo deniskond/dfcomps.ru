@@ -11,6 +11,7 @@ import {
   ValidationResultInterface,
   VerifiedStatuses,
   AdminActiveMulticupInterface,
+  WorldspawnMapInfoInterface,
 } from '@dfcomps/contracts';
 import * as moment from 'moment';
 
@@ -111,7 +112,7 @@ export class AdminDataService {
   }
 
   public getAllActiveMulticups$(): Observable<AdminActiveMulticupInterface[]> {
-    return this.backendService.post$<AdminActiveMulticupInterface[]>(URL_PARAMS.ADMIN.GET_ALL_ACTIVE_MULTICUPS);
+    return this.backendService.get$<AdminActiveMulticupInterface[]>(URL_PARAMS.ADMIN.GET_ALL_ACTIVE_MULTICUPS);
   }
 
   public addMulticupRound$(formValue: Record<string, any>, files: Record<string, any>): Observable<void> {
@@ -139,6 +140,11 @@ export class AdminDataService {
 
   public finishOfflineCup$(cupId: number): Observable<void> {
     return this.backendService.post$<void>(URL_PARAMS.ADMIN.FINISH_OFFLINE_CUP(cupId));
+  }
+  public getWorldspawnMapInfo$(map: string): Observable<WorldspawnMapInfoInterface> {
+    return this.backendService.post$<WorldspawnMapInfoInterface>(URL_PARAMS.ADMIN.GET_WORLDSPAWN_MAP_INFO, {
+      map,
+    });
   }
 
   private getAdminNewsDto(formValue: Record<string, any>): AdminNewsDto {

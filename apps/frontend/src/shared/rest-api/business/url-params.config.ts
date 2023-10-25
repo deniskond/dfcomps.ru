@@ -190,6 +190,7 @@ export class URL_PARAMS {
     SAVE_SEASON_RATINGS: string;
     RESET_SEASON_RATINGS: string;
     INCREMENT_SEASON: string;
+    GET_WORLDSPAWN_MAP_INFO: string;
   } {
     return {
       GET_NEWS: `${API_URL}/admin/news/get-all-news`, // New backend done
@@ -210,6 +211,7 @@ export class URL_PARAMS {
       SAVE_SEASON_RATINGS: `${API_URL}/admin/season/save_season_ratings`, // Not blocking
       RESET_SEASON_RATINGS: `${API_URL}/admin/season/reset_season_ratings`, // Not blocking
       INCREMENT_SEASON: `${API_URL}/admin/season/increment`, // Not blocking
+      GET_WORLDSPAWN_MAP_INFO: `${API_URL}/admin/cups/get-worldspawn-map-info`, // Not done
     };
   }
 }
