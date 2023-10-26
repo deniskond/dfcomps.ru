@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Headers, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
 import { AdminCupsService } from './admin-cups.service';
 import {
   AdminActiveMulticupInterface,
   AdminCupDto,
   AdminValidationInterface,
   ProcessValidationDto,
+  WorldspawnMapInfoInterface,
 } from '@dfcomps/contracts';
 
 @Controller('admin/cups')
@@ -82,5 +83,13 @@ export class AdminCupsController {
   @Get('get-all-active-multicups')
   getAllActiveMulticups(): Promise<AdminActiveMulticupInterface[]> {
     return this.adminCupsService.getAllActiveMulticups();
+  }
+
+  @Get('get-worldspawn-map-info')
+  getWorldspawnMapInfo(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Query() { map }: Record<string, string>,
+  ): Promise<WorldspawnMapInfoInterface> {
+    return this.adminCupsService.getWorldspawnMapInfo(accessToken, map);
   }
 }

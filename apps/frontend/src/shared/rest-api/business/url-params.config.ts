@@ -184,6 +184,8 @@ export class URL_PARAMS {
     FINISH_OFFLINE_CUP: (cupId: number) => string;
     GET_ALL_ACTIVE_MULTICUPS: string;
     ADD_CUP: string;
+    UPLOAD_MAP: string;
+    UPLOAD_LEVELSHOT: string;
     EDIT_CUP: string;
     DELETE_CUP: string;
     SET_SEASON_REWARDS: string;
@@ -204,7 +206,9 @@ export class URL_PARAMS {
       CALCULATE_CUP_RATING: (cupId: number) => `${API_URL}/admin/cups/calculate-rating/${cupId}`, // New backend done
       FINISH_OFFLINE_CUP: (cupId: number) => `${API_URL}/admin/cups/finish-offline-cup/${cupId}`, // New backend done
       GET_ALL_ACTIVE_MULTICUPS: `${API_URL}/admin/cups/get-all-active-multicups`, // New backend done
-      ADD_CUP: `${API_URL}/admin/cups/add_v2`, // Not done
+      ADD_CUP: `${API_URL}/admin/cups/add`, // Not done
+      UPLOAD_MAP: `${API_URL}/admin/cups/upload-map`, // Not done
+      UPLOAD_LEVELSHOT: `${API_URL}/admin/cups/upload-levelshot`, // Not done
       EDIT_CUP: ``, // Not done
       DELETE_CUP: ``, // Not done
       SET_SEASON_REWARDS: `${API_URL}/admin/season/rewards`, // Not blocking

@@ -12,7 +12,7 @@ export class BackendService {
     private authService: AuthService,
   ) {}
 
-  public get$<T>(url: string, params?: Record<string, string>): Observable<T> {
+  public get$<T>(url: string, params?: Record<string, any>): Observable<T> {
     return this.httpClient.get<T>(url, { ...this.getCustomHeaders(), params });
   }
 

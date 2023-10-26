@@ -59,3 +59,4 @@ export { ProcessValidationDto } from './lib/admin/process-validation.dto';
 export { ValidationResultInterface } from './lib/admin/validation-result.interface';
 export { AdminActiveMulticupInterface } from './lib/admin/admin-active-multicup.interface';
 export { WorldspawnMapInfoInterface } from './lib/admin/worldspawn-map-info.interface';
+export { UploadedFileLinkInterface } from './lib/global/uploaded-file-link.interface';

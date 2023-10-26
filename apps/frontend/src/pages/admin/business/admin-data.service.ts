@@ -12,6 +12,7 @@ import {
   VerifiedStatuses,
   AdminActiveMulticupInterface,
   WorldspawnMapInfoInterface,
+  UploadedFileLinkInterface,
 } from '@dfcomps/contracts';
 import * as moment from 'moment';
 
@@ -115,13 +116,8 @@ export class AdminDataService {
     return this.backendService.get$<AdminActiveMulticupInterface[]>(URL_PARAMS.ADMIN.GET_ALL_ACTIVE_MULTICUPS);
   }
 
-  public addMulticupRound$(formValue: Record<string, any>, files: Record<string, any>): Observable<void> {
-    const mappedFiles: { fileKey: string; file: any }[] = Object.keys(files).map((key: string) => ({
-      fileKey: key,
-      file: files[key],
-    }));
-
-    return this.backendService.uploadFile$(URL_PARAMS.ADMIN.ADD_CUP, mappedFiles, {
+  public addCup$(formValue: Record<string, any>): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.ADD_CUP, {
       fullName: formValue['fullName'],
       shortName: formValue['shortName'],
       startTime: formValue['startTime'],
@@ -131,6 +127,9 @@ export class AdminDataService {
       mapAuthor: formValue['mapAuthor'],
       weapons: this.getWeaponsFromForm(formValue),
       addNews: formValue['addNews'],
+      size: formValue['size'],
+      mapLevelshotLink: formValue['mapLevelshotLink'],
+      mapPk3Link: formValue['mapPk3Link'],
     });
   }
 
@@ -141,10 +140,19 @@ export class AdminDataService {
   public finishOfflineCup$(cupId: number): Observable<void> {
     return this.backendService.post$<void>(URL_PARAMS.ADMIN.FINISH_OFFLINE_CUP(cupId));
   }
+
   public getWorldspawnMapInfo$(map: string): Observable<WorldspawnMapInfoInterface> {
-    return this.backendService.post$<WorldspawnMapInfoInterface>(URL_PARAMS.ADMIN.GET_WORLDSPAWN_MAP_INFO, {
+    return this.backendService.get$<WorldspawnMapInfoInterface>(URL_PARAMS.ADMIN.GET_WORLDSPAWN_MAP_INFO, {
       map,
     });
+  }
+
+  public addCustomMap$(map: File): Observable<UploadedFileLinkInterface> {
+    return this.backendService.uploadFile$(URL_PARAMS.ADMIN.UPLOAD_MAP, [{ fileKey: 'file', file: map }]);
+  }
+
+  public addCustomLevelshot$(levelshot: File): Observable<UploadedFileLinkInterface> {
+    return this.backendService.uploadFile$(URL_PARAMS.ADMIN.UPLOAD_MAP, [{ fileKey: 'file', file: levelshot }]);
   }
 
   private getAdminNewsDto(formValue: Record<string, any>): AdminNewsDto {

@@ -66,7 +66,7 @@
           Field is required
         </div>
         <div *ngIf="isMapFound === true" class="field-ok">Map was found on ws.q3df.org</div>
-        <div *ngIf="isMapFound === false" class="field-error">Map is not found on ws.q3df.org</div>
+        <div *ngIf="isMapFound === false" class="field-error">Map was not found on ws.q3df.org</div>
       </div>
       <div class="input-title">Map pk3</div>
       <div>
@@ -173,6 +173,7 @@
         <mat-checkbox color="primary" formControlName="addNews"></mat-checkbox>
       </div>
     </div>
+    <input type="hidden" formControlName="size" />
     <button [disabled]="isLoadingMapInfo" (click)="submit()" mat-raised-button color="accent" class="submit-button">
       Add cup
     </button>
