@@ -17,11 +17,11 @@ export class Cup {
   @Column({ type: 'character varying' })
   short_name: string;
 
-  @Column({ type: 'character varying' })
-  youtube: string;
+  @Column({ type: 'character varying', nullable: true })
+  youtube: string | null;
 
-  @Column({ type: 'character varying' })
-  twitch: string;
+  @Column({ type: 'character varying', nullable: true })
+  twitch: string | null;
 
   @Column({ type: 'integer' })
   current_round: number;
@@ -77,23 +77,17 @@ export class Cup {
   @Column({ type: 'integer' })
   bonus_rating: number;
 
-  @Column({ type: 'character varying' })
-  system: string;
+  @Column({ type: 'character varying', nullable: true })
+  system: string | null;
 
-  @Column({ type: 'character varying' })
-  custom_map: string;
+  @Column({ type: 'character varying', nullable: true })
+  custom_map: string | null;
 
-  @Column({ type: 'character varying' })
-  custom_news: string;
+  @Column({ type: 'character varying', nullable: true })
+  custom_news: string | null;
 
   @Column({ type: 'character varying', nullable: true })
   validation_archive_link: string | null;
-
-  @Column({ type: 'integer' })
-  start_time: number;
-
-  @Column({ type: 'integer' })
-  end_time: number;
 
   @Column({ type: 'boolean' })
   timer: boolean;

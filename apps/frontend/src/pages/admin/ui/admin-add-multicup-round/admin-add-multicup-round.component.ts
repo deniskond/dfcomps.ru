@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -69,9 +69,9 @@ export class AdminAddMulticupRoundComponent implements OnInit {
     shotgun: new FormControl({ value: false, disabled: true }, Validators.required),
     grapplingHook: new FormControl({ value: false, disabled: true }, Validators.required),
     mapLevelshotLink: new FormControl({ value: '', disabled: true }),
-    mapLevelshotFile: new FormControl('', Validators.required),
+    mapLevelshotFile: new FormControl({ value: '', disabled: true }, Validators.required),
     mapPk3Link: new FormControl({ value: '', disabled: true }),
-    mapPk3File: new FormControl('', Validators.required),
+    mapPk3File: new FormControl({ value: '', disabled: true }, Validators.required),
     addNews: new FormControl(true),
     size: new FormControl(''),
   });
@@ -80,6 +80,7 @@ export class AdminAddMulticupRoundComponent implements OnInit {
     private adminDataService: AdminDataService,
     private snackBar: MatSnackBar,
     private router: Router,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -104,11 +105,11 @@ export class AdminAddMulticupRoundComponent implements OnInit {
     this.addMulticupRoundForm
       .get('mapName')!
       .valueChanges.pipe(
+        tap(() => (this.isMapFound = null)),
         filter((value: string) => !!value && !this.isCustomMap),
         debounceTime(500),
         tap(() => {
           this.isLoadingMapInfo = true;
-          this.isMapFound = null;
         }),
         switchMap((value: string) =>
           this.adminDataService.getWorldspawnMapInfo$(value).pipe(catchError(() => of(null))),
@@ -120,11 +121,13 @@ export class AdminAddMulticupRoundComponent implements OnInit {
 
         if (!mapInfo) {
           this.isMapFound = false;
+          this.changeDetectorRef.markForCheck();
           return;
         }
 
         this.setMapInfoFormValues(mapInfo);
         this.isMapFound = true;
+        this.changeDetectorRef.markForCheck();
       });
   }
 

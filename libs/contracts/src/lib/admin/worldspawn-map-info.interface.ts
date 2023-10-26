@@ -1,6 +1,6 @@
 export interface WorldspawnMapInfoInterface {
   name: string;
-  size: number;
+  size: string;
   author: string;
   pk3: string;
   levelshot: string;

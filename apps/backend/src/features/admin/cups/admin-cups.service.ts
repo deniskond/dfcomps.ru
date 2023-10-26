@@ -8,15 +8,17 @@ import {
 } from '@nestjs/common';
 import { AuthService } from '../../auth/auth.service';
 import {
+  AddCupDto,
   AdminActiveMulticupInterface,
-  AdminCupDto,
   AdminCupInterface,
   AdminPlayerDemosValidationInterface,
   AdminValidationInterface,
   CupTypes,
+  NewsTypes,
   Physics,
   ProcessValidationDto,
   ResultsTableInterface,
+  UploadedFileLinkInterface,
   ValidDemoInterface,
   ValidationResultInterface,
   VerifiedStatuses,
@@ -24,7 +26,7 @@ import {
 } from '@dfcomps/contracts';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cup } from '../../../shared/entities/cup.entity';
-import { DeepPartial, Repository } from 'typeorm';
+import { DeepPartial, InsertResult, Repository } from 'typeorm';
 import { getHumanTime } from '../../../shared/helpers/get-human-time';
 import { UserAccessInterface } from '../../../shared/interfaces/user-access.interface';
 import { UserRoles, checkUserRoles, isSuperadmin } from '@dfcomps/auth';
@@ -39,7 +41,10 @@ import * as Zip from 'adm-zip';
 import * as fs from 'fs';
 import { Multicup } from '../../../shared/entities/multicup.entity';
 import axios from 'axios';
-import { getMapLevelshot } from 'apps/backend/src/shared/helpers/get-map-levelshot';
+import { getMapLevelshot } from '../../../shared/helpers/get-map-levelshot';
+import { v4 } from 'uuid';
+import { News } from '../../../shared/entities/news.entity';
+import { mapNewsTypeEnumToDBNewsTypeId } from 'apps/backend/src/shared/mappers/news-types.mapper';
 
 @Injectable()
 export class AdminCupsService {
@@ -47,6 +52,7 @@ export class AdminCupsService {
     private readonly authService: AuthService,
     private readonly tablesService: TablesService,
     @InjectRepository(Cup) private readonly cupsRepository: Repository<Cup>,
+    @InjectRepository(News) private readonly newsRepository: Repository<News>,
     @InjectRepository(Multicup) private readonly multicupsRepository: Repository<Multicup>,
     @InjectRepository(CupDemo) private readonly cupsDemosRepository: Repository<CupDemo>,
     @InjectRepository(Season) private readonly seasonRepository: Repository<Season>,
@@ -80,9 +86,103 @@ export class AdminCupsService {
 
   public async deleteCup(accessToken: string | undefined, cupId: number): Promise<void> {}
 
-  public async addCup(accessToken: string | undefined, cupDto: AdminCupDto): Promise<void> {}
+  public async addCup(accessToken: string | undefined, addCupDto: AddCupDto): Promise<void> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
-  public async updateCup(accessToken: string | undefined, cupDto: AdminCupDto, cupId: number): Promise<void> {}
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+      throw new UnauthorizedException('Unauthorized to get admin cups list without CUP_ORGANIZER role');
+    }
+
+    const startDatetime = moment(addCupDto.startTime).format();
+    const endDatetime = moment(addCupDto.endTime).format();
+
+    const queryResult: InsertResult = await this.cupsRepository
+      .createQueryBuilder()
+      .insert()
+      .into(Cup)
+      .values([
+        {
+          full_name: addCupDto.fullName,
+          short_name: addCupDto.shortName,
+          youtube: null,
+          twitch: null,
+          current_round: 1,
+          start_datetime: startDatetime,
+          end_datetime: endDatetime,
+          server1: '',
+          server2: '',
+          map1: addCupDto.mapName,
+          map2: null,
+          map3: null,
+          map4: null,
+          map5: null,
+          physics: 'mixed',
+          type: CupTypes.OFFLINE,
+          map_weapons: addCupDto.weapons,
+          map_author: addCupDto.mapAuthor,
+          map_pk3: addCupDto.mapPk3Link,
+          map_size: addCupDto.size,
+          archive_link: null,
+          bonus_rating: 0,
+          system: null,
+          custom_map: null,
+          custom_news: null,
+          validation_archive_link: null,
+          timer: false,
+          rating_calculated: false,
+          use_two_servers: false,
+          demos_validated: false,
+          multicup: { id: addCupDto.multicupId },
+        },
+      ])
+      .execute();
+
+    if (addCupDto.addNews) {
+      const cupId: number = queryResult.identifiers[0].id;
+
+      await this.newsRepository
+        .createQueryBuilder()
+        .insert()
+        .into(News)
+        .values([
+          {
+            header: `Старт ${addCupDto.fullName}!`,
+            header_en: `${addCupDto.fullName} start!`,
+            text: '',
+            text_en: '',
+            youtube: null,
+            user: { id: userAccess.userId! },
+            datetimezone: startDatetime,
+            newsType: { id: mapNewsTypeEnumToDBNewsTypeId(NewsTypes.OFFLINE_START) },
+            cup: { id: cupId },
+            comments_count: 0,
+            hide_on_main: false,
+          },
+        ]);
+
+      await this.newsRepository
+        .createQueryBuilder()
+        .insert()
+        .into(News)
+        .values([
+          {
+            header: `Результаты ${addCupDto.fullName}`,
+            header_en: `Results: ${addCupDto.fullName}`,
+            text: '',
+            text_en: '',
+            youtube: null,
+            user: { id: userAccess.userId! },
+            datetimezone: startDatetime,
+            newsType: { id: mapNewsTypeEnumToDBNewsTypeId(NewsTypes.OFFLINE_RESULTS) },
+            cup: { id: cupId },
+            comments_count: 0,
+            hide_on_main: false,
+          },
+        ]);
+    }
+  }
+
+  public async updateCup(accessToken: string | undefined, cupDto: AddCupDto, cupId: number): Promise<void> {}
 
   public async getValidationDemos(accessToken: string | undefined, cupId: number): Promise<AdminValidationInterface> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
@@ -263,6 +363,7 @@ export class AdminCupsService {
         name: multicup.name,
       }));
   }
+
   public async getWorldspawnMapInfo(accessToken: string | undefined, map: string): Promise<WorldspawnMapInfoInterface> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
@@ -346,11 +447,52 @@ export class AdminCupsService {
 
     return {
       name: map,
-      size: parseFloat(sizeMatches[3]),
+      size: sizeMatches[3],
       author: authorMatches && authorMatches.length === 5 ? authorMatches[4] : 'Unknown',
       pk3: `https://ws.q3df.org/maps/downloads/${pk3Matches[1]}.pk3`,
       weapons: mapWeapons,
       levelshot: getMapLevelshot(map),
+    };
+  }
+
+  public async uploadLevelshot(
+    accessToken: string | undefined,
+    levelshot: Express.Multer.File,
+  ): Promise<UploadedFileLinkInterface> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+      throw new UnauthorizedException('Unauthorized to upload map levelshot, CUP_ORGANIZER role needed');
+    }
+
+    const fileName = levelshot.filename;
+    const fullUploadPath = process.env.DFCOMPS_FILE_UPLOAD_PATH + `/images/maps/${fileName}`;
+
+    fs.writeFileSync(fullUploadPath, levelshot.buffer);
+
+    return {
+      link: fullUploadPath,
+    };
+  }
+
+  public async uploadMap(
+    accessToken: string | undefined,
+    map: Express.Multer.File,
+  ): Promise<UploadedFileLinkInterface> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+      throw new UnauthorizedException('Unauthorized to upload map pk3, CUP_ORGANIZER role needed');
+    }
+
+    const fileName = map.filename;
+    const uuid = v4();
+    const fullUploadPath = process.env.DFCOMPS_FILE_UPLOAD_PATH + `/maps/${uuid}/${fileName}`;
+
+    fs.writeFileSync(fullUploadPath, map.buffer);
+
+    return {
+      link: fullUploadPath,
     };
   }
 

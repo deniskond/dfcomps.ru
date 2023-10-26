@@ -6,7 +6,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InsertResult, Repository } from 'typeorm';
 import { HttpService } from '@nestjs/axios';
 import { sha256 } from 'js-sha256';
 import * as md5 from 'md5';
@@ -140,7 +140,7 @@ export class AuthService {
 
     // 4. Inserting user into database
     const userAccessToken = v4();
-    const queryResult = await this.userRepository
+    const queryResult: InsertResult = await this.userRepository
       .createQueryBuilder()
       .insert()
       .into(User)

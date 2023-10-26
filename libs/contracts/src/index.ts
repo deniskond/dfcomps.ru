@@ -51,7 +51,7 @@ export { ValidationArchiveLinkInterface } from './lib/cup/validation-archive-lin
 export { AdminNewsListInterface } from './lib/admin/admin-news-list.interface';
 export { AdminNewsDto } from './lib/admin/admin-news.dto';
 export { AdminEditNewsInterface } from './lib/admin/admin-edit-news.interface';
-export { AdminCupDto } from './lib/admin/admin-cup.dto';
+export { AddCupDto } from './lib/admin/add-cup.dto';
 export { AdminCupInterface } from './lib/admin/admin-cup.interface';
 export { AdminValidationInterface } from './lib/admin/admin-validation.models';
 export { AdminPlayerDemosValidationInterface } from './lib/admin/admin-validation.models';

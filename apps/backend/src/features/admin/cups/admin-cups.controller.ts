@@ -1,10 +1,24 @@
-import { Body, Controller, Get, Headers, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Headers,
+  HttpStatus,
+  Param,
+  ParseFilePipe,
+  ParseFilePipeBuilder,
+  ParseIntPipe,
+  Post,
+  Query,
+  UploadedFile,
+} from '@nestjs/common';
 import { AdminCupsService } from './admin-cups.service';
 import {
+  AddCupDto,
   AdminActiveMulticupInterface,
-  AdminCupDto,
   AdminValidationInterface,
   ProcessValidationDto,
+  UploadedFileLinkInterface,
   WorldspawnMapInfoInterface,
 } from '@dfcomps/contracts';
 
@@ -33,15 +47,15 @@ export class AdminCupsController {
     return this.adminCupsService.deleteCup(accessToken, cupId);
   }
 
-  @Post('post')
-  addCup(@Headers('X-Auth') accessToken: string | undefined, @Body() cupDto: AdminCupDto): Promise<void> {
+  @Post('add')
+  addCup(@Headers('X-Auth') accessToken: string | undefined, @Body() cupDto: AddCupDto): Promise<void> {
     return this.adminCupsService.addCup(accessToken, cupDto);
   }
 
   @Post('update/:cupId')
   updateCup(
     @Headers('X-Auth') accessToken: string | undefined,
-    @Body() cupDto: AdminCupDto,
+    @Body() cupDto: AddCupDto,
     @Param('cupId', new ParseIntPipe()) cupId: number,
   ): Promise<void> {
     return this.adminCupsService.updateCup(accessToken, cupDto, cupId);
@@ -91,5 +105,33 @@ export class AdminCupsController {
     @Query() { map }: Record<string, string>,
   ): Promise<WorldspawnMapInfoInterface> {
     return this.adminCupsService.getWorldspawnMapInfo(accessToken, map);
+  }
+
+  @Post('upload-map')
+  uploadMap(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @UploadedFile(new ParseFilePipe()) map: Express.Multer.File,
+  ): Promise<UploadedFileLinkInterface> {
+    return this.adminCupsService.uploadMap(accessToken, map);
+  }
+
+  @Post('upload-levelshot')
+  uploadLevelshot(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: /jpg|png|gif|jpeg/,
+        })
+        .addMaxSizeValidator({
+          maxSize: 5000000,
+        })
+        .build({
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        }),
+    )
+    levelshot: Express.Multer.File,
+  ): Promise<UploadedFileLinkInterface> {
+    return this.adminCupsService.uploadLevelshot(accessToken, levelshot);
   }
 }

@@ -23,12 +23,12 @@ export interface CupInterface {
   ratingCalculated: boolean;
   server: string | null;
   shortName: string;
-  system: string;
+  system: string | null;
   timer: boolean;
-  twitch: string;
+  twitch: string | null;
   type: CupTypes;
   useTwoServers: boolean;
-  youtube: string;
+  youtube: string | null;
   newsId: number | null;
   customMap: string | null;
   customNews: string | null;
