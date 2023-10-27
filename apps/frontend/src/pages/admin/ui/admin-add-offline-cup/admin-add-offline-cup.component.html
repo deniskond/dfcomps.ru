@@ -1,6 +1,6 @@
 <mat-card class="main-form-card">
-  <h3 class="header">Add multicup round</h3>
-  <form *ngIf="addMulticupRoundForm; else loading" [formGroup]="addMulticupRoundForm">
+  <h3 class="header">{{ isMulticupRequired ? 'Add multicup round' : 'Add offline cup' }}</h3>
+  <form *ngIf="addOfflineCupForm; else loading" [formGroup]="addOfflineCupForm">
     <div class="form">
       <div>
         Full name
@@ -9,7 +9,7 @@
       </div>
       <div>
         <input formControlName="fullName" class="input-field" />
-        <div *ngIf="hasFieldError(this.addMulticupRoundForm.get('fullName')!)" class="field-error">
+        <div *ngIf="hasFieldError(this.addOfflineCupForm.get('fullName')!)" class="field-error">
           Field is required
         </div>
       </div>
@@ -20,7 +20,7 @@
       </div>
       <div>
         <input formControlName="shortName" class="input-field" />
-        <div *ngIf="hasFieldError(this.addMulticupRoundForm.get('shortName')!)" class="field-error">
+        <div *ngIf="hasFieldError(this.addOfflineCupForm.get('shortName')!)" class="field-error">
           Field is required
         </div>
       </div>
@@ -31,7 +31,7 @@
       </div>
       <div>
         <input formControlName="startTime" class="input-field date" type="datetime-local" />
-        <span *ngIf="hasFieldError(this.addMulticupRoundForm.get('startTime')!)" class="field-error">
+        <span *ngIf="hasFieldError(this.addOfflineCupForm.get('startTime')!)" class="field-error">
           Field is required
         </span>
       </div>
@@ -42,7 +42,7 @@
       </div>
       <div>
         <input formControlName="endTime" class="input-field date" type="datetime-local" />
-        <span *ngIf="hasFieldError(this.addMulticupRoundForm.get('endTime')!)" class="field-error">
+        <span *ngIf="hasFieldError(this.addOfflineCupForm.get('endTime')!)" class="field-error">
           Field is required
         </span>
       </div>
@@ -62,7 +62,7 @@
       <div class="input-title">Map name</div>
       <div>
         <input formControlName="mapName" class="input-field" />
-        <div *ngIf="hasFieldError(this.addMulticupRoundForm.get('mapName')!)" class="field-error">
+        <div *ngIf="hasFieldError(this.addOfflineCupForm.get('mapName')!)" class="field-error">
           Field is required
         </div>
         <div *ngIf="isMapFound === true" class="field-ok">Map was found on ws.q3df.org</div>
@@ -79,7 +79,7 @@
             type="file"
             accept=".pk3"
           />
-          <div *ngIf="hasFieldError(this.addMulticupRoundForm.get('mapPk3File')!)" class="field-error">
+          <div *ngIf="hasFieldError(this.addOfflineCupForm.get('mapPk3File')!)" class="field-error">
             Field is required
           </div>
         </ng-container>
@@ -100,7 +100,7 @@
             type="file"
             accept=".jpg"
           />
-          <div *ngIf="hasFieldError(this.addMulticupRoundForm.get('mapLevelshotFile')!)" class="field-error">
+          <div *ngIf="hasFieldError(this.addOfflineCupForm.get('mapLevelshotFile')!)" class="field-error">
             Field is required
           </div>
         </ng-container>
@@ -110,7 +110,7 @@
       <div class="input-title">Map author</div>
       <div>
         <input formControlName="mapAuthor" class="input-field" />
-        <div *ngIf="hasFieldError(this.addMulticupRoundForm.get('mapAuthor')!)" class="field-error">
+        <div *ngIf="hasFieldError(this.addOfflineCupForm.get('mapAuthor')!)" class="field-error">
           Field is required
         </div>
       </div>
@@ -162,19 +162,21 @@
           </mat-checkbox>
         </div>
       </div>
-      <div class="input-title">Multicup</div>
-      <div *ngIf="activeMulticups$ | async as activeMulticups">
-        <mat-form-field appearance="outline">
-          <mat-select formControlName="multicup">
-            <mat-option *ngFor="let activeMulticup of activeMulticups" [value]="activeMulticup.multicupId">
-              {{ activeMulticup.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <div *ngIf="hasFieldError(this.addMulticupRoundForm.get('multicup')!)" class="field-error">
-          Field is required
+      <ng-container *ngIf="isMulticupRequired">
+        <div class="input-title">Multicup</div>
+        <div *ngIf="activeMulticups$ | async as activeMulticups">
+          <mat-form-field appearance="outline">
+            <mat-select formControlName="multicup">
+              <mat-option *ngFor="let activeMulticup of activeMulticups" [value]="activeMulticup.multicupId">
+                {{ activeMulticup.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div *ngIf="hasFieldError(this.addOfflineCupForm.get('multicup')!)" class="field-error">
+            Field is required
+          </div>
         </div>
-      </div>
+      </ng-container>
       <div class="add-news-label">Add start and ending news</div>
       <div>
         <mat-checkbox color="primary" formControlName="addNews"></mat-checkbox>

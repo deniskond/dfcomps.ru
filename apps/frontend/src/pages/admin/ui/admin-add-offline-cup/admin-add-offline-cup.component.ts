@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Data, Router } from '@angular/router';
 import {
   Observable,
   Subject,
@@ -11,6 +11,7 @@ import {
   filter,
   of,
   switchMap,
+  take,
   takeUntil,
   tap,
 } from 'rxjs';
@@ -23,18 +24,19 @@ import {
 import { MatRadioChange } from '@angular/material/radio';
 
 @Component({
-  selector: 'admin-add-multicup-round',
-  templateUrl: './admin-add-multicup-round.component.html',
-  styleUrls: ['./admin-add-multicup-round.component.less'],
+  selector: 'admin-add-offline-cup',
+  templateUrl: './admin-add-offline-cup.component.html',
+  styleUrls: ['./admin-add-offline-cup.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdminAddMulticupRoundComponent implements OnInit {
+export class AdminAddOfflineCupComponent implements OnInit {
   @ViewChild('pk3FileInput') pk3Input: ElementRef;
   @ViewChild('levelshotFileInput') levelshotInput: ElementRef;
 
   public activeMulticups$: Observable<AdminActiveMulticupInterface[]>;
   public isMapFound: boolean | null = null;
   public isLoadingMapInfo = false;
+  public isMulticupRequired = true;
   private onDestroy$ = new Subject<void>();
   private mapType: 'ws' | 'custom' = 'ws';
   private weaponControls: string[] = [
@@ -49,7 +51,7 @@ export class AdminAddMulticupRoundComponent implements OnInit {
     'grapple',
   ];
 
-  public addMulticupRoundForm: FormGroup = new FormGroup({
+  public addOfflineCupForm: FormGroup = new FormGroup({
     fullName: new FormControl('', Validators.required),
     shortName: new FormControl('', Validators.required),
     startTime: new FormControl('', Validators.required),
@@ -80,11 +82,19 @@ export class AdminAddMulticupRoundComponent implements OnInit {
     private snackBar: MatSnackBar,
     private router: Router,
     private changeDetectorRef: ChangeDetectorRef,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
     this.activeMulticups$ = this.adminDataService.getAllActiveMulticups$();
     this.initMapInfoSubscription();
+
+    this.route.data.pipe(take(1)).subscribe(({ multicup }: Data) => {
+      if (!multicup) {
+        this.addOfflineCupForm.get('multicup')!.clearValidators();
+        this.isMulticupRequired = false;
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -93,7 +103,7 @@ export class AdminAddMulticupRoundComponent implements OnInit {
   }
 
   public get isCustomMap(): boolean {
-    return this.addMulticupRoundForm.get('mapType')!.value === 'custom';
+    return this.addOfflineCupForm.get('mapType')!.value === 'custom';
   }
 
   public get isValidMapName(): boolean {
@@ -101,7 +111,7 @@ export class AdminAddMulticupRoundComponent implements OnInit {
   }
 
   public initMapInfoSubscription(): void {
-    this.addMulticupRoundForm
+    this.addOfflineCupForm
       .get('mapName')!
       .valueChanges.pipe(
         tap(() => (this.isMapFound = null)),
@@ -131,17 +141,17 @@ export class AdminAddMulticupRoundComponent implements OnInit {
   }
 
   public submit(): void {
-    Object.keys(this.addMulticupRoundForm.controls).forEach((key: string) =>
-      this.addMulticupRoundForm.get(key)!.markAsDirty(),
+    Object.keys(this.addOfflineCupForm.controls).forEach((key: string) =>
+      this.addOfflineCupForm.get(key)!.markAsDirty(),
     );
 
-    if (!this.addMulticupRoundForm.valid || !this.isValidMapName) {
+    if (!this.addOfflineCupForm.valid || !this.isValidMapName) {
       return;
     }
 
     if (this.mapType === 'ws') {
       this.adminDataService
-        .addCup$(this.addMulticupRoundForm.value)
+        .addCup$(this.addOfflineCupForm.value)
         .pipe(switchMap(() => this.adminDataService.getAllCups$(false)))
         .subscribe(() => {
           this.router.navigate(['/admin/cups']);
@@ -150,7 +160,7 @@ export class AdminAddMulticupRoundComponent implements OnInit {
     }
 
     if (this.mapType === 'custom') {
-      const mapName: string = this.addMulticupRoundForm.get('mapName')!.value;
+      const mapName: string = this.addOfflineCupForm.get('mapName')!.value;
 
       combineLatest([
         this.adminDataService.addCustomMap$(this.pk3Input.nativeElement.files[0], mapName),
@@ -158,10 +168,10 @@ export class AdminAddMulticupRoundComponent implements OnInit {
       ])
         .pipe(
           tap(([{ link: mapLink }, { link: levelshotLink }]: UploadedFileLinkInterface[]) => {
-            this.addMulticupRoundForm.get('mapPk3Link')!.setValue(mapLink);
-            this.addMulticupRoundForm.get('mapLevelshotLink')!.setValue(levelshotLink);
+            this.addOfflineCupForm.get('mapPk3Link')!.setValue(mapLink);
+            this.addOfflineCupForm.get('mapLevelshotLink')!.setValue(levelshotLink);
           }),
-          switchMap(() => this.adminDataService.addCup$(this.addMulticupRoundForm.value)),
+          switchMap(() => this.adminDataService.addCup$(this.addOfflineCupForm.value)),
           switchMap(() => this.adminDataService.getAllCups$(false)),
         )
         .subscribe(() => {
@@ -179,41 +189,41 @@ export class AdminAddMulticupRoundComponent implements OnInit {
     if (this.pk3Input.nativeElement.files[0]) {
       const size: string = (this.pk3Input.nativeElement.files[0].size / (1024 * 1024)).toFixed(2);
 
-      this.addMulticupRoundForm.get('size')!.setValue(size);
+      this.addOfflineCupForm.get('size')!.setValue(size);
     }
   }
 
   public onMapTypeChange({ value }: MatRadioChange): void {
     if (value === 'ws') {
-      this.addMulticupRoundForm.get('mapLevelshotFile')!.disable();
-      this.addMulticupRoundForm.get('mapPk3File')!.disable();
+      this.addOfflineCupForm.get('mapLevelshotFile')!.disable();
+      this.addOfflineCupForm.get('mapPk3File')!.disable();
     }
 
     if (value === 'custom') {
-      this.addMulticupRoundForm.get('mapLevelshotFile')!.enable();
-      this.addMulticupRoundForm.get('mapPk3File')!.enable();
+      this.addOfflineCupForm.get('mapLevelshotFile')!.enable();
+      this.addOfflineCupForm.get('mapPk3File')!.enable();
     }
 
     this.isMapFound = null;
     this.mapType = value;
-    this.addMulticupRoundForm.get('mapAuthor')!.setValue('');
-    this.addMulticupRoundForm.get('mapAuthor')!.markAsPristine();
-    this.addMulticupRoundForm.get('mapLevelshotLink')!.setValue('');
-    this.addMulticupRoundForm.get('mapLevelshotLink')!.markAsPristine();
-    this.addMulticupRoundForm.get('mapPk3Link')!.setValue('');
-    this.addMulticupRoundForm.get('mapPk3Link')!.markAsPristine();
-    this.addMulticupRoundForm.get('size')!.setValue('');
-    this.weaponControls.forEach((controlName: string) => this.addMulticupRoundForm.get(controlName)!.setValue(false));
+    this.addOfflineCupForm.get('mapAuthor')!.setValue('');
+    this.addOfflineCupForm.get('mapAuthor')!.markAsPristine();
+    this.addOfflineCupForm.get('mapLevelshotLink')!.setValue('');
+    this.addOfflineCupForm.get('mapLevelshotLink')!.markAsPristine();
+    this.addOfflineCupForm.get('mapPk3Link')!.setValue('');
+    this.addOfflineCupForm.get('mapPk3Link')!.markAsPristine();
+    this.addOfflineCupForm.get('size')!.setValue('');
+    this.weaponControls.forEach((controlName: string) => this.addOfflineCupForm.get(controlName)!.setValue(false));
   }
 
   private setMapInfoFormValues(mapInfo: WorldspawnMapInfoInterface): void {
-    this.addMulticupRoundForm.get('mapAuthor')!.setValue(mapInfo.author);
-    this.addMulticupRoundForm.get('mapPk3Link')!.setValue(mapInfo.pk3);
-    this.addMulticupRoundForm.get('mapLevelshotLink')!.setValue(mapInfo.levelshot);
-    this.addMulticupRoundForm.get('size')!.setValue(mapInfo.size);
+    this.addOfflineCupForm.get('mapAuthor')!.setValue(mapInfo.author);
+    this.addOfflineCupForm.get('mapPk3Link')!.setValue(mapInfo.pk3);
+    this.addOfflineCupForm.get('mapLevelshotLink')!.setValue(mapInfo.levelshot);
+    this.addOfflineCupForm.get('size')!.setValue(mapInfo.size);
 
     this.weaponControls.forEach((control: string) =>
-      this.addMulticupRoundForm
+      this.addOfflineCupForm
         .get(control)!
         .setValue(mapInfo.weapons[control as keyof WorldspawnMapInfoInterface['weapons']]),
     );
