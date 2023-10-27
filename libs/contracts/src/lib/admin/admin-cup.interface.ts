@@ -9,4 +9,5 @@ export interface AdminCupInterface {
   type: CupTypes;
   validationAvailable: boolean;
   calculateRatingsAvailable: boolean;
+  endDateTime: string;
 }

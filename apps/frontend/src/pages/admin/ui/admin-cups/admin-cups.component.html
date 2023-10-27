@@ -36,15 +36,14 @@
         >
           Validate demos
         </button>
-        <button
-          *ngIf="cup.calculateRatingsAvailable"
-          (click)="finishCup(cup.id)"
-          mat-raised-button
-          color="primary"
-        >
+        <button *ngIf="cup.calculateRatingsAvailable" (click)="finishCup(cup.id)" mat-raised-button color="primary">
           Finish cup
         </button>
-        <ng-container *ngIf="!cup.validationAvailable && !cup.calculateRatingsAvailable">
+        <ng-container *ngIf="isEditingCupAvailable(cup)">
+          <button [routerLink]="'/admin/cups/edit/' + cup.id" mat-raised-button color="primary">Edit</button>
+          <button (click)="confirmDelete(cup.id)" mat-raised-button color="warn">Delete</button>
+        </ng-container>
+        <ng-container *ngIf="!cup.validationAvailable && !cup.calculateRatingsAvailable && !isEditingCupAvailable(cup)">
           No actions available
         </ng-container>
       </div>

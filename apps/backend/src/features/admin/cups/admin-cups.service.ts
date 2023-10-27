@@ -77,8 +77,13 @@ export class AdminCupsService {
       duration: getHumanTime(cup.start_datetime) + ' - ' + getHumanTime(cup.end_datetime),
       physics: cup.physics,
       type: cup.type,
-      validationAvailable: cup.rating_calculated === false && cup.type === CupTypes.OFFLINE,
+      validationAvailable:
+        (cup.rating_calculated === false &&
+          cup.type === CupTypes.OFFLINE &&
+          moment().isAfter(moment(cup.end_datetime))) ||
+        isSuperadmin(userAccess.roles),
       calculateRatingsAvailable: cup.rating_calculated === false && cup.demos_validated === true,
+      endDateTime: cup.end_datetime,
     }));
   }
 
