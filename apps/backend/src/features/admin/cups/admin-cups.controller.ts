@@ -11,6 +11,7 @@ import {
   Post,
   Query,
   UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AdminCupsService } from './admin-cups.service';
 import {
@@ -21,6 +22,7 @@ import {
   UploadedFileLinkInterface,
   WorldspawnMapInfoInterface,
 } from '@dfcomps/contracts';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('admin/cups')
 export class AdminCupsController {
@@ -107,21 +109,25 @@ export class AdminCupsController {
     return this.adminCupsService.getWorldspawnMapInfo(accessToken, map);
   }
 
-  @Post('upload-map')
+  @Post('upload-map/:mapName')
+  @UseInterceptors(FileInterceptor('file'))
   uploadMap(
     @Headers('X-Auth') accessToken: string | undefined,
+    @Param('mapName') mapName: string,
     @UploadedFile(new ParseFilePipe()) map: Express.Multer.File,
   ): Promise<UploadedFileLinkInterface> {
-    return this.adminCupsService.uploadMap(accessToken, map);
+    return this.adminCupsService.uploadMap(accessToken, map, mapName);
   }
 
-  @Post('upload-levelshot')
+  @Post('upload-levelshot/:mapName')
+  @UseInterceptors(FileInterceptor('file'))
   uploadLevelshot(
     @Headers('X-Auth') accessToken: string | undefined,
+    @Param('mapName') mapName: string,
     @UploadedFile(
       new ParseFilePipeBuilder()
         .addFileTypeValidator({
-          fileType: /jpg|png|gif|jpeg/,
+          fileType: /jpg|jpeg/,
         })
         .addMaxSizeValidator({
           maxSize: 5000000,
@@ -132,6 +138,6 @@ export class AdminCupsController {
     )
     levelshot: Express.Multer.File,
   ): Promise<UploadedFileLinkInterface> {
-    return this.adminCupsService.uploadLevelshot(accessToken, levelshot);
+    return this.adminCupsService.uploadLevelshot(accessToken, levelshot, mapName);
   }
 }

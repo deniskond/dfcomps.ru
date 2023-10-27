@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { map, Observable, of, tap } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { BackendService, URL_PARAMS } from '~shared/rest-api';
 import {
   AdminEditNewsInterface,
@@ -147,12 +147,12 @@ export class AdminDataService {
     });
   }
 
-  public addCustomMap$(map: File): Observable<UploadedFileLinkInterface> {
-    return this.backendService.uploadFile$(URL_PARAMS.ADMIN.UPLOAD_MAP, [{ fileKey: 'file', file: map }]);
+  public addCustomMap$(map: File, mapName: string): Observable<UploadedFileLinkInterface> {
+    return this.backendService.uploadFile$(URL_PARAMS.ADMIN.UPLOAD_MAP(mapName), [{ fileKey: 'file', file: map }]);
   }
 
-  public addCustomLevelshot$(levelshot: File): Observable<UploadedFileLinkInterface> {
-    return this.backendService.uploadFile$(URL_PARAMS.ADMIN.UPLOAD_MAP, [{ fileKey: 'file', file: levelshot }]);
+  public addCustomLevelshot$(levelshot: File, mapName: string): Observable<UploadedFileLinkInterface> {
+    return this.backendService.uploadFile$(URL_PARAMS.ADMIN.UPLOAD_LEVELSHOT(mapName), [{ fileKey: 'file', file: levelshot }]);
   }
 
   private getAdminNewsDto(formValue: Record<string, any>): AdminNewsDto {

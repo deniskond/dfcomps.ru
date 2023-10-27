@@ -71,7 +71,14 @@
       <div class="input-title">Map pk3</div>
       <div>
         <ng-container *ngIf="isCustomMap">
-          <input #pk3FileInput formControlName="mapPk3File" class="input-field file" type="file" accept=".pk3" />
+          <input
+            #pk3FileInput
+            (change)="setMapSize()"
+            formControlName="mapPk3File"
+            class="input-field file"
+            type="file"
+            accept=".pk3"
+          />
           <div *ngIf="hasFieldError(this.addMulticupRoundForm.get('mapPk3File')!)" class="field-error">
             Field is required
           </div>
@@ -130,7 +137,7 @@
           </mat-checkbox>
         </div>
         <div class="checkbox-container">
-          <mat-checkbox color="primary" formControlName="lignting">
+          <mat-checkbox color="primary" formControlName="lightning">
             <app-weapons weapons="L" class="weapon-icons"></app-weapons>
           </mat-checkbox>
         </div>
@@ -150,7 +157,7 @@
           </mat-checkbox>
         </div>
         <div class="checkbox-container">
-          <mat-checkbox color="primary" formControlName="grapplingHook">
+          <mat-checkbox color="primary" formControlName="grapple">
             <app-weapons weapons="H" class="weapon-icons"></app-weapons>
           </mat-checkbox>
         </div>

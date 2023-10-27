@@ -9,7 +9,6 @@ import {
   combineLatest,
   debounceTime,
   filter,
-  finalize,
   of,
   switchMap,
   takeUntil,
@@ -43,11 +42,11 @@ export class AdminAddMulticupRoundComponent implements OnInit {
     'rocket',
     'grenade',
     'plasma',
-    'lignting',
+    'lightning',
     'bfg',
     'railgun',
     'shotgun',
-    'grapplingHook',
+    'grapple',
   ];
 
   public addMulticupRoundForm: FormGroup = new FormGroup({
@@ -58,19 +57,19 @@ export class AdminAddMulticupRoundComponent implements OnInit {
     mapType: new FormControl('ws', Validators.required),
     multicup: new FormControl('', Validators.required),
     mapName: new FormControl('', Validators.required),
-    mapAuthor: new FormControl({ value: '', disabled: true }, Validators.required),
-    gauntlet: new FormControl({ value: false, disabled: true }, Validators.required),
-    rocket: new FormControl({ value: false, disabled: true }, Validators.required),
-    grenade: new FormControl({ value: false, disabled: true }, Validators.required),
-    plasma: new FormControl({ value: false, disabled: true }, Validators.required),
-    lignting: new FormControl({ value: false, disabled: true }, Validators.required),
-    bfg: new FormControl({ value: false, disabled: true }, Validators.required),
-    railgun: new FormControl({ value: false, disabled: true }, Validators.required),
-    shotgun: new FormControl({ value: false, disabled: true }, Validators.required),
-    grapplingHook: new FormControl({ value: false, disabled: true }, Validators.required),
-    mapLevelshotLink: new FormControl({ value: '', disabled: true }),
+    mapAuthor: new FormControl('', Validators.required),
+    gauntlet: new FormControl(false, Validators.required),
+    rocket: new FormControl(false, Validators.required),
+    grenade: new FormControl(false, Validators.required),
+    plasma: new FormControl(false, Validators.required),
+    lightning: new FormControl(false, Validators.required),
+    bfg: new FormControl(false, Validators.required),
+    railgun: new FormControl(false, Validators.required),
+    shotgun: new FormControl(false, Validators.required),
+    grapple: new FormControl(false, Validators.required),
+    mapLevelshotLink: new FormControl(''),
     mapLevelshotFile: new FormControl({ value: '', disabled: true }, Validators.required),
-    mapPk3Link: new FormControl({ value: '', disabled: true }),
+    mapPk3Link: new FormControl(''),
     mapPk3File: new FormControl({ value: '', disabled: true }, Validators.required),
     addNews: new FormControl(true),
     size: new FormControl(''),
@@ -151,9 +150,11 @@ export class AdminAddMulticupRoundComponent implements OnInit {
     }
 
     if (this.mapType === 'custom') {
+      const mapName: string = this.addMulticupRoundForm.get('mapName')!.value;
+
       combineLatest([
-        this.adminDataService.addCustomMap$(this.pk3Input.nativeElement.files[0]),
-        this.adminDataService.addCustomLevelshot$(this.levelshotInput.nativeElement.files[0]),
+        this.adminDataService.addCustomMap$(this.pk3Input.nativeElement.files[0], mapName),
+        this.adminDataService.addCustomLevelshot$(this.levelshotInput.nativeElement.files[0], mapName),
       ])
         .pipe(
           tap(([{ link: mapLink }, { link: levelshotLink }]: UploadedFileLinkInterface[]) => {
@@ -174,24 +175,34 @@ export class AdminAddMulticupRoundComponent implements OnInit {
     return !!control!.errors && !control!.pristine;
   }
 
+  public setMapSize(): void {
+    if (this.pk3Input.nativeElement.files[0]) {
+      const size: string = (this.pk3Input.nativeElement.files[0].size / (1024 * 1024)).toFixed(2);
+
+      this.addMulticupRoundForm.get('size')!.setValue(size);
+    }
+  }
+
   public onMapTypeChange({ value }: MatRadioChange): void {
     if (value === 'ws') {
-      this.addMulticupRoundForm.get('mapAuthor')!.disable();
       this.addMulticupRoundForm.get('mapLevelshotFile')!.disable();
       this.addMulticupRoundForm.get('mapPk3File')!.disable();
-      this.weaponControls.forEach((controlName: string) => this.addMulticupRoundForm.get(controlName)!.disable());
     }
 
     if (value === 'custom') {
-      this.addMulticupRoundForm.get('mapAuthor')!.enable();
       this.addMulticupRoundForm.get('mapLevelshotFile')!.enable();
       this.addMulticupRoundForm.get('mapPk3File')!.enable();
-      this.weaponControls.forEach((controlName: string) => this.addMulticupRoundForm.get(controlName)!.enable());
     }
 
+    this.isMapFound = null;
     this.mapType = value;
     this.addMulticupRoundForm.get('mapAuthor')!.setValue('');
     this.addMulticupRoundForm.get('mapAuthor')!.markAsPristine();
+    this.addMulticupRoundForm.get('mapLevelshotLink')!.setValue('');
+    this.addMulticupRoundForm.get('mapLevelshotLink')!.markAsPristine();
+    this.addMulticupRoundForm.get('mapPk3Link')!.setValue('');
+    this.addMulticupRoundForm.get('mapPk3Link')!.markAsPristine();
+    this.addMulticupRoundForm.get('size')!.setValue('');
     this.weaponControls.forEach((controlName: string) => this.addMulticupRoundForm.get(controlName)!.setValue(false));
   }
 

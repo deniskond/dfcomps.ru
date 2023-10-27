@@ -30,7 +30,7 @@ import { DeepPartial, InsertResult, Repository } from 'typeorm';
 import { getHumanTime } from '../../../shared/helpers/get-human-time';
 import { UserAccessInterface } from '../../../shared/interfaces/user-access.interface';
 import { UserRoles, checkUserRoles, isSuperadmin } from '@dfcomps/auth';
-import * as moment from 'moment';
+import * as moment from 'moment-timezone';
 import { CupDemo } from '../../../shared/entities/cup-demo.entity';
 import { TablesService } from '../../tables/tables.service';
 import { User } from '../../../shared/entities/user.entity';
@@ -45,6 +45,8 @@ import { getMapLevelshot } from '../../../shared/helpers/get-map-levelshot';
 import { v4 } from 'uuid';
 import { News } from '../../../shared/entities/news.entity';
 import { mapNewsTypeEnumToDBNewsTypeId } from 'apps/backend/src/shared/mappers/news-types.mapper';
+import * as sharp from 'sharp';
+import { Metadata, Sharp } from 'sharp';
 
 @Injectable()
 export class AdminCupsService {
@@ -93,8 +95,8 @@ export class AdminCupsService {
       throw new UnauthorizedException('Unauthorized to get admin cups list without CUP_ORGANIZER role');
     }
 
-    const startDatetime = moment(addCupDto.startTime).format();
-    const endDatetime = moment(addCupDto.endTime).format();
+    const startDatetime = moment(addCupDto.startTime).tz('Europe/Moscow').format();
+    const endDatetime = moment(addCupDto.endTime).tz('Europe/Moscow').format();
 
     const queryResult: InsertResult = await this.cupsRepository
       .createQueryBuilder()
@@ -158,7 +160,8 @@ export class AdminCupsService {
             comments_count: 0,
             hide_on_main: false,
           },
-        ]);
+        ])
+        .execute();
 
       await this.newsRepository
         .createQueryBuilder()
@@ -178,7 +181,8 @@ export class AdminCupsService {
             comments_count: 0,
             hide_on_main: false,
           },
-        ]);
+        ])
+        .execute();
     }
   }
 
@@ -458,6 +462,7 @@ export class AdminCupsService {
   public async uploadLevelshot(
     accessToken: string | undefined,
     levelshot: Express.Multer.File,
+    mapName: string,
   ): Promise<UploadedFileLinkInterface> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
@@ -465,10 +470,23 @@ export class AdminCupsService {
       throw new UnauthorizedException('Unauthorized to upload map levelshot, CUP_ORGANIZER role needed');
     }
 
-    const fileName = levelshot.filename;
-    const fullUploadPath = process.env.DFCOMPS_FILE_UPLOAD_PATH + `/images/maps/${fileName}`;
+    const image: Sharp = await sharp(levelshot.buffer);
+    const metadata: Metadata = await image.metadata();
+    let resultImage: Buffer;
 
-    fs.writeFileSync(fullUploadPath, levelshot.buffer);
+    if (metadata.width === 512 && metadata.height === 384) {
+      resultImage = levelshot.buffer;
+    } else {
+      resultImage = await image.resize(512, 384).jpeg().toBuffer();
+    }
+
+    const fullUploadPath = process.env.DFCOMPS_FILE_UPLOAD_PATH + `/images/maps/${mapName.toLowerCase()}.jpg`;
+
+    if (fs.existsSync(fullUploadPath)) {
+      fs.rmSync(fullUploadPath);
+    }
+
+    fs.writeFileSync(fullUploadPath, resultImage);
 
     return {
       link: fullUploadPath,
@@ -478,6 +496,7 @@ export class AdminCupsService {
   public async uploadMap(
     accessToken: string | undefined,
     map: Express.Multer.File,
+    mapName: string,
   ): Promise<UploadedFileLinkInterface> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
@@ -485,10 +504,10 @@ export class AdminCupsService {
       throw new UnauthorizedException('Unauthorized to upload map pk3, CUP_ORGANIZER role needed');
     }
 
-    const fileName = map.filename;
     const uuid = v4();
-    const fullUploadPath = process.env.DFCOMPS_FILE_UPLOAD_PATH + `/maps/${uuid}/${fileName}`;
+    const fullUploadPath = process.env.DFCOMPS_FILE_UPLOAD_PATH + `/maps/${uuid}/${mapName.toLowerCase()}.pk3`;
 
+    fs.mkdirSync(process.env.DFCOMPS_FILE_UPLOAD_PATH + `/maps/${uuid}`);
     fs.writeFileSync(fullUploadPath, map.buffer);
 
     return {

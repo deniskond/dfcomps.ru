@@ -10,7 +10,7 @@ const envMap: Record<string, string> = {
 export const MAIN_URL = envMap[environment.name];
 export const API_URL = MAIN_URL;
 
-// New backend status: 46 / 49 endpoints done
+// New backend status: 49 / 51 endpoints done
 export class URL_PARAMS {
   public static get WEBSOCKET_1V1_URL(): string {
     const websocketEnvMap: Record<string, string> = {
@@ -184,8 +184,8 @@ export class URL_PARAMS {
     FINISH_OFFLINE_CUP: (cupId: number) => string;
     GET_ALL_ACTIVE_MULTICUPS: string;
     ADD_CUP: string;
-    UPLOAD_MAP: string;
-    UPLOAD_LEVELSHOT: string;
+    UPLOAD_MAP: (mapName: string) => string;
+    UPLOAD_LEVELSHOT: (mapName: string) => string;
     EDIT_CUP: string;
     DELETE_CUP: string;
     SET_SEASON_REWARDS: string;
@@ -206,16 +206,16 @@ export class URL_PARAMS {
       CALCULATE_CUP_RATING: (cupId: number) => `${API_URL}/admin/cups/calculate-rating/${cupId}`, // New backend done
       FINISH_OFFLINE_CUP: (cupId: number) => `${API_URL}/admin/cups/finish-offline-cup/${cupId}`, // New backend done
       GET_ALL_ACTIVE_MULTICUPS: `${API_URL}/admin/cups/get-all-active-multicups`, // New backend done
-      ADD_CUP: `${API_URL}/admin/cups/add`, // Not done
-      UPLOAD_MAP: `${API_URL}/admin/cups/upload-map`, // Not done
-      UPLOAD_LEVELSHOT: `${API_URL}/admin/cups/upload-levelshot`, // Not done
+      ADD_CUP: `${API_URL}/admin/cups/add`, // New backend done
+      UPLOAD_MAP: (mapName: string) => `${API_URL}/admin/cups/upload-map/${mapName}`, // New backend done
+      UPLOAD_LEVELSHOT: (mapName: string) => `${API_URL}/admin/cups/upload-levelshot/${mapName}`, // New backend done
       EDIT_CUP: ``, // Not done
       DELETE_CUP: ``, // Not done
       SET_SEASON_REWARDS: `${API_URL}/admin/season/rewards`, // Not blocking
       SAVE_SEASON_RATINGS: `${API_URL}/admin/season/save_season_ratings`, // Not blocking
       RESET_SEASON_RATINGS: `${API_URL}/admin/season/reset_season_ratings`, // Not blocking
       INCREMENT_SEASON: `${API_URL}/admin/season/increment`, // Not blocking
-      GET_WORLDSPAWN_MAP_INFO: `${API_URL}/admin/cups/get-worldspawn-map-info`, // Not done
+      GET_WORLDSPAWN_MAP_INFO: `${API_URL}/admin/cups/get-worldspawn-map-info`, // New backend done
     };
   }
 }
