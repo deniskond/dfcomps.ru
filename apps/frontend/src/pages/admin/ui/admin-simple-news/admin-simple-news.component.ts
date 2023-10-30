@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdminDataService } from '../../business/admin-data.service';
 import { AdminOperationType } from '../../models/admin-operation-type.enum';
-import * as moment from 'moment';
+import * as moment from 'moment-timezone';
 import { debounceTime, Observable, startWith, switchMap } from 'rxjs';
 import { AdminEditNewsInterface } from '@dfcomps/contracts';
 
@@ -86,7 +86,7 @@ export class AdminSimpleNewsComponent implements OnInit {
 
   // TODO Move out to mappers after typization
   private mapDateTimeZoneToInput(datetimezone: string): string {
-    return moment(datetimezone).format('YYYY-MM-DDTHH:mm');
+    return moment(datetimezone).tz('Europe/Moscow').format('YYYY-MM-DDTHH:mm');
   }
 
   private initForm(): void {

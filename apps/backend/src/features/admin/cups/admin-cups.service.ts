@@ -171,7 +171,7 @@ export class AdminCupsService {
           rating_calculated: false,
           use_two_servers: false,
           demos_validated: false,
-          multicup: { id: addCupDto.multicupId },
+          multicup: addCupDto.multicupId ? { id: addCupDto.multicupId } : null,
         },
       ])
       .execute();
@@ -223,7 +223,7 @@ export class AdminCupsService {
     }
   }
 
-  public async updateCup(accessToken: string | undefined, cupDto: UpdateCupDto, cupId: number): Promise<void> {
+  public async updateCup(accessToken: string | undefined, updateCupDto: UpdateCupDto, cupId: number): Promise<void> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
@@ -234,6 +234,63 @@ export class AdminCupsService {
 
     if (!cup) {
       throw new NotFoundException(`Cup with id = ${cupId} not found`);
+    }
+
+    const startDatetime = moment(updateCupDto.startTime).tz('Europe/Moscow').format();
+    const endDatetime = moment(updateCupDto.endTime).tz('Europe/Moscow').format();
+
+    if (updateCupDto.mapPk3Link) {
+      const absolutePk3Link = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + updateCupDto.mapPk3Link;
+
+      if (fs.existsSync(absolutePk3Link)) {
+        fs.rmSync(absolutePk3Link);
+      }
+    }
+
+    await this.cupsRepository
+      .createQueryBuilder()
+      .update(Cup)
+      .set({
+        full_name: updateCupDto.fullName,
+        short_name: updateCupDto.shortName,
+        start_datetime: startDatetime,
+        end_datetime: endDatetime,
+        map1: updateCupDto.mapName,
+        map_weapons: updateCupDto.weapons,
+        map_author: updateCupDto.mapAuthor,
+        map_pk3: updateCupDto.mapPk3Link || undefined,
+        map_size: updateCupDto.size,
+        multicup: updateCupDto.multicupId ? { id: updateCupDto.multicupId } : undefined,
+      })
+      .where({ id: cupId })
+      .execute();
+
+    if (updateCupDto.addNews) {
+      await this.newsRepository
+        .createQueryBuilder('news')
+        .update(News)
+        .set({
+          header: `Старт ${updateCupDto.fullName}!`,
+          header_en: `${updateCupDto.fullName} start!`,
+          user: { id: userAccess.userId! },
+          datetimezone: startDatetime,
+        })
+        .where({ cup: { id: cupId } })
+        .andWhere({ newsType: { id: mapNewsTypeEnumToDBNewsTypeId(NewsTypes.OFFLINE_START) } })
+        .execute();
+
+      await this.newsRepository
+        .createQueryBuilder('news')
+        .update(News)
+        .set({
+          header: `Результаты ${updateCupDto.fullName}`,
+          header_en: `Results: ${updateCupDto.fullName}`,
+          user: { id: userAccess.userId! },
+          datetimezone: startDatetime,
+        })
+        .where({ cup: { id: cupId } })
+        .andWhere({ newsType: { id: mapNewsTypeEnumToDBNewsTypeId(NewsTypes.OFFLINE_RESULTS) } })
+        .execute();
     }
   }
 

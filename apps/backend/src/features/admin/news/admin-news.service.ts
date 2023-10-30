@@ -8,6 +8,7 @@ import { AdminEditNewsInterface, AdminNewsListInterface, AdminNewsDto } from '@d
 import { mapNewsTypeEnumToDBNewsTypeId } from '../../../shared/mappers/news-types.mapper';
 import { NewsComment } from '../../../shared/entities/news-comment.entity';
 import { UserRoles, checkUserRoles } from '@dfcomps/auth';
+import * as moment from 'moment-timezone';
 
 @Injectable()
 export class AdminNewsService {
@@ -74,7 +75,7 @@ export class AdminNewsService {
     };
   }
 
-  public async postNews(accessToken: string | undefined, AdminNewsDto: AdminNewsDto): Promise<void> {
+  public async postNews(accessToken: string | undefined, adminNewsDto: AdminNewsDto): Promise<void> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!userAccess.userId || !checkUserRoles(userAccess.roles, [UserRoles.NEWSMAKER])) {
@@ -87,14 +88,14 @@ export class AdminNewsService {
       .into(News)
       .values([
         {
-          header: AdminNewsDto.russianTitle,
-          header_en: AdminNewsDto.englishTitle,
-          text: AdminNewsDto.russianText,
-          text_en: AdminNewsDto.englishText,
-          youtube: AdminNewsDto.youtube,
+          header: adminNewsDto.russianTitle,
+          header_en: adminNewsDto.englishTitle,
+          text: adminNewsDto.russianText,
+          text_en: adminNewsDto.englishText,
+          youtube: adminNewsDto.youtube,
           user: { id: userAccess.userId },
-          datetimezone: AdminNewsDto.postingTime,
-          newsType: { id: mapNewsTypeEnumToDBNewsTypeId(AdminNewsDto.type) },
+          datetimezone: moment(adminNewsDto.postingTime).tz('Europe/Moscow').format(),
+          newsType: { id: mapNewsTypeEnumToDBNewsTypeId(adminNewsDto.type) },
           comments_count: 0,
           hide_on_main: false,
         },
@@ -102,7 +103,7 @@ export class AdminNewsService {
       .execute();
   }
 
-  public async updateNews(accessToken: string | undefined, AdminNewsDto: AdminNewsDto, newsId: number): Promise<void> {
+  public async updateNews(accessToken: string | undefined, adminNewsDto: AdminNewsDto, newsId: number): Promise<void> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!userAccess.userId || !checkUserRoles(userAccess.roles, [UserRoles.NEWSMAKER])) {
@@ -113,14 +114,14 @@ export class AdminNewsService {
       .createQueryBuilder()
       .update(News)
       .set({
-        header: AdminNewsDto.russianTitle,
-        header_en: AdminNewsDto.englishTitle,
-        text: AdminNewsDto.russianText,
-        text_en: AdminNewsDto.englishText,
-        youtube: AdminNewsDto.youtube,
+        header: adminNewsDto.russianTitle,
+        header_en: adminNewsDto.englishTitle,
+        text: adminNewsDto.russianText,
+        text_en: adminNewsDto.englishText,
+        youtube: adminNewsDto.youtube,
         user: { id: userAccess.userId },
-        datetimezone: AdminNewsDto.postingTime,
-        newsType: { id: mapNewsTypeEnumToDBNewsTypeId(AdminNewsDto.type) },
+        datetimezone: moment(adminNewsDto.postingTime).tz('Europe/Moscow').format(),
+        newsType: { id: mapNewsTypeEnumToDBNewsTypeId(adminNewsDto.type) },
         comments_count: 0,
         hide_on_main: false,
       })

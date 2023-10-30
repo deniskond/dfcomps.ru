@@ -23,6 +23,7 @@ import {
   WorldspawnMapInfoInterface,
 } from '@dfcomps/contracts';
 import { MatRadioChange } from '@angular/material/radio';
+import * as moment from 'moment-timezone';
 
 @Component({
   selector: 'admin-offline-cup',
@@ -217,8 +218,8 @@ export class AdminOfflineCupComponent implements OnInit {
     this.offlineCupForm.setValue({
       fullName: cup.fullName,
       shortName: cup.shortName,
-      startTime: cup.startTime,
-      endTime: cup.endTime,
+      startTime: moment(cup.startTime).tz('Europe/Moscow').format('yyyy-MM-DDTHH:mm'),
+      endTime: moment(cup.endTime).tz('Europe/Moscow').format('yyyy-MM-DDTHH:mm'),
       mapType: cup.mapType,
       multicup: cup.multicupId,
       mapName: cup.mapName,
