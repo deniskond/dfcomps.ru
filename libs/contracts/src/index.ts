@@ -61,3 +61,4 @@ export { AdminActiveMulticupInterface } from './lib/admin/admin-active-multicup.
 export { WorldspawnMapInfoInterface } from './lib/admin/worldspawn-map-info.interface';
 export { UploadedFileLinkInterface } from './lib/global/uploaded-file-link.interface';
 export { AdminEditOfflineCupInterface } from './lib/admin/admin-edit-offline-cup.interface';
+export { UpdateCupDto } from './lib/admin/update-cup.dto';

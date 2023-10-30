@@ -15,6 +15,7 @@ import {
   AdminPlayerDemosValidationInterface,
   AdminValidationInterface,
   CupTypes,
+  UpdateCupDto,
   NewsTypes,
   Physics,
   ProcessValidationDto,
@@ -124,13 +125,11 @@ export class AdminCupsService {
     };
   }
 
-  public async deleteCup(accessToken: string | undefined, cupId: number): Promise<void> {}
-
   public async addCup(accessToken: string | undefined, addCupDto: AddCupDto): Promise<void> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
-      throw new UnauthorizedException('Unauthorized to get admin cups list without CUP_ORGANIZER role');
+      throw new UnauthorizedException('Unauthorized to add cup without CUP_ORGANIZER role');
     }
 
     const startDatetime = moment(addCupDto.startTime).tz('Europe/Moscow').format();
@@ -224,7 +223,21 @@ export class AdminCupsService {
     }
   }
 
-  public async updateCup(accessToken: string | undefined, cupDto: AddCupDto, cupId: number): Promise<void> {}
+  public async updateCup(accessToken: string | undefined, cupDto: UpdateCupDto, cupId: number): Promise<void> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+      throw new UnauthorizedException('Unauthorized to edit cup without CUP_ORGANIZER role');
+    }
+
+    const cup: Cup | null = await this.cupsRepository.createQueryBuilder('cups').where({ id: cupId }).getOne();
+
+    if (!cup) {
+      throw new NotFoundException(`Cup with id = ${cupId} not found`);
+    }
+  }
+
+  public async deleteCup(accessToken: string | undefined, cupId: number): Promise<void> {}
 
   public async getValidationDemos(accessToken: string | undefined, cupId: number): Promise<AdminValidationInterface> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);

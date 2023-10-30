@@ -19,6 +19,7 @@ import {
   AdminActiveMulticupInterface,
   AdminEditOfflineCupInterface,
   AdminValidationInterface,
+  UpdateCupDto,
   ProcessValidationDto,
   UploadedFileLinkInterface,
   WorldspawnMapInfoInterface,
@@ -58,7 +59,7 @@ export class AdminCupsController {
   @Post('update/:cupId')
   updateCup(
     @Headers('X-Auth') accessToken: string | undefined,
-    @Body() cupDto: AddCupDto,
+    @Body() cupDto: UpdateCupDto,
     @Param('cupId', new ParseIntPipe()) cupId: number,
   ): Promise<void> {
     return this.adminCupsService.updateCup(accessToken, cupDto, cupId);

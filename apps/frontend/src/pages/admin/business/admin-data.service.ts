@@ -14,6 +14,8 @@ import {
   WorldspawnMapInfoInterface,
   UploadedFileLinkInterface,
   AdminEditOfflineCupInterface,
+  UpdateCupDto,
+  AddCupDto,
 } from '@dfcomps/contracts';
 import * as moment from 'moment';
 
@@ -135,7 +137,24 @@ export class AdminDataService {
       size: formValue['size'],
       mapLevelshotLink: formValue['mapLevelshotLink'],
       mapPk3Link: formValue['mapPk3Link'],
-    });
+    } as AddCupDto);
+  }
+
+  public editCup$(formValue: Record<string, any>, cupId: number): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.UPDATE_CUP(cupId), {
+      fullName: formValue['fullName'],
+      shortName: formValue['shortName'],
+      startTime: formValue['startTime'],
+      endTime: formValue['endTime'],
+      multicupId: formValue['multicup'] || undefined,
+      mapName: formValue['mapName'],
+      mapAuthor: formValue['mapAuthor'],
+      weapons: this.getWeaponsFromForm(formValue),
+      addNews: formValue['addNews'],
+      size: formValue['size'],
+      mapLevelshotLink: formValue['mapLevelshotLink'] || undefined,
+      mapPk3Link: formValue['mapPk3Link'] || undefined,
+    } as UpdateCupDto);
   }
 
   public calculateCupRating$(cupId: number): Observable<void> {

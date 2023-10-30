@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class AddCupDto {
+export class UpdateCupDto {
   @IsNotEmpty()
   fullName: string;
 
@@ -28,11 +28,9 @@ export class AddCupDto {
   @IsNotEmpty()
   size: string;
 
-  @IsNotEmpty()
-  mapLevelshotLink: string;
+  mapLevelshotLink: string | undefined;
 
-  @IsNotEmpty()
-  mapPk3Link: string;
+  mapPk3Link: string | undefined;
 
   multicupId: number | undefined;
 }

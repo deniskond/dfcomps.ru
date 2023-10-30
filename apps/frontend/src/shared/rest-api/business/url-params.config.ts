@@ -187,7 +187,7 @@ export class URL_PARAMS {
     UPLOAD_MAP: (mapName: string) => string;
     UPLOAD_LEVELSHOT: (mapName: string) => string;
     GET_SINGLE_CUP: (cupId: number) => string;
-    EDIT_CUP: string;
+    UPDATE_CUP: (cupId: number) => string;
     DELETE_CUP: string;
     SET_SEASON_REWARDS: string;
     SAVE_SEASON_RATINGS: string;
@@ -211,7 +211,7 @@ export class URL_PARAMS {
       UPLOAD_MAP: (mapName: string) => `${API_URL}/admin/cups/upload-map/${mapName}`, // New backend done
       UPLOAD_LEVELSHOT: (mapName: string) => `${API_URL}/admin/cups/upload-levelshot/${mapName}`, // New backend done
       GET_SINGLE_CUP: (cupId: number) => `${API_URL}/admin/cups/get/${cupId}`,
-      EDIT_CUP: ``, // Not done
+      UPDATE_CUP: (cupId: number) => `${API_URL}/admin/cups/update/${cupId}`, // Not done
       DELETE_CUP: ``, // Not done
       SET_SEASON_REWARDS: `${API_URL}/admin/season/rewards`, // Not blocking
       SAVE_SEASON_RATINGS: `${API_URL}/admin/season/save_season_ratings`, // Not blocking
