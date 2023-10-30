@@ -6,12 +6,14 @@ import { DuelPlayerInfoInterface, DuelPlayersInfoResponseInterface, Physics } fr
 import { AuthService } from '../auth/auth.service';
 import { UserAccessInterface } from '../../shared/interfaces/user-access.interface';
 import { User } from '../../shared/entities/user.entity';
+import { RatingChange } from '../../shared/entities/rating-change.entity';
 
 @Injectable()
 export class MatchService {
   constructor(
     @InjectRepository(Match) private readonly matchRepository: Repository<Match>,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(RatingChange) private readonly ratingChangesRepository: Repository<RatingChange>,
     private readonly authService: AuthService,
   ) {}
 
@@ -118,5 +120,16 @@ export class MatchService {
     }
 
     return matchInfo;
+  }
+
+  public async getEligiblePlayers(): Promise<number[]> {
+    const players: { userId: number }[] = await this.ratingChangesRepository
+      .createQueryBuilder('rating_changes')
+      .select('rating_changes.userId')
+      .groupBy('rating_changes.userId')
+      .having('COUNT(rating_changes.userId) > 2')
+      .getRawMany();
+
+    return players.map(({ userId }) => userId);
   }
 }
