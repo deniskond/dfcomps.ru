@@ -13,6 +13,7 @@ import {
   AdminActiveMulticupInterface,
   WorldspawnMapInfoInterface,
   UploadedFileLinkInterface,
+  AdminEditOfflineCupInterface,
 } from '@dfcomps/contracts';
 import * as moment from 'moment';
 
@@ -47,6 +48,10 @@ export class AdminDataService {
     return this.backendService
       .get$<AdminCupInterface[]>(URL_PARAMS.ADMIN.GET_CUPS)
       .pipe(tap((cups: AdminCupInterface[]) => (this.cups = cups)));
+  }
+
+  public getSingleCup$(cupId: number): Observable<AdminEditOfflineCupInterface> {
+    return this.backendService.get$<AdminEditOfflineCupInterface>(URL_PARAMS.ADMIN.GET_SINGLE_CUP(cupId));
   }
 
   public getCupValidationInfo$(newsId: number): Observable<AdminValidationInterface> {
@@ -152,7 +157,9 @@ export class AdminDataService {
   }
 
   public addCustomLevelshot$(levelshot: File, mapName: string): Observable<UploadedFileLinkInterface> {
-    return this.backendService.uploadFile$(URL_PARAMS.ADMIN.UPLOAD_LEVELSHOT(mapName), [{ fileKey: 'file', file: levelshot }]);
+    return this.backendService.uploadFile$(URL_PARAMS.ADMIN.UPLOAD_LEVELSHOT(mapName), [
+      { fileKey: 'file', file: levelshot },
+    ]);
   }
 
   private getAdminNewsDto(formValue: Record<string, any>): AdminNewsDto {
@@ -190,7 +197,7 @@ export class AdminDataService {
     if (formValue['grenade']) result += 'G';
     if (formValue['plasma']) result += 'P';
     if (formValue['bfg']) result += 'B';
-    if (formValue['grapplingHook']) result += 'H';
+    if (formValue['grapple']) result += 'H';
 
     return result;
   }

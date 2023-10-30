@@ -22,7 +22,7 @@ import { AdminSeasonComponent } from './ui/admin-season/admin-season.component';
 import { HasAdminRights } from './business/has-admin-rights.guard';
 import { SharedModule } from '~shared/modules/shared.module';
 import { HasAdminPanelAccess } from './business/has-admin-panel-access.guard';
-import { AdminAddOfflineCupComponent } from './ui/admin-add-offline-cup/admin-add-offline-cup.component';
+import { AdminOfflineCupComponent } from './ui/admin-offline-cup/admin-offline-cup.component';
 
 const adminRoutes: Routes = [
   {
@@ -75,8 +75,9 @@ const adminRoutes: Routes = [
         path: 'cups',
         children: [
           { path: '', component: AdminCupsComponent },
-          { path: 'add-offline-cup', component: AdminAddOfflineCupComponent, data: { multicup: false } },
-          { path: 'add-multicup-round', component: AdminAddOfflineCupComponent, data: { multicup: true } },
+          { path: 'add-offline-cup', component: AdminOfflineCupComponent, data: { multicup: false } },
+          { path: 'add-multicup-round', component: AdminOfflineCupComponent, data: { multicup: true } },
+          { path: 'edit/:id', component: AdminOfflineCupComponent },
         ],
       },
       {
@@ -107,7 +108,7 @@ const adminRoutes: Routes = [
     AdminSimpleNewsComponent,
     AdminMulticupRoundNewsComponent,
     AdminSeasonComponent,
-    AdminAddOfflineCupComponent,
+    AdminOfflineCupComponent,
   ],
   imports: [
     RouterModule.forChild(adminRoutes),

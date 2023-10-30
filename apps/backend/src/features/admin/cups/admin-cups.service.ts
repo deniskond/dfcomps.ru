@@ -11,6 +11,7 @@ import {
   AddCupDto,
   AdminActiveMulticupInterface,
   AdminCupInterface,
+  AdminEditOfflineCupInterface,
   AdminPlayerDemosValidationInterface,
   AdminValidationInterface,
   CupTypes,
@@ -87,8 +88,40 @@ export class AdminCupsService {
     }));
   }
 
-  public async getSingleCup(accessToken: string | undefined, cupId: number): Promise<any> {
-    return {};
+  public async getSingleCup(accessToken: string | undefined, cupId: number): Promise<AdminEditOfflineCupInterface> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+      throw new UnauthorizedException('Unauthorized to get admin cup info without CUP_ORGANIZER role');
+    }
+
+    const cup: Cup | null = await this.cupsRepository
+      .createQueryBuilder('cups')
+      .leftJoinAndSelect('cups.multicup', 'multicups')
+      .leftJoinAndSelect('cups.news', 'news')
+      .where({ id: cupId })
+      .getOne();
+
+    if (!cup) {
+      throw new NotFoundException(`Cup with id = ${cupId} not found`);
+    }
+
+    return {
+      id: cup.id,
+      fullName: cup.full_name,
+      shortName: cup.short_name,
+      startTime: cup.start_datetime,
+      endTime: cup.end_datetime,
+      mapType: cup.map_pk3.match(/ws.q3df.org/) ? 'ws' : 'custom',
+      mapName: cup.map1!,
+      mapPk3: cup.map_pk3,
+      mapLevelshot: getMapLevelshot(cup.map1!),
+      author: cup.map_author,
+      weapons: cup.map_weapons,
+      multicupId: cup.multicup?.id || null,
+      addNews: cup.news.length === 2,
+      size: cup.map_size,
+    };
   }
 
   public async deleteCup(accessToken: string | undefined, cupId: number): Promise<void> {}

@@ -60,3 +60,4 @@ export { ValidationResultInterface } from './lib/admin/validation-result.interfa
 export { AdminActiveMulticupInterface } from './lib/admin/admin-active-multicup.interface';
 export { WorldspawnMapInfoInterface } from './lib/admin/worldspawn-map-info.interface';
 export { UploadedFileLinkInterface } from './lib/global/uploaded-file-link.interface';
+export { AdminEditOfflineCupInterface } from './lib/admin/admin-edit-offline-cup.interface';

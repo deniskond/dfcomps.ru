@@ -17,6 +17,7 @@ import { AdminCupsService } from './admin-cups.service';
 import {
   AddCupDto,
   AdminActiveMulticupInterface,
+  AdminEditOfflineCupInterface,
   AdminValidationInterface,
   ProcessValidationDto,
   UploadedFileLinkInterface,
@@ -37,7 +38,7 @@ export class AdminCupsController {
   getSingleCup(
     @Headers('X-Auth') accessToken: string | undefined,
     @Param('cupId', new ParseIntPipe()) cupId: number,
-  ): Promise<any> {
+  ): Promise<AdminEditOfflineCupInterface> {
     return this.adminCupsService.getSingleCup(accessToken, cupId);
   }
 
