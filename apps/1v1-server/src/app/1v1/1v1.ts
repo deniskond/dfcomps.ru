@@ -336,7 +336,6 @@ export class OneVOneHandler {
       firstPlayerId,
       secondPlayerId,
       physics,
-      secretKey: process.env.DUELS_SERVER_PRIVATE_KEY || '',
     })
       .then(() => {
         console.log('rest backend answer ok');
@@ -509,7 +508,6 @@ export class OneVOneHandler {
           firstPlayerId: match.firstPlayerId,
           secondPlayerId: match.secondPlayerId,
           map: JSON.stringify(pickedMap.map),
-          secretKey: process.env.DUELS_SERVER_PRIVATE_KEY || '',
         });
 
         if (match.firstPlayerId === '-1' || match.secondPlayerId === '-1') {
@@ -518,7 +516,6 @@ export class OneVOneHandler {
             secondPlayerId: match.secondPlayerId,
             physics: match.physics,
             wr: match.physics === Physics.CPM ? pickedMap.map.cpmRecord.toString() : pickedMap.map.vq3Record.toString(),
-            secretKey: process.env.DUELS_SERVER_PRIVATE_KEY || '',
           });
         }
       }
@@ -602,7 +599,6 @@ export class OneVOneHandler {
             this.doAxiosPostRequest(URLS.MATCH.FINISH, {
               firstPlayerId,
               secondPlayerId,
-              secretKey: process.env.DUELS_SERVER_PRIVATE_KEY || '',
             }),
           ),
         ),
@@ -658,7 +654,11 @@ export class OneVOneHandler {
 
     Object.entries(formData).forEach(([key, value]: [string, any]) => params.append(key, value));
 
-    return axios.post(url, params);
+    return axios.post(url, params, {
+      headers: {
+        secretKey: process.env.DUELS_SERVER_PRIVATE_KEY || '',
+      },
+    });
   }
 
   private sendUpdatedQueueInfoToAllClients(): Promise<void[]> {

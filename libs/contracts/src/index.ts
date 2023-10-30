@@ -62,3 +62,4 @@ export { WorldspawnMapInfoInterface } from './lib/admin/worldspawn-map-info.inte
 export { UploadedFileLinkInterface } from './lib/global/uploaded-file-link.interface';
 export { AdminEditOfflineCupInterface } from './lib/admin/admin-edit-offline-cup.interface';
 export { UpdateCupDto } from './lib/admin/update-cup.dto';
+export { MatchStartDto } from './lib/match/match-start.dto';

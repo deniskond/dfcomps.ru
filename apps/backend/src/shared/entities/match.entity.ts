@@ -33,8 +33,8 @@ export class Match {
   @Column({ type: 'character varying' })
   physics: Physics;
 
-  @Column({ type: 'character varying' })
-  map: string;
+  @Column({ type: 'character varying', nullable: true })
+  map: string | null;
 
   @Column({ type: 'integer', nullable: true })
   first_player_rating_change: number | null;

@@ -1,6 +1,6 @@
-import { Controller, Get, Headers } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Post } from '@nestjs/common';
 import { MatchService } from './match.service';
-import { DuelPlayersInfoResponseInterface } from '@dfcomps/contracts';
+import { DuelPlayersInfoResponseInterface, MatchSecretDto, MatchStartDto } from '@dfcomps/contracts';
 
 @Controller('match')
 export class MatchController {
@@ -14,5 +14,13 @@ export class MatchController {
   @Get('get-eligible-players')
   getEligiblePlayers(): Promise<number[]> {
     return this.matchService.getEligiblePlayers();
+  }
+
+  @Post('start')
+  startMatch(
+    @Headers('secretKey') secretKey: string | undefined,
+    @Body() { firstPlayerId, secondPlayerId, physics }: MatchStartDto,
+  ): Promise<void> {
+    return this.matchService.startMatch(secretKey, firstPlayerId, secondPlayerId, physics);
   }
 }

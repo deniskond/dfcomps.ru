@@ -7,11 +7,12 @@ import { AuthService } from '../auth/auth.service';
 import { UserAccessInterface } from '../../shared/interfaces/user-access.interface';
 import { User } from '../../shared/entities/user.entity';
 import { RatingChange } from '../../shared/entities/rating-change.entity';
+import * as moment from 'moment';
 
 @Injectable()
 export class MatchService {
   constructor(
-    @InjectRepository(Match) private readonly matchRepository: Repository<Match>,
+    @InjectRepository(Match) private readonly matchesRepository: Repository<Match>,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @InjectRepository(RatingChange) private readonly ratingChangesRepository: Repository<RatingChange>,
     private readonly authService: AuthService,
@@ -29,7 +30,7 @@ export class MatchService {
       .where({ id: userAccess.userId })
       .getOne())!;
 
-    const match: Match | null = await this.matchRepository
+    const match: Match | null = await this.matchesRepository
       .createQueryBuilder('matches')
       .where({ first_player_id: userAccess.userId })
       .orWhere({ second_player_id: userAccess.userId })
@@ -131,5 +132,32 @@ export class MatchService {
       .getRawMany();
 
     return players.map(({ userId }) => userId);
+  }
+
+  public async startMatch(
+    secretKey: string | undefined,
+    firstPlayerId: number,
+    secondPlayerId: number,
+    physics: Physics,
+  ): Promise<void> {
+    if (secretKey !== process.env.DUELS_SERVER_PRIVATE_KEY) {
+      throw new UnauthorizedException("Secret key doesn't match");
+    }
+
+    await this.matchesRepository
+      .createQueryBuilder()
+      .insert()
+      .into(Match)
+      .values([
+        {
+          first_player_id: firstPlayerId,
+          second_player_id: secondPlayerId,
+          physics,
+          start_datetime: moment().format(),
+          is_finished: false,
+          security_code: (Math.random() * (99999 - 10000) + 10000).toString(),
+        },
+      ])
+      .execute();
   }
 }
