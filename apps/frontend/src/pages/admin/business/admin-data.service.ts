@@ -157,6 +157,10 @@ export class AdminDataService {
     } as UpdateCupDto);
   }
 
+  public deleteCup$(cupId: number): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.DELETE_CUP(cupId));
+  }
+
   public calculateCupRating$(cupId: number): Observable<void> {
     return this.backendService.post$<void>(URL_PARAMS.ADMIN.CALCULATE_CUP_RATING(cupId));
   }

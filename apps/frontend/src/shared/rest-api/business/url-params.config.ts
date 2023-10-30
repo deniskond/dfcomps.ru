@@ -10,7 +10,7 @@ const envMap: Record<string, string> = {
 export const MAIN_URL = envMap[environment.name];
 export const API_URL = MAIN_URL;
 
-// New backend status: 49 / 51 endpoints done
+// New backend status: 53 / 53 endpoints done
 export class URL_PARAMS {
   public static get WEBSOCKET_1V1_URL(): string {
     const websocketEnvMap: Record<string, string> = {
@@ -188,7 +188,7 @@ export class URL_PARAMS {
     UPLOAD_LEVELSHOT: (mapName: string) => string;
     GET_SINGLE_CUP: (cupId: number) => string;
     UPDATE_CUP: (cupId: number) => string;
-    DELETE_CUP: string;
+    DELETE_CUP: (cupId: number) => string;
     SET_SEASON_REWARDS: string;
     SAVE_SEASON_RATINGS: string;
     RESET_SEASON_RATINGS: string;
@@ -210,9 +210,9 @@ export class URL_PARAMS {
       ADD_CUP: `${API_URL}/admin/cups/add`, // New backend done
       UPLOAD_MAP: (mapName: string) => `${API_URL}/admin/cups/upload-map/${mapName}`, // New backend done
       UPLOAD_LEVELSHOT: (mapName: string) => `${API_URL}/admin/cups/upload-levelshot/${mapName}`, // New backend done
-      GET_SINGLE_CUP: (cupId: number) => `${API_URL}/admin/cups/get/${cupId}`,
-      UPDATE_CUP: (cupId: number) => `${API_URL}/admin/cups/update/${cupId}`, // Not done
-      DELETE_CUP: ``, // Not done
+      GET_SINGLE_CUP: (cupId: number) => `${API_URL}/admin/cups/get/${cupId}`, // New backend done
+      UPDATE_CUP: (cupId: number) => `${API_URL}/admin/cups/update/${cupId}`, // New backend done
+      DELETE_CUP: (cupId: number) => `${API_URL}/admin/cups/delete/${cupId}`, // New backend done
       SET_SEASON_REWARDS: `${API_URL}/admin/season/rewards`, // Not blocking
       SAVE_SEASON_RATINGS: `${API_URL}/admin/season/save_season_ratings`, // Not blocking
       RESET_SEASON_RATINGS: `${API_URL}/admin/season/reset_season_ratings`, // Not blocking

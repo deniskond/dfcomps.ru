@@ -12,10 +12,22 @@ import { CupResult } from '../../../shared/entities/cup-result.entity';
 import { OldRating } from '../../../shared/entities/old-rating.entity';
 import { Season } from '../../../shared/entities/season.entity';
 import { News } from 'apps/backend/src/shared/entities/news.entity';
+import { NewsComment } from 'apps/backend/src/shared/entities/news-comment.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Cup, CupDemo, OneVOneRating, RatingChange, Multicup, CupResult, OldRating, Season, News]),
+    TypeOrmModule.forFeature([
+      Cup,
+      CupDemo,
+      OneVOneRating,
+      RatingChange,
+      Multicup,
+      CupResult,
+      OldRating,
+      Season,
+      News,
+      NewsComment,
+    ]),
   ],
   controllers: [AdminCupsController],
   providers: [AdminCupsService, TablesService],

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ReplaySubject, Subject, filter, switchMap, takeUntil } from 'rxjs';
+import { ReplaySubject, Subject, filter, switchMap, take, takeUntil } from 'rxjs';
 import { AdminDataService } from '../../business/admin-data.service';
 import { AdminCupInterface } from '@dfcomps/contracts';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -42,7 +42,24 @@ export class AdminCupsComponent implements OnInit {
     this.onDestroy$.complete();
   }
 
-  public confirmDelete(cupId: number): void {}
+  public confirmDelete(cup: AdminCupInterface): void {
+    const snackBar = this.snackBar.open(`Are you sure you want to delete "${cup.fullName}"?`, 'Yes', {
+      duration: 3000,
+    });
+
+    snackBar
+      .onAction()
+      .pipe(
+        take(1),
+        switchMap(() => this.adminDataService.deleteCup$(cup.id)),
+      )
+      .subscribe(() => {
+        this.cups = this.cups.filter((cupEntry: AdminCupInterface) => cupEntry.id !== cup.id);
+        this.cups$.next(this.cups);
+        this.adminDataService.setCups(this.cups);
+        this.snackBar.open(`Successfully deleted "${cup.fullName}"!`, '', { duration: 1000 });
+      });
+  }
 
   public isEditingCupAvailable(cup: AdminCupInterface): boolean {
     if (!this.user) {

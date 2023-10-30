@@ -49,6 +49,8 @@ import { News } from '../../../shared/entities/news.entity';
 import { mapNewsTypeEnumToDBNewsTypeId } from 'apps/backend/src/shared/mappers/news-types.mapper';
 import * as sharp from 'sharp';
 import { Metadata, Sharp } from 'sharp';
+import { NewsComment } from 'apps/backend/src/shared/entities/news-comment.entity';
+import { CupResult } from 'apps/backend/src/shared/entities/cup-result.entity';
 
 @Injectable()
 export class AdminCupsService {
@@ -57,8 +59,10 @@ export class AdminCupsService {
     private readonly tablesService: TablesService,
     @InjectRepository(Cup) private readonly cupsRepository: Repository<Cup>,
     @InjectRepository(News) private readonly newsRepository: Repository<News>,
+    @InjectRepository(NewsComment) private readonly newsCommentsRepository: Repository<NewsComment>,
     @InjectRepository(Multicup) private readonly multicupsRepository: Repository<Multicup>,
     @InjectRepository(CupDemo) private readonly cupsDemosRepository: Repository<CupDemo>,
+    @InjectRepository(CupResult) private readonly cupsResultsRepository: Repository<CupResult>,
     @InjectRepository(Season) private readonly seasonRepository: Repository<Season>,
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
     @InjectRepository(RatingChange) private readonly ratingChangesRepository: Repository<RatingChange>,
@@ -236,6 +240,10 @@ export class AdminCupsService {
       throw new NotFoundException(`Cup with id = ${cupId} not found`);
     }
 
+    if (moment().isAfter(moment(cup.end_datetime))) {
+      throw new BadRequestException(`Can't update - cup already finished`);
+    }
+
     const startDatetime = moment(updateCupDto.startTime).tz('Europe/Moscow').format();
     const endDatetime = moment(updateCupDto.endTime).tz('Europe/Moscow').format();
 
@@ -294,7 +302,62 @@ export class AdminCupsService {
     }
   }
 
-  public async deleteCup(accessToken: string | undefined, cupId: number): Promise<void> {}
+  public async deleteCup(accessToken: string | undefined, cupId: number): Promise<void> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+      throw new UnauthorizedException('Unauthorized to delete cup without CUP_ORGANIZER role');
+    }
+
+    const cup: Cup | null = await this.cupsRepository.createQueryBuilder('cups').where({ id: cupId }).getOne();
+
+    if (!cup) {
+      throw new NotFoundException(`Cup with id = ${cupId} not found`);
+    }
+
+    if (moment().isAfter(moment(cup.end_datetime))) {
+      throw new BadRequestException(`Can't delete - cup already finished`);
+    }
+
+    const newsIds: number[] = (
+      await this.newsRepository
+        .createQueryBuilder()
+        .where({ cup: { id: cupId } })
+        .getMany()
+    ).map((newsItem: News) => newsItem.id);
+
+    if (newsIds.length) {
+      await this.newsCommentsRepository
+        .createQueryBuilder('news_comments')
+        .delete()
+        .from(NewsComment)
+        .where('"news_comments"."newsId" IN(:...ids)', { ids: newsIds })
+        .execute();
+    }
+
+    await this.newsRepository
+      .createQueryBuilder()
+      .delete()
+      .from(News)
+      .where({ cup: { id: cupId } })
+      .execute();
+
+    await this.cupsDemosRepository
+      .createQueryBuilder()
+      .delete()
+      .from(CupDemo)
+      .where({ cup: { id: cupId } })
+      .execute();
+
+    await this.cupsResultsRepository
+      .createQueryBuilder()
+      .delete()
+      .from(CupResult)
+      .where({ cup: { id: cupId } })
+      .execute();
+
+    await this.cupsRepository.createQueryBuilder().delete().from(Cup).where({ id: cupId }).execute();
+  }
 
   public async getValidationDemos(accessToken: string | undefined, cupId: number): Promise<AdminValidationInterface> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);

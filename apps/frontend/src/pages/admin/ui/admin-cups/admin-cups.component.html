@@ -41,7 +41,7 @@
         </button>
         <ng-container *ngIf="isEditingCupAvailable(cup)">
           <button [routerLink]="'/admin/cups/edit/' + cup.id" mat-raised-button color="basic">Edit</button>
-          <button (click)="confirmDelete(cup.id)" mat-raised-button color="warn">Delete</button>
+          <button (click)="confirmDelete(cup)" mat-raised-button color="warn">Delete</button>
         </ng-container>
         <ng-container *ngIf="!cup.validationAvailable && !cup.calculateRatingsAvailable && !isEditingCupAvailable(cup)">
           No actions available
