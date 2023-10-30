@@ -367,18 +367,18 @@ export class AdminCupsService {
     const cupName: string = cup.full_name.replace(/#/g, '').replace(/\s/g, '_');
     const zip = new Zip();
     const archiveFileName = `${cupName}_all_demos.zip`;
-    const archiveFilePath = process.env.DFCOMPS_FILE_UPLOAD_PATH + `/demos/cup${cupId}/${archiveFileName}`;
+    const archiveFilePath = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${archiveFileName}`;
 
     if (fs.existsSync(archiveFilePath)) {
       fs.rmSync(archiveFilePath);
     }
 
     vq3Table.valid.forEach((demo: ValidDemoInterface) => {
-      zip.addLocalFile(process.env.DFCOMPS_FILE_UPLOAD_PATH + `/demos/cup${cupId}/${demo.demopath}`, 'vq3');
+      zip.addLocalFile(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${demo.demopath}`, 'vq3');
     });
 
     cpmTable.valid.forEach((demo: ValidDemoInterface) => {
-      zip.addLocalFile(process.env.DFCOMPS_FILE_UPLOAD_PATH + `/demos/cup${cupId}/${demo.demopath}`, 'cpm');
+      zip.addLocalFile(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${demo.demopath}`, 'cpm');
     });
 
     zip.writeZip(archiveFilePath);
@@ -390,7 +390,7 @@ export class AdminCupsService {
       .getMany();
 
     allValidDemos.forEach(({ demopath }: CupDemo) => {
-      const fileName = process.env.DFCOMPS_FILE_UPLOAD_PATH + `/demos/cup${cupId}/${demopath}`;
+      const fileName = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${demopath}`;
 
       if (fs.existsSync(fileName)) {
         fs.rmSync(fileName);
@@ -398,7 +398,7 @@ export class AdminCupsService {
     });
 
     const cupValidationArchiveFileName =
-      process.env.DFCOMPS_FILE_UPLOAD_PATH + `/demos/cup${cupId}/${cup.validation_archive_link}`;
+      process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${cup.validation_archive_link}`;
 
     if (fs.existsSync(cupValidationArchiveFileName)) {
       fs.rmSync(cupValidationArchiveFileName);
@@ -531,7 +531,8 @@ export class AdminCupsService {
       resultImage = await image.resize(512, 384).jpeg().toBuffer();
     }
 
-    const fullUploadPath = process.env.DFCOMPS_FILE_UPLOAD_PATH + `/images/maps/${mapName.toLowerCase()}.jpg`;
+    const relativePath = `/images/maps/${mapName.toLowerCase()}.jpg`;
+    const fullUploadPath = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + relativePath;
 
     if (fs.existsSync(fullUploadPath)) {
       fs.rmSync(fullUploadPath);
@@ -540,7 +541,7 @@ export class AdminCupsService {
     fs.writeFileSync(fullUploadPath, resultImage);
 
     return {
-      link: fullUploadPath,
+      link: process.env.DFCOMPS_FILES_RELATIVE_PATH + relativePath,
     };
   }
 
@@ -556,13 +557,14 @@ export class AdminCupsService {
     }
 
     const uuid = v4();
-    const fullUploadPath = process.env.DFCOMPS_FILE_UPLOAD_PATH + `/maps/${uuid}/${mapName.toLowerCase()}.pk3`;
+    const relativePath = `/maps/${uuid}/${mapName.toLowerCase()}.pk3`;
+    const fullUploadPath = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + relativePath;
 
-    fs.mkdirSync(process.env.DFCOMPS_FILE_UPLOAD_PATH + `/maps/${uuid}`);
+    fs.mkdirSync(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/maps/${uuid}`);
     fs.writeFileSync(fullUploadPath, map.buffer);
 
     return {
-      link: fullUploadPath,
+      link: process.env.DFCOMPS_FILES_RELATIVE_PATH + relativePath,
     };
   }
 

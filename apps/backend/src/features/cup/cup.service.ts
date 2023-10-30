@@ -99,7 +99,7 @@ export class CupService {
     const zip = new Zip();
     const validationArchiveFileName = `${cupName}_all_demos_validation.zip`;
     const validationArchiveFilePath = 
-      process.env.DFCOMPS_FILE_UPLOAD_PATH + `/demos/cup${cupId}/${validationArchiveFileName}`;
+      process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${validationArchiveFileName}`;
 
     if (fs.existsSync(validationArchiveFilePath)) {
       fs.rmSync(validationArchiveFilePath);
@@ -114,7 +114,7 @@ export class CupService {
       const isVq3TableDemo = vq3Table.valid.some((vq3Demo: ValidDemoInterface) => vq3Demo.demopath === demo.demopath);
 
       if (isVq3TableDemo) {
-        zip.addLocalFile(process.env.DFCOMPS_FILE_UPLOAD_PATH + `/demos/cup${cupId}/${demo.demopath}`, 'vq3');
+        zip.addLocalFile(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${demo.demopath}`, 'vq3');
 
         return;
       }
@@ -122,12 +122,12 @@ export class CupService {
       const isCpmTableDemo = cpmTable.valid.some((cpmDemo: ValidDemoInterface) => cpmDemo.demopath === demo.demopath);
 
       if (isCpmTableDemo) {
-        zip.addLocalFile(process.env.DFCOMPS_FILE_UPLOAD_PATH + `/demos/cup${cupId}/${demo.demopath}`, 'cpm');
+        zip.addLocalFile(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${demo.demopath}`, 'cpm');
 
         return;
       }
 
-      zip.addLocalFile(process.env.DFCOMPS_FILE_UPLOAD_PATH + `/demos/cup${cupId}/${demo.demopath}`, 'bonus');
+      zip.addLocalFile(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${demo.demopath}`, 'bonus');
     });
 
     zip.writeZip(validationArchiveFilePath);

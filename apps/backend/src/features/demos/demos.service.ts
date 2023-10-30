@@ -67,7 +67,7 @@ export class DemosService {
       };
     }
 
-    const demoDirectory = process.env.DFCOMPS_FILE_UPLOAD_PATH + `\\demos\\cup${cup.id}`;
+    const demoDirectory = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `\\demos\\cup${cup.id}`;
 
     if (!fs.existsSync(demoDirectory)) {
       fs.mkdirSync(demoDirectory);
@@ -188,7 +188,7 @@ export class DemosService {
       };
     }
 
-    const demoDirectory = process.env.DFCOMPS_FILE_UPLOAD_PATH + `\\demos\\matches\\match${match.id}`;
+    const demoDirectory = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `\\demos\\matches\\match${match.id}`;
 
     if (!fs.existsSync(demoDirectory)) {
       fs.mkdirSync(demoDirectory);
@@ -301,7 +301,7 @@ export class DemosService {
       throw new BadRequestException('Cup already finished');
     }
 
-    const demoPath: string = process.env.DFCOMPS_FILE_UPLOAD_PATH + `\\demos\\cup${cup.id}\\${demoName}`;
+    const demoPath: string = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `\\demos\\cup${cup.id}\\${demoName}`;
 
     if (fs.existsSync(demoPath)) {
       fs.rmSync(demoPath);
