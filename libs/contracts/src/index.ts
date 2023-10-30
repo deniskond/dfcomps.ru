@@ -65,3 +65,5 @@ export { UpdateCupDto } from './lib/admin/update-cup.dto';
 export { MatchStartDto } from './lib/match/match-start.dto';
 export { UpdateMatchInfoDto } from './lib/match/update-match-info.dto';
 export { EligiblePlayersInterface } from './lib/match/eligible-players.interface';
+export { UpdateBotTimeDto } from './lib/match/update-bot-time.dto';
+export { DFCOMPS_BOT_ID } from './lib/match/dfcomps-bot-id.const';

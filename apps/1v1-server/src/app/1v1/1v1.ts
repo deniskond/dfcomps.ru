@@ -19,7 +19,7 @@ import { QueueInfoInterface } from './interfaces/queue-info.interface';
 import { TEST_PLAYER_ID } from './constants/test-player-id';
 import { MapInterface } from './interfaces/map.interface';
 import { URLS } from './config/urls';
-import { EligiblePlayersInterface, MatchStartDto } from '@dfcomps/contracts';
+import { DFCOMPS_BOT_ID, EligiblePlayersInterface, MatchStartDto, UpdateBotTimeDto, UpdateMatchInfoDto } from '@dfcomps/contracts';
 
 interface QueueInterface {
   playerId: number;
@@ -31,7 +31,6 @@ const MATCH_TIMER_SECONDS = TimingsConfig.MATCH_TIMER_SECONDS;
 const BAN_TIMER = TimingsConfig.BAN_TIMER_SECONDS * 1000;
 const MATCH_TIMER = TimingsConfig.MATCH_TIMER_SECONDS * 1000;
 const LAG_COMPENSATION = 1000;
-const DFCOMPS_BOT_ID = -1;
 
 export class OneVOneHandler {
   private queue$ = new BehaviorSubject<QueueInterface[]>([]);
@@ -513,15 +512,15 @@ export class OneVOneHandler {
           firstPlayerId: match.firstPlayerId,
           secondPlayerId: match.secondPlayerId,
           map: JSON.stringify(pickedMap.map),
-        });
+        } as UpdateMatchInfoDto);
 
         if (match.firstPlayerId === DFCOMPS_BOT_ID || match.secondPlayerId === DFCOMPS_BOT_ID) {
           this.doAxiosPostRequest(URLS.MATCH.UPDATE_BOT_TIME, {
             firstPlayerId: match.firstPlayerId,
             secondPlayerId: match.secondPlayerId,
             physics: match.physics,
-            wr: match.physics === Physics.CPM ? pickedMap.map.cpmRecord.toString() : pickedMap.map.vq3Record.toString(),
-          });
+            wr: match.physics === Physics.CPM ? pickedMap.map.cpmRecord : pickedMap.map.vq3Record,
+          } as UpdateBotTimeDto);
         }
       }
     }

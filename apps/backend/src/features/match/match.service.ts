@@ -1,18 +1,21 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Match } from '../../shared/entities/match.entity';
 import {
+  DFCOMPS_BOT_ID,
   DuelPlayerInfoInterface,
   DuelPlayersInfoResponseInterface,
   EligiblePlayersInterface,
   Physics,
+  UpdateBotTimeDto,
 } from '@dfcomps/contracts';
 import { AuthService } from '../auth/auth.service';
 import { UserAccessInterface } from '../../shared/interfaces/user-access.interface';
 import { User } from '../../shared/entities/user.entity';
 import { RatingChange } from '../../shared/entities/rating-change.entity';
 import * as moment from 'moment';
+import { OneVOneRating } from '../../shared/entities/1v1-rating.entity';
 
 @Injectable()
 export class MatchService {
@@ -20,6 +23,7 @@ export class MatchService {
     @InjectRepository(Match) private readonly matchesRepository: Repository<Match>,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @InjectRepository(RatingChange) private readonly ratingChangesRepository: Repository<RatingChange>,
+    @InjectRepository(OneVOneRating) private readonly oneVOneRatingsRepository: Repository<OneVOneRating>,
     private readonly authService: AuthService,
   ) {}
 
@@ -181,6 +185,54 @@ export class MatchService {
       .update(Match)
       .set({
         map,
+      })
+      .where({ first_player_id: firstPlayerId })
+      .andWhere({ second_player_id: secondPlayerId })
+      .andWhere({ is_finished: false })
+      .execute();
+  }
+
+  public async updateBotTime(
+    secretKey: string | undefined,
+    { firstPlayerId, secondPlayerId, physics, wr }: UpdateBotTimeDto,
+  ): Promise<void> {
+    if (secretKey !== process.env.DUELS_SERVER_PRIVATE_KEY) {
+      throw new UnauthorizedException("Secret key doesn't match");
+    }
+
+    const humanPlayerId: number = firstPlayerId === DFCOMPS_BOT_ID ? secondPlayerId : firstPlayerId;
+    const humanRatingEntry: OneVOneRating | null = await this.oneVOneRatingsRepository
+      .createQueryBuilder('1v1_rating')
+      .where('1v1_rating.userId = :userId', { userId: humanPlayerId })
+      .getOne();
+
+    if (!humanRatingEntry) {
+      throw new BadRequestException(`Player with id = ${humanPlayerId} was not found in 1v1 rating`);
+    }
+
+    const humanRating: number = humanRatingEntry[physics];
+    let botTime: number;
+
+    if (humanRating > 2000) {
+      botTime = wr;
+    } else if (humanRating < 1200) {
+      botTime = wr * 2;
+    } else {
+      botTime = wr * (1 + (2000 - humanRating) / 800);
+    }
+
+    const roundedBotTime = Math.floor(botTime);
+    const millis = (botTime - roundedBotTime) * 1000;
+    const actualMillis = Math.floor(millis / 8) * 8;
+
+    botTime = roundedBotTime + actualMillis / 1000;
+
+    await this.matchesRepository
+      .createQueryBuilder('matches')
+      .update(Match)
+      .set({
+        first_player_time: firstPlayerId === DFCOMPS_BOT_ID ? botTime : null,
+        second_player_time: secondPlayerId === DFCOMPS_BOT_ID ? botTime : null,
       })
       .where({ first_player_id: firstPlayerId })
       .andWhere({ second_player_id: secondPlayerId })
