@@ -1,6 +1,13 @@
 import { Body, Controller, Get, Headers, Post } from '@nestjs/common';
 import { MatchService } from './match.service';
-import { DuelPlayersInfoResponseInterface, EligiblePlayersInterface, MatchStartDto, UpdateBotTimeDto, UpdateMatchInfoDto } from '@dfcomps/contracts';
+import {
+  DuelPlayersInfoResponseInterface,
+  EligiblePlayersInterface,
+  FinishMatchDto,
+  MatchStartDto,
+  UpdateBotTimeDto,
+  UpdateMatchInfoDto,
+} from '@dfcomps/contracts';
 
 @Controller('match')
 export class MatchController {
@@ -38,5 +45,13 @@ export class MatchController {
     @Body() updateBotTimeDto: UpdateBotTimeDto,
   ): Promise<void> {
     return this.matchService.updateBotTime(secretKey, updateBotTimeDto);
+  }
+
+  @Post('finish')
+  finishMatch(
+    @Headers('secretKey') secretKey: string | undefined,
+    @Body() { firstPlayerId, secondPlayerId }: FinishMatchDto,
+  ): Promise<void> {
+    return this.matchService.finishMatch(secretKey, firstPlayerId, secondPlayerId);
   }
 }

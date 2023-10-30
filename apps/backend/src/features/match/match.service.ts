@@ -16,6 +16,7 @@ import { User } from '../../shared/entities/user.entity';
 import { RatingChange } from '../../shared/entities/rating-change.entity';
 import * as moment from 'moment';
 import { OneVOneRating } from '../../shared/entities/1v1-rating.entity';
+import { FinishMatchInterface } from './finish-match.interface';
 
 @Injectable()
 export class MatchService {
@@ -238,5 +239,166 @@ export class MatchService {
       .andWhere({ second_player_id: secondPlayerId })
       .andWhere({ is_finished: false })
       .execute();
+  }
+
+  public async finishMatch(
+    secretKey: string | undefined,
+    firstPlayerId: number,
+    secondPlayerId: number,
+  ): Promise<void> {
+    if (secretKey !== process.env.DUELS_SERVER_PRIVATE_KEY) {
+      throw new UnauthorizedException("Secret key doesn't match");
+    }
+
+    const match: FinishMatchInterface | undefined = await this.matchesRepository
+      .createQueryBuilder('matches')
+      .leftJoinAndSelect('1v1_rating', 'first_rating_table', 'first_rating_table.userId = matches.first_player_id')
+      .leftJoinAndSelect('1v1_rating', 'second_rating_table', 'second_rating_table.userId = matches.second_player_id')
+      .where({ first_player_id: firstPlayerId })
+      .andWhere({ second_player_id: secondPlayerId })
+      .andWhere({ is_finished: false })
+      .getRawOne();
+
+    if (!match) {
+      throw new BadRequestException(`No active match for players ${firstPlayerId} and ${secondPlayerId} found`);
+    }
+
+    const matchFirstPlayerTime: number = match.matches_first_player_time || Infinity;
+    const matchSecondPlayerTime: number = match.matches_second_player_time || Infinity;
+    let firstPlayerResult = matchFirstPlayerTime > matchSecondPlayerTime ? 1 : 0;
+
+    if (matchFirstPlayerTime === matchSecondPlayerTime) {
+      firstPlayerResult = 0.5;
+    }
+
+    let firstPlayerRating =
+      match.matches_physics === Physics.CPM ? match.first_rating_table_cpm : match.first_rating_table_vq3;
+    let secondPlayerRating =
+      match.matches_physics === Physics.CPM ? match.second_rating_table_cpm : match.second_rating_table_vq3;
+
+    firstPlayerRating = firstPlayerRating || 1500;
+    secondPlayerRating = secondPlayerRating || 1500;
+
+    if (match.matches_first_player_id === DFCOMPS_BOT_ID) {
+      firstPlayerRating = secondPlayerRating;
+    }
+
+    if (match.matches_second_player_id === DFCOMPS_BOT_ID) {
+      secondPlayerRating = firstPlayerRating;
+    }
+
+    const firstPlayerRatingChange = this.countEloChange(firstPlayerRating, secondPlayerRating, firstPlayerResult);
+    const secondPlayerRatingChange = this.countEloChange(secondPlayerRating, firstPlayerRating, 1 - firstPlayerResult);
+
+    if (match.matches_physics === Physics.CPM) {
+      if (match.first_rating_table_cpm) {
+        await this.oneVOneRatingsRepository
+          .createQueryBuilder()
+          .update(OneVOneRating)
+          .set({
+            cpm: firstPlayerRating + firstPlayerRatingChange,
+          })
+          .where({ user: { id: firstPlayerId } })
+          .execute();
+      } else {
+        await this.oneVOneRatingsRepository
+          .createQueryBuilder()
+          .insert()
+          .into(OneVOneRating)
+          .values([{
+            user: { id: firstPlayerId },
+            vq3: 1500,
+            cpm: firstPlayerRating + firstPlayerRatingChange,
+          }])
+          .execute();
+      }
+
+      if (match.second_rating_table_cpm) {
+        await this.oneVOneRatingsRepository
+          .createQueryBuilder()
+          .update(OneVOneRating)
+          .set({
+            cpm: secondPlayerRating + secondPlayerRatingChange,
+          })
+          .where({ user: { id: secondPlayerId } })
+          .execute();
+      } else {
+        await this.oneVOneRatingsRepository
+          .createQueryBuilder()
+          .insert()
+          .into(OneVOneRating)
+          .values([{
+            user: { id: secondPlayerId },
+            vq3: 1500,
+            cpm: secondPlayerRating + secondPlayerRatingChange,
+          }])
+          .execute();
+      }
+    }
+
+    if (match.matches_physics === Physics.VQ3) {
+      if (match.first_rating_table_vq3) {
+        await this.oneVOneRatingsRepository
+          .createQueryBuilder()
+          .update(OneVOneRating)
+          .set({
+            vq3: firstPlayerRating + firstPlayerRatingChange,
+          })
+          .where({ user: { id: firstPlayerId } })
+          .execute();
+      } else {
+        await this.oneVOneRatingsRepository
+          .createQueryBuilder()
+          .insert()
+          .into(OneVOneRating)
+          .values([{
+            user: { id: firstPlayerId },
+            cpm: 1500,
+            vq3: firstPlayerRating + firstPlayerRatingChange,
+          }])
+          .execute();
+      }
+
+      if (match.second_rating_table_vq3) {
+        await this.oneVOneRatingsRepository
+          .createQueryBuilder()
+          .update(OneVOneRating)
+          .set({
+            vq3: secondPlayerRating + secondPlayerRatingChange,
+          })
+          .where({ user: { id: secondPlayerId } })
+          .execute();
+      } else {
+        await this.oneVOneRatingsRepository
+          .createQueryBuilder()
+          .insert()
+          .into(OneVOneRating)
+          .values([{
+            user: { id: secondPlayerId },
+            cpm: 1500,
+            vq3: secondPlayerRating + secondPlayerRatingChange,
+          }])
+          .execute();
+      }
+    }
+
+    await this.matchesRepository
+      .createQueryBuilder()
+      .update(Match)
+      .set({
+        is_finished: true,
+        first_player_rating_change: firstPlayerRatingChange,
+        second_player_rating_change: secondPlayerRatingChange,
+      })
+      .where({ first_player_id: firstPlayerId })
+      .andWhere({ second_player_id: secondPlayerId })
+      .andWhere({ is_finished: false })
+      .execute();
+  }
+
+  private countEloChange(firstPlayerRating: number, secondPlayerRating: number, result: number): number {
+    const expectedResult = 1 / (1 + Math.pow(10, (secondPlayerRating - firstPlayerRating) / 400));
+
+    return Math.round(20 * (result - expectedResult));
   }
 }
