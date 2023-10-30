@@ -165,4 +165,26 @@ export class MatchService {
       ])
       .execute();
   }
+
+  public async updateMatchInfo(
+    secretKey: string | undefined,
+    firstPlayerId: number,
+    secondPlayerId: number,
+    map: string,
+  ): Promise<void> {
+    if (secretKey !== process.env.DUELS_SERVER_PRIVATE_KEY) {
+      throw new UnauthorizedException("Secret key doesn't match");
+    }
+
+    await this.matchesRepository
+      .createQueryBuilder()
+      .update(Match)
+      .set({
+        map,
+      })
+      .where({ first_player_id: firstPlayerId })
+      .andWhere({ second_player_id: secondPlayerId })
+      .andWhere({ is_finished: false })
+      .execute();
+  }
 }

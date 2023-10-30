@@ -1,5 +1,4 @@
-import { IsEnum, IsNotEmpty } from 'class-validator';
-import { Physics } from '../global/physics.enum';
+import { IsNotEmpty } from 'class-validator';
 
 export class UpdateMatchInfoDto {
   @IsNotEmpty()
@@ -9,6 +8,5 @@ export class UpdateMatchInfoDto {
   secondPlayerId: number;
 
   @IsNotEmpty()
-  @IsEnum(Physics)
-  physics: Physics;
+  map: string;
 }

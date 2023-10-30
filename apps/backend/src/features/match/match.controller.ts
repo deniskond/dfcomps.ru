@@ -27,6 +27,8 @@ export class MatchController {
   @Post('update-match-info')
   updateMatchInfo(
     @Headers('secretKey') secretKey: string | undefined,
-    @Body() { firstPlayerId, secondPlayerId, physics }: UpdateMatchInfoDto,
-  ): any {}
+    @Body() { firstPlayerId, secondPlayerId, map }: UpdateMatchInfoDto,
+  ): Promise<void> {
+    return this.matchService.updateMatchInfo(secretKey, firstPlayerId, secondPlayerId, map);
+  }
 }
