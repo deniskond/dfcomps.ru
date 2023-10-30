@@ -13,9 +13,9 @@ import { WebSocket, MessageEvent } from 'ws';
 
 describe('end-to-end: case 4 - restoring state', () => {
   let webSocketFirst: WebSocket;
-  let playerIdFirst: string;
+  let playerIdFirst: any;
   let webSocketSecond: WebSocket;
-  let playerIdSecond: string;
+  let playerIdSecond: any;
   let webSocketThird: WebSocket;
   let physics: Physics;
   const webSocketFirstMessagesStream$: Subject<DuelServerMessageType> = new Subject();

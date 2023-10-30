@@ -12,7 +12,7 @@ import { WebSocket, MessageEvent } from 'ws';
 
 describe('end-to-end: case 1a - joining and leaving queue', () => {
   let webSocket: WebSocket;
-  let playerId: string;
+  let playerId: any;
   let physics: Physics;
   const webSocketMessagesStream$: Subject<DuelServerMessageType> = new Subject();
 
@@ -103,9 +103,9 @@ describe('end-to-end: case 1a - joining and leaving queue', () => {
 
 describe('end-to-end: case 1b - checking if player left queue after disconnect', () => {
   let webSocketFirst: WebSocket;
-  let playerIdFirst: string;
+  let playerIdFirst: any;
   let webSocketSecond: WebSocket;
-  let playerIdSecond: string;
+  let playerIdSecond: any;
   let physics: Physics;
   const webSocketFirstMessagesStream$: Subject<DuelServerMessageType> = new Subject();
   const webSocketSecondMessagesStream$: Subject<DuelServerMessageType> = new Subject();

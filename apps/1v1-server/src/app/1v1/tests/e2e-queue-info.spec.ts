@@ -15,11 +15,11 @@ import { WebSocket, MessageEvent } from 'ws';
 
 describe('end-to-end: case 5 - sending queue info to all players', () => {
   let webSocketFirst: WebSocket;
-  let playerIdFirst: string;
+  let playerIdFirst: any;
   let webSocketSecond: WebSocket;
-  let playerIdSecond: string;
+  let playerIdSecond: any;
   let webSocketThird: WebSocket;
-  let playerIdThird: string;
+  let playerIdThird: any;
   let physics: Physics;
   let isFirstPlayerBanning: boolean;
   let maps: MapInterface[];

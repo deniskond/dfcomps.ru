@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Headers, Post } from '@nestjs/common';
 import { MatchService } from './match.service';
-import { DuelPlayersInfoResponseInterface, MatchSecretDto, MatchStartDto } from '@dfcomps/contracts';
+import { DuelPlayersInfoResponseInterface, EligiblePlayersInterface, MatchStartDto, UpdateMatchInfoDto } from '@dfcomps/contracts';
 
 @Controller('match')
 export class MatchController {
@@ -12,7 +12,7 @@ export class MatchController {
   }
 
   @Get('get-eligible-players')
-  getEligiblePlayers(): Promise<number[]> {
+  getEligiblePlayers(): Promise<EligiblePlayersInterface> {
     return this.matchService.getEligiblePlayers();
   }
 
@@ -23,4 +23,10 @@ export class MatchController {
   ): Promise<void> {
     return this.matchService.startMatch(secretKey, firstPlayerId, secondPlayerId, physics);
   }
+
+  @Post('update-match-info')
+  updateMatchInfo(
+    @Headers('secretKey') secretKey: string | undefined,
+    @Body() { firstPlayerId, secondPlayerId, physics }: UpdateMatchInfoDto,
+  ): any {}
 }

@@ -1,1 +1,1 @@
-export const TEST_PLAYER_ID = '207';
+export const TEST_PLAYER_ID = 207;

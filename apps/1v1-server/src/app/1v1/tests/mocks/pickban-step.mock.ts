@@ -5,8 +5,8 @@ import { MapInterface } from '../../interfaces/map.interface';
 import { PickbanStepMessageInterface } from '../../interfaces/pickban-step-message.interface';
 
 export function pickbanStepMock(
-  firstPlayerId: string,
-  secondPlayerId: string,
+  firstPlayerId: number,
+  secondPlayerId: number,
   physics: Physics,
   maps?: MapInterface[],
   bannedByFirst?: boolean[],

@@ -63,3 +63,5 @@ export { UploadedFileLinkInterface } from './lib/global/uploaded-file-link.inter
 export { AdminEditOfflineCupInterface } from './lib/admin/admin-edit-offline-cup.interface';
 export { UpdateCupDto } from './lib/admin/update-cup.dto';
 export { MatchStartDto } from './lib/match/match-start.dto';
+export { UpdateMatchInfoDto } from './lib/match/update-match-info.dto';
+export { EligiblePlayersInterface } from './lib/match/eligible-players.interface';

@@ -2,8 +2,8 @@ import { Physics } from '../../enums/physics.enum';
 import { PickbanMapServerInterface } from './pickban-map-server.interface';
 
 export interface MatchInterface {
-  firstPlayerId: string;
-  secondPlayerId: string;
+  firstPlayerId: number;
+  secondPlayerId: number;
   isFirstPlayerBanning: boolean;
   isSecondPlayerBanning: boolean;
   maps: PickbanMapServerInterface[];

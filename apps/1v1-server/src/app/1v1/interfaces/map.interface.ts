@@ -1,4 +1,4 @@
-import { Difficulty } from '../enums/difficulty.enum';
+import { Difficulty } from '@dfcomps/contracts';
 
 export interface MapInterface {
   name: string;

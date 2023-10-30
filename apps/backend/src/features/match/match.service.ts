@@ -2,7 +2,12 @@ import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/co
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Match } from '../../shared/entities/match.entity';
-import { DuelPlayerInfoInterface, DuelPlayersInfoResponseInterface, Physics } from '@dfcomps/contracts';
+import {
+  DuelPlayerInfoInterface,
+  DuelPlayersInfoResponseInterface,
+  EligiblePlayersInterface,
+  Physics,
+} from '@dfcomps/contracts';
 import { AuthService } from '../auth/auth.service';
 import { UserAccessInterface } from '../../shared/interfaces/user-access.interface';
 import { User } from '../../shared/entities/user.entity';
@@ -123,7 +128,7 @@ export class MatchService {
     return matchInfo;
   }
 
-  public async getEligiblePlayers(): Promise<number[]> {
+  public async getEligiblePlayers(): Promise<EligiblePlayersInterface> {
     const players: { userId: number }[] = await this.ratingChangesRepository
       .createQueryBuilder('rating_changes')
       .select('rating_changes.userId')
@@ -131,7 +136,7 @@ export class MatchService {
       .having('COUNT(rating_changes.userId) > 2')
       .getRawMany();
 
-    return players.map(({ userId }) => userId);
+    return { players: players.map(({ userId }) => userId) };
   }
 
   public async startMatch(

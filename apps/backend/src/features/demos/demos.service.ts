@@ -188,6 +188,13 @@ export class DemosService {
       };
     }
 
+    if (!match.map) {
+      return {
+        status: DemoUploadResult.ERROR,
+        message: 'Map was not selected yet',
+      };
+    }
+
     const demoDirectory = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `\\demos\\matches\\match${match.id}`;
 
     if (!fs.existsSync(demoDirectory)) {

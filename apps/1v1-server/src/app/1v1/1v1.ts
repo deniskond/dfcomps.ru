@@ -19,9 +19,10 @@ import { QueueInfoInterface } from './interfaces/queue-info.interface';
 import { TEST_PLAYER_ID } from './constants/test-player-id';
 import { MapInterface } from './interfaces/map.interface';
 import { URLS } from './config/urls';
+import { EligiblePlayersInterface, MatchStartDto } from '@dfcomps/contracts';
 
 interface QueueInterface {
-  playerId: string;
+  playerId: number;
   physics: Physics;
 }
 
@@ -30,32 +31,37 @@ const MATCH_TIMER_SECONDS = TimingsConfig.MATCH_TIMER_SECONDS;
 const BAN_TIMER = TimingsConfig.BAN_TIMER_SECONDS * 1000;
 const MATCH_TIMER = TimingsConfig.MATCH_TIMER_SECONDS * 1000;
 const LAG_COMPENSATION = 1000;
+const DFCOMPS_BOT_ID = -1;
 
 export class OneVOneHandler {
   private queue$ = new BehaviorSubject<QueueInterface[]>([]);
   private matches$ = new BehaviorSubject<ServerMatchInterface[]>([]);
   private clients$ = new BehaviorSubject<ClientInterface[]>([]);
-  private finishedMatchPlayers$ = new BehaviorSubject<string[]>([]);
-  private eligiblePlayers: string[] = [];
+  private finishedMatchPlayers$ = new BehaviorSubject<number[]>([]);
+  private eligiblePlayers: number[] = [];
 
   public setEligiblePlayersSubscription(): void {
-    this.doAxiosPostRequest(URLS.MATCH.GET_ELIGIBLE_PLAYERS, {}).then(({ data }: AxiosResponse) => {
-      console.log(`Setting eligible players: ${JSON.stringify(data)}`);
-      this.eligiblePlayers = data.players;
-    });
+    this.doAxiosGetRequest<EligiblePlayersInterface>(URLS.MATCH.GET_ELIGIBLE_PLAYERS).then(
+      ({ data }: AxiosResponse<EligiblePlayersInterface>) => {
+        console.log(`Setting eligible players: ${JSON.stringify(data)}`);
+        this.eligiblePlayers = data.players;
+      },
+    );
 
     setInterval(
       () => {
-        this.doAxiosPostRequest(URLS.MATCH.GET_ELIGIBLE_PLAYERS, {}).then(({ data }: AxiosResponse) => {
-          console.log(`Setting eligible players: ${JSON.stringify(data)}`);
-          this.eligiblePlayers = data.players;
-        });
+        this.doAxiosGetRequest<EligiblePlayersInterface>(URLS.MATCH.GET_ELIGIBLE_PLAYERS).then(
+          ({ data }: AxiosResponse<EligiblePlayersInterface>) => {
+            console.log(`Setting eligible players: ${JSON.stringify(data)}`);
+            this.eligiblePlayers = data.players;
+          },
+        );
       },
       1000 * 60 * 60 * 24,
     );
   }
 
-  public addClient(playerId: string, socket: WebSocket, uniqueId: string): void {
+  public addClient(playerId: number, socket: WebSocket, uniqueId: string): void {
     const existingClient = this.clients$.value.find((client: ClientInterface) => client.playerId === playerId);
 
     // проверка на совпадение playerId (может быть повторное сообщение с вкладки, обновление страницы, либо вторая вкладка)
@@ -127,7 +133,6 @@ export class OneVOneHandler {
 
   public processClientMessage(socket: WebSocket, message: DuelClientMessage): void {
     console.log(`received: ${JSON.stringify(message)}`);
-
     if (message.action === DuelWebsocketClientActions.JOIN_QUEUE) {
       if (
         !this.eligiblePlayers.includes(message.playerId) &&
@@ -144,7 +149,7 @@ export class OneVOneHandler {
 
       if (
         this.getPlayerInQueue(message.playerId) ||
-        this.finishedMatchPlayers$.value.find((playerId: string) => playerId === message.playerId) ||
+        this.finishedMatchPlayers$.value.find((playerId: number) => playerId === message.playerId) ||
         this.getPlayerMatch(message.playerId)
       ) {
         this.send(socket, {
@@ -204,7 +209,7 @@ export class OneVOneHandler {
 
     if (message.action === DuelWebsocketClientActions.MATCH_RESULT_ACCEPTED) {
       this.finishedMatchPlayers$.next(
-        this.finishedMatchPlayers$.value.filter((playerId: string) => playerId !== message.playerId),
+        this.finishedMatchPlayers$.value.filter((playerId: number) => playerId !== message.playerId),
       );
     }
   }
@@ -247,8 +252,8 @@ export class OneVOneHandler {
       return;
     }
 
-    const finishedMatchPlayer: string | undefined = this.finishedMatchPlayers$.value.find(
-      (playerId: string) => playerId === message.playerId,
+    const finishedMatchPlayer: number | undefined = this.finishedMatchPlayers$.value.find(
+      (playerId: number) => playerId === message.playerId,
     );
 
     if (finishedMatchPlayer) {
@@ -272,15 +277,15 @@ export class OneVOneHandler {
     console.log(`sent: ${JSON.stringify(message)}`);
   }
 
-  private getPlayerInQueue(playerId: string): QueueInterface | undefined {
+  private getPlayerInQueue(playerId: number): QueueInterface | undefined {
     return this.queue$.value.find((item: QueueInterface) => item.playerId === playerId);
   }
 
-  private addPlayerToQueue(playerId: string, physics: Physics): void {
+  private addPlayerToQueue(playerId: number, physics: Physics): void {
     this.queue$.next([...this.queue$.value, { playerId, physics }]);
   }
 
-  private removePlayerFromQueue(playerId: string): void {
+  private removePlayerFromQueue(playerId: number): void {
     this.queue$.next(this.queue$.value.filter((item: QueueInterface) => item.playerId !== playerId));
   }
 
@@ -311,7 +316,7 @@ export class OneVOneHandler {
     }));
   }
 
-  private startMatch(firstPlayerId: string, secondPlayerId: string, physics: Physics): void {
+  private startMatch(firstPlayerId: number, secondPlayerId: number, physics: Physics): void {
     const isFirstPlayerBanning = Math.random() > 0.5;
     const match: MatchInterface = {
       firstPlayerId,
@@ -336,7 +341,7 @@ export class OneVOneHandler {
       firstPlayerId,
       secondPlayerId,
       physics,
-    })
+    } as MatchStartDto)
       .then(() => {
         console.log('rest backend answer ok');
         this.matches$.next([...this.matches$.value, serverMatch]);
@@ -374,7 +379,7 @@ export class OneVOneHandler {
     }
   }
 
-  private getPlayerMatch(playerId: string): ServerMatchInterface | undefined {
+  private getPlayerMatch(playerId: number): ServerMatchInterface | undefined {
     const match: ServerMatchInterface | undefined = this.matches$.value.find(
       (match: ServerMatchInterface) => match.firstPlayerId === playerId || match.secondPlayerId === playerId,
     );
@@ -386,7 +391,7 @@ export class OneVOneHandler {
     return match;
   }
 
-  private sendRandomMapBan(banningPlayerId: string): void {
+  private sendRandomMapBan(banningPlayerId: number): void {
     console.log(`banning random map for player ${banningPlayerId}`);
 
     const match = this.matches$.value.find(
@@ -413,7 +418,7 @@ export class OneVOneHandler {
     this.banMap(match, randomMapName, banningPlayerId);
   }
 
-  private banMap(match: ServerMatchInterface, mapName: string, banningPlayerId: string): void {
+  private banMap(match: ServerMatchInterface, mapName: string, banningPlayerId: number): void {
     const matchMap = match.maps.find((pickban: PickbanMapServerInterface) => pickban.map.name === mapName);
 
     if (!matchMap) {
@@ -510,7 +515,7 @@ export class OneVOneHandler {
           map: JSON.stringify(pickedMap.map),
         });
 
-        if (match.firstPlayerId === '-1' || match.secondPlayerId === '-1') {
+        if (match.firstPlayerId === DFCOMPS_BOT_ID || match.secondPlayerId === DFCOMPS_BOT_ID) {
           this.doAxiosPostRequest(URLS.MATCH.UPDATE_BOT_TIME, {
             firstPlayerId: match.firstPlayerId,
             secondPlayerId: match.secondPlayerId,
@@ -563,8 +568,8 @@ export class OneVOneHandler {
     };
   }
 
-  private setCheckForBanTimer(bannedMapsCount: number, banningPlayerId: string): void {
-    if (banningPlayerId === '-1') {
+  private setCheckForBanTimer(bannedMapsCount: number, banningPlayerId: number): void {
+    if (banningPlayerId === DFCOMPS_BOT_ID) {
       setTimeout(() => this.sendRandomMapBan(banningPlayerId), 5000);
 
       return;
@@ -591,7 +596,7 @@ export class OneVOneHandler {
       });
   }
 
-  private setEndMatchTimer(firstPlayerId: string, secondPlayerId: string): void {
+  private setEndMatchTimer(firstPlayerId: number, secondPlayerId: number): void {
     timer(MATCH_TIMER + LAG_COMPENSATION)
       .pipe(
         switchMap(() =>
@@ -649,12 +654,20 @@ export class OneVOneHandler {
       });
   }
 
-  private doAxiosPostRequest(url: string, formData: Record<string, string>): Promise<any> {
+  private doAxiosPostRequest<T>(url: string, formData: Record<string, any>): Promise<AxiosResponse<T>> {
     const params = new URLSearchParams();
 
     Object.entries(formData).forEach(([key, value]: [string, any]) => params.append(key, value));
 
     return axios.post(url, params, {
+      headers: {
+        secretKey: process.env.DUELS_SERVER_PRIVATE_KEY || '',
+      },
+    });
+  }
+
+  private doAxiosGetRequest<T>(url: string): Promise<AxiosResponse<T>> {
+    return axios.get(url, {
       headers: {
         secretKey: process.env.DUELS_SERVER_PRIVATE_KEY || '',
       },
@@ -686,10 +699,10 @@ export class OneVOneHandler {
     };
   }
 
-  private setupBotTimer(playerId: string, physics: Physics): void {
+  private setupBotTimer(playerId: number, physics: Physics): void {
     setTimeout(() => {
       if (this.getPlayerInQueue(playerId)) {
-        this.queue$.next([...this.queue$.value, { playerId: '-1', physics }]);
+        this.queue$.next([...this.queue$.value, { playerId: DFCOMPS_BOT_ID, physics }]);
       }
     }, TimingsConfig.BOT_TIMER);
   }

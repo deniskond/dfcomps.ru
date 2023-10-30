@@ -11,7 +11,7 @@ export interface DuelPlayersInfoResponseInterface {
   startDatetime: string;
   isFinished: boolean;
   physics: Physics;
-  map: string;
+  map: string | null;
   firstPlayerInfo: DuelPlayerInfoInterface;
   secondPlayerInfo: DuelPlayerInfoInterface;
   firstPlayerRatingChange: number | null;

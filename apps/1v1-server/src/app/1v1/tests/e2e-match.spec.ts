@@ -17,9 +17,9 @@ import { WebSocket, MessageEvent } from 'ws';
 
 describe('end-to-end: case 2 - full match', () => {
   let webSocketFirst: WebSocket;
-  let playerIdFirst: string;
+  let playerIdFirst: any;
   let webSocketSecond: WebSocket;
-  let playerIdSecond: string;
+  let playerIdSecond: any;
   let physics: Physics;
   let isFirstPlayerBanning: boolean;
   let maps: MapInterface[];
