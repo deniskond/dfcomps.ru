@@ -18,6 +18,7 @@ import { AuthService } from '../auth/auth.service';
 import * as moment from 'moment';
 import * as fs from 'fs';
 import * as sharp from 'sharp';
+import { MulterFileInterface } from '../../shared/interfaces/multer.interface';
 
 @Injectable()
 export class ProfileService {
@@ -182,7 +183,7 @@ export class ProfileService {
       .execute();
   }
 
-  public async updateProfileAvatar(accessToken: string | undefined, avatar: Express.Multer.File): Promise<void> {
+  public async updateProfileAvatar(accessToken: string | undefined, avatar: MulterFileInterface): Promise<void> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!userAccess.userId) {

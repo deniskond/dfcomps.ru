@@ -4,6 +4,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadDemoResponseInterface, UploadedDemoInterface } from '@dfcomps/contracts';
 import { DemoUploadDto } from './dto/demo-upload.dto';
 import { DemoDeleteDto } from './dto/demo-delete.dto';
+import { MulterFileInterface } from '../../shared/interfaces/multer.interface';
 
 @Controller('demos')
 export class DemosController {
@@ -14,7 +15,7 @@ export class DemosController {
   uploadDemo(
     @Headers('X-Auth') accessToken: string | undefined,
     @UploadedFile(new ParseFilePipe())
-    demo: Express.Multer.File,
+    demo: MulterFileInterface,
     @Body() { cupId, mapName }: DemoUploadDto,
   ): Promise<UploadDemoResponseInterface> {
     return this.demosService.upload(accessToken, demo, cupId, mapName);
@@ -25,7 +26,7 @@ export class DemosController {
   uploadMatchDemo(
     @Headers('X-Auth') accessToken: string | undefined,
     @UploadedFile(new ParseFilePipe())
-    demo: Express.Multer.File,
+    demo: MulterFileInterface,
   ): Promise<UploadDemoResponseInterface> {
     return this.demosService.matchUpload(accessToken, demo);
   }

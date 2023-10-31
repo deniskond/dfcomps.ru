@@ -51,6 +51,7 @@ import * as sharp from 'sharp';
 import { Metadata, Sharp } from 'sharp';
 import { NewsComment } from 'apps/backend/src/shared/entities/news-comment.entity';
 import { CupResult } from 'apps/backend/src/shared/entities/cup-result.entity';
+import { MulterFileInterface } from 'apps/backend/src/shared/interfaces/multer.interface';
 
 @Injectable()
 export class AdminCupsService {
@@ -632,7 +633,7 @@ export class AdminCupsService {
 
   public async uploadLevelshot(
     accessToken: string | undefined,
-    levelshot: Express.Multer.File,
+    levelshot: MulterFileInterface,
     mapName: string,
   ): Promise<UploadedFileLinkInterface> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
@@ -667,7 +668,7 @@ export class AdminCupsService {
 
   public async uploadMap(
     accessToken: string | undefined,
-    map: Express.Multer.File,
+    map: MulterFileInterface,
     mapName: string,
   ): Promise<UploadedFileLinkInterface> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);

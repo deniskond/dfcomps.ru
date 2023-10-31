@@ -25,6 +25,7 @@ import {
   WorldspawnMapInfoInterface,
 } from '@dfcomps/contracts';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { MulterFileInterface } from 'apps/backend/src/shared/interfaces/multer.interface';
 
 @Controller('admin/cups')
 export class AdminCupsController {
@@ -116,7 +117,7 @@ export class AdminCupsController {
   uploadMap(
     @Headers('X-Auth') accessToken: string | undefined,
     @Param('mapName') mapName: string,
-    @UploadedFile(new ParseFilePipe()) map: Express.Multer.File,
+    @UploadedFile(new ParseFilePipe()) map: MulterFileInterface,
   ): Promise<UploadedFileLinkInterface> {
     return this.adminCupsService.uploadMap(accessToken, map, mapName);
   }
@@ -138,7 +139,7 @@ export class AdminCupsController {
           errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
         }),
     )
-    levelshot: Express.Multer.File,
+    levelshot: MulterFileInterface,
   ): Promise<UploadedFileLinkInterface> {
     return this.adminCupsService.uploadLevelshot(accessToken, levelshot, mapName);
   }

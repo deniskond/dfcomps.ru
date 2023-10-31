@@ -22,6 +22,7 @@ import { DemoAcceptMode } from './demo-upload-mode.enum';
 import { DemoCheckResultInterface } from './demo-check-result.interface';
 import { DemoConfigInterface } from './demo-config.interface';
 import { Match } from '../../shared/entities/match.entity';
+import { MulterFileInterface } from '../../shared/interfaces/multer.interface';
 
 @Injectable()
 export class DemosService {
@@ -34,7 +35,7 @@ export class DemosService {
 
   public async upload(
     accessToken: string | undefined,
-    demo: Express.Multer.File,
+    demo: MulterFileInterface,
     cupId: number,
     mapName: string,
   ): Promise<UploadDemoResponseInterface> {
@@ -164,7 +165,7 @@ export class DemosService {
 
   public async matchUpload(
     accessToken: string | undefined,
-    demo: Express.Multer.File,
+    demo: MulterFileInterface,
   ): Promise<UploadDemoResponseInterface> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 

@@ -15,6 +15,7 @@ import { ProfileService } from './profile.service';
 import { NickChangeResponseInterface, ProfileInterface } from '@dfcomps/contracts';
 import { ProfileUpdateDto } from './dto/profile-update.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { MulterFileInterface } from '../../shared/interfaces/multer.interface';
 
 @Controller('profile')
 export class ProfileController {
@@ -54,7 +55,7 @@ export class ProfileController {
           errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
         }),
     )
-    avatar: Express.Multer.File,
+    avatar: MulterFileInterface,
   ): Promise<void> {
     return this.profileService.updateProfileAvatar(accessToken, avatar);
   }
