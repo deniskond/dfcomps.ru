@@ -98,6 +98,7 @@ export class CommentsService {
       .createQueryBuilder('news_comments')
       .leftJoinAndSelect('news_comments.user', 'users')
       .where('news_comments.newsId = :newsId', { newsId })
+      .orderBy('news_comments.id', 'ASC')
       .getMany();
 
     return updatedComments.map((newsComment: NewsComment) => ({
@@ -162,6 +163,7 @@ export class CommentsService {
       .createQueryBuilder('news_comments')
       .leftJoinAndSelect('news_comments.user', 'users')
       .where('news_comments.newsId = :newsId', { newsId: newsComment.news.id })
+      .orderBy('news_comments.id', 'ASC')
       .getMany();
 
     return {
@@ -218,6 +220,7 @@ export class CommentsService {
       .createQueryBuilder('news_comments')
       .leftJoinAndSelect('news_comments.user', 'users')
       .where('news_comments.newsId = :newsId', { newsId: newsComment.news.id })
+      .orderBy('news_comments.id', 'ASC')
       .getMany();
 
     return {
