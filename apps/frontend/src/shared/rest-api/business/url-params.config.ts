@@ -2,9 +2,9 @@ import { environment } from '~app/environments/environment';
 import { Physics } from '@dfcomps/contracts';
 
 const envMap: Record<string, string> = {
-  local: '/legacy-api',
-  'local-backend': '/legacy-api',
-  prod: '/legacy-api',
+  local: '/api',
+  'local-backend': '/api',
+  prod: '/api',
 };
 
 export const MAIN_URL = envMap[environment.name];
