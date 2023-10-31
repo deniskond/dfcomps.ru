@@ -271,7 +271,7 @@ export class MatchService {
 
     const matchFirstPlayerTime: number = match.matches_first_player_time || Infinity;
     const matchSecondPlayerTime: number = match.matches_second_player_time || Infinity;
-    let firstPlayerResult = matchFirstPlayerTime > matchSecondPlayerTime ? 1 : 0;
+    let firstPlayerResult = matchFirstPlayerTime > matchSecondPlayerTime ? 0 : 1;
 
     if (matchFirstPlayerTime === matchSecondPlayerTime) {
       firstPlayerResult = 0.5;
