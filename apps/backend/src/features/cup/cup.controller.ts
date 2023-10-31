@@ -8,7 +8,7 @@ export class CupController {
   constructor(private readonly cupService: CupService) {}
 
   @Get('next-cup-info')
-  nextCupInfo(@Headers('X-Auth') accessToken: string): Promise<CupInterface> {
+  nextCupInfo(@Headers('X-Auth') accessToken: string | undefined): Promise<CupInterface> {
     return this.cupService.getNextCupInfo(accessToken);
   }
 

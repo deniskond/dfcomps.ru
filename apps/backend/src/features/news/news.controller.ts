@@ -20,7 +20,10 @@ export class NewsController {
   }
 
   @Get('theme/:theme')
-  getThemeNews(@Headers('X-Auth') accessToken: string | undefined, @Param('theme') theme: string): Promise<NewsInterfaceUnion[]> {
+  getThemeNews(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Param('theme') theme: string,
+  ): Promise<NewsInterfaceUnion[]> {
     return this.newsService.getThemeNews(accessToken, theme);
   }
 

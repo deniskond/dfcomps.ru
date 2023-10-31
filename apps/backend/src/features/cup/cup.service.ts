@@ -31,19 +31,23 @@ export class CupService {
     private readonly tablesService: TablesService,
   ) {}
 
-  public async getNextCupInfo(accessToken: string): Promise<CupInterface> {
+  public async getNextCupInfo(accessToken: string | undefined): Promise<CupInterface> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
     const nextCup: Cup = await this.getNextCup();
-    const serverInfo: CupResult | null = await this.cupResultRepository
-      .createQueryBuilder('cups_results')
-      .select('server')
-      .where({
-        cup: {
-          id: nextCup.id,
-        },
-      })
-      .andWhere({ user: { id: userAccess.userId } })
-      .getOne();
+    let serverInfo: CupResult | null = null;
+
+    if (userAccess.userId) {
+      serverInfo = await this.cupResultRepository
+        .createQueryBuilder('cups_results')
+        .select('server')
+        .where({
+          cup: {
+            id: nextCup.id,
+          },
+        })
+        .andWhere({ user: { id: userAccess.userId } })
+        .getOne();
+    }
 
     let server: string | null = null;
 
@@ -53,7 +57,13 @@ export class CupService {
 
     const isFutureCup: boolean = moment(nextCup.start_datetime).isAfter(moment());
 
-    return mapCupEntityToInterface(nextCup, isFutureCup, server, nextCup.news[0]?.id || null, nextCup.multicup?.id || null);
+    return mapCupEntityToInterface(
+      nextCup,
+      isFutureCup,
+      server,
+      nextCup.news[0]?.id || null,
+      nextCup.multicup?.id || null,
+    );
   }
 
   public async checkIfPlayerRegistered(
@@ -98,7 +108,7 @@ export class CupService {
     const cupName: string = cup.full_name.replace(/#/g, '').replace(/\s/g, '_');
     const zip = new Zip();
     const validationArchiveFileName = `${cupName}_all_demos_validation.zip`;
-    const validationArchiveFilePath = 
+    const validationArchiveFilePath =
       process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${validationArchiveFileName}`;
 
     if (fs.existsSync(validationArchiveFilePath)) {
