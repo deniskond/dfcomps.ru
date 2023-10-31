@@ -29,10 +29,4 @@ export class AuthController {
   register(@Body() { login, discordAccessToken }: RegisterDto): Promise<LoginResponseInterface> {
     return this.authService.register(login, discordAccessToken);
   }
-
-  // TODO Delete after release
-  @Post('convert-table')
-  convertTable() {
-    return this.authService.convertTable();
-  }
 }

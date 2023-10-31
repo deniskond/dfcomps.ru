@@ -24,9 +24,6 @@ export class News {
   @Column({ type: 'character varying', nullable: true })
   youtube: string | null;
 
-  @Column({ type: 'timestamp without time zone', nullable: true })
-  datetime: string;
-
   @Column({ type: 'timestamp with time zone' })
   datetimezone: string;
 

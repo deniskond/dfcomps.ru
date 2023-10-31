@@ -10,12 +10,6 @@ export class Reward {
   @Column({ type: 'character varying' })
   name_en: Rewards;
 
-  @Column({ type: 'character varying' })
-  name_ru: string;
-
-  @Column({ type: 'character varying' })
-  icon: string;
-
   @ManyToOne(() => User)
   user: User;
 }

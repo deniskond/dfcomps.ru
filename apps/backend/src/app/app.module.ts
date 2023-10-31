@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../shared/entities/user.entity';
-import { OldUser } from '../shared/entities/old-user.entity';
 import { Movie } from '../shared/entities/movie.entity';
 import { AuthRole } from '../shared/entities/auth-role.entity';
 import { OneVOneRating } from '../shared/entities/1v1-rating.entity';
@@ -40,7 +39,6 @@ import { AdminModule } from '../features/admin/admin.module';
       password: process.env.DFCOMPS_POSTGRES_PASSWORD,
       entities: [
         User,
-        OldUser,
         Movie,
         AuthRole,
         OneVOneRating,

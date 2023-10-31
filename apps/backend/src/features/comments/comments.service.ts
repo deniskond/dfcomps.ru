@@ -86,7 +86,6 @@ export class CommentsService {
       .values([
         {
           comment: trimmedText,
-          datetime: null,
           datetimezone: moment().format(),
           reason: '',
           user: { id: userAccess.userId },

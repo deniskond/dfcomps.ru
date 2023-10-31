@@ -10,9 +10,6 @@ export class NewsComment {
   @Column({ type: 'text' })
   comment: string;
 
-  @Column({ type: 'timestamp without time zone', nullable: true })
-  datetime: string | null;
-
   @Column({ type: 'timestamp with time zone' })
   datetimezone: string;
 

@@ -25,19 +25,19 @@ export class CupResult {
   @Column({ type: 'integer', nullable: true })
   final_sum: number;
 
-  @Column({ type: 'real' })
+  @Column({ type: 'real', nullable: true })
   time1: number;
 
-  @Column({ type: 'real' })
+  @Column({ type: 'real', nullable: true })
   time2: number;
 
-  @Column({ type: 'real' })
+  @Column({ type: 'real', nullable: true })
   time3: number;
 
-  @Column({ type: 'real' })
+  @Column({ type: 'real', nullable: true })
   time4: number;
 
-  @Column({ type: 'real' })
+  @Column({ type: 'real', nullable: true })
   time5: number;
 
   @Column({ type: 'integer', nullable: true })

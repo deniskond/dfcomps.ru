@@ -16,7 +16,6 @@ import { v4 } from 'uuid';
 import * as moment from 'moment';
 import { AuthRole } from '../../shared/entities/auth-role.entity';
 import { User } from '../../shared/entities/user.entity';
-import { OldUser } from '../../shared/entities/old-user.entity';
 import { UserAccessInterface } from '../../shared/interfaces/user-access.interface';
 import { LoginAvailableInterface, LoginResponseInterface } from '@dfcomps/auth';
 
@@ -25,7 +24,6 @@ export class AuthService {
   constructor(
     @InjectRepository(AuthRole) private readonly authRoleRepository: Repository<AuthRole>,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
-    @InjectRepository(OldUser) private readonly oldUserRepository: Repository<OldUser>,
     private readonly httpService: HttpService,
   ) {}
 
@@ -179,56 +177,6 @@ export class AuthService {
       },
       token: userAccessToken,
     };
-  }
-  public async convertTable(): Promise<string> {
-    const oldUsers: OldUser[] = await this.oldUserRepository.createQueryBuilder('old_users').getMany();
-
-    const newUsers: User[] = oldUsers.map(
-      ({
-        id,
-        nick,
-        displayed_nick,
-        last_nick_change_time,
-        password,
-        initial_cpm_rating,
-        cpm_rating,
-        initial_vq3_rating,
-        vq3_rating,
-        country,
-        avatar,
-        comments_ban_date,
-      }) => ({
-        id,
-        login: nick,
-        displayed_nick,
-        password: sha256(password + process.env.SALT),
-        discord_tag: null,
-        last_discord_prompt: null,
-        access_token: v4(),
-        last_nick_change_time,
-        initial_cpm_rating,
-        cpm_rating,
-        initial_vq3_rating,
-        vq3_rating,
-        country,
-        avatar,
-        comments_ban_date: comments_ban_date ? moment(comments_ban_date).format('X') : null,
-        cupResults: [],
-        news: [],
-        ratingChanges: [],
-        newsComments: [],
-        smiles: [],
-        cupDemos: [],
-        oldRatings: [],
-        rewards: [],
-        oneVOneRating: null,
-      }),
-    );
-
-    // Uncomment when migrating
-    // await this.userRepository.createQueryBuilder().insert().into(User).values(newUsers).execute();
-
-    return 'ok';
   }
 
   public async getUserInfoByAccessToken(accessToken: string | undefined): Promise<UserAccessInterface> {

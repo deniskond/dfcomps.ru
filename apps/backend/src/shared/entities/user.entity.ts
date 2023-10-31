@@ -26,13 +26,13 @@ export class User {
   @Column({ type: 'character varying', nullable: true })
   discord_tag: string | null;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'timestamp with time zone', nullable: true })
   last_discord_prompt: string | null;
 
   @Column({ type: 'character varying' })
   access_token: string;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'timestamp with time zone', nullable: true })
   last_nick_change_time: string | null;
 
   @Column({ type: 'integer' })
@@ -53,7 +53,7 @@ export class User {
   @Column({ type: 'character varying', nullable: true })
   avatar: string | null;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'timestamp with time zone', nullable: true })
   comments_ban_date: string | null;
 
   @OneToMany(() => CupResult, (cupResult) => cupResult.user)
