@@ -177,7 +177,7 @@ export class DemosService {
 
     const match: Match | null = await this.matchRepository
       .createQueryBuilder('matches')
-      .where({ is_finished: true })
+      .where({ is_finished: false })
       .andWhere('first_player_id = :userId OR second_player_id = :userId', { userId: userAccess.userId })
       .getOne();
 

@@ -27,7 +27,7 @@ export class DuelService {
   }
 
   public getPlayersInfo$(): Observable<DuelPlayersInfoInterface> {
-    return this.backendService.post$<DuelPlayersInfoResponseInterface>(URL_PARAMS.DUEL.GET_PLAYERS_INFO).pipe(
+    return this.backendService.get$<DuelPlayersInfoResponseInterface>(URL_PARAMS.DUEL.GET_PLAYERS_INFO).pipe(
       map((duelPlayersInfoDto) => ({
         ...duelPlayersInfoDto,
         map: duelPlayersInfoDto.map ? JSON.parse(duelPlayersInfoDto.map) : null,

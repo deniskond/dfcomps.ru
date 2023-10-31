@@ -10,6 +10,7 @@ import {
   EventEmitter,
   ViewChild,
   ElementRef,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { PickbanMapInterface } from '../../interfaces/pickban-map.interface';
 import { MatchInterface } from '../../services/interfaces/match.interface';
@@ -22,6 +23,7 @@ import { LanguageService } from '~shared/services/language/language.service';
 import { DemosService } from '~shared/services/demos/demos.service';
 import { UploadDemoResponseInterface } from '@dfcomps/contracts';
 import { DuelPlayersInfoInterface } from '~pages/1v1/interfaces/duel-players-info.interface';
+import { formatResultTime } from '@dfcomps/helpers';
 
 @Component({
   selector: 'app-match-progress',
@@ -57,6 +59,7 @@ export class MatchProgressComponent implements OnChanges {
     private snackBar: MatSnackBar,
     private demosService: DemosService,
     private dialog: MatDialog,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngOnChanges({ match, playersInfo }: SimpleChanges): void {
@@ -124,9 +127,15 @@ export class MatchProgressComponent implements OnChanges {
               data: errors,
             });
           }
+
+          this.changeDetectorRef.markForCheck();
         },
         () => this.openSnackBar('error', 'uploadFailed'),
       );
+  }
+
+  public formatTime(time: number | string): string {
+    return formatResultTime(time);
   }
 
   private calculateBanPhaseByMatchInfo(): void {

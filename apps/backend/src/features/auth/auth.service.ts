@@ -221,6 +221,7 @@ export class AuthService {
         cupDemos: [],
         oldRatings: [],
         rewards: [],
+        oneVOneRating: null,
       }),
     );
 

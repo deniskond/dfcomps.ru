@@ -16,6 +16,7 @@ import { UserInterface } from '~shared/interfaces/user.interface';
 import { LanguageService } from '~shared/services/language/language.service';
 import { Physics } from '@dfcomps/contracts';
 import { DuelPlayersInfoInterface } from './interfaces/duel-players-info.interface';
+import { formatResultTime } from '@dfcomps/helpers';
 
 @Component({
   templateUrl: './1v1.page.html',
@@ -129,6 +130,10 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
     const secondPlayerNick = playersInfo.secondPlayerId === -1 ? 'dfcomps bot' : playersInfo.secondPlayerInfo?.nick;
 
     return firstPlayerTime < secondPlayerTime ? firstPlayerNick : secondPlayerNick;
+  }
+
+  public formatTime(time: number | string): string {
+    return formatResultTime(time);
   }
 
   private initJoinQueueCheck(): void {

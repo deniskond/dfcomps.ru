@@ -1,4 +1,4 @@
-import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, OneToMany, OneToOne } from 'typeorm';
 import { CupResult } from './cup-result.entity';
 import { News } from './news.entity';
 import { RatingChange } from './rating-change.entity';
@@ -7,6 +7,7 @@ import { CupDemo } from './cup-demo.entity';
 import { Smile } from './smile.entity';
 import { OldRating } from './old-rating.entity';
 import { Reward } from './reward.entity';
+import { OneVOneRating } from './1v1-rating.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -78,4 +79,7 @@ export class User {
 
   @OneToMany(() => Reward, (reward) => reward.user)
   rewards: Reward[];
+
+  @OneToOne(() => OneVOneRating, (oneVOneRating) => oneVOneRating.user, { nullable: true })
+  oneVOneRating: OneVOneRating | null;
 }

@@ -66,14 +66,17 @@ export class MatchService {
     if (match.first_player_id !== -1) {
       const firstPlayer: User = (await this.userRepository
         .createQueryBuilder('users')
-        .leftJoinAndSelect('1v1_rating.user', 'users')
+        .leftJoinAndSelect('users.oneVOneRating', '1v1_rating')
         .where('users.id = :firstPlayerId', { firstPlayerId: match.first_player_id })
         .getOne())!;
 
       firstPlayerInfo = {
         nick: firstPlayer.displayed_nick,
         country: firstPlayer.country,
-        rating: match.physics === Physics.CPM ? firstPlayer.cpm_rating : firstPlayer.vq3_rating,
+        rating:
+          match.physics === Physics.CPM
+            ? firstPlayer.oneVOneRating?.cpm || 1500
+            : firstPlayer.oneVOneRating?.vq3 || 1500,
       };
     } else {
       firstPlayerInfo = { ...dfcompsBotInfo };
@@ -83,14 +86,17 @@ export class MatchService {
     if (match.second_player_id !== -1) {
       const secondPlayer: User = (await this.userRepository
         .createQueryBuilder('users')
-        .leftJoinAndSelect('1v1_rating.user', 'users')
+        .leftJoinAndSelect('users.oneVOneRating', '1v1_rating')
         .where('users.id = :firstPlayerId', { firstPlayerId: match.first_player_id })
         .getOne())!;
 
       secondPlayerInfo = {
         nick: secondPlayer.displayed_nick,
         country: secondPlayer.country,
-        rating: match.physics === Physics.CPM ? secondPlayer.cpm_rating : secondPlayer.vq3_rating,
+        rating:
+          match.physics === Physics.CPM
+            ? secondPlayer.oneVOneRating?.cpm || 1500
+            : secondPlayer.oneVOneRating?.vq3 || 1500,
       };
     } else {
       secondPlayerInfo = { ...dfcompsBotInfo };
@@ -165,7 +171,7 @@ export class MatchService {
           physics,
           start_datetime: moment().format(),
           is_finished: false,
-          security_code: (Math.floor(Math.random() * (99999 - 10000) + 10000)).toString(),
+          security_code: Math.floor(Math.random() * (99999 - 10000) + 10000).toString(),
         },
       ])
       .execute();
@@ -291,94 +297,110 @@ export class MatchService {
     const secondPlayerRatingChange = this.countEloChange(secondPlayerRating, firstPlayerRating, 1 - firstPlayerResult);
 
     if (match.matches_physics === Physics.CPM) {
-      if (match.first_rating_table_cpm) {
-        await this.oneVOneRatingsRepository
-          .createQueryBuilder()
-          .update(OneVOneRating)
-          .set({
-            cpm: firstPlayerRating + firstPlayerRatingChange,
-          })
-          .where({ user: { id: firstPlayerId } })
-          .execute();
-      } else {
-        await this.oneVOneRatingsRepository
-          .createQueryBuilder()
-          .insert()
-          .into(OneVOneRating)
-          .values([{
-            user: { id: firstPlayerId },
-            vq3: 1500,
-            cpm: firstPlayerRating + firstPlayerRatingChange,
-          }])
-          .execute();
+      if (firstPlayerId !== DFCOMPS_BOT_ID) {
+        if (match.first_rating_table_cpm) {
+          await this.oneVOneRatingsRepository
+            .createQueryBuilder()
+            .update(OneVOneRating)
+            .set({
+              cpm: firstPlayerRating + firstPlayerRatingChange,
+            })
+            .where({ user: { id: firstPlayerId } })
+            .execute();
+        } else {
+          await this.oneVOneRatingsRepository
+            .createQueryBuilder()
+            .insert()
+            .into(OneVOneRating)
+            .values([
+              {
+                user: { id: firstPlayerId },
+                vq3: 1500,
+                cpm: firstPlayerRating + firstPlayerRatingChange,
+              },
+            ])
+            .execute();
+        }
       }
 
-      if (match.second_rating_table_cpm) {
-        await this.oneVOneRatingsRepository
-          .createQueryBuilder()
-          .update(OneVOneRating)
-          .set({
-            cpm: secondPlayerRating + secondPlayerRatingChange,
-          })
-          .where({ user: { id: secondPlayerId } })
-          .execute();
-      } else {
-        await this.oneVOneRatingsRepository
-          .createQueryBuilder()
-          .insert()
-          .into(OneVOneRating)
-          .values([{
-            user: { id: secondPlayerId },
-            vq3: 1500,
-            cpm: secondPlayerRating + secondPlayerRatingChange,
-          }])
-          .execute();
+      if (secondPlayerId !== DFCOMPS_BOT_ID) {
+        if (match.second_rating_table_cpm) {
+          await this.oneVOneRatingsRepository
+            .createQueryBuilder()
+            .update(OneVOneRating)
+            .set({
+              cpm: secondPlayerRating + secondPlayerRatingChange,
+            })
+            .where({ user: { id: secondPlayerId } })
+            .execute();
+        } else {
+          await this.oneVOneRatingsRepository
+            .createQueryBuilder()
+            .insert()
+            .into(OneVOneRating)
+            .values([
+              {
+                user: { id: secondPlayerId },
+                vq3: 1500,
+                cpm: secondPlayerRating + secondPlayerRatingChange,
+              },
+            ])
+            .execute();
+        }
       }
     }
 
     if (match.matches_physics === Physics.VQ3) {
-      if (match.first_rating_table_vq3) {
-        await this.oneVOneRatingsRepository
-          .createQueryBuilder()
-          .update(OneVOneRating)
-          .set({
-            vq3: firstPlayerRating + firstPlayerRatingChange,
-          })
-          .where({ user: { id: firstPlayerId } })
-          .execute();
-      } else {
-        await this.oneVOneRatingsRepository
-          .createQueryBuilder()
-          .insert()
-          .into(OneVOneRating)
-          .values([{
-            user: { id: firstPlayerId },
-            cpm: 1500,
-            vq3: firstPlayerRating + firstPlayerRatingChange,
-          }])
-          .execute();
+      if (firstPlayerId !== DFCOMPS_BOT_ID) {
+        if (match.first_rating_table_vq3) {
+          await this.oneVOneRatingsRepository
+            .createQueryBuilder()
+            .update(OneVOneRating)
+            .set({
+              vq3: firstPlayerRating + firstPlayerRatingChange,
+            })
+            .where({ user: { id: firstPlayerId } })
+            .execute();
+        } else {
+          await this.oneVOneRatingsRepository
+            .createQueryBuilder()
+            .insert()
+            .into(OneVOneRating)
+            .values([
+              {
+                user: { id: firstPlayerId },
+                cpm: 1500,
+                vq3: firstPlayerRating + firstPlayerRatingChange,
+              },
+            ])
+            .execute();
+        }
       }
 
-      if (match.second_rating_table_vq3) {
-        await this.oneVOneRatingsRepository
-          .createQueryBuilder()
-          .update(OneVOneRating)
-          .set({
-            vq3: secondPlayerRating + secondPlayerRatingChange,
-          })
-          .where({ user: { id: secondPlayerId } })
-          .execute();
-      } else {
-        await this.oneVOneRatingsRepository
-          .createQueryBuilder()
-          .insert()
-          .into(OneVOneRating)
-          .values([{
-            user: { id: secondPlayerId },
-            cpm: 1500,
-            vq3: secondPlayerRating + secondPlayerRatingChange,
-          }])
-          .execute();
+      if (secondPlayerId !== DFCOMPS_BOT_ID) {
+        if (match.second_rating_table_vq3) {
+          await this.oneVOneRatingsRepository
+            .createQueryBuilder()
+            .update(OneVOneRating)
+            .set({
+              vq3: secondPlayerRating + secondPlayerRatingChange,
+            })
+            .where({ user: { id: secondPlayerId } })
+            .execute();
+        } else {
+          await this.oneVOneRatingsRepository
+            .createQueryBuilder()
+            .insert()
+            .into(OneVOneRating)
+            .values([
+              {
+                user: { id: secondPlayerId },
+                cpm: 1500,
+                vq3: secondPlayerRating + secondPlayerRatingChange,
+              },
+            ])
+            .execute();
+        }
       }
     }
 

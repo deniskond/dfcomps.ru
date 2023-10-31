@@ -12,7 +12,7 @@ export class OneVOneRating {
   @Column({ type: 'integer' })
   vq3: number;
 
-  @OneToOne(() => User)
+  @OneToOne(() => User, (user) => user.oneVOneRating)
   @JoinColumn()
   user: User;
 }

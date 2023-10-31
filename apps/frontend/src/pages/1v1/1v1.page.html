@@ -89,7 +89,7 @@
                     class="demo-link"
                     download
                   >
-                    {{ playersInfo.firstPlayerTime }}
+                    {{ playersInfo.firstPlayerTime | invokeFunction : formatTime }}
                   </a>
                   <span *ngIf="!playersInfo.firstPlayerTime" class="demo-link">---</span>
                 </div>
@@ -111,7 +111,7 @@
                     class="demo-link"
                     download
                   >
-                    {{ playersInfo.secondPlayerTime }}
+                    {{ playersInfo.secondPlayerTime | invokeFunction : formatTime }}
                   </a>
                   <span *ngIf="!playersInfo.secondPlayerTime" class="demo-link">---</span>
                 </div>
