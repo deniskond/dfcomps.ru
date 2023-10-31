@@ -12,13 +12,13 @@ import { WebSocket, MessageEvent } from 'ws';
 
 describe('end-to-end: case 1a - joining and leaving queue', () => {
   let webSocket: WebSocket;
-  let playerId: any;
+  let playerId: number;
   let physics: Physics;
   const webSocketMessagesStream$: Subject<DuelServerMessageType> = new Subject();
 
   beforeAll(() => {
     webSocket = new WebSocket('ws://localhost:4002/1v1');
-    playerId = faker.datatype.uuid();
+    playerId = 17;
     physics = faker.random.arrayElement([Physics.VQ3, Physics.CPM]);
 
     webSocket.onmessage = (message: MessageEvent) => {
@@ -103,18 +103,18 @@ describe('end-to-end: case 1a - joining and leaving queue', () => {
 
 describe('end-to-end: case 1b - checking if player left queue after disconnect', () => {
   let webSocketFirst: WebSocket;
-  let playerIdFirst: any;
+  let playerIdFirst: number;
   let webSocketSecond: WebSocket;
-  let playerIdSecond: any;
+  let playerIdSecond: number;
   let physics: Physics;
   const webSocketFirstMessagesStream$: Subject<DuelServerMessageType> = new Subject();
   const webSocketSecondMessagesStream$: Subject<DuelServerMessageType> = new Subject();
 
   beforeAll(() => {
     webSocketFirst = new WebSocket('ws://localhost:4002/1v1');
-    playerIdFirst = faker.datatype.uuid();
+    playerIdFirst = 18;
     webSocketSecond = new WebSocket('ws://localhost:4002/1v1');
-    playerIdSecond = faker.datatype.uuid();
+    playerIdSecond = 19;
     physics = faker.random.arrayElement([Physics.VQ3, Physics.CPM]);
 
     webSocketFirst.onmessage = (message: MessageEvent) => {

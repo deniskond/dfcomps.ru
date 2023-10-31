@@ -8,14 +8,14 @@ import { WebSocket, MessageEvent } from 'ws';
 
 describe('end-to-end: case 3 - double browser page', () => {
   let webSocketFirst: WebSocket;
-  let playerId: string;
+  let playerId: number;
   let webSocketSecond: WebSocket;
   const webSocketFirstMessagesStream$: Subject<DuelServerMessageType> = new Subject();
   const webSocketSecondMessagesStream$: Subject<DuelServerMessageType> = new Subject();
 
   beforeAll(() => {
     webSocketFirst = new WebSocket('ws://localhost:4002/1v1');
-    playerId = faker.datatype.uuid();
+    playerId = 10;
     webSocketSecond = new WebSocket('ws://localhost:4002/1v1');
 
     webSocketFirst.onmessage = (message: MessageEvent) => {

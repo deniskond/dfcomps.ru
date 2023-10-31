@@ -654,6 +654,7 @@ export class OneVOneHandler {
   }
 
   private doAxiosPostRequest<T>(url: string, formData: Record<string, any>): Promise<AxiosResponse<T>> {
+    console.log(`POST Request ${url}`);
     const params = new URLSearchParams();
 
     Object.entries(formData).forEach(([key, value]: [string, any]) => params.append(key, value));
@@ -666,6 +667,7 @@ export class OneVOneHandler {
   }
 
   private doAxiosGetRequest<T>(url: string): Promise<AxiosResponse<T>> {
+    console.log(`GET Request ${url}`);
     return axios.get(url, {
       headers: {
         secretKey: process.env.DUELS_SERVER_PRIVATE_KEY || '',

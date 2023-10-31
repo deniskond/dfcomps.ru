@@ -17,9 +17,9 @@ import { WebSocket, MessageEvent } from 'ws';
 
 describe('end-to-end: case 2 - full match', () => {
   let webSocketFirst: WebSocket;
-  let playerIdFirst: any;
+  let playerIdFirst: number;
   let webSocketSecond: WebSocket;
-  let playerIdSecond: any;
+  let playerIdSecond: number;
   let physics: Physics;
   let isFirstPlayerBanning: boolean;
   let maps: MapInterface[];
@@ -28,9 +28,9 @@ describe('end-to-end: case 2 - full match', () => {
 
   beforeAll(() => {
     webSocketFirst = new WebSocket('ws://localhost:4002/1v1');
-    playerIdFirst = faker.datatype.uuid();
+    playerIdFirst = 12;
     webSocketSecond = new WebSocket('ws://localhost:4002/1v1');
-    playerIdSecond = faker.datatype.uuid();
+    playerIdSecond = 13;
     physics = faker.random.arrayElement([Physics.VQ3, Physics.CPM]);
 
     webSocketFirst.onmessage = (message: MessageEvent) => {

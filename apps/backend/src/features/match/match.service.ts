@@ -165,7 +165,7 @@ export class MatchService {
           physics,
           start_datetime: moment().format(),
           is_finished: false,
-          security_code: (Math.random() * (99999 - 10000) + 10000).toString(),
+          security_code: (Math.floor(Math.random() * (99999 - 10000) + 10000)).toString(),
         },
       ])
       .execute();
