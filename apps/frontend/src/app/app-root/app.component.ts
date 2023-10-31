@@ -34,6 +34,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.themeService.setThemeFromCookie();
     this.initUserSubscriptions();
     this.registerMatIcons();
+    this.userService.tryLoginFromCookie();
   }
 
   ngOnDestroy(): void {

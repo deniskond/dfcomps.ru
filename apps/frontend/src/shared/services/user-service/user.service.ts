@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BackendService, URL_PARAMS } from '~shared/rest-api';
 import { Observable, BehaviorSubject, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { UserInterface } from '../../interfaces/user.interface';
 import { AuthService } from '../auth/auth.service';
 import { LoginAvailableInterface, LoginResponseInterface } from '@dfcomps/auth';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class UserService {
@@ -13,6 +14,7 @@ export class UserService {
   constructor(
     private backendService: BackendService,
     private authService: AuthService,
+    private cookieService: CookieService,
   ) {}
 
   public getCurrentUser$(): Observable<UserInterface | null> {
@@ -60,6 +62,25 @@ export class UserService {
         tap((loginResponseDto: LoginResponseInterface) => this.setAuthInfo(loginResponseDto)),
         map(() => true),
       );
+  }
+
+  public tryLoginFromCookie(): void {
+    const login = this.cookieService.get('login');
+    const password = this.cookieService.get('password');
+
+    if (login && password) {
+      this.getCurrentUser$()
+        .pipe(
+          take(1),
+          tap(() => {
+            this.cookieService.delete('login');
+            this.cookieService.delete('password');
+          }),
+          filter((user) => !user),
+          switchMap(() => this.loginByPassword$(login, password)),
+        )
+        .subscribe();
+    }
   }
 
   public logout(): void {
