@@ -17,23 +17,6 @@ services:
       retries: 5
     networks:
       - dfcomps-network
-  diff-db:
-    image: postgres
-    container_name: local_pgdb_diff
-    restart: always
-    ports:
-      - "127.0.0.1:5433:5432"
-    environment:
-      PGUSER: user
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: admin
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
-      interval: 3s
-      timeout: 5s
-      retries: 5
-    networks:
-      - dfcomps-network
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin4_container

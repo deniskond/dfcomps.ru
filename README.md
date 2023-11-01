@@ -4,7 +4,7 @@ This is a repository for storing everything related to dfcomps.ru site, which is
 
 # Quick start
 
-The repository consists of several applications which are managed by [Nx Workspaces](https://nx.dev/). Every app is written in [Typescript](https://www.typescriptlang.org/), recommended version of [NodeJS](https://nodejs.org/) is 18.x. To develop backend locally, you need to install [Docker](https://www.docker.com/) for working with database and migrations. Before running any projects locally, you need to install npm packages: 
+The repository consists of several applications which are managed by [Nx Workspaces](https://nx.dev/). Every app is written in [Typescript](https://www.typescriptlang.org/), recommended version of [NodeJS](https://nodejs.org/) is 18.x. To develop backend locally, you need to install [Docker](https://www.docker.com/) for working with database. Before running any projects locally, you need to install npm packages: 
 
 ```bash
 npm i
@@ -28,7 +28,7 @@ Connection to different backends is managed in [url-params.config](https://githu
 
 ## Database
 
-There is a [PostgreSQL](https://www.postgresql.org/) database using [Liquibase](https://www.liquibase.org/) for migrations and [PgAdmin](https://www.pgadmin.org/) for database management. To setup database make sure Docker is installed and running, then execute this script once:
+There is a [PostgreSQL](https://www.postgresql.org/) database using [TypeORM](https://typeorm.io) for migrations and [PgAdmin](https://www.pgadmin.org/) for database management. To setup database make sure Docker is installed and running, then execute this script once:
 
 ```bash
 npm run database:setup
@@ -48,15 +48,6 @@ Username: user
 Password: admin
 ```
 - After clicking save you should be able to access dfcomps test database
-
-Liquibase migrations use separate docker container to generate local database diff by running
-
-```bash
-npm run database:generate-migrations
-```
-
-After that, a file `build/database/dfcomps.changelog.json` is generated with migrations, which will be then applied to production database. Don't forget to run migrations and commit changelog file if you made any changes to database structure.
-There is also an image of database `build/database/dev-database.tar` which stores database with test data. This file is also updated on running `npm run database:generate-migrations` script and also needs to be committed.
 
 ## Backend
 
