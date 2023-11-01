@@ -6,6 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { GlobalServicesModule } from '~shared/modules/global-services.module';
 import { appRoutes } from '../routing/app.routing';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,6 +16,7 @@ import { appRoutes } from '../routing/app.routing';
     GlobalServicesModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    MatSnackBarModule,
   ],
   bootstrap: [AppComponent],
 })

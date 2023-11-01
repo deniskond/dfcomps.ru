@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NewDiscordAccountComponent } from '~shared/modules/site-header';
 import { UserService } from '~shared/services/user-service/user.service';
 import { NewsInterfaceUnion, NewsTypes } from '@dfcomps/contracts';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   templateUrl: './main.page.html',
@@ -32,6 +33,7 @@ export class MainPageComponent implements OnInit {
     private languageService: LanguageService,
     private dialog: MatDialog,
     private userService: UserService,
+    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit(): void {
@@ -90,6 +92,19 @@ export class MainPageComponent implements OnInit {
         data: {
           isFirstStep: false,
           discordAccessToken,
+        },
+      });
+    } else if (discordOAuthState === 'link') {
+      this.userService.linkDiscord$(discordAccessToken).subscribe({
+        next: () => {
+          this.snackBar.open(`Successfully linked Discord account!`, '', {
+            duration: 2000,
+          });
+        },
+        error: (error: Error) => {
+          this.snackBar.open(`Error linking Discord account - ${error.message}`, '', {
+            duration: 2000,
+          });
         },
       });
     }

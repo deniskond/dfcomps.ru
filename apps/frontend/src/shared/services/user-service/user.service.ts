@@ -4,7 +4,7 @@ import { Observable, BehaviorSubject, of } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { UserInterface } from '../../interfaces/user.interface';
 import { AuthService } from '../auth/auth.service';
-import { LoginAvailableInterface, LoginResponseInterface } from '@dfcomps/auth';
+import { DiscordPromptInterface, LoginAvailableInterface, LoginResponseInterface } from '@dfcomps/auth';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
@@ -100,6 +100,23 @@ export class UserService {
         this.authService.setToken(JSON.parse(token));
       }
     } catch (e) {}
+  }
+
+  public checkDiscordPrompt$(): Observable<boolean> {
+    return this.backendService
+      .get$<DiscordPromptInterface>(URL_PARAMS.AUTH.LAST_DISCORD_PROMPT)
+      .pipe(map(({ prompt }: DiscordPromptInterface) => prompt));
+  }
+
+  public linkDiscord$(discordAccessToken: string): Observable<boolean> {
+    return this.backendService
+      .post$<LoginResponseInterface>(URL_PARAMS.AUTH.LINK_DISCORD, {
+        discordAccessToken,
+      })
+      .pipe(
+        tap((loginResponseDto: LoginResponseInterface) => this.setAuthInfo(loginResponseDto)),
+        map(() => true),
+      );
   }
 
   private setAuthInfo({ user, token }: LoginResponseInterface) {

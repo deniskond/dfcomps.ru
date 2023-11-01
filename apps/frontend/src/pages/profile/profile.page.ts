@@ -8,7 +8,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ProfileCupInterface } from './interfaces/profile-cup.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { EditProfileDialogComponent } from './components/edit-profile-dialog/edit-profile-dialog';
-import { isNonNull } from '~shared/helpers';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { LanguageService } from '~shared/services/language/language.service';
 import { UserService } from '~shared/services/user-service/user.service';
@@ -40,6 +39,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   public isEditProfileAvailable$: Observable<boolean>;
   public isNickChangeAllowed = false;
   public profileUpdate$ = new Subject<void>();
+  public isDiscordLinkButtonShown$: Observable<boolean>;
 
   private onDestroy$ = new Subject<void>();
 
@@ -81,11 +81,22 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.reloadProfile.subscribe(() => this.profileUpdate$.next());
   }
 
+  public linkDiscord(): void {
+    window.location.href =
+      'https://discord.com/oauth2/authorize?response_type=token&client_id=1154028126783946772&scope=identify&state=link';
+  }
+
   private initObservables(): void {
-    this.isEditProfileAvailable$ = combineLatest([
+    this.isEditProfileAvailable$ = combineLatest([this.activatedRoute.params, this.userService.getCurrentUser$()]).pipe(
+      map(([{ id }, user]: [Params, UserInterface | null]) => (user ? +id === user.id : false)),
+    );
+
+    this.isDiscordLinkButtonShown$ = combineLatest([
       this.activatedRoute.params,
-      this.userService.getCurrentUser$().pipe(filter(isNonNull)),
-    ]).pipe(map(([{ id }, user]: [Params, UserInterface]) => (user ? +id === user.id : false)));
+      this.userService.getCurrentUser$(),
+    ]).pipe(
+      map(([{ id }, user]: [Params, UserInterface | null]) => (user ? +id === user.id && !user.discordTag : false)),
+    );
   }
 
   private setRouteSubscription(): void {

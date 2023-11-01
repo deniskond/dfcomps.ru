@@ -9,6 +9,7 @@ export interface LoginResponseInterface {
     id: number;
     nick: string;
     roles: UserRoles[];
+    discordTag: string | null;
   };
   token: string;
 }

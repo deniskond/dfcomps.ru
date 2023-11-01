@@ -17,7 +17,7 @@ import * as moment from 'moment';
 import { AuthRole } from '../../shared/entities/auth-role.entity';
 import { User } from '../../shared/entities/user.entity';
 import { UserAccessInterface } from '../../shared/interfaces/user-access.interface';
-import { LoginAvailableInterface, LoginResponseInterface } from '@dfcomps/auth';
+import { DiscordPromptInterface, LoginAvailableInterface, LoginResponseInterface } from '@dfcomps/auth';
 
 @Injectable()
 export class AuthService {
@@ -48,6 +48,7 @@ export class AuthService {
           id: user.id,
           nick: user.displayed_nick,
           roles: authRoles.map(({ role }: AuthRole) => role),
+          discordTag: user.discord_tag,
         },
         token: user.access_token,
       };
@@ -92,6 +93,7 @@ export class AuthService {
         id: user.id,
         nick: user.displayed_nick,
         roles: authRoles.map(({ role }: AuthRole) => role),
+        discordTag: discordUserInfo.username,
       },
       token: user.access_token,
     };
@@ -174,6 +176,7 @@ export class AuthService {
         id: userId,
         nick: login,
         roles: [],
+        discordTag: discordUsername,
       },
       token: userAccessToken,
     };
@@ -200,6 +203,101 @@ export class AuthService {
       userId: user.id,
       commentsBanDate: user.comments_ban_date,
       roles: authRoles.map(({ role }: AuthRole) => role),
+    };
+  }
+
+  public async getDiscordPrompt(accessToken: string | undefined): Promise<DiscordPromptInterface> {
+    const { userId }: UserAccessInterface = await this.getUserInfoByAccessToken(accessToken);
+
+    if (!userId) {
+      return {
+        prompt: false,
+      };
+    }
+
+    const user: User = (await this.userRepository.createQueryBuilder().where({ id: userId }).getOne())!;
+
+    if (user.discord_tag) {
+      return {
+        prompt: false,
+      };
+    }
+
+    if (!user.last_discord_prompt || moment().subtract(1, 'month').isAfter(user.last_discord_prompt)) {
+      await this.userRepository
+        .createQueryBuilder()
+        .update(User)
+        .set({
+          last_discord_prompt: moment().format(),
+        })
+        .where({ id: userId })
+        .execute();
+
+      return {
+        prompt: true,
+      };
+    }
+
+    return {
+      prompt: false,
+    };
+  }
+
+  public async linkDiscord(
+    accessToken: string | undefined,
+    discordAccessToken: string,
+  ): Promise<LoginResponseInterface> {
+    const discordUserInfo = await firstValueFrom(
+      this.httpService
+        .get('https://discord.com/api/users/@me', {
+          headers: {
+            authorization: `Bearer ${discordAccessToken}`,
+          },
+        })
+        .pipe(
+          map(({ data }: AxiosResponse) => data),
+          catchError(() => {
+            throw new InternalServerErrorException('Discord auth error');
+          }),
+        ),
+    );
+
+    const sameTagUser: User | null = await this.userRepository.findOneBy({ discord_tag: discordUserInfo.username });
+
+    if (sameTagUser) {
+      throw new BadRequestException('User with this tag already exists');
+    }
+
+    const { userId }: UserAccessInterface = await this.getUserInfoByAccessToken(accessToken);
+
+    if (!userId) {
+      throw new NotFoundException('User not found');
+    }
+
+    await this.userRepository
+      .createQueryBuilder()
+      .update(User)
+      .set({
+        discord_tag: discordUserInfo.username,
+      })
+      .where({ id: userId })
+      .execute();
+    
+    const user: User = (await this.userRepository.findOneBy({ id: userId }))!;
+    const authRoles: AuthRole[] = await this.authRoleRepository.findBy({ user_id: user.id });
+
+    return {
+      user: {
+        avatar: user.avatar,
+        country: user.country,
+        cpmRating: user.cpm_rating,
+        vq3Rating: user.vq3_rating,
+        id: user.id,
+        nick: user.displayed_nick,
+        roles: authRoles.map(({ role }: AuthRole) => role),
+        discordTag: discordUserInfo.username,
+      },
+      token: user.access_token,
     };
   }
 }
