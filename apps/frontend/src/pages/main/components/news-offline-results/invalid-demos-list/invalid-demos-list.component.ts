@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
-import { InvalidDemoInterface } from '~shared/interfaces/invalid-demo.interface';
+import { InvalidDemoInterface } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-invalid-demos-list',
@@ -8,6 +8,6 @@ import { InvalidDemoInterface } from '~shared/interfaces/invalid-demo.interface'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InvalidDemosListComponent {
-  @Input() cupId: string;
+  @Input() cupId: number;
   @Input() invalidDemos: InvalidDemoInterface[];
 }

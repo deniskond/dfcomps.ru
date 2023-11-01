@@ -17,7 +17,7 @@ export class CupTimerOnlineComponent implements OnInit {
   @Input()
   currentTime: number;
   @Input()
-  newsId: string | undefined;
+  newsId: number | null;
   @Input()
   server: string | undefined;
 

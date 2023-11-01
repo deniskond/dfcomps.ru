@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BackendService, URL_PARAMS } from '~shared/rest-api';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { NewsInterfaceUnion } from '../../types/news-union.type';
 import { tap, finalize } from 'rxjs/operators';
+import { NewsInterfaceUnion, ValidationArchiveLinkInterface } from '@dfcomps/contracts';
 
 @Injectable()
 export class NewsService extends BackendService {
@@ -17,7 +17,7 @@ export class NewsService extends BackendService {
     }
 
     this.isLoading = true;
-    this.post$<NewsInterfaceUnion[]>(URL_PARAMS.NEWS.MAIN_PAGE)
+    this.get$<NewsInterfaceUnion[]>(URL_PARAMS.NEWS.MAIN_PAGE)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe((news: NewsInterfaceUnion[]) => this._mainPageNews$.next(news));
   }
@@ -41,7 +41,7 @@ export class NewsService extends BackendService {
     }
 
     this.isLoading = true;
-    this.post$<NewsInterfaceUnion[]>(URL_PARAMS.NEWS.THEME_PAGE(theme))
+    this.get$<NewsInterfaceUnion[]>(URL_PARAMS.NEWS.THEME_PAGE(theme))
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe((news: NewsInterfaceUnion[]) => this._themePageNews$.next(news));
   }
@@ -59,12 +59,10 @@ export class NewsService extends BackendService {
   }
 
   public getSingleNews$(id: string): Observable<NewsInterfaceUnion> {
-    return this.post$(URL_PARAMS.NEWS.SINGLE_NEWS(id));
+    return this.get$(URL_PARAMS.NEWS.SINGLE_NEWS(id));
   }
 
-  public getDemosForValidation$(cupId: string): Observable<{ url: string }> {
-    return this.post$(URL_PARAMS.DEMOS.VALIDATION_ARCHIVE_LINK, {
-      cupId,
-    });
+  public getDemosForValidation$(cupId: number): Observable<ValidationArchiveLinkInterface> {
+    return this.get$(URL_PARAMS.CUP.VALIDATION_ARCHIVE_LINK(cupId));
   }
 }

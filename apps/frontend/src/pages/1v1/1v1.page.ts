@@ -7,15 +7,16 @@ import { DuelWebsocketServerActions } from './services/enums/duel-websocket-serv
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatchStates } from './services/enums/match-states.enum';
 import { MatchInterface } from './services/interfaces/match.interface';
-import { DuelPlayersInfoInterface } from './interfaces/duel-players-info.interface';
 import { PickbanPhases } from './enums/pickban-phases.enum';
 import { MatchFinishedService } from './services/match-finsihed.service';
 import { JoinQueueService } from './services/join-queue.service';
 import { Languages } from '~shared/enums/languages.enum';
 import { UserService } from '~shared/services/user-service/user.service';
-import { Physics } from '~shared/enums/physics.enum';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { LanguageService } from '~shared/services/language/language.service';
+import { Physics } from '@dfcomps/contracts';
+import { DuelPlayersInfoInterface } from './interfaces/duel-players-info.interface';
+import { formatResultTime } from '@dfcomps/helpers';
 
 @Component({
   templateUrl: './1v1.page.html',
@@ -102,8 +103,8 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
       return '';
     }
 
-    const firstPlayerTime = parseFloat(playersInfo.firstPlayerTime!) || 10000;
-    const secondPlayerTime = parseFloat(playersInfo.secondPlayerTime!) || 10000;
+    const firstPlayerTime = playersInfo.firstPlayerTime! || 10000;
+    const secondPlayerTime = playersInfo.secondPlayerTime! || 10000;
 
     if (firstPlayerTime === secondPlayerTime) {
       return 'draw';
@@ -118,17 +119,21 @@ export class OneVOnePageComponent implements OnInit, OnDestroy {
       return '';
     }
 
-    const firstPlayerTime = parseFloat(playersInfo.firstPlayerTime!) || 10000;
-    const secondPlayerTime = parseFloat(playersInfo.secondPlayerTime!) || 10000;
+    const firstPlayerTime = playersInfo.firstPlayerTime! || 10000;
+    const secondPlayerTime = playersInfo.secondPlayerTime! || 10000;
 
     if (firstPlayerTime === secondPlayerTime) {
       return '';
     }
 
-    const firstPlayerNick = playersInfo.firstPlayerId === '-1' ? 'dfcomps bot' : playersInfo.firstPlayerInfo?.nick;
-    const secondPlayerNick = playersInfo.secondPlayerId === '-1' ? 'dfcomps bot' : playersInfo.secondPlayerInfo?.nick;
+    const firstPlayerNick = playersInfo.firstPlayerId === -1 ? 'dfcomps bot' : playersInfo.firstPlayerInfo?.nick;
+    const secondPlayerNick = playersInfo.secondPlayerId === -1 ? 'dfcomps bot' : playersInfo.secondPlayerInfo?.nick;
 
     return firstPlayerTime < secondPlayerTime ? firstPlayerNick : secondPlayerNick;
+  }
+
+  public formatTime(time: number | string): string {
+    return formatResultTime(time);
   }
 
   private initJoinQueueCheck(): void {

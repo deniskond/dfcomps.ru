@@ -1,13 +1,11 @@
-import { CupSystems } from '~shared/enums/cup-systems.enum';
-import { MulticupResultInterface } from './multicup-result.interface';
-import { Physics } from '~shared/enums/physics.enum';
+import { MulticupResultInterface, MulticupSystems, Physics } from '@dfcomps/contracts';
 
 export interface MulticupTableInterface {
   fullName: string;
   rounds: string;
   currentRound: number;
   physics: Physics;
-  system: CupSystems;
+  system: MulticupSystems;
   players: MulticupResultInterface[];
   shortName?: string;
 }

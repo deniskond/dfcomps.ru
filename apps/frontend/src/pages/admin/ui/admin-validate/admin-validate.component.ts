@@ -1,14 +1,11 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { map, Observable, switchMap, take, tap } from 'rxjs';
 import { AdminDataService } from '../../business/admin-data.service';
-import {
-  AdminDemoValidationStatus,
-  AdminValidationInterface,
-  PlayerDemosValidationInterface,
-} from '../../models/admin-validation.interface';
+import { AdminPlayerDemosValidationInterface, AdminValidationInterface, VerifiedStatuses } from '@dfcomps/contracts';
+import { formatResultTime } from '@dfcomps/helpers';
 
 @Component({
   selector: 'dfcomps.ru-admin-validate',
@@ -18,7 +15,7 @@ import {
 })
 export class AdminValidateComponent implements OnInit {
   public cupValidationInfo$: Observable<AdminValidationInterface>;
-  public adminDemoValidationStatuses = AdminDemoValidationStatus;
+  public demoValidationStatuses = VerifiedStatuses;
   public validationForm: FormGroup;
 
   constructor(
@@ -26,11 +23,12 @@ export class AdminValidateComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
     private snackBar: MatSnackBar,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
     this.cupValidationInfo$ = this.activatedRoute.params.pipe(
-      switchMap((params: Params) => this.adminDataService.getCupValidationInfo$(params['id'])),
+      switchMap((params: Params) => this.adminDataService.getCupValidationInfo$(parseInt(params['id']))),
       tap((cupValidationInfo: AdminValidationInterface) => this.initValidationForm(cupValidationInfo)),
     );
   }
@@ -51,10 +49,18 @@ export class AdminValidateComponent implements OnInit {
     this.activatedRoute.params
       .pipe(
         take(1),
-        map((params: Params) => params['id']),
-        switchMap((cupId: string) => this.adminDataService.sendValidationResult$(this.validationForm.value, cupId)),
+        map((params: Params) => parseInt(params['id'])),
+        switchMap((cupId: number) => this.adminDataService.sendValidationResult$(this.validationForm.value, cupId)),
+        switchMap(() => this.adminDataService.getAllCups$(false)),
       )
-      .subscribe(() => this.snackBar.open('Validation results submitted successfully!', '', { duration: 2000 }));
+      .subscribe(() => {
+        this.router.navigate(['/admin/cups']);
+        this.snackBar.open('Validation results submitted successfully!', '', { duration: 2000 });
+      });
+  }
+
+  public formatTime(time: number): string {
+    return formatResultTime(time);
   }
 
   private initValidationForm(cupValidationInfo: AdminValidationInterface): void {
@@ -65,18 +71,18 @@ export class AdminValidateComponent implements OnInit {
     this.changeDetectorRef.markForCheck();
   }
 
-  private getValidationControlValue(validationStatus: AdminDemoValidationStatus): boolean | null {
-    const validationStatusMap: Record<AdminDemoValidationStatus, boolean | null> = {
-      [AdminDemoValidationStatus.NOT_CHECKED]: null,
-      [AdminDemoValidationStatus.VALIDATED_OK]: true,
-      [AdminDemoValidationStatus.VALIDATED_FAILED]: false,
+  private getValidationControlValue(validationStatus: VerifiedStatuses): boolean | null {
+    const validationStatusMap: Record<VerifiedStatuses, boolean | null> = {
+      [VerifiedStatuses.UNWATCHED]: null,
+      [VerifiedStatuses.VALID]: true,
+      [VerifiedStatuses.INVALID]: false,
     };
 
     return validationStatusMap[validationStatus];
   }
 
-  private getFormPhysicsControls(playerDemos: PlayerDemosValidationInterface[]): Record<string, AbstractControl> {
-    return playerDemos.reduce((accumulator, playerDemos: PlayerDemosValidationInterface) => {
+  private getFormPhysicsControls(playerDemos: AdminPlayerDemosValidationInterface[]): Record<string, AbstractControl> {
+    return playerDemos.reduce((accumulator, playerDemos: AdminPlayerDemosValidationInterface) => {
       const playerDemosControls = playerDemos.demos.reduce(
         (acc, demo) => ({
           ...acc,

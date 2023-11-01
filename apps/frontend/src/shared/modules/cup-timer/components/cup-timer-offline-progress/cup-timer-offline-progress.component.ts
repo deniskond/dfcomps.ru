@@ -23,13 +23,13 @@ export class CupTimerOfflineProgressComponent implements OnInit, OnChanges {
   @Input()
   cupName: string;
   @Input()
-  newsId: string;
+  newsId: number;
   @Input()
-  mapLink: string;
+  mapLink: string | null;
   @Input()
   endTime: string;
   @Input()
-  customNews: string | undefined;
+  customNews: string | null;
 
   @Output()
   finished = new EventEmitter<void>();

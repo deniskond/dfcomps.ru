@@ -1,10 +1,10 @@
 import { Component, Input, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { NewsInterfaceUnion } from '@dfcomps/contracts';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Languages } from '~shared/enums/languages.enum';
 import { LanguageService } from '~shared/services/language/language.service';
-import { NewsInterfaceUnion } from '~shared/types/news-union.type';
 
 @Component({
   selector: 'app-html-news',

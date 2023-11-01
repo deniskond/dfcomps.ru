@@ -15,11 +15,11 @@ export class CupTimerOfflineComponent implements OnInit {
   @Input()
   endTime: string;
   @Input()
-  mapLink: string;
+  mapLink: string | null;
   @Input()
-  newsId: string | undefined;
+  newsId: number | null;
   @Input()
-  customNews: string | undefined;
+  customNews: string | null;
 
   public timerState: CupTimerStates;
   public timerStates = CupTimerStates;

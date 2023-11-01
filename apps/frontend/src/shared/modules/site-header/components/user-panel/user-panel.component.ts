@@ -9,6 +9,7 @@ import { filter, take } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { isNonNull } from '../../../../../shared/helpers/is-non-null';
+import { UserRoles, checkUserRoles } from '@dfcomps/auth';
 
 @Component({
   selector: 'app-user-panel',
@@ -22,7 +23,11 @@ export class UserPanelComponent implements OnInit, OnDestroy {
 
   private onDestroy$ = new Subject<void>();
 
-  constructor(private dialog: MatDialog, private userService: UserService, private router: Router) {}
+  constructor(
+    private dialog: MatDialog,
+    private userService: UserService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.user$ = this.userService.getCurrentUser$();
@@ -34,7 +39,7 @@ export class UserPanelComponent implements OnInit, OnDestroy {
   }
 
   public onLoginClick(): void {
-    this.dialog.open(LoginDialogComponent, { data: { login: '', password: '' } });
+    this.dialog.open(LoginDialogComponent);
   }
 
   public onRegisterClick(): void {
@@ -46,6 +51,16 @@ export class UserPanelComponent implements OnInit, OnDestroy {
   }
 
   public onProfileClick(): void {
-    this.user$.pipe(filter(isNonNull), take(1)).subscribe((user: UserInterface) => this.router.navigate([`/profile/${user.id}`]));
+    this.user$
+      .pipe(filter(isNonNull), take(1))
+      .subscribe((user: UserInterface) => this.router.navigate([`/profile/${user.id}`]));
+  }
+
+  public hasAdminPanelAccess(user: UserInterface): boolean {
+    return checkUserRoles(user.roles, [
+      UserRoles.VALIDATOR,
+      UserRoles.CUP_ORGANIZER,
+      UserRoles.NEWSMAKER,
+    ]);
   }
 }

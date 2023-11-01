@@ -1,5 +1,5 @@
 import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
-import { CupTypes } from '../../enums/cup-types.enum';
+import { CupTypes } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-cup-timer',
@@ -18,11 +18,11 @@ export class CupTimerComponent {
   @Input()
   endTime: string;
   @Input()
-  mapLink: string;
+  mapLink: string | null;
   @Input()
-  newsId: string | undefined;
+  newsId: number | null;
   @Input()
-  customNews: string | undefined;
+  customNews: string | null;
   @Input()
   server: string | undefined | null;
 

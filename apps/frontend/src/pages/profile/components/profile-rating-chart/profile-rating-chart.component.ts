@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Physics } from '@dfcomps/contracts';
 import { ChartConfiguration } from 'chart.js';
 import { combineLatest, ReplaySubject, Subject, takeUntil } from 'rxjs';
-import { Physics } from '~shared/enums/physics.enum';
 import { Themes } from '~shared/enums/themes.enum';
 import { ThemeService } from '~shared/services/theme/theme.service';
 
@@ -15,7 +15,7 @@ export class ProfileRatingChartComponent implements OnChanges {
   @Input()
   physics: Physics;
   @Input()
-  chart: string[];
+  chart: number[];
 
   private onDestroy$ = new Subject<void>();
   private chart$ = new ReplaySubject<any>(1);
@@ -73,7 +73,7 @@ export class ProfileRatingChartComponent implements OnChanges {
     },
   };
 
-  public barChartLabels: string[];
+  public barChartLabels: number[];
   public barChartData: ChartConfiguration<'line'>['data'];
 
   ngOnChanges({ chart }: SimpleChanges): void {

@@ -13,19 +13,19 @@ import { WebSocket, MessageEvent } from 'ws';
 
 describe('end-to-end: case 4 - restoring state', () => {
   let webSocketFirst: WebSocket;
-  let playerIdFirst: string;
+  let playerIdFirst: number;
   let webSocketSecond: WebSocket;
-  let playerIdSecond: string;
+  let playerIdSecond: number;
   let webSocketThird: WebSocket;
   let physics: Physics;
   const webSocketFirstMessagesStream$: Subject<DuelServerMessageType> = new Subject();
   const webSocketSecondMessagesStream$: Subject<DuelServerMessageType> = new Subject();
 
   beforeAll(() => {
-    webSocketFirst = new WebSocket('ws://localhost:3000/1v1');
-    playerIdFirst = faker.datatype.uuid();
-    webSocketSecond = new WebSocket('ws://localhost:3000/1v1');
-    playerIdSecond = faker.datatype.uuid();
+    webSocketFirst = new WebSocket('ws://localhost:4002/1v1');
+    playerIdFirst = 20;
+    webSocketSecond = new WebSocket('ws://localhost:4002/1v1');
+    playerIdSecond = 21;
     physics = faker.random.arrayElement([Physics.VQ3, Physics.CPM]);
 
     webSocketFirst.onmessage = (message: MessageEvent) => {
@@ -133,7 +133,7 @@ describe('end-to-end: case 4 - restoring state', () => {
   it('should restore state correctly', (done) => {
     webSocketFirst.close();
 
-    webSocketThird = new WebSocket('ws://localhost:3000/1v1');
+    webSocketThird = new WebSocket('ws://localhost:4002/1v1');
 
     webSocketThird.onopen = () => {
       const message: GetPlayerStateMessageInterface = {

@@ -1,13 +1,11 @@
-import { UserAccess } from '../enums/user-access.enum';
+import { UserRoles } from '@dfcomps/auth';
 
 export interface UserInterface {
-  access: UserAccess;
-  avatar: string;
-  country: string;
-  cpmRating: string;
-  id: string;
+  avatar: string | null;
+  country: string | null;
+  cpmRating: number;
+  id: number;
   nick: string;
-  teamId: string;
-  teamStatus: string;
-  vq3Rating: string;
+  vq3Rating: number;
+  roles: UserRoles[];
 }

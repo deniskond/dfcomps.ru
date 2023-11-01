@@ -16,7 +16,7 @@ const numberOfMatchesInEachPhysics = stressTestNumberOfMatchesInEachPhysics;
 // for both physics two players are needed for one match
 const numberOfClients = numberOfMatchesInEachPhysics * 4;
 
-const playersIds: string[] = new Array(numberOfClients).fill(null).map(() => faker.datatype.uuid());
+const playersIds: number[] = new Array(numberOfClients).fill(null).map(() => faker.datatype.number());
 console.log(`Starting stress testing for ${numberOfClients} clients`);
 
 // double check for same array of players; the idea is to test if server state is correct for the same players to join and play again
@@ -44,8 +44,8 @@ function getClientsFunctionsBatch(): Promise<void>[] {
     );
 }
 
-async function testClientActions(playerId: string, physics: Physics): Promise<void> {
-  const webSocket = new WebSocket('ws://localhost:3000/1v1');
+async function testClientActions(playerId: number, physics: Physics): Promise<void> {
+  const webSocket = new WebSocket('ws://localhost:4002/1v1');
   const websocketMessages$: Subject<DuelServerMessageType> = new Subject();
 
   await new Promise<void>((resolve) => {

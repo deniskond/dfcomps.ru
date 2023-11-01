@@ -1,5 +1,12 @@
 <div class="actions-container">
   <mat-card class="card">
+    <div class="card-header">Offline cup</div>
+    <div class="card-text">Simple cup, like warcup</div>
+    <div>
+      <button routerLink="/admin/cups/add-offline-cup" mat-raised-button color="accent">Add offline cup</button>
+    </div>
+  </mat-card>
+  <mat-card class="card">
     <div class="card-header">Multicup round</div>
     <div class="card-text">Round of tournament series</div>
     <div>
@@ -22,14 +29,23 @@
       <div class="cell type">{{ cup.type }}</div>
       <div class="cell actions buttons">
         <button
-          *ngIf="cup.validationAvailable; else noActions"
+          *ngIf="cup.validationAvailable"
           [routerLink]="'/admin/validate/' + cup.id"
           mat-raised-button
           color="basic"
         >
           Validate demos
         </button>
-        <ng-template #noActions>No actions available</ng-template>
+        <button *ngIf="cup.calculateRatingsAvailable" (click)="finishCup(cup.id)" mat-raised-button color="primary">
+          Finish cup
+        </button>
+        <ng-container *ngIf="isEditingCupAvailable(cup)">
+          <button [routerLink]="'/admin/cups/edit/' + cup.id" mat-raised-button color="basic">Edit</button>
+          <button (click)="confirmDelete(cup)" mat-raised-button color="warn">Delete</button>
+        </ng-container>
+        <ng-container *ngIf="!cup.validationAvailable && !cup.calculateRatingsAvailable && !isEditingCupAvailable(cup)">
+          No actions available
+        </ng-container>
       </div>
     </ng-container>
   </div>

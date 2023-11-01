@@ -7,9 +7,9 @@ import { SmileInterface, SMILES_CONFIG, SmileGroups } from '~shared/configs/smil
 import { Languages } from '~shared/enums/languages.enum';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { LanguageService } from '~shared/services/language/language.service';
-import { PersonalSmileInterface } from '~shared/services/smiles/personal-smile.interface';
 import { ENGLISH_TRANSLATIONS } from '~shared/translations/en.translations';
 import { RUSSIAN_TRANSLATIONS } from '~shared/translations/ru.translations';
+import { PersonalSmileInterface } from '@dfcomps/contracts';
 
 interface SortedSmileGroupsInterface {
   name: string;

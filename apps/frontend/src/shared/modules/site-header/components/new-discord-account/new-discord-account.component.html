@@ -1,0 +1,16 @@
+<ng-container *ngIf="isFirstStep">
+  <div translate translation="siteLogIn" class="h1-block-header dialog-header"></div>
+
+  <div translate translation="discordAccountNotFound"></div>
+
+  <div class="buttons-container">
+    <button (click)="nextStep()" mat-raised-button color="primary">
+      <span translate translation="yes"></span>
+    </button>
+    <button (click)="closeModal()" mat-raised-button color="basic">
+      <span translate translation="no"></span>
+    </button>
+  </div>
+</ng-container>
+
+<dfcomps-register-form *ngIf="!isFirstStep" [discordAccessToken]="data.discordAccessToken" (closeDialog)="closeModal()"></dfcomps-register-form>

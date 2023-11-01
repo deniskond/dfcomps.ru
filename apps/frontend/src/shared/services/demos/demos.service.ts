@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BackendService, URL_PARAMS } from '~shared/rest-api';
 import { Observable } from 'rxjs';
-import { UploadDemoDtoInterface } from './dto/upload-demo.dto';
-import { UploadedDemoInterface } from '../../interfaces/uploaded-demo.interface';
+import { UploadDemoResponseInterface, UploadedDemoInterface } from '@dfcomps/contracts';
 
 @Injectable({
   providedIn: 'root',
@@ -10,11 +9,11 @@ import { UploadedDemoInterface } from '../../interfaces/uploaded-demo.interface'
 export class DemosService extends BackendService {
   public uploadDemo$(
     demo: File,
-    cupId: string,
+    cupId: number,
     mapName: string,
-    playerId: string,
+    playerId: number,
     fileName: string,
-  ): Observable<UploadDemoDtoInterface> {
+  ): Observable<UploadDemoResponseInterface> {
     return this.uploadFile$(URL_PARAMS.DEMOS.UPLOAD, [{ fileKey: 'file', file: demo }], {
       cupId,
       mapName,
@@ -23,29 +22,14 @@ export class DemosService extends BackendService {
     });
   }
 
-  public deleteDemo$(demo: string, cupId: string): Observable<UploadedDemoInterface[]> {
+  public deleteDemo$(demoName: string, cupId: string): Observable<UploadedDemoInterface[]> {
     return this.post$(URL_PARAMS.DEMOS.DELETE, {
-      demo,
+      demoName,
       cupId,
     });
   }
 
-  public reflexUploadDemo$(
-    demo: File,
-    cupId: string,
-    mapName: string,
-    playerId: string,
-    fileName: string,
-  ): Observable<UploadDemoDtoInterface> {
-    return this.uploadFile$(URL_PARAMS.DEMOS.REFLEX_UPLOAD, [{ fileKey: 'file', file: demo }], {
-      cupId,
-      mapName,
-      playerId,
-      fileName,
-    });
-  }
-
-  public uploadDuelDemo$(demo: File): Observable<UploadDemoDtoInterface> {
+  public uploadDuelDemo$(demo: File): Observable<UploadDemoResponseInterface> {
     return this.uploadFile$(URL_PARAMS.DEMOS.DUEL_UPLOAD, [{ fileKey: 'file', file: demo }]);
   }
 }

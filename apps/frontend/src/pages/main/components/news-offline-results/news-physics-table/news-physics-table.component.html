@@ -13,7 +13,7 @@
   </div>
   <div class="player-column">
     <app-player-cell [country]="result.country" [nick]="result.nick" [playerId]="result.playerId"> </app-player-cell>
-    <img *ngIf="result.impressive === '1'" class="impressive" src="/assets/images/icons/impressive.png" />
+    <img *ngIf="result.impressive === true" class="impressive" src="/assets/images/icons/impressive.png" />
   </div>
   <div *ngIf="archiveLink || !result.demopath; else noArchiveLink" class="time-column time">
     {{ result.time | invokeFunction: formatResult }}
@@ -25,8 +25,8 @@
   </ng-template>
   <div class="rating-column">
     <ng-container *ngIf="!customTable">
-      <app-rating-change [change]="result.change" [zeroIfNull]="cup.ratingCalculated === '1'"></app-rating-change>
-      <img *ngIf="result.bonus === '1'" class="bonus-plus" src="/assets/images/icons/plus.png" />
+      <app-rating-change [change]="result.change" [zeroIfNull]="cup.ratingCalculated"></app-rating-change>
+      <img *ngIf="result.bonus === true" class="bonus-plus" src="/assets/images/icons/plus.png" />
     </ng-container>
     <span *ngIf="customTable" [class.preliminary]="result.isPreliminaryResult">{{ result.rating || '-' }}</span>
   </div>
@@ -39,7 +39,7 @@
   <div class="rating-column"></div>
 </div>
 
-<div *ngIf="+cup.multicupId && cup.demosValidated !== '0'" class="multicup-button-container">
+<div *ngIf="cup.multicupId && cup.demosValidated" class="multicup-button-container">
   <button (click)="openFullMulticupTable()" mat-raised-button color="primary">
     <span translate translation="fullTable"></span> ({{ physics.toUpperCase() }})
   </button>

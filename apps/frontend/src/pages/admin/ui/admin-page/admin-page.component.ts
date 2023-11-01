@@ -5,7 +5,7 @@ import { isNonNull } from '../../../../shared/helpers/is-non-null';
 import { AdminCurrentPageService } from '../../business/admin-current-page.service';
 import { UserService } from '~shared/services/user-service/user.service';
 import { UserInterface } from '~shared/interfaces/user.interface';
-import { UserAccess } from '~shared/enums/user-access.enum';
+import { UserRoles, checkUserRoles, isSuperadmin } from '@dfcomps/auth';
 
 @Component({
   selector: 'admin-page',
@@ -18,9 +18,11 @@ export class AdminPageComponent implements OnInit {
   public navigationPage$: Observable<string>;
   public user$: Observable<UserInterface>;
   public apiUrl: string;
-  public userAccess = UserAccess;
 
-  constructor(private adminCurrentPageService: AdminCurrentPageService, private userService: UserService) {}
+  constructor(
+    private adminCurrentPageService: AdminCurrentPageService,
+    private userService: UserService,
+  ) {}
 
   ngOnInit(): void {
     this.adminCurrentPageService.setRouteSubscription();
@@ -32,5 +34,17 @@ export class AdminPageComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.adminCurrentPageService.unsetRouteSubscription();
+  }
+
+  public hasSeasonAccess(user: UserInterface): boolean {
+    return isSuperadmin(user.roles);
+  }
+
+  public hasNewsAccess(user: UserInterface): boolean {
+    return checkUserRoles(user.roles, [UserRoles.NEWSMAKER]);
+  }
+
+  public hasCupsAccess(user: UserInterface): boolean {
+    return checkUserRoles(user.roles, [UserRoles.CUP_ORGANIZER]);
   }
 }

@@ -1,6 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { Physics } from '~shared/enums/physics.enum';
-import { NewsMulticupResultsInterface } from '~shared/services/news-service/interfaces/news-multicup-results.interface';
+import { NewsMulticupResultsInterface, Physics } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-news-multicup-results',

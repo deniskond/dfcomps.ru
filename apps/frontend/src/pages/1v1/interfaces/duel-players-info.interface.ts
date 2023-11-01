@@ -1,17 +1,15 @@
-import { Physics } from '~shared/enums/physics.enum';
-import { MapInterface } from '../services/interfaces/map.interface';
-import { DuelPlayerInfoInterface } from './duel-player-info.interface';
+import { DuelPlayerInfoInterface, MapInterface, Physics } from '@dfcomps/contracts';
 
 export interface DuelPlayersInfoInterface {
-  matchId: string;
-  firstPlayerId: string;
-  secondPlayerId: string;
-  firstPlayerTime: string | null;
+  matchId: number;
+  firstPlayerId: number;
+  secondPlayerId: number;
+  firstPlayerTime: number | null;
   firstPlayerDemo: string | null;
-  secondPlayerTime: string | null;
+  secondPlayerTime: number | null;
   secondPlayerDemo: string | null;
   startDatetime: string;
-  isFinished: string;
+  isFinished: boolean;
   physics: Physics;
   map: MapInterface | null;
   firstPlayerInfo: DuelPlayerInfoInterface;

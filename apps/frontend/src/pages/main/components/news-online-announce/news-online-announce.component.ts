@@ -13,10 +13,9 @@ import { filter, withLatestFrom } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { isNonNull } from '~shared/helpers';
-import { RegisteredPlayerInterface } from '~shared/interfaces/registered-player.interface';
 import { UserInterface } from '~shared/interfaces/user.interface';
-import { NewsOnlineAnnounceInterface } from '~shared/services/news-service/interfaces/news-online-announce.interface';
 import { UserService } from '~shared/services/user-service/user.service';
+import { NewsOnlineAnnounceInterface, RegisteredPlayerInterface } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-news-online-announce',
@@ -63,7 +62,7 @@ export class NewsOnlineAnnounceComponent implements OnInit, OnChanges {
   public toggleRegistration(): void {
     if (this.isRegistered) {
       this.cupRegistrationService
-        .cancelRegistrationForCup$(this.news.cupId)
+        .cancelRegistrationForCup$(this.news.cupId!)
         .pipe(
           withLatestFrom(this.userService.getCurrentUser$().pipe(filter(isNonNull))),
           filter(([, user]: [void, UserInterface]) => !!user),
@@ -75,7 +74,7 @@ export class NewsOnlineAnnounceComponent implements OnInit, OnChanges {
         });
     } else {
       this.cupRegistrationService
-        .registerForCup$(this.news.cupId)
+        .registerForCup$(this.news.cupId!)
         .pipe(
           withLatestFrom(this.userService.getCurrentUser$().pipe(filter(isNonNull))),
           filter(([, user]: [void, UserInterface]) => !!user),

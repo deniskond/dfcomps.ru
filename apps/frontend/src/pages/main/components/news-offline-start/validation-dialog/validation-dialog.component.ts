@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ValidationErrorInterface } from '../../../interfaces/validation-error.interface';
+import { ValidationErrorInterface } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-validation-dialog',

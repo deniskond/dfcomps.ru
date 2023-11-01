@@ -3,7 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "apps/frontend",
-  "prefix": "dfcomps.ru",
+  "prefix": "dfcomps",
   "targets": {
     "build": {
       "executor": "@nx/angular:webpack-browser",
@@ -31,7 +31,7 @@
             {
               "type": "initial",
               "maximumWarning": "500kb",
-              "maximumError": "1mb"
+              "maximumError": "1.5mb"
             },
             {
               "type": "anyComponentStyle",

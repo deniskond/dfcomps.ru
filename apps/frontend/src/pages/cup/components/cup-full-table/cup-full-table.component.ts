@@ -8,11 +8,9 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { MulticupTableInterface } from '../../interfaces/multicup-table.interface';
-import { MulticupResultInterface } from '../../interfaces/multicup-result.interface';
 import { PlayerCellStyles } from '~shared/components/player-cell/enums/player-cell-styles.enum';
-import { CupSystems } from '~shared/enums/cup-systems.enum';
-import { Physics } from '~shared/enums/physics.enum';
 import { getTablePlaces } from '~shared/helpers/table-places.helper';
+import { MulticupResultInterface, MulticupSystems, Physics } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-cup-full-table',
@@ -29,7 +27,6 @@ export class CupFullTableComponent implements OnChanges {
   navigateToRound = new EventEmitter<number>();
 
   public playerCellStyles = PlayerCellStyles;
-  public cupSystems = CupSystems;
   public places: number[];
   public roundsCount: number;
   public range = (n: string) => new Array(+n).fill(null);
@@ -40,6 +37,13 @@ export class CupFullTableComponent implements OnChanges {
 
       this.roundsCount = +this.fullTable.rounds + 1;
     }
+  }
+
+  get isEESystem(): boolean {
+    return (
+      !!this.fullTable &&
+      [MulticupSystems.EE_ALMERA, MulticupSystems.EE_DFWC, MulticupSystems.EE_KOZ].includes(this.fullTable.system)
+    );
   }
 
   getPlayerRoundResult(roundResult: string | null): string {

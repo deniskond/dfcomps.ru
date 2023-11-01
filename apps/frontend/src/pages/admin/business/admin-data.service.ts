@@ -1,40 +1,44 @@
 import { Injectable } from '@angular/core';
-import { map, Observable, of, tap } from 'rxjs';
-import { mapAdminCupsDtoToInterface } from '../mappers/admin-cups.mapper';
-import { mapAdminNewsDtoToInterface } from '../mappers/admin-news.mapper';
-import { AdminValidationInterface } from '../models/admin-validation.interface';
-import { AdminCupDto } from '../models/admin-cup.dto';
-import { AdminCupInterface } from '../models/admin-cup.interface';
-import { AdminNewsDto } from '../models/admin-news.dto';
-import { AdminNewsInterface } from '../models/admin-news.interface';
-import { AdminValidationDto } from '../models/admin-validation.dto';
-import { mapAdminValidationDtoToInterface } from '../mappers/admin-validation.mapper';
-import { AdminActiveMulticupsDto } from '../models/admin-active-multicups.dto';
-import { AdminActiveMulticupInterface } from '../models/admin-active-multicup.interface';
-import { mapAdminActiveMulticupsCupsDtoToInterface } from '../mappers/admin-active-multicups.mapper';
+import { Observable, of, tap } from 'rxjs';
 import { BackendService, URL_PARAMS } from '~shared/rest-api';
+import {
+  AdminEditNewsInterface,
+  AdminNewsListInterface,
+  NewsTypes,
+  AdminNewsDto,
+  AdminCupInterface,
+  AdminValidationInterface,
+  ValidationResultInterface,
+  VerifiedStatuses,
+  AdminActiveMulticupInterface,
+  WorldspawnMapInfoInterface,
+  UploadedFileLinkInterface,
+  AdminEditOfflineCupInterface,
+  UpdateCupDto,
+  AddCupDto,
+} from '@dfcomps/contracts';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminDataService {
-  private news: AdminNewsInterface[];
+  private news: AdminNewsListInterface[];
   private cups: AdminCupInterface[];
 
   constructor(private backendService: BackendService) {}
 
-  public getAllNews$(cache = true): Observable<AdminNewsInterface[]> {
+  public getAllNews$(cache = true): Observable<AdminNewsListInterface[]> {
     if (this.news && cache) {
       return of(this.news);
     }
 
-    return this.backendService.post$<AdminNewsDto[]>(URL_PARAMS.ADMIN.GET_NEWS).pipe(
-      map(mapAdminNewsDtoToInterface),
-      tap((news: AdminNewsInterface[]) => (this.news = news)),
-    );
+    return this.backendService
+      .get$<AdminNewsListInterface[]>(URL_PARAMS.ADMIN.GET_NEWS)
+      .pipe(tap((news: AdminNewsListInterface[]) => (this.news = news)));
   }
 
-  public deleteNewsItem$(newsId: string): Observable<void> {
+  public deleteNewsItem$(newsId: number): Observable<void> {
     return this.backendService.post$<void>(URL_PARAMS.ADMIN.DELETE_NEWS(newsId));
   }
 
@@ -43,23 +47,24 @@ export class AdminDataService {
       return of(this.cups);
     }
 
-    return this.backendService.post$<AdminCupDto[]>(URL_PARAMS.ADMIN.GET_CUPS).pipe(
-      map(mapAdminCupsDtoToInterface),
-      tap((cups: AdminCupInterface[]) => (this.cups = cups)),
-    );
+    return this.backendService
+      .get$<AdminCupInterface[]>(URL_PARAMS.ADMIN.GET_CUPS)
+      .pipe(tap((cups: AdminCupInterface[]) => (this.cups = cups)));
   }
 
-  public getCupValidationInfo$(newsId: string): Observable<AdminValidationInterface> {
-    return this.backendService
-      .post$<AdminValidationDto>(URL_PARAMS.ADMIN.CUP_VALIDATION(newsId))
-      .pipe(map(mapAdminValidationDtoToInterface));
+  public getSingleCup$(cupId: number): Observable<AdminEditOfflineCupInterface> {
+    return this.backendService.get$<AdminEditOfflineCupInterface>(URL_PARAMS.ADMIN.GET_SINGLE_CUP(cupId));
+  }
+
+  public getCupValidationInfo$(newsId: number): Observable<AdminValidationInterface> {
+    return this.backendService.get$<AdminValidationInterface>(URL_PARAMS.ADMIN.CUP_VALIDATION(newsId));
   }
 
   public setCups(cups: AdminCupInterface[]): void {
     this.cups = cups;
   }
 
-  public setNews(news: AdminNewsInterface[]): void {
+  public setNews(news: AdminNewsListInterface[]): void {
     this.news = news;
   }
 
@@ -79,74 +84,47 @@ export class AdminDataService {
     return this.backendService.post$<void>(URL_PARAMS.ADMIN.INCREMENT_SEASON);
   }
 
-  public sendValidationResult$(formValue: Record<string, boolean | string>, cupId: string): Observable<void> {
-    const demosIds: string[] = Object.keys(formValue).reduce((acc: string[], controlKey) => {
+  public sendValidationResult$(formValue: Record<string, boolean | string | null>, cupId: number): Observable<void> {
+    const demosIds: number[] = Object.keys(formValue).reduce((acc: number[], controlKey) => {
       if (controlKey.match(/demo/)) {
-        acc.push(controlKey.split('_')[1]);
+        acc.push(parseInt(controlKey.split('_')[1]));
       }
 
       return acc;
     }, []);
 
-    const postParams: Record<string, string> = demosIds.reduce((acc, demoId: string, index) => {
-      return {
-        ...acc,
-        [index + 1 + '_id']: demoId,
-        [index + 1 + '_valid']: this.getDemoValidationResult(formValue['demo_' + demoId] as boolean | null),
-        [index + 1 + '_reason']: formValue['reason_' + demoId].toString(),
-      };
-    }, {});
+    const validationResults: ValidationResultInterface[] = demosIds.map((demoId: number) => ({
+      id: demoId,
+      validationStatus: this.getDemoValidationResult(formValue['demo_' + demoId] as boolean | null),
+      reason: formValue['reason_' + demoId]!.toString(),
+    }));
 
-    return this.backendService.post$<void>(URL_PARAMS.ADMIN.PROCESS_VALIDATE, {
-      ...postParams,
-      count: demosIds.length.toString(),
-      cup_id: cupId,
-    });
+    const processValidationDto = {
+      validationResults: JSON.stringify(validationResults) as any,
+      allDemosCount: demosIds.length,
+    };
+
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.PROCESS_VALIDATION(cupId), processValidationDto);
   }
 
   public postSimpleNews$(formValue: Record<string, any>): Observable<void> {
-    return this.backendService.post$<void>(URL_PARAMS.ADMIN.POST_NEWS, {
-      header: formValue['russianTitle'],
-      header_en: formValue['englishTitle'],
-      posting_time: formValue['timeOption'],
-      datetime: formValue['postingTime'],
-      text: formValue['russianText'],
-      text_en: formValue['englishText'],
-      type_id: '3',
-      youtube: formValue['youtube'],
-    });
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.POST_NEWS, this.getAdminNewsDto(formValue));
   }
 
-  // TODO Admin news typization
-  public getSingleNews$(newsId: string): Observable<any> {
-    return this.backendService.post$<any>(URL_PARAMS.ADMIN.GET_SINGLE_NEWS(newsId));
+  public getSingleNews$(newsId: string): Observable<AdminEditNewsInterface> {
+    return this.backendService.get$<AdminEditNewsInterface>(URL_PARAMS.ADMIN.GET_SINGLE_NEWS(newsId));
   }
 
   public editSimpleNews$(formValue: Record<string, any>, newsId: string): Observable<void> {
-    return this.backendService.post$<void>(URL_PARAMS.ADMIN.EDIT_NEWS(newsId), {
-      header: formValue['russianTitle'],
-      header_en: formValue['englishTitle'],
-      posting_time: formValue['timeOption'],
-      datetime: formValue['postingTime'],
-      text: formValue['russianText'],
-      text_en: formValue['englishText'],
-      youtube: formValue['youtube'],
-    });
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.UPDATE_NEWS(newsId), this.getAdminNewsDto(formValue));
   }
 
   public getAllActiveMulticups$(): Observable<AdminActiveMulticupInterface[]> {
-    return this.backendService
-      .post$<AdminActiveMulticupsDto>(URL_PARAMS.ADMIN.GET_ALL_ACTIVE_MULTICUPS)
-      .pipe(map(mapAdminActiveMulticupsCupsDtoToInterface));
+    return this.backendService.get$<AdminActiveMulticupInterface[]>(URL_PARAMS.ADMIN.GET_ALL_ACTIVE_MULTICUPS);
   }
 
-  public addMulticupRound$(formValue: Record<string, any>, files: Record<string, any>): Observable<void> {
-    const mappedFiles: { fileKey: string; file: any }[] = Object.keys(files).map((key: string) => ({
-      fileKey: key,
-      file: files[key],
-    }));
-
-    return this.backendService.uploadFile$(URL_PARAMS.ADMIN.ADD_CUP, mappedFiles, {
+  public addCup$(formValue: Record<string, any>): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.ADD_CUP, {
       fullName: formValue['fullName'],
       shortName: formValue['shortName'],
       startTime: formValue['startTime'],
@@ -156,19 +134,79 @@ export class AdminDataService {
       mapAuthor: formValue['mapAuthor'],
       weapons: this.getWeaponsFromForm(formValue),
       addNews: formValue['addNews'],
+      size: formValue['size'],
+      mapLevelshotLink: formValue['mapLevelshotLink'],
+      mapPk3Link: formValue['mapPk3Link'],
+    } as AddCupDto);
+  }
+
+  public editCup$(formValue: Record<string, any>, cupId: number): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.UPDATE_CUP(cupId), {
+      fullName: formValue['fullName'],
+      shortName: formValue['shortName'],
+      startTime: formValue['startTime'],
+      endTime: formValue['endTime'],
+      multicupId: formValue['multicup'] || undefined,
+      mapName: formValue['mapName'],
+      mapAuthor: formValue['mapAuthor'],
+      weapons: this.getWeaponsFromForm(formValue),
+      addNews: formValue['addNews'],
+      size: formValue['size'],
+      mapLevelshotLink: formValue['mapLevelshotLink'] || undefined,
+      mapPk3Link: formValue['mapPk3Link'] || undefined,
+    } as UpdateCupDto);
+  }
+
+  public deleteCup$(cupId: number): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.DELETE_CUP(cupId));
+  }
+
+  public calculateCupRating$(cupId: number): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.CALCULATE_CUP_RATING(cupId));
+  }
+
+  public finishOfflineCup$(cupId: number): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.FINISH_OFFLINE_CUP(cupId));
+  }
+
+  public getWorldspawnMapInfo$(map: string): Observable<WorldspawnMapInfoInterface> {
+    return this.backendService.get$<WorldspawnMapInfoInterface>(URL_PARAMS.ADMIN.GET_WORLDSPAWN_MAP_INFO, {
+      map,
     });
   }
 
-  private getDemoValidationResult(value: boolean | null): string {
+  public addCustomMap$(map: File, mapName: string): Observable<UploadedFileLinkInterface> {
+    return this.backendService.uploadFile$(URL_PARAMS.ADMIN.UPLOAD_MAP(mapName), [{ fileKey: 'file', file: map }]);
+  }
+
+  public addCustomLevelshot$(levelshot: File, mapName: string): Observable<UploadedFileLinkInterface> {
+    return this.backendService.uploadFile$(URL_PARAMS.ADMIN.UPLOAD_LEVELSHOT(mapName), [
+      { fileKey: 'file', file: levelshot },
+    ]);
+  }
+
+  private getAdminNewsDto(formValue: Record<string, any>): AdminNewsDto {
+    return {
+      russianTitle: formValue['russianTitle'],
+      englishTitle: formValue['englishTitle'],
+      postingTime: formValue['timeOption'] === 'now' ? moment().format() : formValue['postingTime'],
+      russianText: formValue['russianText'],
+      englishText: formValue['englishText'],
+      type: NewsTypes.SIMPLE,
+      youtube: formValue['youtube'],
+    };
+  }
+
+  private getDemoValidationResult(value: boolean | null): VerifiedStatuses {
     if (value === null) {
-      return '0';
+      return VerifiedStatuses.UNWATCHED;
     }
 
     if (value === true) {
-      return '1';
+      return VerifiedStatuses.VALID;
     }
 
-    return '2';
+    return VerifiedStatuses.INVALID;
   }
 
   private getWeaponsFromForm(formValue: Record<string, any>): string {
@@ -182,7 +220,7 @@ export class AdminDataService {
     if (formValue['grenade']) result += 'G';
     if (formValue['plasma']) result += 'P';
     if (formValue['bfg']) result += 'B';
-    if (formValue['grapplingHook']) result += 'H';
+    if (formValue['grapple']) result += 'H';
 
     return result;
   }

@@ -3,11 +3,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { filter, Observable, ReplaySubject, switchMap, take } from 'rxjs';
 import { isNonNull } from '../../../../shared/helpers';
 import { AdminDataService } from '../../business/admin-data.service';
-import { AdminNewsInterface } from '../../models/admin-news.interface';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { UserService } from '~shared/services/user-service/user.service';
-import { UserAccess } from '~shared/enums/user-access.enum';
-import { NewsTypes } from '~shared/enums/news-types.enum';
+import { AdminNewsListInterface, NewsTypes } from '@dfcomps/contracts';
+import * as moment from 'moment';
+import { UserRoles, checkUserRoles } from '@dfcomps/auth';
 
 @Component({
   selector: 'admin-news',
@@ -16,10 +16,9 @@ import { NewsTypes } from '~shared/enums/news-types.enum';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminNewsComponent implements OnInit {
-  public news: AdminNewsInterface[];
-  public news$ = new ReplaySubject<AdminNewsInterface[]>(1);
+  public news: AdminNewsListInterface[];
+  public news$ = new ReplaySubject<AdminNewsListInterface[]>(1);
   public user$: Observable<UserInterface>;
-  public userAccess = UserAccess;
 
   constructor(
     private adminDataService: AdminDataService,
@@ -28,7 +27,7 @@ export class AdminNewsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.adminDataService.getAllNews$().subscribe((news: AdminNewsInterface[]) => {
+    this.adminDataService.getAllNews$().subscribe((news: AdminNewsListInterface[]) => {
       this.news = news;
       this.news$.next(news);
     });
@@ -36,7 +35,11 @@ export class AdminNewsComponent implements OnInit {
     this.user$ = this.userService.getCurrentUser$().pipe(filter(isNonNull));
   }
 
-  public confirmDelete(newsItem: AdminNewsInterface): void {
+  public formatDateToLocal(date: string): string {
+    return moment(date).local().format('YYYY-MM-DD HH:mm:ss') + ' (local)';
+  }
+
+  public confirmDelete(newsItem: AdminNewsListInterface): void {
     const snackBar = this.snackBar.open(`Are you sure you want to delete "${newsItem.headerEnglish}"?`, 'Yes', {
       duration: 3000,
     });
@@ -48,7 +51,7 @@ export class AdminNewsComponent implements OnInit {
         switchMap(() => this.adminDataService.deleteNewsItem$(newsItem.id)),
       )
       .subscribe(() => {
-        this.news = this.news.filter((item: AdminNewsInterface) => item.id !== newsItem.id);
+        this.news = this.news.filter((item: AdminNewsListInterface) => item.id !== newsItem.id);
         this.news$.next(this.news);
         this.adminDataService.setNews(this.news);
         this.snackBar.open(`Successfully deleted "${newsItem.headerEnglish}"!`, '', { duration: 1000 });
@@ -65,5 +68,9 @@ export class AdminNewsComponent implements OnInit {
     };
 
     return newsTypeRouteMap[newsType];
+  }
+
+  public hasNewsDeleteAccess(user: UserInterface): boolean {
+    return checkUserRoles(user.roles, [UserRoles.NEWSMAKER]);
   }
 }

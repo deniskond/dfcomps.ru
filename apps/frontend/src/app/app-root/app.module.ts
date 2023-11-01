@@ -6,10 +6,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { GlobalServicesModule } from '~shared/modules/global-services.module';
 import { appRoutes } from '../routing/app.routing';
-import { ReflexComponent } from '~pages/reflex/reflex.component';
 
 @NgModule({
-  declarations: [AppComponent, ReflexComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),

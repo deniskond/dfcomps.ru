@@ -6,11 +6,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class CupRegistrationService extends BackendService {
-  public registerForCup$(cupId: string): Observable<void> {
+  public registerForCup$(cupId: number): Observable<void> {
     return this.post$(URL_PARAMS.CUP.REGISTER(cupId));
   }
 
-  public cancelRegistrationForCup$(cupId: string): Observable<void> {
+  public cancelRegistrationForCup$(cupId: number): Observable<void> {
     return this.post$(URL_PARAMS.CUP.CANCEL_REGISTRATION(cupId));
   }
 }

@@ -51,7 +51,7 @@
           <span translate translation="weapons"></span>
         </div>
         <div class="row-info">
-          <app-weapons [weapons]="news.cup.mapWeapons"></app-weapons>
+          <app-weapons [weapons]="news.cup.mapWeapons!"></app-weapons>
         </div>
       </div>
       <div class="map-info-row">
@@ -74,7 +74,7 @@
           <a href="/assets/files/offline-rules.cfg" target="_blank">
             <span translate translation="config"></span>
           </a>
-          <ng-container *ngIf="news.cup.multicupId === '10'">
+          <ng-container *ngIf="news.cup.multicupId === 10">
             <span class="separator">|</span>
             <a (click)="openSDCPopup()" class="popup-link" target="_blank">
               SDC
@@ -126,12 +126,12 @@
           <ng-container *ngIf="news.playerDemos && !!news.playerDemos.length; else noDemos">
             <div class="top-demos">
               <ng-container *ngIf="news.cpmRes && news.cpmDemo">
-                <a href="{{ mainUrl }}/uploads/demos/cup{{ news.cup.id }}/{{ news.cpmDemo }}">{{ news.cpmRes }}</a
+                <a href="/uploads/demos/cup{{ news.cup.id }}/{{ news.cpmDemo }}">{{ news.cpmRes }}</a
                 >&nbsp;(cpm)
                 <span *ngIf="news.vq3Res && news.vq3Demo">,&nbsp;</span>
               </ng-container>
               <ng-container *ngIf="news.vq3Res && news.vq3Demo">
-                <a href="{{ mainUrl }}/uploads/demos/cup{{ news.cup.id }}/{{ news.vq3Demo }}">{{ news.vq3Res }}</a
+                <a href="/uploads/demos/cup{{ news.cup.id }}/{{ news.vq3Demo }}">{{ news.vq3Res }}</a
                 >&nbsp;(vq3)
               </ng-container>
             </div>
@@ -148,7 +148,7 @@
   </div>
 </div>
 
-<div *ngIf="news.cup.bonusRating !== '0'" class="bonus-rating">
+<div *ngIf="news.cup.bonusRating !== 0" class="bonus-rating">
   <span translate translation="bonusRating"></span>: +{{ news.cup.bonusRating }}.
 </div>
 

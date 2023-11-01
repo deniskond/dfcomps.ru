@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Physics } from '~shared/enums/physics.enum';
+import { Physics } from '@dfcomps/contracts';
 
 @Injectable({
   providedIn: 'root',

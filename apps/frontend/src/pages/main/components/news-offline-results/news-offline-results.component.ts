@@ -1,13 +1,10 @@
-import { API_URL } from '~shared/rest-api';
 import { Component, Input, OnInit, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { CUSTOM_TABLE_NEWS_LIMIT } from '../../config/news.config';
 import { map, Observable, take } from 'rxjs';
 import { UserService } from '~shared/services/user-service/user.service';
 import { NewsService } from '~shared/services/news-service/news.service';
-import { UserAccess } from '~shared/enums/user-access.enum';
-import { NewsOfflineResultsInterface } from '~shared/services/news-service/interfaces/news-offline-results.interface';
-import { Physics } from '~shared/enums/physics.enum';
-import { InvalidDemoInterface } from '~shared/interfaces/invalid-demo.interface';
+import { InvalidDemoInterface, NewsOfflineResultsInterface, Physics } from '@dfcomps/contracts';
+import { UserRoles, checkUserRoles } from '@dfcomps/auth';
 
 @Component({
   selector: 'app-news-offline-results',
@@ -33,12 +30,7 @@ export class NewsOfflineResultsComponent implements OnInit, OnChanges {
     this.maxDemosCount = this.getMaxDemosCount();
     this.showDemosForValidationLink$ = this.userService.getCurrentUser$().pipe(
       take(1),
-      map(
-        (user) =>
-          !!user &&
-          (user.access === UserAccess.ADMIN || user.access === UserAccess.VALIDATOR) &&
-          this.news.cup.demosValidated === '0',
-      ),
+      map((user) => !!user && checkUserRoles(user.roles, [UserRoles.VALIDATOR]) && !this.news.cup.demosValidated),
     );
   }
 
@@ -49,7 +41,9 @@ export class NewsOfflineResultsComponent implements OnInit, OnChanges {
   }
 
   public getValidationArchive(): void {
-    this.newsService.getDemosForValidation$(this.news.cup.id).subscribe(({ url }) => window.open(url));
+    this.newsService
+      .getDemosForValidation$(this.news.cup.id)
+      .subscribe(({ filename }) => window.open(`/uploads/demos/cup${this.news.cup.id}/${filename}`));
   }
 
   private getMaxDemosCount(): number {

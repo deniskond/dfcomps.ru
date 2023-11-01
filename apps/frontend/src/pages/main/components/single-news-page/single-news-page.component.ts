@@ -3,9 +3,8 @@ import { Observable, Subject, EMPTY, combineLatest } from 'rxjs';
 import { ActivatedRoute, Params } from '@angular/router';
 import { tap, switchMap, catchError, takeUntil, startWith, map } from 'rxjs/operators';
 import * as moment from 'moment';
-import { NewsTypes } from '~shared/enums/news-types.enum';
 import { NewsService } from '~shared/services/news-service/news.service';
-import { NewsInterfaceUnion } from '~shared/types/news-union.type';
+import { NewsInterfaceUnion, NewsTypes } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-single-news-page',

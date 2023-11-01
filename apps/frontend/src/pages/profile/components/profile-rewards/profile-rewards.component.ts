@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
-import { Rewards } from '../../enums/rewards.enum';
 import { PROFILE_REWARDS } from '../../config/profile-rewards.config';
+import { Rewards } from '@dfcomps/contracts';
 
 interface RewardWithIconPath {
   reward: Rewards;

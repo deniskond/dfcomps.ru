@@ -1,4 +1,3 @@
-import { MAIN_URL } from '~shared/rest-api';
 import {
   Component,
   Input,
@@ -23,11 +22,9 @@ import { CupStates } from '~shared/enums/cup-states.enum';
 import { isNonNull } from '~shared/helpers';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { DemosService } from '~shared/services/demos/demos.service';
-import { UploadDemoDtoInterface } from '~shared/services/demos/dto/upload-demo.dto';
-import { DemoUploadResult } from '~shared/services/demos/enums/demo-upload-result.enum';
 import { LanguageService } from '~shared/services/language/language.service';
-import { NewsOfflineStartInterface } from '~shared/services/news-service/interfaces/news-offline-start.interface';
 import { UserService } from '~shared/services/user-service/user.service';
+import { DemoUploadResult, NewsOfflineStartInterface, UploadDemoResponseInterface } from '@dfcomps/contracts';
 
 const SNACKBAR_DURATION = 3000;
 
@@ -50,7 +47,6 @@ export class NewsOfflineStartComponent implements OnInit {
   public cupState: CupStates;
   public cupStates = CupStates;
   public isUploading = false;
-  public mainUrl = MAIN_URL;
 
   constructor(
     private demosService: DemosService,
@@ -75,7 +71,7 @@ export class NewsOfflineStartComponent implements OnInit {
       return;
     }
 
-    if (!demo.name.toLowerCase().includes(this.news.cup.map1.toLowerCase())) {
+    if (!demo.name.toLowerCase().includes(this.news.cup.map1!.toLowerCase())) {
       this.openSnackBar('error', 'wrongMap');
 
       return;
@@ -88,7 +84,7 @@ export class NewsOfflineStartComponent implements OnInit {
         filter(isNonNull),
         take(1),
         switchMap((user: UserInterface) =>
-          this.demosService.uploadDemo$(demo, this.news.cup.id, this.news.cup.map1, user.id, demo.name),
+          this.demosService.uploadDemo$(demo, this.news.cup.id, this.news.cup.map1!, user.id, demo.name),
         ),
         finalize(() => {
           this.fileInput.nativeElement.value = null;
@@ -101,7 +97,7 @@ export class NewsOfflineStartComponent implements OnInit {
           return of();
         }),
       )
-      .subscribe(({ status, errors, warnings, message }: UploadDemoDtoInterface) => {
+      .subscribe(({ status, errors, warnings, message }: UploadDemoResponseInterface) => {
         if (status === DemoUploadResult.SUCCESS) {
           this.openSnackBar('success', 'demoSent');
           this.reloadNews.emit();

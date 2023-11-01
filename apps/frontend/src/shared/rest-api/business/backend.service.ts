@@ -1,25 +1,29 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { AuthService } from '~shared/services/auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BackendService {
-  constructor(protected httpClient: HttpClient) {}
+  constructor(
+    protected httpClient: HttpClient,
+    private authService: AuthService,
+  ) {}
 
-  public get$<T>(url: string): Observable<T> {
-    return this.httpClient.get<T>(url, { withCredentials: true });
+  public get$<T>(url: string, params?: Record<string, any>): Observable<T> {
+    return this.httpClient.get<T>(url, { ...this.getCustomHeaders(), params });
   }
 
-  public post$<T>(url: string, postParams?: Record<string, string>): Observable<T> {
-    return this.httpClient.post<T>(url, this.prepareHttpParams(postParams), { withCredentials: true });
+  public post$<T>(url: string, postParams?: Record<string, any>): Observable<T> {
+    return this.httpClient.post<T>(url, this.prepareHttpParams(postParams), this.getCustomHeaders());
   }
 
   public uploadFile$(
     url: string,
     fileKeyValues: { fileKey: string; file: any }[],
-    postParams?: Record<string, string>,
+    postParams?: Record<string, any>,
   ): Observable<any> {
     const formData: FormData = new FormData();
 
@@ -33,7 +37,7 @@ export class BackendService {
       Object.keys(postParams).forEach((key: string) => formData.append(key, postParams[key]));
     }
 
-    return this.httpClient.post(url, formData, { withCredentials: true });
+    return this.httpClient.post(url, formData, this.getCustomHeaders());
   }
 
   private prepareHttpParams(params?: Record<string, string>): HttpParams {
@@ -44,5 +48,11 @@ export class BackendService {
     }
 
     return httpParams;
+  }
+
+  private getCustomHeaders(): { headers: Record<string, string> } {
+    const accessToken: string | null = this.authService.getToken();
+
+    return { headers: accessToken ? { 'X-Auth': accessToken } : {} };
   }
 }

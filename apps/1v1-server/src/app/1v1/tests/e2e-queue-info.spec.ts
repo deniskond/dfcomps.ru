@@ -15,11 +15,11 @@ import { WebSocket, MessageEvent } from 'ws';
 
 describe('end-to-end: case 5 - sending queue info to all players', () => {
   let webSocketFirst: WebSocket;
-  let playerIdFirst: string;
+  let playerIdFirst: number;
   let webSocketSecond: WebSocket;
-  let playerIdSecond: string;
+  let playerIdSecond: number;
   let webSocketThird: WebSocket;
-  let playerIdThird: string;
+  let playerIdThird: number;
   let physics: Physics;
   let isFirstPlayerBanning: boolean;
   let maps: MapInterface[];
@@ -35,12 +35,12 @@ describe('end-to-end: case 5 - sending queue info to all players', () => {
   };
 
   beforeAll(() => {
-    webSocketFirst = new WebSocket('ws://localhost:3000/1v1');
-    playerIdFirst = faker.datatype.uuid();
-    webSocketSecond = new WebSocket('ws://localhost:3000/1v1');
-    playerIdSecond = faker.datatype.uuid();
-    webSocketThird = new WebSocket('ws://localhost:3000/1v1');
-    playerIdThird = faker.datatype.uuid();
+    webSocketFirst = new WebSocket('ws://localhost:4002/1v1');
+    playerIdFirst = 14;
+    webSocketSecond = new WebSocket('ws://localhost:4002/1v1');
+    playerIdSecond = 15;
+    webSocketThird = new WebSocket('ws://localhost:4002/1v1');
+    playerIdThird = 16;
     physics = faker.random.arrayElement([Physics.VQ3, Physics.CPM]);
 
     return Promise.all([

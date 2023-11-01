@@ -1,8 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, OnInit } from '@angular/core';
+import { CommentInterface, PersonalSmileInterface } from '@dfcomps/contracts';
 import { SmileInterface, SMILES_CONFIG, SmileGroups } from '~shared/configs/smiles.config';
-import { CommentInterface } from '~shared/interfaces/comments.interface';
 import { UserInterface } from '~shared/interfaces/user.interface';
-import { PersonalSmileInterface } from '~shared/services/smiles/personal-smile.interface';
 
 enum MessagePartTypes {
   SMILE,
@@ -33,7 +32,7 @@ export class NewsCommentTextComponent implements OnInit {
   }
 
   private getMessageParts(): void {
-    const splitMessage = this.comment.comment.split(/(\:\w+?\:)/gm).filter((messagePart) => !!messagePart.trim());
+    const splitMessage = this.comment.comment.split(/(\:\w+?\:)/gm).filter((messagePart: string) => !!messagePart.trim());
 
     this.messageParts = splitMessage.map((messagePart: string) => {
       const smile: SmileInterface | null = this.getSmile(messagePart);

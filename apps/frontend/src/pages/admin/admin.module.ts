@@ -16,13 +16,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminSimpleNewsComponent } from './ui/admin-simple-news/admin-simple-news.component';
 import { AdminMulticupRoundNewsComponent } from './ui/admin-multicup-round-news/admin-multicup-round-news.component';
 import { QuillModule } from 'ngx-quill';
-import { AdminAddMulticupRoundComponent } from './ui/admin-add-multicup-round/admin-add-multicup-round.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AdminSeasonComponent } from './ui/admin-season/admin-season.component';
 import { HasAdminRights } from './business/has-admin-rights.guard';
 import { SharedModule } from '~shared/modules/shared.module';
 import { HasAdminPanelAccess } from './business/has-admin-panel-access.guard';
+import { AdminOfflineCupComponent } from './ui/admin-offline-cup/admin-offline-cup.component';
 
 const adminRoutes: Routes = [
   {
@@ -75,7 +75,9 @@ const adminRoutes: Routes = [
         path: 'cups',
         children: [
           { path: '', component: AdminCupsComponent },
-          { path: 'add-multicup-round', component: AdminAddMulticupRoundComponent },
+          { path: 'add-offline-cup', component: AdminOfflineCupComponent, data: { multicup: false } },
+          { path: 'add-multicup-round', component: AdminOfflineCupComponent, data: { multicup: true } },
+          { path: 'edit/:id', component: AdminOfflineCupComponent },
         ],
       },
       {
@@ -89,9 +91,7 @@ const adminRoutes: Routes = [
       },
       {
         path: 'season',
-        children: [
-          { path: '', component: AdminSeasonComponent },
-        ],
+        children: [{ path: '', component: AdminSeasonComponent }],
         canActivate: [HasAdminRights],
       },
     ],
@@ -107,8 +107,8 @@ const adminRoutes: Routes = [
     AdminValidateComponent,
     AdminSimpleNewsComponent,
     AdminMulticupRoundNewsComponent,
-    AdminAddMulticupRoundComponent,
     AdminSeasonComponent,
+    AdminOfflineCupComponent,
   ],
   imports: [
     RouterModule.forChild(adminRoutes),

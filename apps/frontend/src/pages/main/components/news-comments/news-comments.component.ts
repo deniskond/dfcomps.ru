@@ -1,4 +1,3 @@
-import { CommentActionResult } from './../../services/comments/enums/comment-action-result.enum';
 import { CommentWithActionInterface } from './interfaces/comment-with-action.interface';
 import {
   Component,
@@ -15,10 +14,9 @@ import { CommentsService } from '../../services/comments/comments.service';
 import { ReplaySubject, Observable, combineLatest } from 'rxjs';
 import { take, finalize, map, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
-import { CommentActionResultInterface } from '../../services/comments/interfaces/comment-action.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AdminDeleteCommentDialogComponent } from './components/admin-delete-comment-dialog/admin-delete-comment-dialog.component';
+import { ModeratorDeleteCommentDialogComponent } from './components/moderator-delete-comment-dialog/moderator-delete-comment-dialog.component';
 import {
   smilesDialogAnimation,
   SMILES_DIALOG_OPENED,
@@ -27,13 +25,17 @@ import {
 import { AnimationEvent } from '@angular/animations';
 import { SmilesDropdownComponent } from './components/smiles-dropdown/smiles-dropdown.component';
 import { SmileInterface } from '~shared/configs/smiles.config';
-import { UserAccess } from '~shared/enums/user-access.enum';
-import { CommentInterface } from '~shared/interfaces/comments.interface';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { LanguageService } from '~shared/services/language/language.service';
-import { PersonalSmileInterface } from '~shared/services/smiles/personal-smile.interface';
 import { SmilesService } from '~shared/services/smiles/smiles.service';
 import { UserService } from '~shared/services/user-service/user.service';
+import {
+  CommentActionResult,
+  CommentActionResultInterface,
+  CommentInterface,
+  PersonalSmileInterface,
+} from '@dfcomps/contracts';
+import { UserRoles, checkUserRoles } from '@dfcomps/auth';
 
 const COMMENT_ACTION_PERIOD_MINUTES = 2;
 
@@ -48,7 +50,7 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
   @Input()
   comments: CommentInterface[];
   @Input()
-  newsId: string;
+  newsId: number;
   @Input()
   expanded = false;
 
@@ -60,7 +62,7 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
   public commentsWithActions$: Observable<CommentWithActionInterface[]>;
   public personalSmiles$: Observable<PersonalSmileInterface[]>;
   public isLoading = false;
-  public editingCommentId: string | null = null;
+  public editingCommentId: number | null = null;
   public smilesDropdownOpened = false;
   public smilesDropdownDisplayHidden = true;
   public openedAnimationState = SMILES_DIALOG_OPENED;
@@ -138,7 +140,7 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
     return moment(date).format('DD.MM.YYYY HH:mm:ss');
   }
 
-  public deleteComment(commentId: string): void {
+  public deleteComment(commentId: number): void {
     this.commentsService
       .deleteComment$(commentId)
       .subscribe((commentActionResult: CommentActionResultInterface) =>
@@ -146,18 +148,18 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
       );
   }
 
-  public adminDeleteComment(commentId: string): void {
+  public moderatorDeleteComment(commentId: number): void {
     this.dialog
-      .open(AdminDeleteCommentDialogComponent)
+      .open(ModeratorDeleteCommentDialogComponent)
       .afterClosed()
-      .pipe(switchMap((reason: string) => this.commentsService.adminDeleteComment$(commentId, reason)))
+      .pipe(switchMap((reason: string) => this.commentsService.moderatorDeleteComment$(commentId, reason)))
       .subscribe((updatedComments: CommentInterface[]) => {
         this.comments$.next(updatedComments);
         this.textarea.nativeElement.value = '';
       });
   }
 
-  public editComment(id: string): void {
+  public editComment(id: number): void {
     this.editingCommentId = id;
 
     this.comments$
@@ -165,7 +167,7 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
       .subscribe(
         (comments: CommentInterface[]) =>
           (this.textarea.nativeElement.value = comments.find(
-            (comment: CommentInterface) => comment.id === this.editingCommentId,
+            (comment: CommentInterface) => comment.commentId === this.editingCommentId,
           )!.comment),
       );
   }
@@ -243,9 +245,10 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
       .add(COMMENT_ACTION_PERIOD_MINUTES, 'minutes')
       .isAfter(moment());
     const isEditable: boolean = !!user && comment.playerId === user.id && isNewComment;
-    const isAdminDeletable: boolean = !comment.reason && !isEditable && !!user && user.access === UserAccess.ADMIN;
+    const isModeratorDeletable: boolean =
+      !comment.reason && !isEditable && !!user && checkUserRoles(user.roles, [UserRoles.MODERATOR]);
 
-    return { ...comment, isEditable, isAdminDeletable };
+    return { ...comment, isEditable, isModeratorDeletable };
   }
 
   private processCommentActionResult({ result, comments }: CommentActionResultInterface): void {

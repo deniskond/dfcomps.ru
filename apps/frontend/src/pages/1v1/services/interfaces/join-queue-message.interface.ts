@@ -1,4 +1,4 @@
-import { Physics } from '~shared/enums/physics.enum';
+import { Physics } from '@dfcomps/contracts';
 import { DuelWebsocketClientActions } from './../enums/duel-websocket-client-actions.enum';
 import { DuelWebsocketClientMessageInterface } from './duel-websocket-client-message.interface';
 

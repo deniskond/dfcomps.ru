@@ -1,7 +1,6 @@
 import { Languages } from '../../enums/languages.enum';
 import { Injectable } from '@angular/core';
 import { ReplaySubject, Observable } from 'rxjs';
-import { CookieService } from 'ngx-cookie-service';
 import { map } from 'rxjs/operators';
 import { formatCupTime } from '../../modules/cup-timer/helpers/cup-time-format.helpers';
 import { ENGLISH_TRANSLATIONS } from '../../translations/en.translations';
@@ -13,14 +12,12 @@ import { RUSSIAN_TRANSLATIONS } from '../../translations/ru.translations';
 export class LanguageService {
   private language$ = new ReplaySubject<Languages>(1);
 
-  constructor(private cookieService: CookieService) {}
-
   public getLanguage$(): Observable<Languages> {
     return this.language$.asObservable();
   }
 
   public setLanguage(language: Languages): void {
-    this.cookieService.set('language', language);
+    localStorage.setItem('language', language);
     this.language$.next(language);
   }
 
@@ -42,7 +39,7 @@ export class LanguageService {
     return this.getTranslations$().pipe(map((translations: Record<string, string>) => translations[translation]));
   }
 
-  private getLanguageFromCookie(): unknown {
-    return this.cookieService.get('language');
+  private getLanguageFromCookie(): Languages {
+    return localStorage.getItem('language') as Languages;
   }
 }

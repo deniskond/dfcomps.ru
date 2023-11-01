@@ -5,20 +5,22 @@ import { switchMap, tap, takeUntil, map, withLatestFrom, filter } from 'rxjs/ope
 import { Subject, Observable, combineLatest } from 'rxjs';
 import { ProfileService } from './services/profile.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Rewards } from './enums/rewards.enum';
 import { ProfileCupInterface } from './interfaces/profile-cup.interface';
-import { ProfileCupDtoInterface } from './dto/profile-cup.dto';
-import { ProfileMainInfoInterface } from './interfaces/profile-main-info.interface';
-import { ProfileInterface } from './interfaces/profile.interface';
-import { ProfileDemosDtoInterface } from './dto/profile-demos.dto';
-import { ProfileRewardsDtoInterface } from './dto/profile-rewards.dto';
 import { MatDialog } from '@angular/material/dialog';
 import { EditProfileDialogComponent } from './components/edit-profile-dialog/edit-profile-dialog';
-import { Physics } from '~shared/enums/physics.enum';
 import { isNonNull } from '~shared/helpers';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { LanguageService } from '~shared/services/language/language.service';
 import { UserService } from '~shared/services/user-service/user.service';
+import {
+  Physics,
+  ProfileCupResponseInterface,
+  ProfileDemosInterface,
+  ProfileInterface,
+  ProfileMainInfoInterface,
+  ProfileRewardsInterface,
+  Rewards,
+} from '@dfcomps/contracts';
 
 @Component({
   templateUrl: './profile.page.html',
@@ -27,9 +29,9 @@ import { UserService } from '~shared/services/user-service/user.service';
 })
 export class ProfilePageComponent implements OnInit, OnDestroy {
   public mainInfo: ProfileMainInfoInterface;
-  public cpmChart: string[];
-  public vq3Chart: string[];
-  public demos: ProfileDemosDtoInterface[];
+  public cpmChart: number[];
+  public vq3Chart: number[];
+  public demos: ProfileDemosInterface[];
   public cups: ProfileCupInterface[];
   public rewards: Rewards[];
   public isLoading$ = new Subject<boolean>();
@@ -83,7 +85,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     this.isEditProfileAvailable$ = combineLatest([
       this.activatedRoute.params,
       this.userService.getCurrentUser$().pipe(filter(isNonNull)),
-    ]).pipe(map(([{ id }, user]: [Params, UserInterface]) => (user ? id === user.id : false)));
+    ]).pipe(map(([{ id }, user]: [Params, UserInterface]) => (user ? +id === user.id : false)));
   }
 
   private setRouteSubscription(): void {
@@ -113,7 +115,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     this.vq3Chart = profileInfo.rating.vq3;
     this.demos = profileInfo.demos;
     this.cups = this.mapCupsToView(profileInfo.cups);
-    this.rewards = profileInfo.rewards.map(({ name }: ProfileRewardsDtoInterface) => name);
+    this.rewards = profileInfo.rewards.map(({ name }: ProfileRewardsInterface) => name);
 
     this.sanitizer.bypassSecurityTrustResourceUrl(`/assets/images/avatars/${this.mainInfo.avatar}.jpg`);
 
@@ -123,17 +125,17 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     }, 0);
   }
 
-  private mapCupsToView(cups: ProfileCupDtoInterface[]): ProfileCupInterface[] {
-    return cups.map((cup: ProfileCupDtoInterface) => {
-      const physics = cup.cpm_place === '0' ? Physics.VQ3 : Physics.CPM;
+  private mapCupsToView(cups: ProfileCupResponseInterface[]): ProfileCupInterface[] {
+    return cups.map((cup: ProfileCupResponseInterface) => {
+      const physics = cup.cpm_place === 0 ? Physics.VQ3 : Physics.CPM;
 
       return {
         newsId: cup.news_id,
         fullName: cup.full_name,
         shortName: cup.short_name,
         physics,
-        resultPlace: physics === Physics.CPM ? +cup.cpm_place : +cup.vq3_place,
-        ratingChange: physics === Physics.CPM ? +cup.cpm_change : +cup.vq3_change,
+        resultPlace: physics === Physics.CPM ? cup.cpm_place! : cup.vq3_place!,
+        ratingChange: physics === Physics.CPM ? cup.cpm_change! : cup.vq3_change!,
       };
     });
   }

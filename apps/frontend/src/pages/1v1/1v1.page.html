@@ -89,7 +89,7 @@
                     class="demo-link"
                     download
                   >
-                    {{ playersInfo.firstPlayerTime }}
+                    {{ playersInfo.firstPlayerTime | invokeFunction : formatTime }}
                   </a>
                   <span *ngIf="!playersInfo.firstPlayerTime" class="demo-link">---</span>
                 </div>
@@ -98,7 +98,7 @@
                 <div class="flex">
                   <app-big-flag [country]="playersInfo.secondPlayerInfo!.country"></app-big-flag>
                   <div class="player-nick">
-                    {{ playersInfo.secondPlayerId === '-1' ? 'dfcomps bot' : playersInfo.secondPlayerInfo.nick }}
+                    {{ playersInfo.secondPlayerId === -1 ? 'dfcomps bot' : playersInfo.secondPlayerInfo.nick }}
                     <app-one-v-one-rating-change
                       [ratingChange]="playersInfo.secondPlayerRatingChange!"
                     ></app-one-v-one-rating-change>
@@ -111,7 +111,7 @@
                     class="demo-link"
                     download
                   >
-                    {{ playersInfo.secondPlayerTime }}
+                    {{ playersInfo.secondPlayerTime | invokeFunction : formatTime }}
                   </a>
                   <span *ngIf="!playersInfo.secondPlayerTime" class="demo-link">---</span>
                 </div>

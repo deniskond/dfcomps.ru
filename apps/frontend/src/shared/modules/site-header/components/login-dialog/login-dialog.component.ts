@@ -1,8 +1,6 @@
-import { LoginResultDtoInterface } from '../../../../services/user-service/dto/login-result.dto';
 import { UserService } from '../../../../services/user-service/user.service';
-import { Component, Inject, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { LoginDialogDataInterface } from '../../interfaces/login-dialog-data.interface';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 
@@ -15,6 +13,7 @@ import { finalize } from 'rxjs/operators';
 export class LoginDialogComponent {
   public loginResult: boolean;
   public isLoading = false;
+  public isSelectingMethod = true;
 
   public loginForm = new FormGroup({
     login: new FormControl('', Validators.required),
@@ -23,7 +22,6 @@ export class LoginDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<LoginDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: LoginDialogDataInterface,
     private userService: UserService,
     private changeDetectorRef: ChangeDetectorRef,
   ) {}
@@ -32,24 +30,27 @@ export class LoginDialogComponent {
     this.isLoading = true;
 
     this.userService
-      .login$(this.loginForm.controls['login'].value!, this.loginForm.controls['password'].value!)
+      .loginByPassword$(this.loginForm.controls['login'].value!, this.loginForm.controls['password'].value!)
       .pipe(
         finalize(() => {
           this.isLoading = false;
           this.changeDetectorRef.markForCheck();
         }),
       )
-      .subscribe(({ logged, user }: LoginResultDtoInterface) => {
-        if (logged) {
-          // TODO should be moved into userService
-          this.userService.setCurrentUser(user!);
-          this.dialogRef.close();
-
-          return;
-        }
-
-        this.loginResult = logged;
-        this.changeDetectorRef.detectChanges();
+      .subscribe({
+        next: () => this.dialogRef.close(),
+        error: () => {
+          this.loginResult = false;
+          this.changeDetectorRef.markForCheck();
+        },
       });
+  }
+
+  public proceedToLoginPassword(): void {
+    this.isSelectingMethod = false;
+  }
+
+  public startDiscordOAuth(): void {
+    window.location.href = 'https://discord.com/oauth2/authorize?response_type=token&client_id=1154028126783946772&scope=identify&state=login';
   }
 }

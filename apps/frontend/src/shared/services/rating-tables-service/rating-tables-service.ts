@@ -1,10 +1,8 @@
-import { Physics } from '../../enums/physics.enum';
-import { LeaderTableInterface } from '../../interfaces/leader-table.interface';
 import { Injectable } from '@angular/core';
 import { BackendService, URL_PARAMS } from '~shared/rest-api';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { RatingTablesModes } from '../../enums/rating-tables-modes.enum';
+import { LeaderTableInterface, Physics, PaginationCountInterface, RatingTablesModes } from '@dfcomps/contracts';
 
 const MAX_PLAYERS_PER_PAGE = 100;
 
@@ -19,29 +17,29 @@ export class RatingTablesService extends BackendService {
       return of(this.cachedTables[`${physics}${mode}`]);
     }
 
-    return this.post$<LeaderTableInterface[]>(URL_PARAMS.TOP_TEN_TABLE(physics, mode)).pipe(
+    return this.get$<LeaderTableInterface[]>(URL_PARAMS.TOP_TEN_TABLE(), { physics, mode }).pipe(
       tap((table: LeaderTableInterface[]) => (this.cachedTables[`${physics}${mode}`] = table)),
     );
   }
 
   public getRatingTablePage$(physics: Physics, page: number): Observable<LeaderTableInterface[]> {
-    return this.post$(URL_PARAMS.RATING_TABLE_PAGE(physics, page));
+    return this.get$(URL_PARAMS.RATING_TABLE_PAGE(physics, page));
   }
 
   public getRatingTablePagesCount$(): Observable<number> {
-    return this.post$<{ count: string }>(URL_PARAMS.RATING_TABLE_PLAYERS_COUNT()).pipe(
-      map((response: { count: string }) => +response.count),
+    return this.get$<PaginationCountInterface>(URL_PARAMS.RATING_TABLE_PLAYERS_COUNT()).pipe(
+      map((response: PaginationCountInterface) => response.count),
       map((playersCount: number) => Math.ceil(playersCount / MAX_PLAYERS_PER_PAGE)),
     );
   }
 
   public getSeasonRatingTablePage$(physics: Physics, page: number, season: number): Observable<LeaderTableInterface[]> {
-    return this.post$(URL_PARAMS.SEASON_RATING_TABLE_PAGE(physics, page, season));
+    return this.get$(URL_PARAMS.SEASON_RATING_TABLE_PAGE(physics, page, season));
   }
 
   public getSeasonRatingTablePagesCount$(season: number): Observable<number> {
-    return this.post$<{ count: string }>(URL_PARAMS.SEASON_RATING_TABLE_PLAYERS_COUNT(season)).pipe(
-      map((response: { count: string }) => +response.count),
+    return this.get$<PaginationCountInterface>(URL_PARAMS.SEASON_RATING_TABLE_PLAYERS_COUNT(season)).pipe(
+      map((response: PaginationCountInterface) => +response.count),
       map((playersCount: number) => Math.ceil(playersCount / MAX_PLAYERS_PER_PAGE)),
     );
   }

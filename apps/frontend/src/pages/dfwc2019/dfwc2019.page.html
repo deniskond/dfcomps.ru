@@ -19,13 +19,13 @@
             [class.transparent]="!result.playerId"
             [country]="result.country"
             [nick]="result.nick"
-            [playerId]="result.playerId!.toString()"
+            [playerId]="result.playerId!"
           >
           </app-player-cell>
         </div>
         <div class="points-column">{{ result.points }}</div>
         <div class="rating-column">
-          <app-rating-change [change]="result.change!.toString()" [zeroIfNull]="false"></app-rating-change>
+          <app-rating-change [change]="result.change!" [zeroIfNull]="false"></app-rating-change>
         </div>
       </div>
     </div>
@@ -46,13 +46,13 @@
             [class.transparent]="!result.playerId"
             [country]="result.country"
             [nick]="result.nick"
-            [playerId]="result.playerId!.toString()"
+            [playerId]="result.playerId!"
           >
           </app-player-cell>
         </div>
         <div class="points-column">{{ result.points }}</div>
         <div class="rating-column">
-          <app-rating-change [change]="result.change!.toString()" [zeroIfNull]="false"></app-rating-change>
+          <app-rating-change [change]="result.change!" [zeroIfNull]="false"></app-rating-change>
         </div>
       </div>
     </div>

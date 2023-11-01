@@ -53,6 +53,6 @@
   </button>
   <div *ngIf="bestDemoTime" class="best-demo-time">
     <span translate translation="yourBestTime" class="bebas"></span>:
-    <span class="time">{{ bestDemoTime }}</span>
+    <span class="time">{{ bestDemoTime | invokeFunction : formatTime }}</span>
   </div>
 </div>

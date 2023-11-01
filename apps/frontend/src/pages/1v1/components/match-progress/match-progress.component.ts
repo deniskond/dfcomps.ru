@@ -10,6 +10,7 @@ import {
   EventEmitter,
   ViewChild,
   ElementRef,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { PickbanMapInterface } from '../../interfaces/pickban-map.interface';
 import { MatchInterface } from '../../services/interfaces/match.interface';
@@ -17,11 +18,12 @@ import { PickbanMapServerInterface } from '../../services/interfaces/pickban-map
 import { take, finalize } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
-import { DuelPlayersInfoInterface } from '../../interfaces/duel-players-info.interface';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { LanguageService } from '~shared/services/language/language.service';
 import { DemosService } from '~shared/services/demos/demos.service';
-import { UploadDemoDtoInterface } from '~shared/services/demos/dto/upload-demo.dto';
+import { UploadDemoResponseInterface } from '@dfcomps/contracts';
+import { DuelPlayersInfoInterface } from '~pages/1v1/interfaces/duel-players-info.interface';
+import { formatResultTime } from '@dfcomps/helpers';
 
 @Component({
   selector: 'app-match-progress',
@@ -46,10 +48,10 @@ export class MatchProgressComponent implements OnChanges {
   public bestDemoTime: number | undefined;
   public playerRating: number;
   public playerNick: string;
-  public playerCountry: string;
+  public playerCountry: string | null;
   public opponentRating: number;
   public opponentNick: string;
-  public opponentCountry: string;
+  public opponentCountry: string | null;
   public securityCode: string;
 
   constructor(
@@ -57,6 +59,7 @@ export class MatchProgressComponent implements OnChanges {
     private snackBar: MatSnackBar,
     private demosService: DemosService,
     private dialog: MatDialog,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngOnChanges({ match, playersInfo }: SimpleChanges): void {
@@ -113,7 +116,7 @@ export class MatchProgressComponent implements OnChanges {
         }),
       )
       .subscribe(
-        ({ status, errors, message }: UploadDemoDtoInterface) => {
+        ({ status, errors, message }: UploadDemoResponseInterface) => {
           if (status === 'Success') {
             this.openSnackBar('success', 'demoSent');
             this.bestDemoTime = +message!;
@@ -124,9 +127,15 @@ export class MatchProgressComponent implements OnChanges {
               data: errors,
             });
           }
+
+          this.changeDetectorRef.markForCheck();
         },
         () => this.openSnackBar('error', 'uploadFailed'),
       );
+  }
+
+  public formatTime(time: number | string): string {
+    return formatResultTime(time);
   }
 
   private calculateBanPhaseByMatchInfo(): void {
@@ -193,9 +202,9 @@ export class MatchProgressComponent implements OnChanges {
       this.playerRating = +this.playersInfo.firstPlayerInfo?.rating || 1500;
       this.playerCountry = this.playersInfo.firstPlayerInfo?.country;
       this.opponentNick =
-        this.playersInfo.secondPlayerId === '-1' ? 'dfcomps bot' : this.playersInfo.secondPlayerInfo?.nick;
+        this.playersInfo.secondPlayerId === -1 ? 'dfcomps bot' : this.playersInfo.secondPlayerInfo?.nick;
       this.opponentRating =
-        this.playersInfo.secondPlayerId === '-1'
+        this.playersInfo.secondPlayerId === -1
           ? +this.playersInfo.firstPlayerInfo?.rating
           : +this.playersInfo.secondPlayerInfo?.rating || 1500;
       this.opponentCountry = this.playersInfo.secondPlayerInfo?.country;
@@ -205,9 +214,9 @@ export class MatchProgressComponent implements OnChanges {
       }
     } else {
       this.opponentNick =
-        this.playersInfo.firstPlayerId === '-1' ? 'dfcomps bot' : this.playersInfo.firstPlayerInfo?.nick;
+        this.playersInfo.firstPlayerId === -1 ? 'dfcomps bot' : this.playersInfo.firstPlayerInfo?.nick;
       this.opponentRating =
-        this.playersInfo.firstPlayerId === '-1'
+        this.playersInfo.firstPlayerId === -1
           ? +this.playersInfo.secondPlayerInfo?.rating
           : +this.playersInfo.firstPlayerInfo?.rating || 1500;
       this.opponentCountry = this.playersInfo.firstPlayerInfo?.country;

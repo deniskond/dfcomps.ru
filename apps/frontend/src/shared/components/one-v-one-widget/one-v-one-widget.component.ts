@@ -3,7 +3,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { filter, take, takeUntil } from 'rxjs/operators';
-import { Physics } from '../../enums/physics.enum';
 import { UserInterface } from '../../interfaces/user.interface';
 import { LanguageService } from '../../services/language/language.service';
 import { UserService } from '../../services/user-service/user.service';
@@ -14,6 +13,7 @@ import { QueueInfoInterface } from '~pages/1v1/services/interfaces/queue-info.in
 import { JoinQueueService } from '~pages/1v1/services/join-queue.service';
 import { MatchFinishedService } from '~pages/1v1/services/match-finsihed.service';
 import { DuelServerMessageType } from '~pages/1v1/services/types/duel-server-message.type';
+import { Physics } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-one-v-one-widget',

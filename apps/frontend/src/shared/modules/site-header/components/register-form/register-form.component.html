@@ -1,0 +1,24 @@
+<div translate translation="signUpOnSite" class="h1-block-header dialog-header"></div>
+<div translate translation="signUpLoginCaption"></div>
+
+<form [formGroup]="registerForm">
+  <div class="input-container">
+    <div class="input-caption"><span translate translation="userLogin"></span></div>
+    <div class="input-field-container">
+      <input formControlName="login" class="input-field" />
+      <div *ngIf="isLoginRequiredError" class="field-error">
+        <span translate translation="fieldIsRequired"></span>
+      </div>
+      <div *ngIf="loginInvalidError" class="field-error">
+        {{ loginInvalidError }}
+      </div>
+    </div>
+  </div>
+</form>
+
+<div class="dialog-button">
+  <mat-spinner *ngIf="isLoading" diameter="20" strokeWidth="2" color="accent" class="spinner"></mat-spinner>
+  <button [disabled]="!registerForm.valid || isLoading" (click)="onRegisterClick()" mat-raised-button color="primary">
+    <span translate translation="finishSignUp"></span>
+  </button>
+</div>

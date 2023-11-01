@@ -24,7 +24,7 @@ export class CupTimerOnlineProgressComponent implements OnInit, OnChanges {
   @Input()
   cupName: string;
   @Input()
-  newsId: string;
+  newsId: number;
   @Input()
   endTime: string;
   @Input()

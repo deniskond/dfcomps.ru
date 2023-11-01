@@ -1,80 +1,111 @@
 import { Injectable } from '@angular/core';
 import { BackendService, URL_PARAMS } from '~shared/rest-api';
 import { Observable, BehaviorSubject, of } from 'rxjs';
-import { LoginAvailableDtoInterface } from './dto/login-available.dto';
-import { filter, map, tap } from 'rxjs/operators';
+import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { UserInterface } from '../../interfaces/user.interface';
-import { LoginResultDtoInterface } from './dto/login-result.dto';
+import { AuthService } from '../auth/auth.service';
+import { LoginAvailableInterface, LoginResponseInterface } from '@dfcomps/auth';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class UserService {
-  private firstTimeLogin = true;
-  private _currentUser$ = new BehaviorSubject<UserInterface | null>(null);
+  private currentUser$ = new BehaviorSubject<UserInterface | null>(null);
 
-  constructor(private backendService: BackendService, private cookieService: CookieService) {}
+  constructor(
+    private backendService: BackendService,
+    private authService: AuthService,
+    private cookieService: CookieService,
+  ) {}
 
   public getCurrentUser$(): Observable<UserInterface | null> {
-    return this._currentUser$.asObservable().pipe(
-      tap((currentUser: UserInterface | null) => {
-        if (!currentUser) {
-          this.tryLoginFromCookie();
-        }
-      }),
-    );
+    return this.currentUser$.asObservable();
   }
 
-  public login$(login: string, password: string): Observable<LoginResultDtoInterface> {
-    return this.backendService.post$(URL_PARAMS.USER_ACTIONS.LOGIN, {
-      login,
-      password,
-    });
+  public loginByPassword$(login: string, password: string): Observable<boolean> {
+    return this.backendService
+      .post$<LoginResponseInterface>(URL_PARAMS.AUTH.GET_PASSWORD_TOKEN, {
+        login,
+        password,
+      })
+      .pipe(
+        tap((loginResponseDto: LoginResponseInterface) => this.setAuthInfo(loginResponseDto)),
+        map(() => true),
+      );
+  }
+
+  public loginByDiscord$(discordAccessToken: string): Observable<boolean> {
+    return this.backendService
+      .post$<LoginResponseInterface>(URL_PARAMS.AUTH.GET_DISCORD_TOKEN, {
+        discordAccessToken,
+      })
+      .pipe(
+        tap((loginResponseDto: LoginResponseInterface) => this.setAuthInfo(loginResponseDto)),
+        map(() => true),
+      );
   }
 
   public checkLogin$(login: string): Observable<boolean> {
     return this.backendService
-      .post$<LoginAvailableDtoInterface>(URL_PARAMS.USER_ACTIONS.CHECK_LOGIN, {
+      .post$<LoginAvailableInterface>(URL_PARAMS.AUTH.CHECK_LOGIN, {
         login,
       })
-      .pipe(map(({ loginAvailable }: LoginAvailableDtoInterface) => loginAvailable));
+      .pipe(map(({ loginAvailable }: LoginAvailableInterface) => loginAvailable));
   }
 
-  public register$(login: string, password: string, email: string): Observable<UserInterface> {
-    return this.backendService.post$(URL_PARAMS.USER_ACTIONS.REGISTER, {
-      login,
-      password,
-      email,
-    });
+  public register$(login: string, discordAccessToken: string): Observable<boolean> {
+    return this.backendService
+      .post$<LoginResponseInterface>(URL_PARAMS.AUTH.REGISTER, {
+        login,
+        discordAccessToken,
+      })
+      .pipe(
+        tap((loginResponseDto: LoginResponseInterface) => this.setAuthInfo(loginResponseDto)),
+        map(() => true),
+      );
   }
 
-  public logout(): void {
-    this.cookieService.delete('login');
-    this.cookieService.delete('password');
-    this._currentUser$.next(null);
-  }
-
-  public setCurrentUser(user: UserInterface): void {
-    this._currentUser$.next(user);
-  }
-
-  private tryLoginFromCookie(): void {
-    if (!this.firstTimeLogin) {
-      return;
-    }
-
-    this.firstTimeLogin = false;
-
+  public tryLoginFromCookie(): void {
     const login = this.cookieService.get('login');
     const password = this.cookieService.get('password');
 
     if (login && password) {
-      this.backendService
-        .post$<LoginResultDtoInterface>(URL_PARAMS.USER_ACTIONS.LOGIN, {
-          login,
-          password,
-        })
-        .pipe(filter(({ logged }: LoginResultDtoInterface) => logged))
-        .subscribe(({ user }: LoginResultDtoInterface) => this.setCurrentUser(user!));
+      this.getCurrentUser$()
+        .pipe(
+          take(1),
+          tap(() => {
+            this.cookieService.delete('login');
+            this.cookieService.delete('password');
+          }),
+          filter((user) => !user),
+          switchMap(() => this.loginByPassword$(login, password)),
+        )
+        .subscribe();
     }
+  }
+
+  public logout(): void {
+    this.currentUser$.next(null);
+    this.authService.setToken(null);
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+  }
+
+  public restoreAuthInfo(): void {
+    try {
+      const user: string | null = localStorage.getItem('user');
+      const token: string | null = localStorage.getItem('token');
+
+      if (user && token) {
+        this.currentUser$.next(JSON.parse(user));
+        this.authService.setToken(JSON.parse(token));
+      }
+    } catch (e) {}
+  }
+
+  private setAuthInfo({ user, token }: LoginResponseInterface) {
+    this.currentUser$.next(user);
+    this.authService.setToken(token);
+    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('token', JSON.stringify(token));
   }
 }
