@@ -126,12 +126,12 @@
           <ng-container *ngIf="news.playerDemos && !!news.playerDemos.length; else noDemos">
             <div class="top-demos">
               <ng-container *ngIf="news.cpmRes && news.cpmDemo">
-                <a href="{{ mainUrl }}/uploads/demos/cup{{ news.cup.id }}/{{ news.cpmDemo }}">{{ news.cpmRes }}</a
+                <a href="/uploads/demos/cup{{ news.cup.id }}/{{ news.cpmDemo }}">{{ news.cpmRes }}</a
                 >&nbsp;(cpm)
                 <span *ngIf="news.vq3Res && news.vq3Demo">,&nbsp;</span>
               </ng-container>
               <ng-container *ngIf="news.vq3Res && news.vq3Demo">
-                <a href="{{ mainUrl }}/uploads/demos/cup{{ news.cup.id }}/{{ news.vq3Demo }}">{{ news.vq3Res }}</a
+                <a href="/uploads/demos/cup{{ news.cup.id }}/{{ news.vq3Demo }}">{{ news.vq3Res }}</a
                 >&nbsp;(vq3)
               </ng-container>
             </div>

@@ -1,4 +1,3 @@
-import { MAIN_URL } from '~shared/rest-api';
 import {
   Component,
   Input,
@@ -48,7 +47,6 @@ export class NewsOfflineStartComponent implements OnInit {
   public cupState: CupStates;
   public cupStates = CupStates;
   public isUploading = false;
-  public mainUrl = MAIN_URL;
 
   constructor(
     private demosService: DemosService,
