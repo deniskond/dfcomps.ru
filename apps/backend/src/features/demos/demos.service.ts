@@ -68,7 +68,7 @@ export class DemosService {
       };
     }
 
-    const demoDirectory = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `\\demos\\cup${cup.id}`;
+    const demoDirectory = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cup.id}`;
 
     if (!fs.existsSync(demoDirectory)) {
       fs.mkdirSync(demoDirectory);
@@ -112,7 +112,7 @@ export class DemosService {
       parseInt(patternMatch[3]) * 60 + parseInt(patternMatch[4]) + parseInt(patternMatch[5]) / 1000;
     const randomSuffix: string = Math.floor(Math.random() * (99999 - 10001) + 10001).toString();
     const resultFilename: string = fileName.replace(/#/g, '').replace('.dm_68', '') + `_${randomSuffix}.dm_68`;
-    const demoFullName: string = demoDirectory + '\\' + resultFilename;
+    const demoFullName: string = demoDirectory + '/' + resultFilename;
 
     fs.writeFileSync(demoFullName, demo.buffer);
 
@@ -196,7 +196,7 @@ export class DemosService {
       };
     }
 
-    const demoDirectory = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `\\demos\\matches\\match${match.id}`;
+    const demoDirectory = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/matches/match${match.id}`;
 
     if (!fs.existsSync(demoDirectory)) {
       fs.mkdirSync(demoDirectory);
@@ -309,7 +309,7 @@ export class DemosService {
       throw new BadRequestException('Cup already finished');
     }
 
-    const demoPath: string = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `\\demos\\cup${cup.id}\\${demoName}`;
+    const demoPath: string = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cup.id}/${demoName}`;
 
     if (fs.existsSync(demoPath)) {
       fs.rmSync(demoPath);

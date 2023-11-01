@@ -198,8 +198,8 @@ export class ProfileService {
     const previousAvatar = user.avatar;
     const newAvatarFileName = `${user.id}_${moment().format('x')}`;
 
-    if (fs.existsSync(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `\\images\\avatars\\${previousAvatar}.jpg`)) {
-      fs.rmSync(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `\\images\\avatars\\${previousAvatar}.jpg`);
+    if (fs.existsSync(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/images/avatars/${previousAvatar}.jpg`)) {
+      fs.rmSync(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/images/avatars/${previousAvatar}.jpg`);
     }
 
     const resizedImage: Buffer = await sharp(avatar.buffer)
@@ -211,7 +211,7 @@ export class ProfileService {
       });
 
     fs.writeFileSync(
-      process.env.DFCOMPS_FILES_ABSOLUTE_PATH + '\\images\\avatars\\' + newAvatarFileName + '.jpg',
+      process.env.DFCOMPS_FILES_ABSOLUTE_PATH + '/images/avatars/' + newAvatarFileName + '.jpg',
       resizedImage,
     );
 
