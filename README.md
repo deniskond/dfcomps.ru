@@ -47,7 +47,9 @@ Maintenance database: postgres
 Username: user
 Password: admin
 ```
-- After clicking save you should be able to access dfcomps test database
+- After clicking save you should be able to access dfcomps test database. 
+
+The database itself is obfuscated replica of prod database without user sensitive information like logins, passwords and discord tags.
 
 ## Backend
 
@@ -68,6 +70,19 @@ Websocket interaction between client and server is pretty complex, so there is 1
 
 ```bash
 npm run 1v1-server:test
+```
+
+## Testing
+
+There are several test users in test database, each of them representing the access role. 
+```
+Login: superadmin Password: superadmin
+Login: admin Password: admin
+Login: validator Password: validator
+Login: cup_organizer Password: cup_organizer
+Login: newsmaker Password: newsmaker
+Login: user Password: user
+Login: moderator Password: moderator
 ```
 
 ## Discord bot
