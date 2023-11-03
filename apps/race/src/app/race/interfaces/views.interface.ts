@@ -23,8 +23,14 @@ export interface CompetitionRules {
   numBans: number;
 }
 
+export interface CompetitionCreateInfo {
+  name: string;
+  rules: CompetitionRules;
+}
+
 export interface CompetitionView {
   id: string;
+  name: string;
   rules: CompetitionRules;
   brackets?: Brackets;
   mapPool: MapInfo[];
@@ -41,4 +47,8 @@ export interface RoundView {
 
 export function isCompetitionRules(x: any): x is CompetitionRules {
   return x instanceof Object && 'numBans' in x && parseInt(x['numBans']) == x.numBans;
+}
+
+export function isCompetitionCreateInfo(x: any): x is CompetitionCreateInfo {
+  return x instanceof Object && 'name' in x && typeof x['name'] === 'string' && isCompetitionRules(x['rules']);
 }

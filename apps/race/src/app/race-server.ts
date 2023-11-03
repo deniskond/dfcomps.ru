@@ -5,11 +5,11 @@ import * as WebSocket from 'ws';
 import * as fs from 'fs';
 import * as util from 'util';
 import { RaceController } from './race/race-controller';
-import { ErrorCode, Result, result } from './race/types/result';
+import { ErrorCode, Result, badRequest, notAllowed, result } from './race/types/result';
 import { isInMessage } from './interfaces/message.interface';
-import { createHash } from 'crypto';
+import { createHash, createCipheriv, randomBytes } from 'crypto';
 import { SecretsConfig } from './race/config/secret';
-import { isCompetitionRules } from './race/interfaces/views.interface';
+import { isCompetitionCreateInfo } from './race/interfaces/views.interface';
 import { AddressInfo } from 'net';
 // import { ParsedQs } from 'qs';
 
@@ -27,7 +27,11 @@ export class RaceServer {
     NotAllowed: 403,
     NotFound: 404,
   };
+  private _allowed_tokens: Record<string, { login: string; password: string }>;
+  private _key: Buffer;
+  private _iv: Buffer;
   private response<Type>(response: express.Response, result: Result<Type>): void {
+    response.setHeader('Access-Control-Allow-Origin', '*');
     if (result.err !== undefined) {
       response.status(RaceServer.statusMap[result.err.code]).send(result.err.message);
       return;
@@ -38,16 +42,38 @@ export class RaceServer {
     response.status(RaceServer.statusMap.BadRequest).send(message);
   }
   private getAdminToken(request: express.Request): string | undefined {
-    // [FIXME] after cookie fix remove hashing
-    const hash = createHash('shake256');
-    const login = request.cookies['login'];
-    const passw = request.cookies['password'];
-    if (login === undefined || passw === undefined) return undefined;
-    return hash
-      .update(request.cookies['login'] + request.cookies['password'] + SecretsConfig.TOKEN_SALT, 'utf-8')
-      .digest('base64url');
+    const token = request.cookies['token'];
+    if (token === undefined || !(token in this._allowed_tokens)) return undefined;
+    return token;
+  }
+  private hashPassword(password: string): string {
+    const hash = createHash('sha256');
+    return hash.update(password, 'utf-8').digest('base64');
+  }
+  private tokenize(login: string, passwordHash: string): string {
+    const cipher = createCipheriv('aes-256-cbc', this._key, this._iv);
+    let encr = cipher.update(
+      `${SecretsConfig.TOKEN_SALT}${login}###${passwordHash}${SecretsConfig.TOKEN_SALT}`,
+      'utf-8',
+      'base64url',
+    );
+    encr += cipher.final('base64url');
+    return encr;
   }
   constructor() {
+    this._key = randomBytes(32);
+    this._iv = randomBytes(16);
+    const logins = [
+      { login: 'rantrave', password: 'dfthtrue' },
+      { login: 'w00deh', password: 'dfbossth' },
+      { login: 'n0sf', password: 'dfcompsboss' },
+    ];
+    this._allowed_tokens = {};
+    for (const l of logins) {
+      this._allowed_tokens[this.tokenize(l.login, this.hashPassword(l.password))] = l;
+      console.log(this.hashPassword(l.password));
+    }
+
     this.express = express();
     this.expressWs = expressWs(this.express);
     // this.server = http.createServer(this.express);
@@ -57,11 +83,54 @@ export class RaceServer {
     app.use(express.json());
     app.use(cookieParser());
 
+    app.get('/assets/:resource(*)', async (req: express.Request, res: express.Response) => {
+      console.log(__dirname + '/assets/' + req.params.resource);
+      res.sendFile(__dirname + '/assets/' + req.params.resource);
+    });
+
+    app.get('/app.html', async (req: express.Request, res: express.Response) => {
+      // res.sendFile(__dirname + '/../../../apps/race/src/pure-js.html');
+      const html = await new Promise((r, j) =>
+        fs.readFile('apps/race/src/pure-js.html', (err, b) => {
+          if (err) j(err);
+          else r(b);
+        }),
+      );
+      res.status(200).setHeader('Content-Type', 'text/html').send(html);
+    });
+
+    app.route('/authorize').post((req: express.Request, res: express.Response) => {
+      let token = this.getAdminToken(req);
+      console.log(`TOKEN ${token}`);
+      if (token !== undefined) {
+        res.setHeader(
+          'Set-Cookie',
+          `token=${token}; Secure; Expires=${new Date(new Date().getTime() + 3600000).toUTCString()}`,
+        );
+        this.response(res, result(token));
+        return;
+      }
+      const body = req.body;
+      if (typeof body?.login !== 'string' || typeof body?.passwordHash !== 'string') {
+        this.response(res, badRequest('bad login format'));
+        return;
+      }
+      token = this.tokenize(body.login, body.passwordHash);
+      if (token in this._allowed_tokens) {
+        res.setHeader(
+          'Set-Cookie',
+          `token=${token}; Secure; Expires=${new Date(new Date().getTime() + 3600000).toUTCString()}`,
+        );
+        this.response(res, result(token));
+        return;
+      }
+      this.response(res, notAllowed('bad login'));
+    });
     app
       .route('/competitions')
       .post((req: express.Request, res: express.Response) => {
         const token = this.getAdminToken(req);
-        if (!isCompetitionRules(req.body)) {
+        if (!isCompetitionCreateInfo(req.body)) {
           this.invalidType(res, 'CompetitionRules expected at body');
           return;
         }

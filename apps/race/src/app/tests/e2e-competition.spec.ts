@@ -1,12 +1,28 @@
 import { WebSocket } from 'ws';
-import * as http from 'http';
 import { RoundView } from '../race/interfaces/views.interface';
-import { inspect } from 'util';
 
 describe('testing connection', () => {
-  const adminHeaders = {
+  let adminHeaders = {
     Cookie: 'login=admin; password=admin',
   };
+  beforeAll(async () => {
+    const resp = await fetch('http://localhost:4006/authorize', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        login: 'rantrave',
+        passwordHash: 'G+zRL+KO5NhlBlbfZS9FVMDKMKkwLBWrbjOv7TpaKmU=',
+      }),
+    });
+    expect(resp.status).toEqual(200);
+    const token = await resp.json();
+    console.log(`======== ${token} =========`);
+    adminHeaders = {
+      Cookie: `token=${token}`,
+    };
+  });
   it('create competition', async () => {
     let resp = await fetch('http://localhost:4006/competitions', {
       headers: adminHeaders,
@@ -18,7 +34,7 @@ describe('testing connection', () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ numBans: 2 }),
+      body: JSON.stringify({ name: 'test0', rules: { numBans: 2 } }),
     });
     expect(resp.status).toEqual(403);
     resp = await fetch('http://localhost:4006/competitions', {
@@ -27,7 +43,7 @@ describe('testing connection', () => {
         ...adminHeaders,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ numBans: 2 }),
+      body: JSON.stringify({ name: 'test0', rules: { numBans: 2 } }),
     });
     expect(resp.status).toEqual(200);
     expect(await resp.json()).toEqual(expect.objectContaining({ id: expect.stringMatching('.*') }));
@@ -40,17 +56,17 @@ describe('testing connection', () => {
         ...adminHeaders,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ numBans: 2 }),
+      body: JSON.stringify({ name: 'test1', rules: { numBans: 2 } }),
     });
     expect(resp.status).toEqual(200);
     const competitionId: string = (await resp.json()).id;
     // get list
     resp = await fetch('http://localhost:4006/competitions', { method: 'GET' });
     expect(resp.status).toEqual(200);
-    expect(await resp.json()).toEqual(expect.arrayContaining([competitionId]));
+    expect(await resp.json()).toEqual(expect.arrayContaining([expect.objectContaining({ id: competitionId })]));
     resp = await fetch('http://localhost:4006/competitions', { method: 'GET', headers: { ...adminHeaders } });
     expect(resp.status).toEqual(200);
-    expect(await resp.json()).toEqual(expect.arrayContaining([competitionId]));
+    expect(await resp.json()).toEqual(expect.arrayContaining([expect.objectContaining({ id: competitionId })]));
     // get exact
     resp = await fetch(`http://localhost:4006/competitions/${competitionId}`, { method: 'GET' });
     expect(resp.status).toEqual(200);
@@ -69,7 +85,7 @@ describe('testing connection', () => {
         ...adminHeaders,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ numBans: 2 }),
+      body: JSON.stringify({ name: 'test2', rules: { numBans: 2 } }),
     });
     expect(resp.status).toEqual(200);
     const competitionId: string = (await resp.json()).id;
@@ -105,7 +121,7 @@ describe('testing connection', () => {
         ...adminHeaders,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ numBans: 2 }),
+      body: JSON.stringify({ name: 'test3', rules: { numBans: 2 } }),
     });
     expect(resp.status).toEqual(200);
     const competitionId: string = (await resp.json()).id;
@@ -141,11 +157,11 @@ describe('testing connection', () => {
         ...adminHeaders,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ numBans: 1 }),
+      body: JSON.stringify({ name: 'test4', rules: { numBans: 1 } }),
     });
     expect(resp.status).toEqual(200);
     const competitionId: string = (await resp.json()).id;
-    const players = [];
+    const players: string[] = [];
     for (let i = 0; i < 4; ++i) {
       players.push(`p${i}`);
       resp = await fetch(`http://localhost:4006/competitions/${competitionId}/players?nick=p${i}`, {
@@ -219,7 +235,7 @@ describe('testing connection', () => {
       });
     });
     const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-    const recv = [];
+    const recv: string[] = [];
     adminWs.on('message', (w) => {
       const msg = JSON.parse(w.toString('utf-8'));
       recv.push(msg);

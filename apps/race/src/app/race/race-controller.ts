@@ -2,7 +2,15 @@ import axios from 'axios';
 import { Subject, Subscription } from 'rxjs';
 import { v4 } from 'uuid';
 import { AsyncResult, Result, badRequest, duplicate, error, notAllowed, notFound, result } from './types/result';
-import { CompetitionRules, CompetitionView, Round, RoundView, MapInfo, PlayerInfo } from './interfaces/views.interface';
+import {
+  CompetitionRules,
+  CompetitionView,
+  Round,
+  RoundView,
+  MapInfo,
+  PlayerInfo,
+  CompetitionCreateInfo,
+} from './interfaces/views.interface';
 import { CompetitionData, RoundData } from './interfaces/data.interface';
 import { createHash } from 'crypto';
 
@@ -22,11 +30,11 @@ import { createHash } from 'crypto';
 export class RaceController {
   private competitions: { [key: string]: CompetitionData } = {};
 
-  public createCompetition(rules: CompetitionRules, token: string | undefined): Result<CompetitionView> {
+  public createCompetition(info: CompetitionCreateInfo, token: string | undefined): Result<CompetitionView> {
     if (token === undefined) {
       return notAllowed('You must be logged in to create competitions');
     }
-    const res = { id: v4(), mapPool: [], players: [], rules };
+    const res = { id: v4(), mapPool: [], players: [], ...info };
     this.competitions[res.id] = { view: res, adminToken: token, rounds: {} };
     return result(res);
   }
@@ -38,7 +46,7 @@ export class RaceController {
   public removeCompetition(competitionId: string, token: string | undefined): Result<boolean> {
     const { err, result: competition } = this.validateCompetition(competitionId, token);
     if (err !== undefined) return error(err);
-    const toRemove = [];
+    const toRemove: string[] = [];
     for (const [id, round] of Object.entries(competition.rounds)) {
       if (round.competitionId === competitionId) {
         round.stream.complete();
@@ -47,11 +55,15 @@ export class RaceController {
     }
     return result(delete this.competitions[competitionId]);
   }
-  public listCompetitions(token: string | undefined): Result<string[]> {
+  public listCompetitions(token: string | undefined): Result<{ id: string; name: string }[]> {
     if (token !== undefined) {
-      return result(Object.keys(this.competitions).filter((x) => this.competitions[x].adminToken === token));
+      return result(
+        Object.keys(this.competitions)
+          .filter((x) => this.competitions[x].adminToken === token)
+          .map((x) => ({ id: x, name: this.competitions[x].view.name })),
+      );
     }
-    return result(Object.keys(this.competitions));
+    return result(Object.keys(this.competitions).map((x) => ({ id: x, name: this.competitions[x].view.name })));
   }
   public competitionUpdateRules(
     competitionId: string,
@@ -119,14 +131,18 @@ export class RaceController {
     }
     return result(competition.players.push(mapInfo) - 1);
   }
-  public competitionRemovePlayer(competitionId: string, token: string | undefined, mapName: string): Result<boolean> {
+  public competitionRemovePlayer(
+    competitionId: string,
+    token: string | undefined,
+    playerName: string,
+  ): Result<boolean> {
     const { err, result: competitionData } = this.validateCompetition(competitionId, token);
     if (err !== undefined) return error(err);
     const competition = competitionData.view;
-    const index = competition.mapPool.findIndex((x) => x.mapName === mapName);
+    const index = competition.players.findIndex((x) => x.playerName === playerName);
     if (index === -1) return result(false);
-    competition.mapPool[index] = competition.mapPool[competition.mapPool.length - 1];
-    competition.mapPool.pop();
+    competition.players[index] = competition.players[competition.players.length - 1];
+    competition.players.pop();
     return result(true);
   }
 
@@ -147,7 +163,7 @@ export class RaceController {
       }))
       .sort((a, b) => a.factor - b.factor)
       .map((x) => x.player);
-    const circles = [];
+    const circles: Round[][] = [];
     let n = Math.pow(2, Math.ceil(Math.log2(playersShuffle.length)));
     let circle: Round[] = [];
     const half = n >> 1;
@@ -170,7 +186,7 @@ export class RaceController {
       // n = Math.floor(n / 2);
       n >>= 1;
     }
-    const rounds = [];
+    const rounds: Round[] = [];
     for (let i = circles.length; i-- > 0; ) {
       rounds.push(...circles[i]);
     }

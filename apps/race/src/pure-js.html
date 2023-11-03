@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html>
+<link rel="shortcut icon" type="image/png" href="/assets/favicon.png" />
+
+<head>
+  <style>
+    body {
+      margin: 0;
+      padding: 0.
+    }
+
+    .back {
+      object-fit: cover;
+      height: 100%;
+      width: 100%;
+      min-width: 800px;
+      min-height: 600px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -10;
+    }
+
+    .page {
+      object-fit: cover;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .page-pad {
+      object-fit: cover;
+      left: 320px;
+      height: 100%;
+      width: calc(100% - 320px);
+      position: absolute;
+      top: 0;
+    }
+
+    .fulldim {
+      background-color: #00000080;
+      object-fit: cover;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .levelshot {
+      background-color: #ff5500;
+      width: 220px;
+      height: 165px;
+      position: relative;
+    }
+
+    .levelshot-caption {
+      float: center;
+      position: absolute;
+      left: 1px;
+      right: 1px;
+      bottom: 1px;
+      /* height: 15%; */
+      z-index: 1000;
+      background: linear-gradient(0deg, rgba(0, 0, 0, 0.99) 0%, rgba(0, 0, 0, 0.8) 30%, rgba(255, 247, 242, 0) 100%);
+      color: #FFFFFF;
+      text-align: center;
+      padding-top: 10%;
+      padding-bottom: 5%;
+    }
+
+    .levelshot-image {
+      float: center;
+      position: absolute;
+      left: 1px;
+      top: 1px;
+      z-index: 900;
+      /* margin: 2pt; */
+      width: calc(100% - 2px);
+      height: calc(100% - 2px);
+    }
+
+    .levelshot-black {
+      position: absolute;
+      background: #000;
+      left: 10px;
+      right: 10px;
+      z-index: 30;
+      height: 100%;
+    }
+
+    .levelshot-label {
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+      color: #ff5500;
+      align-content: center;
+      font-size: 100%;
+      font-weight: bold;
+      height: 100%;
+    }
+
+    .main-content-flex {
+      display: flex;
+      flex-flow: column;
+      margin-left: 320px;
+      width: calc(100% - 340px);
+      height: 100%;
+    }
+
+    .map-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .map-entry {
+      display: inline-block;
+      width: 230px;
+      height: 170px;
+    }
+
+    .main-content {
+      display: block;
+      margin-left: 320px;
+      margin-right: 5%;
+      height: 100%;
+    }
+
+    .menu {
+      position: absolute;
+      width: 300px;
+      height: 100%;
+    }
+
+
+    .header-container {
+      display: block;
+      padding: 20px;
+      padding-bottom: 40px;
+      min-width: 320px;
+    }
+
+    .header-caption {
+      user-select: none;
+      float: right;
+      /* display: inline-block; */
+      text-align: right;
+      top: 20px;
+      /* right: 10%; */
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+      color: #ff5500;
+      font-size: 40px;
+      font-weight: bold;
+      padding-right: 16px;
+    }
+
+    .header-underline {
+      display: inline-block;
+      height: 0px;
+      width: 100%;
+      border-top: 1px solid;
+      border-image-slice: 1;
+      border-image-source: linear-gradient(90deg, #7a270050 0%, #ff5300FF 90%, #ba3d00B0 100%);
+    }
+
+    svg {
+      display: block;
+    }
+
+
+    .players-content {
+      /* display: block; */
+      position: absolute;
+      margin-left: 320px;
+      width: calc(100% - 340px);
+      height: 400px;
+      bottom: 0px
+    }
+
+    .players-hdiv {
+      position: relative;
+      float: left;
+      width: 50%;
+      height: 80px;
+    }
+
+    .players-l-caption {
+      position: absolute;
+      display: block;
+      font-family: "Helvetica Narrow", "Arial Narrow", Tahoma, Arial, Helvetica, sans-serif;
+      color: #ff5500;
+      font-size: 40px;
+      top: 10px;
+      left: 40px;
+      font-weight: bold;
+    }
+
+    .players-l-background {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, #522b0080 0%, #27150060 30%, #00000000 100%);
+    }
+
+    .players-l-background-box {
+      position: absolute;
+      width: 2px;
+      height: 100%;
+      background-color: #ff5500;
+    }
+
+    .players-r-caption {
+      position: absolute;
+      display: block;
+      font-family: "Helvetica Narrow", "Arial Narrow", Tahoma, Arial, Helvetica, sans-serif;
+      color: #ff5500;
+      font-size: 40px;
+      top: 10px;
+      right: 40px;
+      font-weight: bold;
+    }
+
+    .players-r-background {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, #00000000 0%, #27150060 70%, #522b0080 100%);
+    }
+
+    .players-r-background-box {
+      position: absolute;
+      width: 2px;
+      height: 100%;
+      right: 0px;
+      background-color: #ff5500;
+    }
+
+    .login {
+      margin-left: 20%;
+      margin-right: 20%;
+      padding-left: 20%;
+      padding-right: 20%;
+    }
+
+    .text-input {
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      appearance: none;
+      border: none;
+      outline: none;
+      border-bottom: 2px solid #ff5300FF;
+      background-color: #A02b0020;
+      /* border-radius: .2em .2em 0 0; */
+      font-family: monospace;
+      font-size: 30px;
+      padding: 8px;
+      padding-left: 20px;
+      color: #ff5300FF;
+    }
+
+    .text-input::placeholder {
+      font-family: monospace;
+      /* font-family: "Helvetica Narrow", "Arial Narrow", Tahoma, Arial, Helvetica, sans-serif; */
+      color: #AA5300FF;
+    }
+
+    .text-input.failure-animation {
+      animation: text-failure 2s infinite;
+    }
+
+    @keyframes text-failure {
+      0% {
+        background-color: #271500A0;
+      }
+
+      10% {
+        background-color: #FF0000A0;
+      }
+
+      100% {
+        background-color: #271500A0;
+      }
+    }
+
+    .text-field {
+      font-family: "Helvetica Narrow", "Arial Narrow", Tahoma, Arial, Helvetica, sans-serif;
+      user-select: none;
+      font-size: 30px;
+      color: #ff5300A0;
+      text-align: center;
+    }
+
+    .button {
+      box-sizing: border-box;
+      user-select: none;
+      appearance: none;
+      width: 100%;
+      height: 100%;
+      border: none;
+      outline: none;
+      border-left: 2px solid #ff5300FF;
+      border-right: 2px solid #ff5300FF;
+      background: linear-gradient(90deg, #521b0080 0%, #27150060 20%, #00000000 50%, #27150060 80%, #521b0080 100%);
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+      font-size: 30px;
+      padding: 8px;
+      color: #ff5300FF;
+    }
+
+    .button:hover {
+      background: linear-gradient(90deg, #A03b0080 0%, #27150060 25%, #00000000 50%, #27150060 75%, #A03b0080 100%);
+    }
+
+    .button:active {
+      background: linear-gradient(90deg, #FF5b00A0 0%, #27150060 34%, #00000000 50%, #27150060 66%, #FF5b00A0 100%);
+    }
+
+    .button.rotated {
+      border-left: 0;
+      border-right: 0;
+      border-top: 2px solid #ff5300FF;
+      border-bottom: 2px solid #ff5300FF;
+      background: linear-gradient(0deg, #521b0080 0%, #27150060 20%, #00000000 50%, #27150060 80%, #521b0080 100%);
+    }
+
+    .button.rotated:hover {
+      background: linear-gradient(0deg, #A03b0080 0%, #27150060 25%, #00000000 50%, #27150060 75%, #A03b0080 100%);
+    }
+
+    .button.rotated:active {
+      background: linear-gradient(0deg, #FF5b00A0 0%, #27150060 34%, #00000000 50%, #27150060 66%, #FF5b00A0 100%);
+    }
+
+    .button.failure-animation {
+      animation: button-failure 2s infinite;
+    }
+
+    @keyframes button-failure {
+      0% {
+        background: linear-gradient(90deg, #522b0080 0%, #27150060 20%, #00000000 50%, #27150060 80%, #522b0080 100%);
+      }
+
+      10% {
+        background-color: #FF0000A0;
+      }
+
+      100% {
+        background: linear-gradient(90deg, #522b0080 0%, #27150060 20%, #00000000 50%, #27150060 80%, #522b0080 100%);
+      }
+    }
+
+    .loader {
+      /* margin: auto; */
+      position: relative;
+      left: calc(50% - 30px);
+      top: 40%;
+      border: 10px solid #404040A0;
+      border-radius: 50%;
+      border-top: 10px solid #FF5b00A0;
+      width: 60px;
+      height: 60px;
+      animation: spinner 4s linear infinite;
+    }
+
+    @keyframes spinner {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .competitions-viewport {
+      min-height: 10vh;
+      max-height: 80vh;
+      overflow-y: scroll;
+      scrollbar-width: 4px;
+      scrollbar-color: #ff5300FF #A02b0040;
+      border-left: 2px solid #ff5300FF;
+      background: linear-gradient(90deg, #A02b0020 0%, #27150010 50%, #00000000 100%);
+      padding: 16px;
+    }
+
+    .competitions-element {
+      /* border-top-left-radius: 2px;
+      border-top-right-radius: 2px; */
+      /* margin: 2px; */
+      /* border: 2px solid; */
+      border-image-slice: 1;
+      /* border-width: 2px; */
+      border-image-source: linear-gradient(90deg, #FF5b0050 0%, #27150030 50%, #00000000 100%);
+      background: none;
+      border-left: 0;
+      border-top: 0;
+      border-right: 0;
+      width: 80%;
+      font-family: "Helvetica Narrow", "Arial Narrow", Tahoma, Arial, Helvetica, sans-serif;
+      font-size: 30px;
+      /* padding: 8px; */
+      color: #ff5300A0;
+      text-align: left;
+    }
+
+    .competitions-element:hover {
+      color: #ff5300FF;
+      border-image-source: linear-gradient(90deg, #FF5b00A0 0%, #27150060 50%, #00000000 100%);
+    }
+
+    .competitions-element:active {
+      background: linear-gradient(90deg, #FF5b0030 0%, #27150040 50%, #00000000 100%);
+    }
+
+    .box {
+      border-top: 1px solid;
+      border-left: 1px solid;
+      border-right: 1px solid;
+      border-image-slice: 1;
+      border-image-source: linear-gradient(0deg, #00000000 0%, #27150060 50%, #FF5b00A0 100%);
+      overflow-y: scroll;
+      scrollbar-width: 4px;
+      scrollbar-color: #ff5300FF #A02b0040;
+      background: linear-gradient(0deg, #A02b0020 0%, #27150010 50%, #00000000 100%);
+      padding: 1%;
+    }
+
+    .list-box {
+      list-style-type: none;
+      min-height: 40vh;
+      max-height: 70vh;
+    }
+
+    .list-box-element {
+      user-select: none;
+      display: flex;
+      align-items: center;
+      padding-left: 5%;
+      width: 95%;
+      height: 48px;
+      text-align: left;
+      font-family: monospace;
+      white-space: nowrap;
+      /* font-family: "Helvetica Narrow", "Arial Narrow", Tahoma, Arial, Helvetica, sans-serif; */
+      border-image-slice: 1;
+      border-image-source: linear-gradient(90deg, #00000000 0%, #ff5300A0 10%, #00000000 100%);
+      color: #ff5300A0;
+      border-bottom: 1px solid #ff5300A0;
+    }
+
+    .list-box-element:hover {
+      color: #ff5300FF;
+      border-image-source: linear-gradient(90deg, #00000000 0%, #ff5300A0 10%, #00000000 100%);
+    }
+
+    .list-box-input-box {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid;
+      border-top: 1px solid;
+      border-image-slice: 1;
+      padding-left: 2%;
+      padding-right: 2%;
+      width: 96%;
+      font-family: monospace;
+      background: linear-gradient(180deg, #A02b0020 0%, #27150010 50%, #00000000 100%);
+      border-image-source: linear-gradient(90deg, #00000000 0%, #ff5300A0 50%, #00000000 100%);
+    }
+
+    .list-box-input-box:hover {
+      border-image-source: linear-gradient(90deg, #00000000 0%, #ff5300FF 50%, #00000000 100%);
+    }
+
+    .list-box-input {
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      appearance: none;
+      border: none;
+      outline: none;
+      background: none;
+      font-size: 24px;
+      /* border-radius: .2em .2em 0 0; */
+      font-family: monospace;
+      padding: 8px;
+      padding-left: 20px;
+      color: #ff5300FF;
+    }
+
+    .list-box-input::placeholder {
+      /* font-size: 24px; */
+      font-family: monospace;
+      color: #AA5300FF;
+    }
+
+    .list-box-input.failure-animation {
+      animation: text-failure 2s infinite;
+    }
+
+    .inline-button {
+      height: 36px;
+      width: 36px;
+      box-sizing: border-box;
+      border-radius: 50%;
+      border: 0px;
+      user-select: none;
+      appearance: none;
+      color: #ff5300A0;
+      background-color: #00000000;
+    }
+
+    .inline-button:hover {
+      color: #ff5300FF;
+    }
+
+    .inline-button:active {
+      background-color: #A02b0040;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/core.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/sha256.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/enc-base64.min.js"></script>
+
+  <script lang="js">
+    /** @returns {HTMLElement | undefined} */
+    function qid(t, id) {
+      return t.querySelector(`#${id}`);
+    }
+    function animate_error(button) {
+      if (!button) return;
+      button.classList.add("failure-animation");
+      setTimeout(() => button.classList.remove("failure-animation"), 2000.0);
+    }
+    async function rq(method, path, data, success = undefined, fail = undefined, failelem = undefined) {
+      let h = {};
+      let b = undefined;
+      if (data !== undefined) {
+        h = { "Content-type": "application/json; charset=UTF-8" };
+        b = JSON.stringify(data);
+      }
+      const res = await fetch(path, {
+        method: method,
+        credentials: "same-origin",
+        headers: h,
+        body: b,
+        cache: "reload",
+      });
+      if (res.ok) {
+        if (success !== undefined) await success(await res.json());
+      } else {
+        console.warn(`${method} ${path} failed with status ${res.status}`);
+        if (fail !== undefined) await fail(res.status);
+        if (failelem) animate_error(failelem);
+      }
+    }
+    async function progress(promise) {
+      const loader = document.getElementById("loader");
+      loader.hidden = false;
+      try {
+        return await promise;
+      } finally {
+        loader.hidden = true;
+      }
+    }
+    // function select_round(round) {
+    //   const elem = document.getElementById("roundHeader");
+    //   const url = new URL(window.location.href)
+    //   elem.innerText = "Round " + round;
+
+    //   const mapTemplate = document.getElementById("mapTemplate");
+    //   const mapList = document.getElementById("mapList");
+    //   for (let i = 0; i < 16; ++i) {
+    //     /** @type {HTMLElement} */
+    //     let elem = mapTemplate.cloneNode(true);
+
+    //     elem = mapList.appendChild(elem);
+    //     elem.className = "map-entry";
+    //     elem.hidden = false;
+    //     elem.id = "map_" + i.toString()
+    //     /** @type {HTMLElement} */
+    //     const img = elem.querySelector("#mapLevelshot");
+    //     img.setAttribute("src", "http://ws.q3df.org/images/authorshots/512x384/st1.jpg")
+    //     /** @type {HTMLElement} */
+    //     const name = elem.querySelector("#mapName");
+    //     name.innerText = "st" + i.toString();
+    //   }
+    // }
+    async function login(button) {
+      const login = qid(document, "login-login").value;
+      const paswd = qid(document, "login-paswd").value;
+      const passwordHash = CryptoJS.SHA256(paswd).toString(CryptoJS.enc.Base64);
+
+      await progress(
+        rq("POST", '/authorize', { login, passwordHash }, async function (d) {
+          localStorage.setItem("token", d);
+          await update_page(false);
+        }, undefined, button));
+    }
+    async function ensure_token() {
+      await rq("POST", '/authorize', {}, undefined, async (x) => { localStorage.removeItem("token"); });
+    }
+
+    function set_listbox(box, tid, els, tf) {
+      if (!box) return;
+      /** @type {HTMLElement} */
+      const t = qid(box, tid);
+      const tr = []
+      for (let i of box.children) {
+        if (i.id === tid) continue;
+        // if (i.hidden) continue;
+        tr.push(i);
+      }
+      for (let i of tr) {
+        box.removeChild(i);
+      }
+      for (let i in els) {
+        let el = els[i];
+        let e = t.cloneNode(true);
+        e = box.appendChild(e);
+        e.id = null;
+        delete e.id;
+        e.hidden = false;
+        tf(e, i, el);
+      }
+    }
+
+    async function update_page(relog = true) {
+      const rounds = document.getElementById("rounds");
+      const login = document.getElementById("login");
+      const competitions = document.getElementById("competitions");
+      const competitionBrowser = document.getElementById("cb");
+      rounds.hidden = true;
+      competitions.hidden = true;
+      login.hidden = true;
+      competitionBrowser.hidden = true;
+
+      if (relog) await progress(ensure_token());
+      const token = localStorage.getItem("token");
+      if (!token) {
+        login.hidden = false;
+        return;
+      }
+      const page = localStorage.getItem("nav-page");
+      if (page === "rounds") {
+        const round = localStorage.getItem("nav-round");
+        if (round !== undefined) {
+          rounds.hidden = false;
+          select_round(round);
+          return;
+        }
+      }
+      const compet = localStorage.getItem("nav-comp-selected");
+      if (compet) {
+        await progress(update_competition(compet));
+        competitionBrowser.hidden = false;
+        return;
+      }
+      await progress(update_competitions());
+      const competitionList = document.getElementById("competition-list");
+      const competitionTemplate = document.getElementById("competition-template");
+      competitions.hidden = false;
+      const competitionsData = JSON.parse(localStorage.getItem("competitions"))
+
+      set_listbox(competitionList, "competition-template", competitionsData, function (n, i, e) {
+        n.id = `c-${e.id}`;
+        qid(n, "competition-name").innerText = e.name;
+        qid(n, "competitions-select").onclick = function () {
+          localStorage.setItem("nav-comp-selected", e.id);
+          update_page(false);
+        };
+      });
+    }
+
+    async function remove_player(compet, name) {
+      return rq('DELETE', `/competitions/${compet}/players?nick=${encodeURI(name)}`, undefined,
+        () => update_competition(compet));
+    }
+    async function add_player(compet, inp) {
+      return rq('PUT', `/competitions/${compet}/players?nick=${encodeURI(inp.value)}`, undefined,
+        () => update_competition(compet), undefined, inp);
+    }
+    async function remove_map(compet, name) {
+      return rq('DELETE', `/competitions/${compet}/maps?name=${encodeURI(name)}`, undefined,
+        () => update_competition(compet));
+    }
+    async function add_map(compet, inp) {
+      return rq('PUT', `/competitions/${compet}/maps?name=${encodeURI(inp.value)}`, undefined,
+        () => update_competition(compet), undefined, inp);
+    }
+    async function remove_competition(compet) {
+      return rq('DELETE', `/competitions/${compet}`, undefined,
+        () => { localStorage.removeItem("nav-comp-selected"); update_page(compet); });
+    }
+    async function update_competition(compet) {
+      await rq("GET", `/competitions/${compet}`,
+        undefined, async function (d) {
+          document.getElementById("cb-hdr").innerText = d.name;
+          const p = document.getElementById("cb-pr");
+          p.hidden = true;
+          // return;
+          if (d.brackets) {
+          } else {
+            p.hidden = false;
+            const pl = qid(p, "cb-pr-pl");
+            const pi = qid(p, "cb-pr-pi");
+            const pa = qid(p, "cb-pr-pa");
+
+            pa.onclick = () => add_player(compet, pi);
+            set_listbox(pl, "cb-pr-pl-t", d.players, function (t, i, e) {
+              qid(t, "cb-pr-pl-t-n").innerText = e.playerName;
+              qid(t, "cb-pr-pl-t-r").onclick = async function () {
+                await progress(remove_player(compet, e.playerName));
+              };
+            })
+
+            const ml = qid(p, "cb-pr-ml");
+            const mi = qid(p, "cb-pr-mi");
+            const ma = qid(p, "cb-pr-ma");
+
+            ma.onclick = () => add_map(compet, mi);
+            set_listbox(ml, "cb-pr-ml-t", d.mapPool, function (t, i, e) {
+              qid(t, "cb-pr-ml-t-n").innerText = e.mapName;
+              qid(t, "cb-pr-ml-t-ls").src = e.levelShotUrl;
+              qid(t, "cb-pr-ml-t-r").onclick = async function () {
+                await progress(remove_map(compet, e.mapName));
+              };
+            })
+
+            const rb = qid(p, "cb-pr-rm");
+            rb.onclick = () => remove_competition(compet);
+          }
+        },
+        async function () { close_competition(); },
+        qid(qid(document, "competition-list"), `c-${compet}`)
+      );
+      // {
+      //   id: string;
+      //   name: string;
+      //   rules: CompetitionRules;
+      //   brackets?: Brackets;
+      //   mapPool: MapInfo[];
+      //   players: PlayerInfo[];
+      // }
+    }
+
+    async function close_competition() {
+      localStorage.removeItem("nav-comp-selected");
+      await update_page();
+    }
+
+    async function update_competitions() {
+      const res = await fetch('/competitions', {
+        method: "GET",
+        credentials: "same-origin",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      });
+      if (res.status == 200) {
+        const data = await res.json();
+        localStorage.setItem("competitions", JSON.stringify(data))
+      } else {
+        console.warn(`update_competitions failed with status ${res.status}`)
+      }
+    }
+    async function create_competition(button) {
+      const createDialog = document.getElementById("cc");
+      const name = createDialog.querySelector("#cc-name");
+      if (!name.value) {
+        animate_error(name);
+        return;
+      }
+      const maxbans = createDialog.querySelector("#cc-max-bans");
+      const maxbansValue = Number.parseInt(maxbans.value);
+      if (maxbansValue === undefined || maxbansValue === null || Number.isNaN(maxbansValue)) {
+        animate_error(maxbans);
+        return;
+      }
+      const res = await progress(await fetch('/competitions', {
+        method: "POST",
+        credentials: "same-origin",
+        body: JSON.stringify({
+          name: name.value,
+          rules: {
+            numBans: maxbansValue
+          }
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      }));
+      if (res.status == 200) {
+        createDialog.hidden = true;
+        update_page(false);
+      } else {
+        console.warn(`create_competition failed with status ${res.status}`);
+        animate_error(button);
+      }
+    }
+
+    function initialize() {
+      const paswd = document.getElementById("login-paswd");
+      paswd.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          document.getElementById("login-button").click();
+        }
+      });
+      const createDialog = document.getElementById("cc");
+      document.onkeydown = function (event) {
+        if (event.key === "Escape") {
+          if (!createDialog.hidden) {
+            event.preventDefault();
+            createDialog.hidden = true;
+          }
+        }
+      };
+      for (let inputName of ["#cc-name", "#cc-max-bans"]) {
+        createDialog.querySelector(inputName).addEventListener("keypress", function (event) {
+          if (event.key === "Enter") {
+            event.preventDefault();
+            document.getElementById("cc-commit").click();
+          }
+        });
+      }
+
+      update_page();
+    }
+    window.onload = initialize;
+  </script>
+</head>
+
+<body style="font-size: 0;">
+  <div>
+    <div class="back" style="background-color: #000;"></div>
+    <video class="back" playsinline autoplay muted loop onloadstart="this.playbackRate = 0.7;">
+      <source src="./assets/videos/motion_background.webm" type="video/webm">
+      Your browser does not support the video tag.
+    </video>
+    <div id="login">
+      <div class="main-content">
+        <div class="header-container">
+          <div class="header-caption">Login</div>
+          <div class="header-underline"></div>
+        </div>
+        <div class="login">
+          <input id="login-login" class="text-input" style="margin-bottom: 20px;" type="text"
+            placeholder="&lt;enter-login&gt">
+          <input id="login-paswd" class="text-input" style="margin-bottom: 20px;" type="password">
+          <button id="login-button" class="button" onclick="login(this);">LOGIN</button>
+        </div>
+      </div>
+    </div>
+    <div id="competitions" hidden>
+      <div class="main-content">
+        <div class="header-container">
+          <div class="header-caption">Competitions</div>
+          <div class="header-underline"></div>
+        </div>
+        <div style="margin-left: 10%;margin-right: 10%;">
+          <div class="competitions-viewport">
+            <ul id="competition-list" style="list-style-type: none;">
+              <li id="competition-template" hidden>
+                <button id="competitions-select" class="competitions-element">
+                  <div id="competition-name">TEXT</div>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div style="margin-top: 10px;">
+            <button class="button" onclick="document.getElementById('cc').hidden = false">NEW</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="cb" hidden>
+      <div class="menu">
+        <div style="width:100%;height: 90%;"></div>
+        <div style="width:100%;">
+          <button class="button" onclick="close_competition();">BACK</button>
+        </div>
+      </div>
+      <div class="main-content">
+        <div class="header-container">
+          <div id="cb-hdr" class="header-caption">PLACEHOLDER</div>
+          <div class="header-underline"></div>
+        </div>
+        <div id="cb-pr">
+          <div style="margin-left: 10%;margin-right: 10%;">
+            <div style="display: inline-block; width: 50%;">
+              <div style="padding:1%;">
+                <ul id="cb-pr-pl" class="box list-box">
+                  <li id="cb-pr-pl-t" hidden>
+                    <div class="list-box-element">
+                      <div id="cb-pr-pl-t-n" style="width:90%;font-size: 24px;">asd</div>
+                      <button id="cb-pr-pl-t-r" class="inline-button">
+                        <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                          <path fill="currentColor"
+                            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+                          </path>
+                        </svg>
+                      </button>
+                    </div>
+                  </li>
+                </ul>
+                <div class="list-box-input-box">
+                  <div style="width:100%; height: 100%;">
+                    <input id="cb-pr-pi" class="list-box-input" placeholder="&lt;enter-player-name&gt">
+                  </div>
+                  <div style="width: 36px">
+                    <button id="cb-pr-pa" class="inline-button">
+                      <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path fill="currentColor"
+                          d="M11 2L13 2 13 11 22 11 22 13 13 13 13 22 11 22 11 13 2 13 2 11 11 11z">
+                        </path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="display: inline-block; width: 50%;">
+              <div style="padding:1%;">
+                <ul id="cb-pr-ml" class="box list-box">
+                  <li id="cb-pr-ml-t" hidden>
+                    <div class="list-box-element">
+                      <div style="width: 100%; height: 100%; display: flex; align-items: center;">
+                        <img id="cb-pr-ml-t-ls" src="http://ws.q3df.org/images/authorshots/512x384/falos-principle.jpg"
+                          style="height: 100%;">
+                        <div id="cb-pr-ml-t-n" style="padding-left: 8px;font-size: 24px;">falos-principle</div>
+                      </div>
+                      <div style="width: 36px">
+                        <button id="cb-pr-ml-t-r" class="inline-button">
+                          <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path fill="currentColor"
+                              d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+                            </path>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                <div class="list-box-input-box">
+                  <div style="width:100%; height: 100%;">
+                    <input id="cb-pr-mi" class="list-box-input" placeholder="&lt;enter-map-name&gt">
+                  </div>
+                  <div style="width: 36px">
+                    <button id="cb-pr-ma" class="inline-button">
+                      <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path fill="currentColor"
+                          d="M11 2L13 2 13 11 22 11 22 13 13 13 13 22 11 22 11 13 2 13 2 11 11 11z">
+                        </path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-bottom: 20%; margin-left: 10%;margin-right: 10%;">
+            <div style="display: inline-block; width: 50%;">
+              <button id="cb-pr-st" class="button">START</button>
+            </div>
+            <div style="display: inline-block; width: 50%;">
+              <button id="cb-pr-rm" class="button">REMOVE</button>
+            </div>
+          </div>
+        </div>
+        <div id="cb-br">
+          <div class="box" style="margin: 1%;height: 70vh;">
+            <script lang="js">
+              function build_brackets(par, rnds) {
+                const nt = Math.log2(rnds.length + 1)
+                const tb = qid(par, "cb-br-t");
+                const co = tb.firstChild;
+                while (co.firstChild) { co.removeChild(co.lastChild); }
+                const tr = qid(tb, "cb-br-t-r");
+                while (tr.firstChild) { tr.removeChild(tr.lastChild); }
+                let n = rnds.length;
+                let h = 96;
+                let m = (n + 1) / 2;
+                let r = 0;
+                const tlst = {};
+                for (let i = 0; i < nt; ++i) {
+                  const ct = document.createElement("col");
+                  ct.style = "min-width: 280px";
+                  co.appendChild(ct);
+                  const cv = document.createElement("td");
+                  cv.style = "padding: 0;"
+                  tr.appendChild(cv);
+                  if (m == 1) {
+
+                  } else {
+                    const brt = [build_bracket(tr, h, false), build_bracket(tr, h, false)]
+                    for (let j = 0; j < m; ++j) {
+                      /** @type {HTMLElement} */
+                      let e = brt[j % 2].cloneNode(true);
+                      e = tr.appendChild(e);
+                      e.id = `cb-br-t-${r}`;
+                      const cr = n - r;
+                      const rr = rnds[cr];
+                      tlst[cr] = {
+                        w: rr.winnerIndex,
+                        el: e,
+                        bl: e.querySelectorAll(".brackets-line")
+                      };
+                      if (rr.players[0] !== null) qid(e, "bl-0").innerText = rr.players[0];
+                      if (rr.players[1] !== null) qid(e, "bl-1").innerText = rr.players[1];
+                      if (rr.winnerIndex) {
+                        const w = qid(e, `bl-${rr.winnerIndex}`);
+                        w.classList.add("winner");
+                        w.onmouseenter = () => {
+                          let cc = 2 * cr + 1 + rr.winnerIndex;
+                          while (cc < n) {
+                            const tt = tlst[cc];
+                            for (let l of tt.bl) {
+                              l.classList.add("highlight");
+                            }
+                          }
+                        }
+                        qud(e, `bl-${(rr.winnerIndex + 1) % 2}`).classList.add("looser");
+                      }
+                      r++;
+                    }
+                  }
+                  h *= 2;
+                  m /= 2;
+                }
+              }
+              function build_bracket(to, h, up) {
+                const ub = 1;
+                const db = 0;
+                to.innerHTML = `<div style="position: relative; height: ${h}px;">
+                      <div style="position: absolute; width: 240px">
+                        <div style="height: ${h / 2 - 36}px;"></div>
+                        <div id="bl" class="brackets-board" style="height: 72px;">
+                          <div id="bl-0" class="brackets-label" style="height: 36px; width: 100%;"></div>
+                          <div id="bl-1" class="brackets-label" style="height: 36px; width: 100%;"></div></div>
+                        <div style="height: ${h / 2 - 36}px;"></div></div>
+                      <div style="position: absolute; left: 240px; width: 40px; height: ${h}px">
+                        <div style="display: inline-block; width: 20px">
+                          <div class="brackets-line" style="height: ${h / 2}px; border-bottom: ${ub}px solid"></div>
+                          <div class="brackets-line" style="height: ${h / 2}px; border-top: ${db}px solid"></div></div>
+                        <div style=" display: inline-block; width: 20px; height: ${h}px;">
+                          <div style="height: 18px;"></div>
+                          <div class="brackets-line" style="height: ${h / 2 - 18}px;border: ${ub}px solid;border-right: 0; border-bottom: 0;"></div>
+                          <div class="brackets-line" style="height: ${h / 2 - 18}px;border: ${db}px solid;border-right: 0; border-top: 0;"></div>
+                          <div style="height: 18px;"></div></div></div></div></td>`;
+                return to.firstChild;
+              }
+            </script>
+            <table id="cb-br-t" cellspacing="0" style="border-spacing:0;border-collapse: collapse;">
+              <colgroup>
+              </colgroup>
+              <tbody>
+                <tr id="cb-br-t-r">
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="rounds" hidden>
+      <div class="header">
+        <div class="header-container">
+          <div style="float: right; padding-right: 8px;">
+            <div id="roundHeader" class="header-caption">Round 2</div>
+          </div>
+          <div class="header-underline">
+            <svg width="100%" height="100%" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 -1 600 1">
+              <defs>
+                <linearGradient id="linear" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#7a270050" />
+                  <stop offset="90%" stop-color="#ff5300FF" />
+                  <stop offset="100%" stop-color="#ba3d00B0" />
+                </linearGradient>
+              </defs>
+              <path d="M0 0 L 600 0" stroke="url(#linear)" />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="main-content">
+        <ul id="mapList" class="map-list">
+          <li id="mapTemplate" hidden>
+            <div class="levelshot">
+              <div class="levelshot-black"> </div>
+              <img id="mapLevelshot" class="levelshot-image" src="" />
+              <div class="levelshot-caption">
+                <span id="mapName" class="levelshot-label">PLACEHOLDER</span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="players-content">
+        <div style="padding: 10%;">
+          <div class="players-hdiv">
+            <div class="players-l-background">
+              <div class="players-l-background-box"></div>
+              <span class="players-l-caption">Loontick</span>
+            </div>
+          </div>
+          <div class="players-hdiv">
+            <div class="players-r-background">
+              <div class="players-r-background-box"></div>
+              <span class="players-r-caption">Poontick</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="cc" hidden>
+      <div class="fulldim">
+        <div class="page-pad">
+          <div style="margin-top: 20%;">
+            <div style="width: 80%;margin-left: 10%;margin-right: 10%; margin-bottom: 20px;">
+              <div class="text-field" style="width: 100%;display:inline-block;"><span class="header-caption">Create
+                  competition</span></div>
+            </div>
+            <div style="width: 80%;margin-left: 10%;margin-right: 10%; margin-bottom: 20px;">
+              <div class="text-field" style="width: 49%;display:inline-block;"><span>NAME</span></div>
+              <div style="width: 50%;display:inline-block;"><input id="cc-name" class="text-input">
+              </div>
+            </div>
+            <div style="width: 80%;margin-left: 10%;margin-right: 10%; margin-bottom: 20px;">
+              <div class="text-field" style="width: 49%;display:inline-block;"><span>MAX BANS</span></div>
+              <div style="width: 50%;display:inline-block;"><input id="cc-max-bans" class="text-input" value="2">
+              </div>
+            </div>
+            <div style="width: 80%;margin-left: 10%;margin-right: 10%; margin-bottom: 20px;">
+              <div class="text-field" style="width: 49%;display:inline-block;">
+                <button id="cc-commit" class="button" onclick="create_competition(this);">CREATE</button>
+              </div>
+              <div class="text-field" style="width: 50%;width: 50%;display:inline-block;">
+                <button id="cc-cancel" class="button"
+                  onclick="document.getElementById('cc').hidden = true">CANCEL</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="loader" hidden>
+      <div class="fulldim">
+        <div class="page-pad">
+          <div class="loader"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
