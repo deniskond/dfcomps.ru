@@ -30,7 +30,6 @@ export class OneVOneServer {
       }
     };
 
-    this.oneVOneHandler.setEligiblePlayersSubscription();
     this.setWSServerHandlers();
   }
 

@@ -205,8 +205,8 @@ export class DemosService {
     const matchMap: MapInterface = JSON.parse(match.map);
     const mapName = matchMap.name;
     const fileName = demo.originalname;
-    const pattern = new RegExp(`${mapName}\\[(.*)df\\.(.*)\\](\\d+)\\.(\\d+)\\.(\\d+)\\((.*)\\)\\.dm_68`);
-    const patternMatch: RegExpMatchArray | null = fileName.match(pattern);
+    const pattern = new RegExp(`${mapName.toLowerCase()}\\[(.*)df\\.(.*)\\](\\d+)\\.(\\d+)\\.(\\d+)\\((.*)\\)\\.dm_68`);
+    const patternMatch: RegExpMatchArray | null = fileName.toLowerCase().match(pattern);
 
     if (!patternMatch) {
       return {

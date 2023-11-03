@@ -23,6 +23,7 @@ import { HasAdminRights } from './business/has-admin-rights.guard';
 import { SharedModule } from '~shared/modules/shared.module';
 import { HasAdminPanelAccess } from './business/has-admin-panel-access.guard';
 import { AdminOfflineCupComponent } from './ui/admin-offline-cup/admin-offline-cup.component';
+import { AdminRedirectComponent } from './ui/admin-redirect/admin-redirect.component';
 
 const adminRoutes: Routes = [
   {
@@ -30,7 +31,7 @@ const adminRoutes: Routes = [
     component: AdminPageComponent,
     canActivate: [HasAdminPanelAccess],
     children: [
-      { path: '', component: AdminNewsComponent },
+      { path: '', component: AdminRedirectComponent },
       {
         path: 'news',
         children: [
