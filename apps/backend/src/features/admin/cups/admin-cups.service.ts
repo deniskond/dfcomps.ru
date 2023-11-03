@@ -85,10 +85,9 @@ export class AdminCupsService {
       physics: cup.physics,
       type: cup.type,
       validationAvailable:
-        (cup.rating_calculated === false &&
-          cup.type === CupTypes.OFFLINE &&
-          moment().isAfter(moment(cup.end_datetime))) ||
-        isSuperadmin(userAccess.roles),
+        cup.rating_calculated === false &&
+        cup.type === CupTypes.OFFLINE &&
+        (moment().isAfter(moment(cup.end_datetime)) || isSuperadmin(userAccess.roles)),
       calculateRatingsAvailable: cup.rating_calculated === false && cup.demos_validated === true,
       endDateTime: cup.end_datetime,
     }));
@@ -751,7 +750,7 @@ export class AdminCupsService {
   private async calculateOfflineRating(cup: Cup, physics: Physics): Promise<void> {
     let offlineCupTable: ValidDemoInterface[] = (await this.tablesService.getOfflineCupTable(cup, physics)).valid;
 
-    const otherPhysics = cup.physics === Physics.CPM ? Physics.VQ3 : Physics.CPM;
+    const otherPhysics = physics === Physics.CPM ? Physics.VQ3 : Physics.CPM;
     const otherPhysicsOfflineCupTable: ValidDemoInterface[] = (
       await this.tablesService.getOfflineCupTable(cup, otherPhysics)
     ).valid;
