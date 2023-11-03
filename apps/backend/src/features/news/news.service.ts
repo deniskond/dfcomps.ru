@@ -170,7 +170,8 @@ export class NewsService {
       .getOne())!;
 
     const levelshot = getMapLevelshot(news.cup.map1!);
-    const isFutureCup: boolean = moment(cup.start_datetime).isAfter(moment());
+    const canUserSeeFutureCups = checkUserRoles(userAccess.roles, [UserRoles.NEWSMAKER]);
+    const isFutureCup: boolean = moment(cup.start_datetime).isAfter(moment()) && !canUserSeeFutureCups;
     let cpmDemo: string | null = null;
     let cpmRes: number | null = null;
     let vq3Demo: string | null = null;
