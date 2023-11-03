@@ -2,7 +2,6 @@ import { Body, Controller, Get, Headers, Post } from '@nestjs/common';
 import { MatchService } from './match.service';
 import {
   DuelPlayersInfoResponseInterface,
-  EligiblePlayersInterface,
   FinishMatchDto,
   MatchStartDto,
   UpdateBotTimeDto,
@@ -16,11 +15,6 @@ export class MatchController {
   @Get('info')
   getMatchInfo(@Headers('X-Auth') accessToken: string): Promise<DuelPlayersInfoResponseInterface> {
     return this.matchService.getMatchInfo(accessToken);
-  }
-
-  @Get('get-eligible-players')
-  getEligiblePlayers(): Promise<EligiblePlayersInterface> {
-    return this.matchService.getEligiblePlayers();
   }
 
   @Post('start')

@@ -6,7 +6,6 @@ import {
   DFCOMPS_BOT_ID,
   DuelPlayerInfoInterface,
   DuelPlayersInfoResponseInterface,
-  EligiblePlayersInterface,
   Physics,
   UpdateBotTimeDto,
 } from '@dfcomps/contracts';
@@ -137,17 +136,6 @@ export class MatchService {
     }
 
     return matchInfo;
-  }
-
-  public async getEligiblePlayers(): Promise<EligiblePlayersInterface> {
-    const players: { userId: number }[] = await this.ratingChangesRepository
-      .createQueryBuilder('rating_changes')
-      .select('rating_changes.userId')
-      .groupBy('rating_changes.userId')
-      .having('COUNT(rating_changes.userId) > 2')
-      .getRawMany();
-
-    return { players: players.map(({ userId }) => userId) };
   }
 
   public async startMatch(

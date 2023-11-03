@@ -72,7 +72,7 @@ export class AdminCupsService {
   public async getAllCups(accessToken: string | undefined): Promise<AdminCupInterface[]> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
-    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER, UserRoles.VALIDATOR])) {
       throw new UnauthorizedException('Unauthorized to get admin cups list without CUP_ORGANIZER role');
     }
 
