@@ -213,11 +213,7 @@ export class MatchService {
       .where('1v1_rating.userId = :userId', { userId: humanPlayerId })
       .getOne();
 
-    if (!humanRatingEntry) {
-      throw new BadRequestException(`Player with id = ${humanPlayerId} was not found in 1v1 rating`);
-    }
-
-    const humanRating: number = humanRatingEntry[physics];
+    const humanRating: number = humanRatingEntry ? humanRatingEntry[physics] : 1500;
     let botTime: number;
 
     if (humanRating > 2000) {

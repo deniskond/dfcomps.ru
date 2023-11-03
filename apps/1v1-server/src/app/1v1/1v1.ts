@@ -19,7 +19,13 @@ import { QueueInfoInterface } from './interfaces/queue-info.interface';
 import { TEST_PLAYER_ID } from './constants/test-player-id';
 import { MapInterface } from './interfaces/map.interface';
 import { URLS } from './config/urls';
-import { DFCOMPS_BOT_ID, EligiblePlayersInterface, MatchStartDto, UpdateBotTimeDto, UpdateMatchInfoDto } from '@dfcomps/contracts';
+import {
+  DFCOMPS_BOT_ID,
+  EligiblePlayersInterface,
+  MatchStartDto,
+  UpdateBotTimeDto,
+  UpdateMatchInfoDto,
+} from '@dfcomps/contracts';
 
 interface QueueInterface {
   playerId: number;
