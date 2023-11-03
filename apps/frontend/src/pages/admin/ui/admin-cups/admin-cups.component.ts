@@ -61,6 +61,14 @@ export class AdminCupsComponent implements OnInit {
       });
   }
 
+  public isCupOrganizer(): boolean {
+    if (!this.user) {
+      return false;
+    }
+
+    return checkUserRoles(this.user.roles, [UserRoles.CUP_ORGANIZER]);
+  }
+
   public isEditingCupAvailable(cup: AdminCupInterface): boolean {
     if (!this.user) {
       return false;

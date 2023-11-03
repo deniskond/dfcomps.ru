@@ -87,6 +87,7 @@ export class AdminCupsService {
       validationAvailable:
         cup.rating_calculated === false &&
         cup.type === CupTypes.OFFLINE &&
+        checkUserRoles(userAccess.roles, [UserRoles.VALIDATOR]) &&
         (moment().isAfter(moment(cup.end_datetime)) || isSuperadmin(userAccess.roles)),
       calculateRatingsAvailable: cup.rating_calculated === false && cup.demos_validated === true,
       endDateTime: cup.end_datetime,
