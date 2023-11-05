@@ -239,7 +239,7 @@ export class DemosService {
 
     const randomSuffix: string = Math.floor(Math.random() * (99999 - 10001) + 10001).toString();
     const resultFilename: string = fileName.replace(/#/g, '').replace('.dm_68', '') + `_${randomSuffix}.dm_68`;
-    const demoFullName: string = demoDirectory + '\\' + resultFilename;
+    const demoFullName: string = demoDirectory + '/' + resultFilename;
 
     fs.writeFileSync(demoFullName, demo.buffer);
 
