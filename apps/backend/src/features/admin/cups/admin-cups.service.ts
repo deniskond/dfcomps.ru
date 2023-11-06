@@ -524,6 +524,13 @@ export class AdminCupsService {
     if (fs.existsSync(cupValidationArchiveFileName)) {
       fs.rmSync(cupValidationArchiveFileName);
     }
+
+    await this.cupsRepository
+      .createQueryBuilder()
+      .update(Cup)
+      .set({ archive_link: archiveFileName })
+      .where({ id: cupId })
+      .execute();
   }
 
   public async getAllActiveMulticups(): Promise<AdminActiveMulticupInterface[]> {
