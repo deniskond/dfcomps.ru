@@ -138,7 +138,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
   private mapCupsToView(cups: ProfileCupResponseInterface[]): ProfileCupInterface[] {
     return cups.map((cup: ProfileCupResponseInterface) => {
-      const physics = cup.cpm_place === 0 ? Physics.VQ3 : Physics.CPM;
+      const physics = cup.cpm_place ? Physics.CPM : Physics.VQ3;
 
       return {
         newsId: cup.news_id,

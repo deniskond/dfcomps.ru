@@ -35,7 +35,7 @@
         <span translate translation="rating"></span>
       </mat-header-cell>
       <mat-cell *cdkCellDef="let row" class="rating-column">
-        <app-rating-change [change]="row.ratingChange"></app-rating-change>
+        <app-rating-change [change]="row.ratingChange" [zeroIfNull]="true"></app-rating-change>
       </mat-cell>
     </ng-container>
 
