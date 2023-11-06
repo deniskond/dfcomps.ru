@@ -217,7 +217,7 @@ export class AdminCupsService {
             text_en: '',
             youtube: null,
             user: { id: userAccess.userId! },
-            datetimezone: startDatetime,
+            datetimezone: endDatetime,
             newsType: { id: mapNewsTypeEnumToDBNewsTypeId(NewsTypes.OFFLINE_RESULTS) },
             cup: { id: cupId },
             comments_count: 0,
@@ -295,7 +295,7 @@ export class AdminCupsService {
           header: `Результаты ${updateCupDto.fullName}`,
           header_en: `Results: ${updateCupDto.fullName}`,
           user: { id: userAccess.userId! },
-          datetimezone: startDatetime,
+          datetimezone: endDatetime,
         })
         .where({ cup: { id: cupId } })
         .andWhere({ newsType: { id: mapNewsTypeEnumToDBNewsTypeId(NewsTypes.OFFLINE_RESULTS) } })
