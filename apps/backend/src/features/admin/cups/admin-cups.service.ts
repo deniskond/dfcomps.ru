@@ -418,7 +418,7 @@ export class AdminCupsService {
       await this.cupsRepository
         .createQueryBuilder()
         .update(Cup)
-        .set({ demos_validated: true })
+        .set({ demos_validated: true, validator_id: userAccess.userId })
         .where({ id: cupId })
         .execute();
     }

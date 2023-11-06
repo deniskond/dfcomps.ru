@@ -101,6 +101,9 @@ export class Cup {
   @Column({ type: 'boolean' })
   demos_validated: boolean;
 
+  @Column({ type: 'integer', nullable: true })
+  validator_id: number | null;
+
   @OneToMany(() => CupResult, (cupResult) => cupResult.cup)
   cupResults: CupResult[];
 
