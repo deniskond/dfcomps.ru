@@ -32,5 +32,5 @@ export class UpdateCupDto {
 
   mapPk3Link: string | undefined;
 
-  multicupId: number | undefined;
+  multicupId?: number;
 }

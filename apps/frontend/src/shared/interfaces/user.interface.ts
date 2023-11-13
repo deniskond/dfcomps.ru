@@ -8,4 +8,5 @@ export interface UserInterface {
   nick: string;
   vq3Rating: number;
   roles: UserRoles[];
+  discordTag: string | null;
 }

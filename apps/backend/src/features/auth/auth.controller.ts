@@ -1,10 +1,10 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get, Headers } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { GetPasswordTokenDto } from './dto/get-password-token.dto';
 import { GetDiscordTokenDto } from './dto/get-discord-token.dto';
 import { CheckLoginDto } from './dto/check-login.dto';
 import { RegisterDto } from './dto/register.dto';
-import { LoginAvailableInterface, LoginResponseInterface } from '@dfcomps/auth';
+import { DiscordPromptInterface, LoginAvailableInterface, LoginResponseInterface } from '@dfcomps/auth';
 
 @Controller('auth')
 export class AuthController {
@@ -28,5 +28,18 @@ export class AuthController {
   @Post('register')
   register(@Body() { login, discordAccessToken }: RegisterDto): Promise<LoginResponseInterface> {
     return this.authService.register(login, discordAccessToken);
+  }
+
+  @Get('discord-prompt')
+  getDiscordPrompt(@Headers('X-Auth') accessToken: string | undefined): Promise<DiscordPromptInterface> {
+    return this.authService.getDiscordPrompt(accessToken);
+  }
+
+  @Post('link-discord')
+  linkDiscord(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Body() { discordAccessToken }: GetDiscordTokenDto,
+  ): Promise<LoginResponseInterface> {
+    return this.authService.linkDiscord(accessToken, discordAccessToken);
   }
 }

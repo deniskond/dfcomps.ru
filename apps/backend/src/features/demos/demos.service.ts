@@ -205,8 +205,8 @@ export class DemosService {
     const matchMap: MapInterface = JSON.parse(match.map);
     const mapName = matchMap.name;
     const fileName = demo.originalname;
-    const pattern = new RegExp(`${mapName}\\[(.*)df\\.(.*)\\](\\d+)\\.(\\d+)\\.(\\d+)\\((.*)\\)\\.dm_68`);
-    const patternMatch: RegExpMatchArray | null = fileName.match(pattern);
+    const pattern = new RegExp(`${mapName.toLowerCase()}\\[(.*)df\\.(.*)\\](\\d+)\\.(\\d+)\\.(\\d+)\\((.*)\\)\\.dm_68`);
+    const patternMatch: RegExpMatchArray | null = fileName.toLowerCase().match(pattern);
 
     if (!patternMatch) {
       return {
@@ -239,7 +239,7 @@ export class DemosService {
 
     const randomSuffix: string = Math.floor(Math.random() * (99999 - 10001) + 10001).toString();
     const resultFilename: string = fileName.replace(/#/g, '').replace('.dm_68', '') + `_${randomSuffix}.dm_68`;
-    const demoFullName: string = demoDirectory + '\\' + resultFilename;
+    const demoFullName: string = demoDirectory + '/' + resultFilename;
 
     fs.writeFileSync(demoFullName, demo.buffer);
 

@@ -17,6 +17,7 @@ import { NgChartsModule } from 'ng2-charts';
 import { EditProfileDialogComponent } from './components/edit-profile-dialog/edit-profile-dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '~shared/modules/shared.module';
+import { MatIconModule } from '@angular/material/icon';
 
 const routes: Routes = [
   {
@@ -47,6 +48,7 @@ const routes: Routes = [
     MatDialogModule,
     FormsModule,
     ReactiveFormsModule,
+    MatIconModule,
   ],
   providers: [ProfileService],
 })

@@ -62,17 +62,6 @@ export class CommentsService {
       throw new BadRequestException("Can't add comment before posting time");
     }
 
-    const amountOfCompetitions: number = await this.cupsDemosRepository
-      .createQueryBuilder('cups_demos')
-      .distinct()
-      .select('cupId')
-      .where('cups_demos.userId = :userId', { userId: userAccess.userId })
-      .getCount();
-
-    if (amountOfCompetitions < 3) {
-      throw new BadRequestException("Can't post comments before participating in 3 competitions");
-    }
-
     const trimmedText = text.trim();
 
     if (!trimmedText) {

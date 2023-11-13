@@ -154,6 +154,7 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
   finishSignUp: 'Finish sign up',
   signUpOnlyWithDiscord: 'Registration on the site is currently only available through a Discord account',
   registerWithDiscord: 'Register with Discord',
-  signUpLoginCaption:
-    'Select a login under which other users will see you on the site',
+  signUpLoginCaption: 'Select a login under which other users will see you on the site',
+  doYouWantToLinkDiscord: 'Do you want to link Discord account to your profile?',
+  linkDiscord: 'Link Discord',
 };

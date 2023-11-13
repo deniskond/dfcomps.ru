@@ -19,7 +19,12 @@ import { QueueInfoInterface } from './interfaces/queue-info.interface';
 import { TEST_PLAYER_ID } from './constants/test-player-id';
 import { MapInterface } from './interfaces/map.interface';
 import { URLS } from './config/urls';
-import { DFCOMPS_BOT_ID, EligiblePlayersInterface, MatchStartDto, UpdateBotTimeDto, UpdateMatchInfoDto } from '@dfcomps/contracts';
+import {
+  DFCOMPS_BOT_ID,
+  MatchStartDto,
+  UpdateBotTimeDto,
+  UpdateMatchInfoDto,
+} from '@dfcomps/contracts';
 
 interface QueueInterface {
   playerId: number;
@@ -37,28 +42,6 @@ export class OneVOneHandler {
   private matches$ = new BehaviorSubject<ServerMatchInterface[]>([]);
   private clients$ = new BehaviorSubject<ClientInterface[]>([]);
   private finishedMatchPlayers$ = new BehaviorSubject<number[]>([]);
-  private eligiblePlayers: number[] = [];
-
-  public setEligiblePlayersSubscription(): void {
-    this.doAxiosGetRequest<EligiblePlayersInterface>(URLS.MATCH.GET_ELIGIBLE_PLAYERS).then(
-      ({ data }: AxiosResponse<EligiblePlayersInterface>) => {
-        console.log(`Setting eligible players: ${JSON.stringify(data)}`);
-        this.eligiblePlayers = data.players;
-      },
-    );
-
-    setInterval(
-      () => {
-        this.doAxiosGetRequest<EligiblePlayersInterface>(URLS.MATCH.GET_ELIGIBLE_PLAYERS).then(
-          ({ data }: AxiosResponse<EligiblePlayersInterface>) => {
-            console.log(`Setting eligible players: ${JSON.stringify(data)}`);
-            this.eligiblePlayers = data.players;
-          },
-        );
-      },
-      1000 * 60 * 60 * 24,
-    );
-  }
 
   public addClient(playerId: number, socket: WebSocket, uniqueId: string): void {
     const existingClient = this.clients$.value.find((client: ClientInterface) => client.playerId === playerId);
@@ -133,19 +116,6 @@ export class OneVOneHandler {
   public processClientMessage(socket: WebSocket, message: DuelClientMessage): void {
     console.log(`received: ${JSON.stringify(message)}`);
     if (message.action === DuelWebsocketClientActions.JOIN_QUEUE) {
-      if (
-        !this.eligiblePlayers.includes(message.playerId) &&
-        message.playerId !== TEST_PLAYER_ID &&
-        process.env.NODE_ENV !== 'test'
-      ) {
-        this.send(socket, {
-          action: DuelWebsocketServerActions.JOIN_QUEUE_FAILURE,
-          payload: { error: 'Should play three or more warcups to join queue' },
-        });
-
-        return;
-      }
-
       if (
         this.getPlayerInQueue(message.playerId) ||
         this.finishedMatchPlayers$.value.find((playerId: number) => playerId === message.playerId) ||

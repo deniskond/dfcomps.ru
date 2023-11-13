@@ -141,12 +141,11 @@ export class AdminDataService {
   }
 
   public editCup$(formValue: Record<string, any>, cupId: number): Observable<void> {
-    return this.backendService.post$<void>(URL_PARAMS.ADMIN.UPDATE_CUP(cupId), {
+    const updateCupDto: UpdateCupDto = {
       fullName: formValue['fullName'],
       shortName: formValue['shortName'],
       startTime: formValue['startTime'],
       endTime: formValue['endTime'],
-      multicupId: formValue['multicup'] || undefined,
       mapName: formValue['mapName'],
       mapAuthor: formValue['mapAuthor'],
       weapons: this.getWeaponsFromForm(formValue),
@@ -154,7 +153,13 @@ export class AdminDataService {
       size: formValue['size'],
       mapLevelshotLink: formValue['mapLevelshotLink'] || undefined,
       mapPk3Link: formValue['mapPk3Link'] || undefined,
-    } as UpdateCupDto);
+    };
+
+    if (formValue['multicup']) {
+      updateCupDto.multicupId = formValue['multicup'];
+    }
+
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.UPDATE_CUP(cupId), updateCupDto);
   }
 
   public deleteCup$(cupId: number): Observable<void> {

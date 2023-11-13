@@ -5,15 +5,27 @@
 
       <ng-container *ngIf="(isLoading$ | async) === false"> {{ mainInfo.nick }} </ng-container>
     </h1>
-    <button
-      *ngIf="isEditProfileAvailable$ | async"
-      (click)="openEditProfilePopup()"
-      mat-raised-button
-      color="primary"
-      class="edit-profile-button"
-    >
-      <span translate translation="editProfile"></span>
-    </button>
+    <div>
+      <button
+        *ngIf="isDiscordLinkButtonShown$ | async"
+        (click)="linkDiscord()"
+        mat-raised-button
+        color="primary"
+        class="profile-button"
+      >
+        <mat-icon>discord</mat-icon>
+        <span translate translation="linkDiscord"></span>
+      </button>
+      <button
+        *ngIf="isEditProfileAvailable$ | async"
+        (click)="openEditProfilePopup()"
+        mat-raised-button
+        color="primary"
+        class="profile-button"
+      >
+        <span translate translation="editProfile"></span>
+      </button>
+    </div>
   </div>
 
   <ng-container *ngIf="(isLoading$ | async) === false; else loader">

@@ -153,6 +153,7 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   finishSignUp: 'Завершить регистрацию',
   signUpOnlyWithDiscord: 'Регистрация на сайте в данный момент доступна только через аккаунт Discord',
   registerWithDiscord: 'Зарегистрироваться через Discord',
-  signUpLoginCaption:
-    'Выберите логин, под которым другие пользователи будут видеть вас на сайте',
+  signUpLoginCaption: 'Выберите логин, под которым другие пользователи будут видеть вас на сайте',
+  doYouWantToLinkDiscord: 'Хотите привязать Discord к своему профилю?',
+  linkDiscord: 'Привязать Discord',
 };
