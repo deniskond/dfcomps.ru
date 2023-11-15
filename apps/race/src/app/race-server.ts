@@ -142,7 +142,10 @@ export class RaceServer {
       });
     app
       .route('/competitions/:competitionId')
-      .get((req, res) => this.response(res, this.raceController.getCompetition(req.params.competitionId)))
+      .get((req, res) => {
+        const token = this.getAdminToken(req);
+        this.response(res, this.raceController.getCompetition(req.params.competitionId, token));
+      })
       .delete((req, res) => {
         const token = this.getAdminToken(req);
         this.response(res, this.raceController.removeCompetition(req.params.competitionId, token));
@@ -161,7 +164,7 @@ export class RaceServer {
           .then((r) => this.response(res, r));
       })
       .get((req, res) => {
-        const v = this.raceController.getCompetition(req.params.competitionId);
+        const v = this.raceController.getCompetition(req.params.competitionId, undefined);
         if (v.err !== undefined) {
           this.response(res, v);
           return;
@@ -193,7 +196,7 @@ export class RaceServer {
           .catch((r) => this.log(r));
       })
       .get((req, res) => {
-        const v = this.raceController.getCompetition(req.params.competitionId);
+        const v = this.raceController.getCompetition(req.params.competitionId, undefined);
         if (v.err !== undefined) {
           this.response(res, v);
           return;
@@ -216,15 +219,26 @@ export class RaceServer {
       const token = this.getAdminToken(req);
       this.raceController.competitionStart(req.params.competitionId, token).then((r) => this.response(res, r));
     });
-    app.route('/competitions/:competitionId/rounds/:roundId').post((req, res) => {
-      const token = this.getAdminToken(req);
-      const roundId = parseInt(req.params.roundId);
-      if (isNaN(roundId)) {
-        this.invalidType(res, "Expected 'roundId' to be round index");
-        return;
-      }
-      this.response(res, this.raceController.createRound(req.params.competitionId, token, roundId));
-    });
+    app
+      .route('/competitions/:competitionId/rounds/:roundId')
+      .post((req, res) => {
+        const token = this.getAdminToken(req);
+        const roundId = parseInt(req.params.roundId);
+        if (isNaN(roundId)) {
+          this.invalidType(res, "Expected 'roundId' to be round index");
+          return;
+        }
+        this.response(res, this.raceController.createRound(req.params.competitionId, token, roundId));
+      })
+      .get((req, res) => {
+        const token = this.getAdminToken(req);
+        const roundId = parseInt(req.params.roundId);
+        if (isNaN(roundId)) {
+          this.invalidType(res, "Expected 'roundId' to be round index");
+          return;
+        }
+        this.response(res, this.raceController.getRoundView(req.params.competitionId, roundId, token));
+      });
     app.ws('/bracket/:competitionId/rounds/:roundId', (ws, req: express.Request) => {
       this.log(`new connection to ${req.params.competitionId}/${req.params.roundId}`);
       const competitionId = req.params.competitionId;
@@ -236,20 +250,26 @@ export class RaceServer {
         userToken = req.query.token;
       }
       if (isNaN(roundId)) {
-        ws.close(
-          RaceServer.statusMap.BadRequest,
-          JSON.stringify({ err: { code: 'BadRequest', message: "Expected 'roundId' to be round index" } }),
-        );
+        ws.send(JSON.stringify({ err: { code: 'BadRequest', message: "Expected 'roundId' to be round index" } }));
+        ws.close();
         return;
       }
-      const subscription = this.raceController.subscribeRound(competitionId, roundId, (x) => {
+      const subscription = this.raceController.subscribeRound(competitionId, roundId, adminToken ?? userToken, (x) => {
         ws.send(JSON.stringify(result(x)));
       });
+      console.log(subscription);
       if (subscription.err !== undefined) {
-        ws.close(RaceServer.statusMap[subscription.err.code], JSON.stringify(subscription));
+        console.log(`No connection ${RaceServer.statusMap[subscription.err.code]}`);
+        try {
+          ws.send(JSON.stringify(subscription));
+          ws.close();
+        } catch (e) {
+          console.error(e);
+        }
+        console.log('Connection closed');
         return;
       }
-      ws.send(JSON.stringify(this.raceController.getRoundView(competitionId, roundId)));
+      ws.send(JSON.stringify(this.raceController.getRoundView(competitionId, roundId, adminToken)));
       subscription.result.add(() => {
         ws.close(200);
       });
@@ -263,7 +283,7 @@ export class RaceServer {
         let res;
         switch (message.action) {
           case 'Update':
-            ws.send(JSON.stringify(this.raceController.getRoundView(competitionId, roundId)));
+            ws.send(JSON.stringify(this.raceController.getRoundView(competitionId, roundId, adminToken)));
             break;
           // ws.send();
           case 'Ban':

@@ -38,10 +38,13 @@ export class RaceController {
     this.competitions[res.id] = { view: res, adminToken: token, rounds: {} };
     return result(res);
   }
-  public getCompetition(competitionId: string): Result<CompetitionView> {
+  public getCompetition(
+    competitionId: string,
+    token: string | undefined,
+  ): Result<CompetitionView & { owned: boolean }> {
     const { err, result: competition } = this.validateCompetition(competitionId, undefined, false);
     if (err !== undefined) return error(err);
-    return result(competition.view);
+    return result({ ...competition.view, owned: competition.adminToken === token });
   }
   public removeCompetition(competitionId: string, token: string | undefined): Result<boolean> {
     const { err, result: competition } = this.validateCompetition(competitionId, token);
@@ -56,14 +59,16 @@ export class RaceController {
     return result(delete this.competitions[competitionId]);
   }
   public listCompetitions(token: string | undefined): Result<{ id: string; name: string }[]> {
+    let res;
     if (token !== undefined) {
-      return result(
-        Object.keys(this.competitions)
-          .filter((x) => this.competitions[x].adminToken === token)
-          .map((x) => ({ id: x, name: this.competitions[x].view.name })),
-      );
+      res = Object.keys(this.competitions)
+        .filter((x) => this.competitions[x].adminToken === token)
+        .map((x) => ({ id: x, name: this.competitions[x].view.name }));
+    } else {
+      res = Object.keys(this.competitions).map((x) => ({ id: x, name: this.competitions[x].view.name }));
     }
-    return result(Object.keys(this.competitions).map((x) => ({ id: x, name: this.competitions[x].view.name })));
+    console.log(JSON.stringify(res));
+    return result(res);
   }
   public competitionUpdateRules(
     competitionId: string,
@@ -216,7 +221,7 @@ export class RaceController {
     // const id = this.getRoundId(competitionId, round);
     let roundView = competitionData.rounds[round]?.view;
     if (roundView !== undefined) {
-      return badRequest(`Round ${round} is already started`);
+      return duplicate(`Round ${round} is already started`);
     }
     const p0 = competition.brackets.rounds[round].players[0];
     const p1 = competition.brackets.rounds[round].players[1];
@@ -226,6 +231,13 @@ export class RaceController {
     const r0 = competition.brackets.rounds[(round << 1) + 1];
     const r1 = competition.brackets.rounds[(round << 1) + 2];
     const forbiddenBans = [...(r0?.bannedMaps ?? []), ...(r1?.bannedMaps ?? [])];
+    const order = competition.mapPool
+      .map((x, i) => ({
+        map: i,
+        factor: Math.random(),
+      }))
+      .sort((a, b) => a.factor - b.factor)
+      .map((x) => x.map);
     roundView = {
       forbiddenBans,
       players: [
@@ -236,6 +248,7 @@ export class RaceController {
           info: competition.players[p1],
         },
       ],
+      order,
       bans: {},
       banTurn: 0,
       stage: 'Ban',
@@ -252,7 +265,8 @@ export class RaceController {
   public subscribeRound(
     competitionId: string,
     roundId: number,
-    onUpdate: (x: RoundView) => void,
+    token: string | undefined,
+    onUpdate: (x: RoundView & { tokens?: { token: string }[]; index: number }) => void,
   ): Result<Subscription> {
     const { err, result: competitionData } = this.validateCompetition(competitionId, undefined, false);
     if (err !== undefined) return error(err);
@@ -260,17 +274,31 @@ export class RaceController {
     if (round === undefined) {
       return notFound(`Round with id='${roundId}' is not found in competition ${competitionId}`);
     }
-    return result(round.stream.subscribe(onUpdate));
+    const index = round.players.findIndex((x) => x.token === token);
+    if (competitionData.adminToken === token) {
+      return result(
+        round.stream.subscribe((rw) => onUpdate({ ...rw, tokens: competitionData.rounds[roundId].players, index })),
+      );
+    }
+    return result(round.stream.subscribe((rw) => onUpdate({ ...rw, index })));
   }
 
-  public getRoundView(competitionId: string, roundId: number): Result<RoundView> {
+  public getRoundView(
+    competitionId: string,
+    roundId: number,
+    token?: string,
+  ): Result<RoundView & { index: number; tokens?: { token: string }[] }> {
     const { err, result: competitionData } = this.validateCompetition(competitionId, undefined, false);
     if (err !== undefined) return error(err);
     const round = competitionData.rounds[roundId];
     if (round === undefined) {
       return notFound(`Round with id='${roundId}' is not found in competition ${competitionId}`);
     }
-    return result(round.view);
+    if (competitionData.adminToken === token) {
+      return result({ ...round.view, index: -1, tokens: competitionData.rounds[roundId].players });
+    }
+    const index = round.players.findIndex((x) => x.token === token);
+    return result({ ...round.view, index });
   }
 
   public roundBan(
@@ -351,6 +379,11 @@ export class RaceController {
         return badRequest('Brackets are dead');
       }
       competition.brackets.rounds[roundId].bannedMaps = Object.keys(round.view.bans).map((x) => parseInt(x));
+      // [TODO] add api call for port retrieval
+
+      for (const p of round.view.players) {
+        p.serverUrl = '127.0.0.1:27970';
+      }
 
       round.view.stage = 'Running';
     } else {

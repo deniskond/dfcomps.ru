@@ -71,25 +71,6 @@
       padding-bottom: 5%;
     }
 
-    .levelshot-image {
-      float: center;
-      position: absolute;
-      left: 1px;
-      top: 1px;
-      z-index: 900;
-      /* margin: 2pt; */
-      width: calc(100% - 2px);
-      height: calc(100% - 2px);
-    }
-
-    .levelshot-black {
-      position: absolute;
-      background: #000;
-      left: 10px;
-      right: 10px;
-      z-index: 30;
-      height: 100%;
-    }
 
     .levelshot-label {
       font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -106,12 +87,6 @@
       margin-left: 320px;
       width: calc(100% - 340px);
       height: 100%;
-    }
-
-    .map-list {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
     }
 
     .map-entry {
@@ -161,7 +136,7 @@
       width: 100%;
       border-top: 1px solid;
       border-image-slice: 1;
-      border-image-source: linear-gradient(90deg, #7a270050 0%, #ff5300FF 90%, #ba3d00B0 100%);
+      border-image-source: linear-gradient(90deg, #7a270050 0%, #FF5300FF 90%, #ba3d00B0 100%);
     }
 
     svg {
@@ -169,72 +144,6 @@
     }
 
 
-    .players-content {
-      /* display: block; */
-      position: absolute;
-      margin-left: 320px;
-      width: calc(100% - 340px);
-      height: 400px;
-      bottom: 0px
-    }
-
-    .players-hdiv {
-      position: relative;
-      float: left;
-      width: 50%;
-      height: 80px;
-    }
-
-    .players-l-caption {
-      position: absolute;
-      display: block;
-      font-family: "Helvetica Narrow", "Arial Narrow", Tahoma, Arial, Helvetica, sans-serif;
-      color: #ff5500;
-      font-size: 40px;
-      top: 10px;
-      left: 40px;
-      font-weight: bold;
-    }
-
-    .players-l-background {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, #522b0080 0%, #27150060 30%, #00000000 100%);
-    }
-
-    .players-l-background-box {
-      position: absolute;
-      width: 2px;
-      height: 100%;
-      background-color: #ff5500;
-    }
-
-    .players-r-caption {
-      position: absolute;
-      display: block;
-      font-family: "Helvetica Narrow", "Arial Narrow", Tahoma, Arial, Helvetica, sans-serif;
-      color: #ff5500;
-      font-size: 40px;
-      top: 10px;
-      right: 40px;
-      font-weight: bold;
-    }
-
-    .players-r-background {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, #00000000 0%, #27150060 70%, #522b0080 100%);
-    }
-
-    .players-r-background-box {
-      position: absolute;
-      width: 2px;
-      height: 100%;
-      right: 0px;
-      background-color: #ff5500;
-    }
 
     .login {
       margin-left: 20%;
@@ -250,14 +159,14 @@
       appearance: none;
       border: none;
       outline: none;
-      border-bottom: 2px solid #ff5300FF;
+      border-bottom: 2px solid #FF5300FF;
       background-color: #A02b0020;
       /* border-radius: .2em .2em 0 0; */
       font-family: monospace;
       font-size: 30px;
       padding: 8px;
       padding-left: 20px;
-      color: #ff5300FF;
+      color: #FF5300FF;
     }
 
     .text-input::placeholder {
@@ -300,13 +209,14 @@
       height: 100%;
       border: none;
       outline: none;
-      border-left: 2px solid #ff5300FF;
-      border-right: 2px solid #ff5300FF;
+      border-left: 2px solid #FF5300FF;
+      border-right: 2px solid #FF5300FF;
       background: linear-gradient(90deg, #521b0080 0%, #27150060 20%, #00000000 50%, #27150060 80%, #521b0080 100%);
       font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
       font-size: 30px;
       padding: 8px;
-      color: #ff5300FF;
+      color: #FF5300FF;
+      pointer-events: all;
     }
 
     .button:hover {
@@ -320,8 +230,8 @@
     .button.rotated {
       border-left: 0;
       border-right: 0;
-      border-top: 2px solid #ff5300FF;
-      border-bottom: 2px solid #ff5300FF;
+      border-top: 2px solid #FF5300FF;
+      border-bottom: 2px solid #FF5300FF;
       background: linear-gradient(0deg, #521b0080 0%, #27150060 20%, #00000000 50%, #27150060 80%, #521b0080 100%);
     }
 
@@ -379,8 +289,8 @@
       max-height: 80vh;
       overflow-y: scroll;
       scrollbar-width: 4px;
-      scrollbar-color: #ff5300FF #A02b0040;
-      border-left: 2px solid #ff5300FF;
+      scrollbar-color: #FF5300FF #A02b0040;
+      border-left: 2px solid #FF5300FF;
       background: linear-gradient(90deg, #A02b0020 0%, #27150010 50%, #00000000 100%);
       padding: 16px;
     }
@@ -406,7 +316,7 @@
     }
 
     .competitions-element:hover {
-      color: #ff5300FF;
+      color: #FF5300FF;
       border-image-source: linear-gradient(90deg, #FF5b00A0 0%, #27150060 50%, #00000000 100%);
     }
 
@@ -422,7 +332,7 @@
       border-image-source: linear-gradient(0deg, #00000000 0%, #27150060 50%, #FF5b00A0 100%);
       overflow-y: scroll;
       scrollbar-width: 4px;
-      scrollbar-color: #ff5300FF #A02b0040;
+      scrollbar-color: #FF5300FF #A02b0040;
       background: linear-gradient(0deg, #A02b0020 0%, #27150010 50%, #00000000 100%);
       padding: 1%;
     }
@@ -451,7 +361,7 @@
     }
 
     .list-box-element:hover {
-      color: #ff5300FF;
+      color: #FF5300FF;
       border-image-source: linear-gradient(90deg, #00000000 0%, #ff5300A0 10%, #00000000 100%);
     }
 
@@ -470,7 +380,7 @@
     }
 
     .list-box-input-box:hover {
-      border-image-source: linear-gradient(90deg, #00000000 0%, #ff5300FF 50%, #00000000 100%);
+      border-image-source: linear-gradient(90deg, #00000000 0%, #FF5300FF 50%, #00000000 100%);
     }
 
     .list-box-input {
@@ -486,7 +396,7 @@
       font-family: monospace;
       padding: 8px;
       padding-left: 20px;
-      color: #ff5300FF;
+      color: #FF5300FF;
     }
 
     .list-box-input::placeholder {
@@ -512,11 +422,266 @@
     }
 
     .inline-button:hover {
-      color: #ff5300FF;
+      color: #FF5300FF;
     }
 
     .inline-button:active {
       background-color: #A02b0040;
+    }
+
+    .brackets-board {
+      border-left: 1px solid #FF5300FF;
+      background: linear-gradient(180deg, #A02b0020 0%, #27150010 50%, #00000000 100%);
+    }
+
+    .brackets-label {
+      font-size: 24px;
+      font-family: monospace;
+      color: #AA5300FF;
+      border-right: 2px solid #A02b0040;
+      /* margin-left: 16px; */
+    }
+
+    .brackets-label.winner {
+      border-right: 3px solid #20A020FF;
+      color: #FF5300FF;
+    }
+
+    .brackets-label.looser {
+      border-right: 3px solid #A02020FF;
+      color: #ff5300A0;
+    }
+
+    .brackets-label.highlight {
+      text-shadow: 0 0 10px #FF5300FF, 0 0 20px #AA5300FF, 0 0 40px #00000000;
+      /* margin-left: 16px; */
+    }
+
+    .brackets-line {
+      box-sizing: border-box;
+      border-color: #AA5300FF;
+    }
+
+    .brackets-line.highlight {
+      border-color: #FF5300FF;
+      /* box-shadow: 0 0 10px #FF5300FF, 0 0 20px #AA5300FF, 0 0 40px #00000000; */
+      /* text-shadow:  */
+    }
+
+    .message-box {
+      list-style-type: none;
+      padding: 8px;
+      max-height: 50vh;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 480px;
+    }
+
+    .float-message {
+      display: block;
+      position: relative;
+      font-size: 20px;
+      color: #AA5300FF;
+      padding: 4px;
+      padding-left: 8px;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+      margin: 8px;
+      border-left: 2px solid #FF5300A0;
+      height: 50px;
+      background: linear-gradient(90deg, #A02b0040 0%, #27150020 50%, #00000000 100%);
+      /* background: #F0101040; */
+    }
+
+    .float-message:hover {
+      color: #FF5300FF;
+    }
+
+    .float-message.appear {
+      animation: slide-in 0.25s forwards ease-in-out;
+    }
+
+    .float-message.disappear {
+      animation: slide-in 0.25s forwards ease-in-out;
+      animation-direction: reverse;
+    }
+
+    @keyframes slide-in {
+      0% {
+        left: 600px;
+      }
+
+      100% {
+        left: 0px;
+      }
+    }
+
+    .map-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .lshot {
+      width: 220px;
+      height: 165px;
+      position: relative;
+      user-select: none;
+      /* white-space: nowrap; */
+      /* font-family: "Helvetica Narrow", "Arial Narrow", Tahoma, Arial, Helvetica, sans-serif; */
+      border: 2px solid;
+      border-image-slice: 1;
+      border-image-source: linear-gradient(90deg, #00000000 0%, #ff5300A0 50%, #00000000 100%);
+      background: linear-gradient(90deg, #00000000 0%, #00000080 50%, #00000000 100%);
+      margin: 10px;
+      color: #A02020FF;
+    }
+
+
+    .limage {
+      float: center;
+      position: absolute;
+      left: 1px;
+      top: 1px;
+      /* margin: 2pt; */
+      width: 100%;
+      height: 100%;
+    }
+
+    .lcap {
+      position: absolute;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-family: monospace;
+      font-size: 20px;
+      font-weight: bold;
+      overflow-wrap: break-word;
+      text-shadow: 0 0 5px #000000FF, 0 0 10px #000000FF, 0 0 20px #00000000;
+    }
+
+
+    .lshot.highlight {
+      border-image-source: linear-gradient(90deg, #00000000 0%, #ff5300FF 20%, #FF8000FF 50%, #ff5300FF 80%, #00000000 100%);
+    }
+
+    .lcap.highlight {
+      text-shadow: 0 0 5px #FF5300FF, 0 0 10px #AA5300FF, 0 0 20px #00000000;
+      color: #FF5300FF;
+    }
+
+    .lshot.frozen {
+      border-image-source: linear-gradient(90deg, #00000000 0%, #A0A0A0FF 20%, #A0A0A0FF 50%, #A0A0A0FF 80%, #00000000 100%);
+    }
+
+    .lcap.frozen {
+      color: #E0E0E0FF;
+    }
+
+    .lshot.banned {
+      border-image-source: linear-gradient(90deg, #00000000 0%, #808080FF 50%, #00000000 100%);
+    }
+
+    .lcap.banned {
+      color: #808080FF;
+    }
+
+    .limage.banned {
+      filter: grayscale(90%);
+    }
+
+    .lcapban {
+      position: absolute;
+      display: flex;
+      font-size: 40px;
+      font-family: monospace;
+      color: #FF2020FF;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, #00000030 0%, #00000080 50%, #00000030 100%);
+    }
+
+    .lcaptiontext {
+      width: 100%;
+      align-self: center;
+      text-align: center;
+      text-shadow: 0 0 5px #000000FF, 0 0 15px #A02020FF, 0 0 30px #00000000;
+    }
+
+    .players-content {
+      display: flex;
+      position: absolute;
+      bottom: 0px;
+      left: 0px;
+      right: 0px;
+      top: 0px;
+      pointer-events: none;
+    }
+
+    .rplayers {
+      display: inline-block;
+      align-self: flex-end;
+      width: 100%;
+      padding: 40px;
+      padding-bottom: 10%;
+      font-family: sans-serif;
+      font-weight: bold;
+      color: #FF5300FF;
+    }
+
+    .rpcaption {
+      display: inline-block;
+      box-sizing: border-box;
+      width: 50%;
+      padding: 20px;
+      font-size: 40px;
+      border-color: #FF5300FF;
+    }
+
+    .rpcaption.left {
+      border-left: 4px solid;
+      padding-left: 4cqb;
+      background: linear-gradient(270deg, #00000000 5%, #27150060 70%, #522b0080 99%, #00000000 100%);
+    }
+
+    .rpcaption.right {
+      border-right: 4px solid;
+      padding-right: 40px;
+      background: linear-gradient(90deg, #00000000 5%, #27150060 70%, #522b0080 100%);
+      text-align: end;
+    }
+
+    .rpcaption.highlight {
+      text-shadow: 0 0 5px #FF5300FF, 0 0 10px #AA5300FF, 0 0 20px #00000000;
+      color: #FF5300FF;
+    }
+
+    .rpcaption.winner {
+      border-color: #20A020FF;
+      color: #20A020FF;
+    }
+
+    .rpcaption.left.winner {
+      background: linear-gradient(270deg, #00000000 5%, #20A02010 70%, #20A02030 99%, #00000000 100%);
+    }
+
+    .rpcaption.right.winner {
+      background: linear-gradient(90deg, #00000000 5%, #20A02010 70%, #20A02030 100%);
+    }
+
+    .rpcaption.looser {
+      border-color: #A02020FF;
+      color: #A02020FF;
+    }
+
+    .rpcaption.left.looser {
+      background: linear-gradient(270deg, #00000000 5%, #A0202010 70%, #A0202030 99%, #00000000 100%);
+    }
+
+    .rpcaption.right.looser {
+      background: linear-gradient(90deg, #00000000 5%, #A0202010 70%, #A0202030 100%);
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/core.min.js"></script>
@@ -528,12 +693,27 @@
     function qid(t, id) {
       return t.querySelector(`#${id}`);
     }
+    async function sl(t) {
+      await new Promise((r, _) => setTimeout(() => r(), t));
+    }
     function animate_error(button) {
       if (!button) return;
       button.classList.add("failure-animation");
       setTimeout(() => button.classList.remove("failure-animation"), 2000.0);
     }
-    async function rq(method, path, data, success = undefined, fail = undefined, failelem = undefined) {
+    async function lerr(message) {
+      const ul = qid(document, "msg-l");
+      let li = document.createElement("li");
+      li.innerText = message;
+      li = ul.appendChild(li);
+      li.classList.add("float-message", "appear");
+      await sl(4000.0);
+      li.classList.remove("appear");
+      li.classList.add("disappear");
+      await sl(500.0);
+      ul.removeChild(li);
+    }
+    async function rq(method, path, data, success = undefined, fail = undefined, failelem = undefined, log = true) {
       let h = {};
       let b = undefined;
       if (data !== undefined) {
@@ -548,11 +728,14 @@
         cache: "reload",
       });
       if (res.ok) {
-        if (success !== undefined) await success(await res.json());
+        if (success !== undefined) return await success(await res.json());
       } else {
+        const t = await res.text();
+        if (log) lerr(t);
         console.warn(`${method} ${path} failed with status ${res.status}`);
-        if (fail !== undefined) await fail(res.status);
+        if (fail !== undefined) await fail(res.status, t);
         if (failelem) animate_error(failelem);
+        return undefined;
       }
     }
     async function progress(promise) {
@@ -599,7 +782,7 @@
         }, undefined, button));
     }
     async function ensure_token() {
-      await rq("POST", '/authorize', {}, undefined, async (x) => { localStorage.removeItem("token"); });
+      await rq("POST", '/authorize', {}, undefined, async (x) => { localStorage.removeItem("token"); }, undefined, false);
     }
 
     function set_listbox(box, tid, els, tf) {
@@ -626,11 +809,39 @@
       }
     }
 
-    async function update_page(relog = true) {
+    function nd(x) { return x === null || x === undefined; }
+
+    async function navigation(logged = false) {
+      if (logged) {
+        return;
+      }
+      localStorage.removeItem("nav-comp-selected");
+      localStorage.removeItem("nav-round-selected");
+      localStorage.removeItem("client-token");
+      const loc = window.location;
+      if (!loc.search) return;
+      let { competition: c, round: r, token: t } = Object.fromEntries(loc.search.slice(1).split('&').map(x => x.split('=').map(y => decodeURI(y))));
+      // "nav-comp-selected"
+      // "nav-round-selected"
+      if (!nd(c)) {
+        localStorage.setItem("nav-comp-selected", c);
+      }
+      if (!nd(r)) {
+        r = Number.parseInt(r);
+        if (Number.isNaN(r)) return;
+        localStorage.setItem("nav-round-selected", r);
+      }
+      if (!nd(t)) {
+        localStorage.setItem("client-token", t);
+      }
+    }
+
+    async function update_page(relog = true, update = true) {
       const rounds = document.getElementById("rounds");
       const login = document.getElementById("login");
       const competitions = document.getElementById("competitions");
       const competitionBrowser = document.getElementById("cb");
+
       rounds.hidden = true;
       competitions.hidden = true;
       login.hidden = true;
@@ -638,103 +849,354 @@
 
       if (relog) await progress(ensure_token());
       const token = localStorage.getItem("token");
+      const logged = !nd(token);
+      navigation(logged);
+      const clientToken = localStorage.getItem("client-token");
+      const compet = localStorage.getItem("nav-comp-selected");
+      const round = localStorage.getItem("nav-round-selected");
+      if (compet) {
+        const comp = await progress(get_competition(compet, !update));
+        if (comp === undefined) {
+          await progress(close_competition());
+          animate_error(qid(qid(document, "competition-list"), `c-${compet}`));
+        } else {
+          if (round !== null) {
+            try {
+              await progress(round_connect(comp, round, clientToken, update));
+              // await update_round();
+              rounds.hidden = false;
+            } catch (e) {
+              console.error(e);
+            }
+            return;
+          } else {
+            try {
+              await progress(update_competition(comp));
+              competitionBrowser.hidden = false;
+            } catch {
+              await progress(close_competition());
+              animate_error(qid(qid(document, "competition-list"), `c-${compet}`));
+            }
+            return;
+          }
+        }
+      }
       if (!token) {
         login.hidden = false;
         return;
       }
-      const page = localStorage.getItem("nav-page");
-      if (page === "rounds") {
-        const round = localStorage.getItem("nav-round");
-        if (round !== undefined) {
-          rounds.hidden = false;
-          select_round(round);
-          return;
-        }
-      }
-      const compet = localStorage.getItem("nav-comp-selected");
-      if (compet) {
-        await progress(update_competition(compet));
-        competitionBrowser.hidden = false;
-        return;
-      }
-      await progress(update_competitions());
-      const competitionList = document.getElementById("competition-list");
-      const competitionTemplate = document.getElementById("competition-template");
-      competitions.hidden = false;
-      const competitionsData = JSON.parse(localStorage.getItem("competitions"))
-
-      set_listbox(competitionList, "competition-template", competitionsData, function (n, i, e) {
-        n.id = `c-${e.id}`;
-        qid(n, "competition-name").innerText = e.name;
-        qid(n, "competitions-select").onclick = function () {
-          localStorage.setItem("nav-comp-selected", e.id);
-          update_page(false);
-        };
-      });
+      try {
+        await progress(update_competitions_list(competitions));
+      } catch { }
     }
 
     async function remove_player(compet, name) {
-      return rq('DELETE', `/competitions/${compet}/players?nick=${encodeURI(name)}`, undefined,
-        () => update_competition(compet));
+      return await rq('DELETE', `/competitions/${compet.id}/players?nick=${encodeURI(name)}`, undefined,
+        () => update_page(false, true));
     }
     async function add_player(compet, inp) {
-      return rq('PUT', `/competitions/${compet}/players?nick=${encodeURI(inp.value)}`, undefined,
-        () => update_competition(compet), undefined, inp);
+      return await rq('PUT', `/competitions/${compet.id}/players?nick=${encodeURI(inp.value)}`, undefined,
+        () => update_page(false, true), undefined, inp);
     }
     async function remove_map(compet, name) {
-      return rq('DELETE', `/competitions/${compet}/maps?name=${encodeURI(name)}`, undefined,
-        () => update_competition(compet));
+      return await rq('DELETE', `/competitions/${compet.id}/maps?name=${encodeURI(name)}`, undefined,
+        () => update_page(false, true));
     }
     async function add_map(compet, inp) {
-      return rq('PUT', `/competitions/${compet}/maps?name=${encodeURI(inp.value)}`, undefined,
-        () => update_competition(compet), undefined, inp);
+      return await rq('PUT', `/competitions/${compet.id}/maps?name=${encodeURI(inp.value)}`, undefined,
+        () => update_page(false, true), undefined, inp);
+    }
+    async function get_competition(compet, cache = false) {
+      if (cache) {
+        let c = localStorage.getItem("cache-comp");
+        if (c !== null && c.id === compet) return JSON.parse(c);
+      }
+      return await rq('GET', `/competitions/${compet}`, undefined,
+        (d) => {
+          localStorage.setItem("cache-comp", JSON.stringify(d));
+          return d;
+        });
+    }
+    async function start_round(compet, round) {
+      return await rq('POST', `/competitions/${compet.id}/rounds/${round}`, undefined,
+        (d) => {
+          return d;
+        }, (d, m) => {
+          if (d !== 409) {
+            lerr(m);
+          }
+        }, undefined, false);
     }
     async function remove_competition(compet) {
-      return rq('DELETE', `/competitions/${compet}`, undefined,
-        () => { localStorage.removeItem("nav-comp-selected"); update_page(compet); });
+      return await rq('DELETE', `/competitions/${compet.id}`, undefined,
+        () => { localStorage.removeItem("nav-comp-selected"); update_page(false, true); });
     }
-    async function update_competition(compet) {
-      await rq("GET", `/competitions/${compet}`,
-        undefined, async function (d) {
-          document.getElementById("cb-hdr").innerText = d.name;
-          const p = document.getElementById("cb-pr");
-          p.hidden = true;
-          // return;
-          if (d.brackets) {
+    async function competition_start(compet, b) {
+      return await rq('POST', `/competitions/${compet.id}/start`, undefined,
+        () => update_page(false, true), undefined, b);
+    }
+    async function round_connect(comp, round, token = undefined, reconnect = false) {
+      console.log(comp);
+      if (comp.owned) {
+        await start_round(comp, round);
+      }
+      const dd = {};
+      const p = new Promise((r, j) => { dd.res = r; dd.rej = j; });
+      let ws;
+      try {
+        if (document.__ws && document.__ws.readyState !== WebSocket.CLOSED) {
+          if (reconnect) {
+            document.__ws.close(200);
+            document.__ws = undefined;
           } else {
-            p.hidden = false;
-            const pl = qid(p, "cb-pr-pl");
-            const pi = qid(p, "cb-pr-pi");
-            const pa = qid(p, "cb-pr-pa");
-
-            pa.onclick = () => add_player(compet, pi);
-            set_listbox(pl, "cb-pr-pl-t", d.players, function (t, i, e) {
-              qid(t, "cb-pr-pl-t-n").innerText = e.playerName;
-              qid(t, "cb-pr-pl-t-r").onclick = async function () {
-                await progress(remove_player(compet, e.playerName));
-              };
-            })
-
-            const ml = qid(p, "cb-pr-ml");
-            const mi = qid(p, "cb-pr-mi");
-            const ma = qid(p, "cb-pr-ma");
-
-            ma.onclick = () => add_map(compet, mi);
-            set_listbox(ml, "cb-pr-ml-t", d.mapPool, function (t, i, e) {
-              qid(t, "cb-pr-ml-t-n").innerText = e.mapName;
-              qid(t, "cb-pr-ml-t-ls").src = e.levelShotUrl;
-              qid(t, "cb-pr-ml-t-r").onclick = async function () {
-                await progress(remove_map(compet, e.mapName));
-              };
-            })
-
-            const rb = qid(p, "cb-pr-rm");
-            rb.onclick = () => remove_competition(compet);
+            return;
           }
-        },
-        async function () { close_competition(); },
-        qid(qid(document, "competition-list"), `c-${compet}`)
-      );
+        }
+        let gotMsg = false;
+        const loc = window.location;
+        if (token !== undefined) {
+          ws = new WebSocket(`ws://${loc.hostname}:4006/bracket/${comp.id}/rounds/${round}?token=${encodeURI(token)}`);
+        } else {
+          ws = new WebSocket(`ws://${loc.hostname}:4006/bracket/${comp.id}/rounds/${round}`);
+        }
+        ws.onmessage = (msg) => {
+          console.log(msg);
+          const d = JSON.parse(msg.data.toString('utf-8'));
+          if ("err" in d) {
+            if (d.err.code === "NotFound") {
+              if (!gotMsg) {
+                dd.rej("Round is not started");
+                gotMsg = true;
+              }
+            } else {
+              lerr(d.err.message);
+            }
+          } else if ("result" in d) {
+            update_round(comp, round, d.result);
+          }
+          if (!gotMsg) {
+            gotMsg = true;
+            dd.res();
+          }
+        };
+        ws.onclose = (ev) => {
+          if (!gotMsg) {
+            gotMsg = true;
+            console.log(ev);
+            dd.rej(new Error(`Connection broken: ${ev}`));
+            if (ws === document.__ws) {
+              document.__ws = undefined;
+            }
+          }
+        };
+      } catch (e) {
+        lerr(e);
+      }
+      try {
+        await p;
+      } catch (e) {
+        lerr(e);
+        localStorage.removeItem("nav-round-selected");
+        console.log(localStorage.getItem("nav-round-selected"));
+        update_page(false, false);
+        console.log(localStorage.getItem("nav-round-selected"));
+      }
+      document.__ws = ws;
+    }
+
+    function copy_invite(button, ind) {
+      const text = localStorage.getItem(`rnd-p-invite-${ind}`);
+      if (text === null) {
+        animate_error(button);
+      } else {
+        navigator.clipboard.writeText(text);
+      }
+    }
+
+    async function round_ban(ind) {
+      if (document.__ws) {
+        document.__ws.send(JSON.stringify({ action: 'Ban', mapIndex: ind }));
+      }
+    }
+    async function round_unban(ind) {
+      if (document.__ws) {
+        document.__ws.send(JSON.stringify({ action: 'Unban', mapIndex: ind }));
+      }
+    }
+
+    async function update_round(comp, ind, view) {
+      const rnds = qid(document, "rounds");
+      const ul = qid(rnds, "rm-l");
+      const msg = qid(rnds, "rm-msg");
+      const rps = [qid(rnds, "rp-l"), qid(rnds, "rp-r")];
+      // {
+      //   players: { info: PlayerInfo, serverUrl?: string }[];
+      //   forbiddenBans: number[];
+      //   order: number[];
+      //   bans: Record<number, number>;
+      //   banTurn: number;
+      //   stage: 'Ban' | 'Running' | 'Completed';
+      //   tokens?: { token: string }[];
+      // }
+      const loc = window.location;
+      isadmin = !nd(view.tokens);
+      if (isadmin) {
+
+      }
+      for (let p in view.players) {
+        let rp = rps[p];
+        if (isadmin) {
+          url = `http://${loc.host}/app.html?competition=${comp.id}&round=${ind}&token=${view.tokens[p].token}`
+          localStorage.setItem(`rnd-p-invite-${p}`, url);
+        }
+        rp.innerText = view.players[p].info.playerName;
+        rp.classList.remove("winner");
+        rp.classList.remove("looser");
+        rp.classList.remove("highlight");
+      }
+      const turn = view.index === view.banTurn;
+      if (view.stage === "Ban") {
+        if (Object.keys(view.bans).length >= comp.rules.numBans * 2) {
+          msg.innerText = "BAN STAGE COMPLETE";
+          // enable admin start button
+          if (isadmin) {
+
+          }
+        } else {
+          rps[view.banTurn].classList.add("highlight");
+          if (isadmin) {
+            msg.innerText = "PLAYERS ARE BANNING";
+          } else {
+            if (turn) {
+              msg.innerText = "PICK MAP TO BAN";
+            } else {
+              msg.innerText = "OPPONENT BAN TURN";
+            }
+          }
+        }
+      } else if (view.stage === "Running") {
+        msg.innerText = `CONNECT TO defrag://${view.players[view.index].serverUrl}`;
+      } else {
+        msg.innerText = "ROUND COMPLETE";
+        for (let p of rps) {
+          p.classList.add("looser");
+        }
+        if (!nd(comp.brackets.rounds[ind].winnerIndex)) {
+          rps[comp.brackets.rounds[ind].winnerIndex].classList.add("winner");
+        }
+      }
+      const els = view.order.map(x => {
+        let state = undefined;
+        if (x in view.forbiddenBans) {
+          state = "frozen";
+        } else {
+          if (x in view.bans) {
+            state = "banned";
+          }
+        }
+        return {
+          info: comp.mapPool[x],
+          index: x,
+          state: state,
+        };
+      });
+      set_listbox(ul, "rm-l-t", els, (li, i, el) => {
+        try {
+          li.hidden = false;
+          li.id = "rm_" + el.index.toString()
+          const btn = qid(li, "rm-l-t-b");
+          const ls = qid(li, "rm-l-t-ls");
+          const bn = qid(li, "rm-l-t-bn");
+          const nam = qid(li, "rm-l-t-n");
+
+          nam.innerHTML = el.info.mapName;
+          ls.setAttribute("src", el.info.levelShotUrl);
+
+          if (el.state === undefined) {
+            if (turn || isadmin) {
+              btn.onmouseenter = () => {
+                btn.classList.add("highlight");
+                ls.classList.add("highlight");
+                nam.classList.add("highlight");
+                bn.hidden = false;
+              };
+              btn.onmouseleave = () => {
+                btn.classList.remove("highlight");
+                ls.classList.remove("highlight");
+                bn.classList.remove("highlight");
+                nam.classList.remove("highlight");
+                bn.hidden = true;
+              };
+              btn.onclick = async () => {
+                await progress(round_ban(el.index));
+              };
+            }
+          } else {
+            if (el.state === "banned") {
+              if (isadmin) {
+                btn.onclick = async () => {
+                  await progress(round_unban(el.index));
+                };
+
+                // if admin enable unban
+              }
+            }
+            btn.classList.add(el.state);
+            ls.classList.add(el.state);
+            nam.classList.add(el.state);
+            bn.hidden = false;
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      });
+    }
+
+    async function update_competition(comp) {
+      document.getElementById("cb-hdr").innerText = comp.name;
+      const p = qid(document, "cb-pr");
+      const pbr = qid(document, "cb-br");
+      p.hidden = true;
+      pbr.hidden = true;
+      // return;
+      if (comp.brackets) {
+        // if (true) {
+        pbr.hidden = false;
+        build_brackets(pbr, comp.brackets.rounds, comp.players.map(x => x.playerName));
+      } else {
+        p.hidden = false;
+        const pl = qid(p, "cb-pr-pl");
+        const pi = qid(p, "cb-pr-pi");
+        const pa = qid(p, "cb-pr-pa");
+
+        pa.onclick = () => add_player(comp, pi);
+        set_listbox(pl, "cb-pr-pl-t", comp.players, function (t, i, e) {
+          qid(t, "cb-pr-pl-t-n").innerText = e.playerName;
+          qid(t, "cb-pr-pl-t-r").onclick = async function () {
+            await progress(remove_player(comp, e.playerName));
+          };
+        })
+
+        const ml = qid(p, "cb-pr-ml");
+        const mi = qid(p, "cb-pr-mi");
+        const ma = qid(p, "cb-pr-ma");
+
+        ma.onclick = () => add_map(comp, mi);
+        set_listbox(ml, "cb-pr-ml-t", comp.mapPool, function (t, i, e) {
+          qid(t, "cb-pr-ml-t-n").innerText = e.mapName;
+          qid(t, "cb-pr-ml-t-ls").src = e.levelShotUrl;
+          qid(t, "cb-pr-ml-t-r").onclick = async function () {
+            await progress(remove_map(comp, e.mapName));
+          };
+        })
+
+        const rb = qid(p, "cb-pr-rm");
+        rb.onclick = () => remove_competition(comp);
+        const rc = qid(p, "cb-pr-st");
+        rc.onclick = () => competition_start(comp, rc);
+      }
+      // async function () { close_competition(); },
+      // 
       // {
       //   id: string;
       //   name: string;
@@ -744,60 +1206,180 @@
       //   players: PlayerInfo[];
       // }
     }
+    function build_brackets(par, rnds, pnames) {
+      const nt = Math.log2(rnds.length + 1)
+      const tb = qid(par, "cb-br-t");
+      const co = tb.querySelector("colgroup");
+      while (co.firstChild) { co.removeChild(co.lastChild); }
+      const tr = qid(tb, "cb-br-t-r");
+      while (tr.firstChild) { tr.removeChild(tr.lastChild); }
+      let n = rnds.length;
+      let h = 96;
+      let m = (n + 1) / 2;
+      let r = 0;
+      const tlst = {};
+      for (let i = 0; i < nt; ++i) {
+        const ct = document.createElement("col");
+        ct.style = "min-width: 280px";
+        co.appendChild(ct);
+        let cv = document.createElement("td");
+        let hd = document.createElement("div");
+        hd.hidden = true;
+        cv.style = "padding: 0;"
+        cv = tr.appendChild(cv);
+        let brt;
+        if (m > 1) {
+          brt = [build_bracket(hd, h, false), build_bracket(hd, h, true)]
+        } else {
+          brt = build_bracket(hd, h, undefined);
+        }
+        for (let j = 0; j < m; ++j) {
+          /** @type {HTMLElement} */
+          let e;
+          if (m > 1) {
+            e = brt[j % 2].cloneNode(true);
+          } else {
+            e = brt.cloneNode(true);;
+          }
+          e = cv.appendChild(e);
+          const cr = n - r - 1;
+          e.id = `cb-br-t-${cr}`;
+          const rr = rnds[cr];
+          const p0 = qid(e, "bl-0");
+          const p1 = qid(e, "bl-1");
+          e.onclick = async () => {
+            localStorage.setItem("nav-round-selected", cr);
+            await update_page(false, false);
+          };
+          tlst[cr] = {
+            w: rr.winnerIndex,
+            el: [p0, p1],
+            bl: e.querySelectorAll(".brackets-line")
+          };
+          const ps = []
+          if (rr.players[0] !== null) {
+            p0.innerText = pnames[rr.players[0]];
+            ps.push(p0);
+          }
+          if (rr.players[1] !== null) {
+            p1.innerText = pnames[rr.players[1]];
+            ps.push(p1);
+          }
+          for (let pp in ps) {
+            let ppp = ps[pp];
+            ppp.onmouseenter = () => {
+              let cc = 2 * cr + 1 + parseInt(pp);
+              ppp.classList.add("highlight");
+              pps = 0
+              while (cc < n && pps < 10) {
+                pps += 1;
+                const tt = tlst[cc];
+                if (tt.w === undefined || tt.w === null) {
+                  break;
+                }
+                tt.el[tt.w].classList.add("highlight");
+                for (let l of tt.bl) {
+                  l.classList.add("highlight");
+                }
+                cc = 2 * cc + 1 + tt.w;
+              }
+            };
+            ppp.onmouseleave = () => {
+              let cc = 2 * cr + 1 + parseInt(pp);
+              ppp.classList.remove("highlight");
+              pps = 0
+              while (cc < n && pps < 10) {
+                pps += 1;
+                const tt = tlst[cc];
+                if (tt.w === undefined || tt.w === null) break;
+                tt.el[tt.w].classList.remove("highlight");
+                for (let l of tt.bl) {
+                  l.classList.remove("highlight");
+                }
+                cc = 2 * cr + 1 + tt.w;
+              }
+            };
+          }
+          if (rr.winnerIndex !== undefined && rr.winnerIndex !== null) {
+            const w = qid(e, `bl-${rr.winnerIndex}`);
+            w.classList.add("winner");
+            qid(e, `bl-${(rr.winnerIndex + 1) % 2}`).classList.add("looser");
+          }
+          r++;
+        }
+        h *= 2;
+        m /= 2;
+      }
+    }
+    function build_bracket(to, h, up) {
+      let ub = 0;
+      let db = 0;
+      if (up === true) ub = 2;
+      if (up === false) db = 2;
+      to.innerHTML = `<div style="position: relative; height: ${h}px;">
+                      <div style="position: absolute; width: 240px">
+                        <div style="height: ${h / 2 - 36}px;"></div>
+                        <div id="bl" class="brackets-board" style="height: 72px;">
+                          <div id="bl-0" class="brackets-label" style="height: 36px; width: 218px; padding-left:20px"></div>
+                          <div id="bl-1" class="brackets-label" style="height: 36px; width: 218px; padding-left:20px"></div></div>
+                        <div style="height: ${h / 2 - 36}px;"></div></div>
+                      <div style="position: absolute; left: 240px; width: 40px; height: ${h}px">
+                        <div style="display: inline-block; width: 20px">
+                          <div style="height: ${h / 2}px; border-bottom: ${ub}px solid; border-color:revert-layer;" class="brackets-line"></div>
+                          <div style="height: ${h / 2}px;    border-top: ${db}px solid; border-color:revert-layer;" class="brackets-line"></div></div>
+                        <div style=" display: inline-block; width: 20px; height: ${h}px;">
+                          <div style="height: 18px;"></div>
+                          <div class="brackets-line" style="height: ${h / 2 - 18}px;border: ${ub}px solid;border-right: 0; border-bottom: 0;border-color:revert-layer;"></div>
+                          <div class="brackets-line" style="height: ${h / 2 - 18}px;border: ${db}px solid;border-right: 0;    border-top: 0;border-color:revert-layer;"></div>
+                          <div style="height: 18px;"></div></div></div></div></td>`;
+      return to.firstChild;
+    }
 
     async function close_competition() {
       localStorage.removeItem("nav-comp-selected");
       await update_page();
     }
+    async function close_round() {
+      localStorage.removeItem("nav-round-selected");
+      await update_page();
+    }
 
-    async function update_competitions() {
-      const res = await fetch('/competitions', {
-        method: "GET",
-        credentials: "same-origin",
-        headers: {
-          "Content-type": "application/json; charset=UTF-8"
-        }
-      });
-      if (res.status == 200) {
-        const data = await res.json();
-        localStorage.setItem("competitions", JSON.stringify(data))
-      } else {
-        console.warn(`update_competitions failed with status ${res.status}`)
-      }
+    async function update_competitions_list(comps) {
+      comps.hidden = false;
+      await rq("GET", '/competitions', undefined, d => {
+        const competitionList = qid(comps, "competition-list");
+        set_listbox(competitionList, "competition-template", d, function (n, i, e) {
+          n.id = `c-${e.id}`;
+          qid(n, "competition-name").innerText = e.name;
+          qid(n, "competitions-select").onclick = function () {
+            localStorage.setItem("nav-comp-selected", e.id);
+            update_page(false, false);
+          };
+        });
+      }, undefined, undefined, true);
     }
     async function create_competition(button) {
-      const createDialog = document.getElementById("cc");
-      const name = createDialog.querySelector("#cc-name");
+      const createDialog = qid(document, "cc");
+      const name = qid(createDialog, "cc-name");
       if (!name.value) {
         animate_error(name);
         return;
       }
-      const maxbans = createDialog.querySelector("#cc-max-bans");
+      const maxbans = qid(createDialog, "cc-max-bans");
       const maxbansValue = Number.parseInt(maxbans.value);
       if (maxbansValue === undefined || maxbansValue === null || Number.isNaN(maxbansValue)) {
         animate_error(maxbans);
         return;
       }
-      const res = await progress(await fetch('/competitions', {
-        method: "POST",
-        credentials: "same-origin",
-        body: JSON.stringify({
-          name: name.value,
-          rules: {
-            numBans: maxbansValue
-          }
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8"
+      await rq("POST", '/competitions', {
+        name: name.value,
+        rules: {
+          numBans: maxbansValue
         }
-      }));
-      if (res.status == 200) {
+      }, d => {
         createDialog.hidden = true;
         update_page(false);
-      } else {
-        console.warn(`create_competition failed with status ${res.status}`);
-        animate_error(button);
-      }
+      }, undefined, button, true);
     }
 
     function initialize() {
@@ -839,7 +1421,7 @@
       <source src="./assets/videos/motion_background.webm" type="video/webm">
       Your browser does not support the video tag.
     </video>
-    <div id="login">
+    <div id="login" hidden>
       <div class="main-content">
         <div class="header-container">
           <div class="header-caption">Login</div>
@@ -971,87 +1553,6 @@
         </div>
         <div id="cb-br">
           <div class="box" style="margin: 1%;height: 70vh;">
-            <script lang="js">
-              function build_brackets(par, rnds) {
-                const nt = Math.log2(rnds.length + 1)
-                const tb = qid(par, "cb-br-t");
-                const co = tb.firstChild;
-                while (co.firstChild) { co.removeChild(co.lastChild); }
-                const tr = qid(tb, "cb-br-t-r");
-                while (tr.firstChild) { tr.removeChild(tr.lastChild); }
-                let n = rnds.length;
-                let h = 96;
-                let m = (n + 1) / 2;
-                let r = 0;
-                const tlst = {};
-                for (let i = 0; i < nt; ++i) {
-                  const ct = document.createElement("col");
-                  ct.style = "min-width: 280px";
-                  co.appendChild(ct);
-                  const cv = document.createElement("td");
-                  cv.style = "padding: 0;"
-                  tr.appendChild(cv);
-                  if (m == 1) {
-
-                  } else {
-                    const brt = [build_bracket(tr, h, false), build_bracket(tr, h, false)]
-                    for (let j = 0; j < m; ++j) {
-                      /** @type {HTMLElement} */
-                      let e = brt[j % 2].cloneNode(true);
-                      e = tr.appendChild(e);
-                      e.id = `cb-br-t-${r}`;
-                      const cr = n - r;
-                      const rr = rnds[cr];
-                      tlst[cr] = {
-                        w: rr.winnerIndex,
-                        el: e,
-                        bl: e.querySelectorAll(".brackets-line")
-                      };
-                      if (rr.players[0] !== null) qid(e, "bl-0").innerText = rr.players[0];
-                      if (rr.players[1] !== null) qid(e, "bl-1").innerText = rr.players[1];
-                      if (rr.winnerIndex) {
-                        const w = qid(e, `bl-${rr.winnerIndex}`);
-                        w.classList.add("winner");
-                        w.onmouseenter = () => {
-                          let cc = 2 * cr + 1 + rr.winnerIndex;
-                          while (cc < n) {
-                            const tt = tlst[cc];
-                            for (let l of tt.bl) {
-                              l.classList.add("highlight");
-                            }
-                          }
-                        }
-                        qud(e, `bl-${(rr.winnerIndex + 1) % 2}`).classList.add("looser");
-                      }
-                      r++;
-                    }
-                  }
-                  h *= 2;
-                  m /= 2;
-                }
-              }
-              function build_bracket(to, h, up) {
-                const ub = 1;
-                const db = 0;
-                to.innerHTML = `<div style="position: relative; height: ${h}px;">
-                      <div style="position: absolute; width: 240px">
-                        <div style="height: ${h / 2 - 36}px;"></div>
-                        <div id="bl" class="brackets-board" style="height: 72px;">
-                          <div id="bl-0" class="brackets-label" style="height: 36px; width: 100%;"></div>
-                          <div id="bl-1" class="brackets-label" style="height: 36px; width: 100%;"></div></div>
-                        <div style="height: ${h / 2 - 36}px;"></div></div>
-                      <div style="position: absolute; left: 240px; width: 40px; height: ${h}px">
-                        <div style="display: inline-block; width: 20px">
-                          <div class="brackets-line" style="height: ${h / 2}px; border-bottom: ${ub}px solid"></div>
-                          <div class="brackets-line" style="height: ${h / 2}px; border-top: ${db}px solid"></div></div>
-                        <div style=" display: inline-block; width: 20px; height: ${h}px;">
-                          <div style="height: 18px;"></div>
-                          <div class="brackets-line" style="height: ${h / 2 - 18}px;border: ${ub}px solid;border-right: 0; border-bottom: 0;"></div>
-                          <div class="brackets-line" style="height: ${h / 2 - 18}px;border: ${db}px solid;border-right: 0; border-top: 0;"></div>
-                          <div style="height: 18px;"></div></div></div></div></td>`;
-                return to.firstChild;
-              }
-            </script>
             <table id="cb-br-t" cellspacing="0" style="border-spacing:0;border-collapse: collapse;">
               <colgroup>
               </colgroup>
@@ -1064,56 +1565,66 @@
         </div>
       </div>
     </div>
-    <div id="rounds" hidden>
-      <div class="header">
-        <div class="header-container">
-          <div style="float: right; padding-right: 8px;">
-            <div id="roundHeader" class="header-caption">Round 2</div>
-          </div>
-          <div class="header-underline">
-            <svg width="100%" height="100%" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 -1 600 1">
-              <defs>
-                <linearGradient id="linear" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="#7a270050" />
-                  <stop offset="90%" stop-color="#ff5300FF" />
-                  <stop offset="100%" stop-color="#ba3d00B0" />
-                </linearGradient>
-              </defs>
-              <path d="M0 0 L 600 0" stroke="url(#linear)" />
-            </svg>
-          </div>
+    <div id="rounds">
+      <div class="menu">
+        <div style="width:100%;height: 90%;"></div>
+        <div style="width:100%;">
+          <button class="button" onclick="close_round();">BACK</button>
         </div>
       </div>
-      <div class="main-content">
-        <ul id="mapList" class="map-list">
-          <li id="mapTemplate" hidden>
-            <div class="levelshot">
-              <div class="levelshot-black"> </div>
-              <img id="mapLevelshot" class="levelshot-image" src="" />
-              <div class="levelshot-caption">
-                <span id="mapName" class="levelshot-label">PLACEHOLDER</span>
+      <div class="main-content" style="position: relative; height: 100vh;">
+        <div class="header-container">
+          <div id="cb-hdr" class="header-caption">Round 2</div>
+          <div class="header-underline"></div>
+        </div>
+        <ul id="rm-l" class="map-list">
+          <li id="rm-l-t" hidden>
+            <div id="rm-l-t-b" class="lshot">
+              <img id="rm-l-t-ls" class="limage" src="http://ws.q3df.org/images/authorshots/512x384/" />
+              <div id="rm-l-t-bn" hidden>
+                <div class="lcapban">
+                  <div class="lcaptiontext">BAN</div>
+                </div>
               </div>
+              <div id="rm-l-t-n" class="lcap"></div>
             </div>
           </li>
         </ul>
-      </div>
-      <div class="players-content">
-        <div style="padding: 10%;">
-          <div class="players-hdiv">
-            <div class="players-l-background">
-              <div class="players-l-background-box"></div>
-              <span class="players-l-caption">Loontick</span>
-            </div>
-          </div>
-          <div class="players-hdiv">
-            <div class="players-r-background">
-              <div class="players-r-background-box"></div>
-              <span class="players-r-caption">Poontick</span>
+        <div class="players-content">
+          <div class="rplayers">
+            <style>
+              .rpturn {
+                width: 100%;
+                font-size: 24px;
+                user-select: none;
+                /* height: 40px; */
+                padding: 20px;
+                margin-bottom: 10px;
+                text-align: center;
+                vertical-align: middle;
+                background: linear-gradient(90deg, #00000000 5%, #A03b0040 50%, #00000000 100%);
+                border-top: 1px solid;
+                border-bottom: 1px solid;
+                border-image-slice: 1;
+                border-image-source: linear-gradient(90deg, #00000000 0%, #ff5300A0 50%, #00000000 100%);
+              }
+            </style>
+            <div id="rm-msg" class="rpturn">PICK MAP TO BAN</div>
+            <div id="rp-l" class="rpcaption left">as</div>
+            <div id="rp-r" class="rpcaption right">qw</div>
+            <div id="rm-inv">
+              <button class="button" onclick="copy_invite(this, 0)"
+                style="width:45%; margin-top: 5px; margin-right:5%">Invite</button>
+              <button class="button" onclick="copy_invite(this, 1)"
+                style="width:45%; margin-top: 5px; margin-left:5%">Invite</button>
             </div>
           </div>
         </div>
       </div>
+    </div>
+    <div id="msg" class="page" style="pointer-events: none; ">
+      <ul id="msg-l" class="message-box">
+      </ul>
     </div>
     <div id="cc" hidden>
       <div class="fulldim">

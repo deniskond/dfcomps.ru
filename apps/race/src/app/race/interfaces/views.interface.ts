@@ -38,8 +38,9 @@ export interface CompetitionView {
 }
 
 export interface RoundView {
-  players: { info: PlayerInfo }[];
+  players: { info: PlayerInfo; serverUrl?: string }[];
   forbiddenBans: number[];
+  order: number[];
   bans: Record<number, number>;
   banTurn: number;
   stage: 'Ban' | 'Running' | 'Completed';
