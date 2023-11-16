@@ -1106,10 +1106,10 @@
         }
       } else if (view.stage === "Running") {
         if (view.index in [0, 1]) {
-          msg.innerText = `CONNECT TO defrag://${view.players[view.index].serverUrl}`;
+          msg.innerHTML = `CONNECT TO <a style="pointer-events: all;user-select: all;" href="defrag://${view.players[view.index].serverUrl}">defrag://${view.players[view.index].serverUrl}</a>`;
         } else {
           if (isadmin) {
-            msg.innerText = `defrag://${view.players[0].serverUrl} CONNECT defrag://${view.players[1].serverUrl}`;
+            msg.innerHTML = `<a style="pointer-events: all;user-select: all;" href="defrag://${view.players[0].serverUrl}">defrag://${view.players[0].serverUrl}</a> CONNECT <a style="pointer-events: all;user-select: all;" href="defrag://${view.players[1].serverUrl}">defrag://${view.players[1].serverUrl}</a>`;
           }
         }
         if (isadmin) {
