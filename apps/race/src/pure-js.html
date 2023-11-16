@@ -339,8 +339,8 @@
 
     .list-box {
       list-style-type: none;
-      min-height: 40vh;
-      max-height: 70vh;
+      /* min-height: 40vh; */
+      height: 50vh;
     }
 
     .list-box-element {
@@ -837,6 +837,13 @@
     }
 
     async function update_page(relog = true, update = true) {
+      if (document._next_update !== undefined) {
+        const now = Date.now();
+        if (now < document._next_update) {
+          await progress(sl(document._next_update - now));
+        }
+      }
+      document._next_update = Date.now() + 200;
       const rounds = document.getElementById("rounds");
       const login = document.getElementById("login");
       const competitions = document.getElementById("competitions");
@@ -857,14 +864,13 @@
       if (compet) {
         const comp = await progress(get_competition(compet, !update));
         if (comp === undefined) {
-          await progress(close_competition());
+          localStorage.removeItem("nav-comp-selected");
           animate_error(qid(qid(document, "competition-list"), `c-${compet}`));
+          window.location = window.location.origin + window.location.pathname;
         } else {
           if (round !== null) {
             try {
               await progress(round_connect(comp, round, clientToken, update));
-              // await update_round();
-              rounds.hidden = false;
             } catch (e) {
               console.error(e);
             }
@@ -873,11 +879,12 @@
             try {
               await progress(update_competition(comp));
               competitionBrowser.hidden = false;
-            } catch {
+              return;
+            } catch (e) {
+              console.log(e);
               await progress(close_competition());
               animate_error(qid(qid(document, "competition-list"), `c-${compet}`));
             }
-            return;
           }
         }
       }
@@ -936,7 +943,6 @@
         () => update_page(false, true), undefined, b);
     }
     async function round_connect(comp, round, token = undefined, reconnect = false) {
-      console.log(comp);
       if (comp.owned) {
         await start_round(comp, round);
       }
@@ -946,7 +952,9 @@
       try {
         if (document.__ws && document.__ws.readyState !== WebSocket.CLOSED) {
           if (reconnect) {
-            document.__ws.close(200);
+            try {
+              document.__ws.close(200);
+            } catch { }
             document.__ws = undefined;
           } else {
             return;
@@ -960,7 +968,6 @@
           ws = new WebSocket(`ws://${loc.hostname}:4006/bracket/${comp.id}/rounds/${round}`);
         }
         ws.onmessage = (msg) => {
-          console.log(msg);
           const d = JSON.parse(msg.data.toString('utf-8'));
           if ("err" in d) {
             if (d.err.code === "NotFound") {
@@ -973,6 +980,8 @@
             }
           } else if ("result" in d) {
             update_round(comp, round, d.result);
+            const rounds = document.getElementById("rounds");
+            rounds.hidden = false;
           }
           if (!gotMsg) {
             gotMsg = true;
@@ -982,7 +991,6 @@
         ws.onclose = (ev) => {
           if (!gotMsg) {
             gotMsg = true;
-            console.log(ev);
             dd.rej(new Error(`Connection broken: ${ev}`));
             if (ws === document.__ws) {
               document.__ws = undefined;
@@ -990,16 +998,15 @@
           }
         };
       } catch (e) {
-        lerr(e);
+        console.log(e);
+        lerr(e.stack);
       }
       try {
         await p;
       } catch (e) {
         lerr(e);
         localStorage.removeItem("nav-round-selected");
-        console.log(localStorage.getItem("nav-round-selected"));
-        update_page(false, false);
-        console.log(localStorage.getItem("nav-round-selected"));
+        update_page(false, true);
       }
       document.__ws = ws;
     }
@@ -1023,25 +1030,45 @@
         document.__ws.send(JSON.stringify({ action: 'Unban', mapIndex: ind }));
       }
     }
+    async function round_start(ind) {
+      if (document.__ws) {
+        document.__ws.send(JSON.stringify({ action: 'Start' }));
+      }
+    }
+    async function round_winner(ind, winner) {
+      if (document.__ws) {
+        document.__ws.send(JSON.stringify({ action: 'Complete', winner }));
+      }
+    }
+    async function round_reset(ind) {
+      if (document.__ws) {
+        document.__ws.send(JSON.stringify({ action: 'Reset' }));
+      }
+    }
 
     async function update_round(comp, ind, view) {
       const rnds = qid(document, "rounds");
       const ul = qid(rnds, "rm-l");
       const msg = qid(rnds, "rm-msg");
       const rps = [qid(rnds, "rp-l"), qid(rnds, "rp-r")];
-      // {
-      //   players: { info: PlayerInfo, serverUrl?: string }[];
-      //   forbiddenBans: number[];
-      //   order: number[];
-      //   bans: Record<number, number>;
-      //   banTurn: number;
-      //   stage: 'Ban' | 'Running' | 'Completed';
-      //   tokens?: { token: string }[];
-      // }
+      const inv = qid(rnds, "rm-inv");
+      const st = qid(rnds, "rm-st");
+      const win = qid(rnds, "rm-win");
+      const res = qid(rnds, "rm-res");
+      const back = qid(rnds, "rm-m-b");
+
+      inv.hidden = true;
+      st.hidden = true;
+      win.hidden = true;
+      res.hidden = true;
+      back.hidden = true;
       const loc = window.location;
       isadmin = !nd(view.tokens);
-      if (isadmin) {
 
+      qid(rnds, "rm-hdr").innerText = `Round ${ind}`;
+
+      if (isadmin) {
+        back.hidden = false;
       }
       for (let p in view.players) {
         let rp = rps[p];
@@ -1060,11 +1087,14 @@
           msg.innerText = "BAN STAGE COMPLETE";
           // enable admin start button
           if (isadmin) {
-
+            st.hidden = false;
+            const stb = qid(st, "rm-st-b");
+            stb.onclick = async () => await progress(round_start(ind));
           }
         } else {
           rps[view.banTurn].classList.add("highlight");
           if (isadmin) {
+            inv.hidden = false;
             msg.innerText = "PLAYERS ARE BANNING";
           } else {
             if (turn) {
@@ -1075,14 +1105,35 @@
           }
         }
       } else if (view.stage === "Running") {
-        msg.innerText = `CONNECT TO defrag://${view.players[view.index].serverUrl}`;
+        if (view.index in [0, 1]) {
+          msg.innerText = `CONNECT TO defrag://${view.players[view.index].serverUrl}`;
+        } else {
+          if (isadmin) {
+            msg.innerText = `defrag://${view.players[0].serverUrl} CONNECT defrag://${view.players[1].serverUrl}`;
+          }
+        }
+        if (isadmin) {
+          win.hidden = false;
+          qid(win, "rm-win-0").onclick = async () => await progress(round_winner(ind, 0));
+          qid(win, "rm-win-1").onclick = async () => await progress(round_winner(ind, 1));
+        }
       } else {
         msg.innerText = "ROUND COMPLETE";
-        for (let p of rps) {
-          p.classList.add("looser");
+        if (isadmin) {
+          res.hidden = false;
+          qid(res, "rm-res-b").onclick = async () => await progress(round_reset(ind));
         }
-        if (!nd(comp.brackets.rounds[ind].winnerIndex)) {
-          rps[comp.brackets.rounds[ind].winnerIndex].classList.add("winner");
+        try {
+          for (let p of rps) {
+            p.classList.add("looser");
+          }
+          if (!nd(view.winner)) {
+            const ww = rps[view.winner];
+            ww.classList.remove("looser");
+            ww.classList.add("winner");
+          }
+        } catch (e) {
+          console.log(e);
         }
       }
       const els = view.order.map(x => {
@@ -1169,7 +1220,7 @@
         const pi = qid(p, "cb-pr-pi");
         const pa = qid(p, "cb-pr-pa");
 
-        pa.onclick = () => add_player(comp, pi);
+        pa.onclick = async () => await progress(add_player(comp, pi));
         set_listbox(pl, "cb-pr-pl-t", comp.players, function (t, i, e) {
           qid(t, "cb-pr-pl-t-n").innerText = e.playerName;
           qid(t, "cb-pr-pl-t-r").onclick = async function () {
@@ -1181,7 +1232,7 @@
         const mi = qid(p, "cb-pr-mi");
         const ma = qid(p, "cb-pr-ma");
 
-        ma.onclick = () => add_map(comp, mi);
+        ma.onclick = async () => await progress(add_map(comp, mi));
         set_listbox(ml, "cb-pr-ml-t", comp.mapPool, function (t, i, e) {
           qid(t, "cb-pr-ml-t-n").innerText = e.mapName;
           qid(t, "cb-pr-ml-t-ls").src = e.levelShotUrl;
@@ -1229,19 +1280,20 @@
         cv = tr.appendChild(cv);
         let brt;
         if (m > 1) {
-          brt = [build_bracket(hd, h, false), build_bracket(hd, h, true)]
+          brt = [build_bracket(hd, h, true), build_bracket(hd, h, false)]
         } else {
           brt = build_bracket(hd, h, undefined);
         }
+        const lst = []
         for (let j = 0; j < m; ++j) {
           /** @type {HTMLElement} */
           let e;
           if (m > 1) {
             e = brt[j % 2].cloneNode(true);
           } else {
-            e = brt.cloneNode(true);;
+            e = brt.cloneNode(true);
           }
-          e = cv.appendChild(e);
+          lst.push(e);
           const cr = n - r - 1;
           e.id = `cb-br-t-${cr}`;
           const rr = rnds[cr];
@@ -1249,7 +1301,7 @@
           const p1 = qid(e, "bl-1");
           e.onclick = async () => {
             localStorage.setItem("nav-round-selected", cr);
-            await update_page(false, false);
+            await update_page(false, true);
           };
           tlst[cr] = {
             w: rr.winnerIndex,
@@ -1296,7 +1348,7 @@
                 for (let l of tt.bl) {
                   l.classList.remove("highlight");
                 }
-                cc = 2 * cr + 1 + tt.w;
+                cc = 2 * cc + 1 + tt.w;
               }
             };
           }
@@ -1306,6 +1358,9 @@
             qid(e, `bl-${(rr.winnerIndex + 1) % 2}`).classList.add("looser");
           }
           r++;
+        }
+        for (let j = lst.length - 1; j >= 0; --j) {
+          cv.appendChild(lst[j]);
         }
         h *= 2;
         m /= 2;
@@ -1378,7 +1433,7 @@
         }
       }, d => {
         createDialog.hidden = true;
-        update_page(false);
+        update_page(false, true);
       }, undefined, button, true);
     }
 
@@ -1391,11 +1446,16 @@
         }
       });
       const createDialog = document.getElementById("cc");
+      const rounds = document.getElementById("rounds");
       document.onkeydown = function (event) {
         if (event.key === "Escape") {
           if (!createDialog.hidden) {
             event.preventDefault();
             createDialog.hidden = true;
+          }
+          if (!rounds.hidden) {
+            event.preventDefault();
+            close_round();
           }
         }
       };
@@ -1466,7 +1526,7 @@
       </div>
       <div class="main-content">
         <div class="header-container">
-          <div id="cb-hdr" class="header-caption">PLACEHOLDER</div>
+          <div id="cb-hdr" class="header-caption"></div>
           <div class="header-underline"></div>
         </div>
         <div id="cb-pr">
@@ -1509,9 +1569,9 @@
                   <li id="cb-pr-ml-t" hidden>
                     <div class="list-box-element">
                       <div style="width: 100%; height: 100%; display: flex; align-items: center;">
-                        <img id="cb-pr-ml-t-ls" src="http://ws.q3df.org/images/authorshots/512x384/falos-principle.jpg"
+                        <img id="cb-pr-ml-t-ls" src="http://ws.q3df.org/images/authorshots/512x384"
                           style="height: 100%;">
-                        <div id="cb-pr-ml-t-n" style="padding-left: 8px;font-size: 24px;">falos-principle</div>
+                        <div id="cb-pr-ml-t-n" style="padding-left: 8px;font-size: 24px;"></div>
                       </div>
                       <div style="width: 36px">
                         <button id="cb-pr-ml-t-r" class="inline-button">
@@ -1569,12 +1629,12 @@
       <div class="menu">
         <div style="width:100%;height: 90%;"></div>
         <div style="width:100%;">
-          <button class="button" onclick="close_round();">BACK</button>
+          <button id="rm-m-b" class="button" onclick="close_round();">BACK</button>
         </div>
       </div>
       <div class="main-content" style="position: relative; height: 100vh;">
         <div class="header-container">
-          <div id="cb-hdr" class="header-caption">Round 2</div>
+          <div id="rm-hdr" class="header-caption">Round</div>
           <div class="header-underline"></div>
         </div>
         <ul id="rm-l" class="map-list">
@@ -1609,14 +1669,24 @@
                 border-image-source: linear-gradient(90deg, #00000000 0%, #ff5300A0 50%, #00000000 100%);
               }
             </style>
-            <div id="rm-msg" class="rpturn">PICK MAP TO BAN</div>
-            <div id="rp-l" class="rpcaption left">as</div>
-            <div id="rp-r" class="rpcaption right">qw</div>
-            <div id="rm-inv">
+            <div id="rm-msg" class="rpturn"></div>
+            <div id="rp-l" class="rpcaption left"></div>
+            <div id="rp-r" class="rpcaption right"></div>
+            <div id="rm-inv" hidden>
               <button class="button" onclick="copy_invite(this, 0)"
                 style="width:45%; margin-top: 5px; margin-right:5%">Invite</button>
               <button class="button" onclick="copy_invite(this, 1)"
                 style="width:45%; margin-top: 5px; margin-left:5%">Invite</button>
+            </div>
+            <div id="rm-st" hidden>
+              <button id="rm-st-b" class="button" style="width:100%; margin-top: 5px;">Start</button>
+            </div>
+            <div id="rm-win" hidden>
+              <button id="rm-win-0" class="button" style="width:45%; margin-top: 5px; margin-right:5%">WIN</button>
+              <button id="rm-win-1" class="button" style="width:45%; margin-top: 5px; margin-left:5%">WIN</button>
+            </div>
+            <div id="rm-res" hidden>
+              <button id="rm-res-b" class="button" style="width:100%; margin-top: 5px;">Reset</button>
             </div>
           </div>
         </div>

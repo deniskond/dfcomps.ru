@@ -43,6 +43,7 @@ export interface RoundView {
   order: number[];
   bans: Record<number, number>;
   banTurn: number;
+  winner?: number;
   stage: 'Ban' | 'Running' | 'Completed';
 }
 

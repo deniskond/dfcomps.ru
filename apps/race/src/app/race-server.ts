@@ -249,17 +249,16 @@ export class RaceServer {
       if (req.query.token !== undefined && typeof req.query.token == 'string') {
         userToken = req.query.token;
       }
+      const token = adminToken ?? userToken;
       if (isNaN(roundId)) {
         ws.send(JSON.stringify({ err: { code: 'BadRequest', message: "Expected 'roundId' to be round index" } }));
         ws.close();
         return;
       }
-      const subscription = this.raceController.subscribeRound(competitionId, roundId, adminToken ?? userToken, (x) => {
+      const subscription = this.raceController.subscribeRound(competitionId, roundId, token, (x) => {
         ws.send(JSON.stringify(result(x)));
       });
-      console.log(subscription);
       if (subscription.err !== undefined) {
-        console.log(`No connection ${RaceServer.statusMap[subscription.err.code]}`);
         try {
           ws.send(JSON.stringify(subscription));
           ws.close();
@@ -269,7 +268,7 @@ export class RaceServer {
         console.log('Connection closed');
         return;
       }
-      ws.send(JSON.stringify(this.raceController.getRoundView(competitionId, roundId, adminToken)));
+      ws.send(JSON.stringify(this.raceController.getRoundView(competitionId, roundId, token)));
       subscription.result.add(() => {
         ws.close(200);
       });
@@ -277,24 +276,24 @@ export class RaceServer {
       ws.on('message', (msg) => {
         const message = JSON.parse(msg.toString('utf-8'));
         if (!isInMessage(message)) {
-          this.log(`unknown message: ${msg.toString('utf-8')} from ${adminToken ?? userToken}`);
+          this.log(`unknown message: ${msg.toString('utf-8')} from ${token}`);
           return;
         }
         let res;
         switch (message.action) {
           case 'Update':
-            ws.send(JSON.stringify(this.raceController.getRoundView(competitionId, roundId, adminToken)));
+            ws.send(JSON.stringify(this.raceController.getRoundView(competitionId, roundId, token)));
             break;
           // ws.send();
           case 'Ban':
-            res = this.raceController.roundBan(competitionId, roundId, adminToken ?? userToken, message.mapIndex);
+            res = this.raceController.roundBan(competitionId, roundId, token, message.mapIndex);
             if (res.err !== undefined) {
               this.log(`${message.action}: ${res.err.message}`);
               ws.send(JSON.stringify(res));
             }
             break;
           case 'Unban':
-            res = this.raceController.roundUnban(competitionId, roundId, adminToken ?? userToken, message.mapIndex);
+            res = this.raceController.roundUnban(competitionId, roundId, token, message.mapIndex);
             if (res.err !== undefined) {
               this.log(`${message.action}: ${res.err.message}`);
               ws.send(JSON.stringify(res));
@@ -302,14 +301,14 @@ export class RaceServer {
             break;
           case 'Start':
           case 'Reset':
-            res = this.raceController.roundSet(competitionId, roundId, adminToken ?? userToken, message.action);
+            res = this.raceController.roundSet(competitionId, roundId, token, message.action);
             if (res.err !== undefined) {
               this.log(`${message.action}: ${res.err.message}`);
               ws.send(JSON.stringify(res));
             }
             break;
           case 'Complete':
-            res = this.raceController.roundSet(competitionId, roundId, adminToken ?? userToken, message.winner);
+            res = this.raceController.roundSet(competitionId, roundId, token, message.winner);
             if (res.err !== undefined) {
               this.log(`${message.action}: ${res.err.message}`);
               ws.send(JSON.stringify(res));

@@ -363,6 +363,7 @@ export class RaceController {
     if (stateOrWinner === 'Reset') {
       round.view.stage = 'Ban';
       round.view.bans = {};
+      round.view.winner = undefined;
     } else if (stateOrWinner === 'Start') {
       const bans = Object.values(round.view.bans).reduce(
         (s, x) => {
@@ -391,6 +392,7 @@ export class RaceController {
       competition.brackets.rounds[round.round].winnerIndex = stateOrWinner;
       this.updateBracket(competition);
       round.view.stage = 'Completed';
+      round.view.winner = stateOrWinner;
       // delete this.rounds[round.view.id];
     }
     this.notifyRoundUpdate(round);
