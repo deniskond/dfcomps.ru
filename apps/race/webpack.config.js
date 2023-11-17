@@ -15,6 +15,9 @@ module.exports = (config, context) => {
   // Install additional plugins
   config.plugins = config.plugins || [];
   config.plugins.push(...extractRelevantNodeModules(outputPath));
+  config.plugins.push(
+    new CopyPlugin({ patterns: [{ from: 'src/pure-js.html', to: path.join(outputPath, 'pure-js.html') }] }),
+  );
 
   return config;
 };
@@ -44,7 +47,9 @@ function extractRelevantNodeModules(outputPath) {
  * @returns {*} A Webpack plugin
  */
 function copyPackageLockFile(outputPath) {
-  return new CopyPlugin({ patterns: [{ from: '../../package-lock.json', to: path.join(outputPath, 'package-lock.json') }] });
+  return new CopyPlugin({
+    patterns: [{ from: '../../package-lock.json', to: path.join(outputPath, 'package-lock.json') }],
+  });
 }
 
 /**

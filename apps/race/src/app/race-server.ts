@@ -8,7 +8,6 @@ import { RaceController } from './race/race-controller';
 import { ErrorCode, Result, badRequest, notAllowed, result } from './race/types/result';
 import { isInMessage } from './interfaces/message.interface';
 import { createHash, createCipheriv, randomBytes } from 'crypto';
-import { SecretsConfig } from './race/config/secret';
 import { isCompetitionCreateInfo } from './race/interfaces/views.interface';
 import { AddressInfo } from 'net';
 // import { ParsedQs } from 'qs';
@@ -53,7 +52,7 @@ export class RaceServer {
   private tokenize(login: string, passwordHash: string): string {
     const cipher = createCipheriv('aes-256-cbc', this._key, this._iv);
     let encr = cipher.update(
-      `${SecretsConfig.TOKEN_SALT}${login}###${passwordHash}${SecretsConfig.TOKEN_SALT}`,
+      `${process.env.SALT}${login}###${passwordHash}${process.env.SALT}`,
       'utf-8',
       'base64url',
     );
@@ -64,9 +63,9 @@ export class RaceServer {
     this._key = randomBytes(32);
     this._iv = randomBytes(16);
     const logins = [
-      { login: 'rantrave', password: 'dfthtrue' },
-      { login: 'w00deh', password: 'dfbossth' },
-      { login: 'n0sf', password: 'dfcompsboss' },
+      { login: 'rantrave', password: process.env.RACE_WOODY_PASS! },
+      { login: 'w00deh', password: process.env.RACE_RANTRAVE_PASS! },
+      { login: 'Nosf', password: process.env.RACE_NOSF_PASS! },
     ];
     this._allowed_tokens = {};
     for (const l of logins) {
@@ -89,9 +88,10 @@ export class RaceServer {
     });
 
     app.get('/app.html', async (req: express.Request, res: express.Response) => {
+      const frontendLocation = process.env.NODE_ENV === 'production' ? './pure-js.html' : 'apps/race/src/pure-js.html';
       // res.sendFile(__dirname + '/../../../apps/race/src/pure-js.html');
       const html = await new Promise((r, j) =>
-        fs.readFile('apps/race/src/pure-js.html', (err, b) => {
+        fs.readFile(frontendLocation, (err, b) => {
           if (err) j(err);
           else r(b);
         }),

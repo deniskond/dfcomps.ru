@@ -720,7 +720,9 @@
         h = { "Content-type": "application/json; charset=UTF-8" };
         b = JSON.stringify(data);
       }
-      const res = await fetch(path, {
+
+      const pathPrefix = window.location.host === 'dfcomps.ru' ? '/race' : '';
+      const res = await fetch(pathPrefix + path, {
         method: method,
         credentials: "same-origin",
         headers: h,
@@ -1478,7 +1480,7 @@
   <div>
     <div class="back" style="background-color: #000;"></div>
     <video class="back" playsinline autoplay muted loop onloadstart="this.playbackRate = 0.7;">
-      <source src="./assets/videos/motion_background.webm" type="video/webm">
+      <source src="https://dfcomps.ru/uploads/files/motion_background.webm" type="video/webm">
       Your browser does not support the video tag.
     </video>
     <div id="login" hidden>
