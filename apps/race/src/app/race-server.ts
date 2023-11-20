@@ -63,9 +63,9 @@ export class RaceServer {
     this._key = randomBytes(32);
     this._iv = randomBytes(16);
     const logins = [
-      { login: 'rantrave', password: process.env.RACE_WOODY_PASS! },
-      { login: 'w00deh', password: process.env.RACE_RANTRAVE_PASS! },
-      { login: 'Nosf', password: process.env.RACE_NOSF_PASS! },
+      { login: 'rantrave', password: process.env.NODE_ENV === 'production' ? process.env.RACE_WOODY_PASS! : 'rantrave' },
+      { login: 'w00deh', password: process.env.NODE_ENV === 'production' ? process.env.RACE_RANTRAVE_PASS! : 'w00deh' },
+      { login: 'Nosf', password: process.env.NODE_ENV === 'production' ? process.env.RACE_NOSF_PASS! : 'Nosf' },
     ];
     this._allowed_tokens = {};
     for (const l of logins) {
