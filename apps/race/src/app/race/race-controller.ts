@@ -1,7 +1,17 @@
 import axios from 'axios';
 import { Subject, Subscription } from 'rxjs';
 import { v4 } from 'uuid';
-import { AsyncResult, Result, badRequest, duplicate, error, isResult, notAllowed, notFound, result } from './types/result';
+import {
+  AsyncResult,
+  Result,
+  badRequest,
+  duplicate,
+  error,
+  isResult,
+  notAllowed,
+  notFound,
+  result,
+} from './types/result';
 import {
   CompetitionRules,
   CompetitionView,
@@ -199,7 +209,7 @@ export class RaceController {
       n >>= 1;
     }
     const rounds: Round[] = [];
-    for (let i = circles.length; i-- > 0;) {
+    for (let i = circles.length; i-- > 0; ) {
       rounds.push(...circles[i]);
     }
     competition.brackets = { rounds };
@@ -372,7 +382,7 @@ export class RaceController {
       round.view.bans = {};
       round.view.winner = undefined;
       await this.terminateServer(competitionId, roundId, token);
-    } else if (stateOrWinner === "Restart") {
+    } else if (stateOrWinner === 'Restart') {
       round.view.stage = 'Ban';
       round.view.winner = undefined;
     } else if (stateOrWinner === 'Start') {
@@ -391,8 +401,16 @@ export class RaceController {
         return badRequest('Brackets are dead');
       }
       const banned = Object.keys(round.view.bans).map((x) => parseInt(x));
-      const maps = round.view.order.filter(x => !(x in banned)).map(x => competition.mapPool[x].mapName);
-      const ports = await this.startServer(competitionId, roundId, maps, round.view.players.map(x => x.info.playerName), token);
+      const maps = round.view.order
+        .filter((x) => banned.every((y) => y !== x))
+        .map((x) => competition.mapPool[x].mapName);
+      const ports = await this.startServer(
+        competitionId,
+        roundId,
+        maps,
+        round.view.players.map((x) => x.info.playerName),
+        token,
+      );
       if (ports.err !== undefined) return ports;
       competition.brackets.rounds[roundId].bannedMaps = banned;
       if (this.serverHostAddress !== undefined) {
@@ -410,13 +428,15 @@ export class RaceController {
     } else {
       if (competition.brackets === undefined) return badRequest(`Competition ${competition.id} is in invalid state`);
       if (competition.players[stateOrWinner] === undefined) {
-        return badRequest(`Competition ${competition.id} round ${round.round} is reported with winner '${stateOrWinner}' out of bounds.`);
+        return badRequest(
+          `Competition ${competition.id} round ${round.round} is reported with winner '${stateOrWinner}' out of bounds.`,
+        );
       }
       competition.brackets.rounds[round.round].winnerIndex = stateOrWinner;
       this.updateBracket(competition);
       round.view.stage = 'Completed';
       round.view.winner = stateOrWinner;
-      const res = await this.terminateServer(competitionId, roundId, token);
+      await this.terminateServer(competitionId, roundId, token);
       // delete this.rounds[round.view.id];
     }
     this.notifyRoundUpdate(round);
@@ -485,7 +505,13 @@ export class RaceController {
     }
   }
   // #endregion
-  private async startServer(competitionId: string, roundId: number, maps: string[], players: string[], token: string | undefined): Promise<Result<Record<string, number>>> {
+  private async startServer(
+    competitionId: string,
+    roundId: number,
+    maps: string[],
+    players: string[],
+    token: string | undefined,
+  ): Promise<Result<Record<string, number>>> {
     // request data type: {
     //   "token": string,
     //   "report_host": string,
@@ -503,7 +529,7 @@ export class RaceController {
     //   "beforestart_gap": float,
     // }
     if (this.serverHostAddress === undefined) return result({});
-    const p = this.serverHostPort === undefined ? "" : `:${this.serverHostPort}`;
+    const p = this.serverHostPort === undefined ? '' : `:${this.serverHostPort}`;
     const url = `${this.serverHostAddress}${p}/round/start`;
     try {
       const serverHostRequest = await axios.post(url, {
@@ -513,11 +539,14 @@ export class RaceController {
         report_path: `/competitions/${competitionId}/rounds/${roundId}/complete`,
         reset_path: `/competitions/${competitionId}/rounds/${roundId}/reset`,
         players,
-        maps
+        maps,
       });
       if (serverHostRequest.status >= 300) {
         console.warn(`ServerHost[${serverHostRequest.status}]`);
-        return error({ code: 'InternalError', message: `Connection failed with status code ${serverHostRequest.status}` });
+        return error({
+          code: 'InternalError',
+          message: `Connection failed with status code ${serverHostRequest.status}`,
+        });
       }
       const data = serverHostRequest.data;
       if (!isResult(data)) {
@@ -530,6 +559,7 @@ export class RaceController {
       }
       const portDict = Object.fromEntries(data.result);
       return result(portDict);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       if (e.response) {
         console.warn(`ServerHost[${e.response.status}]: ${JSON.stringify(e.response.data)}`);
@@ -541,14 +571,18 @@ export class RaceController {
       }
     }
   }
-  private async terminateServer(competitionId: string, roundId: number, token: string | undefined): Promise<Result<Record<string, number>>> {
+  private async terminateServer(
+    competitionId: string,
+    roundId: number,
+    token: string | undefined,
+  ): Promise<Result<Record<string, number>>> {
     // request data type: {
     //   "token": string,
     //   "competitionId": string,
     //   "roundId": int,
     // }
     if (this.serverHostAddress === undefined) return result({});
-    const p = this.serverHostPort === undefined ? "" : `:${this.serverHostPort}`;
+    const p = this.serverHostPort === undefined ? '' : `:${this.serverHostPort}`;
     const url = `${this.serverHostAddress}${p}/round/terminate`;
     try {
       const serverHostRequest = await axios.post(url, {
@@ -558,10 +592,13 @@ export class RaceController {
       });
       if (serverHostRequest.status >= 300) {
         console.warn(`ServerHost[${serverHostRequest.status}]`);
-        return error({ code: 'InternalError', message: `Connection failed with status code ${serverHostRequest.status}` });
+        return error({
+          code: 'InternalError',
+          message: `Connection failed with status code ${serverHostRequest.status}`,
+        });
       }
-      const data = serverHostRequest.data;
       return result({});
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       if (e.response) {
         console.warn(`ServerHost[${e.response.status}]: ${JSON.stringify(e.response.data)}`);

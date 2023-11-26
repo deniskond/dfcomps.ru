@@ -1139,7 +1139,7 @@
       }
       const els = view.order.map(x => {
         let state = undefined;
-        if (x in view.forbiddenBans) {
+        if (view.forbiddenBans.some(y => y === x)) {
           state = "frozen";
         } else {
           if (x in view.bans) {

@@ -37,6 +37,10 @@ def strftime(msec):
         return f"{m:02}:{s:02}.{ms:03}"
     return f"{s}.{ms:03}"
 
+color_re = re.compile(r'\^.')
+def remove_colors(string):
+    return color_re.sub("", string).lower()
+
 class command_stream:
     def __init__(self, process: subprocess.Popen):
         self.process = process
@@ -240,7 +244,7 @@ class race_game:
                     cmdplayer = msg.content["player"]
                     msgtext = msg.content["message"]
                     if msgtext.startswith('!'):
-                        if msg.player == cmdplayer:
+                        if self.__remove_colors(msg.player) == cmdplayer:
                             if msgtext == "!giveup":
                                 gs["finished"] = True
                                 gs["disqualified"] = True
@@ -282,7 +286,7 @@ class race_game:
                     gs = self.gamestate[msg.player]
                     cmdplayer = msg.content["player"]
                     event = msg.content["event"]
-                    if player == cmdplayer:
+                    if self.__remove_colors(player) == cmdplayer:
                         cmap = gs["current_map"]
                         if cmap >= 0 and self.stage == "race": # race is going on
                             if event == "join":
@@ -312,7 +316,7 @@ class race_game:
                     gs = self.gamestate[msg.player]
                     cmdplayer = msg.content["player"]
                     demotime = msg.content["time"]
-                    if player == cmdplayer:
+                    if self.__remove_colors(player) == cmdplayer:
                         cmap = gs["current_map"]
                         curmap = gs["times"][cmap]
                         if curmap["start"] is not None:
@@ -555,17 +559,6 @@ def is_number(value):
     except:
         return False
 
-async def start_game(started: asyncio.Future, rules, players, callback, custom_config=[]):
-    # r = rules(["cruton", "cruton2", "cruton3"], warmup_time=600)
-    try:
-        race = race_game("/home/rantrave/games/defrag", rules, players, callback)
-        started.set_result(await race.prepare(custom_config))
-    except Exception as e:
-        started.set_exception(e)
-        return
-
-    await race.run()
-
 class HttpScheduler:
     def __init__(self, ports, game, custom_config):
         self.ports = ports
@@ -674,6 +667,7 @@ class HttpScheduler:
         aftermatch_time = d.get("aftermatch_time", None)
         beforestart_gap = d.get("beforestart_gap", None)
         custom_config = [*self.custom_config, *d.get("custom_config", [])]
+        print(f"Maps to run: {maps}")
         bads = []
         if warmup_map is not None and not isinstance(warmup_map, str): bads.append("'warmup_map' must be string")
         if max_disconnects is not None and not isinstance(max_disconnects, int) and max_disconnects < 0: bads.append("'max_disconnects' must be non negative int")
@@ -767,4 +761,4 @@ if __name__ == "__main__":
         print(f"game at {game} is configured improperly")
         exit(1)
     scheduler = HttpScheduler([27968, 27969, 27970, 27971, 27972], os.environ.get("GAME_PATH"), custom_config)
-    scheduler.start(8080)
+    scheduler.start(9682)
