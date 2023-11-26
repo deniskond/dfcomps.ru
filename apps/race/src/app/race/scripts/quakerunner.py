@@ -218,8 +218,8 @@ class race_game:
     
     # def __overall_cancellation(self):
     #     if self.cancellation_task is not None:
-    def terminate(self):
-        self.events.put_nowait(message(None, "system", {"type": "terminate"}))
+    def terminate(self, manual=False):
+        self.events.put_nowait(message(None, "system", {"type": "terminate", "manual": manual}))
 
     async def __alive(self):
         while self.stage != "shutdown":
@@ -235,6 +235,7 @@ class race_game:
     async def __main_task(self):
         try:
             is_terminated = False
+            is_manual_terminate = False
             while self.stage != "shutdown":
                 msg: message = await self.events.get()
                 print(f'message [{msg.player}]: {msg.content}')
@@ -370,6 +371,7 @@ class race_game:
                                 break
                     elif mtype == "terminate":
                         is_terminated = True
+                        is_manual_terminate = msg.content["manual"]
                         break
             if not is_terminated:
                 await self.broadcast("say ^2ROUND FINISHED!")
@@ -419,7 +421,7 @@ class race_game:
 
                 await asyncio.sleep(20.0)
             else:
-                if self.reset_hook is not None:
+                if not is_manual_terminate and self.reset_hook is not None:
                     await self.reset_hook()
                 await self.broadcast("say ^2ROUND TERMINATED! ^3SORRY ^2X^5_^2X")
 
@@ -612,7 +614,7 @@ class HttpScheduler:
                 return
             key = f'{competitionId}/{roundId}'
             if key in self.running_tasks[token]:
-                self.running_tasks[token][key].terminate()
+                self.running_tasks[token][key].terminate(True)
                 del self.running_tasks[token][key]
 
     def start(self, port):

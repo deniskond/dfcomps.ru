@@ -687,6 +687,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/core.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/sha256.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/enc-base64.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js"
+    integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <script lang="js">
     /** @returns {HTMLElement | undefined} */
@@ -949,24 +952,30 @@
           ws = new WebSocket(`${protocol}://${loc.host}${pathname}`);
         }
         ws.onmessage = (msg) => {
-          const d = JSON.parse(msg.data.toString('utf-8'));
-          if ("err" in d) {
-            if (d.err.code === "NotFound") {
-              if (!gotMsg) {
-                dd.rej("Round is not started");
-                gotMsg = true;
+          try {
+            const d = JSON.parse(msg.data.toString('utf-8'));
+            if ("err" in d) {
+              if (d.err.code === "NotFound") {
+                if (!gotMsg) {
+                  dd.rej("Round is not started");
+                  gotMsg = true;
+                }
+              } else {
+                lerr(d.err.message);
               }
-            } else {
-              lerr(d.err.message);
+            } else if ("result" in d) {
+              update_round(comp, round, d.result);
+              const rounds = document.getElementById("rounds");
+              rounds.hidden = false;
             }
-          } else if ("result" in d) {
-            update_round(comp, round, d.result);
-            const rounds = document.getElementById("rounds");
-            rounds.hidden = false;
-          }
-          if (!gotMsg) {
-            gotMsg = true;
-            dd.res();
+            if (!gotMsg) {
+              gotMsg = true;
+              dd.res();
+            }
+          } finally {
+            if (document.__ws_sub) {
+              document.__ws_sub.next(true);
+            }
           }
         };
         ws.onclose = (ev) => {
@@ -977,6 +986,7 @@
               document.__ws = undefined;
             }
           }
+          document.__ws_sub.complete();
         };
       } catch (e) {
         console.log(e);
@@ -990,6 +1000,9 @@
         update_page(false, true);
       }
       document.__ws = ws;
+      if (!document.__ws_sub) {
+        document.__ws_sub = new rxjs.Subject();
+      }
     }
 
     function copy_invite(button, ind) {
@@ -1001,30 +1014,35 @@
       }
     }
 
-    async function round_ban(ind) {
-      if (document.__ws) {
-        document.__ws.send(JSON.stringify({ action: 'Ban', mapIndex: ind }));
+    async function send_ws(data) {
+      if (document.__ws_sub) {
+        const promise = rxjs.firstValueFrom(document.__ws_sub);
+        if (document.__ws) {
+          document.__ws.send(JSON.stringify(data));
+        }
+        await Promise.race([promise, sl(5000)]);
+      } else {
+        if (document.__ws) {
+          document.__ws.send(JSON.stringify(data));
+        }
+        await sl(1000);
       }
+    }
+
+    async function round_ban(ind) {
+      await send_ws({ action: 'Ban', mapIndex: ind });
     }
     async function round_unban(ind) {
-      if (document.__ws) {
-        document.__ws.send(JSON.stringify({ action: 'Unban', mapIndex: ind }));
-      }
+      await send_ws({ action: 'Unban', mapIndex: ind });
     }
-    async function round_start(ind) {
-      if (document.__ws) {
-        document.__ws.send(JSON.stringify({ action: 'Start' }));
-      }
+    async function round_start() {
+      await send_ws({ action: 'Start' });
     }
-    async function round_winner(ind, winner) {
-      if (document.__ws) {
-        document.__ws.send(JSON.stringify({ action: 'Complete', winner }));
-      }
+    async function round_winner(winner) {
+      await send_ws({ action: 'Complete', winner });
     }
-    async function round_reset(ind) {
-      if (document.__ws) {
-        document.__ws.send(JSON.stringify({ action: 'Reset' }));
-      }
+    async function round_reset() {
+      await send_ws({ action: 'Reset' });
     }
 
     async function update_round(comp, ind, view) {
@@ -1072,7 +1090,7 @@
             inv.hidden = false;
             st.hidden = false;
             const stb = qid(st, "rm-st-b");
-            stb.onclick = async () => await progress(round_start(ind));
+            stb.onclick = async () => await progress(round_start());
           }
         } else {
           rps[view.banTurn].classList.add("highlight");
@@ -1115,14 +1133,14 @@
         }
         if (isadmin) {
           win.hidden = false;
-          qid(win, "rm-win-0").onclick = async () => await progress(round_winner(ind, 0));
-          qid(win, "rm-win-1").onclick = async () => await progress(round_winner(ind, 1));
+          qid(win, "rm-win-0").onclick = async () => await progress(round_winner(0));
+          qid(win, "rm-win-1").onclick = async () => await progress(round_winner(1));
         }
       } else {
         msg.innerText = "ROUND COMPLETE";
         if (isadmin) {
           res.hidden = false;
-          qid(res, "rm-res-b").onclick = async () => await progress(round_reset(ind));
+          qid(res, "rm-res-b").onclick = async () => await progress(round_reset());
         }
         try {
           for (let p of rps) {
@@ -1196,7 +1214,9 @@
             btn.classList.add(el.state);
             ls.classList.add(el.state);
             nam.classList.add(el.state);
-            bn.hidden = false;
+            if (el.state !== "frozen") {
+              bn.hidden = false;
+            }
           }
         } catch (e) {
           console.error(e);
