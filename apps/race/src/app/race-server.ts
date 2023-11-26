@@ -25,6 +25,7 @@ export class RaceServer {
     DuplicateKey: 409,
     NotAllowed: 403,
     NotFound: 404,
+    InternalError: 500,
   };
   private _allowed_tokens: Record<string, { login: string; password: string }>;
   private _key: Buffer;
@@ -62,11 +63,16 @@ export class RaceServer {
   constructor() {
     this._key = randomBytes(32);
     this._iv = randomBytes(16);
-    const logins = [
-      { login: 'rantrave', password: process.env.NODE_ENV === 'production' ? process.env.RACE_WOODY_PASS! : 'rantrave' },
-      { login: 'w00deh', password: process.env.NODE_ENV === 'production' ? process.env.RACE_RANTRAVE_PASS! : 'w00deh' },
-      { login: 'Nosf', password: process.env.NODE_ENV === 'production' ? process.env.RACE_NOSF_PASS! : 'Nosf' },
-    ];
+    const logins = [];
+    if (process.env.NODE_ENV === 'production') {
+      if (process.env.RACE_WOODY_PASS !== undefined) logins.push({ login: 'w00deh', password: process.env.RACE_WOODY_PASS });
+      if (process.env.RACE_RANTRAVE_PASS !== undefined) logins.push({ login: 'rantrave', password: process.env.RACE_RANTRAVE_PASS });
+      if (process.env.RACE_NOSF_PASS !== undefined) logins.push({ login: 'Nosf', password: process.env.RACE_NOSF_PASS });
+    } else {
+      logins.push({ login: 'w00deh', password: 'w00deh' });
+      logins.push({ login: 'rantrave', password: 'rantrave' });
+      logins.push({ login: 'Nosf', password: 'Nosf' });
+    }
     this._allowed_tokens = {};
     for (const l of logins) {
       this._allowed_tokens[this.tokenize(l.login, this.hashPassword(l.password))] = l;
@@ -76,7 +82,8 @@ export class RaceServer {
     this.express = express();
     this.expressWs = expressWs(this.express);
     // this.server = http.createServer(this.express);
-    this.raceController = new RaceController();
+    const shp = parseInt(process.env.SERVER_HOST_PORT ?? "");
+    this.raceController = new RaceController(process.env.SERVER_HOST_ADDRESS, isNaN(shp) ? undefined : shp);
     const app = this.expressWs.app;
 
     app.use(express.json());
@@ -239,6 +246,31 @@ export class RaceServer {
         }
         this.response(res, this.raceController.getRoundView(req.params.competitionId, roundId, token));
       });
+    app.route('/competitions/:competitionId/rounds/:roundId/complete')
+      .post(async (req, res) => {
+        const token = this.getAdminToken(req);
+        const roundId = parseInt(req.params.roundId);
+        if (isNaN(roundId)) {
+          this.invalidType(res, "Expected 'roundId' to be round index");
+          return;
+        }
+        const body = req.body;
+        if (typeof body?.winner !== 'number') {
+          this.response(res, badRequest('bad "winner" index'));
+          return;
+        }
+        this.response(res, await this.raceController.roundSet(req.params.competitionId, roundId, token, body.winner));
+      })
+    app.route('/competitions/:competitionId/rounds/:roundId/reset')
+      .post(async (req, res) => {
+        const token = this.getAdminToken(req);
+        const roundId = parseInt(req.params.roundId);
+        if (isNaN(roundId)) {
+          this.invalidType(res, "Expected 'roundId' to be round index");
+          return;
+        }
+        this.response(res, await this.raceController.roundSet(req.params.competitionId, roundId, token, "Restart"));
+      })
     app.ws('/bracket/:competitionId/rounds/:roundId', (ws, req: express.Request) => {
       this.log(`new connection to ${req.params.competitionId}/${req.params.roundId}`);
       const competitionId = req.params.competitionId;
@@ -272,8 +304,8 @@ export class RaceServer {
       subscription.result.add(() => {
         ws.close(200);
       });
-
-      ws.on('message', (msg) => {
+      // [FIXME] probable race condition, should use queued messages instead of straight async
+      ws.on('message', async (msg) => {
         const message = JSON.parse(msg.toString('utf-8'));
         if (!isInMessage(message)) {
           this.log(`unknown message: ${msg.toString('utf-8')} from ${token}`);
@@ -301,14 +333,14 @@ export class RaceServer {
             break;
           case 'Start':
           case 'Reset':
-            res = this.raceController.roundSet(competitionId, roundId, token, message.action);
+            res = await this.raceController.roundSet(competitionId, roundId, token, message.action);
             if (res.err !== undefined) {
               this.log(`${message.action}: ${res.err.message}`);
               ws.send(JSON.stringify(res));
             }
             break;
           case 'Complete':
-            res = this.raceController.roundSet(competitionId, roundId, token, message.winner);
+            res = await this.raceController.roundSet(competitionId, roundId, token, message.winner);
             if (res.err !== undefined) {
               this.log(`${message.action}: ${res.err.message}`);
               ws.send(JSON.stringify(res));

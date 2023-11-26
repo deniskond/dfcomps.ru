@@ -107,12 +107,14 @@ class quake_factory:
         return cl
 
 class rules:
-    def __init__(self, maps=[], warmup_map="tr1ckhouse-beta3", warmup_time=120, max_disconnects=3, afterlevel_time=0.5, aftermatch_time=120):
+    def __init__(self, maps=[], warmup_map="tr1ckhouse-beta3", warmup_time=300, max_disconnects=3, reconnect_timeout=20, afterlevel_time=0.5, aftermatch_time=120, beforestart_gap=3.0):
         self.warmup_map = warmup_map
         self.warmup_time = warmup_time
         self.max_disconnects = max_disconnects
+        self.reconnect_timeout = reconnect_timeout
         self.afterlevel_time = afterlevel_time
         self.aftermatch_time = aftermatch_time
+        self.beforestart_gap = beforestart_gap
         self.maps = maps
 
 class message:
@@ -123,7 +125,7 @@ class message:
         self.content = content
 
 class race_game:
-    def __init__(self, quakepath, rules, player_ports, report_hook):
+    def __init__(self, quakepath, rules: rules, player_ports, report_hook, reset_hook):
         self.__color_re = re.compile(r'\^.')
         self.quakepath = quakepath
         self.rules = rules
@@ -131,6 +133,7 @@ class race_game:
         self.players = player_ports #set([self.__remove_colors(p) for p in players])
         self.events = asyncio.Queue()
         self.report_hook = report_hook
+        self.reset_hook = reset_hook
         self.gamestate = {
             player: {
                 "times": [{"map": m, "start": None, "end": None, "demo": None} for m in self.maplist],
@@ -139,9 +142,10 @@ class race_game:
                 "disqualified": False,
                 "connected": False,
                 "disconnects": 0,
+                "last_disconnect_id": 0,
                 "current_map": -1,
             }
-            for player in self.players
+            for player, _ in self.players
         }
         self.processes: Dict[str, command_stream] = {}
         self.stage = "warmup" # : "warmup" | "race" | "complete" | "shutdown"
@@ -156,13 +160,13 @@ class race_game:
             None
         ]
 
-    async def prepare(self):
+    async def prepare(self, custom_config=[]):
         binpath = os.path.join(self.quakepath, "ioq3ded")
         modpath = os.path.join(self.quakepath, "defrag")
         if not os.path.exists(binpath):
-            return {"error": {"code": "BadConfig", "message": f"ioquake3 dedicated server is not found at '{binpath}'"} }
+            return {"err": {"code": "BadConfig", "message": f"ioquake3 dedicated server is not found at '{binpath}'"} }
         if not os.path.exists(modpath):
-            return {"error": {"code": "BadConfig", "message": f"Defrag is not found at '{modpath}'"} }
+            return {"err": {"code": "BadConfig", "message": f"Defrag is not found at '{modpath}'"} }
         # ensure maplist is fully presented
         listmaps = []
         for i in os.listdir(modpath):
@@ -176,27 +180,28 @@ class race_game:
         print(urls)
         errors = [y for y in await asyncio.gather(*[self.download(x[0], x[1]) for x in urls]) if y is not None]
         if len(errors) > 0:
-            return {"error": {"code": "InternalError", "message": f"Failed to download maps:\n" + '\n'.join(errors)} }
+            return {"err": {"code": "InternalError", "message": f"Failed to download maps:\n" + '\n'.join(errors)} }
         print(self.players)
         qf = quake_factory(binpath, [
             "set fs_game defrag",
-            "set df_promode 1",
+            *custom_config,
             f"map {self.rules.warmup_map}",
             # [FIXME] add required config!
         ])
         await asyncio.sleep(1.0)
-        for player, port in self.players.items():
+        for player, port in self.players:
             self.processes[player] = qf.run([f"set net_port {port}"])
             print(f"Player '{player}' is running on port {port}")
         
         await asyncio.sleep(1.0)
 
         await self.broadcast(f"map {self.rules.warmup_map}")
-        
-        return {"result": list(self.players.items())}
+        return {"result": self.players}
 
     async def run(self):
-        await asyncio.gather(*[self.__main_task(), self.__alive(), self.__countdown_task(), self.__all_recv_task(), self.__waitforplayers_task()])
+        res, *_ = await asyncio.gather(*[self.__main_task(), self.__alive(), self.__countdown_task(), self.__all_recv_task(), self.__waitforplayers_task()])
+        print("run dead")
+        return res
 
     async def broadcast(self, message: str, exclude=[]):
         await asyncio.gather(*[x.send(message.encode('ascii')) for k,x in self.processes.items() if not x.is_closed() and k not in exclude])
@@ -206,18 +211,26 @@ class race_game:
 
     def __remove_colors(self, string):
         return self.__color_re.sub("", string).lower()
+    
+    # def __overall_cancellation(self):
+    #     if self.cancellation_task is not None:
+    def terminate(self):
+        self.events.put_nowait(message(None, "system", {"type": "terminate"}))
 
     async def __alive(self):
         while self.stage != "shutdown":
             # print('tick')
             await self.broadcast("")
             await asyncio.sleep(1.0)
+        print("__alive dead")
 
     async def __all_recv_task(self):
         await asyncio.gather(*[self.__recv_task(x) for x in self.processes])
+        print("__all_recv_task dead")
 
     async def __main_task(self):
         try:
+            is_terminated = False
             while self.stage != "shutdown":
                 msg: message = await self.events.get()
                 print(f'message [{msg.player}]: {msg.content}')
@@ -232,10 +245,17 @@ class race_game:
                                 gs["finished"] = True
                                 gs["disqualified"] = True
                                 await self.broadcast(f"say ^3Player ^7{player} ^3gave up!")
+                                # run next map
+                                if all((x["finished"] for x in self.gamestate.values())):
+                                    # all players finished round
+                                    print(f"EVERYONE IS FINISHED!")
+                                    self.stage = "complete"
+                                    break
                             elif self.stage == "warmup":
                                 if msgtext == "!ready":
                                     gs["ready"] = True
                                     # check for all ready
+                                    await self.broadcast(f"say ^3Player ^7{player} ^3is ready!")
                                     if all((x["ready"] for x in self.gamestate.values())):
                                         self.countdown_stage = 0
                                         for i in self.countdown_phrases:
@@ -269,12 +289,15 @@ class race_game:
                                 print(f"Player {player} joined {cmap}!")
                                 if not gs["connected"]:
                                     gs["connected"] = True
-                                # [TODO] stop ongoing reconnect timer
+                                # player reconnected, last_disconnect_id is invalidated
+                                gs['last_disconnect_id'] += 1
                                 curmap = gs["times"][cmap]
                                 if curmap["start"] is None:
                                     curmap["start"] = msg.time
                             elif event == "disconnect":
-                                # [TODO] start reconnect timer
+                                # player disconnected, start timer to reconnect
+                                asyncio.create_task(self.__disconnect_timer(msg.player, gs['last_disconnect_id']))
+
                                 gs["disconnects"] += 1
                                 if gs["disconnects"] > self.rules.max_disconnects:
                                     gs["disqualified"] = True
@@ -298,6 +321,7 @@ class race_game:
                             # run next map
                             if cmap == len(self.maplist) - 1:
                                 gs["finished"] = True
+                                await self.broadcast(f"say ^3Player ^7{player} ^3is finished!")
                                 if all((x["finished"] for x in self.gamestate.values())):
                                     # all players finished round
                                     print(f"EVERYONE IS FINISHED!")
@@ -319,6 +343,7 @@ class race_game:
                             del self.processes[p]
                         if len(self.processes) < 2:
                             # all players but at least one are done
+                            is_terminated = True
                             break
                     elif mtype == "start":
                         for p, g in self.gamestate.items():
@@ -326,56 +351,85 @@ class race_game:
                         m = self.maplist[0]
                         await self.broadcast(f"map {m}")
                         # await asyncio.gather(*[x.send(f"map {m}") for x in self.processes.values()])
-
-            await self.broadcast("say ^2ROUND FINISHED!")
-            await asyncio.sleep(1.0)
-
-            playertimes = []
-            for p, g in self.gamestate.items():
-                t = g["times"]
-                dis = False
-                sum_time = 0
-                sum_demo = 0
-                for tms in t:
-                    if tms["start"] is None or tms["end"] is None or tms["demo"] is None:
-                        dis = True
+                    elif mtype == "reconnect":
+                        gs = self.gamestate[msg.player]
+                        if "disconnect_id" in msg.content and msg.content["disconnect_id"] == gs["last_disconnect_id"]:
+                            # player failed to reconnect
+                            gs["finished"] = True
+                            gs["disqualified"] = True
+                            await self.broadcast(f"say ^3Player ^7{player} ^3is not reconnected!")
+                            # run next map
+                            if all((x["finished"] for x in self.gamestate.values())):
+                                # all players finished round
+                                print(f"EVERYONE IS FINISHED!")
+                                self.stage = "complete"
+                                break
+                    elif mtype == "terminate":
+                        is_terminated = True
                         break
-                    sum_time += tms["end"] - tms["start"]
-                    sum_demo += tms["demo"]
-                if dis:
-                    playertimes.append((p, None, None, False, t))
-                else:
-                    playertimes.append((p, sum_time, sum_demo, not g["disqualified"], t))
-            
-            playertimes.sort(key=lambda x: (1e100, 1e100) if x[1] is None else (x[1], x[2]))
-            await self.report_hook(self.gamestate)
+            if not is_terminated:
+                await self.broadcast("say ^2ROUND FINISHED!")
+                await asyncio.sleep(1.0)
 
-            print(self.players)
-            print(playertimes)
-            maxlen = max([len(p) for p in self.players])
-            def rowformat(name, t, dt, valid):
-                if t is None:
-                    return f"\"^3| {{:>{maxlen}}} | ^1{{:>15}}^3 | ^1{{:>15}}^3 |\"".format(name, "NF", "NF")
-                else:
-                    if valid:
-                        return f"\"^3| {{:>{maxlen}}} | {{:>15}} | {{:>15}} |\"".format(name, t, dt)
+                playertimes = []
+                for p, g in self.gamestate.items():
+                    t = g["times"]
+                    dis = False
+                    sum_time = 0
+                    sum_demo = 0
+                    for tms in t:
+                        if tms["start"] is None or tms["end"] is None or tms["demo"] is None:
+                            dis = True
+                            break
+                        # apply time gap before start as a reserve (if zero, end - start is always greater than demo)
+                        sum_time += max(tms["end"] - tms["start"] - self.rules.beforestart_gap, tms["demo"] * 1.0e-3)
+                        print(f"{p} sum time: {sum_time}, {tms['end'] - tms['start']}, {tms['end'] - tms['start'] - self.rules.beforestart_gap}, {tms['demo']}")
+                        sum_demo += tms["demo"]
+                    if dis:
+                        playertimes.append((p, None, None, False, t))
                     else:
-                        return f"\"^3| {{:>{maxlen}}} | ^1{{:>14}}*^3 | ^1{{:>14}}*^3 |\"".format(name, t, dt)
+                        playertimes.append((p, sum_time, sum_demo, not g["disqualified"], t))
                 
-            await self.broadcast(f"say {rowformat('player', '     time', '   demo time', True)}")
-            await self.broadcast(f"say \"^3|{'-'*(maxlen+2)}|-----------------|-----------------|\"")
-            for p, t, dt, valid, *_ in playertimes:
-                if t is None or dt is None:
-                    await self.broadcast(f"say {rowformat(p, None, None, True)}")
-                else:
-                    await self.broadcast(f"say {rowformat(p, strftime(t * 1000), strftime(dt), valid)}")
+                playertimes.sort(key=lambda x: (1e100, 1e100) if x[1] is None else (x[1], x[2]))
+                await self.report_hook({"players": [x[0] for x in self.players], "times": playertimes})
 
-            await asyncio.sleep(60.0)
-            for i in self.processes.values():
-                i.shutdown()
-            await asyncio.gather(*[x.wait_shutdown() for x in self.processes.values()])
+                print(self.players)
+                print(playertimes)
+                maxlen = max([len(p) for p, _ in self.players])
+                def rowformat(name, t, dt, valid):
+                    if t is None:
+                        return f"\"^3| {{:>{maxlen}}} | ^1{{:>15}}^3 | ^1{{:>15}}^3 |\"".format(name, "NF", "NF")
+                    else:
+                        if valid:
+                            return f"\"^3| {{:>{maxlen}}} | {{:>15}} | {{:>15}} |\"".format(name, t, dt)
+                        else:
+                            return f"\"^3| {{:>{maxlen}}} | ^1{{:>14}}*^3 | ^1{{:>14}}*^3 |\"".format(name, t, dt)
+                    
+                await self.broadcast(f"say {rowformat('player', '     time', '   demo time', True)}")
+                await self.broadcast(f"say \"^3|{'-'*(maxlen+2)}|-----------------|-----------------|\"")
+                for p, t, dt, valid, *_ in playertimes:
+                    if t is None or dt is None:
+                        await self.broadcast(f"say {rowformat(p, None, None, True)}")
+                    else:
+                        await self.broadcast(f"say {rowformat(p, strftime(t * 1000), strftime(dt), valid)}")
+
+                await asyncio.sleep(20.0)
+            else:
+                if self.reset_hook is not None:
+                    await self.reset_hook()
+                await self.broadcast("say ^2ROUND TERMINATED! ^3SORRY ^2X^5_^2X")
+
+            return not is_terminated
         finally:
+            for i in self.processes.values():
+                try:
+                    i.shutdown()
+                except Exception as e:
+                    print(e)
+            await asyncio.gather(*[x.wait_shutdown() for x in self.processes.values()])
+            print(f"Shotdown!")
             self.stage = "shutdown"
+            self.countdown.put_nowait(None)
 
     async def _go_to_next_map(self, player):
         gs = self.gamestate[player]
@@ -393,7 +447,7 @@ class race_game:
 
 
     async def __countdown_task(self):
-        while True:
+        while self.stage != "shutdown":
             e = await self.countdown.get()
             if e is None:
                 break
@@ -401,12 +455,22 @@ class race_game:
             self.countdown_stage += 1
             await asyncio.sleep(1.0)
         self.events.put_nowait(message(None, "system", {"type": "start"}))
+        print("__countdown_task dead")
         
 
     async def __waitforplayers_task(self):
-        await asyncio.sleep(self.rules.warmup_time) # wait two minutes to connect players
-        self.events.put_nowait(message(None, "system", {"type": "wait_end"}))
+        towait = time.time() + self.rules.warmup_time
+        while self.stage != "shutdown":
+            delta = towait - time.time()
+            if delta <= 0:
+                self.events.put_nowait(message(None, "system", {"type": "wait_end"}))
+                break
+            await asyncio.sleep(min(1.0, delta)) # wait two minutes to connect players
+        print("__waitforplayers_task dead")
 
+    async def __disconnect_timer(self, player, disconnect_id):
+        await asyncio.sleep(self.rules.reconnect_timeout)
+        self.events.put_nowait(message(player, "system", {"type": "reconnect", "disconnect_id": disconnect_id}))
 
     async def __recv_task(self, player):
         process = self.processes[player]
@@ -414,7 +478,7 @@ class race_game:
         entered_re = re.compile(r'broadcast: print "(.*) entered the game.\\n"')
         disconnected_re = re.compile(r'broadcast: print "(.*) disconnected\\n"')
         finished_re = re.compile(r'ClientTimerStop: \d+ (\d+) "[^"]*" "([^"]*)".*')
-        while True:
+        while self.stage != "shutdown":
             msg = (await process.recv()).decode('ascii')
             if msg is None or len(msg) == 0: break
             # print(f">: {msg.strip()}")
@@ -437,6 +501,7 @@ class race_game:
                 if finish:
                     p = self.__remove_colors(finish.group(2))
                     self.events.put_nowait(message(player, "finish", {"player": p, "time": int(finish.group(1))}))
+        print("__recv_task dead")
             
     async def get_ref(self, mapname):
         async with aiohttp.ClientSession() as session:
@@ -465,6 +530,7 @@ class race_game:
                     b = await resp.content.read(chunksize)
                     if len(b) <= 0: break
                     f.write(b)
+                await asyncio.sleep(3.0)
             try:
                 with zipfile.ZipFile(filename) as f:
                     if all((f'maps/{mapname}.bsp' != x.filename for x in f.filelist)):
@@ -477,9 +543,8 @@ class race_game:
 async def report(pn):
     print(json.dumps(pn))
 
-async def race_run(race: race_game):
-    await race.prepare()
-    await race.run()
+async def reset():
+    print("round was reset")
 
 def is_number(value):
     if isinstance(value, int): return True
@@ -490,17 +555,11 @@ def is_number(value):
     except:
         return False
 
-async def start_game_mock(started: asyncio.Future, rules, players, callback):
-    await asyncio.sleep(2.0)
-    started.set_result({"result": "huraaay!"})
-    await asyncio.sleep(10.0)
-    callback({"result": "SHEESH!"})
-
-async def start_game(started: asyncio.Future, rules, players, callback):
+async def start_game(started: asyncio.Future, rules, players, callback, custom_config=[]):
     # r = rules(["cruton", "cruton2", "cruton3"], warmup_time=600)
     try:
         race = race_game("/home/rantrave/games/defrag", rules, players, callback)
-        started.set_result(await race.prepare())
+        started.set_result(await race.prepare(custom_config))
     except Exception as e:
         started.set_exception(e)
         return
@@ -508,62 +567,155 @@ async def start_game(started: asyncio.Future, rules, players, callback):
     await race.run()
 
 class HttpScheduler:
-    def __init__(self, ports, runner):
+    def __init__(self, ports, game, custom_config):
         self.ports = ports
         self.free_ports = set()
         self._app = None
         self._running_tasks = {}
         self._ports_lock = asyncio.Lock()
-        self.runner = runner
+        self.game = game
+        # self.runner = runner
+        self.custom_config = custom_config
+        self.running_tasks = {}
+        self.default_report_host = os.environ.get("REPORT_HOST")
+        self._free_lock = asyncio.Lock()
+        if self.default_report_host is not None:
+            print(f"Configured callback on host: '{self.default_report_host}'")
+
+    async def start_game(self, started: asyncio.Future, token, competitionId, roundId, rules, players, report_callback, reset_callback, custom_config=[]):
+    # r = rules(["cruton", "cruton2", "cruton3"], warmup_time=600)
+        try:
+            try:
+                async with self._free_lock:
+                    if token not in self.running_tasks:
+                        self.running_tasks[token] = {}
+                    key = f'{competitionId}/{roundId}'
+                    if key in self.running_tasks[token]:
+                        self.running_tasks[token][key].terminate()
+                        del self.running_tasks[token][key]
+                race = race_game(self.game, rules, players, report_callback, reset_callback)
+                started.set_result(await race.prepare(custom_config))
+                async with self._free_lock:
+                    self.running_tasks[token][key] = race
+            except Exception as e:
+                started.set_exception(e)
+                return
+            if await race.run():
+                async with self._free_lock:
+                    if (token in self.running_tasks and
+                        key in self.running_tasks[token] and
+                        self.running_tasks[token][key] is race):
+                        del self.running_tasks[token][key]
+        finally:
+            print(f"Returning ports!")
+            async with self._ports_lock:
+                for _, port in players:
+                    print(f"add port {port}")
+                    self.free_ports.add(port)
+
+    async def terminate_game(self, token, competitionId, roundId):
+        async with self._free_lock:
+            if token not in self.running_tasks:
+                return
+            key = f'{competitionId}/{roundId}'
+            if key in self.running_tasks[token]:
+                self.running_tasks[token][key].terminate()
+                del self.running_tasks[token][key]
 
     def start(self, port):
         self._app = web.Application()
         for i in self.ports:
             self.free_ports.add(i)
+        # {
+        #   "token": string,
+        #   "report_host": string,
+        #   "report_path": string,
+        #   "reset_path": string,
+        #   "competitionId": string,
+        #   "roundId": int,
+        #   "players": string[],
+        #   "maps": string[],
+        #   "warmup_map": string,
+        #   "warmup_time": float,
+        #   "max_disconnects": int,
+        #   "reconnect_timeout": float,
+        #   "afterlevel_time": float,
+        #   "aftermatch_time": float,
+        #   "beforestart_gap": float,
+        #   "custom_config": string[],
+        # }
         self._app.add_routes([web.post('/round/start', lambda rq: self.request_game(rq))])
+        self._app.add_routes([web.post('/round/terminate', lambda rq: self.request_terminate(rq))])
         web.run_app(self._app, port=port)
+
+    async def request_terminate(self, request: web.Request):
+        d = await request.json()
+        token = d.get("token", "")
+        competitionId = d.get("competitionId", "")
+        roundId = d.get("roundId", 0)
+        await self.terminate_game(token, competitionId, roundId)
+        return web.Response(status=200)
 
     async def request_game(self, request: web.Request):
         d = await request.json()
-        token = d.get("token", None)
+        token = d.get("token", "")
+        competitionId = d.get("competitionId", "")
+        roundId = d.get("roundId", 0)
+        report_host = d.get("report_host", self.default_report_host)
+        report_path = d.get("report_path", None)
+        reset_path = d.get("reset_path", None)
         players = d["players"]
         maps = d["maps"]
         warmup_map = d.get("warmup_map", None)
         warmup_time = d.get("warmup_time", None)
         max_disconnects = d.get("max_disconnects", None)
+        reconnect_timeout = d.get("reconnect_timeout", None)
         afterlevel_time = d.get("afterlevel_time", None)
         aftermatch_time = d.get("aftermatch_time", None)
+        beforestart_gap = d.get("beforestart_gap", None)
+        custom_config = [*self.custom_config, *d.get("custom_config", [])]
         bads = []
         if warmup_map is not None and not isinstance(warmup_map, str): bads.append("'warmup_map' must be string")
         if max_disconnects is not None and not isinstance(max_disconnects, int) and max_disconnects < 0: bads.append("'max_disconnects' must be non negative int")
+        if reconnect_timeout is not None and not is_number(reconnect_timeout) and reconnect_timeout < 0: bads.append("'reconnect_timeout' must be non negative float")
         if warmup_time is not None and not is_number(warmup_time) and warmup_time < 0: bads.append("'warmup_time' must be non negative number")
         if afterlevel_time is not None and not is_number(afterlevel_time) and afterlevel_time < 0: bads.append("'afterlevel_time' must be non negative number")
         if aftermatch_time is not None and not is_number(aftermatch_time) and aftermatch_time < 0: bads.append("'aftermatch_time' must be non negative number")
+        if beforestart_gap is not None and not is_number(beforestart_gap) and beforestart_gap < 0: bads.append("'beforestart_gap' must be non negative number")
         if len(bads) > 0:
             return web.Response(
                 status=400,
                 content_type="application/json",
-                body=json.dumps({"error": {"code": "BadRequest", "message": "Invalid rules:\n" + '\n'.join(bads)}})
+                body=json.dumps({"err": {"code": "BadRequest", "message": "Invalid rules:\n" + '\n'.join(bads)}})
             )
         async with self._ports_lock:
             if len(players) > len(self.free_ports):
                 return web.Response(
                     status=503,
                     content_type="application/json",
-                    body=json.dumps({"error": {"code": "TemporarilyUnavailable", "message": "Not enough free ports, try again later"}})
+                    body=json.dumps({"err": {"code": "TemporarilyUnavailable", "message": "Not enough free ports, try again later"}})
                 )
-            pp = {p: self.free_ports.pop() for p in players}
+            pp = [(p, self.free_ports.pop()) for p in players]
         r = rules(maps)
         if warmup_map is not None: r.warmup_map = warmup_map
         if warmup_time is not None: r.warmup_time = warmup_time
         if max_disconnects is not None: r.max_disconnects = max_disconnects
+        if reconnect_timeout is not None: r.reconnect_timeout = reconnect_timeout
         if afterlevel_time is not None: r.afterlevel_time = afterlevel_time
         if aftermatch_time is not None: r.aftermatch_time = aftermatch_time
+        if beforestart_gap is not None: r.beforestart_gap = beforestart_gap
 
         res = asyncio.Future()
-        asyncio.create_task(self.runner(res, r, pp, self.create_report_hook(token, pp)))
+        report_f = report
+        reset_f = reset
+        if report_host is not None:
+            if report_path is not None:
+                report_f = self.create_report_hook(f"{report_host}{report_path}", token, pp)
+            if reset_path is not None:
+                reset_f = self.create_cancel_hook(f"{report_host}{reset_path}", token)
+        asyncio.create_task(self.start_game(res, token, competitionId, roundId, r, pp, report_f, reset_f, custom_config))
         result = await res
-        if "error" in result:
+        if "err" in result:
             return web.Response(
                 status=400,
                 content_type="application/json",
@@ -575,21 +727,44 @@ class HttpScheduler:
             body=json.dumps(result),
         )
 
-    def create_report_hook(self, token, players):
+    def create_report_hook(self, url, token, players):
         async def report(result):
-            print(token, result, players)
-            async with self._ports_lock:
-                for port in players.values():
-                    self.free_ports.add(port)
+            # print(token, result, players)
+            # {"players": string[], "times": (string, float, float, bool, dict)[]}
+            try:
+                ind = result["players"].index(result["times"][0][0])
+                async with aiohttp.ClientSession() as session:
+                    if token:
+                        session.headers.add("Cookie", f"token={token}")
+                    resp = await session.post(url, json={"winner": ind, "table": result["times"]})
+                    if resp.ok:
+                        return
+                    print(f"Error: unable to report results: winner is {ind}")
+            except Exception as e:
+                print(e)
+        return report
+    def create_cancel_hook(self, url, token):
+        async def report():
+            try:
+                async with aiohttp.ClientSession() as session:
+                    if token:
+                        session.headers.add("Cookie", f"token={token}")
+                    resp = await session.post(url)
+                    if resp.ok:
+                        return
+                    print(f"Error: unable to report failed round {await resp.text()}")
+            except Exception as e:
+                print(e)
         return report
 
 if __name__ == "__main__":
-    r = rules(["cruton", "cruton2", "cruton3"], warmup_time=600)
-    ps = {"rantrave":27970, "vor": 27968}
-    ps = {"rantrave":27968, "w00dy.th":27970}
-    race = race_game("/home/rantrave/games/defrag", r, ps, report)
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(race_run(race))
-    
-    # scheduler = HttpScheduler([27968, 27970], start_game)
-    # scheduler.start(8080)
+    # required environments:
+    # REPORT_HOST - host where to report race results (e.g. https://dfcomps.ru/race)
+    # GAME_PATH - folder with defrag and ioq3ded (e.g. "/home/rantrave/games/defrag")
+    custom_config = ["exec server.cfg"]
+    game = os.getenv("GAME_PATH")
+    if game is None or not os.path.isdir(game) or not os.path.isfile(os.path.join(game, "ioq3ded")) or not os.path.isdir(os.path.join(game, "defrag")):
+        print(f"game at {game} is configured improperly")
+        exit(1)
+    scheduler = HttpScheduler([27968, 27969, 27970, 27971, 27972], os.environ.get("GAME_PATH"), custom_config)
+    scheduler.start(8080)

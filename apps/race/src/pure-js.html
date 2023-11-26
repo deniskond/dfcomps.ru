@@ -749,29 +749,6 @@
         loader.hidden = true;
       }
     }
-    // function select_round(round) {
-    //   const elem = document.getElementById("roundHeader");
-    //   const url = new URL(window.location.href)
-    //   elem.innerText = "Round " + round;
-
-    //   const mapTemplate = document.getElementById("mapTemplate");
-    //   const mapList = document.getElementById("mapList");
-    //   for (let i = 0; i < 16; ++i) {
-    //     /** @type {HTMLElement} */
-    //     let elem = mapTemplate.cloneNode(true);
-
-    //     elem = mapList.appendChild(elem);
-    //     elem.className = "map-entry";
-    //     elem.hidden = false;
-    //     elem.id = "map_" + i.toString()
-    //     /** @type {HTMLElement} */
-    //     const img = elem.querySelector("#mapLevelshot");
-    //     img.setAttribute("src", "http://ws.q3df.org/images/authorshots/512x384/st1.jpg")
-    //     /** @type {HTMLElement} */
-    //     const name = elem.querySelector("#mapName");
-    //     name.innerText = "st" + i.toString();
-    //   }
-    // }
     async function login(button) {
       const login = qid(document, "login-login").value;
       const paswd = qid(document, "login-paswd").value;
@@ -964,10 +941,12 @@
         }
         let gotMsg = false;
         const loc = window.location;
+        const protocol = loc.protocol.startsWith("https") ? "wss" : "ws";
+        const pathname = new URL(`./bracket/${comp.id}/rounds/${round}`, loc.href).pathname;
         if (token !== undefined) {
-          ws = new WebSocket(`ws://${loc.hostname}:4006/bracket/${comp.id}/rounds/${round}?token=${encodeURI(token)}`);
+          ws = new WebSocket(`${protocol}://${loc.host}${pathname}?token=${encodeURI(token)}`);
         } else {
-          ws = new WebSocket(`ws://${loc.hostname}:4006/bracket/${comp.id}/rounds/${round}`);
+          ws = new WebSocket(`${protocol}://${loc.host}${pathname}`);
         }
         ws.onmessage = (msg) => {
           const d = JSON.parse(msg.data.toString('utf-8'));
@@ -1074,8 +1053,9 @@
       }
       for (let p in view.players) {
         let rp = rps[p];
+
         if (isadmin) {
-          url = `http://${loc.host}/app.html?competition=${comp.id}&round=${ind}&token=${view.tokens[p].token}`
+          url = `${loc.origin}${loc.pathname}?competition=${comp.id}&round=${ind}&token=${view.tokens[p].token}`
           localStorage.setItem(`rnd-p-invite-${p}`, url);
         }
         rp.innerText = view.players[p].info.playerName;
@@ -1089,6 +1069,7 @@
           msg.innerText = "BAN STAGE COMPLETE";
           // enable admin start button
           if (isadmin) {
+            inv.hidden = false;
             st.hidden = false;
             const stb = qid(st, "rm-st-b");
             stb.onclick = async () => await progress(round_start(ind));
@@ -1108,10 +1089,28 @@
         }
       } else if (view.stage === "Running") {
         if (view.index in [0, 1]) {
-          msg.innerHTML = `CONNECT TO <a style="pointer-events: all;user-select: all;" href="defrag://${view.players[view.index].serverUrl}">defrag://${view.players[view.index].serverUrl}</a>`;
+          if (view.players[view.index].serverUrl === undefined) {
+            msg.innerHTML = "CONNECT TO YOUR SERVER";
+          } else {
+            msg.innerHTML =
+              `<a class="inline-button" style="pointer-events: all;" href="defrag://${view.players[view.index].serverUrl}">defrag://${view.players[view.index].serverUrl}</a>` +
+              ` to <button class="button" onclick="navigator.clipboard.writeText('/connect ${view.players[view.index].serverUrl}');">copy command</button>`;
+          }
         } else {
           if (isadmin) {
-            msg.innerHTML = `<a style="pointer-events: all;user-select: all;" href="defrag://${view.players[0].serverUrl}">defrag://${view.players[0].serverUrl}</a> CONNECT <a style="pointer-events: all;user-select: all;" href="defrag://${view.players[1].serverUrl}">defrag://${view.players[1].serverUrl}</a>`;
+            if (view.players[0].serverUrl === undefined || view.players[1].serverUrl === undefined) {
+              msg.innerHTML = "SERVER HOST IS NOT DEFINED";
+            } else {
+              msg.innerHTML =
+                ` <button class="button" onclick="navigator.clipboard.writeText('/connect ${view.players[0].serverUrl}');" style='width:auto'>copy command</button> ` +
+                `<a class="inline-button" style="pointer-events: all;" href="defrag://${view.players[0].serverUrl}">defrag://${view.players[0].serverUrl}</a> | ` +
+                `<a class="inline-button" style="pointer-events: all;" href="defrag://${view.players[1].serverUrl}">defrag://${view.players[1].serverUrl}</a> ` +
+                `<button class="button" onclick="navigator.clipboard.writeText('/connect ${view.players[1].serverUrl}');" style='width:auto'>copy command</button>`;
+            }
+            // msg.innerHTML 1
+            //   `<a style="pointer-events: all;user-select: all;" href="defrag://${view.players[0].serverUrl}">defrag://${view.players[0].serverUrl}</a>` +
+            //   ` CONNECT ` +
+            //   `<a style="pointer-events: all;user-select: all;" href="defrag://${view.players[1].serverUrl}">defrag://${view.players[1].serverUrl}</a>`;
           }
         }
         if (isadmin) {
