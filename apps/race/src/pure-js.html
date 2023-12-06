@@ -37,6 +37,8 @@
         width: calc(100% - 320px);
         position: absolute;
         top: 0;
+        display: flex;
+        align-items: center;
       }
 
       .fulldim {
@@ -284,12 +286,25 @@
       .competitions-viewport {
         min-height: 10vh;
         max-height: 80vh;
-        overflow-y: scroll;
-        scrollbar-width: 4px;
-        scrollbar-color: #ff5300ff #a02b0040;
         border-left: 2px solid #ff5300ff;
         background: linear-gradient(90deg, #a02b0020 0%, #27150010 50%, #00000000 100%);
         padding: 16px;
+      }
+
+      .scrollable {
+        overflow-y: scroll;
+        scrollbar-width: 4px;
+        scrollbar-color: #ff5300ff #a02b0040;
+      }
+
+      .scrollable::-webkit-scrollbar {
+        width: 2px;
+        background-color: #000;
+      }
+
+      .scrollable::-webkit-scrollbar-thumb {
+        width: 2px;
+        background-color: #ff5300ff;
       }
 
       .competitions-element {
@@ -720,9 +735,14 @@
       .main-block {
         flex: 1;
       }
-
-      input:-webkit-autofill, input:-webkit-autofill:focus, input:-internal-autofill-selected {
-        background-color: unset !important;
+      
+      .popup {
+        width: 100%;
+        background: black;
+        padding: 24px;
+        margin: 24px;
+        border-radius: 16px;
+        border: 1px solid #ff5300;
       }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/core.min.js"></script>
@@ -1651,7 +1671,14 @@
               <div class="header-underline"></div>
             </div>
             <div class="login">
-              <input id="login-login" class="text-input" style="margin-bottom: 20px" type="text" placeholder="Login" autocomplete="off" />
+              <input
+                id="login-login"
+                class="text-input"
+                style="margin-bottom: 20px"
+                type="text"
+                placeholder="Login"
+                autocomplete="off"
+              />
               <input
                 id="login-paswd"
                 class="text-input"
@@ -1663,14 +1690,14 @@
             </div>
           </div>
         </div>
-        <div id="competitions" hidden>
+        <div class="main-block" id="competitions" hidden>
           <div class="main-content">
             <div class="header-container">
               <div class="header-caption">Competitions</div>
               <div class="header-underline"></div>
             </div>
-            <div style="margin-left: 10%; margin-right: 10%">
-              <div class="competitions-viewport">
+            <div style="margin-left: 20px; margin-right: 20px">
+              <div class="competitions-viewport scrollable">
                 <ul id="competition-list" style="list-style-type: none">
                   <li id="competition-template" hidden>
                     <button id="competitions-select" class="competitions-element">
@@ -1685,7 +1712,7 @@
             </div>
           </div>
         </div>
-        <div id="cb" hidden>
+        <div class="main-block" id="cb" hidden>
           <div class="menu">
             <div style="width: 100%; height: 90%"></div>
             <div style="width: 100%">
@@ -1798,7 +1825,7 @@
             </div>
           </div>
         </div>
-        <div id="rounds">
+        <div class="main-block" id="rounds">
           <div class="menu">
             <div style="width: 100%; height: 90%"></div>
             <div style="width: 100%">
@@ -1883,7 +1910,7 @@
         <div id="cc" hidden>
           <div class="fulldim">
             <div class="page-pad">
-              <div style="margin-top: 20%">
+              <div class="popup">
                 <div style="width: 80%; margin-left: 10%; margin-right: 10%; margin-bottom: 20px">
                   <div class="text-field" style="width: 100%; display: inline-block">
                     <span class="header-caption">Create competition</span>
@@ -1891,12 +1918,14 @@
                 </div>
                 <div style="width: 80%; margin-left: 10%; margin-right: 10%; margin-bottom: 20px">
                   <div class="text-field" style="width: 49%; display: inline-block"><span>NAME</span></div>
-                  <div style="width: 50%; display: inline-block"><input id="cc-name" class="text-input" /></div>
+                  <div style="width: 50%; display: inline-block">
+                    <input id="cc-name" class="text-input" autocomplete="off" />
+                  </div>
                 </div>
                 <div style="width: 80%; margin-left: 10%; margin-right: 10%; margin-bottom: 20px">
                   <div class="text-field" style="width: 49%; display: inline-block"><span>MAX BANS</span></div>
                   <div style="width: 50%; display: inline-block">
-                    <input id="cc-max-bans" class="text-input" value="2" />
+                    <input id="cc-max-bans" class="text-input" value="2" autocomplete="off" />
                   </div>
                 </div>
                 <div style="width: 80%; margin-left: 10%; margin-right: 10%; margin-bottom: 20px">
