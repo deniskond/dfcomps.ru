@@ -308,12 +308,7 @@
       }
 
       .competitions-element {
-        /* border-top-left-radius: 2px;
-      border-top-right-radius: 2px; */
-        /* margin: 2px; */
-        /* border: 2px solid; */
         border-image-slice: 1;
-        /* border-width: 2px; */
         border-image-source: linear-gradient(90deg, #ff5b0050 0%, #27150030 50%, #00000000 100%);
         background: none;
         border-left: 0;
@@ -322,7 +317,6 @@
         width: 80%;
         font-family: 'Helvetica Narrow', 'Arial Narrow', Tahoma, Arial, Helvetica, sans-serif;
         font-size: 30px;
-        /* padding: 8px; */
         color: #ff5300a0;
         text-align: left;
       }
@@ -342,9 +336,6 @@
         border-right: 1px solid;
         border-image-slice: 1;
         border-image-source: linear-gradient(0deg, #00000000 0%, #27150060 50%, #ff5b00a0 100%);
-        overflow-y: scroll;
-        scrollbar-width: 4px;
-        scrollbar-color: #ff5300ff #a02b0040;
         background: linear-gradient(0deg, #a02b0020 0%, #27150010 50%, #00000000 100%);
         padding: 1%;
       }
@@ -735,7 +726,7 @@
       .main-block {
         flex: 1;
       }
-      
+
       .popup {
         width: 100%;
         background: black;
@@ -743,6 +734,13 @@
         margin: 24px;
         border-radius: 16px;
         border: 1px solid #ff5300;
+      }
+
+      .back-button {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 200px;
       }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/core.min.js"></script>
@@ -1373,7 +1371,10 @@
           const pi = qid(p, 'cb-pr-pi');
           const pa = qid(p, 'cb-pr-pa');
 
-          pa.onclick = async () => await progress(add_player(comp, pi));
+          pa.onclick = async () => {
+            await progress(add_player(comp, pi));
+            pi.value = null;
+          };
           set_listbox(pl, 'cb-pr-pl-t', comp.players, function (t, i, e) {
             qid(t, 'cb-pr-pl-t-n').innerText = e.playerName;
             qid(t, 'cb-pr-pl-t-r').onclick = async function () {
@@ -1385,7 +1386,10 @@
           const mi = qid(p, 'cb-pr-mi');
           const ma = qid(p, 'cb-pr-ma');
 
-          ma.onclick = async () => await progress(add_map(comp, mi));
+          ma.onclick = async () => {
+            await progress(add_map(comp, mi));
+            mi.value = null;
+          };
           set_listbox(ml, 'cb-pr-ml-t', comp.mapPool, function (t, i, e) {
             qid(t, 'cb-pr-ml-t-n').innerText = e.mapName;
             qid(t, 'cb-pr-ml-t-ls').src = e.levelShotUrl;
@@ -1713,11 +1717,8 @@
           </div>
         </div>
         <div class="main-block" id="cb" hidden>
-          <div class="menu">
-            <div style="width: 100%; height: 90%"></div>
-            <div style="width: 100%">
-              <button class="button" onclick="close_competition();">BACK</button>
-            </div>
+          <div class="back-button">
+            <button class="button" onclick="close_competition();">BACK</button>
           </div>
           <div class="main-content">
             <div class="header-container">
@@ -1725,9 +1726,9 @@
               <div class="header-underline"></div>
             </div>
             <div id="cb-pr">
-              <div style="margin-left: 10%; margin-right: 10%">
-                <div style="display: inline-block; width: 50%">
-                  <div style="padding: 1%">
+              <div style="margin-left: 20px; margin-right: 20px; display: flex">
+                <div style="flex: 1">
+                  <div>
                     <ul id="cb-pr-pl" class="box list-box">
                       <li id="cb-pr-pl-t" hidden>
                         <div class="list-box-element">
@@ -1745,7 +1746,12 @@
                     </ul>
                     <div class="list-box-input-box">
                       <div style="width: 100%; height: 100%">
-                        <input id="cb-pr-pi" class="list-box-input" placeholder="&lt;enter-player-name&gt" />
+                        <input
+                          id="cb-pr-pi"
+                          class="list-box-input"
+                          placeholder="&lt;enter-player-name&gt"
+                          autocomplete="off"
+                        />
                       </div>
                       <div style="width: 36px">
                         <button id="cb-pr-pa" class="inline-button">
@@ -1760,9 +1766,9 @@
                     </div>
                   </div>
                 </div>
-                <div style="display: inline-block; width: 50%">
-                  <div style="padding: 1%">
-                    <ul id="cb-pr-ml" class="box list-box">
+                <div style="flex: 1">
+                  <div>
+                    <ul id="cb-pr-ml" class="box scrollable list-box">
                       <li id="cb-pr-ml-t" hidden>
                         <div class="list-box-element">
                           <div style="width: 100%; height: 100%; display: flex; align-items: center">
@@ -1788,7 +1794,12 @@
                     </ul>
                     <div class="list-box-input-box">
                       <div style="width: 100%; height: 100%">
-                        <input id="cb-pr-mi" class="list-box-input" placeholder="&lt;enter-map-name&gt" />
+                        <input
+                          id="cb-pr-mi"
+                          class="list-box-input"
+                          placeholder="&lt;enter-map-name&gt"
+                          autocomplete="off"
+                        />
                       </div>
                       <div style="width: 36px">
                         <button id="cb-pr-ma" class="inline-button">
@@ -1804,17 +1815,17 @@
                   </div>
                 </div>
               </div>
-              <div style="margin-bottom: 20%; margin-left: 10%; margin-right: 10%">
-                <div style="display: inline-block; width: 50%">
+              <div style="margin-left: 20px; margin-right: 20px; display: flex">
+                <div style="flex: 1">
                   <button id="cb-pr-st" class="button">START</button>
                 </div>
-                <div style="display: inline-block; width: 50%">
+                <div style="flex: 1; margin-left: 20px">
                   <button id="cb-pr-rm" class="button">REMOVE</button>
                 </div>
               </div>
             </div>
             <div id="cb-br">
-              <div class="box" style="margin: 1%; height: 70vh">
+              <div class="box scrollable" style="margin: 1%; height: 70vh">
                 <table id="cb-br-t" cellspacing="0" style="border-spacing: 0; border-collapse: collapse">
                   <colgroup></colgroup>
                   <tbody>
@@ -1826,11 +1837,8 @@
           </div>
         </div>
         <div class="main-block" id="rounds">
-          <div class="menu">
-            <div style="width: 100%; height: 90%"></div>
-            <div style="width: 100%">
-              <button id="rm-m-b" class="button" onclick="close_round();">BACK</button>
-            </div>
+          <div class="back-button">
+            <button id="rm-m-b" class="button" onclick="close_round();">BACK</button>
           </div>
           <div class="main-content" style="position: relative; height: 100vh">
             <div class="header-container">
