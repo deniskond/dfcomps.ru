@@ -1,1398 +1,1514 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<link rel="shortcut icon" type="image/png" href="/assets/favicon.png" />
+  <link rel="shortcut icon" type="image/png" href="/assets/favicon.png" />
 
-<head>
-  <style>
-    body {
-      margin: 0;
-      padding: 0.
-    }
-
-    .back {
-      object-fit: cover;
-      height: 100%;
-      width: 100%;
-      min-width: 800px;
-      min-height: 600px;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: -10;
-    }
-
-    .page {
-      object-fit: cover;
-      height: 100%;
-      width: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-
-    .page-pad {
-      object-fit: cover;
-      left: 320px;
-      height: 100%;
-      width: calc(100% - 320px);
-      position: absolute;
-      top: 0;
-    }
-
-    .fulldim {
-      background-color: #00000080;
-      object-fit: cover;
-      height: 100%;
-      width: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-
-    .levelshot {
-      background-color: #ff5500;
-      width: 220px;
-      height: 165px;
-      position: relative;
-    }
-
-    .levelshot-caption {
-      float: center;
-      position: absolute;
-      left: 1px;
-      right: 1px;
-      bottom: 1px;
-      /* height: 15%; */
-      z-index: 1000;
-      background: linear-gradient(0deg, rgba(0, 0, 0, 0.99) 0%, rgba(0, 0, 0, 0.8) 30%, rgba(255, 247, 242, 0) 100%);
-      color: #FFFFFF;
-      text-align: center;
-      padding-top: 10%;
-      padding-bottom: 5%;
-    }
-
-
-    .levelshot-label {
-      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-      color: #ff5500;
-      align-content: center;
-      font-size: 100%;
-      font-weight: bold;
-      height: 100%;
-    }
-
-    .main-content-flex {
-      display: flex;
-      flex-flow: column;
-      margin-left: 320px;
-      width: calc(100% - 340px);
-      height: 100%;
-    }
-
-    .map-entry {
-      display: inline-block;
-      width: 230px;
-      height: 170px;
-    }
-
-    .main-content {
-      display: block;
-      margin-left: 320px;
-      margin-right: 5%;
-      height: 100%;
-    }
-
-    .menu {
-      position: absolute;
-      width: 300px;
-      height: 100%;
-    }
-
-
-    .header-container {
-      display: block;
-      padding: 20px;
-      padding-bottom: 40px;
-      min-width: 320px;
-    }
-
-    .header-caption {
-      user-select: none;
-      float: right;
-      /* display: inline-block; */
-      text-align: right;
-      top: 20px;
-      /* right: 10%; */
-      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-      color: #ff5500;
-      font-size: 40px;
-      font-weight: bold;
-      padding-right: 16px;
-    }
-
-    .header-underline {
-      display: inline-block;
-      height: 0px;
-      width: 100%;
-      border-top: 1px solid;
-      border-image-slice: 1;
-      border-image-source: linear-gradient(90deg, #7a270050 0%, #FF5300FF 90%, #ba3d00B0 100%);
-    }
-
-    svg {
-      display: block;
-    }
-
-
-
-    .login {
-      margin-left: 20%;
-      margin-right: 20%;
-      padding-left: 20%;
-      padding-right: 20%;
-    }
-
-    .text-input {
-      box-sizing: border-box;
-      width: 100%;
-      height: 100%;
-      appearance: none;
-      border: none;
-      outline: none;
-      border-bottom: 2px solid #FF5300FF;
-      background-color: #A02b0020;
-      /* border-radius: .2em .2em 0 0; */
-      font-family: monospace;
-      font-size: 30px;
-      padding: 8px;
-      padding-left: 20px;
-      color: #FF5300FF;
-    }
-
-    .text-input::placeholder {
-      font-family: monospace;
-      /* font-family: "Helvetica Narrow", "Arial Narrow", Tahoma, Arial, Helvetica, sans-serif; */
-      color: #AA5300FF;
-    }
-
-    .text-input.failure-animation {
-      animation: text-failure 2s infinite;
-    }
-
-    @keyframes text-failure {
-      0% {
-        background-color: #271500A0;
+  <head>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
       }
 
-      10% {
-        background-color: #FF0000A0;
+      .back {
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+        min-width: 800px;
+        min-height: 600px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -10;
       }
 
-      100% {
-        background-color: #271500A0;
-      }
-    }
-
-    .text-field {
-      font-family: "Helvetica Narrow", "Arial Narrow", Tahoma, Arial, Helvetica, sans-serif;
-      user-select: none;
-      font-size: 30px;
-      color: #ff5300A0;
-      text-align: center;
-    }
-
-    .button {
-      box-sizing: border-box;
-      user-select: none;
-      appearance: none;
-      width: 100%;
-      height: 100%;
-      border: none;
-      outline: none;
-      border-left: 2px solid #FF5300FF;
-      border-right: 2px solid #FF5300FF;
-      background: linear-gradient(90deg, #521b0080 0%, #27150060 20%, #00000000 50%, #27150060 80%, #521b0080 100%);
-      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-      font-size: 30px;
-      padding: 8px;
-      color: #FF5300FF;
-      pointer-events: all;
-    }
-
-    .button:hover {
-      background: linear-gradient(90deg, #A03b0080 0%, #27150060 25%, #00000000 50%, #27150060 75%, #A03b0080 100%);
-    }
-
-    .button:active {
-      background: linear-gradient(90deg, #FF5b00A0 0%, #27150060 34%, #00000000 50%, #27150060 66%, #FF5b00A0 100%);
-    }
-
-    .button.rotated {
-      border-left: 0;
-      border-right: 0;
-      border-top: 2px solid #FF5300FF;
-      border-bottom: 2px solid #FF5300FF;
-      background: linear-gradient(0deg, #521b0080 0%, #27150060 20%, #00000000 50%, #27150060 80%, #521b0080 100%);
-    }
-
-    .button.rotated:hover {
-      background: linear-gradient(0deg, #A03b0080 0%, #27150060 25%, #00000000 50%, #27150060 75%, #A03b0080 100%);
-    }
-
-    .button.rotated:active {
-      background: linear-gradient(0deg, #FF5b00A0 0%, #27150060 34%, #00000000 50%, #27150060 66%, #FF5b00A0 100%);
-    }
-
-    .button.failure-animation {
-      animation: button-failure 2s infinite;
-    }
-
-    @keyframes button-failure {
-      0% {
-        background: linear-gradient(90deg, #522b0080 0%, #27150060 20%, #00000000 50%, #27150060 80%, #522b0080 100%);
+      .page {
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
       }
 
-      10% {
-        background-color: #FF0000A0;
+      .page-pad {
+        object-fit: cover;
+        left: 320px;
+        height: 100%;
+        width: calc(100% - 320px);
+        position: absolute;
+        top: 0;
       }
 
-      100% {
-        background: linear-gradient(90deg, #522b0080 0%, #27150060 20%, #00000000 50%, #27150060 80%, #522b0080 100%);
-      }
-    }
-
-    .loader {
-      /* margin: auto; */
-      position: relative;
-      left: calc(50% - 30px);
-      top: 40%;
-      border: 10px solid #404040A0;
-      border-radius: 50%;
-      border-top: 10px solid #FF5b00A0;
-      width: 60px;
-      height: 60px;
-      animation: spinner 4s linear infinite;
-    }
-
-    @keyframes spinner {
-      0% {
-        transform: rotate(0deg);
+      .fulldim {
+        background-color: #00000080;
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
       }
 
-      100% {
-        transform: rotate(360deg);
-      }
-    }
-
-    .competitions-viewport {
-      min-height: 10vh;
-      max-height: 80vh;
-      overflow-y: scroll;
-      scrollbar-width: 4px;
-      scrollbar-color: #FF5300FF #A02b0040;
-      border-left: 2px solid #FF5300FF;
-      background: linear-gradient(90deg, #A02b0020 0%, #27150010 50%, #00000000 100%);
-      padding: 16px;
-    }
-
-    .competitions-element {
-      /* border-top-left-radius: 2px;
-      border-top-right-radius: 2px; */
-      /* margin: 2px; */
-      /* border: 2px solid; */
-      border-image-slice: 1;
-      /* border-width: 2px; */
-      border-image-source: linear-gradient(90deg, #FF5b0050 0%, #27150030 50%, #00000000 100%);
-      background: none;
-      border-left: 0;
-      border-top: 0;
-      border-right: 0;
-      width: 80%;
-      font-family: "Helvetica Narrow", "Arial Narrow", Tahoma, Arial, Helvetica, sans-serif;
-      font-size: 30px;
-      /* padding: 8px; */
-      color: #ff5300A0;
-      text-align: left;
-    }
-
-    .competitions-element:hover {
-      color: #FF5300FF;
-      border-image-source: linear-gradient(90deg, #FF5b00A0 0%, #27150060 50%, #00000000 100%);
-    }
-
-    .competitions-element:active {
-      background: linear-gradient(90deg, #FF5b0030 0%, #27150040 50%, #00000000 100%);
-    }
-
-    .box {
-      border-top: 1px solid;
-      border-left: 1px solid;
-      border-right: 1px solid;
-      border-image-slice: 1;
-      border-image-source: linear-gradient(0deg, #00000000 0%, #27150060 50%, #FF5b00A0 100%);
-      overflow-y: scroll;
-      scrollbar-width: 4px;
-      scrollbar-color: #FF5300FF #A02b0040;
-      background: linear-gradient(0deg, #A02b0020 0%, #27150010 50%, #00000000 100%);
-      padding: 1%;
-    }
-
-    .list-box {
-      list-style-type: none;
-      /* min-height: 40vh; */
-      height: 50vh;
-    }
-
-    .list-box-element {
-      user-select: none;
-      display: flex;
-      align-items: center;
-      padding-left: 5%;
-      width: 95%;
-      height: 48px;
-      text-align: left;
-      font-family: monospace;
-      white-space: nowrap;
-      /* font-family: "Helvetica Narrow", "Arial Narrow", Tahoma, Arial, Helvetica, sans-serif; */
-      border-image-slice: 1;
-      border-image-source: linear-gradient(90deg, #00000000 0%, #ff5300A0 10%, #00000000 100%);
-      color: #ff5300A0;
-      border-bottom: 1px solid #ff5300A0;
-    }
-
-    .list-box-element:hover {
-      color: #FF5300FF;
-      border-image-source: linear-gradient(90deg, #00000000 0%, #ff5300A0 10%, #00000000 100%);
-    }
-
-    .list-box-input-box {
-      display: flex;
-      align-items: center;
-      border-bottom: 1px solid;
-      border-top: 1px solid;
-      border-image-slice: 1;
-      padding-left: 2%;
-      padding-right: 2%;
-      width: 96%;
-      font-family: monospace;
-      background: linear-gradient(180deg, #A02b0020 0%, #27150010 50%, #00000000 100%);
-      border-image-source: linear-gradient(90deg, #00000000 0%, #ff5300A0 50%, #00000000 100%);
-    }
-
-    .list-box-input-box:hover {
-      border-image-source: linear-gradient(90deg, #00000000 0%, #FF5300FF 50%, #00000000 100%);
-    }
-
-    .list-box-input {
-      box-sizing: border-box;
-      width: 100%;
-      height: 100%;
-      appearance: none;
-      border: none;
-      outline: none;
-      background: none;
-      font-size: 24px;
-      /* border-radius: .2em .2em 0 0; */
-      font-family: monospace;
-      padding: 8px;
-      padding-left: 20px;
-      color: #FF5300FF;
-    }
-
-    .list-box-input::placeholder {
-      /* font-size: 24px; */
-      font-family: monospace;
-      color: #AA5300FF;
-    }
-
-    .list-box-input.failure-animation {
-      animation: text-failure 2s infinite;
-    }
-
-    .inline-button {
-      height: 36px;
-      width: 36px;
-      box-sizing: border-box;
-      border-radius: 50%;
-      border: 0px;
-      user-select: none;
-      appearance: none;
-      color: #ff5300A0;
-      background-color: #00000000;
-    }
-
-    .inline-button:hover {
-      color: #FF5300FF;
-    }
-
-    .inline-button:active {
-      background-color: #A02b0040;
-    }
-
-    .brackets-board {
-      border-left: 1px solid #FF5300FF;
-      background: linear-gradient(180deg, #A02b0020 0%, #27150010 50%, #00000000 100%);
-    }
-
-    .brackets-label {
-      font-size: 24px;
-      font-family: monospace;
-      color: #AA5300FF;
-      border-right: 2px solid #A02b0040;
-      /* margin-left: 16px; */
-    }
-
-    .brackets-label.winner {
-      border-right: 3px solid #20A020FF;
-      color: #FF5300FF;
-    }
-
-    .brackets-label.looser {
-      border-right: 3px solid #A02020FF;
-      color: #ff5300A0;
-    }
-
-    .brackets-label.highlight {
-      text-shadow: 0 0 10px #FF5300FF, 0 0 20px #AA5300FF, 0 0 40px #00000000;
-      /* margin-left: 16px; */
-    }
-
-    .brackets-line {
-      box-sizing: border-box;
-      border-color: #AA5300FF;
-    }
-
-    .brackets-line.highlight {
-      border-color: #FF5300FF;
-      /* box-shadow: 0 0 10px #FF5300FF, 0 0 20px #AA5300FF, 0 0 40px #00000000; */
-      /* text-shadow:  */
-    }
-
-    .message-box {
-      list-style-type: none;
-      padding: 8px;
-      max-height: 50vh;
-      overflow-y: scroll;
-      overflow-x: hidden;
-      position: absolute;
-      right: 0;
-      bottom: 0;
-      width: 480px;
-    }
-
-    .float-message {
-      display: block;
-      position: relative;
-      font-size: 20px;
-      color: #AA5300FF;
-      padding: 4px;
-      padding-left: 8px;
-      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-      margin: 8px;
-      border-left: 2px solid #FF5300A0;
-      height: 50px;
-      background: linear-gradient(90deg, #A02b0040 0%, #27150020 50%, #00000000 100%);
-      /* background: #F0101040; */
-    }
-
-    .float-message:hover {
-      color: #FF5300FF;
-    }
-
-    .float-message.appear {
-      animation: slide-in 0.25s forwards ease-in-out;
-    }
-
-    .float-message.disappear {
-      animation: slide-in 0.25s forwards ease-in-out;
-      animation-direction: reverse;
-    }
-
-    @keyframes slide-in {
-      0% {
-        left: 600px;
+      .levelshot {
+        background-color: #ff5500;
+        width: 220px;
+        height: 165px;
+        position: relative;
       }
 
-      100% {
-        left: 0px;
-      }
-    }
-
-    .map-list {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .lshot {
-      width: 220px;
-      height: 165px;
-      position: relative;
-      user-select: none;
-      /* white-space: nowrap; */
-      /* font-family: "Helvetica Narrow", "Arial Narrow", Tahoma, Arial, Helvetica, sans-serif; */
-      border: 2px solid;
-      border-image-slice: 1;
-      border-image-source: linear-gradient(90deg, #00000000 0%, #ff5300A0 50%, #00000000 100%);
-      background: linear-gradient(90deg, #00000000 0%, #00000080 50%, #00000000 100%);
-      margin: 10px;
-      color: #A02020FF;
-    }
-
-
-    .limage {
-      float: center;
-      position: absolute;
-      left: 1px;
-      top: 1px;
-      /* margin: 2pt; */
-      width: 100%;
-      height: 100%;
-    }
-
-    .lcap {
-      position: absolute;
-      left: 0;
-      right: 0;
-      text-align: center;
-      font-family: monospace;
-      font-size: 20px;
-      font-weight: bold;
-      overflow-wrap: break-word;
-      text-shadow: 0 0 5px #000000FF, 0 0 10px #000000FF, 0 0 20px #00000000;
-    }
-
-
-    .lshot.highlight {
-      border-image-source: linear-gradient(90deg, #00000000 0%, #ff5300FF 20%, #FF8000FF 50%, #ff5300FF 80%, #00000000 100%);
-    }
-
-    .lcap.highlight {
-      text-shadow: 0 0 5px #FF5300FF, 0 0 10px #AA5300FF, 0 0 20px #00000000;
-      color: #FF5300FF;
-    }
-
-    .lshot.frozen {
-      border-image-source: linear-gradient(90deg, #00000000 0%, #A0A0A0FF 20%, #A0A0A0FF 50%, #A0A0A0FF 80%, #00000000 100%);
-    }
-
-    .lcap.frozen {
-      color: #E0E0E0FF;
-    }
-
-    .lshot.banned {
-      border-image-source: linear-gradient(90deg, #00000000 0%, #808080FF 50%, #00000000 100%);
-    }
-
-    .lcap.banned {
-      color: #808080FF;
-    }
-
-    .limage.banned {
-      filter: grayscale(90%);
-    }
-
-    .lcapban {
-      position: absolute;
-      display: flex;
-      font-size: 40px;
-      font-family: monospace;
-      color: #FF2020FF;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, #00000030 0%, #00000080 50%, #00000030 100%);
-    }
-
-    .lcaptiontext {
-      width: 100%;
-      align-self: center;
-      text-align: center;
-      text-shadow: 0 0 5px #000000FF, 0 0 15px #A02020FF, 0 0 30px #00000000;
-    }
-
-    .players-content {
-      display: flex;
-      position: absolute;
-      bottom: 0px;
-      left: 0px;
-      right: 0px;
-      top: 0px;
-      pointer-events: none;
-    }
-
-    .rplayers {
-      display: inline-block;
-      align-self: flex-end;
-      width: 100%;
-      padding: 40px;
-      padding-bottom: 10%;
-      font-family: sans-serif;
-      font-weight: bold;
-      color: #FF5300FF;
-    }
-
-    .rpcaption {
-      display: inline-block;
-      box-sizing: border-box;
-      width: 50%;
-      padding: 20px;
-      font-size: 40px;
-      border-color: #FF5300FF;
-    }
-
-    .rpcaption.left {
-      border-left: 4px solid;
-      padding-left: 4cqb;
-      background: linear-gradient(270deg, #00000000 5%, #27150060 70%, #522b0080 99%, #00000000 100%);
-    }
-
-    .rpcaption.right {
-      border-right: 4px solid;
-      padding-right: 40px;
-      background: linear-gradient(90deg, #00000000 5%, #27150060 70%, #522b0080 100%);
-      text-align: end;
-    }
-
-    .rpcaption.highlight {
-      text-shadow: 0 0 5px #FF5300FF, 0 0 10px #AA5300FF, 0 0 20px #00000000;
-      color: #FF5300FF;
-    }
-
-    .rpcaption.winner {
-      border-color: #20A020FF;
-      color: #20A020FF;
-    }
-
-    .rpcaption.left.winner {
-      background: linear-gradient(270deg, #00000000 5%, #20A02010 70%, #20A02030 99%, #00000000 100%);
-    }
-
-    .rpcaption.right.winner {
-      background: linear-gradient(90deg, #00000000 5%, #20A02010 70%, #20A02030 100%);
-    }
-
-    .rpcaption.looser {
-      border-color: #A02020FF;
-      color: #A02020FF;
-    }
-
-    .rpcaption.left.looser {
-      background: linear-gradient(270deg, #00000000 5%, #A0202010 70%, #A0202030 99%, #00000000 100%);
-    }
-
-    .rpcaption.right.looser {
-      background: linear-gradient(90deg, #00000000 5%, #A0202010 70%, #A0202030 100%);
-    }
-  </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/core.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/sha256.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/enc-base64.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js"
-    integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-  <script lang="js">
-    /** @returns {HTMLElement | undefined} */
-    function qid(t, id) {
-      return t.querySelector(`#${id}`);
-    }
-    async function sl(t) {
-      await new Promise((r, _) => setTimeout(() => r(), t));
-    }
-    function animate_error(button) {
-      if (!button) return;
-      button.classList.add("failure-animation");
-      setTimeout(() => button.classList.remove("failure-animation"), 2000.0);
-    }
-    async function lerr(message) {
-      const ul = qid(document, "msg-l");
-      let li = document.createElement("li");
-      li.innerText = message;
-      li = ul.appendChild(li);
-      li.classList.add("float-message", "appear");
-      await sl(4000.0);
-      li.classList.remove("appear");
-      li.classList.add("disappear");
-      await sl(500.0);
-      ul.removeChild(li);
-    }
-    async function rq(method, path, data, success = undefined, fail = undefined, failelem = undefined, log = true) {
-      let h = {};
-      let b = undefined;
-      if (data !== undefined) {
-        h = { "Content-type": "application/json; charset=UTF-8" };
-        b = JSON.stringify(data);
+      .levelshot-caption {
+        float: center;
+        position: absolute;
+        left: 1px;
+        right: 1px;
+        bottom: 1px;
+        /* height: 15%; */
+        z-index: 1000;
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0.99) 0%, rgba(0, 0, 0, 0.8) 30%, rgba(255, 247, 242, 0) 100%);
+        color: #ffffff;
+        text-align: center;
+        padding-top: 10%;
+        padding-bottom: 5%;
       }
 
-      const pathPrefix = window.location.host === 'dfcomps.ru' ? '/race' : '';
-      const res = await fetch(pathPrefix + path, {
-        method: method,
-        credentials: "same-origin",
-        headers: h,
-        body: b,
-        cache: "reload",
-      });
-      if (res.ok) {
-        if (success !== undefined) return await success(await res.json());
-      } else {
-        const t = await res.text();
-        if (log) lerr(t);
-        console.warn(`${method} ${path} failed with status ${res.status}`);
-        if (fail !== undefined) await fail(res.status, t);
-        if (failelem) animate_error(failelem);
-        return undefined;
+      .levelshot-label {
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana,
+          sans-serif;
+        color: #ff5500;
+        align-content: center;
+        font-size: 100%;
+        font-weight: bold;
+        height: 100%;
       }
-    }
-    async function progress(promise) {
-      const loader = document.getElementById("loader");
-      loader.hidden = false;
-      try {
-        return await promise;
-      } finally {
-        loader.hidden = true;
-      }
-    }
-    async function login(button) {
-      const login = qid(document, "login-login").value;
-      const paswd = qid(document, "login-paswd").value;
-      const passwordHash = CryptoJS.SHA256(paswd).toString(CryptoJS.enc.Base64);
 
-      await progress(
-        rq("POST", '/authorize', { login, passwordHash }, async function (d) {
-          localStorage.setItem("token", d);
-          await update_page(false);
-        }, undefined, button));
-    }
-    async function ensure_token() {
-      await rq("POST", '/authorize', {}, undefined, async (x) => { localStorage.removeItem("token"); }, undefined, false);
-    }
+      .main-content-flex {
+        display: flex;
+        flex-flow: column;
+        /* margin-left: 320px; */
+        /* width: calc(100% - 340px); */
+        height: 100%;
+      }
 
-    function set_listbox(box, tid, els, tf) {
-      if (!box) return;
-      /** @type {HTMLElement} */
-      const t = qid(box, tid);
-      const tr = []
-      for (let i of box.children) {
-        if (i.id === tid) continue;
-        // if (i.hidden) continue;
-        tr.push(i);
+      .map-entry {
+        display: inline-block;
+        width: 230px;
+        height: 170px;
       }
-      for (let i of tr) {
-        box.removeChild(i);
-      }
-      for (let i in els) {
-        let el = els[i];
-        let e = t.cloneNode(true);
-        e = box.appendChild(e);
-        e.id = null;
-        delete e.id;
-        e.hidden = false;
-        tf(e, i, el);
-      }
-    }
 
-    function nd(x) { return x === null || x === undefined; }
+      .main-content {
+        display: block;
+        /* margin-left: 320px; */
+        /* margin-right: 5%; */
+        height: 100%;
+      }
 
-    async function navigation(logged = false) {
-      if (logged) {
-        return;
+      .menu {
+        position: absolute;
+        width: 300px;
+        height: 100%;
       }
-      localStorage.removeItem("nav-comp-selected");
-      localStorage.removeItem("nav-round-selected");
-      localStorage.removeItem("client-token");
-      const loc = window.location;
-      if (!loc.search) return;
-      let { competition: c, round: r, token: t } = Object.fromEntries(loc.search.slice(1).split('&').map(x => x.split('=').map(y => decodeURI(y))));
-      // "nav-comp-selected"
-      // "nav-round-selected"
-      if (!nd(c)) {
-        localStorage.setItem("nav-comp-selected", c);
-      }
-      if (!nd(r)) {
-        r = Number.parseInt(r);
-        if (Number.isNaN(r)) return;
-        localStorage.setItem("nav-round-selected", r);
-      }
-      if (!nd(t)) {
-        localStorage.setItem("client-token", t);
-      }
-    }
 
-    async function update_page(relog = true, update = true) {
-      if (document._next_update !== undefined) {
-        const now = Date.now();
-        if (now < document._next_update) {
-          await progress(sl(document._next_update - now));
+      .header-container {
+        display: block;
+        padding: 20px;
+        padding-bottom: 40px;
+        min-width: 320px;
+      }
+
+      .header-caption {
+        user-select: none;
+        float: right;
+        /* display: inline-block; */
+        text-align: right;
+        top: 20px;
+        /* right: 10%; */
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana,
+          sans-serif;
+        color: #ff5500;
+        font-size: 40px;
+        font-weight: bold;
+        padding-right: 16px;
+      }
+
+      .header-underline {
+        display: inline-block;
+        height: 0px;
+        width: 100%;
+        border-top: 1px solid;
+        border-image-slice: 1;
+        border-image-source: linear-gradient(90deg, #7a270050 0%, #ff5300ff 90%, #ba3d00b0 100%);
+      }
+
+      svg {
+        display: block;
+      }
+
+      .login {
+        margin-left: 20px;
+        margin-right: 20px;
+      }
+
+      .text-input {
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        appearance: none;
+        border: none;
+        outline: none;
+        border-bottom: 2px solid #ff5300ff;
+        background-color: #a02b0020 !important;
+        /* border-radius: .2em .2em 0 0; */
+        font-family: monospace;
+        font-size: 30px;
+        padding: 8px;
+        padding-left: 20px;
+        color: #ff5300ff;
+      }
+
+      .text-input::placeholder {
+        font-family: monospace;
+        /* font-family: "Helvetica Narrow", "Arial Narrow", Tahoma, Arial, Helvetica, sans-serif; */
+        color: #aa5300ff;
+      }
+
+      .text-input.failure-animation {
+        animation: text-failure 2s infinite;
+      }
+
+      @keyframes text-failure {
+        0% {
+          background-color: #271500a0;
+        }
+
+        10% {
+          background-color: #ff0000a0;
+        }
+
+        100% {
+          background-color: #271500a0;
         }
       }
-      document._next_update = Date.now() + 200;
-      const rounds = document.getElementById("rounds");
-      const login = document.getElementById("login");
-      const competitions = document.getElementById("competitions");
-      const competitionBrowser = document.getElementById("cb");
 
-      rounds.hidden = true;
-      competitions.hidden = true;
-      login.hidden = true;
-      competitionBrowser.hidden = true;
+      .text-field {
+        font-family: 'Helvetica Narrow', 'Arial Narrow', Tahoma, Arial, Helvetica, sans-serif;
+        user-select: none;
+        font-size: 30px;
+        color: #ff5300a0;
+        text-align: center;
+      }
 
-      if (relog) await progress(ensure_token());
-      const token = localStorage.getItem("token");
-      const logged = !nd(token);
-      navigation(logged);
-      const clientToken = localStorage.getItem("client-token");
-      const compet = localStorage.getItem("nav-comp-selected");
-      const round = localStorage.getItem("nav-round-selected");
-      if (compet) {
-        const comp = await progress(get_competition(compet, !update));
-        if (comp === undefined) {
-          localStorage.removeItem("nav-comp-selected");
-          animate_error(qid(qid(document, "competition-list"), `c-${compet}`));
-          window.location = window.location.origin + window.location.pathname;
+      .button {
+        box-sizing: border-box;
+        user-select: none;
+        appearance: none;
+        width: 100%;
+        height: 100%;
+        border: none;
+        outline: none;
+        border-left: 2px solid #ff5300ff;
+        border-right: 2px solid #ff5300ff;
+        background: linear-gradient(90deg, #521b0080 0%, #27150060 20%, #00000000 50%, #27150060 80%, #521b0080 100%);
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana,
+          sans-serif;
+        font-size: 30px;
+        padding: 8px;
+        color: #ff5300ff;
+        pointer-events: all;
+      }
+
+      .button:hover {
+        background: linear-gradient(90deg, #a03b0080 0%, #27150060 25%, #00000000 50%, #27150060 75%, #a03b0080 100%);
+      }
+
+      .button:active {
+        background: linear-gradient(90deg, #ff5b00a0 0%, #27150060 34%, #00000000 50%, #27150060 66%, #ff5b00a0 100%);
+      }
+
+      .button.rotated {
+        border-left: 0;
+        border-right: 0;
+        border-top: 2px solid #ff5300ff;
+        border-bottom: 2px solid #ff5300ff;
+        background: linear-gradient(0deg, #521b0080 0%, #27150060 20%, #00000000 50%, #27150060 80%, #521b0080 100%);
+      }
+
+      .button.rotated:hover {
+        background: linear-gradient(0deg, #a03b0080 0%, #27150060 25%, #00000000 50%, #27150060 75%, #a03b0080 100%);
+      }
+
+      .button.rotated:active {
+        background: linear-gradient(0deg, #ff5b00a0 0%, #27150060 34%, #00000000 50%, #27150060 66%, #ff5b00a0 100%);
+      }
+
+      .button.failure-animation {
+        animation: button-failure 2s infinite;
+      }
+
+      @keyframes button-failure {
+        0% {
+          background: linear-gradient(90deg, #522b0080 0%, #27150060 20%, #00000000 50%, #27150060 80%, #522b0080 100%);
+        }
+
+        10% {
+          background-color: #ff0000a0;
+        }
+
+        100% {
+          background: linear-gradient(90deg, #522b0080 0%, #27150060 20%, #00000000 50%, #27150060 80%, #522b0080 100%);
+        }
+      }
+
+      .loader {
+        /* margin: auto; */
+        position: relative;
+        left: calc(50% - 30px);
+        top: 40%;
+        border: 10px solid #404040a0;
+        border-radius: 50%;
+        border-top: 10px solid #ff5b00a0;
+        width: 60px;
+        height: 60px;
+        animation: spinner 4s linear infinite;
+      }
+
+      @keyframes spinner {
+        0% {
+          transform: rotate(0deg);
+        }
+
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .competitions-viewport {
+        min-height: 10vh;
+        max-height: 80vh;
+        overflow-y: scroll;
+        scrollbar-width: 4px;
+        scrollbar-color: #ff5300ff #a02b0040;
+        border-left: 2px solid #ff5300ff;
+        background: linear-gradient(90deg, #a02b0020 0%, #27150010 50%, #00000000 100%);
+        padding: 16px;
+      }
+
+      .competitions-element {
+        /* border-top-left-radius: 2px;
+      border-top-right-radius: 2px; */
+        /* margin: 2px; */
+        /* border: 2px solid; */
+        border-image-slice: 1;
+        /* border-width: 2px; */
+        border-image-source: linear-gradient(90deg, #ff5b0050 0%, #27150030 50%, #00000000 100%);
+        background: none;
+        border-left: 0;
+        border-top: 0;
+        border-right: 0;
+        width: 80%;
+        font-family: 'Helvetica Narrow', 'Arial Narrow', Tahoma, Arial, Helvetica, sans-serif;
+        font-size: 30px;
+        /* padding: 8px; */
+        color: #ff5300a0;
+        text-align: left;
+      }
+
+      .competitions-element:hover {
+        color: #ff5300ff;
+        border-image-source: linear-gradient(90deg, #ff5b00a0 0%, #27150060 50%, #00000000 100%);
+      }
+
+      .competitions-element:active {
+        background: linear-gradient(90deg, #ff5b0030 0%, #27150040 50%, #00000000 100%);
+      }
+
+      .box {
+        border-top: 1px solid;
+        border-left: 1px solid;
+        border-right: 1px solid;
+        border-image-slice: 1;
+        border-image-source: linear-gradient(0deg, #00000000 0%, #27150060 50%, #ff5b00a0 100%);
+        overflow-y: scroll;
+        scrollbar-width: 4px;
+        scrollbar-color: #ff5300ff #a02b0040;
+        background: linear-gradient(0deg, #a02b0020 0%, #27150010 50%, #00000000 100%);
+        padding: 1%;
+      }
+
+      .list-box {
+        list-style-type: none;
+        /* min-height: 40vh; */
+        height: 50vh;
+      }
+
+      .list-box-element {
+        user-select: none;
+        display: flex;
+        align-items: center;
+        padding-left: 5%;
+        width: 95%;
+        height: 48px;
+        text-align: left;
+        font-family: monospace;
+        white-space: nowrap;
+        /* font-family: "Helvetica Narrow", "Arial Narrow", Tahoma, Arial, Helvetica, sans-serif; */
+        border-image-slice: 1;
+        border-image-source: linear-gradient(90deg, #00000000 0%, #ff5300a0 10%, #00000000 100%);
+        color: #ff5300a0;
+        border-bottom: 1px solid #ff5300a0;
+      }
+
+      .list-box-element:hover {
+        color: #ff5300ff;
+        border-image-source: linear-gradient(90deg, #00000000 0%, #ff5300a0 10%, #00000000 100%);
+      }
+
+      .list-box-input-box {
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid;
+        border-top: 1px solid;
+        border-image-slice: 1;
+        padding-left: 2%;
+        padding-right: 2%;
+        width: 96%;
+        font-family: monospace;
+        background: linear-gradient(180deg, #a02b0020 0%, #27150010 50%, #00000000 100%);
+        border-image-source: linear-gradient(90deg, #00000000 0%, #ff5300a0 50%, #00000000 100%);
+      }
+
+      .list-box-input-box:hover {
+        border-image-source: linear-gradient(90deg, #00000000 0%, #ff5300ff 50%, #00000000 100%);
+      }
+
+      .list-box-input {
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        appearance: none;
+        border: none;
+        outline: none;
+        background: none;
+        font-size: 24px;
+        /* border-radius: .2em .2em 0 0; */
+        font-family: monospace;
+        padding: 8px;
+        padding-left: 20px;
+        color: #ff5300ff;
+      }
+
+      .list-box-input::placeholder {
+        /* font-size: 24px; */
+        font-family: monospace;
+        color: #aa5300ff;
+      }
+
+      .list-box-input.failure-animation {
+        animation: text-failure 2s infinite;
+      }
+
+      .inline-button {
+        height: 36px;
+        width: 36px;
+        box-sizing: border-box;
+        border-radius: 50%;
+        border: 0px;
+        user-select: none;
+        appearance: none;
+        color: #ff5300a0;
+        background-color: #00000000;
+      }
+
+      .inline-button:hover {
+        color: #ff5300ff;
+      }
+
+      .inline-button:active {
+        background-color: #a02b0040;
+      }
+
+      .brackets-board {
+        border-left: 1px solid #ff5300ff;
+        background: linear-gradient(180deg, #a02b0020 0%, #27150010 50%, #00000000 100%);
+      }
+
+      .brackets-label {
+        font-size: 24px;
+        font-family: monospace;
+        color: #aa5300ff;
+        border-right: 2px solid #a02b0040;
+        /* margin-left: 16px; */
+      }
+
+      .brackets-label.winner {
+        border-right: 3px solid #20a020ff;
+        color: #ff5300ff;
+      }
+
+      .brackets-label.looser {
+        border-right: 3px solid #a02020ff;
+        color: #ff5300a0;
+      }
+
+      .brackets-label.highlight {
+        text-shadow:
+          0 0 10px #ff5300ff,
+          0 0 20px #aa5300ff,
+          0 0 40px #00000000;
+        /* margin-left: 16px; */
+      }
+
+      .brackets-line {
+        box-sizing: border-box;
+        border-color: #aa5300ff;
+      }
+
+      .brackets-line.highlight {
+        border-color: #ff5300ff;
+        /* box-shadow: 0 0 10px #FF5300FF, 0 0 20px #AA5300FF, 0 0 40px #00000000; */
+        /* text-shadow:  */
+      }
+
+      .message-box {
+        list-style-type: none;
+        padding: 8px;
+        max-height: 50vh;
+        /* overflow-y: scroll; */
+        overflow-x: hidden;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 480px;
+      }
+
+      .float-message {
+        display: block;
+        position: relative;
+        font-size: 20px;
+        color: #aa5300ff;
+        padding: 4px;
+        padding-left: 8px;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana,
+          sans-serif;
+        margin: 8px;
+        border-left: 2px solid #ff5300a0;
+        height: 50px;
+        background: linear-gradient(90deg, #a02b0040 0%, #27150020 50%, #00000000 100%);
+        /* background: #F0101040; */
+      }
+
+      .float-message:hover {
+        color: #ff5300ff;
+      }
+
+      .float-message.appear {
+        animation: slide-in 0.25s forwards ease-in-out;
+      }
+
+      .float-message.disappear {
+        animation: slide-in 0.25s forwards ease-in-out;
+        animation-direction: reverse;
+      }
+
+      @keyframes slide-in {
+        0% {
+          left: 600px;
+        }
+
+        100% {
+          left: 0px;
+        }
+      }
+
+      .map-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .lshot {
+        width: 220px;
+        height: 165px;
+        position: relative;
+        user-select: none;
+        /* white-space: nowrap; */
+        /* font-family: "Helvetica Narrow", "Arial Narrow", Tahoma, Arial, Helvetica, sans-serif; */
+        border: 2px solid;
+        border-image-slice: 1;
+        border-image-source: linear-gradient(90deg, #00000000 0%, #ff5300a0 50%, #00000000 100%);
+        background: linear-gradient(90deg, #00000000 0%, #00000080 50%, #00000000 100%);
+        margin: 10px;
+        color: #a02020ff;
+      }
+
+      .limage {
+        float: center;
+        position: absolute;
+        left: 1px;
+        top: 1px;
+        /* margin: 2pt; */
+        width: 100%;
+        height: 100%;
+      }
+
+      .lcap {
+        position: absolute;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-family: monospace;
+        font-size: 20px;
+        font-weight: bold;
+        overflow-wrap: break-word;
+        text-shadow:
+          0 0 5px #000000ff,
+          0 0 10px #000000ff,
+          0 0 20px #00000000;
+      }
+
+      .lshot.highlight {
+        border-image-source: linear-gradient(
+          90deg,
+          #00000000 0%,
+          #ff5300ff 20%,
+          #ff8000ff 50%,
+          #ff5300ff 80%,
+          #00000000 100%
+        );
+      }
+
+      .lcap.highlight {
+        text-shadow:
+          0 0 5px #ff5300ff,
+          0 0 10px #aa5300ff,
+          0 0 20px #00000000;
+        color: #ff5300ff;
+      }
+
+      .lshot.frozen {
+        border-image-source: linear-gradient(
+          90deg,
+          #00000000 0%,
+          #a0a0a0ff 20%,
+          #a0a0a0ff 50%,
+          #a0a0a0ff 80%,
+          #00000000 100%
+        );
+      }
+
+      .lcap.frozen {
+        color: #e0e0e0ff;
+      }
+
+      .lshot.banned {
+        border-image-source: linear-gradient(90deg, #00000000 0%, #808080ff 50%, #00000000 100%);
+      }
+
+      .lcap.banned {
+        color: #808080ff;
+      }
+
+      .limage.banned {
+        filter: grayscale(90%);
+      }
+
+      .lcapban {
+        position: absolute;
+        display: flex;
+        font-size: 40px;
+        font-family: monospace;
+        color: #ff2020ff;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, #00000030 0%, #00000080 50%, #00000030 100%);
+      }
+
+      .lcaptiontext {
+        width: 100%;
+        align-self: center;
+        text-align: center;
+        text-shadow:
+          0 0 5px #000000ff,
+          0 0 15px #a02020ff,
+          0 0 30px #00000000;
+      }
+
+      .players-content {
+        display: flex;
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+        top: 0px;
+        pointer-events: none;
+      }
+
+      .rplayers {
+        display: inline-block;
+        align-self: flex-end;
+        width: 100%;
+        padding: 40px;
+        padding-bottom: 10%;
+        font-family: sans-serif;
+        font-weight: bold;
+        color: #ff5300ff;
+      }
+
+      .rpcaption {
+        display: inline-block;
+        box-sizing: border-box;
+        width: 50%;
+        padding: 20px;
+        font-size: 40px;
+        border-color: #ff5300ff;
+      }
+
+      .rpcaption.left {
+        border-left: 4px solid;
+        padding-left: 4cqb;
+        background: linear-gradient(270deg, #00000000 5%, #27150060 70%, #522b0080 99%, #00000000 100%);
+      }
+
+      .rpcaption.right {
+        border-right: 4px solid;
+        padding-right: 40px;
+        background: linear-gradient(90deg, #00000000 5%, #27150060 70%, #522b0080 100%);
+        text-align: end;
+      }
+
+      .rpcaption.highlight {
+        text-shadow:
+          0 0 5px #ff5300ff,
+          0 0 10px #aa5300ff,
+          0 0 20px #00000000;
+        color: #ff5300ff;
+      }
+
+      .rpcaption.winner {
+        border-color: #20a020ff;
+        color: #20a020ff;
+      }
+
+      .rpcaption.left.winner {
+        background: linear-gradient(270deg, #00000000 5%, #20a02010 70%, #20a02030 99%, #00000000 100%);
+      }
+
+      .rpcaption.right.winner {
+        background: linear-gradient(90deg, #00000000 5%, #20a02010 70%, #20a02030 100%);
+      }
+
+      .rpcaption.looser {
+        border-color: #a02020ff;
+        color: #a02020ff;
+      }
+
+      .rpcaption.left.looser {
+        background: linear-gradient(270deg, #00000000 5%, #a0202010 70%, #a0202030 99%, #00000000 100%);
+      }
+
+      .rpcaption.right.looser {
+        background: linear-gradient(90deg, #00000000 5%, #a0202010 70%, #a0202030 100%);
+      }
+
+      .chat {
+        width: 360px;
+      }
+
+      .chat-and-main-container {
+        display: flex;
+      }
+
+      .main-block {
+        flex: 1;
+      }
+
+      input:-webkit-autofill, input:-webkit-autofill:focus, input:-internal-autofill-selected {
+        background-color: unset !important;
+      }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/sha256.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/enc-base64.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js"
+      integrity="sha512-D9LDs8YUUVa4V9Gl4Zb+xqRAc7RCzooR3+zzebgK2RMu/KU+dh90pbjEEMzPiSyRSGbSp9j1pZnrO4joGa5WEg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <script lang="js">
+      /** @returns {HTMLElement | undefined} */
+      function qid(t, id) {
+        return t.querySelector(`#${id}`);
+      }
+      async function sl(t) {
+        await new Promise((r, _) => setTimeout(() => r(), t));
+      }
+      function animate_error(button) {
+        if (!button) return;
+        button.classList.add('failure-animation');
+        setTimeout(() => button.classList.remove('failure-animation'), 2000.0);
+      }
+      async function lerr(message) {
+        const ul = qid(document, 'msg-l');
+        let li = document.createElement('li');
+        li.innerText = message;
+        li = ul.appendChild(li);
+        li.classList.add('float-message', 'appear');
+        await sl(4000.0);
+        li.classList.remove('appear');
+        li.classList.add('disappear');
+        await sl(500.0);
+        ul.removeChild(li);
+      }
+      async function rq(method, path, data, success = undefined, fail = undefined, failelem = undefined, log = true) {
+        let h = {};
+        let b = undefined;
+        if (data !== undefined) {
+          h = { 'Content-type': 'application/json; charset=UTF-8' };
+          b = JSON.stringify(data);
+        }
+
+        const pathPrefix = window.location.host === 'dfcomps.ru' ? '/race' : '';
+        const res = await fetch(pathPrefix + path, {
+          method: method,
+          credentials: 'same-origin',
+          headers: h,
+          body: b,
+          cache: 'reload',
+        });
+        if (res.ok) {
+          if (success !== undefined) return await success(await res.json());
         } else {
-          if (round !== null) {
-            try {
-              await progress(round_connect(comp, round, clientToken, update));
-            } catch (e) {
-              console.error(e);
-            }
-            return;
+          const t = await res.text();
+          if (log) lerr(t);
+          console.warn(`${method} ${path} failed with status ${res.status}`);
+          if (fail !== undefined) await fail(res.status, t);
+          if (failelem) animate_error(failelem);
+          return undefined;
+        }
+      }
+      async function progress(promise) {
+        const loader = document.getElementById('loader');
+        loader.hidden = false;
+        try {
+          return await promise;
+        } finally {
+          loader.hidden = true;
+        }
+      }
+      async function login(button) {
+        const login = qid(document, 'login-login').value;
+        const paswd = qid(document, 'login-paswd').value;
+        const passwordHash = CryptoJS.SHA256(paswd).toString(CryptoJS.enc.Base64);
+
+        await progress(
+          rq(
+            'POST',
+            '/authorize',
+            { login, passwordHash },
+            async function (d) {
+              localStorage.setItem('token', d);
+              await update_page(false);
+            },
+            undefined,
+            button,
+          ),
+        );
+      }
+      async function ensure_token() {
+        await rq(
+          'POST',
+          '/authorize',
+          {},
+          undefined,
+          async (x) => {
+            localStorage.removeItem('token');
+          },
+          undefined,
+          false,
+        );
+      }
+
+      function set_listbox(box, tid, els, tf) {
+        if (!box) return;
+        /** @type {HTMLElement} */
+        const t = qid(box, tid);
+        const tr = [];
+        for (let i of box.children) {
+          if (i.id === tid) continue;
+          // if (i.hidden) continue;
+          tr.push(i);
+        }
+        for (let i of tr) {
+          box.removeChild(i);
+        }
+        for (let i in els) {
+          let el = els[i];
+          let e = t.cloneNode(true);
+          e = box.appendChild(e);
+          e.id = null;
+          delete e.id;
+          e.hidden = false;
+          tf(e, i, el);
+        }
+      }
+
+      function nd(x) {
+        return x === null || x === undefined;
+      }
+
+      async function navigation(logged = false) {
+        if (logged) {
+          return;
+        }
+        localStorage.removeItem('nav-comp-selected');
+        localStorage.removeItem('nav-round-selected');
+        localStorage.removeItem('client-token');
+        const loc = window.location;
+        if (!loc.search) return;
+        let {
+          competition: c,
+          round: r,
+          token: t,
+        } = Object.fromEntries(
+          loc.search
+            .slice(1)
+            .split('&')
+            .map((x) => x.split('=').map((y) => decodeURI(y))),
+        );
+        // "nav-comp-selected"
+        // "nav-round-selected"
+        if (!nd(c)) {
+          localStorage.setItem('nav-comp-selected', c);
+        }
+        if (!nd(r)) {
+          r = Number.parseInt(r);
+          if (Number.isNaN(r)) return;
+          localStorage.setItem('nav-round-selected', r);
+        }
+        if (!nd(t)) {
+          localStorage.setItem('client-token', t);
+        }
+      }
+
+      async function update_page(relog = true, update = true) {
+        if (document._next_update !== undefined) {
+          const now = Date.now();
+          if (now < document._next_update) {
+            await progress(sl(document._next_update - now));
+          }
+        }
+        document._next_update = Date.now() + 200;
+        const rounds = document.getElementById('rounds');
+        const login = document.getElementById('login');
+        const competitions = document.getElementById('competitions');
+        const competitionBrowser = document.getElementById('cb');
+
+        rounds.hidden = true;
+        competitions.hidden = true;
+        login.hidden = true;
+        competitionBrowser.hidden = true;
+
+        if (relog) await progress(ensure_token());
+        const token = localStorage.getItem('token');
+        const logged = !nd(token);
+        navigation(logged);
+        const clientToken = localStorage.getItem('client-token');
+        const compet = localStorage.getItem('nav-comp-selected');
+        const round = localStorage.getItem('nav-round-selected');
+        if (compet) {
+          const comp = await progress(get_competition(compet, !update));
+          if (comp === undefined) {
+            localStorage.removeItem('nav-comp-selected');
+            animate_error(qid(qid(document, 'competition-list'), `c-${compet}`));
+            window.location = window.location.origin + window.location.pathname;
           } else {
-            try {
-              await progress(update_competition(comp));
-              competitionBrowser.hidden = false;
+            if (round !== null) {
+              try {
+                await progress(round_connect(comp, round, clientToken, update));
+              } catch (e) {
+                console.error(e);
+              }
               return;
-            } catch (e) {
-              console.log(e);
-              await progress(close_competition());
-              animate_error(qid(qid(document, "competition-list"), `c-${compet}`));
+            } else {
+              try {
+                await progress(update_competition(comp));
+                competitionBrowser.hidden = false;
+                return;
+              } catch (e) {
+                console.log(e);
+                await progress(close_competition());
+                animate_error(qid(qid(document, 'competition-list'), `c-${compet}`));
+              }
             }
           }
         }
+        if (!token) {
+          login.hidden = false;
+          return;
+        }
+        try {
+          await progress(update_competitions_list(competitions));
+        } catch {}
       }
-      if (!token) {
-        login.hidden = false;
-        return;
-      }
-      try {
-        await progress(update_competitions_list(competitions));
-      } catch { }
-    }
 
-    async function remove_player(compet, name) {
-      return await rq('DELETE', `/competitions/${compet.id}/players?nick=${encodeURI(name)}`, undefined,
-        () => update_page(false, true));
-    }
-    async function add_player(compet, inp) {
-      return await rq('PUT', `/competitions/${compet.id}/players?nick=${encodeURI(inp.value)}`, undefined,
-        () => update_page(false, true), undefined, inp);
-    }
-    async function remove_map(compet, name) {
-      return await rq('DELETE', `/competitions/${compet.id}/maps?name=${encodeURI(name)}`, undefined,
-        () => update_page(false, true));
-    }
-    async function add_map(compet, inp) {
-      return await rq('PUT', `/competitions/${compet.id}/maps?name=${encodeURI(inp.value)}`, undefined,
-        () => update_page(false, true), undefined, inp);
-    }
-    async function get_competition(compet, cache = false) {
-      if (cache) {
-        let c = localStorage.getItem("cache-comp");
-        if (c !== null && c.id === compet) return JSON.parse(c);
+      async function remove_player(compet, name) {
+        return await rq('DELETE', `/competitions/${compet.id}/players?nick=${encodeURI(name)}`, undefined, () =>
+          update_page(false, true),
+        );
       }
-      return await rq('GET', `/competitions/${compet}`, undefined,
-        (d) => {
-          localStorage.setItem("cache-comp", JSON.stringify(d));
+      async function add_player(compet, inp) {
+        return await rq(
+          'PUT',
+          `/competitions/${compet.id}/players?nick=${encodeURI(inp.value)}`,
+          undefined,
+          () => update_page(false, true),
+          undefined,
+          inp,
+        );
+      }
+      async function remove_map(compet, name) {
+        return await rq('DELETE', `/competitions/${compet.id}/maps?name=${encodeURI(name)}`, undefined, () =>
+          update_page(false, true),
+        );
+      }
+      async function add_map(compet, inp) {
+        return await rq(
+          'PUT',
+          `/competitions/${compet.id}/maps?name=${encodeURI(inp.value)}`,
+          undefined,
+          () => update_page(false, true),
+          undefined,
+          inp,
+        );
+      }
+      async function get_competition(compet, cache = false) {
+        if (cache) {
+          let c = localStorage.getItem('cache-comp');
+          if (c !== null && c.id === compet) return JSON.parse(c);
+        }
+        return await rq('GET', `/competitions/${compet}`, undefined, (d) => {
+          localStorage.setItem('cache-comp', JSON.stringify(d));
           return d;
         });
-    }
-    async function start_round(compet, round) {
-      return await rq('POST', `/competitions/${compet.id}/rounds/${round}`, undefined,
-        (d) => {
-          return d;
-        }, (d, m) => {
-          if (d !== 409) {
-            lerr(m);
-          }
-        }, undefined, false);
-    }
-    async function remove_competition(compet) {
-      return await rq('DELETE', `/competitions/${compet.id}`, undefined,
-        () => { localStorage.removeItem("nav-comp-selected"); update_page(false, true); });
-    }
-    async function competition_start(compet, b) {
-      return await rq('POST', `/competitions/${compet.id}/start`, undefined,
-        () => update_page(false, true), undefined, b);
-    }
-    async function round_connect(comp, round, token = undefined, reconnect = false) {
-      if (comp.owned) {
-        await start_round(comp, round);
       }
-      const dd = {};
-      const p = new Promise((r, j) => { dd.res = r; dd.rej = j; });
-      let ws;
-      try {
-        if (document.__ws && document.__ws.readyState !== WebSocket.CLOSED) {
-          if (reconnect) {
-            try {
-              document.__ws.close(200);
-            } catch { }
-            document.__ws = undefined;
-          } else {
-            return;
-          }
-        }
-        let gotMsg = false;
-        const loc = window.location;
-        const protocol = loc.protocol.startsWith("https") ? "wss" : "ws";
-        const pathname = new URL(`./bracket/${comp.id}/rounds/${round}`, loc.href).pathname;
-        if (token !== undefined) {
-          ws = new WebSocket(`${protocol}://${loc.host}${pathname}?token=${encodeURI(token)}`);
-        } else {
-          ws = new WebSocket(`${protocol}://${loc.host}${pathname}`);
-        }
-        ws.onmessage = (msg) => {
-          try {
-            const d = JSON.parse(msg.data.toString('utf-8'));
-            if ("err" in d) {
-              if (d.err.code === "NotFound") {
-                if (!gotMsg) {
-                  dd.rej("Round is not started");
-                  gotMsg = true;
-                }
-              } else {
-                lerr(d.err.message);
-              }
-            } else if ("result" in d) {
-              update_round(comp, round, d.result);
-              const rounds = document.getElementById("rounds");
-              rounds.hidden = false;
+      async function start_round(compet, round) {
+        return await rq(
+          'POST',
+          `/competitions/${compet.id}/rounds/${round}`,
+          undefined,
+          (d) => {
+            return d;
+          },
+          (d, m) => {
+            if (d !== 409) {
+              lerr(m);
             }
+          },
+          undefined,
+          false,
+        );
+      }
+      async function remove_competition(compet) {
+        return await rq('DELETE', `/competitions/${compet.id}`, undefined, () => {
+          localStorage.removeItem('nav-comp-selected');
+          update_page(false, true);
+        });
+      }
+      async function competition_start(compet, b) {
+        return await rq(
+          'POST',
+          `/competitions/${compet.id}/start`,
+          undefined,
+          () => update_page(false, true),
+          undefined,
+          b,
+        );
+      }
+      async function round_connect(comp, round, token = undefined, reconnect = false) {
+        if (comp.owned) {
+          await start_round(comp, round);
+        }
+        const dd = {};
+        const p = new Promise((r, j) => {
+          dd.res = r;
+          dd.rej = j;
+        });
+        let ws;
+        try {
+          if (document.__ws && document.__ws.readyState !== WebSocket.CLOSED) {
+            if (reconnect) {
+              try {
+                document.__ws.close(200);
+              } catch {}
+              document.__ws = undefined;
+            } else {
+              return;
+            }
+          }
+          let gotMsg = false;
+          const loc = window.location;
+          const protocol = loc.protocol.startsWith('https') ? 'wss' : 'ws';
+          const pathname = new URL(`./bracket/${comp.id}/rounds/${round}`, loc.href).pathname;
+          if (token !== undefined) {
+            ws = new WebSocket(`${protocol}://${loc.host}${pathname}?token=${encodeURI(token)}`);
+          } else {
+            ws = new WebSocket(`${protocol}://${loc.host}${pathname}`);
+          }
+          ws.onmessage = (msg) => {
+            try {
+              const d = JSON.parse(msg.data.toString('utf-8'));
+              if ('err' in d) {
+                if (d.err.code === 'NotFound') {
+                  if (!gotMsg) {
+                    dd.rej('Round is not started');
+                    gotMsg = true;
+                  }
+                } else {
+                  lerr(d.err.message);
+                }
+              } else if ('result' in d) {
+                update_round(comp, round, d.result);
+                const rounds = document.getElementById('rounds');
+                rounds.hidden = false;
+              }
+              if (!gotMsg) {
+                gotMsg = true;
+                dd.res();
+              }
+            } finally {
+              if (document.__ws_sub) {
+                document.__ws_sub.next(true);
+              }
+            }
+          };
+          ws.onclose = (ev) => {
             if (!gotMsg) {
               gotMsg = true;
-              dd.res();
+              dd.rej(new Error(`Connection broken: ${ev}`));
+              if (ws === document.__ws) {
+                document.__ws = undefined;
+              }
             }
-          } finally {
-            if (document.__ws_sub) {
-              document.__ws_sub.next(true);
-            }
-          }
-        };
-        ws.onclose = (ev) => {
-          if (!gotMsg) {
-            gotMsg = true;
-            dd.rej(new Error(`Connection broken: ${ev}`));
-            if (ws === document.__ws) {
-              document.__ws = undefined;
-            }
-          }
-          document.__ws_sub.complete();
-        };
-      } catch (e) {
-        console.log(e);
-        lerr(e.stack);
-      }
-      try {
-        await p;
-      } catch (e) {
-        lerr(e);
-        localStorage.removeItem("nav-round-selected");
-        update_page(false, true);
-      }
-      document.__ws = ws;
-      if (!document.__ws_sub) {
-        document.__ws_sub = new rxjs.Subject();
-      }
-    }
-
-    function copy_invite(button, ind) {
-      const text = localStorage.getItem(`rnd-p-invite-${ind}`);
-      if (text === null) {
-        animate_error(button);
-      } else {
-        navigator.clipboard.writeText(text);
-      }
-    }
-
-    async function send_ws(data) {
-      if (document.__ws_sub) {
-        const promise = rxjs.firstValueFrom(document.__ws_sub);
-        if (document.__ws) {
-          document.__ws.send(JSON.stringify(data));
-        }
-        await Promise.race([promise, sl(5000)]);
-      } else {
-        if (document.__ws) {
-          document.__ws.send(JSON.stringify(data));
-        }
-        await sl(1000);
-      }
-    }
-
-    async function round_ban(ind) {
-      await send_ws({ action: 'Ban', mapIndex: ind });
-    }
-    async function round_unban(ind) {
-      await send_ws({ action: 'Unban', mapIndex: ind });
-    }
-    async function round_start() {
-      await send_ws({ action: 'Start' });
-    }
-    async function round_winner(winner) {
-      await send_ws({ action: 'Complete', winner });
-    }
-    async function round_reset() {
-      await send_ws({ action: 'Reset' });
-    }
-
-    async function update_round(comp, ind, view) {
-      const rnds = qid(document, "rounds");
-      const ul = qid(rnds, "rm-l");
-      const msg = qid(rnds, "rm-msg");
-      const rps = [qid(rnds, "rp-l"), qid(rnds, "rp-r")];
-      const inv = qid(rnds, "rm-inv");
-      const st = qid(rnds, "rm-st");
-      const win = qid(rnds, "rm-win");
-      const res = qid(rnds, "rm-res");
-      const back = qid(rnds, "rm-m-b");
-
-      inv.hidden = true;
-      st.hidden = true;
-      win.hidden = true;
-      res.hidden = true;
-      back.hidden = true;
-      const loc = window.location;
-      isadmin = !nd(view.tokens);
-
-      qid(rnds, "rm-hdr").innerText = `Round ${ind}`;
-
-      if (isadmin) {
-        back.hidden = false;
-      }
-      for (let p in view.players) {
-        let rp = rps[p];
-
-        if (isadmin) {
-          url = `${loc.origin}${loc.pathname}?competition=${comp.id}&round=${ind}&token=${view.tokens[p].token}`
-          localStorage.setItem(`rnd-p-invite-${p}`, url);
-        }
-        rp.innerText = view.players[p].info.playerName;
-        rp.classList.remove("winner");
-        rp.classList.remove("looser");
-        rp.classList.remove("highlight");
-      }
-      const turn = view.index === view.banTurn;
-      if (view.stage === "Ban") {
-        if (Object.keys(view.bans).length >= comp.rules.numBans * 2) {
-          msg.innerText = "BAN STAGE COMPLETE";
-          // enable admin start button
-          if (isadmin) {
-            inv.hidden = false;
-            st.hidden = false;
-            const stb = qid(st, "rm-st-b");
-            stb.onclick = async () => await progress(round_start());
-          }
-        } else {
-          rps[view.banTurn].classList.add("highlight");
-          if (isadmin) {
-            inv.hidden = false;
-            msg.innerText = "PLAYERS ARE BANNING";
-          } else {
-            if (turn) {
-              msg.innerText = "PICK MAP TO BAN";
-            } else {
-              msg.innerText = "OPPONENT BAN TURN";
-            }
-          }
-        }
-      } else if (view.stage === "Running") {
-        if (view.index in [0, 1]) {
-          if (view.players[view.index].serverUrl === undefined) {
-            msg.innerHTML = "CONNECT TO YOUR SERVER";
-          } else {
-            msg.innerHTML =
-              `<a class="inline-button" style="pointer-events: all;" href="defrag://${view.players[view.index].serverUrl}">defrag://${view.players[view.index].serverUrl}</a>` +
-              ` to <button class="button" onclick="navigator.clipboard.writeText('/connect ${view.players[view.index].serverUrl}');">copy command</button>`;
-          }
-        } else {
-          if (isadmin) {
-            if (view.players[0].serverUrl === undefined || view.players[1].serverUrl === undefined) {
-              msg.innerHTML = "SERVER HOST IS NOT DEFINED";
-            } else {
-              msg.innerHTML =
-                ` <button class="button" onclick="navigator.clipboard.writeText('/connect ${view.players[0].serverUrl}');" style='width:auto'>copy command</button> ` +
-                `<a class="inline-button" style="pointer-events: all;" href="defrag://${view.players[0].serverUrl}">defrag://${view.players[0].serverUrl}</a> | ` +
-                `<a class="inline-button" style="pointer-events: all;" href="defrag://${view.players[1].serverUrl}">defrag://${view.players[1].serverUrl}</a> ` +
-                `<button class="button" onclick="navigator.clipboard.writeText('/connect ${view.players[1].serverUrl}');" style='width:auto'>copy command</button>`;
-            }
-            // msg.innerHTML 1
-            //   `<a style="pointer-events: all;user-select: all;" href="defrag://${view.players[0].serverUrl}">defrag://${view.players[0].serverUrl}</a>` +
-            //   ` CONNECT ` +
-            //   `<a style="pointer-events: all;user-select: all;" href="defrag://${view.players[1].serverUrl}">defrag://${view.players[1].serverUrl}</a>`;
-          }
-        }
-        if (isadmin) {
-          win.hidden = false;
-          qid(win, "rm-win-0").onclick = async () => await progress(round_winner(0));
-          qid(win, "rm-win-1").onclick = async () => await progress(round_winner(1));
-        }
-      } else {
-        msg.innerText = "ROUND COMPLETE";
-        if (isadmin) {
-          res.hidden = false;
-          qid(res, "rm-res-b").onclick = async () => await progress(round_reset());
-        }
-        try {
-          for (let p of rps) {
-            p.classList.add("looser");
-          }
-          if (!nd(view.winner)) {
-            const ww = rps[view.winner];
-            ww.classList.remove("looser");
-            ww.classList.add("winner");
-          }
+            document.__ws_sub.complete();
+          };
         } catch (e) {
           console.log(e);
+          lerr(e.stack);
         }
-      }
-      const els = view.order.map(x => {
-        let state = undefined;
-        if (view.forbiddenBans.some(y => y === x)) {
-          state = "frozen";
-        } else {
-          if (x in view.bans) {
-            state = "banned";
-          }
-        }
-        return {
-          info: comp.mapPool[x],
-          index: x,
-          state: state,
-        };
-      });
-      set_listbox(ul, "rm-l-t", els, (li, i, el) => {
         try {
-          li.hidden = false;
-          li.id = "rm_" + el.index.toString()
-          const btn = qid(li, "rm-l-t-b");
-          const ls = qid(li, "rm-l-t-ls");
-          const bn = qid(li, "rm-l-t-bn");
-          const nam = qid(li, "rm-l-t-n");
-
-          nam.innerHTML = el.info.mapName;
-          ls.setAttribute("src", el.info.levelShotUrl);
-
-          if (el.state === undefined) {
-            if (turn || isadmin) {
-              btn.onmouseenter = () => {
-                btn.classList.add("highlight");
-                ls.classList.add("highlight");
-                nam.classList.add("highlight");
-                bn.hidden = false;
-              };
-              btn.onmouseleave = () => {
-                btn.classList.remove("highlight");
-                ls.classList.remove("highlight");
-                bn.classList.remove("highlight");
-                nam.classList.remove("highlight");
-                bn.hidden = true;
-              };
-              btn.onclick = async () => {
-                await progress(round_ban(el.index));
-              };
-            }
-          } else {
-            if (el.state === "banned") {
-              if (isadmin) {
-                btn.onclick = async () => {
-                  await progress(round_unban(el.index));
-                };
-
-                // if admin enable unban
-              }
-            }
-            btn.classList.add(el.state);
-            ls.classList.add(el.state);
-            nam.classList.add(el.state);
-            if (el.state !== "frozen") {
-              bn.hidden = false;
-            }
-          }
+          await p;
         } catch (e) {
-          console.error(e);
+          lerr(e);
+          localStorage.removeItem('nav-round-selected');
+          update_page(false, true);
         }
-      });
-    }
-
-    async function update_competition(comp) {
-      document.getElementById("cb-hdr").innerText = comp.name;
-      const p = qid(document, "cb-pr");
-      const pbr = qid(document, "cb-br");
-      p.hidden = true;
-      pbr.hidden = true;
-      // return;
-      if (comp.brackets) {
-        // if (true) {
-        pbr.hidden = false;
-        build_brackets(pbr, comp.brackets.rounds, comp.players.map(x => x.playerName));
-      } else {
-        p.hidden = false;
-        const pl = qid(p, "cb-pr-pl");
-        const pi = qid(p, "cb-pr-pi");
-        const pa = qid(p, "cb-pr-pa");
-
-        pa.onclick = async () => await progress(add_player(comp, pi));
-        set_listbox(pl, "cb-pr-pl-t", comp.players, function (t, i, e) {
-          qid(t, "cb-pr-pl-t-n").innerText = e.playerName;
-          qid(t, "cb-pr-pl-t-r").onclick = async function () {
-            await progress(remove_player(comp, e.playerName));
-          };
-        })
-
-        const ml = qid(p, "cb-pr-ml");
-        const mi = qid(p, "cb-pr-mi");
-        const ma = qid(p, "cb-pr-ma");
-
-        ma.onclick = async () => await progress(add_map(comp, mi));
-        set_listbox(ml, "cb-pr-ml-t", comp.mapPool, function (t, i, e) {
-          qid(t, "cb-pr-ml-t-n").innerText = e.mapName;
-          qid(t, "cb-pr-ml-t-ls").src = e.levelShotUrl;
-          qid(t, "cb-pr-ml-t-r").onclick = async function () {
-            await progress(remove_map(comp, e.mapName));
-          };
-        })
-
-        const rb = qid(p, "cb-pr-rm");
-        rb.onclick = () => remove_competition(comp);
-        const rc = qid(p, "cb-pr-st");
-        rc.onclick = () => competition_start(comp, rc);
+        document.__ws = ws;
+        if (!document.__ws_sub) {
+          document.__ws_sub = new rxjs.Subject();
+        }
       }
-      // async function () { close_competition(); },
-      // 
-      // {
-      //   id: string;
-      //   name: string;
-      //   rules: CompetitionRules;
-      //   brackets?: Brackets;
-      //   mapPool: MapInfo[];
-      //   players: PlayerInfo[];
-      // }
-    }
-    function build_brackets(par, rnds, pnames) {
-      const nt = Math.log2(rnds.length + 1)
-      const tb = qid(par, "cb-br-t");
-      const co = tb.querySelector("colgroup");
-      while (co.firstChild) { co.removeChild(co.lastChild); }
-      const tr = qid(tb, "cb-br-t-r");
-      while (tr.firstChild) { tr.removeChild(tr.lastChild); }
-      let n = rnds.length;
-      let h = 96;
-      let m = (n + 1) / 2;
-      let r = 0;
-      const tlst = {};
-      for (let i = 0; i < nt; ++i) {
-        const ct = document.createElement("col");
-        ct.style = "min-width: 280px";
-        co.appendChild(ct);
-        let cv = document.createElement("td");
-        let hd = document.createElement("div");
-        hd.hidden = true;
-        cv.style = "padding: 0;"
-        cv = tr.appendChild(cv);
-        let brt;
-        if (m > 1) {
-          brt = [build_bracket(hd, h, true), build_bracket(hd, h, false)]
+
+      function copy_invite(button, ind) {
+        const text = localStorage.getItem(`rnd-p-invite-${ind}`);
+        if (text === null) {
+          animate_error(button);
         } else {
-          brt = build_bracket(hd, h, undefined);
+          navigator.clipboard.writeText(text);
         }
-        const lst = []
-        for (let j = 0; j < m; ++j) {
-          /** @type {HTMLElement} */
-          let e;
-          if (m > 1) {
-            e = brt[j % 2].cloneNode(true);
-          } else {
-            e = brt.cloneNode(true);
-          }
-          lst.push(e);
-          const cr = n - r - 1;
-          e.id = `cb-br-t-${cr}`;
-          const rr = rnds[cr];
-          const p0 = qid(e, "bl-0");
-          const p1 = qid(e, "bl-1");
-          e.onclick = async () => {
-            localStorage.setItem("nav-round-selected", cr);
-            await update_page(false, true);
-          };
-          tlst[cr] = {
-            w: rr.winnerIndex,
-            el: [p0, p1],
-            bl: e.querySelectorAll(".brackets-line")
-          };
-          const ps = []
-          if (rr.players[0] !== null) {
-            p0.innerText = pnames[rr.players[0]];
-            ps.push(p0);
-          }
-          if (rr.players[1] !== null) {
-            p1.innerText = pnames[rr.players[1]];
-            ps.push(p1);
-          }
-          for (let pp in ps) {
-            let ppp = ps[pp];
-            ppp.onmouseenter = () => {
-              let cc = 2 * cr + 1 + parseInt(pp);
-              ppp.classList.add("highlight");
-              pps = 0
-              while (cc < n && pps < 10) {
-                pps += 1;
-                const tt = tlst[cc];
-                if (tt.w === undefined || tt.w === null) {
-                  break;
-                }
-                tt.el[tt.w].classList.add("highlight");
-                for (let l of tt.bl) {
-                  l.classList.add("highlight");
-                }
-                cc = 2 * cc + 1 + tt.w;
-              }
-            };
-            ppp.onmouseleave = () => {
-              let cc = 2 * cr + 1 + parseInt(pp);
-              ppp.classList.remove("highlight");
-              pps = 0
-              while (cc < n && pps < 10) {
-                pps += 1;
-                const tt = tlst[cc];
-                if (tt.w === undefined || tt.w === null) break;
-                tt.el[tt.w].classList.remove("highlight");
-                for (let l of tt.bl) {
-                  l.classList.remove("highlight");
-                }
-                cc = 2 * cc + 1 + tt.w;
-              }
-            };
-          }
-          if (rr.winnerIndex !== undefined && rr.winnerIndex !== null) {
-            const w = qid(e, `bl-${rr.winnerIndex}`);
-            w.classList.add("winner");
-            qid(e, `bl-${(rr.winnerIndex + 1) % 2}`).classList.add("looser");
-          }
-          r++;
-        }
-        for (let j = lst.length - 1; j >= 0; --j) {
-          cv.appendChild(lst[j]);
-        }
-        h *= 2;
-        m /= 2;
       }
-    }
-    function build_bracket(to, h, up) {
-      let ub = 0;
-      let db = 0;
-      if (up === true) ub = 2;
-      if (up === false) db = 2;
-      to.innerHTML = `<div style="position: relative; height: ${h}px;">
+
+      async function send_ws(data) {
+        if (document.__ws_sub) {
+          const promise = rxjs.firstValueFrom(document.__ws_sub);
+          if (document.__ws) {
+            document.__ws.send(JSON.stringify(data));
+          }
+          await Promise.race([promise, sl(5000)]);
+        } else {
+          if (document.__ws) {
+            document.__ws.send(JSON.stringify(data));
+          }
+          await sl(1000);
+        }
+      }
+
+      async function round_ban(ind) {
+        await send_ws({ action: 'Ban', mapIndex: ind });
+      }
+      async function round_unban(ind) {
+        await send_ws({ action: 'Unban', mapIndex: ind });
+      }
+      async function round_start() {
+        await send_ws({ action: 'Start' });
+      }
+      async function round_winner(winner) {
+        await send_ws({ action: 'Complete', winner });
+      }
+      async function round_reset() {
+        await send_ws({ action: 'Reset' });
+      }
+
+      async function update_round(comp, ind, view) {
+        const rnds = qid(document, 'rounds');
+        const ul = qid(rnds, 'rm-l');
+        const msg = qid(rnds, 'rm-msg');
+        const rps = [qid(rnds, 'rp-l'), qid(rnds, 'rp-r')];
+        const inv = qid(rnds, 'rm-inv');
+        const st = qid(rnds, 'rm-st');
+        const win = qid(rnds, 'rm-win');
+        const res = qid(rnds, 'rm-res');
+        const back = qid(rnds, 'rm-m-b');
+
+        inv.hidden = true;
+        st.hidden = true;
+        win.hidden = true;
+        res.hidden = true;
+        back.hidden = true;
+        const loc = window.location;
+        isadmin = !nd(view.tokens);
+
+        qid(rnds, 'rm-hdr').innerText = `Round ${ind}`;
+
+        if (isadmin) {
+          back.hidden = false;
+        }
+        for (let p in view.players) {
+          let rp = rps[p];
+
+          if (isadmin) {
+            url = `${loc.origin}${loc.pathname}?competition=${comp.id}&round=${ind}&token=${view.tokens[p].token}`;
+            localStorage.setItem(`rnd-p-invite-${p}`, url);
+          }
+          rp.innerText = view.players[p].info.playerName;
+          rp.classList.remove('winner');
+          rp.classList.remove('looser');
+          rp.classList.remove('highlight');
+        }
+        const turn = view.index === view.banTurn;
+        if (view.stage === 'Ban') {
+          if (Object.keys(view.bans).length >= comp.rules.numBans * 2) {
+            msg.innerText = 'BAN STAGE COMPLETE';
+            // enable admin start button
+            if (isadmin) {
+              inv.hidden = false;
+              st.hidden = false;
+              const stb = qid(st, 'rm-st-b');
+              stb.onclick = async () => await progress(round_start());
+            }
+          } else {
+            rps[view.banTurn].classList.add('highlight');
+            if (isadmin) {
+              inv.hidden = false;
+              msg.innerText = 'PLAYERS ARE BANNING';
+            } else {
+              if (turn) {
+                msg.innerText = 'PICK MAP TO BAN';
+              } else {
+                msg.innerText = 'OPPONENT BAN TURN';
+              }
+            }
+          }
+        } else if (view.stage === 'Running') {
+          if (view.index in [0, 1]) {
+            if (view.players[view.index].serverUrl === undefined) {
+              msg.innerHTML = 'CONNECT TO YOUR SERVER';
+            } else {
+              msg.innerHTML =
+                `<a class="inline-button" style="pointer-events: all;" href="defrag://${
+                  view.players[view.index].serverUrl
+                }">defrag://${view.players[view.index].serverUrl}</a>` +
+                ` to <button class="button" onclick="navigator.clipboard.writeText('/connect ${
+                  view.players[view.index].serverUrl
+                }');">copy command</button>`;
+            }
+          } else {
+            if (isadmin) {
+              if (view.players[0].serverUrl === undefined || view.players[1].serverUrl === undefined) {
+                msg.innerHTML = 'SERVER HOST IS NOT DEFINED';
+              } else {
+                msg.innerHTML =
+                  ` <button class="button" onclick="navigator.clipboard.writeText('/connect ${view.players[0].serverUrl}');" style='width:auto'>copy command</button> ` +
+                  `<a class="inline-button" style="pointer-events: all;" href="defrag://${view.players[0].serverUrl}">defrag://${view.players[0].serverUrl}</a> | ` +
+                  `<a class="inline-button" style="pointer-events: all;" href="defrag://${view.players[1].serverUrl}">defrag://${view.players[1].serverUrl}</a> ` +
+                  `<button class="button" onclick="navigator.clipboard.writeText('/connect ${view.players[1].serverUrl}');" style='width:auto'>copy command</button>`;
+              }
+              // msg.innerHTML 1
+              //   `<a style="pointer-events: all;user-select: all;" href="defrag://${view.players[0].serverUrl}">defrag://${view.players[0].serverUrl}</a>` +
+              //   ` CONNECT ` +
+              //   `<a style="pointer-events: all;user-select: all;" href="defrag://${view.players[1].serverUrl}">defrag://${view.players[1].serverUrl}</a>`;
+            }
+          }
+          if (isadmin) {
+            win.hidden = false;
+            qid(win, 'rm-win-0').onclick = async () => await progress(round_winner(0));
+            qid(win, 'rm-win-1').onclick = async () => await progress(round_winner(1));
+          }
+        } else {
+          msg.innerText = 'ROUND COMPLETE';
+          if (isadmin) {
+            res.hidden = false;
+            qid(res, 'rm-res-b').onclick = async () => await progress(round_reset());
+          }
+          try {
+            for (let p of rps) {
+              p.classList.add('looser');
+            }
+            if (!nd(view.winner)) {
+              const ww = rps[view.winner];
+              ww.classList.remove('looser');
+              ww.classList.add('winner');
+            }
+          } catch (e) {
+            console.log(e);
+          }
+        }
+        const els = view.order.map((x) => {
+          let state = undefined;
+          if (view.forbiddenBans.some((y) => y === x)) {
+            state = 'frozen';
+          } else {
+            if (x in view.bans) {
+              state = 'banned';
+            }
+          }
+          return {
+            info: comp.mapPool[x],
+            index: x,
+            state: state,
+          };
+        });
+        set_listbox(ul, 'rm-l-t', els, (li, i, el) => {
+          try {
+            li.hidden = false;
+            li.id = 'rm_' + el.index.toString();
+            const btn = qid(li, 'rm-l-t-b');
+            const ls = qid(li, 'rm-l-t-ls');
+            const bn = qid(li, 'rm-l-t-bn');
+            const nam = qid(li, 'rm-l-t-n');
+
+            nam.innerHTML = el.info.mapName;
+            ls.setAttribute('src', el.info.levelShotUrl);
+
+            if (el.state === undefined) {
+              if (turn || isadmin) {
+                btn.onmouseenter = () => {
+                  btn.classList.add('highlight');
+                  ls.classList.add('highlight');
+                  nam.classList.add('highlight');
+                  bn.hidden = false;
+                };
+                btn.onmouseleave = () => {
+                  btn.classList.remove('highlight');
+                  ls.classList.remove('highlight');
+                  bn.classList.remove('highlight');
+                  nam.classList.remove('highlight');
+                  bn.hidden = true;
+                };
+                btn.onclick = async () => {
+                  await progress(round_ban(el.index));
+                };
+              }
+            } else {
+              if (el.state === 'banned') {
+                if (isadmin) {
+                  btn.onclick = async () => {
+                    await progress(round_unban(el.index));
+                  };
+
+                  // if admin enable unban
+                }
+              }
+              btn.classList.add(el.state);
+              ls.classList.add(el.state);
+              nam.classList.add(el.state);
+              if (el.state !== 'frozen') {
+                bn.hidden = false;
+              }
+            }
+          } catch (e) {
+            console.error(e);
+          }
+        });
+      }
+
+      async function update_competition(comp) {
+        document.getElementById('cb-hdr').innerText = comp.name;
+        const p = qid(document, 'cb-pr');
+        const pbr = qid(document, 'cb-br');
+        p.hidden = true;
+        pbr.hidden = true;
+        // return;
+        if (comp.brackets) {
+          // if (true) {
+          pbr.hidden = false;
+          build_brackets(
+            pbr,
+            comp.brackets.rounds,
+            comp.players.map((x) => x.playerName),
+          );
+        } else {
+          p.hidden = false;
+          const pl = qid(p, 'cb-pr-pl');
+          const pi = qid(p, 'cb-pr-pi');
+          const pa = qid(p, 'cb-pr-pa');
+
+          pa.onclick = async () => await progress(add_player(comp, pi));
+          set_listbox(pl, 'cb-pr-pl-t', comp.players, function (t, i, e) {
+            qid(t, 'cb-pr-pl-t-n').innerText = e.playerName;
+            qid(t, 'cb-pr-pl-t-r').onclick = async function () {
+              await progress(remove_player(comp, e.playerName));
+            };
+          });
+
+          const ml = qid(p, 'cb-pr-ml');
+          const mi = qid(p, 'cb-pr-mi');
+          const ma = qid(p, 'cb-pr-ma');
+
+          ma.onclick = async () => await progress(add_map(comp, mi));
+          set_listbox(ml, 'cb-pr-ml-t', comp.mapPool, function (t, i, e) {
+            qid(t, 'cb-pr-ml-t-n').innerText = e.mapName;
+            qid(t, 'cb-pr-ml-t-ls').src = e.levelShotUrl;
+            qid(t, 'cb-pr-ml-t-r').onclick = async function () {
+              await progress(remove_map(comp, e.mapName));
+            };
+          });
+
+          const rb = qid(p, 'cb-pr-rm');
+          rb.onclick = () => remove_competition(comp);
+          const rc = qid(p, 'cb-pr-st');
+          rc.onclick = () => competition_start(comp, rc);
+        }
+        // async function () { close_competition(); },
+        //
+        // {
+        //   id: string;
+        //   name: string;
+        //   rules: CompetitionRules;
+        //   brackets?: Brackets;
+        //   mapPool: MapInfo[];
+        //   players: PlayerInfo[];
+        // }
+      }
+      function build_brackets(par, rnds, pnames) {
+        const nt = Math.log2(rnds.length + 1);
+        const tb = qid(par, 'cb-br-t');
+        const co = tb.querySelector('colgroup');
+        while (co.firstChild) {
+          co.removeChild(co.lastChild);
+        }
+        const tr = qid(tb, 'cb-br-t-r');
+        while (tr.firstChild) {
+          tr.removeChild(tr.lastChild);
+        }
+        let n = rnds.length;
+        let h = 96;
+        let m = (n + 1) / 2;
+        let r = 0;
+        const tlst = {};
+        for (let i = 0; i < nt; ++i) {
+          const ct = document.createElement('col');
+          ct.style = 'min-width: 280px';
+          co.appendChild(ct);
+          let cv = document.createElement('td');
+          let hd = document.createElement('div');
+          hd.hidden = true;
+          cv.style = 'padding: 0;';
+          cv = tr.appendChild(cv);
+          let brt;
+          if (m > 1) {
+            brt = [build_bracket(hd, h, true), build_bracket(hd, h, false)];
+          } else {
+            brt = build_bracket(hd, h, undefined);
+          }
+          const lst = [];
+          for (let j = 0; j < m; ++j) {
+            /** @type {HTMLElement} */
+            let e;
+            if (m > 1) {
+              e = brt[j % 2].cloneNode(true);
+            } else {
+              e = brt.cloneNode(true);
+            }
+            lst.push(e);
+            const cr = n - r - 1;
+            e.id = `cb-br-t-${cr}`;
+            const rr = rnds[cr];
+            const p0 = qid(e, 'bl-0');
+            const p1 = qid(e, 'bl-1');
+            e.onclick = async () => {
+              localStorage.setItem('nav-round-selected', cr);
+              await update_page(false, true);
+            };
+            tlst[cr] = {
+              w: rr.winnerIndex,
+              el: [p0, p1],
+              bl: e.querySelectorAll('.brackets-line'),
+            };
+            const ps = [];
+            if (rr.players[0] !== null) {
+              p0.innerText = pnames[rr.players[0]];
+              ps.push(p0);
+            }
+            if (rr.players[1] !== null) {
+              p1.innerText = pnames[rr.players[1]];
+              ps.push(p1);
+            }
+            for (let pp in ps) {
+              let ppp = ps[pp];
+              ppp.onmouseenter = () => {
+                let cc = 2 * cr + 1 + parseInt(pp);
+                ppp.classList.add('highlight');
+                pps = 0;
+                while (cc < n && pps < 10) {
+                  pps += 1;
+                  const tt = tlst[cc];
+                  if (tt.w === undefined || tt.w === null) {
+                    break;
+                  }
+                  tt.el[tt.w].classList.add('highlight');
+                  for (let l of tt.bl) {
+                    l.classList.add('highlight');
+                  }
+                  cc = 2 * cc + 1 + tt.w;
+                }
+              };
+              ppp.onmouseleave = () => {
+                let cc = 2 * cr + 1 + parseInt(pp);
+                ppp.classList.remove('highlight');
+                pps = 0;
+                while (cc < n && pps < 10) {
+                  pps += 1;
+                  const tt = tlst[cc];
+                  if (tt.w === undefined || tt.w === null) break;
+                  tt.el[tt.w].classList.remove('highlight');
+                  for (let l of tt.bl) {
+                    l.classList.remove('highlight');
+                  }
+                  cc = 2 * cc + 1 + tt.w;
+                }
+              };
+            }
+            if (rr.winnerIndex !== undefined && rr.winnerIndex !== null) {
+              const w = qid(e, `bl-${rr.winnerIndex}`);
+              w.classList.add('winner');
+              qid(e, `bl-${(rr.winnerIndex + 1) % 2}`).classList.add('looser');
+            }
+            r++;
+          }
+          for (let j = lst.length - 1; j >= 0; --j) {
+            cv.appendChild(lst[j]);
+          }
+          h *= 2;
+          m /= 2;
+        }
+      }
+      function build_bracket(to, h, up) {
+        let ub = 0;
+        let db = 0;
+        if (up === true) ub = 2;
+        if (up === false) db = 2;
+        to.innerHTML = `<div style="position: relative; height: ${h}px;">
                       <div style="position: absolute; width: 240px">
                         <div style="height: ${h / 2 - 36}px;"></div>
                         <div id="bl" class="brackets-board" style="height: 72px;">
@@ -1401,361 +1517,410 @@
                         <div style="height: ${h / 2 - 36}px;"></div></div>
                       <div style="position: absolute; left: 240px; width: 40px; height: ${h}px">
                         <div style="display: inline-block; width: 20px">
-                          <div style="height: ${h / 2}px; border-bottom: ${ub}px solid; border-color:revert-layer;" class="brackets-line"></div>
-                          <div style="height: ${h / 2}px;    border-top: ${db}px solid; border-color:revert-layer;" class="brackets-line"></div></div>
+                          <div style="height: ${
+                            h / 2
+                          }px; border-bottom: ${ub}px solid; border-color:revert-layer;" class="brackets-line"></div>
+                          <div style="height: ${
+                            h / 2
+                          }px;    border-top: ${db}px solid; border-color:revert-layer;" class="brackets-line"></div></div>
                         <div style=" display: inline-block; width: 20px; height: ${h}px;">
                           <div style="height: 18px;"></div>
-                          <div class="brackets-line" style="height: ${h / 2 - 18}px;border: ${ub}px solid;border-right: 0; border-bottom: 0;border-color:revert-layer;"></div>
-                          <div class="brackets-line" style="height: ${h / 2 - 18}px;border: ${db}px solid;border-right: 0;    border-top: 0;border-color:revert-layer;"></div>
+                          <div class="brackets-line" style="height: ${
+                            h / 2 - 18
+                          }px;border: ${ub}px solid;border-right: 0; border-bottom: 0;border-color:revert-layer;"></div>
+                          <div class="brackets-line" style="height: ${
+                            h / 2 - 18
+                          }px;border: ${db}px solid;border-right: 0;    border-top: 0;border-color:revert-layer;"></div>
                           <div style="height: 18px;"></div></div></div></div></td>`;
-      return to.firstChild;
-    }
-
-    async function close_competition() {
-      localStorage.removeItem("nav-comp-selected");
-      await update_page();
-    }
-    async function close_round() {
-      localStorage.removeItem("nav-round-selected");
-      await update_page();
-    }
-
-    async function update_competitions_list(comps) {
-      comps.hidden = false;
-      await rq("GET", '/competitions', undefined, d => {
-        const competitionList = qid(comps, "competition-list");
-        set_listbox(competitionList, "competition-template", d, function (n, i, e) {
-          n.id = `c-${e.id}`;
-          qid(n, "competition-name").innerText = e.name;
-          qid(n, "competitions-select").onclick = function () {
-            localStorage.setItem("nav-comp-selected", e.id);
-            update_page(false, false);
-          };
-        });
-      }, undefined, undefined, true);
-    }
-    async function create_competition(button) {
-      const createDialog = qid(document, "cc");
-      const name = qid(createDialog, "cc-name");
-      if (!name.value) {
-        animate_error(name);
-        return;
+        return to.firstChild;
       }
-      const maxbans = qid(createDialog, "cc-max-bans");
-      const maxbansValue = Number.parseInt(maxbans.value);
-      if (maxbansValue === undefined || maxbansValue === null || Number.isNaN(maxbansValue)) {
-        animate_error(maxbans);
-        return;
-      }
-      await rq("POST", '/competitions', {
-        name: name.value,
-        rules: {
-          numBans: maxbansValue
-        }
-      }, d => {
-        createDialog.hidden = true;
-        update_page(false, true);
-      }, undefined, button, true);
-    }
 
-    function initialize() {
-      const paswd = document.getElementById("login-paswd");
-      paswd.addEventListener("keypress", function (event) {
-        if (event.key === "Enter") {
-          event.preventDefault();
-          document.getElementById("login-button").click();
+      async function close_competition() {
+        localStorage.removeItem('nav-comp-selected');
+        await update_page();
+      }
+      async function close_round() {
+        localStorage.removeItem('nav-round-selected');
+        await update_page();
+      }
+
+      async function update_competitions_list(comps) {
+        comps.hidden = false;
+        await rq(
+          'GET',
+          '/competitions',
+          undefined,
+          (d) => {
+            const competitionList = qid(comps, 'competition-list');
+            set_listbox(competitionList, 'competition-template', d, function (n, i, e) {
+              n.id = `c-${e.id}`;
+              qid(n, 'competition-name').innerText = e.name;
+              qid(n, 'competitions-select').onclick = function () {
+                localStorage.setItem('nav-comp-selected', e.id);
+                update_page(false, false);
+              };
+            });
+          },
+          undefined,
+          undefined,
+          true,
+        );
+      }
+      async function create_competition(button) {
+        const createDialog = qid(document, 'cc');
+        const name = qid(createDialog, 'cc-name');
+        if (!name.value) {
+          animate_error(name);
+          return;
         }
-      });
-      const createDialog = document.getElementById("cc");
-      const rounds = document.getElementById("rounds");
-      document.onkeydown = function (event) {
-        if (event.key === "Escape") {
-          if (!createDialog.hidden) {
-            event.preventDefault();
+        const maxbans = qid(createDialog, 'cc-max-bans');
+        const maxbansValue = Number.parseInt(maxbans.value);
+        if (maxbansValue === undefined || maxbansValue === null || Number.isNaN(maxbansValue)) {
+          animate_error(maxbans);
+          return;
+        }
+        await rq(
+          'POST',
+          '/competitions',
+          {
+            name: name.value,
+            rules: {
+              numBans: maxbansValue,
+            },
+          },
+          (d) => {
             createDialog.hidden = true;
-          }
-          if (!rounds.hidden) {
-            event.preventDefault();
-            close_round();
-          }
-        }
-      };
-      for (let inputName of ["#cc-name", "#cc-max-bans"]) {
-        createDialog.querySelector(inputName).addEventListener("keypress", function (event) {
-          if (event.key === "Enter") {
-            event.preventDefault();
-            document.getElementById("cc-commit").click();
-          }
-        });
+            update_page(false, true);
+          },
+          undefined,
+          button,
+          true,
+        );
       }
 
-      update_page();
-    }
-    window.onload = initialize;
-  </script>
-</head>
+      function initialize() {
+        const paswd = document.getElementById('login-paswd');
+        paswd.addEventListener('keypress', function (event) {
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            document.getElementById('login-button').click();
+          }
+        });
+        const createDialog = document.getElementById('cc');
+        const rounds = document.getElementById('rounds');
+        document.onkeydown = function (event) {
+          if (event.key === 'Escape') {
+            if (!createDialog.hidden) {
+              event.preventDefault();
+              createDialog.hidden = true;
+            }
+            if (!rounds.hidden) {
+              event.preventDefault();
+              close_round();
+            }
+          }
+        };
+        for (let inputName of ['#cc-name', '#cc-max-bans']) {
+          createDialog.querySelector(inputName).addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+              event.preventDefault();
+              document.getElementById('cc-commit').click();
+            }
+          });
+        }
 
-<body style="font-size: 0;">
-  <div>
-    <div class="back" style="background-color: #000;"></div>
-    <video class="back" playsinline autoplay muted loop onloadstart="this.playbackRate = 0.7;">
-      <source src="https://dfcomps.ru/uploads/files/motion_background.webm" type="video/webm">
-      Your browser does not support the video tag.
-    </video>
-    <div id="login" hidden>
-      <div class="main-content">
-        <div class="header-container">
-          <div class="header-caption">Login</div>
-          <div class="header-underline"></div>
-        </div>
-        <div class="login">
-          <input id="login-login" class="text-input" style="margin-bottom: 20px;" type="text"
-            placeholder="&lt;enter-login&gt">
-          <input id="login-paswd" class="text-input" style="margin-bottom: 20px;" type="password">
-          <button id="login-button" class="button" onclick="login(this);">LOGIN</button>
-        </div>
-      </div>
-    </div>
-    <div id="competitions" hidden>
-      <div class="main-content">
-        <div class="header-container">
-          <div class="header-caption">Competitions</div>
-          <div class="header-underline"></div>
-        </div>
-        <div style="margin-left: 10%;margin-right: 10%;">
-          <div class="competitions-viewport">
-            <ul id="competition-list" style="list-style-type: none;">
-              <li id="competition-template" hidden>
-                <button id="competitions-select" class="competitions-element">
-                  <div id="competition-name">TEXT</div>
-                </button>
-              </li>
-            </ul>
-          </div>
-          <div style="margin-top: 10px;">
-            <button class="button" onclick="document.getElementById('cc').hidden = false">NEW</button>
+        update_page();
+      }
+      window.onload = initialize;
+    </script>
+  </head>
+
+  <body>
+    <div>
+      <div class="back" style="background-color: #000"></div>
+      <video class="back" playsinline autoplay muted loop onloadstart="this.playbackRate = 0.7;">
+        <source src="https://dfcomps.ru/uploads/files/motion_background.webm" type="video/webm" />
+        Your browser does not support the video tag.
+      </video>
+      <div class="chat-and-main-container">
+        <div class="chat"></div>
+        <div class="main-block" id="login" hidden>
+          <div class="main-content">
+            <div class="header-container">
+              <div class="header-caption">Login</div>
+              <div class="header-underline"></div>
+            </div>
+            <div class="login">
+              <input id="login-login" class="text-input" style="margin-bottom: 20px" type="text" placeholder="Login" autocomplete="off" />
+              <input
+                id="login-paswd"
+                class="text-input"
+                style="margin-bottom: 20px"
+                type="password"
+                placeholder="Password"
+              />
+              <button id="login-button" class="button" onclick="login(this);">LOGIN</button>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div id="cb" hidden>
-      <div class="menu">
-        <div style="width:100%;height: 90%;"></div>
-        <div style="width:100%;">
-          <button class="button" onclick="close_competition();">BACK</button>
-        </div>
-      </div>
-      <div class="main-content">
-        <div class="header-container">
-          <div id="cb-hdr" class="header-caption"></div>
-          <div class="header-underline"></div>
-        </div>
-        <div id="cb-pr">
-          <div style="margin-left: 10%;margin-right: 10%;">
-            <div style="display: inline-block; width: 50%;">
-              <div style="padding:1%;">
-                <ul id="cb-pr-pl" class="box list-box">
-                  <li id="cb-pr-pl-t" hidden>
-                    <div class="list-box-element">
-                      <div id="cb-pr-pl-t-n" style="width:90%;font-size: 24px;">asd</div>
-                      <button id="cb-pr-pl-t-r" class="inline-button">
-                        <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                          <path fill="currentColor"
-                            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
-                          </path>
-                        </svg>
-                      </button>
-                    </div>
+        <div id="competitions" hidden>
+          <div class="main-content">
+            <div class="header-container">
+              <div class="header-caption">Competitions</div>
+              <div class="header-underline"></div>
+            </div>
+            <div style="margin-left: 10%; margin-right: 10%">
+              <div class="competitions-viewport">
+                <ul id="competition-list" style="list-style-type: none">
+                  <li id="competition-template" hidden>
+                    <button id="competitions-select" class="competitions-element">
+                      <div id="competition-name">TEXT</div>
+                    </button>
                   </li>
                 </ul>
-                <div class="list-box-input-box">
-                  <div style="width:100%; height: 100%;">
-                    <input id="cb-pr-pi" class="list-box-input" placeholder="&lt;enter-player-name&gt">
-                  </div>
-                  <div style="width: 36px">
-                    <button id="cb-pr-pa" class="inline-button">
-                      <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path fill="currentColor"
-                          d="M11 2L13 2 13 11 22 11 22 13 13 13 13 22 11 22 11 13 2 13 2 11 11 11z">
-                        </path>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
+              </div>
+              <div style="margin-top: 10px">
+                <button class="button" onclick="document.getElementById('cc').hidden = false">NEW</button>
               </div>
             </div>
-            <div style="display: inline-block; width: 50%;">
-              <div style="padding:1%;">
-                <ul id="cb-pr-ml" class="box list-box">
-                  <li id="cb-pr-ml-t" hidden>
-                    <div class="list-box-element">
-                      <div style="width: 100%; height: 100%; display: flex; align-items: center;">
-                        <img id="cb-pr-ml-t-ls" src="http://ws.q3df.org/images/authorshots/512x384"
-                          style="height: 100%;">
-                        <div id="cb-pr-ml-t-n" style="padding-left: 8px;font-size: 24px;"></div>
+          </div>
+        </div>
+        <div id="cb" hidden>
+          <div class="menu">
+            <div style="width: 100%; height: 90%"></div>
+            <div style="width: 100%">
+              <button class="button" onclick="close_competition();">BACK</button>
+            </div>
+          </div>
+          <div class="main-content">
+            <div class="header-container">
+              <div id="cb-hdr" class="header-caption"></div>
+              <div class="header-underline"></div>
+            </div>
+            <div id="cb-pr">
+              <div style="margin-left: 10%; margin-right: 10%">
+                <div style="display: inline-block; width: 50%">
+                  <div style="padding: 1%">
+                    <ul id="cb-pr-pl" class="box list-box">
+                      <li id="cb-pr-pl-t" hidden>
+                        <div class="list-box-element">
+                          <div id="cb-pr-pl-t-n" style="width: 90%; font-size: 24px">asd</div>
+                          <button id="cb-pr-pl-t-r" class="inline-button">
+                            <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path
+                                fill="currentColor"
+                                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                              ></path>
+                            </svg>
+                          </button>
+                        </div>
+                      </li>
+                    </ul>
+                    <div class="list-box-input-box">
+                      <div style="width: 100%; height: 100%">
+                        <input id="cb-pr-pi" class="list-box-input" placeholder="&lt;enter-player-name&gt" />
                       </div>
                       <div style="width: 36px">
-                        <button id="cb-pr-ml-t-r" class="inline-button">
+                        <button id="cb-pr-pa" class="inline-button">
                           <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path fill="currentColor"
-                              d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
-                            </path>
+                            <path
+                              fill="currentColor"
+                              d="M11 2L13 2 13 11 22 11 22 13 13 13 13 22 11 22 11 13 2 13 2 11 11 11z"
+                            ></path>
                           </svg>
                         </button>
                       </div>
                     </div>
-                  </li>
-                </ul>
-                <div class="list-box-input-box">
-                  <div style="width:100%; height: 100%;">
-                    <input id="cb-pr-mi" class="list-box-input" placeholder="&lt;enter-map-name&gt">
                   </div>
-                  <div style="width: 36px">
-                    <button id="cb-pr-ma" class="inline-button">
-                      <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path fill="currentColor"
-                          d="M11 2L13 2 13 11 22 11 22 13 13 13 13 22 11 22 11 13 2 13 2 11 11 11z">
-                        </path>
-                      </svg>
+                </div>
+                <div style="display: inline-block; width: 50%">
+                  <div style="padding: 1%">
+                    <ul id="cb-pr-ml" class="box list-box">
+                      <li id="cb-pr-ml-t" hidden>
+                        <div class="list-box-element">
+                          <div style="width: 100%; height: 100%; display: flex; align-items: center">
+                            <img
+                              id="cb-pr-ml-t-ls"
+                              src="http://ws.q3df.org/images/authorshots/512x384"
+                              style="height: 100%"
+                            />
+                            <div id="cb-pr-ml-t-n" style="padding-left: 8px; font-size: 24px"></div>
+                          </div>
+                          <div style="width: 36px">
+                            <button id="cb-pr-ml-t-r" class="inline-button">
+                              <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                  fill="currentColor"
+                                  d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                                ></path>
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                    <div class="list-box-input-box">
+                      <div style="width: 100%; height: 100%">
+                        <input id="cb-pr-mi" class="list-box-input" placeholder="&lt;enter-map-name&gt" />
+                      </div>
+                      <div style="width: 36px">
+                        <button id="cb-pr-ma" class="inline-button">
+                          <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path
+                              fill="currentColor"
+                              d="M11 2L13 2 13 11 22 11 22 13 13 13 13 22 11 22 11 13 2 13 2 11 11 11z"
+                            ></path>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div style="margin-bottom: 20%; margin-left: 10%; margin-right: 10%">
+                <div style="display: inline-block; width: 50%">
+                  <button id="cb-pr-st" class="button">START</button>
+                </div>
+                <div style="display: inline-block; width: 50%">
+                  <button id="cb-pr-rm" class="button">REMOVE</button>
+                </div>
+              </div>
+            </div>
+            <div id="cb-br">
+              <div class="box" style="margin: 1%; height: 70vh">
+                <table id="cb-br-t" cellspacing="0" style="border-spacing: 0; border-collapse: collapse">
+                  <colgroup></colgroup>
+                  <tbody>
+                    <tr id="cb-br-t-r"></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="rounds">
+          <div class="menu">
+            <div style="width: 100%; height: 90%"></div>
+            <div style="width: 100%">
+              <button id="rm-m-b" class="button" onclick="close_round();">BACK</button>
+            </div>
+          </div>
+          <div class="main-content" style="position: relative; height: 100vh">
+            <div class="header-container">
+              <div id="rm-hdr" class="header-caption">Round</div>
+              <div class="header-underline"></div>
+            </div>
+            <ul id="rm-l" class="map-list">
+              <li id="rm-l-t" hidden>
+                <div id="rm-l-t-b" class="lshot">
+                  <img id="rm-l-t-ls" class="limage" src="http://ws.q3df.org/images/authorshots/512x384/" />
+                  <div id="rm-l-t-bn" hidden>
+                    <div class="lcapban">
+                      <div class="lcaptiontext">BAN</div>
+                    </div>
+                  </div>
+                  <div id="rm-l-t-n" class="lcap"></div>
+                </div>
+              </li>
+            </ul>
+            <div class="players-content">
+              <div class="rplayers">
+                <style>
+                  .rpturn {
+                    width: 100%;
+                    font-size: 24px;
+                    user-select: none;
+                    /* height: 40px; */
+                    padding: 20px;
+                    margin-bottom: 10px;
+                    text-align: center;
+                    vertical-align: middle;
+                    background: linear-gradient(90deg, #00000000 5%, #a03b0040 50%, #00000000 100%);
+                    border-top: 1px solid;
+                    border-bottom: 1px solid;
+                    border-image-slice: 1;
+                    border-image-source: linear-gradient(90deg, #00000000 0%, #ff5300a0 50%, #00000000 100%);
+                  }
+                </style>
+                <div id="rm-msg" class="rpturn"></div>
+                <div id="rp-l" class="rpcaption left"></div>
+                <div id="rp-r" class="rpcaption right"></div>
+                <div id="rm-inv" hidden>
+                  <button
+                    class="button"
+                    onclick="copy_invite(this, 0)"
+                    style="width: 45%; margin-top: 5px; margin-right: 5%"
+                  >
+                    Invite
+                  </button>
+                  <button
+                    class="button"
+                    onclick="copy_invite(this, 1)"
+                    style="width: 45%; margin-top: 5px; margin-left: 5%"
+                  >
+                    Invite
+                  </button>
+                </div>
+                <div id="rm-st" hidden>
+                  <button id="rm-st-b" class="button" style="width: 100%; margin-top: 5px">Start</button>
+                </div>
+                <div id="rm-win" hidden>
+                  <button id="rm-win-0" class="button" style="width: 45%; margin-top: 5px; margin-right: 5%">
+                    WIN
+                  </button>
+                  <button id="rm-win-1" class="button" style="width: 45%; margin-top: 5px; margin-left: 5%">WIN</button>
+                </div>
+                <div id="rm-res" hidden>
+                  <button id="rm-res-b" class="button" style="width: 100%; margin-top: 5px">Reset</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="msg" class="page" style="pointer-events: none">
+          <ul id="msg-l" class="message-box"></ul>
+        </div>
+        <div id="cc" hidden>
+          <div class="fulldim">
+            <div class="page-pad">
+              <div style="margin-top: 20%">
+                <div style="width: 80%; margin-left: 10%; margin-right: 10%; margin-bottom: 20px">
+                  <div class="text-field" style="width: 100%; display: inline-block">
+                    <span class="header-caption">Create competition</span>
+                  </div>
+                </div>
+                <div style="width: 80%; margin-left: 10%; margin-right: 10%; margin-bottom: 20px">
+                  <div class="text-field" style="width: 49%; display: inline-block"><span>NAME</span></div>
+                  <div style="width: 50%; display: inline-block"><input id="cc-name" class="text-input" /></div>
+                </div>
+                <div style="width: 80%; margin-left: 10%; margin-right: 10%; margin-bottom: 20px">
+                  <div class="text-field" style="width: 49%; display: inline-block"><span>MAX BANS</span></div>
+                  <div style="width: 50%; display: inline-block">
+                    <input id="cc-max-bans" class="text-input" value="2" />
+                  </div>
+                </div>
+                <div style="width: 80%; margin-left: 10%; margin-right: 10%; margin-bottom: 20px">
+                  <div class="text-field" style="width: 49%; display: inline-block">
+                    <button id="cc-commit" class="button" onclick="create_competition(this);">CREATE</button>
+                  </div>
+                  <div class="text-field" style="width: 50%; width: 50%; display: inline-block">
+                    <button id="cc-cancel" class="button" onclick="document.getElementById('cc').hidden = true">
+                      CANCEL
                     </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div style="margin-bottom: 20%; margin-left: 10%;margin-right: 10%;">
-            <div style="display: inline-block; width: 50%;">
-              <button id="cb-pr-st" class="button">START</button>
-            </div>
-            <div style="display: inline-block; width: 50%;">
-              <button id="cb-pr-rm" class="button">REMOVE</button>
-            </div>
-          </div>
         </div>
-        <div id="cb-br">
-          <div class="box" style="margin: 1%;height: 70vh;">
-            <table id="cb-br-t" cellspacing="0" style="border-spacing:0;border-collapse: collapse;">
-              <colgroup>
-              </colgroup>
-              <tbody>
-                <tr id="cb-br-t-r">
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="rounds">
-      <div class="menu">
-        <div style="width:100%;height: 90%;"></div>
-        <div style="width:100%;">
-          <button id="rm-m-b" class="button" onclick="close_round();">BACK</button>
-        </div>
-      </div>
-      <div class="main-content" style="position: relative; height: 100vh;">
-        <div class="header-container">
-          <div id="rm-hdr" class="header-caption">Round</div>
-          <div class="header-underline"></div>
-        </div>
-        <ul id="rm-l" class="map-list">
-          <li id="rm-l-t" hidden>
-            <div id="rm-l-t-b" class="lshot">
-              <img id="rm-l-t-ls" class="limage" src="http://ws.q3df.org/images/authorshots/512x384/" />
-              <div id="rm-l-t-bn" hidden>
-                <div class="lcapban">
-                  <div class="lcaptiontext">BAN</div>
-                </div>
-              </div>
-              <div id="rm-l-t-n" class="lcap"></div>
-            </div>
-          </li>
-        </ul>
-        <div class="players-content">
-          <div class="rplayers">
-            <style>
-              .rpturn {
-                width: 100%;
-                font-size: 24px;
-                user-select: none;
-                /* height: 40px; */
-                padding: 20px;
-                margin-bottom: 10px;
-                text-align: center;
-                vertical-align: middle;
-                background: linear-gradient(90deg, #00000000 5%, #A03b0040 50%, #00000000 100%);
-                border-top: 1px solid;
-                border-bottom: 1px solid;
-                border-image-slice: 1;
-                border-image-source: linear-gradient(90deg, #00000000 0%, #ff5300A0 50%, #00000000 100%);
-              }
-            </style>
-            <div id="rm-msg" class="rpturn"></div>
-            <div id="rp-l" class="rpcaption left"></div>
-            <div id="rp-r" class="rpcaption right"></div>
-            <div id="rm-inv" hidden>
-              <button class="button" onclick="copy_invite(this, 0)"
-                style="width:45%; margin-top: 5px; margin-right:5%">Invite</button>
-              <button class="button" onclick="copy_invite(this, 1)"
-                style="width:45%; margin-top: 5px; margin-left:5%">Invite</button>
-            </div>
-            <div id="rm-st" hidden>
-              <button id="rm-st-b" class="button" style="width:100%; margin-top: 5px;">Start</button>
-            </div>
-            <div id="rm-win" hidden>
-              <button id="rm-win-0" class="button" style="width:45%; margin-top: 5px; margin-right:5%">WIN</button>
-              <button id="rm-win-1" class="button" style="width:45%; margin-top: 5px; margin-left:5%">WIN</button>
-            </div>
-            <div id="rm-res" hidden>
-              <button id="rm-res-b" class="button" style="width:100%; margin-top: 5px;">Reset</button>
+        <div id="loader" hidden>
+          <div class="fulldim">
+            <div class="page-pad">
+              <div class="loader"></div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div id="msg" class="page" style="pointer-events: none; ">
-      <ul id="msg-l" class="message-box">
-      </ul>
-    </div>
-    <div id="cc" hidden>
-      <div class="fulldim">
-        <div class="page-pad">
-          <div style="margin-top: 20%;">
-            <div style="width: 80%;margin-left: 10%;margin-right: 10%; margin-bottom: 20px;">
-              <div class="text-field" style="width: 100%;display:inline-block;"><span class="header-caption">Create
-                  competition</span></div>
-            </div>
-            <div style="width: 80%;margin-left: 10%;margin-right: 10%; margin-bottom: 20px;">
-              <div class="text-field" style="width: 49%;display:inline-block;"><span>NAME</span></div>
-              <div style="width: 50%;display:inline-block;"><input id="cc-name" class="text-input">
-              </div>
-            </div>
-            <div style="width: 80%;margin-left: 10%;margin-right: 10%; margin-bottom: 20px;">
-              <div class="text-field" style="width: 49%;display:inline-block;"><span>MAX BANS</span></div>
-              <div style="width: 50%;display:inline-block;"><input id="cc-max-bans" class="text-input" value="2">
-              </div>
-            </div>
-            <div style="width: 80%;margin-left: 10%;margin-right: 10%; margin-bottom: 20px;">
-              <div class="text-field" style="width: 49%;display:inline-block;">
-                <button id="cc-commit" class="button" onclick="create_competition(this);">CREATE</button>
-              </div>
-              <div class="text-field" style="width: 50%;width: 50%;display:inline-block;">
-                <button id="cc-cancel" class="button"
-                  onclick="document.getElementById('cc').hidden = true">CANCEL</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="loader" hidden>
-      <div class="fulldim">
-        <div class="page-pad">
-          <div class="loader"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</body>
-
+  </body>
 </html>
