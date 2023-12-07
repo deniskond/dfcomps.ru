@@ -1170,6 +1170,18 @@
         await send_ws({ action: 'Reset' });
       }
 
+      function getRoundTitle(roundIndex) {
+        if (roundIndex === 0) {
+          return 'Final';
+        }
+
+        if (roundIndex === 1 || roundIndex === 2) {
+          return `Semifinal #${roundIndex}`;
+        }
+
+        return `Quaterfinal #${roundIndex - 2}`;
+      }
+
       async function update_round(comp, ind, view) {
         const rnds = qid(document, 'rounds');
         const ul = qid(rnds, 'rm-l');
@@ -1191,7 +1203,7 @@
         const loc = window.location;
         isadmin = !nd(view.tokens);
 
-        qid(rnds, 'rm-hdr').innerText = `Round ${ind}`;
+        qid(rnds, 'rm-hdr').innerText = getRoundTitle(ind);
 
         if (isadmin) {
           back.hidden = false;
@@ -1735,7 +1747,7 @@
               <div style="margin-left: 20px; margin-right: 20px; display: flex">
                 <div style="width: 50%;">
                   <div>
-                    <ul id="cb-pr-pl" class="box list-box">
+                    <ul id="cb-pr-pl" class="box scrollable list-box">
                       <li id="cb-pr-pl-t" hidden>
                         <div class="list-box-element">
                           <div id="cb-pr-pl-t-n" style="width: 90%; font-size: 24px">asd</div>
