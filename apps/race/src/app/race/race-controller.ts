@@ -20,6 +20,8 @@ import {
   MapInfo,
   PlayerInfo,
   CompetitionCreateInfo,
+  RawCompetitionView,
+  IncompleteMapInfo,
 } from './interfaces/views.interface';
 import { CompetitionData, RoundData } from './interfaces/data.interface';
 import { createHash } from 'crypto';
@@ -55,6 +57,48 @@ export class RaceController {
     this.competitions[res.id] = { view: res, adminToken: token, rounds: {} };
     return result(res);
   }
+
+  public async makeCompetition(
+    competition: RawCompetitionView,
+    token: string | undefined,
+  ): Promise<Result<CompetitionView>> {
+    if (token === undefined) {
+      return notAllowed('You must be logged in to make competitions');
+    }
+    const infos = await Promise.all(competition.mapPool.map((x) => this.ensureMapInfo(x)));
+    const notFound = infos
+      .map((x, i) => [x, competition.mapPool[i].mapName])
+      .filter((x) => x[0] === undefined)
+      .map((x) => x[1]);
+    if (notFound.length > 0) {
+      return error({
+        code: 'BadRequest',
+        message: `Some maps are not found: ${notFound}`,
+      });
+    }
+    const res = { id: v4(), ...competition };
+    this.competitions[res.id] = { view: res, adminToken: token, rounds: {} };
+    return result(res);
+  }
+
+  private async ensureMapInfo(x: IncompleteMapInfo): Promise<MapInfo | undefined> {
+    const ls = x.levelShotUrl;
+    const url = x.worldspawnUrl;
+    if (ls !== undefined && url !== undefined) {
+      return {
+        mapName: x.mapName,
+        levelShotUrl: ls,
+        worldspawnUrl: url,
+        stats: x.stats,
+      };
+    }
+    const info = await this.getMapInfo(x.mapName);
+    if (info === undefined) {
+      return undefined;
+    }
+    return info;
+  }
+
   public getCompetition(
     competitionId: string,
     token: string | undefined,
@@ -194,7 +238,7 @@ export class RaceController {
       const player1 = playersShuffle[half + i];
       circle.push({
         players: [player0, player1],
-        winnerIndex: player1 === undefined ? 0 : undefined,
+        winnerIndex: player1 === null ? 0 : undefined,
       });
     }
     circles.push(circle);
@@ -202,7 +246,7 @@ export class RaceController {
     while (n > 1) {
       circle = [];
       for (let i = 0; i < n >> 1; ++i) {
-        circle.push({ players: [undefined, undefined] });
+        circle.push({ players: [null, null] });
       }
       circles.push(circle);
       // n = Math.floor(n / 2);
@@ -242,7 +286,7 @@ export class RaceController {
     }
     const p0 = competition.brackets.rounds[round].players[0];
     const p1 = competition.brackets.rounds[round].players[1];
-    if (p0 === undefined || p1 === undefined) {
+    if (p0 === null || p1 === null) {
       return badRequest(`Players are not ready to round ${round}`);
     }
     const r0 = competition.brackets.rounds[(round << 1) + 1];
