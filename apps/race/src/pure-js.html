@@ -1185,17 +1185,18 @@
     async function round_reset() {
       await send_ws({ action: 'Reset' });
     }
-
+    const stages = ["Final", "Semifinal", "Quaterfinal"];
     function getRoundTitle(roundIndex) {
-      if (roundIndex === 0) {
-        return 'Final';
+      const x = parseInt(roundIndex);
+      const stage = Math.floor(Math.log2(x + 1));
+      if (stage === 0) {
+        return stages[stage];
       }
-
-      if (roundIndex === 1 || roundIndex === 2) {
-        return `Semifinal #${roundIndex}`;
+      const num = x + 1 - Math.pow(2, stage);
+      if (stage < stages.length) {
+        return `${stages[stage]} #${num + 1}`;
       }
-
-      return `Quaterfinal #${roundIndex - 2}`;
+      return `Last ${Math.pow(2, stage)} #${num + 1}`;
     }
 
     async function update_round(comp, ind, view) {

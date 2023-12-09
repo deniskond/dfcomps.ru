@@ -71,14 +71,55 @@ export class RaceController {
       .filter((x) => x[0] === undefined)
       .map((x) => x[1]);
     if (notFound.length > 0) {
-      return error({
-        code: 'BadRequest',
-        message: `Some maps are not found: ${notFound}`,
-      });
+      return badRequest(`Some maps are not found: ${notFound}`);
+    } else {
+      // typecheck failed
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      competition.mapPool = infos as any;
     }
     const res = { id: v4(), ...competition };
+    const err = this.isValidCompetition(res);
+    if (err !== null) {
+      return badRequest(err);
+    }
     this.competitions[res.id] = { view: res, adminToken: token, rounds: {} };
     return result(res);
+  }
+
+  private isValidCompetition(x: CompetitionView) {
+    if (x.players.length < 2) return 'Expected at least 2 players';
+    const nrounds = Math.pow(2, Math.ceil(Math.log2(x.players.length))) - 1;
+    if (x.mapPool.length === 0) return 'Expected at least one map in pool';
+    if (x.rules.numBans > x.mapPool.length / 6) return 'Not enough maps in pool';
+    if (x.brackets !== undefined) {
+      if (x.brackets.rounds.length !== nrounds)
+        return `Invalid rounds count, expected ${nrounds} got ${x.brackets.rounds.length}`;
+      for (const i in x.brackets.rounds) {
+        const ind = parseInt(i);
+        const round = x.brackets.rounds[i];
+        if (round.bannedMaps !== undefined) {
+          for (const ban of round.bannedMaps) {
+            if (ban >= x.mapPool.length) return `Invalid ban at round ${i}.`;
+          }
+        }
+        if (round.winnerIndex !== undefined) {
+          if (round.winnerIndex >= round.players.length) return `Invalid winner at round ${i}`;
+          if (ind > 0) {
+            const rnd = Math.floor((ind + 1) / 2) - 1;
+            const pos = (ind + 1) % 2;
+            if (round.players[round.winnerIndex] !== x.brackets.rounds[rnd].players[pos]) {
+              return `Wrong winner of round ${rnd}[${pos}]. Due to results of ${rnd} it must be ${
+                round.players[round.winnerIndex]
+              }`;
+            }
+          }
+        }
+        for (const pl of round.players) {
+          if (pl !== null && pl >= x.players.length) return `Out of range player at round ${i}`;
+        }
+      }
+    }
+    return null;
   }
 
   private async ensureMapInfo(x: IncompleteMapInfo): Promise<MapInfo | undefined> {
@@ -238,7 +279,7 @@ export class RaceController {
       const player1 = playersShuffle[half + i];
       circle.push({
         players: [player0, player1],
-        winnerIndex: player1 === null ? 0 : undefined,
+        winnerIndex: player1 === undefined ? 0 : undefined,
       });
     }
     circles.push(circle);
