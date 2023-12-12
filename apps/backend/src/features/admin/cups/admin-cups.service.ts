@@ -528,7 +528,7 @@ export class AdminCupsService {
     await this.cupsRepository
       .createQueryBuilder()
       .update(Cup)
-      .set({ archive_link: archiveFileName })
+      .set({ archive_link: archiveFilePath })
       .where({ id: cupId })
       .execute();
   }
