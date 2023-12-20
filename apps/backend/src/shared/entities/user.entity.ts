@@ -11,7 +11,7 @@ import { OneVOneRating } from './1v1-rating.entity';
 
 @Entity({ name: 'users' })
 export class User {
-  @PrimaryGeneratedColumn('identity', { name: 'id', generatedIdentity: 'BY DEFAULT' })
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ type: 'character varying' })
