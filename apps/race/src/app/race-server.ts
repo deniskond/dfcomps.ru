@@ -8,7 +8,7 @@ import { RaceController } from './race/race-controller';
 import { ErrorCode, Result, badRequest, notAllowed, result } from './race/types/result';
 import { isInMessage } from './interfaces/message.interface';
 import { createHash, createCipheriv, randomBytes } from 'crypto';
-import { isCompetitionCreateInfo } from './race/interfaces/views.interface';
+import { isCompetitionCreateInfo, isRawCompetitionInfo } from './race/interfaces/views.interface';
 import { AddressInfo } from 'net';
 // import { ParsedQs } from 'qs';
 
@@ -52,11 +52,7 @@ export class RaceServer {
   }
   private tokenize(login: string, passwordHash: string): string {
     const cipher = createCipheriv('aes-256-cbc', this._key, this._iv);
-    let encr = cipher.update(
-      `${process.env.SALT}${login}###${passwordHash}${process.env.SALT}`,
-      'utf-8',
-      'base64url',
-    );
+    let encr = cipher.update(`${process.env.SALT}${login}###${passwordHash}${process.env.SALT}`, 'utf-8', 'base64url');
     encr += cipher.final('base64url');
     return encr;
   }
@@ -65,9 +61,12 @@ export class RaceServer {
     this._iv = randomBytes(16);
     const logins = [];
     if (process.env.NODE_ENV === 'production') {
-      if (process.env.RACE_WOODY_PASS !== undefined) logins.push({ login: 'w00deh', password: process.env.RACE_WOODY_PASS });
-      if (process.env.RACE_RANTRAVE_PASS !== undefined) logins.push({ login: 'rantrave', password: process.env.RACE_RANTRAVE_PASS });
-      if (process.env.RACE_NOSF_PASS !== undefined) logins.push({ login: 'Nosf', password: process.env.RACE_NOSF_PASS });
+      if (process.env.RACE_WOODY_PASS !== undefined)
+        logins.push({ login: 'w00deh', password: process.env.RACE_WOODY_PASS });
+      if (process.env.RACE_RANTRAVE_PASS !== undefined)
+        logins.push({ login: 'rantrave', password: process.env.RACE_RANTRAVE_PASS });
+      if (process.env.RACE_NOSF_PASS !== undefined)
+        logins.push({ login: 'Nosf', password: process.env.RACE_NOSF_PASS });
     } else {
       logins.push({ login: 'w00deh', password: 'w00deh' });
       logins.push({ login: 'rantrave', password: 'rantrave' });
@@ -82,7 +81,7 @@ export class RaceServer {
     this.express = express();
     this.expressWs = expressWs(this.express);
     // this.server = http.createServer(this.express);
-    const shp = parseInt(process.env.SERVER_HOST_PORT ?? "");
+    const shp = parseInt(process.env.SERVER_HOST_PORT ?? '');
     this.raceController = new RaceController(process.env.SERVER_HOST_ADDRESS, isNaN(shp) ? undefined : shp);
     const app = this.expressWs.app;
 
@@ -146,6 +145,14 @@ export class RaceServer {
       .get((req: express.Request, res: express.Response) => {
         const token = this.getAdminToken(req);
         this.response(res, this.raceController.listCompetitions(token));
+      })
+      .put((req: express.Request, res: express.Response) => {
+        const token = this.getAdminToken(req);
+        this.log(JSON.stringify(req.body));
+        if (!isRawCompetitionInfo(req.body)) {
+          this.invalidType(res, 'RawCompetitionInfo expected at body');
+        }
+        this.raceController.makeCompetition(req.body, token).then((r) => this.response(res, r));
       });
     app
       .route('/competitions/:competitionId')
@@ -246,31 +253,29 @@ export class RaceServer {
         }
         this.response(res, this.raceController.getRoundView(req.params.competitionId, roundId, token));
       });
-    app.route('/competitions/:competitionId/rounds/:roundId/complete')
-      .post(async (req, res) => {
-        const token = this.getAdminToken(req);
-        const roundId = parseInt(req.params.roundId);
-        if (isNaN(roundId)) {
-          this.invalidType(res, "Expected 'roundId' to be round index");
-          return;
-        }
-        const body = req.body;
-        if (typeof body?.winner !== 'number') {
-          this.response(res, badRequest('bad "winner" index'));
-          return;
-        }
-        this.response(res, await this.raceController.roundSet(req.params.competitionId, roundId, token, body.winner));
-      })
-    app.route('/competitions/:competitionId/rounds/:roundId/reset')
-      .post(async (req, res) => {
-        const token = this.getAdminToken(req);
-        const roundId = parseInt(req.params.roundId);
-        if (isNaN(roundId)) {
-          this.invalidType(res, "Expected 'roundId' to be round index");
-          return;
-        }
-        this.response(res, await this.raceController.roundSet(req.params.competitionId, roundId, token, "Restart"));
-      })
+    app.route('/competitions/:competitionId/rounds/:roundId/complete').post(async (req, res) => {
+      const token = this.getAdminToken(req);
+      const roundId = parseInt(req.params.roundId);
+      if (isNaN(roundId)) {
+        this.invalidType(res, "Expected 'roundId' to be round index");
+        return;
+      }
+      const body = req.body;
+      if (typeof body?.winner !== 'number') {
+        this.response(res, badRequest('bad "winner" index'));
+        return;
+      }
+      this.response(res, await this.raceController.roundSet(req.params.competitionId, roundId, token, body.winner));
+    });
+    app.route('/competitions/:competitionId/rounds/:roundId/reset').post(async (req, res) => {
+      const token = this.getAdminToken(req);
+      const roundId = parseInt(req.params.roundId);
+      if (isNaN(roundId)) {
+        this.invalidType(res, "Expected 'roundId' to be round index");
+        return;
+      }
+      this.response(res, await this.raceController.roundSet(req.params.competitionId, roundId, token, 'Restart'));
+    });
     app.ws('/bracket/:competitionId/rounds/:roundId', (ws, req: express.Request) => {
       this.log(`new connection to ${req.params.competitionId}/${req.params.roundId}`);
       const competitionId = req.params.competitionId;
