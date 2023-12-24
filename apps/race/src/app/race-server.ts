@@ -104,6 +104,17 @@ export class RaceServer {
       );
       res.status(200).setHeader('Content-Type', 'text/html').send(html);
     });
+    app.get('/banner.html', async (req: express.Request, res: express.Response) => {
+      const frontendLocation = process.env.NODE_ENV === 'production' ? './banner.html' : 'apps/race/src/banner.html';
+      // res.sendFile(__dirname + '/../../../apps/race/src/pure-js.html');
+      const html = await new Promise((r, j) =>
+        fs.readFile(frontendLocation, (err, b) => {
+          if (err) j(err);
+          else r(b);
+        }),
+      );
+      res.status(200).setHeader('Content-Type', 'text/html').send(html);
+    });
 
     app.route('/authorize').post((req: express.Request, res: express.Response) => {
       let token = this.getAdminToken(req);
