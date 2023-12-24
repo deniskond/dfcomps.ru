@@ -17,6 +17,7 @@ module.exports = (config, context) => {
   config.plugins.push(...extractRelevantNodeModules(outputPath));
   config.plugins.push(
     new CopyPlugin({ patterns: [{ from: 'src/pure-js.html', to: path.join(outputPath, 'pure-js.html') }] }),
+    new CopyPlugin({ patterns: [{ from: 'src/banner.html', to: path.join(outputPath, 'banner.html') }] }),
   );
 
   return config;
