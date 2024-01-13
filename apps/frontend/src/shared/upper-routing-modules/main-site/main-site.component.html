@@ -22,8 +22,10 @@
             [customNews]="cup.customNews"
             [mapLink]="cup.customMap || cup.mapPk3"
             [server]="server$ | async"
-          >
-          </app-cup-timer>
+          ></app-cup-timer>
+        </div>
+        <div class="right-block shadowed" style="padding: 16px;display: flex;align-items: center;justify-content: center;border: 1px solid var(--base-background);background: var(--timer-background-color);margin-top:0;border-top:0;">
+          <img src="../../../../assets/images/fps_winter.png" style="height:160px;" />
         </div>
         <div class="right-block shadowed">
           <div class="side-block-header table-header">
@@ -36,10 +38,10 @@
             <span translate translation="ratingLeaders"></span>
           </div>
           <nav mat-tab-nav-bar [tabPanel]="tabPanel" class="navigation">
-            <a [active]="activePage === 1" (click)="setTab(1)" mat-tab-link class="navigation-link"> CPM </a>
-            <a [active]="activePage === 2" (click)="setTab(2)" mat-tab-link class="navigation-link"> VQ3 </a>
-            <a [active]="activePage === 3" (click)="setTab(3)" mat-tab-link class="navigation-link"> CPM (1v1) </a>
-            <a [active]="activePage === 4" (click)="setTab(4)" mat-tab-link class="navigation-link"> VQ3 (1v1) </a>
+            <a [active]="activePage === 1" (click)="setTab(1)" mat-tab-link class="navigation-link">CPM</a>
+            <a [active]="activePage === 2" (click)="setTab(2)" mat-tab-link class="navigation-link">VQ3</a>
+            <a [active]="activePage === 3" (click)="setTab(3)" mat-tab-link class="navigation-link">CPM (1v1)</a>
+            <a [active]="activePage === 4" (click)="setTab(4)" mat-tab-link class="navigation-link">VQ3 (1v1)</a>
           </nav>
           <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
           <app-top-ten-table
