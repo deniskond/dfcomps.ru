@@ -488,6 +488,7 @@ export class AdminCupsService {
     const cupName: string = cup.full_name.replace(/#/g, '').replace(/\s/g, '_');
     const zip = new Zip();
     const archiveFileName = `${cupName}_all_demos.zip`;
+    const relativeArchiveFilePath = process.env.DFCOMPS_FILES_RELATIVE_PATH + `/demos/cup${cupId}/${archiveFileName}`;
     const archiveFilePath = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${archiveFileName}`;
 
     if (fs.existsSync(archiveFilePath)) {
@@ -528,7 +529,7 @@ export class AdminCupsService {
     await this.cupsRepository
       .createQueryBuilder()
       .update(Cup)
-      .set({ archive_link: archiveFilePath })
+      .set({ archive_link: relativeArchiveFilePath })
       .where({ id: cupId })
       .execute();
   }
