@@ -1,4 +1,10 @@
-import { NickChangeResponseInterface, Physics, ProfileDemosInterface, ProfileInterface } from '@dfcomps/contracts';
+import {
+  CupTypes,
+  NickChangeResponseInterface,
+  Physics,
+  ProfileDemosInterface,
+  ProfileInterface,
+} from '@dfcomps/contracts';
 import {
   BadRequestException,
   Injectable,
@@ -110,7 +116,7 @@ export class ProfileService {
       demos: filteredDemos,
       cups: cups.map((ratingChange: RatingChange) => ({
         full_name: ratingChange.cup.full_name,
-        short_name: ratingChange.cup.short_name,
+        short_name: ratingChange.cup.type === CupTypes.ONLINE ? ratingChange.cup.short_name : ratingChange.cup.map1!,
         news_id: ratingChange.cup.news[0]?.id || null,
         cpm_place: ratingChange.cpm_place,
         vq3_place: ratingChange.vq3_place,
