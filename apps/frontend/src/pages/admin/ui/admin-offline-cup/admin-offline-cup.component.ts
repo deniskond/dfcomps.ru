@@ -9,6 +9,7 @@ import {
   combineLatest,
   debounceTime,
   filter,
+  finalize,
   of,
   switchMap,
   take,
@@ -38,6 +39,7 @@ export class AdminOfflineCupComponent implements OnInit {
   public activeMulticups$: Observable<AdminActiveMulticupInterface[]>;
   public isMapFound: boolean | null = null;
   public isLoadingMapInfo = false;
+  public isLoadingCupAction = false;
   public isMulticupRequired = true;
   public componentMode: 'Add' | 'Edit' = 'Add';
   public offlineCupForm: FormGroup = new FormGroup({
@@ -163,6 +165,7 @@ export class AdminOfflineCupComponent implements OnInit {
       return;
     }
 
+    this.isLoadingCupAction = true;
     this.componentMode === 'Add' ? this.addCup() : this.editCup();
   }
 
@@ -257,7 +260,10 @@ export class AdminOfflineCupComponent implements OnInit {
     if (this.mapType === 'ws') {
       this.adminDataService
         .addCup$(this.offlineCupForm.value)
-        .pipe(switchMap(() => this.adminDataService.getAllCups$(false)))
+        .pipe(
+          switchMap(() => this.adminDataService.getAllCups$(false)),
+          finalize(() => (this.isLoadingCupAction = false)),
+        )
         .subscribe(() => {
           this.router.navigate(['/admin/cups']);
           this.snackBar.open('Cup added successfully', 'OK', { duration: 3000 });
@@ -290,7 +296,10 @@ export class AdminOfflineCupComponent implements OnInit {
     if (this.mapType === 'ws') {
       this.adminDataService
         .editCup$(this.offlineCupForm.value, this.cupId!)
-        .pipe(switchMap(() => this.adminDataService.getAllCups$(false)))
+        .pipe(
+          switchMap(() => this.adminDataService.getAllCups$(false)),
+          finalize(() => (this.isLoadingCupAction = false)),
+        )
         .subscribe(() => {
           this.router.navigate(['/admin/cups']);
           this.snackBar.open('Cup edited successfully', 'OK', { duration: 3000 });

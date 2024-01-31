@@ -9,9 +9,7 @@
       </div>
       <div>
         <input formControlName="fullName" class="input-field" />
-        <div *ngIf="hasFieldError(this.offlineCupForm.get('fullName')!)" class="field-error">
-          Field is required
-        </div>
+        <div *ngIf="hasFieldError(this.offlineCupForm.get('fullName')!)" class="field-error">Field is required</div>
       </div>
       <div>
         Short name
@@ -20,9 +18,7 @@
       </div>
       <div>
         <input formControlName="shortName" class="input-field" />
-        <div *ngIf="hasFieldError(this.offlineCupForm.get('shortName')!)" class="field-error">
-          Field is required
-        </div>
+        <div *ngIf="hasFieldError(this.offlineCupForm.get('shortName')!)" class="field-error">Field is required</div>
       </div>
       <div>
         Start time
@@ -31,9 +27,7 @@
       </div>
       <div>
         <input formControlName="startTime" class="input-field date" type="datetime-local" />
-        <span *ngIf="hasFieldError(this.offlineCupForm.get('startTime')!)" class="field-error">
-          Field is required
-        </span>
+        <span *ngIf="hasFieldError(this.offlineCupForm.get('startTime')!)" class="field-error">Field is required</span>
       </div>
       <div>
         End time
@@ -42,9 +36,7 @@
       </div>
       <div>
         <input formControlName="endTime" class="input-field date" type="datetime-local" />
-        <span *ngIf="hasFieldError(this.offlineCupForm.get('endTime')!)" class="field-error">
-          Field is required
-        </span>
+        <span *ngIf="hasFieldError(this.offlineCupForm.get('endTime')!)" class="field-error">Field is required</span>
       </div>
       <div class="map-type-label">Map type</div>
       <div>
@@ -62,9 +54,7 @@
       <div class="input-title">Map name</div>
       <div>
         <input formControlName="mapName" class="input-field" />
-        <div *ngIf="hasFieldError(this.offlineCupForm.get('mapName')!)" class="field-error">
-          Field is required
-        </div>
+        <div *ngIf="hasFieldError(this.offlineCupForm.get('mapName')!)" class="field-error">Field is required</div>
         <div *ngIf="isMapFound === true" class="field-ok">Map was found on ws.q3df.org</div>
         <div *ngIf="isMapFound === false" class="field-error">Map was not found on ws.q3df.org</div>
       </div>
@@ -79,9 +69,7 @@
             type="file"
             accept=".pk3"
           />
-          <div *ngIf="hasFieldError(this.offlineCupForm.get('mapPk3File')!)" class="field-error">
-            Field is required
-          </div>
+          <div *ngIf="hasFieldError(this.offlineCupForm.get('mapPk3File')!)" class="field-error">Field is required</div>
         </ng-container>
 
         <input *ngIf="!isCustomMap" formControlName="mapPk3Link" class="input-field" />
@@ -110,9 +98,7 @@
       <div class="input-title">Map author</div>
       <div>
         <input formControlName="mapAuthor" class="input-field" />
-        <div *ngIf="hasFieldError(this.offlineCupForm.get('mapAuthor')!)" class="field-error">
-          Field is required
-        </div>
+        <div *ngIf="hasFieldError(this.offlineCupForm.get('mapAuthor')!)" class="field-error">Field is required</div>
       </div>
       <div class="input-title">Map weapons</div>
       <div class="weapons-checkboxes">
@@ -172,9 +158,7 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <div *ngIf="hasFieldError(this.offlineCupForm.get('multicup')!)" class="field-error">
-            Field is required
-          </div>
+          <div *ngIf="hasFieldError(this.offlineCupForm.get('multicup')!)" class="field-error">Field is required</div>
         </div>
       </ng-container>
       <div class="add-news-label">{{ componentMode }} start and ending news</div>
@@ -183,7 +167,18 @@
       </div>
     </div>
     <input type="hidden" formControlName="size" />
-    <button [disabled]="isLoadingMapInfo" (click)="submit()" mat-raised-button color="accent" class="submit-button">
+
+    <button
+      [disabled]="isLoadingMapInfo || isLoadingCupAction"
+      (click)="submit()"
+      mat-raised-button
+      color="accent"
+      class="submit-button"
+      style="position: relative"
+    >
+      <div *ngIf="isLoadingCupAction" class="button-spinner-container">
+        <mat-spinner diameter="20" strokeWidth="2" color="primary"></mat-spinner>
+      </div>
       {{ componentMode }} cup
     </button>
   </form>
