@@ -25,6 +25,8 @@ export class CupTimerComponent {
   customNews: string | null;
   @Input()
   server: string | undefined | null;
+  @Input()
+  logo: string | null;
 
   public cupTypes = CupTypes;
 }
