@@ -104,6 +104,9 @@ export class Cup {
   @Column({ type: 'integer', nullable: true })
   validator_id: number | null;
 
+  @Column({ type: 'character varying', nullable: true })
+  logo: string;
+
   @OneToMany(() => CupResult, (cupResult) => cupResult.cup)
   cupResults: CupResult[];
 

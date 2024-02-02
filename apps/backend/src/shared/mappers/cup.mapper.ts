@@ -41,5 +41,6 @@ export function mapCupEntityToInterface(
     customMap: isFutureCup ? null : cup.custom_map,
     customNews: isFutureCup ? null : cup.custom_news,
     cupId: cup.id,
+    logo: cup.logo,
   };
 }

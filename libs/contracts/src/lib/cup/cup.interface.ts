@@ -33,4 +33,5 @@ export interface CupInterface {
   customMap: string | null;
   customNews: string | null;
   cupId: number | null;
+  logo: string | null;
 }
