@@ -344,7 +344,7 @@ export class DemosService {
     securityCode: string | null = null,
     demoAcceptMode = DemoAcceptMode.OFFLINE_AND_ONLINE,
   ): DemoCheckResultInterface {
-    const demoConfig: DemoConfigInterface = new DemoParser().parseDemo(demoPath);
+    const demoConfig: DemoConfigInterface = new DemoParser().parseDemo(demoPath); 
     let valid = true;
     const errors: Record<string, ValidationErrorInterface> = {};
     const warnings = [];
@@ -383,6 +383,14 @@ export class DemosService {
           expected: '100',
         };
       }
+    }
+
+    if (demoConfig.game.g_synchronousclients === '0' && demoConfig.game.pmove_fixed === '0') {
+      valid = false;
+      errors.pmove_and_gsync = {
+        actual: 'g_synchronousclients=0, pmove_fixed=0',
+        expected: 'g_synchronousclients=1 OR pmove_fixed=1',
+      };
     }
 
     if ((demoConfig.client.mapname as string).toLowerCase() !== mapName.toLowerCase()) {

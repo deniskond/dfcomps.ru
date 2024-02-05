@@ -18,6 +18,8 @@ export interface DemoConfigInterface {
     sv_cheats: string;
     timescale: string;
     defrag_obs: string;
+    g_synchronousclients: string;
+    pmove_fixed: string;
   };
   player: {
     hc: string;

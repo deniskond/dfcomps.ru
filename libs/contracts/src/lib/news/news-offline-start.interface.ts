@@ -7,9 +7,9 @@ export interface NewsOfflineStartInterface extends NewsInterface {
   type: NewsTypes.OFFLINE_START;
   cup: CupInterface;
   cpmDemo: string | null;
-  cpmRes: number | null;
+  cpmRes: string | null;
   vq3Demo: string | null;
-  vq3Res: number | null;
+  vq3Res: string | null;
   playerDemos: UploadedDemoInterface[];
   levelshot: string;
 }

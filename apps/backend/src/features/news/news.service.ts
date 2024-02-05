@@ -30,6 +30,7 @@ import { UserAccessInterface } from '../../shared/interfaces/user-access.interfa
 import { getMapLevelshot } from '../../shared/helpers/get-map-levelshot';
 import { mapCupEntityToInterface } from '../../shared/mappers/cup.mapper';
 import { UserRoles, checkUserRoles } from '@dfcomps/auth';
+import { formatResultTime } from '@dfcomps/helpers';
 
 @Injectable()
 export class NewsService {
@@ -173,9 +174,9 @@ export class NewsService {
     const canUserSeeFutureCups = checkUserRoles(userAccess.roles, [UserRoles.NEWSMAKER]);
     const isFutureCup: boolean = moment(cup.start_datetime).isAfter(moment()) && !canUserSeeFutureCups;
     let cpmDemo: string | null = null;
-    let cpmRes: number | null = null;
+    let cpmRes: string | null = null;
     let vq3Demo: string | null = null;
-    let vq3Res: number | null = null;
+    let vq3Res: string | null = null;
     let playerDemos: CupDemo[] = [];
 
     if (userAccess.userId) {
@@ -189,9 +190,9 @@ export class NewsService {
       const bestVq3Demo: CupDemo | undefined = this.findBestPlayerDemo(playerDemos, Physics.VQ3);
 
       cpmDemo = bestCpmDemo?.demopath || null;
-      cpmRes = bestCpmDemo?.time || null;
+      cpmRes = bestCpmDemo?.time ? formatResultTime(bestCpmDemo.time) : null;
       vq3Demo = bestVq3Demo?.demopath || null;
-      vq3Res = bestVq3Demo?.time || null;
+      vq3Res = bestVq3Demo?.time ? formatResultTime(bestVq3Demo.time) : null;
     }
 
     return {
