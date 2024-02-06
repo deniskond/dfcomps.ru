@@ -1,0 +1,155 @@
+<ng-container *ngIf="(language$ | async) === languages.RU">
+  <div class="shadowed-main-block">
+    <h1 class="h1-block-header">EE Система</h1>
+    <div class="rules-section">
+      <p>
+        Эта система используется для подсчета очков в турнирах с несколькими раундами, 
+        таких как онлайн-капы или оффлайн-турниры, подобные DFWC. Система называется EE по 
+        первым буквам ников игроков, которые ее предложили (Enter & Exten). Общий результат 
+        для каждого игрока представляет собой сумму очков во всех раундах (без вычитания худшего 
+        раунда, как это было в первой редакции EE-системы). Очки игрока за каждый раунд рассчитываются 
+        по следующей формуле:
+      </p>
+      <p class="formula">
+        P<sub>n</sub> = (t<sub>1</sub> / t<sub>n</sub>) * k<sub>n</sub> * 1000
+      </p>
+      <p>
+        Где:<br>
+        P<sub>n</sub> — очки игрока на n-ом месте в таблице<br>
+        t<sub>1</sub>  — время топ-1 игрока<br>
+        t<sub>n</sub> — время игрока n<br>
+        k<sub>n</sub> — коэффициент n-ого места в таблице
+      </p>
+      <p>
+        k<sub>n</sub> считается по-разному для разных <b>n</b>:
+      </p>
+      <div class="formula-row">
+        <div class="formula-caption russian">1. если <b>n</b> от 1 до 50, то k<sub>n</sub> рассчитывается как</div>
+        <div class="formula-container">
+          <p class="formula">
+            k<sub>n</sub> = 1 - (n - 1) / 100
+          </p>
+        </div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-caption russian">2. если <b>n</b> от 51 до 100, то k<sub>n</sub> рассчитывается как</div>
+        <div class="formula-container">
+          <p class="formula">
+            k<sub>n</sub> = 0.51 - (n - 50) / 200
+          </p>
+        </div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-caption russian">3. если <b>n</b> больше 100, то k<sub>n</sub> рассчитывается как</div>
+        <div class="formula-container">
+          <p class="formula">
+            k<sub>n</sub> = 0.26 - (n - 100) / 400, но не меньше чем 0.01
+            <!-- <span class="formula-comment">(но не меньше чем 0.01)</span> -->
+          </p>
+        </div>
+      </div>
+      <p>
+        Результат подсчета очков округляется до ближайшего целого числа, при этом 0.5 округляется до 1.
+      </p>
+    </div>
+  </div>
+
+  <div class="shadowed-main-block" id="online">
+    <h1 class="h1-block-header">Примеры</h1>
+    <div class="rules-section">
+      <p>
+        1. <i>Игрок занял первое место в раунде.</i><br>
+        Он получит 1000 очков независимо от своего времени, потому что t<sub>1</sub> / t<sub>n</sub> = 1 и
+        k<sub>n</sub> = 1 для первого места.
+      </p>
+      <p>
+        2. <i>Игрок занял 25 место в раунде, его время 46.816, топ-1 время 33.440.</i><br>
+        Он получит (33.440 / 46.816) * (1 - (25 - 1) / 100) * 1000 = 542.857 очков, что округляется до 543.
+      </p>
+      <p>
+        3. <i>У двух или более игроков одинаковое время.</i><br>
+        Это означает, что они также получат одинаковое количество очков, поскольку у них будет одинаковый 
+        номер места в таблице и поэтому у них будут одинаковые k<sub>n</sub> и t<sub>1</sub> / t<sub>n</sub>.
+      </p>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="(language$ | async) === languages.EN">
+  <div class="shadowed-main-block">
+    <h1 class="h1-block-header">EE System</h1>
+    <div class="rules-section">
+      <p>
+        This system is used to calculate points for multi round tournaments like online cups or DFWC-like 
+        offline tournaments. The system is called EE after the first letters of the nicknames of the players 
+        who proposed it (Enter & Exten). Overall result for each player is a sum of points of each 
+        round (there’s no subtraction of the worst round as it was in the first edition of EE System). 
+        Player’s points for each round are counted by the following formula:
+      </p>
+      <p class="formula">
+        P<sub>n</sub> = (t<sub>1</sub> / t<sub>n</sub>) * k<sub>n</sub> * 1000
+      </p>
+      <p>
+        Where:<br>
+        P<sub>n</sub> — points for player at the n-th position in the table<br>
+        t<sub>1</sub>  — top 1 time<br>
+        t<sub>n</sub> — player’s time<br>
+        k<sub>n</sub> — coefficient for n-th place
+      </p>
+
+
+
+      <p>
+        k<sub>n</sub> is calculated differently for different <b>n</b>:
+      </p>
+      <div class="formula-row">
+        <div class="formula-caption">1. if <b>n</b> is in range 1 - 50, k<sub>n</sub> is calculated as</div>
+        <div class="formula-container">
+          <p class="formula">
+            k<sub>n</sub> = 1 - (n - 1) / 100
+          </p>
+        </div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-caption">2. if <b>n</b> is in range 51 - 100, k<sub>n</sub> is calculated as</div>
+        <div class="formula-container">
+          <p class="formula">
+            k<sub>n</sub> = 0.51 - (n - 50) / 200
+          </p>
+        </div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-caption">3. if <b>n</b> is greater than 100, k<sub>n</sub> is calculated as</div>
+        <div class="formula-container">
+          <p class="formula">
+            k<sub>n</sub> = 0.26 - (n - 100) / 400, but no less than 0.01
+            <!-- <span class="formula-comment">(but no less than 0.01)</span> -->
+          </p>
+        </div>
+      </div>
+      <p>
+        The result of points calculation is rounded to the nearest integer number, while 0.5 is rounded to 1.
+      </p>
+    </div>
+  </div>
+
+  <div class="shadowed-main-block" id="online">
+    <h1 class="h1-block-header">Examples</h1>
+    <div class="rules-section">
+      <p>
+        1. <i>Player got 1st place in a round.</i><br>
+        He will get 1000 points regardless of his time, because t<sub>1</sub> / t<sub>n</sub> = 1 and
+        k<sub>n</sub> = 1 for first place.
+      </p>
+      <p>
+        2. <i>Player got 25th place in a round, his time is 46.816, top time is 33.440.</i><br>
+        He will get (33.440 / 46.816) * (1 - (25 - 1) / 100) * 1000 = 542.857 points, which is rounded to 543.
+      </p>
+      <p>
+        3. <i>Two or more players have the same time.</i><br>
+        This means they will also get the same number of points, because they will share one standing 
+        place and thus they will have the same k<sub>n</sub> and t<sub>1</sub> / t<sub>n</sub>.
+      </p>
+    </div>
+  </div>
+</ng-container>
