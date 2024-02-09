@@ -12,6 +12,7 @@ import {
   NewsOnlineAnnounceInterface,
   NewsOnlineResultsInterface,
   NewsSimpleInterface,
+  NewsStreamersResultsInterface,
   NewsTypes,
   PaginationCountInterface,
   Physics,
@@ -159,6 +160,8 @@ export class NewsService {
         return this.mapMulticupResultsNews(newsItem);
       case NewsTypes.SIMPLE:
         return this.mapSimpleNews(newsItem);
+      case NewsTypes.STREAMERS_RESULTS:
+        return this.mapStreamersResultsNews(newsItem);
     }
   }
 
@@ -332,6 +335,13 @@ export class NewsService {
     return {
       ...(await this.mapBaseNews(news)),
       type: NewsTypes.SIMPLE,
+    };
+  }
+
+  private async mapStreamersResultsNews(news: News): Promise<NewsStreamersResultsInterface> {
+    return {
+      ...(await this.mapBaseNews(news)),
+      type: NewsTypes.STREAMERS_RESULTS,
     };
   }
 

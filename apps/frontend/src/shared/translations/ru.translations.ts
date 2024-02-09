@@ -156,4 +156,5 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   signUpLoginCaption: 'Выберите логин, под которым другие пользователи будут видеть вас на сайте',
   doYouWantToLinkDiscord: 'Хотите привязать Discord к своему профилю?',
   linkDiscord: 'Привязать Discord',
+  downloadStreamersArchive: 'Скачать архив демок для стримеров',
 };

@@ -6,4 +6,5 @@ export enum UserRoles {
   CUP_ORGANIZER = 'CUP_ORGANIZER',
   ADMIN = 'ADMIN',
   SUPERADMIN = 'SUPERADMIN',
+  STREAMER = 'STREAMER',
 }

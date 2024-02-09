@@ -56,13 +56,20 @@
         [news]="singleNews"
       ></app-news-online-announce>
       <app-news-online-results *ngSwitchCase="newsTypes.ONLINE_RESULTS" [news]="singleNews"></app-news-online-results>
-      <app-news-offline-start *ngSwitchCase="newsTypes.OFFLINE_START" [news]="singleNews" (reloadNews)="reloadNews()">
-      </app-news-offline-start>
+      <app-news-offline-start
+        *ngSwitchCase="newsTypes.OFFLINE_START"
+        [news]="singleNews"
+        (reloadNews)="reloadNews()"
+      ></app-news-offline-start>
       <app-news-offline-results
         *ngSwitchCase="newsTypes.OFFLINE_RESULTS"
         [news]="singleNews"
       ></app-news-offline-results>
       <app-news-dfwc-results *ngSwitchCase="newsTypes.DFWC_RESULTS" [news]="singleNews"></app-news-dfwc-results>
+      <app-news-streamers-results
+        *ngSwitchCase="newsTypes.STREAMERS_RESULTS"
+        [news]="$any(singleNews)"
+      ></app-news-streamers-results>
     </ng-container>
   </div>
   <app-news-comments [comments]="singleNews.comments" [newsId]="singleNews.id" [expanded]="false"></app-news-comments>

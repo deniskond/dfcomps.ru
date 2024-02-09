@@ -67,3 +67,4 @@ export { UpdateMatchInfoDto } from './lib/match/update-match-info.dto';
 export { UpdateBotTimeDto } from './lib/match/update-bot-time.dto';
 export { DFCOMPS_BOT_ID } from './lib/match/dfcomps-bot-id.const';
 export { FinishMatchDto } from './lib/match/finish-match.dto';
+export { NewsStreamersResultsInterface } from './lib/news/news-streamers-results.interface';

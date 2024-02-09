@@ -157,4 +157,5 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
   signUpLoginCaption: 'Select a login under which other users will see you on the site',
   doYouWantToLinkDiscord: 'Do you want to link Discord account to your profile?',
   linkDiscord: 'Link Discord',
+  downloadStreamersArchive: 'Download demos archive for streamers',
 };

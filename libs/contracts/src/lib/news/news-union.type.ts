@@ -4,6 +4,7 @@ import { NewsOfflineStartInterface } from './news-offline-start.interface';
 import { NewsOnlineAnnounceInterface } from './news-online-announce.interface';
 import { NewsOnlineResultsInterface } from './news-online-results.interface';
 import { NewsSimpleInterface } from './news-simple.interface';
+import { NewsStreamersResultsInterface } from './news-streamers-results.interface';
 
 export type NewsInterfaceUnion =
   | NewsMulticupResultsInterface
@@ -11,4 +12,5 @@ export type NewsInterfaceUnion =
   | NewsOfflineStartInterface
   | NewsOnlineAnnounceInterface
   | NewsOnlineResultsInterface
-  | NewsSimpleInterface;
+  | NewsSimpleInterface
+  | NewsStreamersResultsInterface;

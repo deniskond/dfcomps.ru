@@ -1,0 +1,10 @@
+<button
+  *ngIf="showDemosForStreamersLink$ | async"
+  (click)="getStreamersArchive()"
+  mat-raised-button
+  color="primary"
+  class="streamers-button"
+>
+  <span translate translation="downloadStreamersArchive"></span>
+</button>
+<app-html-news [news]="news"></app-html-news>

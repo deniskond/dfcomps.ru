@@ -6,4 +6,5 @@ export enum NewsTypes {
   MULTICUP_RESULTS = 'multicup_results',
   SIMPLE = 'text',
   DFWC_RESULTS = 'dfwc_round_results',
+  STREAMERS_RESULTS = 'streamers_results',
 }

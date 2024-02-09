@@ -34,6 +34,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { SharedModule } from '~shared/modules/shared.module';
 import { NewsService } from '~shared/services/news-service/news.service';
 import { ThemeNewsPageComponent } from './components/theme-news-page/theme-news-page.component';
+import { NewsStreamersResultsComponent } from './components/news-streamers-results/news-streamers-results.component';
 
 const routes: Routes = [
   {
@@ -91,6 +92,7 @@ const routes: Routes = [
     OverbouncesWarningDialogComponent,
     SDCRulesDialogComponent,
     ThemeNewsPageComponent,
+    NewsStreamersResultsComponent,
   ],
   providers: [NewsService],
 })

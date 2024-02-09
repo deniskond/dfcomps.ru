@@ -9,6 +9,7 @@ export function mapNewsTypeEnumToDBNewsTypeId(newsType: NewsTypes): number {
     [NewsTypes.ONLINE_ANNOUNCE]: 2,
     [NewsTypes.ONLINE_RESULTS]: 1,
     [NewsTypes.SIMPLE]: 3,
+    [NewsTypes.STREAMERS_RESULTS]: 8,
   };
 
   return newsTypesMap[newsType];
