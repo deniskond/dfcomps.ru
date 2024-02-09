@@ -158,7 +158,7 @@ export class CupService {
 
   public async getStreamersArchiveLink(accessToken: string | undefined, cupId: number): Promise<ArchiveLinkInterface> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
-    const MAX_DEMOS_FOR_PHYSICS = 2;
+    const MAX_DEMOS_FOR_PHYSICS = 30;
 
     if (!userAccess.userId || !checkUserRoles(userAccess.roles, [UserRoles.STREAMER])) {
       throw new UnauthorizedException("Can't get demos for streamers without STREAMER role");
