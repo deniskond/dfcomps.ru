@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Headers, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { CupService } from './cup.service';
-import { CheckCupRegistrationInterface, CupInterface, ValidationArchiveLinkInterface } from '@dfcomps/contracts';
+import { CheckCupRegistrationInterface, CupInterface, ArchiveLinkInterface } from '@dfcomps/contracts';
 import { CheckCupRegistrationDto } from './dto/check-cup-registration.dto';
 
 @Controller('cup')
@@ -24,7 +24,15 @@ export class CupController {
   getValidationArchiveLink(
     @Headers('X-Auth') accessToken: string | undefined,
     @Param('cupId', new ParseIntPipe()) cupId: number,
-  ): Promise<ValidationArchiveLinkInterface> {
+  ): Promise<ArchiveLinkInterface> {
     return this.cupService.getValidationArchiveLink(accessToken, cupId);
+  }
+
+  @Get('streamers-archive-link/:cupId')
+  getStreamersArchiveLink(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Param('cupId', new ParseIntPipe()) cupId: number,
+  ): Promise<ArchiveLinkInterface> {
+    return this.cupService.getStreamersArchiveLink(accessToken, cupId);
   }
 }

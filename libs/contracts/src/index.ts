@@ -47,7 +47,7 @@ export { Difficulty } from './lib/match/difficulty.enum';
 export { DuelPlayerInfoInterface } from './lib/match/duel-player-info.interface';
 export { DuelPlayersInfoResponseInterface } from './lib/match/duel-players-info-response.interface';
 export { MulticupTableInterface } from './lib/cup/multicup-table.interface';
-export { ValidationArchiveLinkInterface } from './lib/cup/validation-archive-link.interface';
+export { ArchiveLinkInterface } from './lib/cup/archive-link.interface';
 export { AdminNewsListInterface } from './lib/admin/admin-news-list.interface';
 export { AdminNewsDto } from './lib/admin/admin-news.dto';
 export { AdminEditNewsInterface } from './lib/admin/admin-edit-news.interface';

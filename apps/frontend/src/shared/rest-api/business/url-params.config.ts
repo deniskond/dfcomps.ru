@@ -156,6 +156,7 @@ export class URL_PARAMS {
     CANCEL_REGISTRATION: (cupId: number) => string;
     CHECK_REGISTRATION: () => string;
     VALIDATION_ARCHIVE_LINK: (cupId: number) => string;
+    STREAMERS_ARCHIVE_LINK: (cupId: number) => string;
   } {
     return {
       GET_NEXTCUP: `${API_URL}/cup/next-cup-info`,
@@ -163,6 +164,7 @@ export class URL_PARAMS {
       CANCEL_REGISTRATION: (cupId: number) => `${API_URL}/cup/cancel_registration/${cupId}`, // TODO
       CHECK_REGISTRATION: () => `${API_URL}/cup/is-registered`, // TODO
       VALIDATION_ARCHIVE_LINK: (cupId: number) => `${API_URL}/cup/validation-archive-link/${cupId}`,
+      STREAMERS_ARCHIVE_LINK: (cupId: number) => `${API_URL}/cup/streamers-archive-link/${cupId}`,
     };
   }
 

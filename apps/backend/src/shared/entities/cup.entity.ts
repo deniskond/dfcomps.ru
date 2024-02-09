@@ -89,6 +89,9 @@ export class Cup {
   @Column({ type: 'character varying', nullable: true })
   validation_archive_link: string | null;
 
+  @Column({ type: 'character varying', nullable: true })
+  streamers_archive_link: string | null;
+
   @Column({ type: 'boolean' })
   timer: boolean;
 

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
@@ -7,7 +7,7 @@ import {
   Physics,
   ResultsTableInterface,
   ValidDemoInterface,
-  ValidationArchiveLinkInterface,
+  ArchiveLinkInterface,
 } from '@dfcomps/contracts';
 import { AuthService } from '../auth/auth.service';
 import * as moment from 'moment';
@@ -20,6 +20,7 @@ import { TablesService } from '../tables/tables.service';
 import * as Zip from 'adm-zip';
 import * as fs from 'fs';
 import { CupDemo } from '../../shared/entities/cup-demo.entity';
+import { v4 } from 'uuid';
 
 @Injectable()
 export class CupService {
@@ -81,10 +82,7 @@ export class CupService {
     return { isRegistered: !!playerCupRecordCount };
   }
 
-  public async getValidationArchiveLink(
-    accessToken: string | undefined,
-    cupId: number,
-  ): Promise<ValidationArchiveLinkInterface> {
+  public async getValidationArchiveLink(accessToken: string | undefined, cupId: number): Promise<ArchiveLinkInterface> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!userAccess.userId || !checkUserRoles(userAccess.roles, [UserRoles.VALIDATOR])) {
@@ -95,6 +93,10 @@ export class CupService {
 
     if (!cup) {
       throw new NotFoundException(`Cup with id = ${cupId} not found`);
+    }
+
+    if (moment().isBefore(moment(cup.end_datetime))) {
+      throw new BadRequestException(`Can't get validation archive - cup has not finished yet`);
     }
 
     if (cup.validation_archive_link) {
@@ -152,6 +154,101 @@ export class CupService {
     return {
       filename: validationArchiveFileName,
     };
+  }
+
+  public async getStreamersArchiveLink(accessToken: string | undefined, cupId: number): Promise<ArchiveLinkInterface> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+    const MAX_DEMOS_FOR_PHYSICS = 2;
+
+    if (!userAccess.userId || !checkUserRoles(userAccess.roles, [UserRoles.STREAMER])) {
+      throw new UnauthorizedException("Can't get demos for streamers without STREAMER role");
+    }
+
+    const cup: Cup | null = await this.cupRepository.createQueryBuilder('cups').where({ id: cupId }).getOne();
+
+    if (!cup) {
+      throw new NotFoundException(`Cup with id = ${cupId} not found`);
+    }
+
+    if (moment().isBefore(moment(cup.end_datetime))) {
+      throw new BadRequestException(`Can't get streamers archive - cup has not finished yet`);
+    }
+
+    if (cup.streamers_archive_link) {
+      return {
+        filename: cup.streamers_archive_link,
+      };
+    }
+
+    const vq3Table: ResultsTableInterface = await this.tablesService.getOfflineCupTable(cup, Physics.VQ3);
+    const cpmTable: ResultsTableInterface = await this.tablesService.getOfflineCupTable(cup, Physics.CPM);
+    const cupName: string = cup.full_name.replace(/#/g, '').replace(/\s/g, '_');
+    const zip = new Zip();
+    const streamersArchiveFileName = `${cupName}_streamers_demos_${v4().substring(0, 12)}.zip`;
+    const streamersArchiveFilePath =
+      process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${streamersArchiveFileName}`;
+
+    if (fs.existsSync(streamersArchiveFilePath)) {
+      fs.rmSync(streamersArchiveFilePath);
+    }
+
+    let cpmDemosCount = 0;
+    let vq3DemosCount = 0;
+
+    for (
+      let vq3DemoIndex = 0;
+      vq3DemoIndex < vq3Table.valid.length && vq3DemoIndex < MAX_DEMOS_FOR_PHYSICS;
+      vq3DemoIndex++
+    ) {
+      zip.addLocalFile(
+        process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${vq3Table.valid[vq3DemoIndex].demopath}`,
+        'vq3',
+        this.formatNumberWithLeadingZeroes(vq3DemoIndex + 1) + '.dm_68'
+      );
+      vq3DemosCount++;
+    }
+
+    for (
+      let cpmDemoIndex = 0;
+      cpmDemoIndex < vq3Table.valid.length && cpmDemoIndex < MAX_DEMOS_FOR_PHYSICS;
+      cpmDemoIndex++
+    ) {
+      zip.addLocalFile(
+        process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${cpmTable.valid[cpmDemoIndex].demopath}`,
+        'cpm',
+        this.formatNumberWithLeadingZeroes(cpmDemoIndex + 1) + '.dm_68'
+      );
+      cpmDemosCount++;
+    }
+
+    zip.writeZip(streamersArchiveFilePath);
+
+    await this.cupRepository
+      .createQueryBuilder()
+      .update(Cup)
+      .set({ streamers_archive_link: streamersArchiveFileName })
+      .where({ id: cupId })
+      .execute();
+
+    return {
+      filename: streamersArchiveFileName,
+    };
+  }
+  
+  private formatNumberWithLeadingZeroes(n: number): string {
+    if (n < 10) {
+      return `000${n}`;
+    }
+
+    if (n < 100) {
+      return `00${n}`;
+    }
+
+    if (n < 1000) {
+      return `0${n}`;
+    }
+
+    return `${n}`;
   }
 
   private async getNextCup(): Promise<Cup> {
