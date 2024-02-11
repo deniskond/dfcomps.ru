@@ -75,13 +75,13 @@ export class DemosService {
     }
 
     const fileName = demo.originalname;
-    const pattern = new RegExp(`${mapName}\\[(.*)df\\.(.*)\\](\\d+)\\.(\\d+)\\.(\\d+)\\((.*)\\)\\.dm_68`);
+    const pattern = new RegExp(`${mapName}\\[(df|mdf)\\.(vq3|cpm)\\](\\d+)\\.(\\d+)\\.(\\d{3})\\((.*)\\.(.*)\\)\\.dm_68`);
     const patternMatch: RegExpMatchArray | null = fileName.match(pattern);
 
     if (!patternMatch) {
       return {
         status: DemoUploadResult.ERROR,
-        message: 'Wrong demo name',
+        message: 'Wrong demo name, check df_ar_format',
       };
     }
 
