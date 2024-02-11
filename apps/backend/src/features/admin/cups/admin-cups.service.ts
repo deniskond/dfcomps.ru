@@ -921,8 +921,12 @@ export class AdminCupsService {
     return table.map((tableEntry: TableEntryWithRatingInterface) => {
       let ratingChange = tableEntry.ratingChange;
 
-      if (tableEntry.rating > 1700 && tableEntry.rating + ratingChange < 1700) {
+      if (tableEntry.rating >= 1700 && tableEntry.rating + ratingChange < 1700) {
         ratingChange = 1700 - tableEntry.rating;
+      }
+
+      if (tableEntry.rating < 1700 && ratingChange <= 0) {
+        ratingChange = 1;
       }
 
       return {
