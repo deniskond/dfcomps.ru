@@ -169,7 +169,7 @@ export class AdminCupsService {
           archive_link: null,
           bonus_rating: 0,
           system: null,
-          custom_map: null,
+          custom_map: addCupDto.mapPk3Link,
           custom_news: null,
           validation_archive_link: null,
           timer: false,

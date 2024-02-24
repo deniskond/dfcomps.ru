@@ -158,7 +158,6 @@ export class CupService {
 
   public async getStreamersArchiveLink(accessToken: string | undefined, cupId: number): Promise<ArchiveLinkInterface> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
-    const MAX_DEMOS_FOR_PHYSICS = 30;
 
     if (!userAccess.userId || !checkUserRoles(userAccess.roles, [UserRoles.STREAMER])) {
       throw new UnauthorizedException("Can't get demos for streamers without STREAMER role");
@@ -195,28 +194,20 @@ export class CupService {
     let cpmDemosCount = 0;
     let vq3DemosCount = 0;
 
-    for (
-      let vq3DemoIndex = 0;
-      vq3DemoIndex < vq3Table.valid.length && vq3DemoIndex < MAX_DEMOS_FOR_PHYSICS;
-      vq3DemoIndex++
-    ) {
+    for (let vq3DemoIndex = 0; vq3DemoIndex < vq3Table.valid.length; vq3DemoIndex++) {
       zip.addLocalFile(
         process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${vq3Table.valid[vq3DemoIndex].demopath}`,
         'vq3',
-        this.formatNumberWithLeadingZeroes(vq3DemoIndex + 1) + '.dm_68'
+        this.formatNumberWithLeadingZeroes(vq3DemoIndex + 1) + '.dm_68',
       );
       vq3DemosCount++;
     }
 
-    for (
-      let cpmDemoIndex = 0;
-      cpmDemoIndex < vq3Table.valid.length && cpmDemoIndex < MAX_DEMOS_FOR_PHYSICS;
-      cpmDemoIndex++
-    ) {
+    for (let cpmDemoIndex = 0; cpmDemoIndex < vq3Table.valid.length; cpmDemoIndex++) {
       zip.addLocalFile(
         process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${cpmTable.valid[cpmDemoIndex].demopath}`,
         'cpm',
-        this.formatNumberWithLeadingZeroes(cpmDemoIndex + 1) + '.dm_68'
+        this.formatNumberWithLeadingZeroes(cpmDemoIndex + 1) + '.dm_68',
       );
       cpmDemosCount++;
     }
@@ -234,7 +225,7 @@ export class CupService {
       filename: streamersArchiveFileName,
     };
   }
-  
+
   private formatNumberWithLeadingZeroes(n: number): string {
     if (n < 10) {
       return `000${n}`;
