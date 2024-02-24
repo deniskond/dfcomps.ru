@@ -83,6 +83,7 @@ Login: cup_organizer Password: cup_organizer
 Login: newsmaker Password: newsmaker
 Login: user Password: user
 Login: moderator Password: moderator
+Login: streamer Password: streamer
 ```
 
 ## Discord bot
