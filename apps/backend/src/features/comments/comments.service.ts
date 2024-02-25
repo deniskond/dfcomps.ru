@@ -47,7 +47,9 @@ export class CommentsService {
     }
 
     if (moment(userAccess.commentsBanDate).isAfter(moment())) {
-      throw new BadRequestException(`Comments banned until ${userAccess.commentsBanDate}`);
+      const humanDateTime = moment(userAccess.commentsBanDate).format('DD MMM YYYY');
+
+      throw new BadRequestException(`Comments banned until ${humanDateTime}`);
     }
 
     const news: News | null = await this.newsRepository.createQueryBuilder('news').where({ id: newsId }).getOne();

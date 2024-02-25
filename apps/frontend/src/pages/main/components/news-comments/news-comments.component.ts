@@ -121,16 +121,10 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
           this.textarea.nativeElement.value = '';
         },
         (error) => {
-          const testForBan = error.error.match(/<p>Message: comments banned until (.*)<\/p>/);
+          const testForBan = error.error.message.match(/Comments banned until (.*)/);
 
           if (testForBan) {
-            this.snackBar.open(`Comments banned until ${testForBan[1]}`, '', { duration: 3000 });
-          }
-
-          const testForNewUser = error.error.match(/can't post comments before participating in 3 competitions/);
-
-          if (testForNewUser) {
-            this.snackBar.open("Can't post comments before participating in 3 competitions", '', { duration: 3000 });
+            this.snackBar.open(`Comments banned until ${testForBan[1]}`, 'OK', { duration: 3000 });
           }
         },
       );
