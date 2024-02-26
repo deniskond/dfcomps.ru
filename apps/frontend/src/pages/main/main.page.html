@@ -23,7 +23,7 @@
 
 <ng-template #newsElem let-singleNews="singleNews">
   <div class="shadowed-main-block news-block">
-    <h1 class="h1-block-header no-margin">
+    <h1 class="h1-block-header no-margin" data-test-id="news-header-text">
       <a *ngIf="language$ | async as language" routerLink="/news/{{ singleNews.id }}" class="news_header_link">
         {{ language === languages.EN ? singleNews.headerEn : singleNews.header }}
       </a>

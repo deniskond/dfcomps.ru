@@ -4,29 +4,38 @@
     <div class="form">
       <div class="input-title">Title (Russian)</div>
       <div>
-        <input formControlName="russianTitle" class="input-field" />
+        <input formControlName="russianTitle" class="input-field" data-test-id="russian-news-title-input" />
         <div *ngIf="hasFieldError(this.addSimpleNewsForm.get('russianTitle')!)" class="field-error">
           Field is required
         </div>
       </div>
       <div class="input-title">Title (English)</div>
       <div>
-        <input formControlName="englishTitle" class="input-field" />
+        <input formControlName="englishTitle" class="input-field" data-test-id="english-news-title-input" />
         <div *ngIf="hasFieldError(this.addSimpleNewsForm.get('englishTitle')!)" class="field-error">
           Field is required
         </div>
       </div>
-      <div class="input-title">Time to post<br /><span class="comment">(MSK GMT +3:00)</span></div>
+      <div class="input-title">
+        Time to post
+        <br />
+        <span class="comment">(MSK GMT +3:00)</span>
+      </div>
       <div class="radio-container">
         <mat-radio-group formControlName="timeOption">
           <div>
-            <mat-radio-button value="now" color="primary"></mat-radio-button>
+            <mat-radio-button value="now" color="primary" data-test-id="now-option-radio"></mat-radio-button>
             <span>Now</span>
           </div>
           <div>
-            <mat-radio-button value="custom" color="primary"></mat-radio-button>
+            <mat-radio-button value="custom" color="primary" data-test-id="custom-time-option-radio"></mat-radio-button>
             <span>Custom time</span>
-            <input formControlName="postingTime" class="input-field date" type="datetime-local" />
+            <input
+              formControlName="postingTime"
+              class="input-field date"
+              type="datetime-local"
+              data-test-id="news-posting-time-input"
+            />
             <span
               *ngIf="
                 this.addSimpleNewsForm.errors &&
@@ -42,21 +51,21 @@
       </div>
       <div class="input-title">Russian text</div>
       <div class="wysiwyg-container">
-        <quill-editor formControlName="russianText" class="quill"></quill-editor>
+        <quill-editor formControlName="russianText" class="quill" data-test-id="russian-text-quill"></quill-editor>
         <div *ngIf="hasFieldError(this.addSimpleNewsForm.get('russianText')!)" class="field-error">
           Field is required
         </div>
       </div>
       <div class="input-title">English text</div>
       <div class="wysiwyg-container">
-        <quill-editor formControlName="englishText" class="quill"></quill-editor>
+        <quill-editor formControlName="englishText" class="quill" data-test-id="english-text-quill"></quill-editor>
         <div *ngIf="hasFieldError(this.addSimpleNewsForm.get('englishText')!)" class="field-error">
           Field is required
         </div>
       </div>
       <div class="input-title">Youtube embed ID</div>
       <div>
-        <input formControlName="youtube" class="input-field" />
+        <input formControlName="youtube" class="input-field" data-test-id="youtube-input" />
         <app-youtube
           *ngIf="youtubeEmbedId$ | async as youtubeEmbedId"
           [id]="youtubeEmbedId"
@@ -66,7 +75,15 @@
         ></app-youtube>
       </div>
     </div>
-    <button (click)="submitNews()" mat-raised-button color="accent" class="submit-button">Save news</button>
+    <button
+      (click)="submitNews()"
+      mat-raised-button
+      color="accent"
+      class="submit-button"
+      data-test-id="save-simple-news-button"
+    >
+      Save news
+    </button>
   </form>
   <ng-template #loading>
     <div class="loading-block">

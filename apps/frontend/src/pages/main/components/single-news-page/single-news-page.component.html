@@ -1,7 +1,7 @@
 <ng-container *ngIf="!hasError; else error">
   <div *ngIf="singleNews$ | async as singleNews; else loader" class="news-container">
     <div class="shadowed-main-block news-block">
-      <h1 class="h1-block-header no-margin news_header">
+      <h1 class="h1-block-header no-margin news_header" data-test-id="news-header-text">
         {{ singleNews.header }}
       </h1>
 

@@ -11,7 +11,7 @@ export const loginAs = (role: UserRoles) => {
   cy.get('[data-test-id=login-action-button]').click();
 };
 
-export const logOut = (options = { isHeaderVisible: true }) => {
+export const logOut = (options: { isHeaderVisible: boolean } = { isHeaderVisible: true }) => {
   if (!options.isHeaderVisible) {
     cy.visit('/');
   }
