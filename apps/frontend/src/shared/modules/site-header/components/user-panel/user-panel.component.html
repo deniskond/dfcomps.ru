@@ -1,7 +1,7 @@
 <ng-container *ngIf="user$ | async as user; else notLogged">
   <span class="logged-in-as">
     <span translate translation="loggedInAs"></span>
-    <span>&nbsp;{{ user.nick }}</span>
+    <span data-test-id="user-nick-text">&nbsp;{{ user.nick }}</span>
   </span>
   <div class="profile-links">
     <a *ngIf="hasAdminPanelAccess(user)" matRipple href="/admin" class="profile-link blue-link">
@@ -19,7 +19,7 @@
 </ng-container>
 <ng-template #notLogged>
   <div class="profile-links">
-    <div (click)="onLoginClick()" matRipple class="profile-link blue-link">
+    <div (click)="onLoginClick()" matRipple class="profile-link blue-link" data-test-id="userpanel-login-button">
       <span translate translation="logIn"></span>
     </div>
     <div (click)="onRegisterClick()" matRipple class="profile-link blue-link">

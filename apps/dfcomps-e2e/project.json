@@ -8,12 +8,12 @@
       "executor": "@nx/cypress:cypress",
       "options": {
         "cypressConfig": "apps/dfcomps-e2e/cypress.config.ts",
-        "devServerTarget": "frontend:serve:development",
+        "devServerTarget": "frontend:serve:local-backend",
         "testingType": "e2e"
       },
       "configurations": {
         "production": {
-          "devServerTarget": "frontend:serve:production"
+          "devServerTarget": "frontend:serve:local-backend"
         }
       }
     },
@@ -31,6 +31,7 @@
   },
   "tags": [],
   "implicitDependencies": [
-    "frontend"
+    "frontend",
+    "backend"
   ]
 }
