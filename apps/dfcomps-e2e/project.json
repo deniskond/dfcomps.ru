@@ -32,6 +32,8 @@
   "tags": [],
   "implicitDependencies": [
     "frontend",
-    "backend"
+    "backend",
+    "contracts",
+    "auth"
   ]
 }
