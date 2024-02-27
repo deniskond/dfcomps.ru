@@ -42,11 +42,18 @@
             [routerLink]="'/admin/news/edit/' + newsTypeRoute + '/' + newsItem.id"
             mat-raised-button
             color="basic"
+            data-test-id="edit-news-button"
           >
             Edit
           </button>
           <ng-container *ngIf="user$ | async as user">
-            <button *ngIf="hasNewsDeleteAccess(user)" (click)="confirmDelete(newsItem)" mat-raised-button color="warn">
+            <button
+              *ngIf="hasNewsDeleteAccess(user)"
+              (click)="confirmDelete(newsItem)"
+              mat-raised-button
+              color="warn"
+              data-test-id="delete-news-button"
+            >
               Delete
             </button>
           </ng-container>
