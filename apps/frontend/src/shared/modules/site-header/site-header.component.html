@@ -10,12 +10,23 @@
       </div>
     </div>
 
-    <div *ngIf="(theme$ | async) as theme" class="themes">
-      <mat-slide-toggle [class]="theme" [checked]="theme === themes.DARK" (toggleChange)="toggleTheme()" color="primary"></mat-slide-toggle>
+    <div *ngIf="theme$ | async as theme" class="themes">
+      <mat-slide-toggle
+        [class]="theme"
+        [checked]="theme === themes.DARK"
+        (toggleChange)="toggleTheme()"
+        color="primary"
+      ></mat-slide-toggle>
     </div>
-    
-    <div *ngIf="(language$ | async) as language" class="langs">
-      <mat-slide-toggle [class]="language" [checked]="language === languages.RU" (toggleChange)="toggleLanguage()" color="primary"></mat-slide-toggle>
+
+    <div *ngIf="language$ | async as language" class="langs">
+      <mat-slide-toggle
+        [class]="language"
+        [checked]="language === languages.RU"
+        (toggleChange)="toggleLanguage()"
+        color="primary"
+        data-test-id="language-toggle"
+      ></mat-slide-toggle>
     </div>
 
     <app-user-panel></app-user-panel>

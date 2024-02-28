@@ -3,7 +3,14 @@
     <div class="card-header">Simple text news</div>
     <div class="card-text">General news about any topic, which are not linked to any cup tables</div>
     <div>
-      <button routerLink="/admin/news/add/simple" mat-raised-button color="accent">Add news</button>
+      <button
+        routerLink="/admin/news/add/simple"
+        mat-raised-button
+        color="accent"
+        data-test-id="add-simple-news-button"
+      >
+        Add news
+      </button>
     </div>
   </mat-card>
   <!-- <mat-card class="card">
@@ -24,8 +31,8 @@
     <div class="cell table-head">Actions</div>
     <ng-container *ngFor="let newsItem of news; let i = index">
       <div class="cell first">{{ news.length - i }}</div>
-      <div class="cell header">{{ newsItem.headerEnglish }}</div>
-      <div class="cell date">{{ newsItem.date | invokeFunction : formatDateToLocal }}</div>
+      <div class="cell header" data-test-id="news-title-text">{{ newsItem.headerEnglish }}</div>
+      <div class="cell date">{{ newsItem.date | invokeFunction: formatDateToLocal }}</div>
       <div class="cell type">{{ newsItem.typeName }}</div>
       <div class="cell actions buttons">
         <ng-container
@@ -35,14 +42,23 @@
             [routerLink]="'/admin/news/edit/' + newsTypeRoute + '/' + newsItem.id"
             mat-raised-button
             color="basic"
+            data-test-id="edit-news-button"
           >
             Edit
           </button>
-          <ng-container *ngIf="(user$ | async) as user">
-            <button *ngIf="hasNewsDeleteAccess(user)" (click)="confirmDelete(newsItem)" mat-raised-button color="warn">Delete</button>
+          <ng-container *ngIf="user$ | async as user">
+            <button
+              *ngIf="hasNewsDeleteAccess(user)"
+              (click)="confirmDelete(newsItem)"
+              mat-raised-button
+              color="warn"
+              data-test-id="delete-news-button"
+            >
+              Delete
+            </button>
           </ng-container>
         </ng-container>
-        <ng-template #noActionsAvailable> No actions available </ng-template>
+        <ng-template #noActionsAvailable>No actions available</ng-template>
       </div>
     </ng-container>
   </div>

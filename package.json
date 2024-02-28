@@ -33,7 +33,9 @@
     "file-storage:release": "docker build -t dfcomps-file-storage . -f ./build/file-storage/file-storage.dockerfile && docker save dfcomps-file-storage | ssh -C root@dfcomps.ru \"docker load && docker run -d -p 127.0.0.1:4003:80 --name dfcomps-file-storage --network dfcomps-network --mount source=dfcomps-files,target=/var/www/html dfcomps-file-storage\"",
     "full-local-test:build": "docker build -t dfcomps-nginx-local . -f ./build/local-nginx/local-nginx.dockerfile",
     "full-local-test:run": "docker run -d -p 127.0.0.1:80:80 --name dfcomps-nginx-local --network dfcomps-network dfcomps-nginx-local",
-    "dfcomps:release": "npm run frontend:release && npm run backend:release && npm run 1v1-server:release"
+    "dfcomps:release": "npm run frontend:release && npm run backend:release && npm run 1v1-server:release",
+    "e2e": "npm run database:restore-db && concurrently \"npm run backend\" \"wait-on tcp:4001 && nx e2e dfcomps-e2e\"",
+    "e2e-single": "npm run database:restore-db && concurrently \"npm run backend\" \"wait-on tcp:4001 && nx e2e dfcomps-e2e --spec=apps/dfcomps-e2e/src/e2e/admin-cups.cy.ts\""
   },
   "private": true,
   "dependencies": {

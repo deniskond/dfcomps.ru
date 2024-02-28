@@ -14,12 +14,14 @@
             href="https://ws.q3df.org/map/{{ news.cup.map1 }}/"
             target="_blank"
             class="map-link"
+            data-test-id="cup-map-link"
             >{{ news.cup.map1 }}</a
           >
           <a
             *ngIf="news.cup.customMap"
             [href]="news.cup.customMap"
             class="map-link"
+            data-test-id="cup-map-link"
             >{{ news.cup.map1 }}</a
           >
         </div>

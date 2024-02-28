@@ -3,7 +3,7 @@
 <div *ngIf="isSelectingMethod" class="method-buttons">
   <div class="dialog-button">
     <mat-spinner *ngIf="isLoading" diameter="20" strokeWidth="2" color="accent" class="spinner"></mat-spinner>
-    <button (click)="proceedToLoginPassword()" mat-raised-button color="primary">
+    <button (click)="proceedToLoginPassword()" mat-raised-button color="primary" data-test-id="password-login-button">
       <mat-icon>vpn_key</mat-icon>
       <span translate translation="logInWithPassword"></span>
     </button>
@@ -21,21 +21,25 @@
   <form [formGroup]="loginForm">
     <div class="input-container">
       <div translate translation="userLogin" class="input-caption"></div>
-      <input formControlName="login" class="input-field" />
+      <input formControlName="login" class="input-field" data-test-id="login-input" />
     </div>
     <div class="input-container">
       <div translate translation="password" class="input-caption"></div>
-      <input formControlName="password" class="input-field password" type="password" />
+      <input formControlName="password" class="input-field password" type="password" data-test-id="password-input" />
     </div>
   </form>
   <div *ngIf="loginResult === false" translate translation="wrongLoginPassword" class="login-error"></div>
 
   <div class="dialog-button">
     <mat-spinner *ngIf="isLoading" diameter="20" strokeWidth="2" color="accent" class="spinner"></mat-spinner>
-    <button [disabled]="!loginForm.valid || isLoading" (click)="onLoginClick()" mat-raised-button color="primary">
+    <button
+      [disabled]="!loginForm.valid || isLoading"
+      (click)="onLoginClick()"
+      mat-raised-button
+      color="primary"
+      data-test-id="login-action-button"
+    >
       <span translate translation="logIn"></span>
     </button>
   </div>
 </ng-container>
-
-
