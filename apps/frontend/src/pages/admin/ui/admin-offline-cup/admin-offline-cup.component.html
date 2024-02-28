@@ -8,7 +8,7 @@
         <span class="comment">(displayed in news)</span>
       </div>
       <div>
-        <input formControlName="fullName" class="input-field" />
+        <input formControlName="fullName" class="input-field" data-test-id="cup-fullname-input" />
         <div *ngIf="hasFieldError(this.offlineCupForm.get('fullName')!)" class="field-error">Field is required</div>
       </div>
       <div>
@@ -17,7 +17,7 @@
         <span class="comment">(displayed in cup timer)</span>
       </div>
       <div>
-        <input formControlName="shortName" class="input-field" />
+        <input formControlName="shortName" class="input-field" data-test-id="cup-shortname-input" />
         <div *ngIf="hasFieldError(this.offlineCupForm.get('shortName')!)" class="field-error">Field is required</div>
       </div>
       <div>
@@ -26,7 +26,12 @@
         <span class="comment">(MSK GMT +3:00)</span>
       </div>
       <div>
-        <input formControlName="startTime" class="input-field date" type="datetime-local" />
+        <input
+          formControlName="startTime"
+          class="input-field date"
+          type="datetime-local"
+          data-test-id="cup-starttime-input"
+        />
         <span *ngIf="hasFieldError(this.offlineCupForm.get('startTime')!)" class="field-error">Field is required</span>
       </div>
       <div>
@@ -35,25 +40,30 @@
         <span class="comment">(MSK GMT +3:00)</span>
       </div>
       <div>
-        <input formControlName="endTime" class="input-field date" type="datetime-local" />
+        <input
+          formControlName="endTime"
+          class="input-field date"
+          type="datetime-local"
+          data-test-id="cup-endtime-input"
+        />
         <span *ngIf="hasFieldError(this.offlineCupForm.get('endTime')!)" class="field-error">Field is required</span>
       </div>
       <div class="map-type-label">Map type</div>
       <div>
         <mat-radio-group (change)="onMapTypeChange($event)" formControlName="mapType">
           <div class="radio-container">
-            <mat-radio-button value="ws" color="primary"></mat-radio-button>
+            <mat-radio-button value="ws" color="primary" data-test-id="cup-map-ws-radio"></mat-radio-button>
             <span>ws.q3df.org</span>
           </div>
           <div class="radio-container">
-            <mat-radio-button value="custom" color="primary"></mat-radio-button>
+            <mat-radio-button value="custom" color="primary" data-test-id="cup-map-custom-radio"></mat-radio-button>
             <span>Custom uploaded map</span>
           </div>
         </mat-radio-group>
       </div>
       <div class="input-title">Map name</div>
       <div>
-        <input formControlName="mapName" class="input-field" />
+        <input formControlName="mapName" class="input-field" data-test-id="cup-mapname-input" />
         <div *ngIf="hasFieldError(this.offlineCupForm.get('mapName')!)" class="field-error">Field is required</div>
         <div *ngIf="isMapFound === true" class="field-ok">Map was found on ws.q3df.org</div>
         <div *ngIf="isMapFound === false" class="field-error">Map was not found on ws.q3df.org</div>
@@ -68,11 +78,12 @@
             class="input-field file"
             type="file"
             accept=".pk3"
+            data-test-id="cup-pk3-input"
           />
           <div *ngIf="hasFieldError(this.offlineCupForm.get('mapPk3File')!)" class="field-error">Field is required</div>
         </ng-container>
 
-        <input *ngIf="!isCustomMap" formControlName="mapPk3Link" class="input-field" />
+        <input *ngIf="!isCustomMap" formControlName="mapPk3Link" class="input-field" data-test-id="cup-pk3link-input" />
       </div>
       <div class="input-title">
         Map levelshot
@@ -87,63 +98,69 @@
             class="input-field file"
             type="file"
             accept=".jpg"
+            data-test-id="cup-levelshot-input"
           />
           <div *ngIf="hasFieldError(this.offlineCupForm.get('mapLevelshotFile')!)" class="field-error">
             Field is required
           </div>
         </ng-container>
 
-        <input *ngIf="!isCustomMap" formControlName="mapLevelshotLink" class="input-field" />
+        <input
+          *ngIf="!isCustomMap"
+          formControlName="mapLevelshotLink"
+          class="input-field"
+          data-test-id="cup-levelshotlink-input"
+        />
       </div>
       <div class="input-title">Map author</div>
       <div>
-        <input formControlName="mapAuthor" class="input-field" />
+        <input formControlName="mapAuthor" class="input-field" data-test-id="cup-mapauthor-input" />
         <div *ngIf="hasFieldError(this.offlineCupForm.get('mapAuthor')!)" class="field-error">Field is required</div>
       </div>
       <div class="input-title">Map weapons</div>
       <div class="weapons-checkboxes">
         <div class="checkbox-container">
-          <mat-checkbox color="primary" formControlName="gauntlet">
+          <mat-checkbox color="primary" formControlName="gauntlet" data-test-id="cup-weapon-u-checkbox">
             <app-weapons weapons="U" class="weapon-icons"></app-weapons>
           </mat-checkbox>
         </div>
         <div class="checkbox-container">
-          <mat-checkbox color="primary" formControlName="grenade">
+          <mat-checkbox color="primary" formControlName="grenade" data-test-id="cup-weapon-g-checkbox">
             <app-weapons weapons="G" class="weapon-icons"></app-weapons>
           </mat-checkbox>
         </div>
         <div class="checkbox-container">
-          <mat-checkbox color="primary" formControlName="rocket">
+          <mat-checkbox color="primary" formControlName="rocket" data-test-id="cup-weapon-r-checkbox">
             <app-weapons weapons="R" class="weapon-icons"></app-weapons>
           </mat-checkbox>
         </div>
         <div class="checkbox-container">
-          <mat-checkbox color="primary" formControlName="plasma">
+          <mat-checkbox color="primary" formControlName="plasma" data-test-id="cup-weapon-p-checkbox">
             <app-weapons weapons="P" class="weapon-icons"></app-weapons>
           </mat-checkbox>
         </div>
         <div class="checkbox-container">
-          <mat-checkbox color="primary" formControlName="lightning">
+          <mat-checkbox color="primary" formControlName="lightning" data-test-id="cup-weapon-l-checkbox">
             <app-weapons weapons="L" class="weapon-icons"></app-weapons>
           </mat-checkbox>
         </div>
         <div class="checkbox-container">
-          <mat-checkbox color="primary" formControlName="bfg">
+          <mat-checkbox color="primary" formControlName="bfg" data-test-id="cup-weapon-b-checkbox">
             <app-weapons weapons="B" class="weapon-icons"></app-weapons>
           </mat-checkbox>
         </div>
         <div class="checkbox-container">
-          <mat-checkbox color="primary" formControlName="railgun">
+          <mat-checkbox color="primary" formControlName="railgun" data-test-id="cup-weapon-i-checkbox">
             <app-weapons weapons="I" class="weapon-icons"></app-weapons>
           </mat-checkbox>
         </div>
         <div class="checkbox-container">
-          <mat-checkbox color="primary" formControlName="shotgun">
+          <mat-checkbox color="primary" formControlName="shotgun" data-test-id="cup-weapon-s-checkbox">
             <app-weapons weapons="S" class="weapon-icons"></app-weapons>
           </mat-checkbox>
         </div>
         <div class="checkbox-container">
-          <mat-checkbox color="primary" formControlName="grapple">
+          <mat-checkbox color="primary" formControlName="grapple" data-test-id="cup-weapon-h-checkbox">
             <app-weapons weapons="H" class="weapon-icons"></app-weapons>
           </mat-checkbox>
         </div>
@@ -152,7 +169,7 @@
         <div class="input-title">Multicup</div>
         <div *ngIf="activeMulticups$ | async as activeMulticups">
           <mat-form-field appearance="outline">
-            <mat-select formControlName="multicup">
+            <mat-select formControlName="multicup" data-test-id="cup-multicup-select">
               <mat-option *ngFor="let activeMulticup of activeMulticups" [value]="activeMulticup.multicupId">
                 {{ activeMulticup.name }}
               </mat-option>
@@ -163,7 +180,7 @@
       </ng-container>
       <div class="add-news-label">{{ componentMode }} start and ending news</div>
       <div>
-        <mat-checkbox color="primary" formControlName="addNews"></mat-checkbox>
+        <mat-checkbox color="primary" formControlName="addNews" data-test-id="cup-add-news-checkbox"></mat-checkbox>
       </div>
     </div>
     <input type="hidden" formControlName="size" />
@@ -174,7 +191,7 @@
       mat-raised-button
       color="accent"
       class="submit-button"
-      style="position: relative"
+      data-test-id="cup-submit-button"
     >
       <div *ngIf="isLoadingCupAction" class="button-spinner-container">
         <mat-spinner diameter="20" strokeWidth="2" color="primary"></mat-spinner>

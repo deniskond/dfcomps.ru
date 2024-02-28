@@ -34,7 +34,8 @@
     "full-local-test:build": "docker build -t dfcomps-nginx-local . -f ./build/local-nginx/local-nginx.dockerfile",
     "full-local-test:run": "docker run -d -p 127.0.0.1:80:80 --name dfcomps-nginx-local --network dfcomps-network dfcomps-nginx-local",
     "dfcomps:release": "npm run frontend:release && npm run backend:release && npm run 1v1-server:release",
-    "e2e": "npm run database:restore-db && concurrently \"npm run backend\" \"wait-on tcp:4001 && nx e2e dfcomps-e2e\""
+    "e2e": "npm run database:restore-db && concurrently \"npm run backend\" \"wait-on tcp:4001 && nx e2e dfcomps-e2e\"",
+    "e2e-single": "npm run database:restore-db && concurrently \"npm run backend\" \"wait-on tcp:4001 && nx e2e dfcomps-e2e --spec=apps/dfcomps-e2e/src/e2e/admin-cups.cy.ts\""
   },
   "private": true,
   "dependencies": {
