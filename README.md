@@ -109,8 +109,9 @@ Test cases:
 ☐ 14. Adding multicup round with custom map
 ☐ 15. Editing multicup round with custom map
 ☐ 16. Deleting multicup round with custom map
-☐ 17. Ending season
-☐ 18. Updating profile
+☐ 17. Deleting multicup
+☐ 18. Ending season
+☐ 19. Updating profile
 ```
 
 ## Discord bot
