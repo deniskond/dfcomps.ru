@@ -97,13 +97,13 @@ Test cases:
 ☑ 2. Editing news
 ☑ 3. Deleting news
 ☑ 4. Adding cup
-☐ 5. Editing cup
+☑ 5. Editing cup
 ☐ 6. Uploading valid demo with overbounces turned off
 ☐ 7. Uploading valid demo with overbounces turned on
 ☐ 8. Uploading invalid demo
 ☐ 9. Validation (validators archive + setting results in admin)
 ☐ 10. Finishing cup (distribution of rating + making cup archive)
-☐ 11. Deleting cup
+☑ 11. Deleting cup
 ☐ 12. Adding multicup
 ☐ 13. Editing multicup
 ☐ 14. Adding multicup round with custom map

@@ -77,11 +77,14 @@ describe('admin panel news', () => {
 
   it('should delete simple news correctly', () => {
     cy.get('[data-test-id=admin-panel-button]').click();
+
+    const firstNewsTitle = cy.get('[data-test-id=news-title-text]').first().invoke('text');
+
     cy.get('[data-test-id=delete-news-button]').first().click();
     cy.get('mat-snack-bar-container').find('button.mat-mdc-snack-bar-action').click();
 
     // checking admin news list
-    cy.get('[data-test-id=news-title-text]').first().should('not.contain.text', editedEnglishTitle);
+    cy.get('[data-test-id=news-title-text]').first().should('not.contain.text', firstNewsTitle);
 
     // checking snackbar
     cy.get('simple-snack-bar').find('.mat-mdc-snack-bar-label').should('contain.text', 'Successfully deleted');   
