@@ -86,6 +86,33 @@ Login: moderator Password: moderator
 Login: streamer Password: streamer
 ```
 
+There are end-to-end tests written in [Cypress](https://www.cypress.io/), which can be run by commands
+```bash
+npm run e2e
+npm run e2e-single # edit the test name in this script & run single test
+```
+Test cases:
+```
+☑ 1. Adding news
+☑ 2. Editing news
+☑ 3. Deleting news
+☑ 4. Adding cup
+☐ 5. Editing cup
+☐ 6. Uploading valid demo with overbounces turned off
+☐ 7. Uploading valid demo with overbounces turned on
+☐ 8. Uploading invalid demo
+☐ 9. Validation (validators archive + setting results in admin)
+☐ 10. Finishing cup (distribution of rating + making cup archive)
+☐ 11. Deleting cup
+☐ 12. Adding multicup
+☐ 13. Editing multicup
+☐ 14. Adding multicup round with custom map
+☐ 15. Editing multicup round with custom map
+☐ 16. Deleting multicup round with custom map
+☐ 17. Ending season
+☐ 18. Updating profile
+```
+
 ## Discord bot
 Designed to bring some dfcomps functionality to discord channels. Currently is not used and is in deprecated state. To run locally:
 
