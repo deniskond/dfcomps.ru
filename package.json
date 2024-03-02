@@ -57,6 +57,7 @@
     "@nestjs/typeorm": "10.0.0",
     "@nx/angular": "16.6.0",
     "@nx/nest": "16.6.0",
+    "@sentry/angular-ivy": "^7.104.0",
     "@types/cookie-parser": "1.4.4",
     "@types/express-ws": "3.0.2",
     "adm-zip": "0.5.10",
