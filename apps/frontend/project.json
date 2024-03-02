@@ -23,7 +23,8 @@
         "scripts": [],
         "customWebpackConfig": {
           "path": "apps/frontend/webpack.config.js"
-        }
+        },
+        "sourceMap": true
       },
       "configurations": {
         "production": {
