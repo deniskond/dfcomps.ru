@@ -210,7 +210,7 @@ export class CupService {
 
     for (
       let cpmDemoIndex = 0;
-      cpmDemoIndex < vq3Table.valid.length && cpmDemoIndex < MAX_DEMOS_FOR_PHYSICS;
+      cpmDemoIndex < cpmTable.valid.length && cpmDemoIndex < MAX_DEMOS_FOR_PHYSICS;
       cpmDemoIndex++
     ) {
       zip.addLocalFile(
