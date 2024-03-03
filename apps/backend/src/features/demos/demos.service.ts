@@ -401,13 +401,11 @@ export class DemosService {
       };
     }
 
-    const allowedDefragVersions: string[] = ['19123', '19124', '19125', '19126', '19127', '19128', '19129', '19130'];
-
-    if (!allowedDefragVersions.some((version: string) => version === demoConfig.client.defrag_vers)) {
+    if (parseInt(demoConfig.client.defrag_vers) < 19123) {
       valid = false;
       errors.defrag_version = {
         actual: demoConfig.client.defrag_vers,
-        expected: '1.91.23 - 1.91.30',
+        expected: '1.91.23 or higher',
       };
     }
 
