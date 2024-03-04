@@ -93,25 +93,34 @@ npm run e2e-single # edit the test name in this script & run single test
 ```
 Test cases:
 ```
-☑ 1. Adding news
-☑ 2. Editing news
+☑ 1. Adding simple news
+☑ 2. Editing simple news
 ☑ 3. Deleting news
-☑ 4. Adding cup
-☑ 5. Editing cup
-☐ 6. Uploading valid demo with overbounces turned off
-☐ 7. Uploading valid demo with overbounces turned on
-☐ 8. Uploading invalid demo
-☐ 9. Validation (validators archive + setting results in admin)
-☐ 10. Finishing cup (distribution of rating + making cup archive)
-☑ 11. Deleting cup
-☐ 12. Adding multicup
-☐ 13. Editing multicup
-☐ 14. Adding multicup round with custom map
-☐ 15. Editing multicup round with custom map
-☐ 16. Deleting multicup round with custom map
-☐ 17. Deleting multicup
-☐ 18. Ending season
-☐ 19. Updating profile
+☑ 4. Adding offline cup
+☑ 5. Editing offline cup
+☐ 6. Adding start offline cup news
+☐ 7. Editing start offline cup news
+☐ 8. Adding finish offline cup news
+☐ 9. Editing finish offline cup news
+☐ 10. Uploading valid demo with overbounces turned off
+☐ 11. Uploading valid demo with overbounces turned on
+☐ 12. Uploading invalid demo
+☐ 13. Validation (validators archive + setting results in admin)
+☐ 14. Finishing cup (distribution of rating + making cup archive)
+☑ 15. Deleting offline cup
+☐ 16. Adding multicup
+☐ 17. Editing multicup
+☐ 18. Adding multicup round with custom map
+☐ 19. Editing multicup round with custom map
+☐ 20. Deleting multicup round with custom map
+☐ 21. Deleting multicup
+☐ 22. Adding online cup
+☐ 23. Editing online cup
+☐ 24. Online cup with server logs
+☐ 25. Online cup with manual results
+☐ 26. Deleting online cup
+☐ 27. Ending season
+☐ 28. Updating profile
 ```
 
 ## Discord bot
