@@ -53,7 +53,7 @@
       [class.gray]="result.minround === roundIndex + 1"
       class="cell"
     >
-      {{ result.roundResults[roundIndex] | invokeFunction: getPlayerRoundResult }}
+      {{ result.roundResults[roundIndex] | invokeFunction: getPlayerRoundResult : roundIndex < fullTable.currentRound - 1 }}
     </div>
     <div [class.yellow]="fullTable.currentRound === roundsCount" class="cell">{{ result.overall }}</div>
   </div>

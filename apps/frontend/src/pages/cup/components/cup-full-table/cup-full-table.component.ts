@@ -46,9 +46,13 @@ export class CupFullTableComponent implements OnChanges {
     );
   }
 
-  getPlayerRoundResult(roundResult: string | null): string {
-    if (roundResult === null) {
-      return '-';
+  getPlayerRoundResult(roundResult: string | null | undefined, isFinishedRound: boolean): string {
+    if (!roundResult) {
+      if (isFinishedRound) {
+        return '-';
+      }
+
+      return '';
     }
 
     return roundResult;
