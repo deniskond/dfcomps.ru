@@ -96,7 +96,7 @@ export class AdminDataService {
     const validationResults: ValidationResultInterface[] = demosIds.map((demoId: number) => ({
       id: demoId,
       validationStatus: this.getDemoValidationResult(formValue['demo_' + demoId] as boolean | null),
-      reason: formValue['reason_' + demoId]!.toString(),
+      reason: formValue['reason_' + demoId]?.toString() || null,
     }));
 
     const processValidationDto = {
