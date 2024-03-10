@@ -4,8 +4,8 @@ export interface AdminNewsListInterface {
   id: number;
   headerRussian: string;
   headerEnglish: string;
-  textRussian: string;
-  textEnglish: string;
+  textRussian: string | null;
+  textEnglish: string | null;
   typeName: string;
   date: string;
   type: NewsTypes;

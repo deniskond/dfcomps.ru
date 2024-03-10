@@ -15,11 +15,11 @@ export class News {
   @Column({ type: 'character varying' })
   header_en: string;
 
-  @Column({ type: 'text' })
-  text: string;
+  @Column({ type: 'text', nullable: true })
+  text: string | null;
 
-  @Column({ type: 'text' })
-  text_en: string;
+  @Column({ type: 'text', nullable: true })
+  text_en: string | null;
 
   @Column({ type: 'character varying', nullable: true })
   youtube: string | null;

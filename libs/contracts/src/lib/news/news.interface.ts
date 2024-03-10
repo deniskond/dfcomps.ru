@@ -14,8 +14,8 @@ export interface NewsInterface {
   cupId: number | null;
   multicupId: number | null;
   startTime: string | null;
-  text: string;
-  textEn: string;
+  text: string | null;
+  textEn: string | null;
   youtube: string | null;
   tableJson: string;
   twitch1: string;
