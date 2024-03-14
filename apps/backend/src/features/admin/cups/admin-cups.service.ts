@@ -762,11 +762,13 @@ export class AdminCupsService {
   }
 
   private async calculateOfflineRating(cup: Cup, physics: Physics): Promise<void> {
-    let offlineCupTable: ValidDemoInterface[] = (await this.tablesService.getOfflineCupTable(cup, physics)).valid;
+    let offlineCupTable: ValidDemoInterface[] = (
+      await this.tablesService.getOfflineCupTable(cup, physics, { filterExcludedDemos: true })
+    ).valid;
 
     const otherPhysics = physics === Physics.CPM ? Physics.VQ3 : Physics.CPM;
     const otherPhysicsOfflineCupTable: ValidDemoInterface[] = (
-      await this.tablesService.getOfflineCupTable(cup, otherPhysics)
+      await this.tablesService.getOfflineCupTable(cup, otherPhysics, { filterExcludedDemos: true })
     ).valid;
 
     let averageRating = 0;

@@ -76,7 +76,11 @@ export class TablesService {
     }));
   }
 
-  public async getOfflineCupTable(cup: Cup, physics: Physics): Promise<ResultsTableInterface> {
+  public async getOfflineCupTable(
+    cup: Cup,
+    physics: Physics,
+    options: { filterExcludedDemos: boolean } = { filterExcludedDemos: false },
+  ): Promise<ResultsTableInterface> {
     const cupDemos: CupDemo[] = await this.cupsDemosRepository
       .createQueryBuilder('cups_demos')
       .leftJoinAndSelect('cups_demos.user', 'users')
@@ -98,7 +102,7 @@ export class TablesService {
         time: cupDemo.time,
       }));
 
-    const validDemos: ValidDemoInterface[] = cupDemos
+    let validDemos: ValidDemoInterface[] = cupDemos
       .filter(
         ({ verified_status }: CupDemo) =>
           verified_status === VerifiedStatuses.VALID || verified_status === VerifiedStatuses.UNWATCHED,
@@ -141,6 +145,10 @@ export class TablesService {
       }, [])
       .sort((demo1: ValidDemoInterface, demo2: ValidDemoInterface) => demo1.time - demo2.time);
 
+    if (options.filterExcludedDemos) {
+      validDemos = validDemos.filter(({ isOutsideCompetition }: ValidDemoInterface) => !isOutsideCompetition);
+    }
+
     const result: ResultsTableInterface = {
       valid: validDemos,
       invalid: invalidDemos,
@@ -157,7 +165,7 @@ export class TablesService {
     system: MulticupSystems,
   ): Promise<MulticupResultInterface[]> {
     const singleCupTables: ResultsTableInterface[] = await Promise.all(
-      cups.map((cup: Cup) => this.getOfflineCupTable(cup, physics)),
+      cups.map((cup: Cup) => this.getOfflineCupTable(cup, physics, { filterExcludedDemos: true })),
     );
 
     const tablesWithPoints: MultiCupTableWithPoints[] =
@@ -208,7 +216,9 @@ export class TablesService {
       throw new BadRequestException(`Round ${roundNumber} of multicup with id ${multicupId} haven't been played yet`);
     }
 
-    const singleCupTables: ResultsTableInterface[] = [await this.getOfflineCupTable(targetCup, physics)];
+    const singleCupTables: ResultsTableInterface[] = [
+      await this.getOfflineCupTable(targetCup, physics, { filterExcludedDemos: true }),
+    ];
 
     const tableWithPoints: MultiCupTableWithPoints =
       multicup.system === MulticupSystems.SDC
@@ -405,19 +415,22 @@ export class TablesService {
     const onlineCupAdaptedTables: ResultsTableInterface[] = new Array(roundsPlayed).fill(null).map((_, index) => {
       return {
         valid: cupResults
-          .map((cupResult: CupResult) => ({
-            bonus: null,
-            change: null,
-            country: cupResult.user.country,
-            demopath: '',
-            impressive: false,
-            nick: cupResult.user.displayed_nick,
-            playerId: cupResult.user.id,
-            rating: 0,
-            time: cupResult[`time${index + 1}` as keyof CupResult] as number,
-            isOrganizer: false,
-            isOutsideCompetition: false,
-          } as ValidDemoInterface))
+          .map(
+            (cupResult: CupResult) =>
+              ({
+                bonus: null,
+                change: null,
+                country: cupResult.user.country,
+                demopath: '',
+                impressive: false,
+                nick: cupResult.user.displayed_nick,
+                playerId: cupResult.user.id,
+                rating: 0,
+                time: cupResult[`time${index + 1}` as keyof CupResult] as number,
+                isOrganizer: false,
+                isOutsideCompetition: false,
+              }) as ValidDemoInterface,
+          )
           .filter((result: ValidDemoInterface) => !!result.time)
           .sort((result1, result2) => result1.time - result2.time),
         invalid: [],
