@@ -5,7 +5,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { map, Observable, switchMap, take, tap } from 'rxjs';
 import { AdminDataService } from '../../business/admin-data.service';
 import { AdminPlayerDemosValidationInterface, AdminValidationInterface, VerifiedStatuses } from '@dfcomps/contracts';
-import { formatResultTime } from '@dfcomps/helpers';
+import { Unpacked, formatResultTime } from '@dfcomps/helpers';
 
 @Component({
   selector: 'dfcomps.ru-admin-validate',
@@ -84,13 +84,15 @@ export class AdminValidateComponent implements OnInit {
   private getFormPhysicsControls(playerDemos: AdminPlayerDemosValidationInterface[]): Record<string, AbstractControl> {
     return playerDemos.reduce((accumulator, playerDemos: AdminPlayerDemosValidationInterface) => {
       const playerDemosControls = playerDemos.demos.reduce(
-        (acc, demo) => ({
+        (acc, demo: Unpacked<AdminPlayerDemosValidationInterface['demos']>) => ({
           ...acc,
           ['demo_' + demo.id]: new FormControl(
             this.getValidationControlValue(demo.validationStatus),
             Validators.required,
           ),
           ['reason_' + demo.id]: new FormControl(demo.validationFailedReason),
+          ['org_' + demo.id]: new FormControl(demo.isOrganizer),
+          ['exclude_' + demo.id]: new FormControl(demo.isOutsideCompetition),
         }),
         {},
       );

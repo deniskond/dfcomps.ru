@@ -24,7 +24,7 @@
 .validation-table {
   margin-top: 16px;
   display: grid;
-  grid-template-columns: 80px 200px 128px 500px;
+  grid-template-columns: 80px 200px 128px 470px 180px;
 }
 
 .cell {
@@ -74,7 +74,7 @@
 
 .reason-input {
   height: 28px;
-  width: 216px;
+  width: 180px;
   padding-left: 4px;
   margin-left: 12px;
   border: 1px solid #888;
@@ -86,4 +86,8 @@
   &:first-of-type {
     margin-left: 0;
   }
+}
+
+::ng-deep .mdc-checkbox {
+  margin-right: -8px !important;
 }

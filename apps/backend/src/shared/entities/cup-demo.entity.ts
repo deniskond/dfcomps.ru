@@ -32,6 +32,12 @@ export class CupDemo {
   @Column({ type: 'boolean' })
   impressive: boolean;
 
+  @Column({ type: 'boolean', nullable: true })
+  isOrganizer: boolean;
+
+  @Column({ type: 'boolean', nullable: true })
+  isOutsideCompetition: boolean;
+
   @ManyToOne(() => Cup)
   cup: Cup;
 

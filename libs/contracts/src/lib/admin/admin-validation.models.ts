@@ -9,6 +9,8 @@ export interface AdminPlayerDemosValidationInterface {
     validationFailedReason: string | null;
     demoLink: string;
     id: number;
+    isOrganizer: boolean;
+    isOutsideCompetition: boolean;
   }[];
 }
 

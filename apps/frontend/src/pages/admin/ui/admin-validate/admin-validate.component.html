@@ -20,6 +20,7 @@
         <div class="cell table-head">Player</div>
         <div class="cell table-head">Demos</div>
         <div class="cell table-head">Validation result</div>
+        <div class="cell table-head">Additional</div>
         <ng-container *ngFor="let player of players; let i = index">
           <div class="cell first">{{ i + 1 }}</div>
           <div class="cell nick">
@@ -42,6 +43,16 @@
               </mat-radio-group>
               <span>Reason:</span>
               <input [formControlName]="'reason_' + demo.id" class="reason-input" />
+            </div>
+          </div>
+          <div class="cell demos">
+            <div *ngFor="let demo of player.demos" class="demo-cell">
+              <mat-checkbox color="primary" [formControlName]="'org_' + demo.id">
+                Org
+              </mat-checkbox>
+              <mat-checkbox color="primary" [formControlName]="'exclude_' + demo.id">
+                Exclude
+              </mat-checkbox>
             </div>
           </div>
         </ng-container>

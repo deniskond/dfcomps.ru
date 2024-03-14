@@ -32,7 +32,7 @@ export class HtmlNewsComponent implements OnInit, OnDestroy {
       .subscribe((language: Languages) => {
         const newsHtml = language === Languages.RU ? this.news.text : this.news.textEn;
 
-        this.newsHtml = this.domSanitizer.bypassSecurityTrustHtml(newsHtml);
+        this.newsHtml = this.domSanitizer.bypassSecurityTrustHtml(newsHtml || '');
         this.changeDetectorRef.markForCheck();
       });
   }

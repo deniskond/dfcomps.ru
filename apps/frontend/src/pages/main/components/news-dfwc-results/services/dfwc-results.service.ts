@@ -49,6 +49,8 @@ export class DfwcResultsService {
           time: this.convertDemoTime(result.time),
           isPreliminaryResult: !arrayResults[0].rank,
           absoluteLink: true,
+          isOrganizer: false,
+          isOutsideCompetition: false,
         };
       }),
       invalid: [],

@@ -52,6 +52,7 @@ import { Metadata, Sharp } from 'sharp';
 import { NewsComment } from 'apps/backend/src/shared/entities/news-comment.entity';
 import { CupResult } from 'apps/backend/src/shared/entities/cup-result.entity';
 import { MulterFileInterface } from 'apps/backend/src/shared/interfaces/multer.interface';
+import { Unpacked } from '@dfcomps/helpers';
 
 @Injectable()
 export class AdminCupsService {
@@ -405,10 +406,12 @@ export class AdminCupsService {
     }
 
     const targetEntries: Partial<CupDemo>[] = validationResults.map(
-      ({ id, validationStatus, reason }: ValidationResultInterface) => ({
+      ({ id, validationStatus, reason, isOrganizer, isOutsideCompetition }: ValidationResultInterface) => ({
         id,
         reason,
         verified_status: validationStatus,
+        isOrganizer,
+        isOutsideCompetition,
       }),
     );
 
@@ -712,14 +715,14 @@ export class AdminCupsService {
         );
 
         if (playerDemoIndex !== -1) {
-          type Unpacked<T> = T extends (infer U)[] ? U : T;
-
           const addedDemo: Unpacked<AdminPlayerDemosValidationInterface['demos']> = {
             time: playerDemo.time,
             validationStatus: playerDemo.verified_status,
             validationFailedReason: playerDemo.reason,
             demoLink: `/uploads/demos/cup${cupId}/${playerDemo.demopath}`,
             id: playerDemo.id,
+            isOrganizer: playerDemo.isOrganizer,
+            isOutsideCompetition: playerDemo.isOutsideCompetition,
           };
 
           demos[playerDemoIndex].demos.push(addedDemo);
@@ -737,6 +740,8 @@ export class AdminCupsService {
               validationFailedReason: playerDemo.reason,
               demoLink: `/uploads/demos/cup${cupId}/${playerDemo.demopath}`,
               id: playerDemo.id,
+              isOrganizer: playerDemo.isOrganizer,
+              isOutsideCompetition: playerDemo.isOutsideCompetition,
             },
           ],
         };

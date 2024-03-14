@@ -10,4 +10,6 @@ export interface ValidDemoInterface {
   time: number;
   isPreliminaryResult?: boolean;
   absoluteLink?: boolean;
+  isOrganizer: boolean;
+  isOutsideCompetition: boolean;
 }

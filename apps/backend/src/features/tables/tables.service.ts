@@ -123,6 +123,8 @@ export class TablesService {
           playerId: demo.user.id,
           rating: physics === Physics.CPM ? demo.user.cpm_rating : demo.user.vq3_rating,
           time: demo.time,
+          isOrganizer: false,
+          isOutsideCompetition: false,
         };
 
         const previousBestDemo: ValidDemoInterface | undefined = demos.find(
@@ -413,7 +415,9 @@ export class TablesService {
             playerId: cupResult.user.id,
             rating: 0,
             time: cupResult[`time${index + 1}` as keyof CupResult] as number,
-          }))
+            isOrganizer: false,
+            isOutsideCompetition: false,
+          } as ValidDemoInterface))
           .filter((result: ValidDemoInterface) => !!result.time)
           .sort((result1, result2) => result1.time - result2.time),
         invalid: [],

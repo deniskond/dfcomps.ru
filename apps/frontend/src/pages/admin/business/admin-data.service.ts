@@ -16,6 +16,7 @@ import {
   AdminEditOfflineCupInterface,
   UpdateCupDto,
   AddCupDto,
+  ProcessValidationDto,
 } from '@dfcomps/contracts';
 import * as moment from 'moment';
 
@@ -97,10 +98,12 @@ export class AdminDataService {
       id: demoId,
       validationStatus: this.getDemoValidationResult(formValue['demo_' + demoId] as boolean | null),
       reason: formValue['reason_' + demoId]?.toString() || null,
+      isOrganizer: !!formValue['org_' + demoId],
+      isOutsideCompetition: !!formValue['exclude_' + demoId],
     }));
 
-    const processValidationDto = {
-      validationResults: JSON.stringify(validationResults) as any,
+    const processValidationDto: ProcessValidationDto = {
+      validationResults: JSON.stringify(validationResults) as any, // HTTP issue with sending objects
       allDemosCount: demosIds.length,
     };
 

@@ -4,4 +4,6 @@ export interface ValidationResultInterface {
   id: number;
   validationStatus: VerifiedStatuses;
   reason: string | null;
+  isOrganizer: boolean;
+  isOutsideCompetition: boolean;
 }
