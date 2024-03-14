@@ -7,5 +7,5 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayerPlaceComponent {
-  @Input() place: number;
+  @Input() place: number | null;
 }

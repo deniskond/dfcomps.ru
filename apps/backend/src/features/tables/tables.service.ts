@@ -123,8 +123,8 @@ export class TablesService {
           playerId: demo.user.id,
           rating: physics === Physics.CPM ? demo.user.cpm_rating : demo.user.vq3_rating,
           time: demo.time,
-          isOrganizer: false,
-          isOutsideCompetition: false,
+          isOrganizer: demo.isOrganizer,
+          isOutsideCompetition: demo.isOutsideCompetition,
         };
 
         const previousBestDemo: ValidDemoInterface | undefined = demos.find(

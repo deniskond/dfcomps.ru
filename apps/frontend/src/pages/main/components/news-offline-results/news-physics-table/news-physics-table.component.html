@@ -14,6 +14,7 @@
   <div class="player-column">
     <app-player-cell [country]="result.country" [nick]="result.nick" [playerId]="result.playerId"> </app-player-cell>
     <img *ngIf="result.impressive === true" class="impressive" src="/assets/images/icons/impressive.png" />
+    <img *ngIf="result.isOrganizer === true" class="org" src="/assets/images/icons/org.png" />
   </div>
   <div *ngIf="archiveLink || !result.demopath; else noArchiveLink" class="time-column time">
     {{ result.time | invokeFunction: formatResult }}

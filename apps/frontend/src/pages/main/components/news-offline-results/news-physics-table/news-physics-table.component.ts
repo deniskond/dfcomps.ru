@@ -1,10 +1,10 @@
 import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { range } from 'lodash';
 import { CUSTOM_TABLE_NEWS_LIMIT } from '../../../config/news.config';
-import { getTablePlaces } from '~shared/helpers/table-places.helper';
 import { CupInterface, ValidDemoInterface } from '@dfcomps/contracts';
 import { Physics } from '@dfcomps/contracts';
 import { formatResultTime } from '@dfcomps/helpers';
+import { getTablePlacesWithExclude } from '~shared/helpers/table-places-with-exclude.helper';
 
 @Component({
   selector: 'app-news-physics-table',
@@ -20,13 +20,16 @@ export class NewsPhysicsTableComponent implements OnInit {
   @Input() cup: CupInterface;
   @Input() customTable: boolean;
 
-  public places: number[];
+  public places: (number | null)[];
   public range = range;
   public table: ValidDemoInterface[];
 
   ngOnInit(): void {
     this.table = this.customTable ? this.physicsTable.slice(0, CUSTOM_TABLE_NEWS_LIMIT) : this.physicsTable;
-    this.places = getTablePlaces(this.table.map(({ time }: ValidDemoInterface) => +time));
+    this.places = getTablePlacesWithExclude(
+      this.table.map(({ time }: ValidDemoInterface) => +time),
+      this.table.map(({ isOutsideCompetition }: ValidDemoInterface) => isOutsideCompetition),
+    );
   }
 
   public formatResult(time: string): string {
@@ -38,6 +41,8 @@ export class NewsPhysicsTableComponent implements OnInit {
   }
 
   public openFullMulticupTable(): void {
-    window.open(`${window.location.origin}/cup/multi?id=${this.cup.multicupId}&physics=${this.physics}`, '_blank')!.focus();
+    window
+      .open(`${window.location.origin}/cup/multi?id=${this.cup.multicupId}&physics=${this.physics}`, '_blank')!
+      .focus();
   }
 }
