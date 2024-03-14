@@ -7,7 +7,7 @@
     "postinstall": "node ./decorate-angular-cli.js && husky install",
     "frontend": "nx serve frontend --open",
     "frontend-local": "nx serve frontend --open --configuration=local-backend",
-    "frontend:build": "nx build frontend && npm run sentry:sourcemaps",
+    "frontend:build": "nx build frontend",
     "frontend:server": "superstatic dist/apps/frontend",
     "frontend:release": "docker build -t dfcomps-frontend . -f ./build/frontend/frontend.dockerfile && docker save dfcomps-frontend | ssh -C root@dfcomps.ru \"docker load && docker stop dfcomps-frontend || true && docker rm dfcomps-frontend || true && docker rmi dfcomps-frontend:release || true && docker image tag dfcomps-frontend:latest dfcomps-frontend:release && docker run -d -p 127.0.0.1:4000:80 --name dfcomps-frontend dfcomps-frontend\"",
     "backend": "cross-env DFCOMPS_POSTGRES_PASSWORD=admin nx serve backend",
@@ -35,8 +35,7 @@
     "full-local-test:run": "docker run -d -p 127.0.0.1:80:80 --name dfcomps-nginx-local --network dfcomps-network dfcomps-nginx-local",
     "dfcomps:release": "npm run frontend:release && npm run backend:release && npm run 1v1-server:release",
     "e2e": "npm run database:restore-db && concurrently \"npm run backend\" \"wait-on tcp:4001 && nx e2e dfcomps-e2e\"",
-    "e2e-single": "npm run database:restore-db && concurrently \"npm run backend\" \"wait-on tcp:4001 && nx e2e dfcomps-e2e --spec=apps/dfcomps-e2e/src/e2e/admin-cups.cy.ts\"",
-    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org dfcomps --project javascript-angular ./dist/apps/frontend && sentry-cli sourcemaps upload --org dfcomps --project javascript-angular ./dist/apps/frontend"
+    "e2e-single": "npm run database:restore-db && concurrently \"npm run backend\" \"wait-on tcp:4001 && nx e2e dfcomps-e2e --spec=apps/dfcomps-e2e/src/e2e/admin-cups.cy.ts\""
   },
   "private": true,
   "dependencies": {
