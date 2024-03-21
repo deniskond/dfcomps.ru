@@ -1,7 +1,13 @@
 <div class="actions-container">
   <mat-card class="card">
-    <div class="card-header">Simple text news</div>
-    <div class="card-text">General news about any topic, which are not linked to any cup tables</div>
+    <div class="card-header">Select news type</div>
+    <mat-form-field appearance="outline" class="news-type-select">
+      <mat-select [(value)]="addNewsTypeSelectValue">
+        <mat-option *ngFor="let newsType of newsTypes" [value]="newsType">
+          {{ newsType }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
     <div>
       <button
         routerLink="/admin/news/add/simple"
@@ -13,13 +19,6 @@
       </button>
     </div>
   </mat-card>
-  <!-- <mat-card class="card">
-    <div class="card-header">Multicup news</div>
-    <div class="card-text">News about new multicup round</div>
-    <div>
-      <button routerLink="/admin/news/add/multicup-round" mat-raised-button color="accent">Add news</button>
-    </div>
-  </mat-card> -->
 </div>
 <mat-card class="news-table-card">
   <div class="card-header">News list</div>

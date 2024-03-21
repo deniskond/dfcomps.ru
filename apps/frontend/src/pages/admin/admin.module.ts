@@ -13,8 +13,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AdminValidateComponent } from './ui/admin-validate/admin-validate.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AdminSimpleNewsComponent } from './ui/admin-simple-news/admin-simple-news.component';
-import { AdminMulticupRoundNewsComponent } from './ui/admin-multicup-round-news/admin-multicup-round-news.component';
+import { AdminNewsActionComponent } from './ui/admin-news-action/admin-news-action.component';
 import { QuillModule } from 'ngx-quill';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -47,24 +46,11 @@ const adminRoutes: Routes = [
                 children: [
                   {
                     path: '',
-                    component: AdminSimpleNewsComponent,
+                    component: AdminNewsActionComponent,
                   },
                   {
                     path: ':id',
-                    component: AdminSimpleNewsComponent,
-                  },
-                ],
-              },
-              {
-                path: 'multicup-round-start',
-                children: [
-                  {
-                    path: '',
-                    component: AdminMulticupRoundNewsComponent,
-                  },
-                  {
-                    path: ':id',
-                    component: AdminMulticupRoundNewsComponent,
+                    component: AdminNewsActionComponent,
                   },
                 ],
               },
@@ -106,8 +92,7 @@ const adminRoutes: Routes = [
     AdminNewsComponent,
     AdminCupsComponent,
     AdminValidateComponent,
-    AdminSimpleNewsComponent,
-    AdminMulticupRoundNewsComponent,
+    AdminNewsActionComponent,
     AdminSeasonComponent,
     AdminOfflineCupComponent,
   ],

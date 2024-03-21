@@ -1,18 +1,18 @@
 <mat-card class="main-form-card">
   <h3 class="header">{{ operationType | titlecase }} simple news</h3>
-  <form *ngIf="addSimpleNewsForm; else loading" [formGroup]="addSimpleNewsForm">
+  <form *ngIf="newsActionForm; else loading" [formGroup]="newsActionForm">
     <div class="form">
       <div class="input-title">Title (Russian)</div>
       <div>
         <input formControlName="russianTitle" class="input-field" data-test-id="russian-news-title-input" />
-        <div *ngIf="hasFieldError(this.addSimpleNewsForm.get('russianTitle')!)" class="field-error">
+        <div *ngIf="hasFieldError(this.newsActionForm.get('russianTitle')!)" class="field-error">
           Field is required
         </div>
       </div>
       <div class="input-title">Title (English)</div>
       <div>
         <input formControlName="englishTitle" class="input-field" data-test-id="english-news-title-input" />
-        <div *ngIf="hasFieldError(this.addSimpleNewsForm.get('englishTitle')!)" class="field-error">
+        <div *ngIf="hasFieldError(this.newsActionForm.get('englishTitle')!)" class="field-error">
           Field is required
         </div>
       </div>
@@ -38,9 +38,9 @@
             />
             <span
               *ngIf="
-                this.addSimpleNewsForm.errors &&
-                this.addSimpleNewsForm.errors['postingTimeEmpty'] &&
-                !this.addSimpleNewsForm.get('postingTime')!.pristine
+                this.newsActionForm.errors &&
+                this.newsActionForm.errors['postingTimeEmpty'] &&
+                !this.newsActionForm.get('postingTime')!.pristine
               "
               class="field-error"
             >
@@ -52,14 +52,14 @@
       <div class="input-title">Russian text</div>
       <div class="wysiwyg-container">
         <quill-editor formControlName="russianText" class="quill" data-test-id="russian-text-quill"></quill-editor>
-        <div *ngIf="hasFieldError(this.addSimpleNewsForm.get('russianText')!)" class="field-error">
+        <div *ngIf="hasFieldError(this.newsActionForm.get('russianText')!)" class="field-error">
           Field is required
         </div>
       </div>
       <div class="input-title">English text</div>
       <div class="wysiwyg-container">
         <quill-editor formControlName="englishText" class="quill" data-test-id="english-text-quill"></quill-editor>
-        <div *ngIf="hasFieldError(this.addSimpleNewsForm.get('englishText')!)" class="field-error">
+        <div *ngIf="hasFieldError(this.newsActionForm.get('englishText')!)" class="field-error">
           Field is required
         </div>
       </div>

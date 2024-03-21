@@ -19,6 +19,8 @@ export class AdminNewsComponent implements OnInit {
   public news: AdminNewsListInterface[];
   public news$ = new ReplaySubject<AdminNewsListInterface[]>(1);
   public user$: Observable<UserInterface>;
+  public newsTypes: string[];
+  public addNewsTypeSelectValue: string;
 
   constructor(
     private adminDataService: AdminDataService,
@@ -33,6 +35,7 @@ export class AdminNewsComponent implements OnInit {
     });
 
     this.user$ = this.userService.getCurrentUser$().pipe(filter(isNonNull));
+    this.initAddNewsTypeSelect();
   }
 
   public formatDateToLocal(date: string): string {
@@ -58,13 +61,16 @@ export class AdminNewsComponent implements OnInit {
       });
   }
 
-  public getNewsTypeRoute(newsType: NewsTypes): string | undefined {
-    // TODO Remove Partial and add all routes
-    const newsTypeRouteMap: Partial<Record<NewsTypes, string>> = {
-      // [NewsTypes.OFFLINE_START]: 'offline-start',
+  public getNewsTypeRoute(newsType: NewsTypes): string {
+    const newsTypeRouteMap: Record<NewsTypes, string> = {
       [NewsTypes.SIMPLE]: 'simple',
-      [NewsTypes.OFFLINE_START]: 'simple',
-      [NewsTypes.OFFLINE_RESULTS]: 'simple',
+      [NewsTypes.OFFLINE_START]: 'offline-start',
+      [NewsTypes.OFFLINE_RESULTS]: 'offline-results',
+      [NewsTypes.ONLINE_ANNOUNCE]: 'online-announce',
+      [NewsTypes.ONLINE_RESULTS]: 'online-results',
+      [NewsTypes.MULTICUP_RESULTS]: 'multicup-results',
+      [NewsTypes.DFWC_RESULTS]: 'dfwc-results',
+      [NewsTypes.STREAMERS_RESULTS]: 'streamers-results',
     };
 
     return newsTypeRouteMap[newsType];
@@ -72,5 +78,25 @@ export class AdminNewsComponent implements OnInit {
 
   public hasNewsDeleteAccess(user: UserInterface): boolean {
     return checkUserRoles(user.roles, [UserRoles.NEWSMAKER]);
+  }
+
+  public initAddNewsTypeSelect(): void {
+    this.newsTypes = Object.values(NewsTypes).map(this.mapNewsTypeToHumanName);
+    this.addNewsTypeSelectValue = this.mapNewsTypeToHumanName(NewsTypes.SIMPLE);
+  }
+
+  private mapNewsTypeToHumanName(newsType: NewsTypes): string {
+    const newsTypeHumanNameMap: Record<NewsTypes, string> = {
+      [NewsTypes.SIMPLE]: 'Simple text news',
+      [NewsTypes.OFFLINE_START]: 'Offline cup start',
+      [NewsTypes.OFFLINE_RESULTS]: 'Offline cup results',
+      [NewsTypes.ONLINE_ANNOUNCE]: 'Online cup announce',
+      [NewsTypes.ONLINE_RESULTS]: 'Online cup results',
+      [NewsTypes.MULTICUP_RESULTS]: 'Multicup results',
+      [NewsTypes.DFWC_RESULTS]: 'DFWC round results',
+      [NewsTypes.STREAMERS_RESULTS]: 'Results for streamers review',
+    };
+
+    return newsTypeHumanNameMap[newsType];
   }
 }

@@ -9,14 +9,14 @@ import { debounceTime, Observable, startWith, switchMap } from 'rxjs';
 import { AdminEditNewsInterface } from '@dfcomps/contracts';
 
 @Component({
-  selector: 'admin-add-simple-news',
-  templateUrl: './admin-simple-news.component.html',
-  styleUrls: ['./admin-simple-news.component.less'],
+  selector: 'admin-news-action',
+  templateUrl: './admin-news-action.component.html',
+  styleUrls: ['./admin-news-action.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdminSimpleNewsComponent implements OnInit {
+export class AdminNewsActionComponent implements OnInit {
   public operationType: AdminOperationType;
-  public addSimpleNewsForm: FormGroup;
+  public newsActionForm: FormGroup;
   public youtubeEmbedId$: Observable<string>;
   private newsId: string;
 
@@ -35,17 +35,17 @@ export class AdminSimpleNewsComponent implements OnInit {
   }
 
   public submitNews(): void {
-    Object.keys(this.addSimpleNewsForm.controls).forEach((key: string) =>
-      this.addSimpleNewsForm.get(key)!.markAsDirty(),
+    Object.keys(this.newsActionForm.controls).forEach((key: string) =>
+      this.newsActionForm.get(key)!.markAsDirty(),
     );
 
-    if (!this.addSimpleNewsForm.valid) {
+    if (!this.newsActionForm.valid) {
       return;
     }
 
     if (this.operationType === AdminOperationType.ADD) {
       this.adminDataService
-        .postSimpleNews$(this.addSimpleNewsForm.value)
+        .postSimpleNews$(this.newsActionForm.value)
         .pipe(switchMap(() => this.adminDataService.getAllNews$(false)))
         .subscribe(() => {
           this.router.navigate(['/admin/news']);
@@ -55,7 +55,7 @@ export class AdminSimpleNewsComponent implements OnInit {
 
     if (this.operationType === AdminOperationType.EDIT) {
       this.adminDataService
-        .editSimpleNews$(this.addSimpleNewsForm.value, this.newsId)
+        .editSimpleNews$(this.newsActionForm.value, this.newsId)
         .pipe(switchMap(() => this.adminDataService.getAllNews$(false)))
         .subscribe(() => {
           this.router.navigate(['/admin/news']);
@@ -91,7 +91,7 @@ export class AdminSimpleNewsComponent implements OnInit {
 
   private initForm(): void {
     if (this.operationType === AdminOperationType.ADD) {
-      this.addSimpleNewsForm = new FormGroup(
+      this.newsActionForm = new FormGroup(
         {
           russianTitle: new FormControl('', Validators.required),
           englishTitle: new FormControl('', Validators.required),
@@ -109,7 +109,7 @@ export class AdminSimpleNewsComponent implements OnInit {
 
     if (this.operationType === AdminOperationType.EDIT) {
       this.adminDataService.getSingleNews$(this.newsId).subscribe((singleNews: AdminEditNewsInterface) => {
-        this.addSimpleNewsForm = new FormGroup(
+        this.newsActionForm = new FormGroup(
           {
             russianTitle: new FormControl(singleNews.newsItem.headerRussian, Validators.required),
             englishTitle: new FormControl(singleNews.newsItem.headerEnglish, Validators.required),
@@ -129,8 +129,8 @@ export class AdminSimpleNewsComponent implements OnInit {
   }
 
   private setYoutubeFieldObservable(): void {
-    this.youtubeEmbedId$ = this.addSimpleNewsForm
+    this.youtubeEmbedId$ = this.newsActionForm
       .get('youtube')!
-      .valueChanges.pipe(debounceTime(300), startWith(this.addSimpleNewsForm.get('youtube')!.value));
+      .valueChanges.pipe(debounceTime(300), startWith(this.newsActionForm.get('youtube')!.value));
   }
 }
