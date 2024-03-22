@@ -4,16 +4,16 @@
     <mat-form-field appearance="outline" class="news-type-select">
       <mat-select [(value)]="addNewsTypeSelectValue">
         <mat-option *ngFor="let newsType of newsTypes" [value]="newsType">
-          {{ newsType }}
+          {{ newsType | invokeFunction : mapNewsTypeToHumanName }}
         </mat-option>
       </mat-select>
     </mat-form-field>
     <div>
       <button
-        routerLink="/admin/news/add/simple"
+        (click)="openAddNewsPage()"
         mat-raised-button
         color="accent"
-        data-test-id="add-simple-news-button"
+        data-test-id="add-news-button"
       >
         Add news
       </button>

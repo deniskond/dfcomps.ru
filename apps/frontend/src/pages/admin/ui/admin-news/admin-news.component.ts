@@ -8,6 +8,7 @@ import { UserService } from '~shared/services/user-service/user.service';
 import { AdminNewsListInterface, NewsTypes } from '@dfcomps/contracts';
 import * as moment from 'moment';
 import { UserRoles, checkUserRoles } from '@dfcomps/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'admin-news',
@@ -19,13 +20,14 @@ export class AdminNewsComponent implements OnInit {
   public news: AdminNewsListInterface[];
   public news$ = new ReplaySubject<AdminNewsListInterface[]>(1);
   public user$: Observable<UserInterface>;
-  public newsTypes: string[];
-  public addNewsTypeSelectValue: string;
+  public newsTypes = Object.values(NewsTypes);
+  public addNewsTypeSelectValue = NewsTypes.SIMPLE;
 
   constructor(
     private adminDataService: AdminDataService,
     private snackBar: MatSnackBar,
     private userService: UserService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -35,7 +37,6 @@ export class AdminNewsComponent implements OnInit {
     });
 
     this.user$ = this.userService.getCurrentUser$().pipe(filter(isNonNull));
-    this.initAddNewsTypeSelect();
   }
 
   public formatDateToLocal(date: string): string {
@@ -80,12 +81,11 @@ export class AdminNewsComponent implements OnInit {
     return checkUserRoles(user.roles, [UserRoles.NEWSMAKER]);
   }
 
-  public initAddNewsTypeSelect(): void {
-    this.newsTypes = Object.values(NewsTypes).map(this.mapNewsTypeToHumanName);
-    this.addNewsTypeSelectValue = this.mapNewsTypeToHumanName(NewsTypes.SIMPLE);
+  public openAddNewsPage(): void {
+    this.router.navigate([`/admin/news/add/${this.getNewsTypeRoute(this.addNewsTypeSelectValue)}`]);
   }
 
-  private mapNewsTypeToHumanName(newsType: NewsTypes): string {
+  public mapNewsTypeToHumanName(newsType: NewsTypes): string {
     const newsTypeHumanNameMap: Record<NewsTypes, string> = {
       [NewsTypes.SIMPLE]: 'Simple text news',
       [NewsTypes.OFFLINE_START]: 'Offline cup start',
