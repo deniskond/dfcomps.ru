@@ -17,6 +17,7 @@ import {
   UpdateCupDto,
   AddCupDto,
   ProcessValidationDto,
+  AdminActiveCupInterface,
 } from '@dfcomps/contracts';
 import * as moment from 'moment';
 
@@ -110,20 +111,31 @@ export class AdminDataService {
     return this.backendService.post$<void>(URL_PARAMS.ADMIN.PROCESS_VALIDATION(cupId), processValidationDto);
   }
 
-  public postSimpleNews$(formValue: Record<string, any>): Observable<void> {
-    return this.backendService.post$<void>(URL_PARAMS.ADMIN.POST_NEWS, this.getAdminNewsDto(formValue));
+  public postNews$(formValue: Record<string, any>, newsType: NewsTypes): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.POST_NEWS, this.getAdminNewsDto(formValue, newsType));
   }
 
   public getSingleNews$(newsId: string): Observable<AdminEditNewsInterface> {
     return this.backendService.get$<AdminEditNewsInterface>(URL_PARAMS.ADMIN.GET_SINGLE_NEWS(newsId));
   }
 
-  public editSimpleNews$(formValue: Record<string, any>, newsId: string): Observable<void> {
-    return this.backendService.post$<void>(URL_PARAMS.ADMIN.UPDATE_NEWS(newsId), this.getAdminNewsDto(formValue));
+  public editNews$(formValue: Record<string, any>, newsId: string, newsType: NewsTypes): Observable<void> {
+    return this.backendService.post$<void>(
+      URL_PARAMS.ADMIN.UPDATE_NEWS(newsId),
+      this.getAdminNewsDto(formValue, newsType),
+    );
   }
 
-  public getAllActiveMulticups$(): Observable<AdminActiveMulticupInterface[]> {
-    return this.backendService.get$<AdminActiveMulticupInterface[]>(URL_PARAMS.ADMIN.GET_ALL_ACTIVE_MULTICUPS);
+  public getAllAvailableMulticups$(): Observable<AdminActiveMulticupInterface[]> {
+    return this.backendService.get$<AdminActiveMulticupInterface[]>(URL_PARAMS.ADMIN.GET_ALL_AVAILABLE_MULTICUPS);
+  }
+
+  public getAllOfflineCupsWithoutNews$(): Observable<AdminActiveCupInterface[]> {
+    return this.backendService.get$<AdminActiveCupInterface[]>(URL_PARAMS.ADMIN.GET_ALL_OFFLINE_CUPS_WITHOUT_NEWS);
+  }
+
+  public getAllOnlineCupsWithoutNews$(): Observable<AdminActiveCupInterface[]> {
+    return this.backendService.get$<AdminActiveCupInterface[]>(URL_PARAMS.ADMIN.GET_ALL_ONLINE_CUPS_WITHOUT_NEWS);
   }
 
   public addCup$(formValue: Record<string, any>): Observable<void> {
@@ -193,14 +205,14 @@ export class AdminDataService {
     ]);
   }
 
-  private getAdminNewsDto(formValue: Record<string, any>): AdminNewsDto {
+  private getAdminNewsDto(formValue: Record<string, any>, newsType: NewsTypes): AdminNewsDto {
     return {
       russianTitle: formValue['russianTitle'],
       englishTitle: formValue['englishTitle'],
       postingTime: formValue['timeOption'] === 'now' ? moment().format() : formValue['postingTime'],
       russianText: formValue['russianText'],
       englishText: formValue['englishText'],
-      type: NewsTypes.SIMPLE,
+      type: newsType,
       youtube: formValue['youtube'],
     };
   }

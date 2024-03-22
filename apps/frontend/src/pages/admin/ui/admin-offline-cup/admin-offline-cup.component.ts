@@ -36,7 +36,7 @@ export class AdminOfflineCupComponent implements OnInit {
   @ViewChild('pk3FileInput') pk3Input: ElementRef;
   @ViewChild('levelshotFileInput') levelshotInput: ElementRef;
 
-  public activeMulticups$: Observable<AdminActiveMulticupInterface[]>;
+  public availableMulticups$: Observable<AdminActiveMulticupInterface[]>;
   public isMapFound: boolean | null = null;
   public isLoadingMapInfo = false;
   public isLoadingCupAction = false;
@@ -92,7 +92,7 @@ export class AdminOfflineCupComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.activeMulticups$ = this.adminDataService.getAllActiveMulticups$();
+    this.availableMulticups$ = this.adminDataService.getAllAvailableMulticups$();
     this.initMapInfoSubscription();
 
     this.route.data.pipe(take(1)).subscribe(({ multicup }: Data) => {

@@ -5,5 +5,5 @@ export enum NewsTypes {
   ONLINE_RESULTS = 'online_results',
   MULTICUP_RESULTS = 'multicup_results',
   SIMPLE = 'text',
-  DFWC_RESULTS = 'dfwc_round_results',
+  DFWC_ROUND_RESULTS = 'dfwc_round_results',
 }

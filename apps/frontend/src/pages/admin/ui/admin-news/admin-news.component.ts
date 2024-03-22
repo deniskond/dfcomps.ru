@@ -71,7 +71,7 @@ export class AdminNewsComponent implements OnInit {
       [NewsTypes.ONLINE_ANNOUNCE]: AdminNewsRouting.ONLINE_ANNOUNCE,
       [NewsTypes.ONLINE_RESULTS]: AdminNewsRouting.ONLINE_ANNOUNCE,
       [NewsTypes.MULTICUP_RESULTS]: AdminNewsRouting.MULTICUP_RESULTS,
-      [NewsTypes.DFWC_RESULTS]: AdminNewsRouting.DFWC_ROUND_RESULTS,
+      [NewsTypes.DFWC_ROUND_RESULTS]: AdminNewsRouting.DFWC_ROUND_RESULTS,
       [NewsTypes.STREAMERS_RESULTS]: AdminNewsRouting.STREAMERS_RESULTS,
     };
 
@@ -84,24 +84,5 @@ export class AdminNewsComponent implements OnInit {
 
   public openAddNewsPage(): void {
     this.router.navigate([`/admin/news/add/${this.getNewsTypeRoute(this.addNewsTypeSelectValue)}`]);
-  }
-
-
-  // TODO
-  // This mapping can be deleted if the enum itself would store this values
-  // Need to check if enum values are used somewhere (after e2e tests)
-  public mapNewsTypeToHumanName(newsType: NewsTypes): string {
-    const newsTypeHumanNameMap: Record<NewsTypes, string> = {
-      [NewsTypes.SIMPLE]: 'Simple text news',
-      [NewsTypes.OFFLINE_START]: 'Offline cup start',
-      [NewsTypes.OFFLINE_RESULTS]: 'Offline cup results',
-      [NewsTypes.ONLINE_ANNOUNCE]: 'Online cup announce',
-      [NewsTypes.ONLINE_RESULTS]: 'Online cup results',
-      [NewsTypes.MULTICUP_RESULTS]: 'Multicup results',
-      [NewsTypes.DFWC_RESULTS]: 'DFWC round results',
-      [NewsTypes.STREAMERS_RESULTS]: 'Results for streamers review',
-    };
-
-    return newsTypeHumanNameMap[newsType];
   }
 }

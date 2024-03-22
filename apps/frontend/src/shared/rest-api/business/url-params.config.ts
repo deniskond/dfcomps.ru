@@ -187,7 +187,9 @@ export class URL_PARAMS {
     PROCESS_VALIDATION: (cupId: number) => string;
     CALCULATE_CUP_RATING: (cupId: number) => string;
     FINISH_OFFLINE_CUP: (cupId: number) => string;
-    GET_ALL_ACTIVE_MULTICUPS: string;
+    GET_ALL_AVAILABLE_MULTICUPS: string;
+    GET_ALL_OFFLINE_CUPS_WITHOUT_NEWS: string;
+    GET_ALL_ONLINE_CUPS_WITHOUT_NEWS: string;
     ADD_CUP: string;
     UPLOAD_MAP: (mapName: string) => string;
     UPLOAD_LEVELSHOT: (mapName: string) => string;
@@ -211,7 +213,9 @@ export class URL_PARAMS {
       PROCESS_VALIDATION: (cupId: number) => `${API_URL}/admin/cups/process-validation/${cupId}`,
       CALCULATE_CUP_RATING: (cupId: number) => `${API_URL}/admin/cups/calculate-rating/${cupId}`,
       FINISH_OFFLINE_CUP: (cupId: number) => `${API_URL}/admin/cups/finish-offline-cup/${cupId}`,
-      GET_ALL_ACTIVE_MULTICUPS: `${API_URL}/admin/cups/get-all-active-multicups`,
+      GET_ALL_AVAILABLE_MULTICUPS: `${API_URL}/admin/cups/get-all-available-multicups`,
+      GET_ALL_OFFLINE_CUPS_WITHOUT_NEWS: `${API_URL}/admin/cups/get-all-offline-cups-without-news`,
+      GET_ALL_ONLINE_CUPS_WITHOUT_NEWS: `${API_URL}/admin/cups/get-all-online-cups-without-news`,
       ADD_CUP: `${API_URL}/admin/cups/add`,
       UPLOAD_MAP: (mapName: string) => `${API_URL}/admin/cups/upload-map/${mapName}`,
       UPLOAD_LEVELSHOT: (mapName: string) => `${API_URL}/admin/cups/upload-levelshot/${mapName}`,

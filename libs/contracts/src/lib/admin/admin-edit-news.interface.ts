@@ -10,5 +10,6 @@ export interface AdminEditNewsInterface {
     date: string;
     type: NewsTypes;
     youtube: string | null;
+    cupId: number;
   };
 }

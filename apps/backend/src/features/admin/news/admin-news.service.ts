@@ -54,6 +54,7 @@ export class AdminNewsService {
     const newsItem: News | null = await this.newsRepository
       .createQueryBuilder('news')
       .leftJoinAndSelect('news.newsType', 'news_types')
+      .leftJoinAndSelect('news.cup', 'cups')
       .where({ id: newsId })
       .getOne();
 
@@ -71,6 +72,7 @@ export class AdminNewsService {
         date: newsItem.datetimezone,
         type: newsItem.newsType.name,
         youtube: newsItem.youtube,
+        cupId: newsItem.cup.id,
       },
     };
   }

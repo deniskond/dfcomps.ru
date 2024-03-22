@@ -1,10 +1,10 @@
 export enum NewsTypes {
-  OFFLINE_START = 'offline_start',
-  OFFLINE_RESULTS = 'offline_results',
-  ONLINE_ANNOUNCE = 'online_announce',
-  ONLINE_RESULTS = 'online_results',
-  MULTICUP_RESULTS = 'multicup_results',
-  SIMPLE = 'text',
-  DFWC_RESULTS = 'dfwc_round_results',
-  STREAMERS_RESULTS = 'streamers_results',
+  OFFLINE_START = 'Offline cup start',
+  OFFLINE_RESULTS = 'Offline cup results',
+  ONLINE_ANNOUNCE = 'Online cup announce',
+  ONLINE_RESULTS = 'Online cup results',
+  MULTICUP_RESULTS = 'Multicup results',
+  SIMPLE = 'Simple text',
+  DFWC_ROUND_RESULTS = 'DFWC round results',
+  STREAMERS_RESULTS = 'Results for streamers',
 }

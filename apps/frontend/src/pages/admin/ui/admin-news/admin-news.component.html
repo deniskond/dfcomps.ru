@@ -4,7 +4,7 @@
     <mat-form-field appearance="outline" class="news-type-select">
       <mat-select [(value)]="addNewsTypeSelectValue">
         <mat-option *ngFor="let newsType of newsTypes" [value]="newsType">
-          {{ newsType | invokeFunction : mapNewsTypeToHumanName }}
+          {{ newsType }}
         </mat-option>
       </mat-select>
     </mat-form-field>

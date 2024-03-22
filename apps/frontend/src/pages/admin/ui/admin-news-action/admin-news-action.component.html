@@ -5,16 +5,12 @@
       <div class="input-title">Title (Russian)</div>
       <div>
         <input formControlName="russianTitle" class="input-field" data-test-id="russian-news-title-input" />
-        <div *ngIf="hasFieldError(this.newsActionForm.get('russianTitle')!)" class="field-error">
-          Field is required
-        </div>
+        <div *ngIf="hasFieldError(this.newsActionForm.get('russianTitle')!)" class="field-error">Field is required</div>
       </div>
       <div class="input-title">Title (English)</div>
       <div>
         <input formControlName="englishTitle" class="input-field" data-test-id="english-news-title-input" />
-        <div *ngIf="hasFieldError(this.newsActionForm.get('englishTitle')!)" class="field-error">
-          Field is required
-        </div>
+        <div *ngIf="hasFieldError(this.newsActionForm.get('englishTitle')!)" class="field-error">Field is required</div>
       </div>
       <div class="input-title">
         Time to post
@@ -49,19 +45,48 @@
           </div>
         </mat-radio-group>
       </div>
+
+      <ng-container *ngIf="isCupRequired">
+        <ng-container *ngIf="availableCups$ | async as availableCups">
+          <div class="input-title">Cup</div>
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-select formControlName="cup" data-test-id="news-cup-select">
+                <mat-option *ngFor="let availableCup of availableCups" [value]="availableCup.cupId">
+                  {{ availableCup.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div *ngIf="hasFieldError(this.newsActionForm.get('cup')!)" class="field-error">Field is required</div>
+          </div>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="isMulticupRequired">
+        <ng-container *ngIf="availableMulticups$ | async as availableMulticups">
+          <div class="input-title">Multicup</div>
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-select formControlName="multicup" data-test-id="news-cup-select">
+                <mat-option *ngFor="let availableMulticup of availableMulticups" [value]="availableMulticup.multicupId">
+                  {{ availableMulticup.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div *ngIf="hasFieldError(this.newsActionForm.get('multicup')!)" class="field-error">Field is required</div>
+          </div>
+        </ng-container>
+      </ng-container>
+
       <div class="input-title">Russian text</div>
       <div class="wysiwyg-container">
         <quill-editor formControlName="russianText" class="quill" data-test-id="russian-text-quill"></quill-editor>
-        <div *ngIf="hasFieldError(this.newsActionForm.get('russianText')!)" class="field-error">
-          Field is required
-        </div>
+        <div *ngIf="hasFieldError(this.newsActionForm.get('russianText')!)" class="field-error">Field is required</div>
       </div>
       <div class="input-title">English text</div>
       <div class="wysiwyg-container">
         <quill-editor formControlName="englishText" class="quill" data-test-id="english-text-quill"></quill-editor>
-        <div *ngIf="hasFieldError(this.newsActionForm.get('englishText')!)" class="field-error">
-          Field is required
-        </div>
+        <div *ngIf="hasFieldError(this.newsActionForm.get('englishText')!)" class="field-error">Field is required</div>
       </div>
       <div class="input-title">Youtube embed ID</div>
       <div>

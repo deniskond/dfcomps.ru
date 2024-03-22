@@ -150,7 +150,7 @@ export class NewsService {
       case NewsTypes.OFFLINE_START:
         return this.mapOfflineStartNews(newsItem, userAccess);
       case NewsTypes.OFFLINE_RESULTS:
-      case NewsTypes.DFWC_RESULTS:
+      case NewsTypes.DFWC_ROUND_RESULTS:
         return this.mapOfflineResultsNews(newsItem);
       case NewsTypes.ONLINE_ANNOUNCE:
         return this.mapOnlineAnnounceNews(newsItem, userAccess);

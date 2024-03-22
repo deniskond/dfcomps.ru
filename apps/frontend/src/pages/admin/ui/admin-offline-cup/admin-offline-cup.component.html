@@ -166,17 +166,19 @@
         </div>
       </div>
       <ng-container *ngIf="isMulticupRequired">
-        <div class="input-title">Multicup</div>
-        <div *ngIf="activeMulticups$ | async as activeMulticups">
-          <mat-form-field appearance="outline">
-            <mat-select formControlName="multicup" data-test-id="cup-multicup-select">
-              <mat-option *ngFor="let activeMulticup of activeMulticups" [value]="activeMulticup.multicupId">
-                {{ activeMulticup.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <div *ngIf="hasFieldError(this.offlineCupForm.get('multicup')!)" class="field-error">Field is required</div>
-        </div>
+        <ng-container *ngIf="availableMulticups$ | async as availableMulticups">
+          <div class="input-title">Multicup</div>
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-select formControlName="multicup" data-test-id="cup-multicup-select">
+                <mat-option *ngFor="let availableMulticup of availableMulticups" [value]="availableMulticup.multicupId">
+                  {{ availableMulticup.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div *ngIf="hasFieldError(this.offlineCupForm.get('multicup')!)" class="field-error">Field is required</div>
+          </div>
+        </ng-container>
       </ng-container>
       <div class="add-news-label">{{ componentMode }} start and ending news</div>
       <div>

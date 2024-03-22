@@ -41,8 +41,8 @@ const adminRoutes: Routes = [
           },
           {
             path: ':action',
-            children: Object.values(AdminNewsRouting).map((route: AdminNewsRouting) => ({
-              path: route,
+            children: [{
+              path: ':newsType',
               children: [
                 {
                   path: '',
@@ -53,7 +53,7 @@ const adminRoutes: Routes = [
                   component: AdminNewsActionComponent,
                 },
               ],
-            })),
+            }],
           },
         ],
       },
