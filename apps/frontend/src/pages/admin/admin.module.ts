@@ -23,6 +23,7 @@ import { SharedModule } from '~shared/modules/shared.module';
 import { HasAdminPanelAccess } from './business/has-admin-panel-access.guard';
 import { AdminOfflineCupComponent } from './ui/admin-offline-cup/admin-offline-cup.component';
 import { AdminRedirectComponent } from './ui/admin-redirect/admin-redirect.component';
+import { AdminNewsRouting } from './models/admin-news-routing.enum';
 
 const adminRoutes: Routes = [
   {
@@ -40,21 +41,19 @@ const adminRoutes: Routes = [
           },
           {
             path: ':action',
-            children: [
-              {
-                path: 'simple',
-                children: [
-                  {
-                    path: '',
-                    component: AdminNewsActionComponent,
-                  },
-                  {
-                    path: ':id',
-                    component: AdminNewsActionComponent,
-                  },
-                ],
-              },
-            ],
+            children: Object.values(AdminNewsRouting).map((route: AdminNewsRouting) => ({
+              path: route,
+              children: [
+                {
+                  path: '',
+                  component: AdminNewsActionComponent,
+                },
+                {
+                  path: ':id',
+                  component: AdminNewsActionComponent,
+                },
+              ],
+            })),
           },
         ],
       },

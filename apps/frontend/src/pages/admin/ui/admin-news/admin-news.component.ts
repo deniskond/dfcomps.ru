@@ -9,6 +9,7 @@ import { AdminNewsListInterface, NewsTypes } from '@dfcomps/contracts';
 import * as moment from 'moment';
 import { UserRoles, checkUserRoles } from '@dfcomps/auth';
 import { Router } from '@angular/router';
+import { AdminNewsRouting } from '../../models/admin-news-routing.enum';
 
 @Component({
   selector: 'admin-news',
@@ -64,14 +65,14 @@ export class AdminNewsComponent implements OnInit {
 
   public getNewsTypeRoute(newsType: NewsTypes): string {
     const newsTypeRouteMap: Record<NewsTypes, string> = {
-      [NewsTypes.SIMPLE]: 'simple',
-      [NewsTypes.OFFLINE_START]: 'offline-start',
-      [NewsTypes.OFFLINE_RESULTS]: 'offline-results',
-      [NewsTypes.ONLINE_ANNOUNCE]: 'online-announce',
-      [NewsTypes.ONLINE_RESULTS]: 'online-results',
-      [NewsTypes.MULTICUP_RESULTS]: 'multicup-results',
-      [NewsTypes.DFWC_RESULTS]: 'dfwc-results',
-      [NewsTypes.STREAMERS_RESULTS]: 'streamers-results',
+      [NewsTypes.SIMPLE]: AdminNewsRouting.SIMPLE,
+      [NewsTypes.OFFLINE_START]: AdminNewsRouting.OFFLINE_START,
+      [NewsTypes.OFFLINE_RESULTS]: AdminNewsRouting.OFFLINE_RESULTS,
+      [NewsTypes.ONLINE_ANNOUNCE]: AdminNewsRouting.ONLINE_ANNOUNCE,
+      [NewsTypes.ONLINE_RESULTS]: AdminNewsRouting.ONLINE_ANNOUNCE,
+      [NewsTypes.MULTICUP_RESULTS]: AdminNewsRouting.MULTICUP_RESULTS,
+      [NewsTypes.DFWC_RESULTS]: AdminNewsRouting.DFWC_ROUND_RESULTS,
+      [NewsTypes.STREAMERS_RESULTS]: AdminNewsRouting.STREAMERS_RESULTS,
     };
 
     return newsTypeRouteMap[newsType];
@@ -85,6 +86,10 @@ export class AdminNewsComponent implements OnInit {
     this.router.navigate([`/admin/news/add/${this.getNewsTypeRoute(this.addNewsTypeSelectValue)}`]);
   }
 
+
+  // TODO
+  // This mapping can be deleted if the enum itself would store this values
+  // Need to check if enum values are used somewhere (after e2e tests)
   public mapNewsTypeToHumanName(newsType: NewsTypes): string {
     const newsTypeHumanNameMap: Record<NewsTypes, string> = {
       [NewsTypes.SIMPLE]: 'Simple text news',
