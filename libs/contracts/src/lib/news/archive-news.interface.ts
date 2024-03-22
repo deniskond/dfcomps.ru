@@ -5,4 +5,5 @@ export interface ArchiveNewsInterface {
   header: string;
   headerEn: string;
   id: number;
+  mapName: string;
 }

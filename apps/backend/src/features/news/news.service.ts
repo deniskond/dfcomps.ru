@@ -129,6 +129,7 @@ export class NewsService {
     const archiveNews: News[] = await this.newsRepository
       .createQueryBuilder('news')
       .leftJoinAndSelect('news.user', 'users')
+      .leftJoinAndSelect('news.cup', 'cups', "news.header LIKE '%WarCup%'")
       .where('news.datetimezone < :time', { time })
       .orderBy('datetimezone', 'DESC')
       .offset(startIndex)
@@ -142,6 +143,7 @@ export class NewsService {
       header: archiveNewsItem.header,
       headerEn: archiveNewsItem.header_en,
       id: archiveNewsItem.id,
+      mapName: (archiveNewsItem.cup && archiveNewsItem.cup.map1) ? ' - ' + archiveNewsItem.cup.map1 : ''
     }));
   }
 

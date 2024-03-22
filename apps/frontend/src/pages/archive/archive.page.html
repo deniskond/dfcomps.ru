@@ -6,7 +6,7 @@
       <div class="news-container">
         <div *ngFor="let singleNews of news" (click)="navigateToNewsPage(+singleNews.id)" class="archive-news-row">
           <a *ngIf="(language$ | async) as language" class="blue-link bold">
-            {{ language === languages.RU ? singleNews.header : singleNews.headerEn }}
+            {{ language === languages.RU ? singleNews.header : singleNews.headerEn }} {{ singleNews.mapName }}
           </a>
           <div>{{ singleNews.datetimezone | invokeFunction : formatDate }}</div>
         </div>
