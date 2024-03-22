@@ -13,6 +13,7 @@ import {
   NewsTypes,
 } from '@dfcomps/contracts';
 import { AdminNewsRouting } from '../../models/admin-news-routing.enum';
+import { mapNewsTypeToHumanTitle } from '../../business/admin-news-types.mapper';
 
 const newsTypesWithRequiredCup: NewsTypes[] = [
   NewsTypes.OFFLINE_START,
@@ -36,8 +37,9 @@ export class AdminNewsActionComponent implements OnInit {
   public isMulticupRequired: boolean;
   public availableMulticups$: Observable<AdminActiveMulticupInterface[]>;
   public availableCups$: Observable<AdminActiveCupInterface[]>;
+  public mapNewsTypeToHumanTitle = mapNewsTypeToHumanTitle;
+  public newsType: NewsTypes;
   private newsId: string;
-  private newsType: NewsTypes;
 
   constructor(
     private adminDataService: AdminDataService,

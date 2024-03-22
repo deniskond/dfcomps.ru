@@ -72,7 +72,7 @@ export class AdminNewsService {
         date: newsItem.datetimezone,
         type: newsItem.newsType.name,
         youtube: newsItem.youtube,
-        cupId: newsItem.cup.id,
+        cupId: newsItem.cup?.id || null,
       },
     };
   }

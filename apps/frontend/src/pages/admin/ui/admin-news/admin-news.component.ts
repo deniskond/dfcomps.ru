@@ -10,6 +10,7 @@ import * as moment from 'moment';
 import { UserRoles, checkUserRoles } from '@dfcomps/auth';
 import { Router } from '@angular/router';
 import { AdminNewsRouting } from '../../models/admin-news-routing.enum';
+import { mapNewsTypeToHumanTitle } from '../../business/admin-news-types.mapper';
 
 @Component({
   selector: 'admin-news',
@@ -23,6 +24,7 @@ export class AdminNewsComponent implements OnInit {
   public user$: Observable<UserInterface>;
   public newsTypes = Object.values(NewsTypes);
   public addNewsTypeSelectValue = NewsTypes.SIMPLE;
+  public mapNewsTypeToHumanTitle = mapNewsTypeToHumanTitle;
 
   constructor(
     private adminDataService: AdminDataService,
@@ -69,7 +71,7 @@ export class AdminNewsComponent implements OnInit {
       [NewsTypes.OFFLINE_START]: AdminNewsRouting.OFFLINE_START,
       [NewsTypes.OFFLINE_RESULTS]: AdminNewsRouting.OFFLINE_RESULTS,
       [NewsTypes.ONLINE_ANNOUNCE]: AdminNewsRouting.ONLINE_ANNOUNCE,
-      [NewsTypes.ONLINE_RESULTS]: AdminNewsRouting.ONLINE_ANNOUNCE,
+      [NewsTypes.ONLINE_RESULTS]: AdminNewsRouting.ONLINE_RESULTS,
       [NewsTypes.MULTICUP_RESULTS]: AdminNewsRouting.MULTICUP_RESULTS,
       [NewsTypes.DFWC_ROUND_RESULTS]: AdminNewsRouting.DFWC_ROUND_RESULTS,
       [NewsTypes.STREAMERS_RESULTS]: AdminNewsRouting.STREAMERS_RESULTS,
