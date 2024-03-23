@@ -23,7 +23,7 @@ import { SharedModule } from '~shared/modules/shared.module';
 import { HasAdminPanelAccess } from './business/has-admin-panel-access.guard';
 import { AdminOfflineCupComponent } from './ui/admin-offline-cup/admin-offline-cup.component';
 import { AdminRedirectComponent } from './ui/admin-redirect/admin-redirect.component';
-import { AdminNewsRouting } from './models/admin-news-routing.enum';
+import { AdminOnlineCupComponent } from './ui/admin-online-cup/admin-online-cup.component';
 
 const adminRoutes: Routes = [
   {
@@ -61,9 +61,11 @@ const adminRoutes: Routes = [
         path: 'cups',
         children: [
           { path: '', component: AdminCupsComponent },
-          { path: 'add-offline-cup', component: AdminOfflineCupComponent, data: { multicup: false } },
-          { path: 'add-multicup-round', component: AdminOfflineCupComponent, data: { multicup: true } },
-          { path: 'edit/:id', component: AdminOfflineCupComponent },
+          { path: 'offline/add', component: AdminOfflineCupComponent, data: { multicup: false } },
+          { path: 'offline/edit/:id', component: AdminOfflineCupComponent },
+          { path: 'multicup-round/add', component: AdminOfflineCupComponent, data: { multicup: true } },
+          { path: 'online/add', component: AdminOnlineCupComponent },
+          { path: 'online/edit/:id', component: AdminOnlineCupComponent },
         ],
       },
       {
@@ -94,6 +96,7 @@ const adminRoutes: Routes = [
     AdminNewsActionComponent,
     AdminSeasonComponent,
     AdminOfflineCupComponent,
+    AdminOnlineCupComponent,
   ],
   imports: [
     RouterModule.forChild(adminRoutes),

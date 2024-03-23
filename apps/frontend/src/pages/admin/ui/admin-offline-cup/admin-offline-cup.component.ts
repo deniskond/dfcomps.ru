@@ -19,7 +19,7 @@ import {
 import { AdminDataService } from '../../business/admin-data.service';
 import {
   AdminActiveMulticupInterface,
-  AdminEditOfflineCupInterface,
+  AdminEditCupInterface,
   UploadedFileLinkInterface,
   WorldspawnMapInfoInterface,
 } from '@dfcomps/contracts';
@@ -109,7 +109,7 @@ export class AdminOfflineCupComponent implements OnInit {
         tap(({ id }: Params) => (this.cupId = parseInt(id))),
         switchMap(({ id }: Params) => this.adminDataService.getSingleCup$(id)),
       )
-      .subscribe((cup: AdminEditOfflineCupInterface) => {
+      .subscribe((cup: AdminEditCupInterface) => {
         this.componentMode = 'Edit';
         this.setFormValues(cup);
       });
@@ -166,7 +166,7 @@ export class AdminOfflineCupComponent implements OnInit {
     }
 
     this.isLoadingCupAction = true;
-    this.componentMode === 'Add' ? this.addCup() : this.editCup();
+    this.componentMode === 'Add' ? this.addOfflineCup() : this.editOfflineCup();
   }
 
   public hasFieldError(control: AbstractControl): boolean {
@@ -217,7 +217,7 @@ export class AdminOfflineCupComponent implements OnInit {
     );
   }
 
-  private setFormValues(cup: AdminEditOfflineCupInterface): void {
+  private setFormValues(cup: AdminEditCupInterface): void {
     this.offlineCupForm.setValue({
       fullName: cup.fullName,
       shortName: cup.shortName,
@@ -256,17 +256,17 @@ export class AdminOfflineCupComponent implements OnInit {
     }
   }
 
-  private addCup(): void {
+  private addOfflineCup(): void {
     if (this.mapType === 'ws') {
       this.adminDataService
-        .addCup$(this.offlineCupForm.value)
+        .addOfflineCup$(this.offlineCupForm.value)
         .pipe(
           switchMap(() => this.adminDataService.getAllCups$(false)),
           finalize(() => (this.isLoadingCupAction = false)),
         )
         .subscribe(() => {
           this.router.navigate(['/admin/cups']);
-          this.snackBar.open('Cup added successfully', 'OK', { duration: 3000 });
+          this.snackBar.open('Offline cup added successfully', 'OK', { duration: 3000 });
         });
     }
 
@@ -282,27 +282,27 @@ export class AdminOfflineCupComponent implements OnInit {
             this.offlineCupForm.get('mapPk3Link')!.setValue(mapLink);
             this.offlineCupForm.get('mapLevelshotLink')!.setValue(levelshotLink);
           }),
-          switchMap(() => this.adminDataService.addCup$(this.offlineCupForm.value)),
+          switchMap(() => this.adminDataService.addOfflineCup$(this.offlineCupForm.value)),
           switchMap(() => this.adminDataService.getAllCups$(false)),
         )
         .subscribe(() => {
           this.router.navigate(['/admin/cups']);
-          this.snackBar.open('Cup added successfully', 'OK', { duration: 3000 });
+          this.snackBar.open('Offline cup added successfully', 'OK', { duration: 3000 });
         });
     }
   }
 
-  private editCup(): void {
+  private editOfflineCup(): void {
     if (this.mapType === 'ws') {
       this.adminDataService
-        .editCup$(this.offlineCupForm.value, this.cupId!)
+        .editOfflineCup$(this.offlineCupForm.value, this.cupId!)
         .pipe(
           switchMap(() => this.adminDataService.getAllCups$(false)),
           finalize(() => (this.isLoadingCupAction = false)),
         )
         .subscribe(() => {
           this.router.navigate(['/admin/cups']);
-          this.snackBar.open('Cup edited successfully', 'OK', { duration: 3000 });
+          this.snackBar.open('Offline cup edited successfully', 'OK', { duration: 3000 });
         });
     }
 
@@ -327,12 +327,12 @@ export class AdminOfflineCupComponent implements OnInit {
               this.offlineCupForm.get('mapLevelshotLink')!.setValue(uploadedLevelshot.link);
             }
           }),
-          switchMap(() => this.adminDataService.editCup$(this.offlineCupForm.value, this.cupId!)),
+          switchMap(() => this.adminDataService.editOfflineCup$(this.offlineCupForm.value, this.cupId!)),
           switchMap(() => this.adminDataService.getAllCups$(false)),
         )
         .subscribe(() => {
           this.router.navigate(['/admin/cups']);
-          this.snackBar.open('Cup edited successfully', 'OK', { duration: 3000 });
+          this.snackBar.open('Offline cup edited successfully', 'OK', { duration: 3000 });
         });
     }
   }

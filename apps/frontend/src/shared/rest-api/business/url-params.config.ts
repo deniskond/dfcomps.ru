@@ -190,7 +190,7 @@ export class URL_PARAMS {
     GET_ALL_AVAILABLE_MULTICUPS: string;
     GET_ALL_OFFLINE_CUPS_WITHOUT_NEWS: string;
     GET_ALL_ONLINE_CUPS_WITHOUT_NEWS: string;
-    ADD_CUP: string;
+    ADD_OFFLINE_CUP: string;
     UPLOAD_MAP: (mapName: string) => string;
     UPLOAD_LEVELSHOT: (mapName: string) => string;
     GET_SINGLE_CUP: (cupId: number) => string;
@@ -216,7 +216,7 @@ export class URL_PARAMS {
       GET_ALL_AVAILABLE_MULTICUPS: `${API_URL}/admin/cups/get-all-available-multicups`,
       GET_ALL_OFFLINE_CUPS_WITHOUT_NEWS: `${API_URL}/admin/cups/get-all-offline-cups-without-news`,
       GET_ALL_ONLINE_CUPS_WITHOUT_NEWS: `${API_URL}/admin/cups/get-all-online-cups-without-news`,
-      ADD_CUP: `${API_URL}/admin/cups/add`,
+      ADD_OFFLINE_CUP: `${API_URL}/admin/cups/add-offline-cup`,
       UPLOAD_MAP: (mapName: string) => `${API_URL}/admin/cups/upload-map/${mapName}`,
       UPLOAD_LEVELSHOT: (mapName: string) => `${API_URL}/admin/cups/upload-levelshot/${mapName}`,
       GET_SINGLE_CUP: (cupId: number) => `${API_URL}/admin/cups/get/${cupId}`,

@@ -1,0 +1,63 @@
+<mat-card class="main-form-card">
+  <h3 class="header">{{ componentMode }}{{ isMulticupRequired ? ' multicup round' : ' online cup' }}</h3>
+  <form *ngIf="onlineCupForm; else loading" [formGroup]="onlineCupForm">
+    <div class="form">
+      <div>
+        Full name
+        <br />
+        <span class="comment">(displayed in news)</span>
+      </div>
+      <div>
+        <input formControlName="fullName" class="input-field" data-test-id="online-cup-fullname-input" />
+        <div *ngIf="hasFieldError(this.onlineCupForm.get('fullName')!)" class="field-error">Field is required</div>
+      </div>
+      <div>
+        Short name
+        <br />
+        <span class="comment">(displayed in cup timer)</span>
+      </div>
+      <div>
+        <input formControlName="shortName" class="input-field" data-test-id="online-cup-shortname-input" />
+        <div *ngIf="hasFieldError(this.onlineCupForm.get('shortName')!)" class="field-error">Field is required</div>
+      </div>
+      <div>
+        Start time
+        <br />
+        <span class="comment">(MSK GMT +3:00)</span>
+      </div>
+      <div>
+        <input
+          formControlName="startTime"
+          class="input-field date"
+          type="datetime-local"
+          data-test-id="online-cup-starttime-input"
+        />
+        <span *ngIf="hasFieldError(this.onlineCupForm.get('startTime')!)" class="field-error">Field is required</span>
+      </div>
+      <div class="add-news-label">{{ componentMode }} start news</div>
+      <div>
+        <mat-checkbox color="primary" formControlName="addNews" data-test-id="online-cup-add-news-checkbox"></mat-checkbox>
+      </div>
+    </div>
+    <input type="hidden" formControlName="size" />
+
+    <button
+      [disabled]="isLoadingMapInfo || isLoadingCupAction"
+      (click)="submit()"
+      mat-raised-button
+      color="accent"
+      class="submit-button"
+      data-test-id="online-cup-submit-button"
+    >
+      <div *ngIf="isLoadingCupAction" class="button-spinner-container">
+        <mat-spinner diameter="20" strokeWidth="2" color="primary"></mat-spinner>
+      </div>
+      {{ componentMode }} cup
+    </button>
+  </form>
+  <ng-template #loading>
+    <div class="loading-block">
+      <mat-spinner diameter="75" strokeWidth="4" color="accent"></mat-spinner>
+    </div>
+  </ng-template>
+</mat-card>

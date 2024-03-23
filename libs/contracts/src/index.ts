@@ -51,7 +51,7 @@ export { ArchiveLinkInterface } from './lib/cup/archive-link.interface';
 export { AdminNewsListInterface } from './lib/admin/admin-news-list.interface';
 export { AdminNewsDto } from './lib/admin/admin-news.dto';
 export { AdminEditNewsInterface } from './lib/admin/admin-edit-news.interface';
-export { AddCupDto } from './lib/admin/add-cup.dto';
+export { AddOfflineCupDto } from './lib/admin/add-cup.dto';
 export { AdminCupInterface } from './lib/admin/admin-cup.interface';
 export { AdminValidationInterface } from './lib/admin/admin-validation.models';
 export { AdminPlayerDemosValidationInterface } from './lib/admin/admin-validation.models';
@@ -60,7 +60,7 @@ export { ValidationResultInterface } from './lib/admin/validation-result.interfa
 export { AdminActiveMulticupInterface } from './lib/admin/admin-active-multicup.interface';
 export { WorldspawnMapInfoInterface } from './lib/admin/worldspawn-map-info.interface';
 export { UploadedFileLinkInterface } from './lib/global/uploaded-file-link.interface';
-export { AdminEditOfflineCupInterface } from './lib/admin/admin-edit-offline-cup.interface';
+export { AdminEditCupInterface as AdminEditCupInterface } from './lib/admin/admin-edit-offline-cup.interface';
 export { UpdateCupDto } from './lib/admin/update-cup.dto';
 export { MatchStartDto } from './lib/match/match-start.dto';
 export { UpdateMatchInfoDto } from './lib/match/update-match-info.dto';

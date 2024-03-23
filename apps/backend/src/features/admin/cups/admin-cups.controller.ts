@@ -15,9 +15,9 @@ import {
 } from '@nestjs/common';
 import { AdminCupsService } from './admin-cups.service';
 import {
-  AddCupDto,
+  AddOfflineCupDto,
   AdminActiveMulticupInterface,
-  AdminEditOfflineCupInterface,
+  AdminEditCupInterface,
   AdminValidationInterface,
   UpdateCupDto,
   ProcessValidationDto,
@@ -40,7 +40,7 @@ export class AdminCupsController {
   getSingleCup(
     @Headers('X-Auth') accessToken: string | undefined,
     @Param('cupId', new ParseIntPipe()) cupId: number,
-  ): Promise<AdminEditOfflineCupInterface> {
+  ): Promise<AdminEditCupInterface> {
     return this.adminCupsService.getSingleCup(accessToken, cupId);
   }
 
@@ -52,9 +52,9 @@ export class AdminCupsController {
     return this.adminCupsService.deleteCup(accessToken, cupId);
   }
 
-  @Post('add')
-  addCup(@Headers('X-Auth') accessToken: string | undefined, @Body() cupDto: AddCupDto): Promise<void> {
-    return this.adminCupsService.addCup(accessToken, cupDto);
+  @Post('add-offline-cup')
+  addCup(@Headers('X-Auth') accessToken: string | undefined, @Body() cupDto: AddOfflineCupDto): Promise<void> {
+    return this.adminCupsService.addOfflineCup(accessToken, cupDto);
   }
 
   @Post('update/:cupId')

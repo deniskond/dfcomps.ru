@@ -8,10 +8,10 @@ import {
 } from '@nestjs/common';
 import { AuthService } from '../../auth/auth.service';
 import {
-  AddCupDto,
+  AddOfflineCupDto,
   AdminActiveMulticupInterface,
   AdminCupInterface,
-  AdminEditOfflineCupInterface,
+  AdminEditCupInterface,
   AdminPlayerDemosValidationInterface,
   AdminValidationInterface,
   CupTypes,
@@ -95,7 +95,7 @@ export class AdminCupsService {
     }));
   }
 
-  public async getSingleCup(accessToken: string | undefined, cupId: number): Promise<AdminEditOfflineCupInterface> {
+  public async getSingleCup(accessToken: string | undefined, cupId: number): Promise<AdminEditCupInterface> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
@@ -128,10 +128,13 @@ export class AdminCupsService {
       multicupId: cup.multicup?.id || null,
       addNews: cup.news.length === 2,
       size: cup.map_size,
+      useTwoServers: cup.use_two_servers,
+      server1: cup.server1,
+      server2: cup.server2,
     };
   }
 
-  public async addCup(accessToken: string | undefined, addCupDto: AddCupDto): Promise<void> {
+  public async addOfflineCup(accessToken: string | undefined, addCupDto: AddOfflineCupDto): Promise<void> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {

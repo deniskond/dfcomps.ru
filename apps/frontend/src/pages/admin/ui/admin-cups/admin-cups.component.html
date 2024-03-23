@@ -4,7 +4,7 @@
     <div class="card-text">Simple cup, like warcup</div>
     <div>
       <button
-        routerLink="/admin/cups/add-offline-cup"
+        routerLink="/admin/cups/offline/add"
         mat-raised-button
         color="accent"
         data-test-id="add-offline-cup-button"
@@ -18,12 +18,26 @@
     <div class="card-text">Round of tournament series</div>
     <div>
       <button
-        routerLink="/admin/cups/add-multicup-round"
+        routerLink="/admin/cups/multicup-round/add"
         mat-raised-button
         color="accent"
         data-test-id="add-multicup-round-button"
       >
         Add multicup round
+      </button>
+    </div>
+  </mat-card>
+  <mat-card class="card">
+    <div class="card-header">Online cup</div>
+    <div class="card-text">5 rounds by 30 minutes each</div>
+    <div>
+      <button
+        routerLink="/admin/cups/add-online-cup"
+        mat-raised-button
+        color="accent"
+        data-test-id="add-online-cup-button"
+      >
+        Add online cup
       </button>
     </div>
   </mat-card>
@@ -55,14 +69,14 @@
         </button>
         <ng-container *ngIf="isEditingCupAvailable(cup)">
           <button
-            [routerLink]="'/admin/cups/edit/' + cup.id"
+            [routerLink]="cup | invokeFunction : getCupEditLink"
             mat-raised-button
             color="basic"
-            data-test-id="edit-offline-cup-button"
+            data-test-id="edit-cup-button"
           >
             Edit
           </button>
-          <button (click)="confirmDelete(cup)" mat-raised-button color="warn" data-test-id="delete-offline-cup-button">
+          <button (click)="confirmDelete(cup)" mat-raised-button color="warn" data-test-id="delete-cup-button">
             Delete
           </button>
         </ng-container>

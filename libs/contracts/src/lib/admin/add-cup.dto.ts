@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class AddCupDto {
+export class AddOfflineCupDto {
   @IsNotEmpty()
   fullName: string;
 

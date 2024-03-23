@@ -13,9 +13,9 @@ import {
   AdminActiveMulticupInterface,
   WorldspawnMapInfoInterface,
   UploadedFileLinkInterface,
-  AdminEditOfflineCupInterface,
+  AdminEditCupInterface,
   UpdateCupDto,
-  AddCupDto,
+  AddOfflineCupDto,
   ProcessValidationDto,
   AdminActiveCupInterface,
 } from '@dfcomps/contracts';
@@ -54,8 +54,8 @@ export class AdminDataService {
       .pipe(tap((cups: AdminCupInterface[]) => (this.cups = cups)));
   }
 
-  public getSingleCup$(cupId: number): Observable<AdminEditOfflineCupInterface> {
-    return this.backendService.get$<AdminEditOfflineCupInterface>(URL_PARAMS.ADMIN.GET_SINGLE_CUP(cupId));
+  public getSingleCup$(cupId: number): Observable<AdminEditCupInterface> {
+    return this.backendService.get$<AdminEditCupInterface>(URL_PARAMS.ADMIN.GET_SINGLE_CUP(cupId));
   }
 
   public getCupValidationInfo$(newsId: number): Observable<AdminValidationInterface> {
@@ -138,8 +138,8 @@ export class AdminDataService {
     return this.backendService.get$<AdminActiveCupInterface[]>(URL_PARAMS.ADMIN.GET_ALL_ONLINE_CUPS_WITHOUT_NEWS);
   }
 
-  public addCup$(formValue: Record<string, any>): Observable<void> {
-    return this.backendService.post$<void>(URL_PARAMS.ADMIN.ADD_CUP, {
+  public addOfflineCup$(formValue: Record<string, any>): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.ADD_OFFLINE_CUP, {
       fullName: formValue['fullName'],
       shortName: formValue['shortName'],
       startTime: formValue['startTime'],
@@ -152,10 +152,10 @@ export class AdminDataService {
       size: formValue['size'],
       mapLevelshotLink: formValue['mapLevelshotLink'],
       mapPk3Link: formValue['mapPk3Link'],
-    } as AddCupDto);
+    } as AddOfflineCupDto);
   }
 
-  public editCup$(formValue: Record<string, any>, cupId: number): Observable<void> {
+  public editOfflineCup$(formValue: Record<string, any>, cupId: number): Observable<void> {
     const updateCupDto: UpdateCupDto = {
       fullName: formValue['fullName'],
       shortName: formValue['shortName'],
