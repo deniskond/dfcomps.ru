@@ -129,6 +129,7 @@ export class NewsService {
     const archiveNews: News[] = await this.newsRepository
       .createQueryBuilder('news')
       .leftJoinAndSelect('news.user', 'users')
+      .leftJoinAndSelect('news.newsType', 'news_types')
       .leftJoinAndSelect('news.cup', 'cups', "news.header LIKE '%WarCup%'")
       .where('news.datetimezone < :time', { time })
       .orderBy('datetimezone', 'DESC')
@@ -137,6 +138,7 @@ export class NewsService {
       .getMany();
 
     return archiveNews.map((archiveNewsItem: News) => ({
+      archiveNewsTypeId: archiveNewsItem.newsType.id,
       authorId: archiveNewsItem.user.id,
       authorName: archiveNewsItem.user.displayed_nick,
       datetimezone: archiveNewsItem.datetimezone,

@@ -1,7 +1,38 @@
-<div class="shadowed-main-block">
-  <h1 translate translation="newsArchive" class="h1-block-header"></h1>
+<div class="shadowed-main-block"> 
+  <div class="news-filter-buttons">
+    <button mat-raised-button 
+            color="primary" 
+            [class.filter-selected]="currentFilter === 'all'" 
+            (click)="filterNewsBy('all')" 
+            class="filter-button"> 
+      <span translate translation="allNews"></span>
+    </button>
+    <button mat-raised-button 
+            color="primary" 
+            [class.filter-selected]="currentFilter === 'start'"          
+            (click)="filterNewsBy('start')" 
+            class="filter-button">
+      <span translate translation="start"></span>
+    </button>
+    <button mat-raised-button 
+            color="primary" 
+            [class.filter-selected]="currentFilter === 'result'" 
+            (click)="filterNewsBy('result')" 
+            class="filter-button">
+      <span translate translation="result"></span>
+    </button>
+    <button mat-raised-button 
+            color="primary" 
+            [class.filter-selected]="currentFilter === 'other'" 
+            (click)="filterNewsBy('other')" 
+            class="filter-button">  
+      <span translate translation="other"></span>
+    </button>
+  </div>
+  
+  <h1 translate translation="newsArchive" class="h1-news-header"></h1>
 
-  <div *ngIf="(news$ | async) as news; else loader" class="movies-container">
+  <div *ngIf="(currentNews$ | async) as news; else loader" class="movies-container">
     <ng-container *ngIf="!!news.length; else loader">
       <div class="news-container">
         <div *ngFor="let singleNews of news" (click)="navigateToNewsPage(+singleNews.id)" class="archive-news-row">

@@ -1,4 +1,5 @@
 export interface ArchiveNewsInterface {
+  archiveNewsTypeId: number;
   authorId: number;
   authorName: string;
   datetimezone: string;
