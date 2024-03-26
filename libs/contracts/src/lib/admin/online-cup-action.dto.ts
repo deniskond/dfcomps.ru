@@ -1,4 +1,5 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsEnum, IsNotEmpty } from 'class-validator';
+import { Physics } from '../global/physics.enum';
 
 export class OnlineCupActionDto {
   @IsNotEmpty()
@@ -18,6 +19,10 @@ export class OnlineCupActionDto {
 
   @IsNotEmpty()
   server1: string;
+
+  @IsEnum(Physics)
+  @IsNotEmpty()
+  physics: Physics;
 
   server2: string | undefined;
 }

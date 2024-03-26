@@ -19,6 +19,7 @@ import {
   AdminActiveMulticupInterface,
   AdminEditCupInterface,
   AdminValidationInterface,
+  OnlineCupActionDto,
   ProcessValidationDto,
   UpdateOfflineCupDto,
   UploadedFileLinkInterface,
@@ -53,17 +54,20 @@ export class AdminCupsController {
   }
 
   @Post('add-offline-cup')
-  addCup(@Headers('X-Auth') accessToken: string | undefined, @Body() cupDto: AddOfflineCupDto): Promise<void> {
-    return this.adminCupsService.addOfflineCup(accessToken, cupDto);
+  addOfflineCup(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Body() addOfflineCupDto: AddOfflineCupDto,
+  ): Promise<void> {
+    return this.adminCupsService.addOfflineCup(accessToken, addOfflineCupDto);
   }
 
   @Post('update-offline-cup/:cupId')
-  updateCup(
+  updateOfflineCup(
     @Headers('X-Auth') accessToken: string | undefined,
-    @Body() cupDto: UpdateOfflineCupDto,
+    @Body() updateOfflineCupDto: UpdateOfflineCupDto,
     @Param('cupId', new ParseIntPipe()) cupId: number,
   ): Promise<void> {
-    return this.adminCupsService.updateOfflineCup(accessToken, cupDto, cupId);
+    return this.adminCupsService.updateOfflineCup(accessToken, updateOfflineCupDto, cupId);
   }
 
   @Get('get-validation-demos/:cupId')
@@ -97,6 +101,23 @@ export class AdminCupsController {
     @Param('cupId', new ParseIntPipe()) cupId: number,
   ): Promise<void> {
     return this.adminCupsService.finishOfflineCup(accessToken, cupId);
+  }
+
+  @Post('add-online-cup')
+  addOnlineCup(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Body() addOnlineCupDto: OnlineCupActionDto,
+  ): Promise<void> {
+    return this.adminCupsService.addOnlineCup(accessToken, addOnlineCupDto);
+  }
+
+  @Post('update-offline-cup/:cupId')
+  updateOnlineCup(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Body() updateOnlineCupDto: OnlineCupActionDto,
+    @Param('cupId', new ParseIntPipe()) cupId: number,
+  ): Promise<void> {
+    return this.adminCupsService.updateOnlineCup(accessToken, updateOnlineCupDto, cupId);
   }
 
   @Get('get-all-active-multicups')
