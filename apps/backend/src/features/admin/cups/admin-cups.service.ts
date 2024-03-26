@@ -15,11 +15,11 @@ import {
   AdminPlayerDemosValidationInterface,
   AdminValidationInterface,
   CupTypes,
-  UpdateCupDto,
   NewsTypes,
   Physics,
   ProcessValidationDto,
   ResultsTableInterface,
+  UpdateOfflineCupDto,
   UploadedFileLinkInterface,
   ValidDemoInterface,
   ValidationResultInterface,
@@ -232,7 +232,11 @@ export class AdminCupsService {
     }
   }
 
-  public async updateCup(accessToken: string | undefined, updateCupDto: UpdateCupDto, cupId: number): Promise<void> {
+  public async updateOfflineCup(
+    accessToken: string | undefined,
+    updateOfflineCupDto: UpdateOfflineCupDto,
+    cupId: number,
+  ): Promise<void> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
@@ -249,11 +253,11 @@ export class AdminCupsService {
       throw new BadRequestException(`Can't update - cup already finished`);
     }
 
-    const startDatetime = moment(updateCupDto.startTime).tz('Europe/Moscow').format();
-    const endDatetime = moment(updateCupDto.endTime).tz('Europe/Moscow').format();
+    const startDatetime = moment(updateOfflineCupDto.startTime).tz('Europe/Moscow').format();
+    const endDatetime = moment(updateOfflineCupDto.endTime).tz('Europe/Moscow').format();
 
-    if (updateCupDto.mapPk3Link) {
-      const absolutePk3Link = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + updateCupDto.mapPk3Link;
+    if (updateOfflineCupDto.mapPk3Link) {
+      const absolutePk3Link = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + updateOfflineCupDto.mapPk3Link;
 
       if (fs.existsSync(absolutePk3Link)) {
         fs.rmSync(absolutePk3Link);
@@ -264,27 +268,27 @@ export class AdminCupsService {
       .createQueryBuilder()
       .update(Cup)
       .set({
-        full_name: updateCupDto.fullName,
-        short_name: updateCupDto.shortName,
+        full_name: updateOfflineCupDto.fullName,
+        short_name: updateOfflineCupDto.shortName,
         start_datetime: startDatetime,
         end_datetime: endDatetime,
-        map1: updateCupDto.mapName,
-        map_weapons: updateCupDto.weapons,
-        map_author: updateCupDto.mapAuthor,
-        map_pk3: updateCupDto.mapPk3Link || undefined,
-        map_size: updateCupDto.size,
-        multicup: updateCupDto.multicupId ? { id: updateCupDto.multicupId } : undefined,
+        map1: updateOfflineCupDto.mapName,
+        map_weapons: updateOfflineCupDto.weapons,
+        map_author: updateOfflineCupDto.mapAuthor,
+        map_pk3: updateOfflineCupDto.mapPk3Link || undefined,
+        map_size: updateOfflineCupDto.size,
+        multicup: updateOfflineCupDto.multicupId ? { id: updateOfflineCupDto.multicupId } : undefined,
       })
       .where({ id: cupId })
       .execute();
 
-    if (updateCupDto.addNews) {
+    if (updateOfflineCupDto.addNews) {
       await this.newsRepository
         .createQueryBuilder('news')
         .update(News)
         .set({
-          header: `Старт ${updateCupDto.fullName}!`,
-          header_en: `${updateCupDto.fullName} start!`,
+          header: `Старт ${updateOfflineCupDto.fullName}!`,
+          header_en: `${updateOfflineCupDto.fullName} start!`,
           user: { id: userAccess.userId! },
           datetimezone: startDatetime,
         })
@@ -296,8 +300,8 @@ export class AdminCupsService {
         .createQueryBuilder('news')
         .update(News)
         .set({
-          header: `Результаты ${updateCupDto.fullName}`,
-          header_en: `Results: ${updateCupDto.fullName}`,
+          header: `Результаты ${updateOfflineCupDto.fullName}`,
+          header_en: `Results: ${updateOfflineCupDto.fullName}`,
           user: { id: userAccess.userId! },
           datetimezone: endDatetime,
         })

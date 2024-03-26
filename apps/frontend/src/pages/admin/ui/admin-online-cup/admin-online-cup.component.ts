@@ -2,16 +2,9 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import {
-  Observable,
-  Subject,
-  filter,
-  switchMap,
-  take,
-  tap,
-} from 'rxjs';
+import { Subject, filter, finalize, switchMap, take, takeUntil, tap } from 'rxjs';
 import { AdminDataService } from '../../business/admin-data.service';
-import { AdminActiveMulticupInterface, AdminEditCupInterface } from '@dfcomps/contracts';
+import { AdminEditCupInterface } from '@dfcomps/contracts';
 import * as moment from 'moment-timezone';
 
 @Component({
@@ -21,23 +14,21 @@ import * as moment from 'moment-timezone';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminOnlineCupComponent implements OnInit {
-  public availableMulticups$: Observable<AdminActiveMulticupInterface[]>;
-  public isMapFound: boolean | null = null;
-  public isLoadingMapInfo = false;
   public isLoadingCupAction = false;
-  public isMulticupRequired = true;
+  public useTwoServers = true;
   public componentMode: 'Add' | 'Edit' = 'Add';
   public onlineCupForm: FormGroup = new FormGroup({
     fullName: new FormControl('', Validators.required),
     shortName: new FormControl('', Validators.required),
     startTime: new FormControl('', Validators.required),
+    addNews: new FormControl(true),
     useTwoServers: new FormControl(true, Validators.required),
-    server1: new FormControl(''),
-    server2: new FormControl(''),
+    server1: new FormControl('q3df.ru:27974', Validators.required),
+    server2: new FormControl('q3df.ru:27975', Validators.required),
   });
 
-  private onDestroy$ = new Subject<void>();
   private cupId: number | null = null;
+  private onDestroy$ = new Subject<void>();
 
   constructor(
     private adminDataService: AdminDataService,
@@ -47,6 +38,8 @@ export class AdminOnlineCupComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.initUseTwoServersSubscription();
+
     this.route.params
       .pipe(
         take(1),
@@ -80,6 +73,21 @@ export class AdminOnlineCupComponent implements OnInit {
     return !!control!.errors && !control!.pristine;
   }
 
+  private initUseTwoServersSubscription(): void {
+    this.onlineCupForm
+      .get('useTwoServers')!
+      .valueChanges.pipe(takeUntil(this.onDestroy$))
+      .subscribe((value: boolean) => {
+        if (value) {
+          this.onlineCupForm.get('server2')!.setValidators([Validators.required]);
+        } else {
+          this.onlineCupForm.get('server2')!.clearValidators();
+        }
+
+        this.useTwoServers = value;
+      });
+  }
+
   private setFormValues(cup: AdminEditCupInterface): void {
     this.onlineCupForm.setValue({
       fullName: cup.fullName,
@@ -92,28 +100,28 @@ export class AdminOnlineCupComponent implements OnInit {
   }
 
   private addOnlineCup(): void {
-    // this.adminDataService
-    //   .addOnlineCup$(this.onlineCupForm.value)
-    //   .pipe(
-    //     switchMap(() => this.adminDataService.getAllCups$(false)),
-    //     finalize(() => (this.isLoadingCupAction = false)),
-    //   )
-    //   .subscribe(() => {
-    //     this.router.navigate(['/admin/cups']);
-    //     this.snackBar.open('Online cup added successfully', 'OK', { duration: 3000 });
-    //   });
+    this.adminDataService
+      .addOnlineCup$(this.onlineCupForm.value)
+      .pipe(
+        switchMap(() => this.adminDataService.getAllCups$(false)),
+        finalize(() => (this.isLoadingCupAction = false)),
+      )
+      .subscribe(() => {
+        this.router.navigate(['/admin/cups']);
+        this.snackBar.open('Online cup added successfully', 'OK', { duration: 3000 });
+      });
   }
 
   private editOnlineCup(): void {
-    // this.adminDataService
-    //   .editOnlineCup$(this.onlineCupForm.value, this.cupId!)
-    //   .pipe(
-    //     switchMap(() => this.adminDataService.getAllCups$(false)),
-    //     finalize(() => (this.isLoadingCupAction = false)),
-    //   )
-    //   .subscribe(() => {
-    //     this.router.navigate(['/admin/cups']);
-    //     this.snackBar.open('Online cup edited successfully', 'OK', { duration: 3000 });
-    //   });
+    this.adminDataService
+      .editOnlineCup$(this.onlineCupForm.value, this.cupId!)
+      .pipe(
+        switchMap(() => this.adminDataService.getAllCups$(false)),
+        finalize(() => (this.isLoadingCupAction = false)),
+      )
+      .subscribe(() => {
+        this.router.navigate(['/admin/cups']);
+        this.snackBar.open('Online cup edited successfully', 'OK', { duration: 3000 });
+      });
   }
 }

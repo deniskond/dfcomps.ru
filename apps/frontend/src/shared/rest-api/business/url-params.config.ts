@@ -194,7 +194,9 @@ export class URL_PARAMS {
     UPLOAD_MAP: (mapName: string) => string;
     UPLOAD_LEVELSHOT: (mapName: string) => string;
     GET_SINGLE_CUP: (cupId: number) => string;
-    UPDATE_CUP: (cupId: number) => string;
+    UPDATE_OFFLINE_CUP: (cupId: number) => string;
+    ADD_ONLINE_CUP: string;
+    UPDATE_ONLINE_CUP: (cupId: number) => string;
     DELETE_CUP: (cupId: number) => string;
     SET_SEASON_REWARDS: string;
     SAVE_SEASON_RATINGS: string;
@@ -220,7 +222,9 @@ export class URL_PARAMS {
       UPLOAD_MAP: (mapName: string) => `${API_URL}/admin/cups/upload-map/${mapName}`,
       UPLOAD_LEVELSHOT: (mapName: string) => `${API_URL}/admin/cups/upload-levelshot/${mapName}`,
       GET_SINGLE_CUP: (cupId: number) => `${API_URL}/admin/cups/get/${cupId}`,
-      UPDATE_CUP: (cupId: number) => `${API_URL}/admin/cups/update/${cupId}`,
+      UPDATE_OFFLINE_CUP: (cupId: number) => `${API_URL}/admin/cups/update-offline-cup/${cupId}`,
+      ADD_ONLINE_CUP: `${API_URL}/admin/cups/add-online-cup`,
+      UPDATE_ONLINE_CUP: (cupId: number) => `${API_URL}/admin/cups/update-online-cup/${cupId}`,
       DELETE_CUP: (cupId: number) => `${API_URL}/admin/cups/delete/${cupId}`,
       SET_SEASON_REWARDS: `${API_URL}/admin/season/rewards`, // TODO
       SAVE_SEASON_RATINGS: `${API_URL}/admin/season/save_season_ratings`, // TODO

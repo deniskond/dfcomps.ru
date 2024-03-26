@@ -14,10 +14,11 @@ import {
   WorldspawnMapInfoInterface,
   UploadedFileLinkInterface,
   AdminEditCupInterface,
-  UpdateCupDto,
   AddOfflineCupDto,
   ProcessValidationDto,
   AdminActiveCupInterface,
+  UpdateOfflineCupDto,
+  OnlineCupActionDto,
 } from '@dfcomps/contracts';
 import * as moment from 'moment';
 
@@ -156,7 +157,7 @@ export class AdminDataService {
   }
 
   public editOfflineCup$(formValue: Record<string, any>, cupId: number): Observable<void> {
-    const updateCupDto: UpdateCupDto = {
+    const updateCupDto: UpdateOfflineCupDto = {
       fullName: formValue['fullName'],
       shortName: formValue['shortName'],
       startTime: formValue['startTime'],
@@ -174,7 +175,31 @@ export class AdminDataService {
       updateCupDto.multicupId = formValue['multicup'];
     }
 
-    return this.backendService.post$<void>(URL_PARAMS.ADMIN.UPDATE_CUP(cupId), updateCupDto);
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.UPDATE_OFFLINE_CUP(cupId), updateCupDto);
+  }
+
+  public addOnlineCup$(formValue: Record<string, any>): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.ADD_ONLINE_CUP, {
+      fullName: formValue['fullName'],
+      shortName: formValue['shortName'],
+      startTime: formValue['startTime'],
+      addNews: formValue['addNews'],
+      useTwoServers: formValue['useTwoServers'],
+      server1: formValue['server1'],
+      server2: formValue['server2'],
+    } as OnlineCupActionDto);
+  }
+
+  public editOnlineCup$(formValue: Record<string, any>, cupId: number): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.UPDATE_ONLINE_CUP(cupId), {
+      fullName: formValue['fullName'],
+      shortName: formValue['shortName'],
+      startTime: formValue['startTime'],
+      addNews: formValue['addNews'],
+      useTwoServers: formValue['useTwoServers'],
+      server1: formValue['server1'],
+      server2: formValue['server2'],
+    } as OnlineCupActionDto);
   }
 
   public deleteCup$(cupId: number): Observable<void> {

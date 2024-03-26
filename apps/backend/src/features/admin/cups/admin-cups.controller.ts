@@ -19,8 +19,8 @@ import {
   AdminActiveMulticupInterface,
   AdminEditCupInterface,
   AdminValidationInterface,
-  UpdateCupDto,
   ProcessValidationDto,
+  UpdateOfflineCupDto,
   UploadedFileLinkInterface,
   WorldspawnMapInfoInterface,
 } from '@dfcomps/contracts';
@@ -57,13 +57,13 @@ export class AdminCupsController {
     return this.adminCupsService.addOfflineCup(accessToken, cupDto);
   }
 
-  @Post('update/:cupId')
+  @Post('update-offline-cup/:cupId')
   updateCup(
     @Headers('X-Auth') accessToken: string | undefined,
-    @Body() cupDto: UpdateCupDto,
+    @Body() cupDto: UpdateOfflineCupDto,
     @Param('cupId', new ParseIntPipe()) cupId: number,
   ): Promise<void> {
-    return this.adminCupsService.updateCup(accessToken, cupDto, cupId);
+    return this.adminCupsService.updateOfflineCup(accessToken, cupDto, cupId);
   }
 
   @Get('get-validation-demos/:cupId')
