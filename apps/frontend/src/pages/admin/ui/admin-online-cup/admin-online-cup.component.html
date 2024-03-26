@@ -20,6 +20,16 @@
         <input formControlName="shortName" class="input-field" data-test-id="online-cup-shortname-input" />
         <div *ngIf="hasFieldError(this.onlineCupForm.get('shortName')!)" class="field-error">Field is required</div>
       </div>
+      <div class="input-label">Physics</div>
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-select formControlName="physics" data-test-id="online-cup-physics-select">
+            <mat-option *ngFor="let physics of physicsArray" [value]="physics">
+              {{ physics | uppercase }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
       <div>
         Start time
         <br />
@@ -34,7 +44,11 @@
         />
         <span *ngIf="hasFieldError(this.onlineCupForm.get('startTime')!)" class="field-error">Field is required</span>
       </div>
-      <div class="input-label">{{ componentMode }} start news</div>
+      <div>
+        {{ componentMode }} start news
+        <br />
+        <span class="comment">(news appear immediately)</span>
+      </div>
       <div class="checkbox-container">
         <mat-checkbox
           color="primary"
@@ -50,17 +64,13 @@
           data-test-id="online-cup-add-news-checkbox"
         ></mat-checkbox>
       </div>
-      <div class="input-label">
-        Server 1
-      </div>
+      <div class="input-label">Server 1</div>
       <div>
         <input formControlName="server1" class="input-field" data-test-id="online-cup-server1-input" />
         <div *ngIf="hasFieldError(this.onlineCupForm.get('server1')!)" class="field-error">Field is required</div>
       </div>
       <ng-container *ngIf="useTwoServers">
-        <div class="input-label">
-          Server 2
-        </div>
+        <div class="input-label">Server 2</div>
         <div>
           <input formControlName="server2" class="input-field" data-test-id="online-cup-server1-input" />
           <div *ngIf="hasFieldError(this.onlineCupForm.get('server2')!)" class="field-error">Field is required</div>

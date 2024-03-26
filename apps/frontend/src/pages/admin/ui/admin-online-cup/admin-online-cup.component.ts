@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject, filter, finalize, switchMap, take, takeUntil, tap } from 'rxjs';
 import { AdminDataService } from '../../business/admin-data.service';
-import { AdminEditCupInterface } from '@dfcomps/contracts';
+import { AdminEditCupInterface, Physics } from '@dfcomps/contracts';
 import * as moment from 'moment-timezone';
 
 @Component({
@@ -17,14 +17,16 @@ export class AdminOnlineCupComponent implements OnInit {
   public isLoadingCupAction = false;
   public useTwoServers = true;
   public componentMode: 'Add' | 'Edit' = 'Add';
+  public physicsArray = Object.values(Physics);
   public onlineCupForm: FormGroup = new FormGroup({
     fullName: new FormControl('', Validators.required),
     shortName: new FormControl('', Validators.required),
     startTime: new FormControl('', Validators.required),
-    addNews: new FormControl(true),
+    addNews: new FormControl(false),
     useTwoServers: new FormControl(true, Validators.required),
     server1: new FormControl('q3df.ru:27974', Validators.required),
     server2: new FormControl('q3df.ru:27975', Validators.required),
+    physics: new FormControl(Physics.VQ3, Validators.required),
   });
 
   private cupId: number | null = null;
@@ -96,6 +98,8 @@ export class AdminOnlineCupComponent implements OnInit {
       useTwoServers: cup.useTwoServers,
       server1: cup.server1,
       server2: cup.server2,
+      addNews: true,
+      physics: cup.physics,
     });
   }
 

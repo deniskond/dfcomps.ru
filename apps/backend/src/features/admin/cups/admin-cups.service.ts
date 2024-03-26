@@ -132,6 +132,7 @@ export class AdminCupsService {
       useTwoServers: cup.use_two_servers,
       server1: cup.server1,
       server2: cup.server2,
+      physics: cup.physics,
     };
   }
 

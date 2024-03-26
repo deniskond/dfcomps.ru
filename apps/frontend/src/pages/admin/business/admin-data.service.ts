@@ -187,6 +187,7 @@ export class AdminDataService {
       useTwoServers: formValue['useTwoServers'],
       server1: formValue['server1'],
       server2: formValue['server2'],
+      physics: formValue['physics'],
     } as OnlineCupActionDto);
   }
 
@@ -199,6 +200,7 @@ export class AdminDataService {
       useTwoServers: formValue['useTwoServers'],
       server1: formValue['server1'],
       server2: formValue['server2'],
+      physics: formValue['physics'],
     } as OnlineCupActionDto);
   }
 

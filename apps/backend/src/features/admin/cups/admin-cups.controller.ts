@@ -111,7 +111,7 @@ export class AdminCupsController {
     return this.adminCupsService.addOnlineCup(accessToken, addOnlineCupDto);
   }
 
-  @Post('update-offline-cup/:cupId')
+  @Post('update-online-cup/:cupId')
   updateOnlineCup(
     @Headers('X-Auth') accessToken: string | undefined,
     @Body() updateOnlineCupDto: OnlineCupActionDto,

@@ -1,3 +1,5 @@
+import { Physics } from '../global/physics.enum';
+
 export interface AdminEditCupInterface {
   id: number;
   fullName: string;
@@ -16,4 +18,5 @@ export interface AdminEditCupInterface {
   useTwoServers: boolean;
   server1: string;
   server2: string;
+  physics: Physics | 'mixed';
 }
