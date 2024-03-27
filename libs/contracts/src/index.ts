@@ -27,7 +27,6 @@ export { VerifiedStatuses } from './lib/cup/verified-statuses.enum';
 export { InvalidDemoInterface } from './lib/tables/invalid-demo.interface';
 export { ValidDemoInterface } from './lib/tables/valid-demo.interface';
 export { MulticupSystems } from './lib/cup/multicup-systems.enum';
-export { PaginationCountInterface } from './lib/global/pagination-count.interface';
 export { SeasonNumberInterface } from './lib/rating/season-number.interface';
 export { ArchiveNewsInterface } from './lib/news/archive-news.interface';
 export { CommentActionResultInterface } from './lib/comments/comment-action.interface';
@@ -70,3 +69,7 @@ export { AdminActiveCupInterface } from './lib/admin/admin-active-cup.interface'
 export { AddOfflineCupDto } from './lib/admin/add-offline-cup.dto';
 export { UpdateOfflineCupDto } from './lib/admin/update-offline-cup.dto';
 export { OnlineCupActionDto } from './lib/admin/online-cup-action.dto';
+export { ArchiveNewsFilter } from './lib/news/archive-news-filter.enum';
+export { ArchiveNewsResultInterface } from './lib/news/archive-news.interface';
+export { CountInterface } from './lib/global/count.interface';
+export { NewsArchiveFilterDto } from './lib/news/match-start.dto';

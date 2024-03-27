@@ -4,13 +4,13 @@ import {
   MulticupResultInterface,
   MulticupSystems,
   Physics,
-  PaginationCountInterface,
   RatingTablesModes,
   ResultsTableInterface,
   ValidDemoInterface,
   VerifiedStatuses,
   MulticupTableInterface,
   MulticupRoundInterface,
+  CountInterface,
 } from '@dfcomps/contracts';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -285,7 +285,7 @@ export class TablesService {
     }));
   }
 
-  public async getRatingTablePlayersCount(): Promise<PaginationCountInterface> {
+  public async getRatingTablePlayersCount(): Promise<CountInterface> {
     const vq3PlayersCount: number = await this.userRepository
       .createQueryBuilder('users')
       .where('vq3_rating != 0')
@@ -303,7 +303,7 @@ export class TablesService {
     };
   }
 
-  public async getSeasonRatingTablePlayersCount(season: number): Promise<PaginationCountInterface> {
+  public async getSeasonRatingTablePlayersCount(season: number): Promise<CountInterface> {
     const vq3PlayersCount: number = await this.oldRatingsRepository
       .createQueryBuilder('old_ratings')
       .where('vq3_rating != 0')

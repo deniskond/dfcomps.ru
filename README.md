@@ -2,6 +2,8 @@
 
 This is a repository for storing everything related to dfcomps.ru site, which is dedicated to hosting Quake III Defrag tournaments. Feel free to contribute or just join our awesome community and send your demos :)
 
+For anyone interested in contributing, there is a trello board with the list of planned tasks for dfcomps: [https://trello.com/b/kKv83NJL/dfcomps](https://trello.com/b/kKv83NJL/dfcomps).
+
 # Quick start
 
 The repository consists of several applications which are managed by [Nx Workspaces](https://nx.dev/). Every app is written in [Typescript](https://www.typescriptlang.org/), recommended version of [NodeJS](https://nodejs.org/) is 18.x. To develop backend locally, you need to install [Docker](https://www.docker.com/) for working with database. Before running any projects locally, you need to install npm packages: 
