@@ -2,7 +2,7 @@
 
 This is a repository for storing everything related to dfcomps.ru site, which is dedicated to hosting Quake III Defrag tournaments. Feel free to contribute or just join our awesome community and send your demos :)
 
-For anyone interested in contributing, there is a trello board with list of planned tasks for dfomps: [https://trello.com/b/kKv83NJL/dfcomps](https://trello.com/b/kKv83NJL/dfcomps).
+For anyone interested in contributing, there is a trello board with the list of planned tasks for dfcomps: [https://trello.com/b/kKv83NJL/dfcomps](https://trello.com/b/kKv83NJL/dfcomps).
 
 # Quick start
 
