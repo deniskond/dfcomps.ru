@@ -19,6 +19,13 @@
         icon="grade"
       ></admin-menu-item>
       <admin-menu-item
+        *ngIf="hasCupsAccess(user)"
+        [isActive]="navigationPage === 'multicups'"
+        routerLink="/admin/multicups"
+        caption="Multicups"
+        icon="dataset"
+      ></admin-menu-item>
+      <admin-menu-item
         *ngIf="hasSeasonAccess(user)"
         [isActive]="navigationPage === 'season'"
         routerLink="/admin/season"

@@ -37,6 +37,7 @@ describe('admin online cups', () => {
     // adding online cup and checking admin cups list
     cy.get('[data-test-id=online-cup-submit-button]').click(); 
     cy.get('[data-test-id=cup-fullname-text]').first().should('contain.text', initialCupFullName);
+    cy.wait(1000); // this is flaky without timeout; news might not be added before routing to main page
 
     // checking mainpage
     cy.visit('/');

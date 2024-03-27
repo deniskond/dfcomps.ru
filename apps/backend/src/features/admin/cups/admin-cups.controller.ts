@@ -16,7 +16,6 @@ import {
 import { AdminCupsService } from './admin-cups.service';
 import {
   AddOfflineCupDto,
-  AdminActiveMulticupInterface,
   AdminEditCupInterface,
   AdminValidationInterface,
   OnlineCupActionDto,
@@ -118,11 +117,6 @@ export class AdminCupsController {
     @Param('cupId', new ParseIntPipe()) cupId: number,
   ): Promise<void> {
     return this.adminCupsService.updateOnlineCup(accessToken, updateOnlineCupDto, cupId);
-  }
-
-  @Get('get-all-active-multicups')
-  getAllActiveMulticups(): Promise<AdminActiveMulticupInterface[]> {
-    return this.adminCupsService.getAllActiveMulticups();
   }
 
   @Get('get-worldspawn-map-info')

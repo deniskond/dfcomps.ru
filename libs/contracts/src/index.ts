@@ -73,3 +73,6 @@ export { ArchiveNewsFilter } from './lib/news/archive-news-filter.enum';
 export { ArchiveNewsResultInterface } from './lib/news/archive-news.interface';
 export { CountInterface } from './lib/global/count.interface';
 export { NewsArchiveFilterDto } from './lib/news/match-start.dto';
+export { AdminMulticupInterface } from './lib/admin/admin-multicup.interface';
+export { AdminEditMulticupInterface } from './lib/admin/admin-edit-multicup.interface';
+export { MulticupActionDto } from './lib/admin/multicup-action.dto';

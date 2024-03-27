@@ -19,6 +19,8 @@ import {
   AdminActiveCupInterface,
   UpdateOfflineCupDto,
   OnlineCupActionDto,
+  AdminMulticupInterface,
+  AdminEditMulticupInterface,
 } from '@dfcomps/contracts';
 import * as moment from 'moment';
 
@@ -28,6 +30,7 @@ import * as moment from 'moment';
 export class AdminDataService {
   private news: AdminNewsListInterface[];
   private cups: AdminCupInterface[];
+  private multicups: AdminMulticupInterface[];
 
   constructor(private backendService: BackendService) {}
 
@@ -230,6 +233,28 @@ export class AdminDataService {
     return this.backendService.uploadFile$(URL_PARAMS.ADMIN.UPLOAD_LEVELSHOT(mapName), [
       { fileKey: 'file', file: levelshot },
     ]);
+  }
+
+  public getAllMulticups$(cache = true): Observable<AdminMulticupInterface[]> {
+    if (this.multicups && cache) {
+      return of(this.multicups);
+    }
+
+    return this.backendService
+      .get$<AdminMulticupInterface[]>(URL_PARAMS.ADMIN.GET_MULTICUPS)
+      .pipe(tap((multicups: AdminMulticupInterface[]) => (this.multicups = multicups)));
+  }
+
+  public getSingleMulticup$(multicupId: number): Observable<AdminEditMulticupInterface> {
+    return this.backendService.get$<AdminEditMulticupInterface>(URL_PARAMS.ADMIN.GET_SINGLE_MULTICUP(multicupId));
+  }
+
+  public deleteMulticup$(multicupId: number): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.DELETE_MULTICUP(multicupId));
+  }
+
+  public setMulticups(multicups: AdminMulticupInterface[]): void {
+    this.multicups = multicups;
   }
 
   private getAdminNewsDto(formValue: Record<string, any>, newsType: NewsTypes): AdminNewsDto {

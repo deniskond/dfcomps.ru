@@ -24,6 +24,8 @@ import { HasAdminPanelAccess } from './business/has-admin-panel-access.guard';
 import { AdminOfflineCupComponent } from './ui/admin-offline-cup/admin-offline-cup.component';
 import { AdminRedirectComponent } from './ui/admin-redirect/admin-redirect.component';
 import { AdminOnlineCupComponent } from './ui/admin-online-cup/admin-online-cup.component';
+import { AdminMulticupsComponent } from './ui/admin-multicups/admin-multicups.component';
+import { AdminMulticupComponent } from './ui/admin-multicup/admin-multicup.component';
 
 const adminRoutes: Routes = [
   {
@@ -69,6 +71,14 @@ const adminRoutes: Routes = [
         ],
       },
       {
+        path: 'multicups',
+        children: [
+          { path: '', component: AdminMulticupsComponent },
+          { path: 'add', component: AdminMulticupComponent },
+          { path: 'edit/:id', component: AdminMulticupComponent },
+        ],
+      },
+      {
         path: 'validate',
         children: [
           {
@@ -97,6 +107,8 @@ const adminRoutes: Routes = [
     AdminSeasonComponent,
     AdminOfflineCupComponent,
     AdminOnlineCupComponent,
+    AdminMulticupsComponent,
+    AdminMulticupComponent,
   ],
   imports: [
     RouterModule.forChild(adminRoutes),

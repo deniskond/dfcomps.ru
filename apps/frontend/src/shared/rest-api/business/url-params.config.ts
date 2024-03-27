@@ -187,7 +187,6 @@ export class URL_PARAMS {
     PROCESS_VALIDATION: (cupId: number) => string;
     CALCULATE_CUP_RATING: (cupId: number) => string;
     FINISH_OFFLINE_CUP: (cupId: number) => string;
-    GET_ALL_AVAILABLE_MULTICUPS: string;
     GET_ALL_OFFLINE_CUPS_WITHOUT_NEWS: string;
     GET_ALL_ONLINE_CUPS_WITHOUT_NEWS: string;
     ADD_OFFLINE_CUP: string;
@@ -203,6 +202,10 @@ export class URL_PARAMS {
     RESET_SEASON_RATINGS: string;
     INCREMENT_SEASON: string;
     GET_WORLDSPAWN_MAP_INFO: string;
+    GET_MULTICUPS: string;
+    GET_SINGLE_MULTICUP: (multicupId: number) => string;
+    DELETE_MULTICUP: (multicupId: number) => string;
+    GET_ALL_AVAILABLE_MULTICUPS: string;
   } {
     return {
       GET_NEWS: `${API_URL}/admin/news/get-all-news`,
@@ -215,7 +218,6 @@ export class URL_PARAMS {
       PROCESS_VALIDATION: (cupId: number) => `${API_URL}/admin/cups/process-validation/${cupId}`,
       CALCULATE_CUP_RATING: (cupId: number) => `${API_URL}/admin/cups/calculate-rating/${cupId}`,
       FINISH_OFFLINE_CUP: (cupId: number) => `${API_URL}/admin/cups/finish-offline-cup/${cupId}`,
-      GET_ALL_AVAILABLE_MULTICUPS: `${API_URL}/admin/cups/get-all-available-multicups`,
       GET_ALL_OFFLINE_CUPS_WITHOUT_NEWS: `${API_URL}/admin/cups/get-all-offline-cups-without-news`,
       GET_ALL_ONLINE_CUPS_WITHOUT_NEWS: `${API_URL}/admin/cups/get-all-online-cups-without-news`,
       ADD_OFFLINE_CUP: `${API_URL}/admin/cups/add-offline-cup`,
@@ -231,6 +233,10 @@ export class URL_PARAMS {
       RESET_SEASON_RATINGS: `${API_URL}/admin/season/reset_season_ratings`, // TODO
       INCREMENT_SEASON: `${API_URL}/admin/season/increment`, // TODO
       GET_WORLDSPAWN_MAP_INFO: `${API_URL}/admin/cups/get-worldspawn-map-info`,
+      GET_MULTICUPS: `${API_URL}/admin/multicups/get-all-multicups`,
+      GET_SINGLE_MULTICUP: (multicupId: number) => `${API_URL}/admin/multicups/get/${multicupId}`,
+      DELETE_MULTICUP: (multicupId: number) => `${API_URL}/admin/multicups/delete/${multicupId}`,
+      GET_ALL_AVAILABLE_MULTICUPS: `${API_URL}/admin/multicups/get-all-available-multicups`,
     };
   }
 }
