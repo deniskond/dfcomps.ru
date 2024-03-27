@@ -70,3 +70,4 @@ export { NewsStreamersResultsInterface } from './lib/news/news-streamers-results
 export { ArchiveNewsFilter } from './lib/news/archive-news-filter.enum';
 export { ArchiveNewsResultInterface } from './lib/news/archive-news.interface';
 export { CountInterface } from './lib/global/count.interface';
+export { NewsArchiveFilterDto } from './lib/news/match-start.dto';

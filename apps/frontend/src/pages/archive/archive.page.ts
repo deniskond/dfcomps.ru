@@ -60,11 +60,12 @@ export class ArchivePageComponent implements OnInit {
 
   public filterNewsBy(filter: ArchiveNewsFilter): void {
     this.currentFilter = filter;
+    this.fetchNews();
   }
 
   private fetchNews(): void {
     this.archiveService
-      .getArchiveNews$(this.currentPage * NEWS_ON_PAGE, (this.currentPage + 1) * NEWS_ON_PAGE)
+      .getArchiveNews$(this.currentPage * NEWS_ON_PAGE, (this.currentPage + 1) * NEWS_ON_PAGE, this.currentFilter)
       .subscribe(({ resultsCount, news }: ArchiveNewsResultInterface) => {
         this.news = news;
         this.pagesCount = Math.ceil(resultsCount / NEWS_ON_PAGE);

@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
+  ArchiveNewsFilter,
   ArchiveNewsResultInterface,
   MulticupResultInterface,
   NewsInterface,
@@ -31,6 +32,7 @@ import { getMapLevelshot } from '../../shared/helpers/get-map-levelshot';
 import { mapCupEntityToInterface } from '../../shared/mappers/cup.mapper';
 import { UserRoles, checkUserRoles } from '@dfcomps/auth';
 import { formatResultTime } from '@dfcomps/helpers';
+import { mapNewsTypeEnumToDBNewsTypeId } from '../../shared/mappers/news-types.mapper';
 
 @Injectable()
 export class NewsService {
@@ -115,17 +117,41 @@ export class NewsService {
     return await this.mapNewsType(newsItem, userAccess);
   }
 
-  public async getNewsArchive(startIndex: number, endIndex: number): Promise<ArchiveNewsResultInterface> {
+  public async getNewsArchive(
+    startIndex: number,
+    endIndex: number,
+    filter: ArchiveNewsFilter,
+  ): Promise<ArchiveNewsResultInterface> {
     const time: string = moment().format();
-    const newsCount: number = await this.newsRepository.createQueryBuilder('news').getCount();
+    const filterNewsMap: Record<ArchiveNewsFilter, NewsTypes[]> = {
+      [ArchiveNewsFilter.ALL]: Object.values(NewsTypes),
+      [ArchiveNewsFilter.OTHER]: [NewsTypes.SIMPLE],
+      [ArchiveNewsFilter.RESULT]: [
+        NewsTypes.DFWC_RESULTS,
+        NewsTypes.MULTICUP_RESULTS,
+        NewsTypes.OFFLINE_RESULTS,
+        NewsTypes.ONLINE_RESULTS,
+        NewsTypes.STREAMERS_RESULTS,
+      ],
+      [ArchiveNewsFilter.START]: [NewsTypes.OFFLINE_START, NewsTypes.ONLINE_ANNOUNCE],
+    };
+    const dbNewsTypesIds: number[] = filterNewsMap[filter].map(mapNewsTypeEnumToDBNewsTypeId);
+
     const archiveNews: News[] = await this.newsRepository
       .createQueryBuilder('news')
       .leftJoinAndSelect('news.user', 'users')
+      .leftJoinAndSelect('news.newsType', 'news_types')
       .where('news.datetimezone < :time', { time })
+      .andWhere('news.newsTypeId IN(:...ids)', { ids: dbNewsTypesIds })
       .orderBy('datetimezone', 'DESC')
       .offset(startIndex)
       .limit(endIndex - startIndex)
       .getMany();
+
+    const newsCount: number = await this.newsRepository
+      .createQueryBuilder('news')
+      .where('news.newsTypeId IN(:...ids)', { ids: dbNewsTypesIds })
+      .getCount();
 
     return {
       news: archiveNews.map((archiveNewsItem: News) => ({

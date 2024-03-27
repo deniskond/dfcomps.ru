@@ -2,6 +2,7 @@ import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
 import { News } from './news.entity';
 import { NewsTypes } from '@dfcomps/contracts';
 
+// TODO This entity needs to be deleted
 @Entity({ name: 'news_types' })
 export class NewsType {
   @PrimaryGeneratedColumn()

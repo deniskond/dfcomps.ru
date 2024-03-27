@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ArchiveNewsResultInterface } from '@dfcomps/contracts';
+import { ArchiveNewsFilter, ArchiveNewsResultInterface, NewsArchiveFilterDto } from '@dfcomps/contracts';
 import { Observable } from 'rxjs';
 import { BackendService, URL_PARAMS } from '~shared/rest-api';
 
@@ -7,7 +7,15 @@ import { BackendService, URL_PARAMS } from '~shared/rest-api';
   providedIn: 'root',
 })
 export class ArchiveService extends BackendService {
-  public getArchiveNews$(startIndex: number, endIndex: number): Observable<ArchiveNewsResultInterface> {
-    return this.get$(URL_PARAMS.NEWS.ARCHIVE(startIndex, endIndex));
+  public getArchiveNews$(
+    startIndex: number,
+    endIndex: number,
+    filter: ArchiveNewsFilter,
+  ): Observable<ArchiveNewsResultInterface> {
+    return this.post$(URL_PARAMS.NEWS.ARCHIVE, {
+      startIndex,
+      endIndex,
+      filter,
+    } as NewsArchiveFilterDto);
   }
 }

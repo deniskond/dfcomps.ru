@@ -1,6 +1,6 @@
-import { Controller, Get, Headers, Param, ParseIntPipe } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { NewsService } from './news.service';
-import { ArchiveNewsResultInterface, NewsInterfaceUnion } from '@dfcomps/contracts';
+import { ArchiveNewsResultInterface, NewsArchiveFilterDto, NewsInterfaceUnion } from '@dfcomps/contracts';
 
 @Controller('news')
 export class NewsController {
@@ -27,11 +27,8 @@ export class NewsController {
     return this.newsService.getThemeNews(accessToken, theme);
   }
 
-  @Get('archive/:startIndex/:endIndex')
-  getNewsArchive(
-    @Param('startIndex', new ParseIntPipe()) startIndex: number,
-    @Param('endIndex', new ParseIntPipe()) endIndex: number,
-  ): Promise<ArchiveNewsResultInterface> {
-    return this.newsService.getNewsArchive(startIndex, endIndex);
+  @Post('archive')
+  getNewsArchive(@Body() { startIndex, endIndex, filter }: NewsArchiveFilterDto): Promise<ArchiveNewsResultInterface> {
+    return this.newsService.getNewsArchive(startIndex, endIndex, filter);
   }
 }
