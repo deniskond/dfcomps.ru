@@ -3,7 +3,7 @@ import { TablesService } from './tables.service';
 import {
   LeaderTableInterface,
   Physics,
-  PaginationCountInterface,
+  CountInterface,
   MulticupTableInterface,
   MulticupRoundInterface,
 } from '@dfcomps/contracts';
@@ -31,7 +31,7 @@ export class TablesController {
   }
 
   @Get('rating_table_players_count')
-  getRatingTablePlayersCount(): Promise<PaginationCountInterface> {
+  getRatingTablePlayersCount(): Promise<CountInterface> {
     return this.tablesService.getRatingTablePlayersCount();
   }
 
@@ -49,7 +49,7 @@ export class TablesController {
   }
 
   @Get('season_rating_table_players_count/:season')
-  getSeasonRatingPlayersCount(@Param('season', new ParseIntPipe()) season: number): Promise<PaginationCountInterface> {
+  getSeasonRatingPlayersCount(@Param('season', new ParseIntPipe()) season: number): Promise<CountInterface> {
     return this.tablesService.getSeasonRatingTablePlayersCount(season);
   }
 

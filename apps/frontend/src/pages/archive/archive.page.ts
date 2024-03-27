@@ -1,13 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ArchiveService } from './services/archive/archive.service';
-import { Observable, of, BehaviorSubject } from 'rxjs';
 import { range } from 'lodash';
-import { switchMap } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { Languages } from '~shared/enums/languages.enum';
 import { LanguageService } from '~shared/services/language/language.service';
-import { ArchiveNewsInterface } from '@dfcomps/contracts';
+import { ArchiveNewsFilter, ArchiveNewsInterface, ArchiveNewsResultInterface } from '@dfcomps/contracts';
 
 const NEWS_ON_PAGE = 50;
 
@@ -19,12 +18,13 @@ const NEWS_ON_PAGE = 50;
 export class ArchivePageComponent implements OnInit {
   public newsCount: number;
   public pagesCount: number;
-  public news$: Observable<ArchiveNewsInterface[]>;
-  public currentNewsRange$ = new BehaviorSubject<[number, number]>([0, NEWS_ON_PAGE]);
+  public news: ArchiveNewsInterface[] = [];
+  public languages = Languages;
   public currentPage = 0;
   public range = range;
-  public language$: Observable<Languages>;
-  public languages = Languages;
+  public language: Languages;
+  public currentFilter = ArchiveNewsFilter.ALL;
+  public archiveNewsFilter = ArchiveNewsFilter;
 
   constructor(
     private router: Router,
@@ -34,19 +34,15 @@ export class ArchivePageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.archiveService.getNewsCount$().subscribe((count: number) => {
-      this.newsCount = count;
-      this.pagesCount = Math.ceil(count / NEWS_ON_PAGE);
-      this.changeDetectorRef.markForCheck();
-    });
+    this.fetchNews();
 
-    this.news$ = this.currentNewsRange$.pipe(
-      switchMap(([startIndex, endIndex]: [number, number]) =>
-        startIndex || endIndex ? this.archiveService.getArchiveNews$(startIndex, endIndex) : of([]),
-      ),
-    );
-
-    this.language$ = this.languageService.getLanguage$();
+    this.languageService
+      .getLanguage$()
+      .pipe(take(1))
+      .subscribe((language: Languages) => {
+        this.language = language;
+        this.changeDetectorRef.markForCheck();
+      });
   }
 
   public navigateToNewsPage(newsId: number): void {
@@ -55,11 +51,24 @@ export class ArchivePageComponent implements OnInit {
 
   public changePagination(page: number): void {
     this.currentPage = page;
-    this.currentNewsRange$.next([0, 0]);
-    this.currentNewsRange$.next([page * NEWS_ON_PAGE, (page + 1) * NEWS_ON_PAGE]);
+    this.fetchNews();
   }
 
   public formatDate(date: string): string {
     return moment(date).format('DD.MM.YYYY HH:mm');
+  }
+
+  public filterNewsBy(filter: ArchiveNewsFilter): void {
+    this.currentFilter = filter;
+  }
+
+  private fetchNews(): void {
+    this.archiveService
+      .getArchiveNews$(this.currentPage * NEWS_ON_PAGE, (this.currentPage + 1) * NEWS_ON_PAGE)
+      .subscribe(({ resultsCount, news }: ArchiveNewsResultInterface) => {
+        this.news = news;
+        this.pagesCount = Math.ceil(resultsCount / NEWS_ON_PAGE);
+        this.changeDetectorRef.markForCheck();
+      });
   }
 }

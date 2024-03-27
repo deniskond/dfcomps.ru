@@ -1,3 +1,8 @@
+export interface ArchiveNewsResultInterface {
+  news: ArchiveNewsInterface[];
+  resultsCount: number;
+}
+
 export interface ArchiveNewsInterface {
   authorId: number;
   authorName: string;

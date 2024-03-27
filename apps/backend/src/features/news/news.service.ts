@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
-  ArchiveNewsInterface,
+  ArchiveNewsResultInterface,
   MulticupResultInterface,
   NewsInterface,
   NewsInterfaceUnion,
@@ -14,7 +14,6 @@ import {
   NewsSimpleInterface,
   NewsStreamersResultsInterface,
   NewsTypes,
-  PaginationCountInterface,
   Physics,
   ResultsTableInterface,
 } from '@dfcomps/contracts';
@@ -116,16 +115,9 @@ export class NewsService {
     return await this.mapNewsType(newsItem, userAccess);
   }
 
-  public async getNewsCount(): Promise<PaginationCountInterface> {
-    const newsCount: number = await this.newsRepository.createQueryBuilder('news').getCount();
-
-    return {
-      count: newsCount,
-    };
-  }
-
-  public async getNewsArchive(startIndex: number, endIndex: number): Promise<ArchiveNewsInterface[]> {
+  public async getNewsArchive(startIndex: number, endIndex: number): Promise<ArchiveNewsResultInterface> {
     const time: string = moment().format();
+    const newsCount: number = await this.newsRepository.createQueryBuilder('news').getCount();
     const archiveNews: News[] = await this.newsRepository
       .createQueryBuilder('news')
       .leftJoinAndSelect('news.user', 'users')
@@ -135,14 +127,17 @@ export class NewsService {
       .limit(endIndex - startIndex)
       .getMany();
 
-    return archiveNews.map((archiveNewsItem: News) => ({
-      authorId: archiveNewsItem.user.id,
-      authorName: archiveNewsItem.user.displayed_nick,
-      datetimezone: archiveNewsItem.datetimezone,
-      header: archiveNewsItem.header,
-      headerEn: archiveNewsItem.header_en,
-      id: archiveNewsItem.id,
-    }));
+    return {
+      news: archiveNews.map((archiveNewsItem: News) => ({
+        authorId: archiveNewsItem.user.id,
+        authorName: archiveNewsItem.user.displayed_nick,
+        datetimezone: archiveNewsItem.datetimezone,
+        header: archiveNewsItem.header,
+        headerEn: archiveNewsItem.header_en,
+        id: archiveNewsItem.id,
+      })),
+      resultsCount: newsCount,
+    };
   }
 
   private async mapNewsType(newsItem: News, userAccess: UserAccessInterface): Promise<NewsInterfaceUnion> {
