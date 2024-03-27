@@ -82,7 +82,6 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   success: 'Успешно',
   demoSent: 'Демо отправлено',
   archive: 'Новости',
-  allNews: 'все новости',
   newsArchive: 'Архив новостей',
   goToArchive: 'Перейти в архив новостей',
   fullResultsTable: 'Полная таблица результатов',
@@ -158,5 +157,4 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   doYouWantToLinkDiscord: 'Хотите привязать Discord к своему профилю?',
   linkDiscord: 'Привязать Discord',
   downloadStreamersArchive: 'Скачать архив демок для стримеров',
-  other: 'другой'
 };

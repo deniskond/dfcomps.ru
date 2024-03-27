@@ -82,7 +82,6 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
   success: 'Success',
   demoSent: 'Demo sent',
   archive: 'News',
-  allNews: 'All News',
   newsArchive: 'News archive',
   goToArchive: 'Go to news archive',
   fullResultsTable: 'Full results table',
@@ -159,5 +158,4 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
   doYouWantToLinkDiscord: 'Do you want to link Discord account to your profile?',
   linkDiscord: 'Link Discord',
   downloadStreamersArchive: 'Download demos archive for streamers',
-  other: 'Other'
 };
