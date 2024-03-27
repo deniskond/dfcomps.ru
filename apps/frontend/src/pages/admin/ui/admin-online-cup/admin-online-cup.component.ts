@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -15,9 +15,9 @@ import * as moment from 'moment-timezone';
 })
 export class AdminOnlineCupComponent implements OnInit {
   public isLoadingCupAction = false;
+  public isInitialLoading = true;
   public useTwoServers = true;
   public componentMode: 'Add' | 'Edit' = 'Add';
-  public physicsArray = Object.values(Physics);
   public onlineCupForm: FormGroup = new FormGroup({
     fullName: new FormControl('', Validators.required),
     shortName: new FormControl('', Validators.required),
@@ -37,6 +37,7 @@ export class AdminOnlineCupComponent implements OnInit {
     private snackBar: MatSnackBar,
     private router: Router,
     private route: ActivatedRoute,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -48,6 +49,10 @@ export class AdminOnlineCupComponent implements OnInit {
         filter(({ id }: Params) => !!id),
         tap(({ id }: Params) => (this.cupId = parseInt(id))),
         switchMap(({ id }: Params) => this.adminDataService.getSingleCup$(id)),
+        finalize(() => { 
+          this.isInitialLoading = false;
+          this.changeDetectorRef.markForCheck();
+        }),
       )
       .subscribe((cup: AdminEditCupInterface) => {
         this.componentMode = 'Edit';

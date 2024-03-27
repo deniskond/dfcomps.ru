@@ -36,7 +36,7 @@
 
 <app-html-news [news]="news"></app-html-news>
 <div class="players-table-description"><span translate translation="listOfRegisteredPlayers"></span>:</div>
-<div class="players-table">
+<div class="players-table" data-test-id="online-cup-players-table">
   <div *ngFor="let row of range(rowCount)" class="players-row">
     <div *ngFor="let column of range(columnCount)" class="players-cell">
       <div class="number">{{ column * rowCount + row + 1 }}</div>

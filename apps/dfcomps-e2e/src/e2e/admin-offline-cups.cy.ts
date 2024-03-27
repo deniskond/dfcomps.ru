@@ -3,7 +3,7 @@ import { loginAs } from '../support/app.po';
 import * as moment from 'moment';
 import * as faker from 'faker';
 
-describe('admin cups', () => {
+describe('admin offline cups', () => {
   const initialCupFullName = faker.lorem.words();
   const initialCupShortName = faker.lorem.words();
   const initialMapName = 'crosspath';
@@ -25,7 +25,7 @@ describe('admin cups', () => {
 
     cy.intercept(
       {
-        method: 'GET', // Route all GET requests
+        method: 'GET',
         url: '/admin/cups/get-worldspawn-map-info?map=crosspath',
       },
       {

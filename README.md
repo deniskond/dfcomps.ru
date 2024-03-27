@@ -114,11 +114,11 @@ Test cases:
 ☐ 19. Editing multicup round with custom map
 ☐ 20. Deleting multicup round with custom map
 ☐ 21. Deleting multicup
-☐ 22. Adding online cup
-☐ 23. Editing online cup
+☑ 22. Adding online cup
+☑ 23. Editing online cup
 ☐ 24. Online cup with server logs
 ☐ 25. Online cup with manual results
-☐ 26. Deleting online cup
+☑ 26. Deleting online cup
 ☐ 27. Ending season
 ☐ 28. Updating profile
 ```

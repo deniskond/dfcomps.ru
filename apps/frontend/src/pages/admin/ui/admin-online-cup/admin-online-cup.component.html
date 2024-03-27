@@ -1,6 +1,6 @@
 <mat-card class="main-form-card">
-  <h3 class="header">{{ componentMode }} online cup</h3>
-  <form *ngIf="onlineCupForm; else loading" [formGroup]="onlineCupForm">
+  <h3 *ngIf="!isInitialLoading;" class="header">{{ componentMode }} online cup</h3>
+  <form *ngIf="!isInitialLoading; else loading" [formGroup]="onlineCupForm">
     <div class="form">
       <div>
         Full name
@@ -24,9 +24,8 @@
       <div>
         <mat-form-field appearance="outline">
           <mat-select formControlName="physics" data-test-id="online-cup-physics-select">
-            <mat-option *ngFor="let physics of physicsArray" [value]="physics">
-              {{ physics | uppercase }}
-            </mat-option>
+            <mat-option value="vq3" data-test-id="online-cup-physics-vq3">VQ3</mat-option>
+            <mat-option value="cpm" data-test-id="online-cup-physics-cpm">CPM</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -61,7 +60,7 @@
         <mat-checkbox
           color="primary"
           formControlName="useTwoServers"
-          data-test-id="online-cup-add-news-checkbox"
+          data-test-id="online-cup-two-servers-checkbox"
         ></mat-checkbox>
       </div>
       <div class="input-label">Server 1</div>
@@ -72,7 +71,7 @@
       <ng-container *ngIf="useTwoServers">
         <div class="input-label">Server 2</div>
         <div>
-          <input formControlName="server2" class="input-field" data-test-id="online-cup-server1-input" />
+          <input formControlName="server2" class="input-field" data-test-id="online-cup-server2-input" />
           <div *ngIf="hasFieldError(this.onlineCupForm.get('server2')!)" class="field-error">Field is required</div>
         </div>
       </ng-container>
