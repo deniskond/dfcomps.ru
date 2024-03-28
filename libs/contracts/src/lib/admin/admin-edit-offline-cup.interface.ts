@@ -1,4 +1,6 @@
-export interface AdminEditOfflineCupInterface {
+import { Physics } from '../global/physics.enum';
+
+export interface AdminEditCupInterface {
   id: number;
   fullName: string;
   shortName: string;
@@ -13,4 +15,8 @@ export interface AdminEditOfflineCupInterface {
   multicupId: number | null;
   size: string;
   addNews: boolean;
+  useTwoServers: boolean;
+  server1: string;
+  server2: string;
+  physics: Physics | 'mixed';
 }

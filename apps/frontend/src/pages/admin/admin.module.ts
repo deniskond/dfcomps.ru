@@ -13,8 +13,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AdminValidateComponent } from './ui/admin-validate/admin-validate.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AdminSimpleNewsComponent } from './ui/admin-simple-news/admin-simple-news.component';
-import { AdminMulticupRoundNewsComponent } from './ui/admin-multicup-round-news/admin-multicup-round-news.component';
+import { AdminNewsActionComponent } from './ui/admin-news-action/admin-news-action.component';
 import { QuillModule } from 'ngx-quill';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -24,6 +23,9 @@ import { SharedModule } from '~shared/modules/shared.module';
 import { HasAdminPanelAccess } from './business/has-admin-panel-access.guard';
 import { AdminOfflineCupComponent } from './ui/admin-offline-cup/admin-offline-cup.component';
 import { AdminRedirectComponent } from './ui/admin-redirect/admin-redirect.component';
+import { AdminOnlineCupComponent } from './ui/admin-online-cup/admin-online-cup.component';
+import { AdminMulticupsComponent } from './ui/admin-multicups/admin-multicups.component';
+import { AdminMulticupComponent } from './ui/admin-multicup/admin-multicup.component';
 
 const adminRoutes: Routes = [
   {
@@ -41,34 +43,19 @@ const adminRoutes: Routes = [
           },
           {
             path: ':action',
-            children: [
-              {
-                path: 'simple',
-                children: [
-                  {
-                    path: '',
-                    component: AdminSimpleNewsComponent,
-                  },
-                  {
-                    path: ':id',
-                    component: AdminSimpleNewsComponent,
-                  },
-                ],
-              },
-              {
-                path: 'multicup-round-start',
-                children: [
-                  {
-                    path: '',
-                    component: AdminMulticupRoundNewsComponent,
-                  },
-                  {
-                    path: ':id',
-                    component: AdminMulticupRoundNewsComponent,
-                  },
-                ],
-              },
-            ],
+            children: [{
+              path: ':newsType',
+              children: [
+                {
+                  path: '',
+                  component: AdminNewsActionComponent,
+                },
+                {
+                  path: ':id',
+                  component: AdminNewsActionComponent,
+                },
+              ],
+            }],
           },
         ],
       },
@@ -76,9 +63,19 @@ const adminRoutes: Routes = [
         path: 'cups',
         children: [
           { path: '', component: AdminCupsComponent },
-          { path: 'add-offline-cup', component: AdminOfflineCupComponent, data: { multicup: false } },
-          { path: 'add-multicup-round', component: AdminOfflineCupComponent, data: { multicup: true } },
-          { path: 'edit/:id', component: AdminOfflineCupComponent },
+          { path: 'offline/add', component: AdminOfflineCupComponent, data: { multicup: false } },
+          { path: 'offline/edit/:id', component: AdminOfflineCupComponent },
+          { path: 'multicup-round/add', component: AdminOfflineCupComponent, data: { multicup: true } },
+          { path: 'online/add', component: AdminOnlineCupComponent },
+          { path: 'online/edit/:id', component: AdminOnlineCupComponent },
+        ],
+      },
+      {
+        path: 'multicups',
+        children: [
+          { path: '', component: AdminMulticupsComponent },
+          { path: 'add', component: AdminMulticupComponent },
+          { path: 'edit/:id', component: AdminMulticupComponent },
         ],
       },
       {
@@ -106,10 +103,12 @@ const adminRoutes: Routes = [
     AdminNewsComponent,
     AdminCupsComponent,
     AdminValidateComponent,
-    AdminSimpleNewsComponent,
-    AdminMulticupRoundNewsComponent,
+    AdminNewsActionComponent,
     AdminSeasonComponent,
     AdminOfflineCupComponent,
+    AdminOnlineCupComponent,
+    AdminMulticupsComponent,
+    AdminMulticupComponent,
   ],
   imports: [
     RouterModule.forChild(adminRoutes),

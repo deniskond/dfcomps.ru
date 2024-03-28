@@ -22,7 +22,7 @@ describe('admin panel news', () => {
 
   it('should add simple news correctly', () => {
     cy.get('[data-test-id=admin-panel-button]').click();
-    cy.get('[data-test-id=add-simple-news-button]').click();
+    cy.get('[data-test-id=add-news-button]').click();
 
     // filling the form
     cy.get('[data-test-id=russian-news-title-input]').type(initialRussianTitle);

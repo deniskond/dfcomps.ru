@@ -13,12 +13,14 @@ export class AdminCurrentPageService {
     validate: 'cups',
     news: 'news',
     season: 'season',
+    multicups: 'multicups',
   };
   private currentPageMap: Record<string, string> = {
     cups: 'cups',
     validate: 'validate demos',
     news: 'news',
     season: 'season',
+    multicups: 'multicups',
   };
 
   constructor(private router: Router) {}

@@ -128,7 +128,7 @@ export class NewsService {
       [ArchiveNewsFilter.ALL]: Object.values(NewsTypes),
       [ArchiveNewsFilter.OTHER]: [NewsTypes.SIMPLE],
       [ArchiveNewsFilter.RESULT]: [
-        NewsTypes.DFWC_RESULTS,
+        NewsTypes.DFWC_ROUND_RESULTS,
         NewsTypes.MULTICUP_RESULTS,
         NewsTypes.OFFLINE_RESULTS,
         NewsTypes.ONLINE_RESULTS,
@@ -174,7 +174,7 @@ export class NewsService {
       case NewsTypes.OFFLINE_START:
         return this.mapOfflineStartNews(newsItem, userAccess);
       case NewsTypes.OFFLINE_RESULTS:
-      case NewsTypes.DFWC_RESULTS:
+      case NewsTypes.DFWC_ROUND_RESULTS:
         return this.mapOfflineResultsNews(newsItem);
       case NewsTypes.ONLINE_ANNOUNCE:
         return this.mapOnlineAnnounceNews(newsItem, userAccess);
