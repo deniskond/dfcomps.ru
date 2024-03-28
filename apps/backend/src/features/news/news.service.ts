@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import {
   ArchiveNewsFilter,
   ArchiveNewsResultInterface,
+  CupTypes,
   MulticupResultInterface,
   NewsInterface,
   NewsInterfaceUnion,
@@ -141,6 +142,7 @@ export class NewsService {
       .createQueryBuilder('news')
       .leftJoinAndSelect('news.user', 'users')
       .leftJoinAndSelect('news.newsType', 'news_types')
+      .leftJoinAndSelect('news.cup', 'cups')
       .where('news.datetimezone < :time', { time })
       .andWhere('news.newsTypeId IN(:...ids)', { ids: dbNewsTypesIds })
       .orderBy('datetimezone', 'DESC')
@@ -161,6 +163,7 @@ export class NewsService {
         header: archiveNewsItem.header,
         headerEn: archiveNewsItem.header_en,
         id: archiveNewsItem.id,
+        mapName: archiveNewsItem.cup?.type === CupTypes.OFFLINE ? archiveNewsItem.cup.map1 : null,
       })),
       resultsCount: newsCount,
     };

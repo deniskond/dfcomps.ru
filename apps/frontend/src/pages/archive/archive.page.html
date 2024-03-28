@@ -44,9 +44,12 @@
     <ng-container *ngIf="!!news.length; else loader">
       <div class="news-container">
         <div *ngFor="let singleNews of news" (click)="navigateToNewsPage(+singleNews.id)" class="archive-news-row">
-          <a *ngIf="language" class="blue-link bold">
-            {{ language === languages.RU ? singleNews.header : singleNews.headerEn }}
-          </a>
+          <span>
+            <a *ngIf="language" class="blue-link bold">
+              {{ language === languages.RU ? singleNews.header : singleNews.headerEn }}
+            </a>
+            <span class="map-name">{{ singleNews.mapName }}</span>
+          </span>
           <div>{{ singleNews.datetimezone | invokeFunction : formatDate }}</div>
         </div>
       </div>
