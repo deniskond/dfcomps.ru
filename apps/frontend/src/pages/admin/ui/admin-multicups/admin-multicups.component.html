@@ -1,7 +1,9 @@
 <div *ngIf="isCupOrganizer()" class="actions-container">
   <mat-card class="card">
     <div class="card-header">Multicup</div>
-    <div class="card-text">Series of offline cups, usually 5-7 rounds, with overall results calculated by EE-system</div>
+    <div class="card-text">
+      Series of offline cups, usually 5-7 rounds, with overall results calculated by EE-system
+    </div>
     <div>
       <button routerLink="/admin/multicups/add" mat-raised-button color="accent" data-test-id="add-multicup-button">
         Add multicup
@@ -26,11 +28,16 @@
             [routerLink]="'/admin/multicups/edit/' + multicup.id"
             mat-raised-button
             color="basic"
-            data-test-id="edit-cup-button"
+            data-test-id="edit-multicup-button"
           >
             Edit
           </button>
-          <button (click)="confirmDelete(multicup)" mat-raised-button color="warn" data-test-id="delete-cup-button">
+          <button
+            (click)="confirmDelete(multicup)"
+            mat-raised-button
+            color="warn"
+            data-test-id="delete-multicup-button"
+          >
             Delete
           </button>
         </ng-container>
