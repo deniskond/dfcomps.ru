@@ -204,6 +204,8 @@ export class URL_PARAMS {
     GET_WORLDSPAWN_MAP_INFO: string;
     GET_MULTICUPS: string;
     GET_SINGLE_MULTICUP: (multicupId: number) => string;
+    ADD_MULTICUP: string;
+    UPDATE_MULTICUP: (multicupId: number) => string;
     DELETE_MULTICUP: (multicupId: number) => string;
     GET_ALL_AVAILABLE_MULTICUPS: string;
   } {
@@ -235,6 +237,8 @@ export class URL_PARAMS {
       GET_WORLDSPAWN_MAP_INFO: `${API_URL}/admin/cups/get-worldspawn-map-info`,
       GET_MULTICUPS: `${API_URL}/admin/multicups/get-all-multicups`,
       GET_SINGLE_MULTICUP: (multicupId: number) => `${API_URL}/admin/multicups/get/${multicupId}`,
+      ADD_MULTICUP: `${API_URL}/admin/multicups/add-multicup`,
+      UPDATE_MULTICUP: (multicupId: number) => `${API_URL}/admin/multicups/update-multicup/${multicupId}`,
       DELETE_MULTICUP: (multicupId: number) => `${API_URL}/admin/multicups/delete/${multicupId}`,
       GET_ALL_AVAILABLE_MULTICUPS: `${API_URL}/admin/multicups/get-all-available-multicups`,
     };

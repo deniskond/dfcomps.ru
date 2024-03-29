@@ -2,10 +2,9 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Subject, filter, finalize, switchMap, take, takeUntil, tap } from 'rxjs';
+import { filter, finalize, switchMap, take, tap } from 'rxjs';
 import { AdminDataService } from '../../business/admin-data.service';
-import { AdminEditCupInterface, Physics } from '@dfcomps/contracts';
-import * as moment from 'moment-timezone';
+import { AdminMulticupActionInterface } from '@dfcomps/contracts';
 
 @Component({
   selector: 'admin-multicup',
@@ -16,21 +15,13 @@ import * as moment from 'moment-timezone';
 export class AdminMulticupComponent implements OnInit {
   public isLoadingMulticupAction = false;
   public isInitialLoading = true;
-  public useTwoServers = true;
   public componentMode: 'Add' | 'Edit' = 'Add';
-  public onlineCupForm: FormGroup = new FormGroup({
-    fullName: new FormControl('', Validators.required),
-    shortName: new FormControl('', Validators.required),
-    startTime: new FormControl('', Validators.required),
-    addNews: new FormControl(false),
-    useTwoServers: new FormControl(true, Validators.required),
-    server1: new FormControl('q3df.ru:27974', Validators.required),
-    server2: new FormControl('q3df.ru:27975', Validators.required),
-    physics: new FormControl(Physics.VQ3, Validators.required),
+  public multicupForm: FormGroup = new FormGroup({
+    name: new FormControl('', Validators.required),
+    rounds: new FormControl('', Validators.required),
   });
 
-  private cupId: number | null = null;
-  private onDestroy$ = new Subject<void>();
+  private multicupId: number | null = null;
 
   constructor(
     private adminDataService: AdminDataService,
@@ -41,96 +32,72 @@ export class AdminMulticupComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.initUseTwoServersSubscription();
-
     this.route.params
       .pipe(
         take(1),
         filter(({ id }: Params) => !!id),
-        tap(({ id }: Params) => (this.cupId = parseInt(id))),
-        switchMap(({ id }: Params) => this.adminDataService.getSingleCup$(id)),
-        finalize(() => { 
+        tap(({ id }: Params) => (this.multicupId = parseInt(id))),
+        switchMap(({ id }: Params) => this.adminDataService.getSingleMulticup$(id)),
+        finalize(() => {
           this.isInitialLoading = false;
           this.changeDetectorRef.markForCheck();
         }),
       )
-      .subscribe((cup: AdminEditCupInterface) => {
+      .subscribe((multicup: AdminMulticupActionInterface) => {
         this.componentMode = 'Edit';
-        this.setFormValues(cup);
+        this.setFormValues(multicup);
       });
   }
 
-  ngOnDestroy(): void {
-    this.onDestroy$.next();
-    this.onDestroy$.complete();
-  }
-
   public submit(): void {
-    Object.keys(this.onlineCupForm.controls).forEach((key: string) => this.onlineCupForm.get(key)!.markAsDirty());
+    Object.keys(this.multicupForm.controls).forEach((key: string) => this.multicupForm.get(key)!.markAsDirty());
 
-    if (!this.onlineCupForm.valid) {
+    if (!this.multicupForm.valid) {
       return;
     }
 
     this.isLoadingMulticupAction = true;
-    this.componentMode === 'Add' ? this.addOnlineCup() : this.editOnlineCup();
+    this.componentMode === 'Add' ? this.addMulticup() : this.editMulticup();
   }
 
   public hasFieldError(control: AbstractControl): boolean {
     return !!control!.errors && !control!.pristine;
   }
 
-  private initUseTwoServersSubscription(): void {
-    this.onlineCupForm
-      .get('useTwoServers')!
-      .valueChanges.pipe(takeUntil(this.onDestroy$))
-      .subscribe((value: boolean) => {
-        if (value) {
-          this.onlineCupForm.get('server2')!.setValidators([Validators.required]);
-        } else {
-          this.onlineCupForm.get('server2')!.clearValidators();
-        }
-
-        this.useTwoServers = value;
-      });
-  }
-
-  private setFormValues(cup: AdminEditCupInterface): void {
-    this.onlineCupForm.setValue({
-      fullName: cup.fullName,
-      shortName: cup.shortName,
-      startTime: moment(cup.startTime).tz('Europe/Moscow').format('yyyy-MM-DDTHH:mm'),
-      useTwoServers: cup.useTwoServers,
-      server1: cup.server1,
-      server2: cup.server2,
-      addNews: true,
-      physics: cup.physics,
+  private setFormValues(multicup: AdminMulticupActionInterface): void {
+    this.multicupForm.setValue({
+      name: multicup.name,
+      rounds: multicup.rounds,
     });
   }
 
-  private addOnlineCup(): void {
+  private addMulticup(): void {
+    const formValue: Record<string, any> = this.multicupForm.value;
+
     this.adminDataService
-      .addOnlineCup$(this.onlineCupForm.value)
+      .addMulticup$(formValue['name'], formValue['rounds'])
       .pipe(
-        switchMap(() => this.adminDataService.getAllCups$(false)),
+        switchMap(() => this.adminDataService.getAllMulticups$(false)),
         finalize(() => (this.isLoadingMulticupAction = false)),
       )
       .subscribe(() => {
-        this.router.navigate(['/admin/cups']);
-        this.snackBar.open('Online cup added successfully', 'OK', { duration: 3000 });
+        this.router.navigate(['/admin/multicups']);
+        this.snackBar.open('Multicup added successfully', 'OK', { duration: 3000 });
       });
   }
 
-  private editOnlineCup(): void {
+  private editMulticup(): void {
+    const formValue: Record<string, any> = this.multicupForm.value;
+
     this.adminDataService
-      .editOnlineCup$(this.onlineCupForm.value, this.cupId!)
+      .editMulticup$(formValue['name'], formValue['rounds'], this.multicupId!)
       .pipe(
-        switchMap(() => this.adminDataService.getAllCups$(false)),
+        switchMap(() => this.adminDataService.getAllMulticups$(false)),
         finalize(() => (this.isLoadingMulticupAction = false)),
       )
       .subscribe(() => {
-        this.router.navigate(['/admin/cups']);
-        this.snackBar.open('Online cup edited successfully', 'OK', { duration: 3000 });
+        this.router.navigate(['/admin/multicups']);
+        this.snackBar.open('Multicup edited successfully', 'OK', { duration: 3000 });
       });
   }
 }

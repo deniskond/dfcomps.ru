@@ -20,7 +20,8 @@ import {
   UpdateOfflineCupDto,
   OnlineCupActionDto,
   AdminMulticupInterface,
-  AdminEditMulticupInterface,
+  AdminMulticupActionInterface,
+  MulticupActionDto,
 } from '@dfcomps/contracts';
 import * as moment from 'moment';
 
@@ -245,8 +246,22 @@ export class AdminDataService {
       .pipe(tap((multicups: AdminMulticupInterface[]) => (this.multicups = multicups)));
   }
 
-  public getSingleMulticup$(multicupId: number): Observable<AdminEditMulticupInterface> {
-    return this.backendService.get$<AdminEditMulticupInterface>(URL_PARAMS.ADMIN.GET_SINGLE_MULTICUP(multicupId));
+  public getSingleMulticup$(multicupId: number): Observable<AdminMulticupActionInterface> {
+    return this.backendService.get$<AdminMulticupActionInterface>(URL_PARAMS.ADMIN.GET_SINGLE_MULTICUP(multicupId));
+  }
+
+  public addMulticup$(name: string, rounds: number): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.ADD_MULTICUP, {
+      name,
+      rounds,
+    } as MulticupActionDto);
+  }
+
+  public editMulticup$(name: string, rounds: number, multicupId: number): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.UPDATE_MULTICUP(multicupId), {
+      name,
+      rounds,
+    } as MulticupActionDto);
   }
 
   public deleteMulticup$(multicupId: number): Observable<void> {

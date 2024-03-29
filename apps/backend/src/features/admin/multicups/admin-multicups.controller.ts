@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Headers, Param, ParseIntPipe, Post } from '@nestjs/common';
-import { AdminActiveMulticupInterface, AdminEditMulticupInterface, MulticupActionDto } from '@dfcomps/contracts';
+import { AdminActiveMulticupInterface, AdminMulticupActionInterface, MulticupActionDto } from '@dfcomps/contracts';
 import { AdminMulticupsService } from './admin-multicups.service';
 
 @Controller('admin/multicups')
@@ -15,7 +15,7 @@ export class AdminMulticupsController {
   getSingleCup(
     @Headers('X-Auth') accessToken: string | undefined,
     @Param('multicupId', new ParseIntPipe()) multicupId: number,
-  ): Promise<AdminEditMulticupInterface> {
+  ): Promise<AdminMulticupActionInterface> {
     return this.adminMulticupsService.getSingleMulticup(accessToken, multicupId);
   }
 
