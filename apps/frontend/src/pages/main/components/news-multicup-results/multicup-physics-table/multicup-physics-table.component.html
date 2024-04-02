@@ -1,13 +1,13 @@
 <div class="physics-header">
-  {{ physics }}
+  {{ physics }} Top {{ slicedPhysicsTable.length }}
 </div>
 <div class="multicup-results-row">
   <div class="place-column">#</div>
   <div class="player-column">Player</div>
   <div class="points-column">Points</div>
-  <div class="ratings-column">Rating</div>
+  <div *ngIf="hasRatingChange" class="ratings-column">Rating</div>
 </div>
-<div *ngFor="let result of physicsTable; let i = index" class="multicup-results-row">
+<div *ngFor="let result of slicedPhysicsTable; let i = index" class="multicup-results-row">
   <div class="place-column">
     <app-player-place [place]="places[i]"></app-player-place>
   </div>
@@ -19,7 +19,7 @@
     ></app-player-cell>
   </div>
   <div class="points-column">{{ result.overall }}</div>
-  <div class="ratings-column">
+  <div *ngIf="hasRatingChange" class="ratings-column">
     <app-rating-change
       [change]="result.ratingChange === 0 ? null : result.ratingChange"
       [zeroIfNull]="false"

@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { getTablePlaces } from '~shared/helpers/table-places.helper';
 import { MulticupResultInterface, Physics } from '@dfcomps/contracts';
 
+const MAX_PLAYERS_IN_TABLE = 30;
+
 @Component({
   selector: 'app-multicup-physics-table',
   templateUrl: './multicup-physics-table.component.html',
@@ -15,16 +17,22 @@ export class MulticupPhysicsTableComponent implements OnInit {
   @Input() multicupId: number;
   @Input() tableCellsCount: number;
 
+  public slicedPhysicsTable: MulticupResultInterface[];
   public places: number[];
   public emptyCells: null[] = [];
+  public hasRatingChange: boolean;
 
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    this.places = getTablePlaces(this.physicsTable.map(({ overall }: MulticupResultInterface) => overall));
+    this.hasRatingChange = this.physicsTable[0].ratingChange !== null;
+    this.slicedPhysicsTable = this.physicsTable.slice(0, MAX_PLAYERS_IN_TABLE);
+    this.places = getTablePlaces(this.slicedPhysicsTable.map(({ overall }: MulticupResultInterface) => overall));
 
-    if (this.physicsTable.length < this.tableCellsCount) {
-      this.emptyCells = new Array(this.tableCellsCount - this.physicsTable.length).fill(null);
+    const actualTableCellsCount = this.tableCellsCount > MAX_PLAYERS_IN_TABLE ? MAX_PLAYERS_IN_TABLE : this.tableCellsCount;
+
+    if (this.physicsTable.length < actualTableCellsCount) {
+      this.emptyCells = new Array(actualTableCellsCount - this.physicsTable.length).fill(null);
     }
   }
 
