@@ -60,6 +60,7 @@ export class ArchivePageComponent implements OnInit {
 
   public filterNewsBy(filter: ArchiveNewsFilter): void {
     this.currentFilter = filter;
+    this.changePagination(0);
     this.fetchNews();
   }
 
