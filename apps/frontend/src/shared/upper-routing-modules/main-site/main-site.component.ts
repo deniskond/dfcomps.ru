@@ -25,7 +25,7 @@ export class MainSiteComponent implements OnInit {
   ngOnInit(): void {
     this.cupsService.getNextCupInfo$().subscribe((nextCup: CupInterface) => this.nextCupInfo$.next(nextCup));
 
-    // TODO Здесь нужен стор
+    // TODO Some type of storage is needed here
     this.server$ = this.userService.getCurrentUser$().pipe(
       filter(isNonNull),
       switchMap(() =>
