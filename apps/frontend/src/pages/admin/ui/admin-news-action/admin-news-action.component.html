@@ -52,7 +52,7 @@
         <ng-container *ngIf="availableCups$ | async as availableCups">
           <div class="input-title">Cup</div>
           <div>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="select">
               <mat-select formControlName="cup" data-test-id="news-cup-select">
                 <mat-option *ngFor="let availableCup of availableCups" [value]="availableCup.cupId">
                   {{ availableCup.name }}
@@ -68,7 +68,7 @@
         <ng-container *ngIf="availableMulticups$ | async as availableMulticups">
           <div class="input-title">Multicup</div>
           <div>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="select">
               <mat-select formControlName="multicup" data-test-id="news-cup-select">
                 <mat-option *ngFor="let availableMulticup of availableMulticups" [value]="availableMulticup.multicupId">
                   {{ availableMulticup.name }}

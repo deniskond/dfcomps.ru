@@ -135,12 +135,16 @@ export class AdminDataService {
     return this.backendService.get$<AdminActiveMulticupInterface[]>(URL_PARAMS.ADMIN.GET_ALL_AVAILABLE_MULTICUPS);
   }
 
-  public getAllOfflineCupsWithoutNews$(): Observable<AdminActiveCupInterface[]> {
-    return this.backendService.get$<AdminActiveCupInterface[]>(URL_PARAMS.ADMIN.GET_ALL_OFFLINE_CUPS_WITHOUT_NEWS);
+  public getAllOfflineCupsWithoutNews$(newsType: NewsTypes): Observable<AdminActiveCupInterface[]> {
+    return this.backendService.get$<AdminActiveCupInterface[]>(
+      URL_PARAMS.ADMIN.GET_ALL_OFFLINE_CUPS_WITHOUT_NEWS(newsType),
+    );
   }
 
-  public getAllOnlineCupsWithoutNews$(): Observable<AdminActiveCupInterface[]> {
-    return this.backendService.get$<AdminActiveCupInterface[]>(URL_PARAMS.ADMIN.GET_ALL_ONLINE_CUPS_WITHOUT_NEWS);
+  public getAllOnlineCupsWithoutNews$(newsType: NewsTypes): Observable<AdminActiveCupInterface[]> {
+    return this.backendService.get$<AdminActiveCupInterface[]>(
+      URL_PARAMS.ADMIN.GET_ALL_ONLINE_CUPS_WITHOUT_NEWS(newsType),
+    );
   }
 
   public addOfflineCup$(formValue: Record<string, any>): Observable<void> {

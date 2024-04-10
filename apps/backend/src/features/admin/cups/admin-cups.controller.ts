@@ -16,8 +16,11 @@ import {
 import { AdminCupsService } from './admin-cups.service';
 import {
   AddOfflineCupDto,
+  AdminActiveCupInterface,
+  AdminActiveMulticupInterface,
   AdminEditCupInterface,
   AdminValidationInterface,
+  NewsTypes,
   OnlineCupActionDto,
   ProcessValidationDto,
   UpdateOfflineCupDto,
@@ -26,6 +29,7 @@ import {
 } from '@dfcomps/contracts';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MulterFileInterface } from 'apps/backend/src/shared/interfaces/multer.interface';
+import { EnumValidationPipe } from 'apps/backend/src/shared/validation/enum-validation.pipe';
 
 @Controller('admin/cups')
 export class AdminCupsController {
@@ -157,5 +161,26 @@ export class AdminCupsController {
     levelshot: MulterFileInterface,
   ): Promise<UploadedFileLinkInterface> {
     return this.adminCupsService.uploadLevelshot(accessToken, levelshot, mapName);
+  }
+
+  @Get('get-all-offline-cups-without-news/:newsType')
+  getAllOfflineCupsWithoutNews(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Param('newsType', new EnumValidationPipe(NewsTypes)) newsType: NewsTypes,
+  ): Promise<AdminActiveCupInterface[]> {
+    return this.adminCupsService.getAllOfflineCupsWithoutNews(accessToken, newsType);
+  }
+
+  @Get('get-all-online-cups-without-news/:newsType')
+  getAllOnlineCupsWithoutNews(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Param('newsType', new EnumValidationPipe(NewsTypes)) newsType: NewsTypes,
+  ): Promise<AdminActiveCupInterface[]> {
+    return this.adminCupsService.getAllOnlineCupsWithoutNews(accessToken, newsType);
+  }
+
+  @Get('get-all-active-multicups')
+  getAllActiveMulticups(@Headers('X-Auth') accessToken: string | undefined): Promise<AdminActiveMulticupInterface[]> {
+    return this.adminCupsService.getAllActiveMulticups(accessToken);
   }
 }
