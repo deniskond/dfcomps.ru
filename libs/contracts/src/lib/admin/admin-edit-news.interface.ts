@@ -11,5 +11,6 @@ export interface AdminEditNewsInterface {
     type: NewsTypes;
     youtube: string | null;
     cupId: number | null;
+    multicupId: number | null;
   };
 }

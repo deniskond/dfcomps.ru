@@ -277,7 +277,7 @@ export class AdminDataService {
   }
 
   private getAdminNewsDto(formValue: Record<string, any>, newsType: NewsTypes): AdminNewsDto {
-    return {
+    const adminNewsDto: AdminNewsDto = {
       russianTitle: formValue['russianTitle'],
       englishTitle: formValue['englishTitle'],
       postingTime: formValue['timeOption'] === 'now' ? moment().format() : formValue['postingTime'],
@@ -286,6 +286,16 @@ export class AdminDataService {
       type: newsType,
       youtube: formValue['youtube'],
     };
+
+    if (formValue['cup']) {
+      adminNewsDto.cupId = formValue['cup'];
+    }
+
+    if (formValue['multicup']) {
+      adminNewsDto.multicupId = formValue['multicup'];
+    }
+
+    return adminNewsDto;
   }
 
   private getDemoValidationResult(value: boolean | null): VerifiedStatuses {

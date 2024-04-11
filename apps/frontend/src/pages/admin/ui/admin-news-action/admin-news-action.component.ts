@@ -155,6 +155,7 @@ export class AdminNewsActionComponent implements OnInit {
           englishText: new FormControl('', Validators.required),
           youtube: new FormControl(''),
           cup: new FormControl(null),
+          multicup: new FormControl(null),
         },
         this.postingTimeValidator(),
       );
@@ -174,6 +175,7 @@ export class AdminNewsActionComponent implements OnInit {
             englishText: new FormControl(singleNews.newsItem.textEnglish, Validators.required),
             youtube: new FormControl(singleNews.newsItem.youtube),
             cup: new FormControl(singleNews.newsItem.cupId),
+            multicup: new FormControl(singleNews.newsItem.multicupId),
           },
           this.postingTimeValidator(),
         );
