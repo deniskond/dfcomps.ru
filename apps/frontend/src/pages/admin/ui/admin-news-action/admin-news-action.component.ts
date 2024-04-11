@@ -5,11 +5,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AdminDataService } from '../../business/admin-data.service';
 import { AdminOperationType } from '../../models/admin-operation-type.enum';
 import * as moment from 'moment-timezone';
-import { debounceTime, Observable, startWith, switchMap } from 'rxjs';
+import { combineLatest, debounceTime, map, Observable, ReplaySubject, startWith, switchMap } from 'rxjs';
 import {
   AdminActiveCupInterface,
   AdminActiveMulticupInterface,
   AdminEditNewsInterface,
+  CupTypes,
   NewsTypes,
 } from '@dfcomps/contracts';
 import { AdminNewsRouting } from '../../models/admin-news-routing.enum';
@@ -39,7 +40,10 @@ export class AdminNewsActionComponent implements OnInit {
   public availableCups$: Observable<AdminActiveCupInterface[]>;
   public mapNewsTypeToHumanTitle = mapNewsTypeToHumanTitle;
   public newsType: NewsTypes;
+  public cupsList$: Observable<AdminActiveCupInterface[]>;
+
   private newsId: string;
+  private selectedCup$: ReplaySubject<AdminActiveCupInterface | null> = new ReplaySubject(1);
 
   constructor(
     private adminDataService: AdminDataService,
@@ -64,17 +68,23 @@ export class AdminNewsActionComponent implements OnInit {
       this.isCupRequired &&
       (this.newsType === NewsTypes.ONLINE_ANNOUNCE || this.newsType === NewsTypes.ONLINE_RESULTS)
     ) {
-      this.availableCups$ = this.adminDataService.getAllOnlineCupsWithoutNews$(this.newsType);
+      this.availableCups$ = this.adminDataService.getAllCupsWithoutNews$(CupTypes.ONLINE, this.newsType);
     }
 
     if (
       this.isCupRequired &&
       (this.newsType === NewsTypes.OFFLINE_START || this.newsType === NewsTypes.OFFLINE_RESULTS)
     ) {
-      this.availableCups$ = this.adminDataService.getAllOfflineCupsWithoutNews$(this.newsType);
+      this.availableCups$ = this.adminDataService.getAllCupsWithoutNews$(CupTypes.OFFLINE, this.newsType);
     }
 
     this.initForm();
+
+    this.cupsList$ = combineLatest([this.availableCups$, this.selectedCup$]).pipe(
+      map(([availableCups, selectedCup]: [AdminActiveCupInterface[], AdminActiveCupInterface | null]) =>
+        selectedCup ? [...availableCups, selectedCup] : [...availableCups],
+      ),
+    );
   }
 
   public submitNews(): void {
@@ -174,12 +184,13 @@ export class AdminNewsActionComponent implements OnInit {
             russianText: new FormControl(singleNews.newsItem.textRussian, Validators.required),
             englishText: new FormControl(singleNews.newsItem.textEnglish, Validators.required),
             youtube: new FormControl(singleNews.newsItem.youtube),
-            cup: new FormControl(singleNews.newsItem.cupId),
+            cup: new FormControl(singleNews.newsItem.cup?.cupId),
             multicup: new FormControl(singleNews.newsItem.multicupId),
           },
           this.postingTimeValidator(),
         );
 
+        this.selectedCup$.next(singleNews.newsItem.cup);
         this.changeDetectorRef.markForCheck();
         this.setYoutubeFieldObservable();
       });

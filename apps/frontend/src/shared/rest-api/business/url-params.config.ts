@@ -1,5 +1,5 @@
 import { environment } from '~app/environments/environment';
-import { NewsTypes, Physics } from '@dfcomps/contracts';
+import { CupTypes, NewsTypes, Physics } from '@dfcomps/contracts';
 
 const envMap: Record<string, string> = {
   local: '/api',
@@ -187,8 +187,7 @@ export class URL_PARAMS {
     PROCESS_VALIDATION: (cupId: number) => string;
     CALCULATE_CUP_RATING: (cupId: number) => string;
     FINISH_OFFLINE_CUP: (cupId: number) => string;
-    GET_ALL_OFFLINE_CUPS_WITHOUT_NEWS: (newsType: NewsTypes) => string;
-    GET_ALL_ONLINE_CUPS_WITHOUT_NEWS: (newsType: NewsTypes) => string;
+    GET_ALL_CUPS_WITHOUT_NEWS: (cupType: CupTypes, newsType: NewsTypes) => string;
     ADD_OFFLINE_CUP: string;
     UPLOAD_MAP: (mapName: string) => string;
     UPLOAD_LEVELSHOT: (mapName: string) => string;
@@ -220,10 +219,8 @@ export class URL_PARAMS {
       PROCESS_VALIDATION: (cupId: number) => `${API_URL}/admin/cups/process-validation/${cupId}`,
       CALCULATE_CUP_RATING: (cupId: number) => `${API_URL}/admin/cups/calculate-rating/${cupId}`,
       FINISH_OFFLINE_CUP: (cupId: number) => `${API_URL}/admin/cups/finish-offline-cup/${cupId}`,
-      GET_ALL_OFFLINE_CUPS_WITHOUT_NEWS: (newsType: NewsTypes) =>
-        `${API_URL}/admin/cups/get-all-offline-cups-without-news/${newsType}`,
-      GET_ALL_ONLINE_CUPS_WITHOUT_NEWS: (newsType: NewsTypes) =>
-        `${API_URL}/admin/cups/get-all-online-cups-without-news/${newsType}`,
+      GET_ALL_CUPS_WITHOUT_NEWS: (cupType: CupTypes, newsType: NewsTypes) =>
+        `${API_URL}/admin/cups/get-all-cups-without-news/${cupType}/${newsType}`,
       ADD_OFFLINE_CUP: `${API_URL}/admin/cups/add-offline-cup`,
       UPLOAD_MAP: (mapName: string) => `${API_URL}/admin/cups/upload-map/${mapName}`,
       UPLOAD_LEVELSHOT: (mapName: string) => `${API_URL}/admin/cups/upload-levelshot/${mapName}`,

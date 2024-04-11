@@ -20,6 +20,7 @@ import {
   AdminActiveMulticupInterface,
   AdminEditCupInterface,
   AdminValidationInterface,
+  CupTypes,
   NewsTypes,
   OnlineCupActionDto,
   ProcessValidationDto,
@@ -163,20 +164,13 @@ export class AdminCupsController {
     return this.adminCupsService.uploadLevelshot(accessToken, levelshot, mapName);
   }
 
-  @Get('get-all-offline-cups-without-news/:newsType')
+  @Get('get-all-cups-without-news/:cupType/:newsType')
   getAllOfflineCupsWithoutNews(
     @Headers('X-Auth') accessToken: string | undefined,
+    @Param('cupType', new EnumValidationPipe(CupTypes)) cupType: CupTypes,
     @Param('newsType', new EnumValidationPipe(NewsTypes)) newsType: NewsTypes,
   ): Promise<AdminActiveCupInterface[]> {
-    return this.adminCupsService.getAllOfflineCupsWithoutNews(accessToken, newsType);
-  }
-
-  @Get('get-all-online-cups-without-news/:newsType')
-  getAllOnlineCupsWithoutNews(
-    @Headers('X-Auth') accessToken: string | undefined,
-    @Param('newsType', new EnumValidationPipe(NewsTypes)) newsType: NewsTypes,
-  ): Promise<AdminActiveCupInterface[]> {
-    return this.adminCupsService.getAllOnlineCupsWithoutNews(accessToken, newsType);
+    return this.adminCupsService.getAllCupsWithoutNews(accessToken, cupType, newsType);
   }
 
   @Get('get-all-active-multicups')

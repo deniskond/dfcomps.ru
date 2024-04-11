@@ -49,7 +49,7 @@
       </div>
 
       <ng-container *ngIf="isCupRequired">
-        <ng-container *ngIf="availableCups$ | async as availableCups">
+        <ng-container *ngIf="cupsList$ | async as availableCups">
           <div class="input-title">Cup</div>
           <div>
             <mat-form-field appearance="outline" class="select">

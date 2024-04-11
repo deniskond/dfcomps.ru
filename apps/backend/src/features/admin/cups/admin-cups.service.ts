@@ -848,43 +848,31 @@ export class AdminCupsService {
     }
   }
 
-  public async getAllOfflineCupsWithoutNews(
+  public async getAllCupsWithoutNews(
     accessToken: string | undefined,
+    cupType: CupTypes,
     newsType: NewsTypes,
   ): Promise<AdminActiveCupInterface[]> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
-      throw new UnauthorizedException('Unauthorized to get offline cups without CUP_ORGANIZER role');
+      throw new UnauthorizedException('Unauthorized to get cups without CUP_ORGANIZER role');
     }
 
-    const offlineCupsWithNews: Cup[] = await this.cupsRepository
+    const cupsWithNews: Cup[] = await this.cupsRepository
       .createQueryBuilder('cups')
       .leftJoinAndSelect('cups.news', 'news')
       .leftJoinAndSelect('news.newsType', 'news_types')
-      .where({ type: CupTypes.OFFLINE })
+      .where({ type: cupType })
       .orderBy('cups.id', 'DESC')
       .getMany();
 
-    return offlineCupsWithNews
+    return cupsWithNews
       .filter((cup: Cup) => cup.news.every((newsItem: News) => newsItem.newsType.name !== newsType))
       .map((cup: Cup) => ({
         cupId: cup.id,
         name: cup.full_name,
       }));
-  }
-
-  public async getAllOnlineCupsWithoutNews(
-    accessToken: string | undefined,
-    newsType: NewsTypes,
-  ): Promise<AdminActiveCupInterface[]> {
-    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
-
-    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
-      throw new UnauthorizedException('Unauthorized to get online cups without CUP_ORGANIZER role');
-    }
-
-    return [] as any;
   }
 
   private async getPhysicsDemos(cupId: number, physics: Physics): Promise<AdminPlayerDemosValidationInterface[]> {
