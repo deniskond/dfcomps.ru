@@ -1,4 +1,5 @@
-import { IsNotEmpty } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsBoolean, IsNotEmpty } from 'class-validator';
 
 export class AddOfflineCupDto {
   @IsNotEmpty()
@@ -22,7 +23,9 @@ export class AddOfflineCupDto {
   @IsNotEmpty()
   weapons: string;
 
+  @IsBoolean()
   @IsNotEmpty()
+  @Transform(({ value} ) => value === 'true')
   addNews: boolean;
 
   @IsNotEmpty()

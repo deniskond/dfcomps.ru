@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AdminDataService } from '../../business/admin-data.service';
 import { AdminOperationType } from '../../models/admin-operation-type.enum';
 import * as moment from 'moment-timezone';
-import { combineLatest, debounceTime, map, Observable, ReplaySubject, startWith, switchMap } from 'rxjs';
+import { combineLatest, debounceTime, map, Observable, ReplaySubject, startWith, switchMap, tap } from 'rxjs';
 import {
   AdminActiveCupInterface,
   AdminActiveMulticupInterface,
@@ -82,7 +82,7 @@ export class AdminNewsActionComponent implements OnInit {
 
     this.cupsList$ = combineLatest([this.availableCups$, this.selectedCup$]).pipe(
       map(([availableCups, selectedCup]: [AdminActiveCupInterface[], AdminActiveCupInterface | null]) =>
-        selectedCup ? [...availableCups, selectedCup] : [...availableCups],
+        selectedCup ? [selectedCup, ...availableCups] : [...availableCups],
       ),
     );
   }
@@ -170,6 +170,7 @@ export class AdminNewsActionComponent implements OnInit {
         this.postingTimeValidator(),
       );
 
+      this.selectedCup$.next(null);
       this.setYoutubeFieldObservable();
     }
 

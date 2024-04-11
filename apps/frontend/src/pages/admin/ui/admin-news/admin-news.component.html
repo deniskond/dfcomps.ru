@@ -2,7 +2,7 @@
   <mat-card class="card">
     <div class="card-header">Select news type</div>
     <mat-form-field appearance="outline" class="news-type-select">
-      <mat-select [(value)]="addNewsTypeSelectValue">
+      <mat-select [(value)]="addNewsTypeSelectValue" data-test-id="admin-news-type-select">
         <mat-option *ngFor="let newsType of newsTypes" [value]="newsType">
           {{ newsType | invokeFunction : mapNewsTypeToHumanTitle }}
         </mat-option>

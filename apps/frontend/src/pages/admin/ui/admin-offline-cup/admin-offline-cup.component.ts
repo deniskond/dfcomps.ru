@@ -166,7 +166,25 @@ export class AdminOfflineCupComponent implements OnInit {
     }
 
     this.isLoadingCupAction = true;
-    this.componentMode === 'Add' ? this.addOfflineCup() : this.editOfflineCup();
+
+    const targetObservable$: Observable<void> =
+      this.componentMode === 'Add' ? this.addOfflineCup$() : this.editOfflineCup$();
+
+    targetObservable$
+      .pipe(
+        take(1),
+        switchMap(() =>
+          this.offlineCupForm.get('addNews')!.value ? this.adminDataService.getAllNews$(false) : of(null),
+        ),
+        switchMap(() => this.adminDataService.getAllCups$(false)),
+        finalize(() => (this.isLoadingCupAction = false)),
+      )
+      .subscribe(() => {
+        this.router.navigate(['/admin/cups']);
+        this.snackBar.open(`Offline cup ${this.componentMode === 'Add' ? 'added' : 'edited'} successfully`, 'OK', {
+          duration: 3000,
+        });
+      });
   }
 
   public hasFieldError(control: AbstractControl): boolean {
@@ -256,84 +274,50 @@ export class AdminOfflineCupComponent implements OnInit {
     }
   }
 
-  private addOfflineCup(): void {
+  private addOfflineCup$(): Observable<any> {
     if (this.mapType === 'ws') {
-      this.adminDataService
-        .addOfflineCup$(this.offlineCupForm.value)
-        .pipe(
-          switchMap(() => this.adminDataService.getAllCups$(false)),
-          finalize(() => (this.isLoadingCupAction = false)),
-        )
-        .subscribe(() => {
-          this.router.navigate(['/admin/cups']);
-          this.snackBar.open('Offline cup added successfully', 'OK', { duration: 3000 });
-        });
-    }
-
-    if (this.mapType === 'custom') {
+      return this.adminDataService.addOfflineCup$(this.offlineCupForm.value);
+    } else {
       const mapName: string = this.offlineCupForm.get('mapName')!.value;
 
-      combineLatest([
+      return combineLatest([
         this.adminDataService.addCustomMap$(this.pk3Input.nativeElement.files[0], mapName),
         this.adminDataService.addCustomLevelshot$(this.levelshotInput.nativeElement.files[0], mapName),
-      ])
-        .pipe(
-          tap(([{ link: mapLink }, { link: levelshotLink }]: UploadedFileLinkInterface[]) => {
-            this.offlineCupForm.get('mapPk3Link')!.setValue(mapLink);
-            this.offlineCupForm.get('mapLevelshotLink')!.setValue(levelshotLink);
-          }),
-          switchMap(() => this.adminDataService.addOfflineCup$(this.offlineCupForm.value)),
-          switchMap(() => this.adminDataService.getAllCups$(false)),
-        )
-        .subscribe(() => {
-          this.router.navigate(['/admin/cups']);
-          this.snackBar.open('Offline cup added successfully', 'OK', { duration: 3000 });
-        });
+      ]).pipe(
+        tap(([{ link: mapLink }, { link: levelshotLink }]: UploadedFileLinkInterface[]) => {
+          this.offlineCupForm.get('mapPk3Link')!.setValue(mapLink);
+          this.offlineCupForm.get('mapLevelshotLink')!.setValue(levelshotLink);
+        }),
+        switchMap(() => this.adminDataService.addOfflineCup$(this.offlineCupForm.value)),
+      );
     }
   }
 
-  private editOfflineCup(): void {
+  private editOfflineCup$(): Observable<any> {
     if (this.mapType === 'ws') {
-      this.adminDataService
-        .editOfflineCup$(this.offlineCupForm.value, this.cupId!)
-        .pipe(
-          switchMap(() => this.adminDataService.getAllCups$(false)),
-          finalize(() => (this.isLoadingCupAction = false)),
-        )
-        .subscribe(() => {
-          this.router.navigate(['/admin/cups']);
-          this.snackBar.open('Offline cup edited successfully', 'OK', { duration: 3000 });
-        });
-    }
-
-    if (this.mapType === 'custom') {
+      return this.adminDataService.editOfflineCup$(this.offlineCupForm.value, this.cupId!);
+    } else {
       const mapName: string = this.offlineCupForm.get('mapName')!.value;
       const pk3FileValue: string | undefined = this.offlineCupForm.get('mapPk3File')!.value;
       const levelshotFileValue: string | undefined = this.offlineCupForm.get('mapLevelshotFile')!.value;
 
-      combineLatest([
+      return combineLatest([
         pk3FileValue ? this.adminDataService.addCustomMap$(this.pk3Input.nativeElement.files[0], mapName) : of(null),
         levelshotFileValue
           ? this.adminDataService.addCustomLevelshot$(this.levelshotInput.nativeElement.files[0], mapName)
           : of(null),
-      ])
-        .pipe(
-          tap(([uploadedMap, uploadedLevelshot]: (UploadedFileLinkInterface | null)[]) => {
-            if (uploadedMap) {
-              this.offlineCupForm.get('mapPk3Link')!.setValue(uploadedMap.link);
-            }
+      ]).pipe(
+        tap(([uploadedMap, uploadedLevelshot]: (UploadedFileLinkInterface | null)[]) => {
+          if (uploadedMap) {
+            this.offlineCupForm.get('mapPk3Link')!.setValue(uploadedMap.link);
+          }
 
-            if (uploadedLevelshot) {
-              this.offlineCupForm.get('mapLevelshotLink')!.setValue(uploadedLevelshot.link);
-            }
-          }),
-          switchMap(() => this.adminDataService.editOfflineCup$(this.offlineCupForm.value, this.cupId!)),
-          switchMap(() => this.adminDataService.getAllCups$(false)),
-        )
-        .subscribe(() => {
-          this.router.navigate(['/admin/cups']);
-          this.snackBar.open('Offline cup edited successfully', 'OK', { duration: 3000 });
-        });
+          if (uploadedLevelshot) {
+            this.offlineCupForm.get('mapLevelshotLink')!.setValue(uploadedLevelshot.link);
+          }
+        }),
+        switchMap(() => this.adminDataService.editOfflineCup$(this.offlineCupForm.value, this.cupId!)),
+      );
     }
   }
 }
