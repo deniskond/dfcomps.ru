@@ -100,10 +100,10 @@ Test cases:
 ☑ 3. Deleting news
 ☑ 4. Adding offline cup
 ☑ 5. Editing offline cup
-☐ 6. Adding start offline cup news
-☐ 7. Editing start offline cup news
-☐ 8. Adding offline cup result news
-☐ 9. Editing offline cup result news
+☑ 6. Adding start offline cup news
+☑ 7. Editing start offline cup news
+☑ 8. Adding offline cup result news
+☑ 9. Editing offline cup result news
 ☐ 10. Adding online cup announce news
 ☐ 11. Adding online cup result news
 ☐ 12. Adding multicup result news
