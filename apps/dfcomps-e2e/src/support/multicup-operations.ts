@@ -5,7 +5,6 @@ import * as faker from 'faker';
 export function addMultiCup(): string {
   const fullName = faker.lorem.words();
 
-  cy.visit('/');
   loginAs(UserRoles.CUP_ORGANIZER);
 
   cy.visit('/admin/multicups');

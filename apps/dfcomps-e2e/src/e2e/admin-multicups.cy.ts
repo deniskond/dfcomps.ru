@@ -10,7 +10,6 @@ describe('admin multicups', () => {
   const secondMulticupRounds = faker.datatype.number();
 
   beforeEach(() => {
-    cy.visit('/');
     loginAs(UserRoles.CUP_ORGANIZER);
   });
 

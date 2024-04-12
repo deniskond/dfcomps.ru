@@ -7,7 +7,7 @@ describe('admin offline cups', () => {
   const initialCupFullName = faker.lorem.words();
   const initialCupShortName = faker.lorem.words();
   const initialMapName = 'crosspath';
-  const cupStartTime = moment().subtract('1', 'day').format('YYYY-MM-DDTHH:mm');
+  const cupStartTime = moment().format('YYYY-MM-DDTHH:mm');
   const cupEndTime = moment().add('1', 'day').format('YYYY-MM-DDTHH:mm');
 
   const secondCupFullName = faker.lorem.words();
@@ -15,7 +15,6 @@ describe('admin offline cups', () => {
   const secondMapName = 'st1';
 
   beforeEach(() => {
-    cy.visit('/');
     loginAs(UserRoles.CUP_ORGANIZER);
   });
 
@@ -87,7 +86,7 @@ describe('admin offline cups', () => {
 
   it('should edit simple offline cup correctly', () => {
     cy.visit('/admin/cups');
-    cy.get('[data-test-id=edit-cup-button]').click();
+    cy.get('[data-test-id=edit-cup-button]').first().click();
 
     cy.intercept(
       {

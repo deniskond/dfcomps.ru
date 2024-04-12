@@ -16,7 +16,6 @@ describe('admin panel news', () => {
   const editedYoutubeId = 'g_JzrGR-jDY';
 
   beforeEach(() => {
-    cy.visit('/');
     loginAs(UserRoles.NEWSMAKER);
   });
 
@@ -28,7 +27,7 @@ describe('admin panel news', () => {
     cy.get('[data-test-id=russian-news-title-input]').type(initialRussianTitle);
     cy.get('[data-test-id=english-news-title-input]').type(initialEnglishTitle);
     cy.get('[data-test-id=custom-time-option-radio]').click();
-    cy.get('[data-test-id=news-posting-time-input]').type(moment().subtract('1', 'day').format('YYYY-MM-DDTHH:mm'));
+    cy.get('[data-test-id=news-posting-time-input]').type(moment().format('YYYY-MM-DDTHH:mm'));
     cy.get('[data-test-id=russian-text-quill]').find('.ql-editor').type(initialRussianText);
     cy.get('[data-test-id=english-text-quill]').find('.ql-editor').type(initialEnglishText);
     cy.get('[data-test-id=youtube-input]').type(initialYoutubeId);

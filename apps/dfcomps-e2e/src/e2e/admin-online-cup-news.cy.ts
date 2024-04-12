@@ -13,7 +13,6 @@ describe('admin online cup news', () => {
   });
 
   beforeEach(() => {
-    cy.visit('/');
     loginAs(UserRoles.NEWSMAKER);
   });
 
@@ -33,7 +32,7 @@ describe('admin online cup news', () => {
     cy.get('[data-test-id=russian-news-title-input]').type(russianTitle);
     cy.get('[data-test-id=english-news-title-input]').type(englishTitle);
     cy.get('[data-test-id=custom-time-option-radio]').click();
-    cy.get('[data-test-id=news-posting-time-input]').type(moment().subtract('1', 'day').format('YYYY-MM-DDTHH:mm'));
+    cy.get('[data-test-id=news-posting-time-input]').type(moment().format('YYYY-MM-DDTHH:mm'));
     cy.get('[data-test-id=russian-text-quill]').find('.ql-editor').type(russianText);
     cy.get('[data-test-id=english-text-quill]').find('.ql-editor').type(englishText);
     cy.get('[data-test-id=youtube-input]').type(youtubeId);
@@ -74,7 +73,7 @@ describe('admin online cup news', () => {
     cy.get('[data-test-id=russian-news-title-input]').type(russianTitle);
     cy.get('[data-test-id=english-news-title-input]').type(englishTitle);
     cy.get('[data-test-id=custom-time-option-radio]').click();
-    cy.get('[data-test-id=news-posting-time-input]').type(moment().subtract('1', 'day').format('YYYY-MM-DDTHH:mm'));
+    cy.get('[data-test-id=news-posting-time-input]').type(moment().format('YYYY-MM-DDTHH:mm'));
     cy.get('[data-test-id=russian-text-quill]').find('.ql-editor').type(russianText);
     cy.get('[data-test-id=english-text-quill]').find('.ql-editor').type(englishText);
     cy.get('[data-test-id=youtube-input]').type(youtubeId);

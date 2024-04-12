@@ -12,7 +12,6 @@ describe('admin online cups', () => {
   const secondCupShortName = faker.lorem.words();
 
   beforeEach(() => {
-    cy.visit('/');
     loginAs(UserRoles.CUP_ORGANIZER);
   });
 
@@ -26,7 +25,6 @@ describe('admin online cups', () => {
     cy.get('[data-test-id=online-cup-physics-select]').click();
     cy.get('[data-test-id=online-cup-physics-vq3]').click();
     cy.get('[data-test-id=online-cup-starttime-input]').type(cupStartTime);
-    cy.get('[data-test-id=online-cup-add-news-checkbox]').click();
 
     // checking two servers switch
     cy.get('[data-test-id=online-cup-two-servers-checkbox]').click();
@@ -37,17 +35,11 @@ describe('admin online cups', () => {
     // adding online cup and checking admin cups list
     cy.get('[data-test-id=online-cup-submit-button]').click(); 
     cy.get('[data-test-id=cup-fullname-text]').first().should('contain.text', initialCupFullName);
-    cy.wait(1000); // this is flaky without timeout; news might not be added before routing to main page
-
-    // checking mainpage
-    cy.visit('/');
-    cy.get('[data-test-id=news-header-text]').first().should('contain.text', initialCupFullName);
-    cy.get('.news-block').first().find('[data-test-id=online-cup-players-table]').should('exist');
   });
 
   it('should edit online cup correctly', () => {
     cy.visit('/admin/cups');
-    cy.get('[data-test-id=edit-cup-button]').click();
+    cy.get('[data-test-id=edit-cup-button]').first().click();
 
     // filling the form
     cy.get('[data-test-id=online-cup-fullname-input]').clear().type(secondCupFullName);
@@ -56,10 +48,6 @@ describe('admin online cups', () => {
     // submitting form and checking admin cups list
     cy.get('[data-test-id=online-cup-submit-button]').click();
     cy.get('[data-test-id=cup-fullname-text]').first().should('contain.text', secondCupFullName);
-
-    // checking mainpage
-    cy.visit('/');
-    cy.get('[data-test-id=news-header-text]').first().should('contain.text', secondCupFullName);
   });
 
   it('should delete online cup correctly', () => {

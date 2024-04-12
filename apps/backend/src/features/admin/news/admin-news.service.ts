@@ -29,7 +29,7 @@ export class AdminNewsService {
       .createQueryBuilder('news')
       .leftJoinAndSelect('news.newsType', 'news_types')
       .orderBy('news.datetimezone', 'DESC')
-      .addOrderBy('news.newsTypeId', 'ASC')
+      .addOrderBy('news.id', 'DESC')
       .getMany();
 
     return news.map((newsItem: News) => ({
