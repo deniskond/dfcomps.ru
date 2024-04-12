@@ -28,7 +28,10 @@ export class UserService {
         password,
       })
       .pipe(
-        tap((loginResponseDto: LoginResponseInterface) => this.setAuthInfo(loginResponseDto)),
+        tap((loginResponseDto: LoginResponseInterface) => {
+          this.setAuthInfo(loginResponseDto);
+          location.reload();
+        }),
         map(() => true),
       );
   }
@@ -39,7 +42,10 @@ export class UserService {
         discordAccessToken,
       })
       .pipe(
-        tap((loginResponseDto: LoginResponseInterface) => this.setAuthInfo(loginResponseDto)),
+        tap((loginResponseDto: LoginResponseInterface) => {
+          this.setAuthInfo(loginResponseDto);
+          location.reload();
+        }),
         map(() => true),
       );
   }
@@ -88,6 +94,7 @@ export class UserService {
     this.authService.setToken(null);
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+    location.reload();
   }
 
   public restoreAuthInfo(): void {

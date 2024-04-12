@@ -64,16 +64,14 @@ export class AdminNewsActionComponent implements OnInit {
       this.availableMulticups$ = this.adminDataService.getAllAvailableMulticups$();
     }
 
-    if (
-      this.isCupRequired &&
-      (this.newsType === NewsTypes.ONLINE_ANNOUNCE || this.newsType === NewsTypes.ONLINE_RESULTS)
-    ) {
+    if (this.newsType === NewsTypes.ONLINE_ANNOUNCE || this.newsType === NewsTypes.ONLINE_RESULTS) {
       this.availableCups$ = this.adminDataService.getAllCupsWithoutNews$(CupTypes.ONLINE, this.newsType);
     }
 
     if (
-      this.isCupRequired &&
-      (this.newsType === NewsTypes.OFFLINE_START || this.newsType === NewsTypes.OFFLINE_RESULTS)
+      this.newsType === NewsTypes.OFFLINE_START ||
+      this.newsType === NewsTypes.OFFLINE_RESULTS ||
+      this.newsType === NewsTypes.STREAMERS_RESULTS
     ) {
       this.availableCups$ = this.adminDataService.getAllCupsWithoutNews$(CupTypes.OFFLINE, this.newsType);
     }
