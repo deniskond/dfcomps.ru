@@ -1,5 +1,5 @@
 import { environment } from '~app/environments/environment';
-import { Physics } from '@dfcomps/contracts';
+import { CupTypes, NewsTypes, Physics } from '@dfcomps/contracts';
 
 const envMap: Record<string, string> = {
   local: '/api',
@@ -187,18 +187,26 @@ export class URL_PARAMS {
     PROCESS_VALIDATION: (cupId: number) => string;
     CALCULATE_CUP_RATING: (cupId: number) => string;
     FINISH_OFFLINE_CUP: (cupId: number) => string;
-    GET_ALL_ACTIVE_MULTICUPS: string;
-    ADD_CUP: string;
+    GET_ALL_CUPS_WITHOUT_NEWS: (cupType: CupTypes, newsType: NewsTypes) => string;
+    ADD_OFFLINE_CUP: string;
     UPLOAD_MAP: (mapName: string) => string;
     UPLOAD_LEVELSHOT: (mapName: string) => string;
     GET_SINGLE_CUP: (cupId: number) => string;
-    UPDATE_CUP: (cupId: number) => string;
+    UPDATE_OFFLINE_CUP: (cupId: number) => string;
+    ADD_ONLINE_CUP: string;
+    UPDATE_ONLINE_CUP: (cupId: number) => string;
     DELETE_CUP: (cupId: number) => string;
     SET_SEASON_REWARDS: string;
     SAVE_SEASON_RATINGS: string;
     RESET_SEASON_RATINGS: string;
     INCREMENT_SEASON: string;
     GET_WORLDSPAWN_MAP_INFO: string;
+    GET_MULTICUPS: string;
+    GET_SINGLE_MULTICUP: (multicupId: number) => string;
+    ADD_MULTICUP: string;
+    UPDATE_MULTICUP: (multicupId: number) => string;
+    DELETE_MULTICUP: (multicupId: number) => string;
+    GET_ALL_AVAILABLE_MULTICUPS: string;
   } {
     return {
       GET_NEWS: `${API_URL}/admin/news/get-all-news`,
@@ -211,18 +219,27 @@ export class URL_PARAMS {
       PROCESS_VALIDATION: (cupId: number) => `${API_URL}/admin/cups/process-validation/${cupId}`,
       CALCULATE_CUP_RATING: (cupId: number) => `${API_URL}/admin/cups/calculate-rating/${cupId}`,
       FINISH_OFFLINE_CUP: (cupId: number) => `${API_URL}/admin/cups/finish-offline-cup/${cupId}`,
-      GET_ALL_ACTIVE_MULTICUPS: `${API_URL}/admin/cups/get-all-active-multicups`,
-      ADD_CUP: `${API_URL}/admin/cups/add`,
+      GET_ALL_CUPS_WITHOUT_NEWS: (cupType: CupTypes, newsType: NewsTypes) =>
+        `${API_URL}/admin/cups/get-all-cups-without-news/${cupType}/${newsType}`,
+      ADD_OFFLINE_CUP: `${API_URL}/admin/cups/add-offline-cup`,
       UPLOAD_MAP: (mapName: string) => `${API_URL}/admin/cups/upload-map/${mapName}`,
       UPLOAD_LEVELSHOT: (mapName: string) => `${API_URL}/admin/cups/upload-levelshot/${mapName}`,
       GET_SINGLE_CUP: (cupId: number) => `${API_URL}/admin/cups/get/${cupId}`,
-      UPDATE_CUP: (cupId: number) => `${API_URL}/admin/cups/update/${cupId}`,
+      UPDATE_OFFLINE_CUP: (cupId: number) => `${API_URL}/admin/cups/update-offline-cup/${cupId}`,
+      ADD_ONLINE_CUP: `${API_URL}/admin/cups/add-online-cup`,
+      UPDATE_ONLINE_CUP: (cupId: number) => `${API_URL}/admin/cups/update-online-cup/${cupId}`,
       DELETE_CUP: (cupId: number) => `${API_URL}/admin/cups/delete/${cupId}`,
       SET_SEASON_REWARDS: `${API_URL}/admin/season/rewards`, // TODO
       SAVE_SEASON_RATINGS: `${API_URL}/admin/season/save_season_ratings`, // TODO
       RESET_SEASON_RATINGS: `${API_URL}/admin/season/reset_season_ratings`, // TODO
       INCREMENT_SEASON: `${API_URL}/admin/season/increment`, // TODO
       GET_WORLDSPAWN_MAP_INFO: `${API_URL}/admin/cups/get-worldspawn-map-info`,
+      GET_MULTICUPS: `${API_URL}/admin/multicups/get-all-multicups`,
+      GET_SINGLE_MULTICUP: (multicupId: number) => `${API_URL}/admin/multicups/get/${multicupId}`,
+      ADD_MULTICUP: `${API_URL}/admin/multicups/add-multicup`,
+      UPDATE_MULTICUP: (multicupId: number) => `${API_URL}/admin/multicups/update-multicup/${multicupId}`,
+      DELETE_MULTICUP: (multicupId: number) => `${API_URL}/admin/multicups/delete/${multicupId}`,
+      GET_ALL_AVAILABLE_MULTICUPS: `${API_URL}/admin/multicups/get-all-active-multicups`,
     };
   }
 }

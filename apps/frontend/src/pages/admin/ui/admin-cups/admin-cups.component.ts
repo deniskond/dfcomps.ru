@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ReplaySubject, Subject, filter, switchMap, take, takeUntil } from 'rxjs';
 import { AdminDataService } from '../../business/admin-data.service';
-import { AdminCupInterface } from '@dfcomps/contracts';
+import { AdminCupInterface, CupTypes } from '@dfcomps/contracts';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserRoles, checkUserRoles } from '@dfcomps/auth';
 import { UserService } from '~shared/services/user-service/user.service';
@@ -92,6 +92,10 @@ export class AdminCupsComponent implements OnInit {
         this.cups$.next(cups);
         this.snackBar.open('Cup finished successfully', 'OK', { duration: 2000 });
       });
+  }
+
+  public getCupEditLink(cup: AdminCupInterface): string {
+    return cup.type === CupTypes.ONLINE ? `/admin/cups/online/edit/${cup.id}` : `/admin/cups/offline/edit/${cup.id}`;
   }
 
   private initCurrentUserSubscription(): void {

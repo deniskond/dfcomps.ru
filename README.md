@@ -100,29 +100,33 @@ Test cases:
 ☑ 3. Deleting news
 ☑ 4. Adding offline cup
 ☑ 5. Editing offline cup
-☐ 6. Adding start offline cup news
-☐ 7. Editing start offline cup news
-☐ 8. Adding finish offline cup news
-☐ 9. Editing finish offline cup news
-☐ 10. Uploading valid demo with overbounces turned off
-☐ 11. Uploading valid demo with overbounces turned on
-☐ 12. Uploading invalid demo
-☐ 13. Validation (validators archive + setting results in admin)
-☐ 14. Finishing cup (distribution of rating + making cup archive)
-☑ 15. Deleting offline cup
-☐ 16. Adding multicup
-☐ 17. Editing multicup
-☐ 18. Adding multicup round with custom map
-☐ 19. Editing multicup round with custom map
-☐ 20. Deleting multicup round with custom map
-☐ 21. Deleting multicup
-☐ 22. Adding online cup
-☐ 23. Editing online cup
-☐ 24. Online cup with server logs
-☐ 25. Online cup with manual results
-☐ 26. Deleting online cup
-☐ 27. Ending season
-☐ 28. Updating profile
+☑ 6. Adding start offline cup news
+☑ 7. Editing start offline cup news
+☑ 8. Adding offline cup result news
+☑ 9. Editing offline cup result news
+☑ 10. Adding online cup announce news
+☑ 11. Adding online cup result news
+☑ 12. Adding multicup result news
+☑ 13. Adding streamers result news
+☐ 14. Uploading valid demo with overbounces turned off
+☐ 15. Uploading valid demo with overbounces turned on
+☐ 16. Uploading invalid demo
+☐ 17. Validation (validators archive + setting results in admin)
+☐ 18. Finishing cup (distribution of rating + making cup archive)
+☑ 19. Deleting offline cup
+☑ 20. Adding multicup
+☑ 21. Editing multicup
+☐ 22. Adding multicup round with custom map
+☐ 23. Editing multicup round with custom map
+☐ 24. Deleting multicup round with custom map
+☑ 25. Deleting multicup
+☑ 26. Adding online cup
+☑ 27. Editing online cup
+☐ 28. Online cup with server logs
+☐ 29. Online cup with manual results
+☑ 30. Deleting online cup
+☐ 31. Ending season
+☐ 32. Updating profile
 ```
 
 ## Discord bot

@@ -29,7 +29,7 @@ export class AdminNewsService {
       .createQueryBuilder('news')
       .leftJoinAndSelect('news.newsType', 'news_types')
       .orderBy('news.datetimezone', 'DESC')
-      .addOrderBy('news.newsTypeId', 'ASC')
+      .addOrderBy('news.id', 'DESC')
       .getMany();
 
     return news.map((newsItem: News) => ({
@@ -48,12 +48,13 @@ export class AdminNewsService {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!checkUserRoles(userAccess.roles, [UserRoles.NEWSMAKER])) {
-      throw new UnauthorizedException('Unauthorized to get admin news list without NEWSMAKER role');
+      throw new UnauthorizedException('Unauthorized to get admin news item without NEWSMAKER role');
     }
 
     const newsItem: News | null = await this.newsRepository
       .createQueryBuilder('news')
       .leftJoinAndSelect('news.newsType', 'news_types')
+      .leftJoinAndSelect('news.cup', 'cups')
       .where({ id: newsId })
       .getOne();
 
@@ -71,6 +72,8 @@ export class AdminNewsService {
         date: newsItem.datetimezone,
         type: newsItem.newsType.name,
         youtube: newsItem.youtube,
+        cup: newsItem.cup ? { cupId: newsItem.cup.id, name: newsItem.cup.full_name } : null,
+        multicupId: newsItem.multicup_id,
       },
     };
   }
@@ -79,7 +82,7 @@ export class AdminNewsService {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!userAccess.userId || !checkUserRoles(userAccess.roles, [UserRoles.NEWSMAKER])) {
-      throw new UnauthorizedException('Unauthorized to get admin news list without NEWSMAKER role');
+      throw new UnauthorizedException('Unauthorized to post news list without NEWSMAKER role');
     }
 
     await this.newsRepository
@@ -98,6 +101,8 @@ export class AdminNewsService {
           newsType: { id: mapNewsTypeEnumToDBNewsTypeId(adminNewsDto.type) },
           comments_count: 0,
           hide_on_main: false,
+          cup: adminNewsDto.cupId ? { id: Number(adminNewsDto.cupId) } : null,
+          multicup_id: adminNewsDto.multicupId,
         },
       ])
       .execute();
@@ -107,7 +112,7 @@ export class AdminNewsService {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!userAccess.userId || !checkUserRoles(userAccess.roles, [UserRoles.NEWSMAKER])) {
-      throw new UnauthorizedException('Unauthorized to get admin news list without NEWSMAKER role');
+      throw new UnauthorizedException('Unauthorized to update news list without NEWSMAKER role');
     }
 
     await this.newsRepository
@@ -124,6 +129,8 @@ export class AdminNewsService {
         newsType: { id: mapNewsTypeEnumToDBNewsTypeId(adminNewsDto.type) },
         comments_count: 0,
         hide_on_main: false,
+        cup: adminNewsDto.cupId ? { id: Number(adminNewsDto.cupId) } : null,
+        multicup_id: adminNewsDto.multicupId,
       })
       .where({ id: newsId })
       .execute();
@@ -133,7 +140,7 @@ export class AdminNewsService {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!userAccess.userId || !checkUserRoles(userAccess.roles, [UserRoles.NEWSMAKER])) {
-      throw new UnauthorizedException('Unauthorized to get admin news list without NEWSMAKER role');
+      throw new UnauthorizedException('Unauthorized to delete news without NEWSMAKER role');
     }
 
     await this.newsCommentsRepository

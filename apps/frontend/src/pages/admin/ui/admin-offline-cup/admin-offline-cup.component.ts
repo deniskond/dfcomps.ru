@@ -19,12 +19,16 @@ import {
 import { AdminDataService } from '../../business/admin-data.service';
 import {
   AdminActiveMulticupInterface,
-  AdminEditOfflineCupInterface,
+  AdminEditCupInterface,
   UploadedFileLinkInterface,
   WorldspawnMapInfoInterface,
 } from '@dfcomps/contracts';
 import { MatRadioChange } from '@angular/material/radio';
 import * as moment from 'moment-timezone';
+import { isNonNull } from '~shared/helpers';
+import { UserService } from '~shared/services/user-service/user.service';
+import { UserInterface } from '~shared/interfaces/user.interface';
+import { UserRoles, checkUserRoles } from '@dfcomps/auth';
 
 @Component({
   selector: 'admin-offline-cup',
@@ -36,7 +40,7 @@ export class AdminOfflineCupComponent implements OnInit {
   @ViewChild('pk3FileInput') pk3Input: ElementRef;
   @ViewChild('levelshotFileInput') levelshotInput: ElementRef;
 
-  public activeMulticups$: Observable<AdminActiveMulticupInterface[]>;
+  public availableMulticups$: Observable<AdminActiveMulticupInterface[]>;
   public isMapFound: boolean | null = null;
   public isLoadingMapInfo = false;
   public isLoadingCupAction = false;
@@ -89,10 +93,11 @@ export class AdminOfflineCupComponent implements OnInit {
     private router: Router,
     private changeDetectorRef: ChangeDetectorRef,
     private route: ActivatedRoute,
+    private userService: UserService,
   ) {}
 
   ngOnInit(): void {
-    this.activeMulticups$ = this.adminDataService.getAllActiveMulticups$();
+    this.availableMulticups$ = this.adminDataService.getAllAvailableMulticups$();
     this.initMapInfoSubscription();
 
     this.route.data.pipe(take(1)).subscribe(({ multicup }: Data) => {
@@ -109,7 +114,7 @@ export class AdminOfflineCupComponent implements OnInit {
         tap(({ id }: Params) => (this.cupId = parseInt(id))),
         switchMap(({ id }: Params) => this.adminDataService.getSingleCup$(id)),
       )
-      .subscribe((cup: AdminEditOfflineCupInterface) => {
+      .subscribe((cup: AdminEditCupInterface) => {
         this.componentMode = 'Edit';
         this.setFormValues(cup);
       });
@@ -166,7 +171,28 @@ export class AdminOfflineCupComponent implements OnInit {
     }
 
     this.isLoadingCupAction = true;
-    this.componentMode === 'Add' ? this.addCup() : this.editCup();
+
+    const targetObservable$: Observable<void> =
+      this.componentMode === 'Add' ? this.addOfflineCup$() : this.editOfflineCup$();
+
+    targetObservable$
+      .pipe(
+        take(1),
+        switchMap(() => this.userService.getCurrentUser$().pipe(filter(isNonNull))),
+        switchMap((user: UserInterface) =>
+          this.offlineCupForm.get('addNews')!.value && checkUserRoles(user.roles, [UserRoles.NEWSMAKER])
+            ? this.adminDataService.getAllNews$(false)
+            : of(null),
+        ),
+        switchMap(() => this.adminDataService.getAllCups$(false)),
+        finalize(() => (this.isLoadingCupAction = false)),
+      )
+      .subscribe(() => {
+        this.router.navigate(['/admin/cups']);
+        this.snackBar.open(`Offline cup ${this.componentMode === 'Add' ? 'added' : 'edited'} successfully`, 'OK', {
+          duration: 3000,
+        });
+      });
   }
 
   public hasFieldError(control: AbstractControl): boolean {
@@ -217,7 +243,7 @@ export class AdminOfflineCupComponent implements OnInit {
     );
   }
 
-  private setFormValues(cup: AdminEditOfflineCupInterface): void {
+  private setFormValues(cup: AdminEditCupInterface): void {
     this.offlineCupForm.setValue({
       fullName: cup.fullName,
       shortName: cup.shortName,
@@ -256,84 +282,50 @@ export class AdminOfflineCupComponent implements OnInit {
     }
   }
 
-  private addCup(): void {
+  private addOfflineCup$(): Observable<any> {
     if (this.mapType === 'ws') {
-      this.adminDataService
-        .addCup$(this.offlineCupForm.value)
-        .pipe(
-          switchMap(() => this.adminDataService.getAllCups$(false)),
-          finalize(() => (this.isLoadingCupAction = false)),
-        )
-        .subscribe(() => {
-          this.router.navigate(['/admin/cups']);
-          this.snackBar.open('Cup added successfully', 'OK', { duration: 3000 });
-        });
-    }
-
-    if (this.mapType === 'custom') {
+      return this.adminDataService.addOfflineCup$(this.offlineCupForm.value);
+    } else {
       const mapName: string = this.offlineCupForm.get('mapName')!.value;
 
-      combineLatest([
+      return combineLatest([
         this.adminDataService.addCustomMap$(this.pk3Input.nativeElement.files[0], mapName),
         this.adminDataService.addCustomLevelshot$(this.levelshotInput.nativeElement.files[0], mapName),
-      ])
-        .pipe(
-          tap(([{ link: mapLink }, { link: levelshotLink }]: UploadedFileLinkInterface[]) => {
-            this.offlineCupForm.get('mapPk3Link')!.setValue(mapLink);
-            this.offlineCupForm.get('mapLevelshotLink')!.setValue(levelshotLink);
-          }),
-          switchMap(() => this.adminDataService.addCup$(this.offlineCupForm.value)),
-          switchMap(() => this.adminDataService.getAllCups$(false)),
-        )
-        .subscribe(() => {
-          this.router.navigate(['/admin/cups']);
-          this.snackBar.open('Cup added successfully', 'OK', { duration: 3000 });
-        });
+      ]).pipe(
+        tap(([{ link: mapLink }, { link: levelshotLink }]: UploadedFileLinkInterface[]) => {
+          this.offlineCupForm.get('mapPk3Link')!.setValue(mapLink);
+          this.offlineCupForm.get('mapLevelshotLink')!.setValue(levelshotLink);
+        }),
+        switchMap(() => this.adminDataService.addOfflineCup$(this.offlineCupForm.value)),
+      );
     }
   }
 
-  private editCup(): void {
+  private editOfflineCup$(): Observable<any> {
     if (this.mapType === 'ws') {
-      this.adminDataService
-        .editCup$(this.offlineCupForm.value, this.cupId!)
-        .pipe(
-          switchMap(() => this.adminDataService.getAllCups$(false)),
-          finalize(() => (this.isLoadingCupAction = false)),
-        )
-        .subscribe(() => {
-          this.router.navigate(['/admin/cups']);
-          this.snackBar.open('Cup edited successfully', 'OK', { duration: 3000 });
-        });
-    }
-
-    if (this.mapType === 'custom') {
+      return this.adminDataService.editOfflineCup$(this.offlineCupForm.value, this.cupId!);
+    } else {
       const mapName: string = this.offlineCupForm.get('mapName')!.value;
       const pk3FileValue: string | undefined = this.offlineCupForm.get('mapPk3File')!.value;
       const levelshotFileValue: string | undefined = this.offlineCupForm.get('mapLevelshotFile')!.value;
 
-      combineLatest([
+      return combineLatest([
         pk3FileValue ? this.adminDataService.addCustomMap$(this.pk3Input.nativeElement.files[0], mapName) : of(null),
         levelshotFileValue
           ? this.adminDataService.addCustomLevelshot$(this.levelshotInput.nativeElement.files[0], mapName)
           : of(null),
-      ])
-        .pipe(
-          tap(([uploadedMap, uploadedLevelshot]: (UploadedFileLinkInterface | null)[]) => {
-            if (uploadedMap) {
-              this.offlineCupForm.get('mapPk3Link')!.setValue(uploadedMap.link);
-            }
+      ]).pipe(
+        tap(([uploadedMap, uploadedLevelshot]: (UploadedFileLinkInterface | null)[]) => {
+          if (uploadedMap) {
+            this.offlineCupForm.get('mapPk3Link')!.setValue(uploadedMap.link);
+          }
 
-            if (uploadedLevelshot) {
-              this.offlineCupForm.get('mapLevelshotLink')!.setValue(uploadedLevelshot.link);
-            }
-          }),
-          switchMap(() => this.adminDataService.editCup$(this.offlineCupForm.value, this.cupId!)),
-          switchMap(() => this.adminDataService.getAllCups$(false)),
-        )
-        .subscribe(() => {
-          this.router.navigate(['/admin/cups']);
-          this.snackBar.open('Cup edited successfully', 'OK', { duration: 3000 });
-        });
+          if (uploadedLevelshot) {
+            this.offlineCupForm.get('mapLevelshotLink')!.setValue(uploadedLevelshot.link);
+          }
+        }),
+        switchMap(() => this.adminDataService.editOfflineCup$(this.offlineCupForm.value, this.cupId!)),
+      );
     }
   }
 }

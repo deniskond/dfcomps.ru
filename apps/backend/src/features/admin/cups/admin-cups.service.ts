@@ -8,18 +8,20 @@ import {
 } from '@nestjs/common';
 import { AuthService } from '../../auth/auth.service';
 import {
-  AddCupDto,
+  AddOfflineCupDto,
+  AdminActiveCupInterface,
   AdminActiveMulticupInterface,
   AdminCupInterface,
-  AdminEditOfflineCupInterface,
+  AdminEditCupInterface,
   AdminPlayerDemosValidationInterface,
   AdminValidationInterface,
   CupTypes,
-  UpdateCupDto,
   NewsTypes,
+  OnlineCupActionDto,
   Physics,
   ProcessValidationDto,
   ResultsTableInterface,
+  UpdateOfflineCupDto,
   UploadedFileLinkInterface,
   ValidDemoInterface,
   ValidationResultInterface,
@@ -95,7 +97,7 @@ export class AdminCupsService {
     }));
   }
 
-  public async getSingleCup(accessToken: string | undefined, cupId: number): Promise<AdminEditOfflineCupInterface> {
+  public async getSingleCup(accessToken: string | undefined, cupId: number): Promise<AdminEditCupInterface> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
@@ -128,18 +130,22 @@ export class AdminCupsService {
       multicupId: cup.multicup?.id || null,
       addNews: cup.news.length === 2,
       size: cup.map_size,
+      useTwoServers: cup.use_two_servers,
+      server1: cup.server1,
+      server2: cup.server2,
+      physics: cup.physics,
     };
   }
 
-  public async addCup(accessToken: string | undefined, addCupDto: AddCupDto): Promise<void> {
+  public async addOfflineCup(accessToken: string | undefined, addOfflineCupDto: AddOfflineCupDto): Promise<void> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
       throw new UnauthorizedException('Unauthorized to add cup without CUP_ORGANIZER role');
     }
 
-    const startDatetime = moment(addCupDto.startTime).tz('Europe/Moscow').format();
-    const endDatetime = moment(addCupDto.endTime).tz('Europe/Moscow').format();
+    const startDatetime = moment(addOfflineCupDto.startTime).tz('Europe/Moscow').format();
+    const endDatetime = moment(addOfflineCupDto.endTime).tz('Europe/Moscow').format();
 
     const queryResult: InsertResult = await this.cupsRepository
       .createQueryBuilder()
@@ -147,8 +153,8 @@ export class AdminCupsService {
       .into(Cup)
       .values([
         {
-          full_name: addCupDto.fullName,
-          short_name: addCupDto.shortName,
+          full_name: addOfflineCupDto.fullName,
+          short_name: addOfflineCupDto.shortName,
           youtube: null,
           twitch: null,
           current_round: 1,
@@ -156,33 +162,33 @@ export class AdminCupsService {
           end_datetime: endDatetime,
           server1: '',
           server2: '',
-          map1: addCupDto.mapName,
+          map1: addOfflineCupDto.mapName,
           map2: null,
           map3: null,
           map4: null,
           map5: null,
           physics: 'mixed',
           type: CupTypes.OFFLINE,
-          map_weapons: addCupDto.weapons,
-          map_author: addCupDto.mapAuthor,
-          map_pk3: addCupDto.mapPk3Link,
-          map_size: addCupDto.size,
+          map_weapons: addOfflineCupDto.weapons,
+          map_author: addOfflineCupDto.mapAuthor,
+          map_pk3: addOfflineCupDto.mapPk3Link,
+          map_size: addOfflineCupDto.size,
           archive_link: null,
           bonus_rating: 0,
           system: null,
-          custom_map: addCupDto.mapPk3Link,
+          custom_map: addOfflineCupDto.mapPk3Link,
           custom_news: null,
           validation_archive_link: null,
           timer: false,
           rating_calculated: false,
           use_two_servers: false,
           demos_validated: false,
-          multicup: addCupDto.multicupId ? { id: addCupDto.multicupId } : null,
+          multicup: addOfflineCupDto.multicupId ? { id: addOfflineCupDto.multicupId } : null,
         },
       ])
       .execute();
 
-    if (addCupDto.addNews) {
+    if (addOfflineCupDto.addNews) {
       const cupId: number = queryResult.identifiers[0].id;
 
       await this.newsRepository
@@ -191,8 +197,8 @@ export class AdminCupsService {
         .into(News)
         .values([
           {
-            header: `Старт ${addCupDto.fullName}!`,
-            header_en: `${addCupDto.fullName} start!`,
+            header: `Старт ${addOfflineCupDto.fullName}!`,
+            header_en: `${addOfflineCupDto.fullName} start!`,
             text: '',
             text_en: '',
             youtube: null,
@@ -212,8 +218,8 @@ export class AdminCupsService {
         .into(News)
         .values([
           {
-            header: `Результаты ${addCupDto.fullName}`,
-            header_en: `Results: ${addCupDto.fullName}`,
+            header: `Результаты ${addOfflineCupDto.fullName}`,
+            header_en: `Results: ${addOfflineCupDto.fullName}`,
             text: '',
             text_en: '',
             youtube: null,
@@ -229,7 +235,11 @@ export class AdminCupsService {
     }
   }
 
-  public async updateCup(accessToken: string | undefined, updateCupDto: UpdateCupDto, cupId: number): Promise<void> {
+  public async updateOfflineCup(
+    accessToken: string | undefined,
+    updateOfflineCupDto: UpdateOfflineCupDto,
+    cupId: number,
+  ): Promise<void> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
@@ -246,11 +256,11 @@ export class AdminCupsService {
       throw new BadRequestException(`Can't update - cup already finished`);
     }
 
-    const startDatetime = moment(updateCupDto.startTime).tz('Europe/Moscow').format();
-    const endDatetime = moment(updateCupDto.endTime).tz('Europe/Moscow').format();
+    const startDatetime = moment(updateOfflineCupDto.startTime).tz('Europe/Moscow').format();
+    const endDatetime = moment(updateOfflineCupDto.endTime).tz('Europe/Moscow').format();
 
-    if (updateCupDto.mapPk3Link) {
-      const absolutePk3Link = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + updateCupDto.mapPk3Link;
+    if (updateOfflineCupDto.mapPk3Link) {
+      const absolutePk3Link = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + updateOfflineCupDto.mapPk3Link;
 
       if (fs.existsSync(absolutePk3Link)) {
         fs.rmSync(absolutePk3Link);
@@ -261,27 +271,27 @@ export class AdminCupsService {
       .createQueryBuilder()
       .update(Cup)
       .set({
-        full_name: updateCupDto.fullName,
-        short_name: updateCupDto.shortName,
+        full_name: updateOfflineCupDto.fullName,
+        short_name: updateOfflineCupDto.shortName,
         start_datetime: startDatetime,
         end_datetime: endDatetime,
-        map1: updateCupDto.mapName,
-        map_weapons: updateCupDto.weapons,
-        map_author: updateCupDto.mapAuthor,
-        map_pk3: updateCupDto.mapPk3Link || undefined,
-        map_size: updateCupDto.size,
-        multicup: updateCupDto.multicupId ? { id: updateCupDto.multicupId } : undefined,
+        map1: updateOfflineCupDto.mapName,
+        map_weapons: updateOfflineCupDto.weapons,
+        map_author: updateOfflineCupDto.mapAuthor,
+        map_pk3: updateOfflineCupDto.mapPk3Link || undefined,
+        map_size: updateOfflineCupDto.size,
+        multicup: updateOfflineCupDto.multicupId ? { id: updateOfflineCupDto.multicupId } : undefined,
       })
       .where({ id: cupId })
       .execute();
 
-    if (updateCupDto.addNews) {
+    if (updateOfflineCupDto.addNews) {
       await this.newsRepository
         .createQueryBuilder('news')
         .update(News)
         .set({
-          header: `Старт ${updateCupDto.fullName}!`,
-          header_en: `${updateCupDto.fullName} start!`,
+          header: `Старт ${updateOfflineCupDto.fullName}!`,
+          header_en: `${updateOfflineCupDto.fullName} start!`,
           user: { id: userAccess.userId! },
           datetimezone: startDatetime,
         })
@@ -293,8 +303,8 @@ export class AdminCupsService {
         .createQueryBuilder('news')
         .update(News)
         .set({
-          header: `Результаты ${updateCupDto.fullName}`,
-          header_en: `Results: ${updateCupDto.fullName}`,
+          header: `Результаты ${updateOfflineCupDto.fullName}`,
+          header_en: `Results: ${updateOfflineCupDto.fullName}`,
           user: { id: userAccess.userId! },
           datetimezone: endDatetime,
         })
@@ -537,7 +547,13 @@ export class AdminCupsService {
       .execute();
   }
 
-  public async getAllActiveMulticups(): Promise<AdminActiveMulticupInterface[]> {
+  public async getAllActiveMulticups(accessToken: string | undefined): Promise<AdminActiveMulticupInterface[]> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+      throw new UnauthorizedException('Unauthorized to get all active multicups, CUP_ORGANIZER role needed');
+    }
+
     const multicups: Multicup[] = await this.multicupsRepository
       .createQueryBuilder('multicups')
       .leftJoinAndSelect('multicups.cups', 'cups')
@@ -698,6 +714,126 @@ export class AdminCupsService {
     return {
       link: process.env.DFCOMPS_FILES_RELATIVE_PATH + relativePath,
     };
+  }
+
+  public async addOnlineCup(accessToken: string | undefined, addOnlineCupDto: OnlineCupActionDto): Promise<void> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+      throw new UnauthorizedException('Unauthorized to add cup without CUP_ORGANIZER role');
+    }
+
+    const startDatetime = moment(addOnlineCupDto.startTime).tz('Europe/Moscow').format();
+    const endDatetime = moment(addOnlineCupDto.startTime).tz('Europe/Moscow').add(3, 'hours').format();
+
+    await this.cupsRepository
+      .createQueryBuilder()
+      .insert()
+      .into(Cup)
+      .values([
+        {
+          full_name: addOnlineCupDto.fullName,
+          short_name: addOnlineCupDto.shortName,
+          youtube: null,
+          twitch: null,
+          current_round: 1,
+          start_datetime: startDatetime,
+          end_datetime: endDatetime,
+          server1: addOnlineCupDto.server1,
+          server2: addOnlineCupDto.server2,
+          map1: null,
+          map2: null,
+          map3: null,
+          map4: null,
+          map5: null,
+          physics: addOnlineCupDto.physics,
+          type: CupTypes.ONLINE,
+          map_weapons: '',
+          map_author: '',
+          map_pk3: '',
+          map_size: '',
+          archive_link: null,
+          bonus_rating: 0,
+          system: null,
+          custom_map: null,
+          custom_news: null,
+          validation_archive_link: null,
+          timer: false,
+          rating_calculated: false,
+          use_two_servers: addOnlineCupDto.useTwoServers,
+          demos_validated: false,
+          multicup: null,
+        },
+      ])
+      .execute();
+  }
+
+  public async updateOnlineCup(
+    accessToken: string | undefined,
+    updateOnlineCupDto: OnlineCupActionDto,
+    cupId: number,
+  ): Promise<void> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+      throw new UnauthorizedException('Unauthorized to edit cup without CUP_ORGANIZER role');
+    }
+
+    const cup: Cup | null = await this.cupsRepository.createQueryBuilder('cups').where({ id: cupId }).getOne();
+
+    if (!cup) {
+      throw new NotFoundException(`Cup with id = ${cupId} not found`);
+    }
+
+    if (moment().isAfter(moment(cup.end_datetime))) {
+      throw new BadRequestException(`Can't update - cup already finished`);
+    }
+
+    const startDatetime = moment(updateOnlineCupDto.startTime).tz('Europe/Moscow').format();
+    const endDatetime = moment(updateOnlineCupDto.startTime).tz('Europe/Moscow').add(3, 'hours').format();
+
+    await this.cupsRepository
+      .createQueryBuilder()
+      .update(Cup)
+      .set({
+        full_name: updateOnlineCupDto.fullName,
+        short_name: updateOnlineCupDto.shortName,
+        start_datetime: startDatetime,
+        end_datetime: endDatetime,
+        use_two_servers: updateOnlineCupDto.useTwoServers,
+        server1: updateOnlineCupDto.server1,
+        server2: updateOnlineCupDto.server2,
+        physics: updateOnlineCupDto.physics,
+      })
+      .where({ id: cupId })
+      .execute();
+  }
+
+  public async getAllCupsWithoutNews(
+    accessToken: string | undefined,
+    cupType: CupTypes,
+    newsType: NewsTypes,
+  ): Promise<AdminActiveCupInterface[]> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.NEWSMAKER])) {
+      throw new UnauthorizedException('Unauthorized to get all cups for news without NEWSMAKER role');
+    }
+
+    const cupsWithNews: Cup[] = await this.cupsRepository
+      .createQueryBuilder('cups')
+      .leftJoinAndSelect('cups.news', 'news')
+      .leftJoinAndSelect('news.newsType', 'news_types')
+      .where({ type: cupType })
+      .orderBy('cups.id', 'DESC')
+      .getMany();
+
+    return cupsWithNews
+      .filter((cup: Cup) => cup.news.every((newsItem: News) => newsItem.newsType.name !== newsType))
+      .map((cup: Cup) => ({
+        cupId: cup.id,
+        name: cup.full_name,
+      }));
   }
 
   private async getPhysicsDemos(cupId: number, physics: Physics): Promise<AdminPlayerDemosValidationInterface[]> {

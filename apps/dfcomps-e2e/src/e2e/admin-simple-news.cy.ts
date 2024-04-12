@@ -16,23 +16,22 @@ describe('admin panel news', () => {
   const editedYoutubeId = 'g_JzrGR-jDY';
 
   beforeEach(() => {
-    cy.visit('/');
     loginAs(UserRoles.NEWSMAKER);
   });
 
   it('should add simple news correctly', () => {
     cy.get('[data-test-id=admin-panel-button]').click();
-    cy.get('[data-test-id=add-simple-news-button]').click();
+    cy.get('[data-test-id=add-news-button]').click();
 
     // filling the form
     cy.get('[data-test-id=russian-news-title-input]').type(initialRussianTitle);
     cy.get('[data-test-id=english-news-title-input]').type(initialEnglishTitle);
     cy.get('[data-test-id=custom-time-option-radio]').click();
-    cy.get('[data-test-id=news-posting-time-input]').type(moment().subtract('1', 'day').format('YYYY-MM-DDTHH:mm'));
+    cy.get('[data-test-id=news-posting-time-input]').type(moment().format('YYYY-MM-DDTHH:mm'));
     cy.get('[data-test-id=russian-text-quill]').find('.ql-editor').type(initialRussianText);
     cy.get('[data-test-id=english-text-quill]').find('.ql-editor').type(initialEnglishText);
     cy.get('[data-test-id=youtube-input]').type(initialYoutubeId);
-    cy.get('[data-test-id=save-simple-news-button]').click();
+    cy.get('[data-test-id=news-action-button]').click();
 
     // checking admin news list
     cy.get('[data-test-id=news-title-text]').first().should('contain.text', initialEnglishTitle);
@@ -59,7 +58,7 @@ describe('admin panel news', () => {
     cy.get('[data-test-id=russian-text-quill]').find('.ql-editor').clear().type(editedRussianText);
     cy.get('[data-test-id=english-text-quill]').find('.ql-editor').clear().type(editedEnglishText);
     cy.get('[data-test-id=youtube-input]').clear().type(editedYoutubeId);
-    cy.get('[data-test-id=save-simple-news-button]').click();
+    cy.get('[data-test-id=news-action-button]').click();
 
     // checking admin news list
     cy.get('[data-test-id=news-title-text]').first().should('contain.text', editedEnglishTitle);

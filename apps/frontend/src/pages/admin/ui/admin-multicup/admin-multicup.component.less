@@ -1,0 +1,115 @@
+.main-form-card {
+  width: 100%;
+  height: 100%;
+  margin-top: 32px;
+  padding: 16px;
+}
+
+.header {
+  margin-bottom: 32px;
+}
+
+.input-field {
+  height: 32px;
+  font-size: 14px;
+  width: 300px;
+  padding-left: 4px;
+  border: 1px solid rgb(204, 204, 204);
+
+  &.date {
+    width: unset;
+    margin-right: 8px;
+  }
+}
+
+.form {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  grid-row-gap: 16px;
+}
+
+.field-error {
+  margin-top: 8px;
+  color: red;
+}
+
+.field-ok {
+  margin-top: 8px;
+  color: rgb(13, 187, 13);
+}
+
+.submit-button {
+  margin-top: 32px;
+  position: relative;
+}
+
+.comment {
+  color: #aaa;
+  font-size: 12px;
+}
+
+.input-title {
+  padding-top: 8px;
+}
+
+.radio-container {
+  margin-bottom: 6px;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  height: 32px;
+}
+
+.input-label {
+  display: flex;
+  align-items: center;
+}
+
+.button-spinner-container {
+  width: 100%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkbox-container {
+  margin-left: -11px;
+}
+
+::ng-deep {
+  .mat-mdc-form-field-infix {
+    min-height: unset;
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+  }
+
+  .mat-mdc-option {
+    min-height: 36px !important;
+  }
+
+  .mat-mdc-select-panel {
+    padding: 0 !important;
+  }
+
+  .mat-mdc-select {
+    letter-spacing: 0 !important;
+  }
+
+  .mat-mdc-form-field-subscript-wrapper {
+    display: none !important;
+  }
+
+  .mdc-text-field {
+    padding: 0 12px !important;
+  }
+
+  .mat-mdc-form-field-infix {
+    min-height: unset;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+}

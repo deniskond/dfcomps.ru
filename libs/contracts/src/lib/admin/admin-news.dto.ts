@@ -22,4 +22,8 @@ export class AdminNewsDto {
   type: NewsTypes;
 
   youtube: string | null;
+
+  cupId?: number;
+
+  multicupId?: number;
 }

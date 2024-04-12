@@ -1,4 +1,5 @@
 import { NewsTypes } from '../news/news-types.enum';
+import { AdminActiveCupInterface } from './admin-active-cup.interface';
 
 export interface AdminEditNewsInterface {
   newsItem: {
@@ -10,5 +11,7 @@ export interface AdminEditNewsInterface {
     date: string;
     type: NewsTypes;
     youtube: string | null;
+    cup: AdminActiveCupInterface | null;
+    multicupId: number | null;
   };
 }

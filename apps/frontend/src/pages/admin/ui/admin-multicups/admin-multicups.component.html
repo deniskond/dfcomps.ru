@@ -1,0 +1,53 @@
+<div *ngIf="isCupOrganizer()" class="actions-container">
+  <mat-card class="card">
+    <div class="card-header">Multicup</div>
+    <div class="card-text">
+      Series of offline cups, usually 5-7 rounds, with overall results calculated by EE-system
+    </div>
+    <div>
+      <button routerLink="/admin/multicups/add" mat-raised-button color="accent" data-test-id="add-multicup-button">
+        Add multicup
+      </button>
+    </div>
+  </mat-card>
+</div>
+<mat-card class="multicups-table-card">
+  <div class="card-header">Cups list</div>
+  <div *ngIf="multicups$ | async as multicups; else isLoading" class="multicups-table">
+    <div class="cell first table-head">Number</div>
+    <div class="cell table-head">Name</div>
+    <div class="cell table-head">Rounds</div>
+    <div class="cell table-head">Actions</div>
+    <ng-container *ngFor="let multicup of multicups; let i = index">
+      <div class="cell first">{{ multicups.length - i }}</div>
+      <div class="cell header" data-test-id="multicup-name-text">{{ multicup.name }}</div>
+      <div class="cell rounds header" data-test-id="multicup-rounds-text">{{ multicup.rounds }}</div>
+      <div class="cell actions buttons">
+        <ng-container *ngIf="isEditingMulticupAvailable(multicup)">
+          <button
+            [routerLink]="'/admin/multicups/edit/' + multicup.id"
+            mat-raised-button
+            color="basic"
+            data-test-id="edit-multicup-button"
+          >
+            Edit
+          </button>
+          <button
+            (click)="confirmDelete(multicup)"
+            mat-raised-button
+            color="warn"
+            data-test-id="delete-multicup-button"
+          >
+            Delete
+          </button>
+        </ng-container>
+        <ng-container *ngIf="!isEditingMulticupAvailable(multicup)">No actions available</ng-container>
+      </div>
+    </ng-container>
+  </div>
+  <ng-template #isLoading>
+    <div class="spinner">
+      <mat-spinner diameter="75" strokeWidth="4" color="accent"></mat-spinner>
+    </div>
+  </ng-template>
+</mat-card>

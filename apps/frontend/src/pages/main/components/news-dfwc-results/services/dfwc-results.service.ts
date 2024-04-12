@@ -4,6 +4,8 @@ import { DfwcSingleResultDtoInterface } from '../dto/dfwc-single-result.dto';
 import { decode } from 'html-entities';
 import { NewsOfflineResultsInterface, ResultsTableInterface } from '@dfcomps/contracts';
 
+// TODO This needs refactoring if this will be used in future
+// There shouldn't be several different implementations of EE-system on dfcomps
 @Injectable({
   providedIn: 'root',
 })

@@ -1,0 +1,35 @@
+<mat-card class="main-form-card">
+  <h3 *ngIf="!isInitialLoading" class="header">{{ componentMode }} multicup</h3>
+  <form *ngIf="!isInitialLoading; else loading" [formGroup]="multicupForm">
+    <div class="form">
+      <div class="input-label">Name</div>
+      <div>
+        <input formControlName="name" class="input-field" data-test-id="multicup-name-input" />
+        <div *ngIf="hasFieldError(this.multicupForm.get('name')!)" class="field-error">Field is required</div>
+      </div>
+      <div class="input-label">Rounds</div>
+      <div>
+        <input type="number" formControlName="rounds" class="input-field" data-test-id="multicup-rounds-input" />
+        <div *ngIf="hasFieldError(this.multicupForm.get('rounds')!)" class="field-error">Field is required</div>
+      </div>
+    </div>
+    <button
+      [disabled]="isLoadingMulticupAction"
+      (click)="submit()"
+      mat-raised-button
+      color="accent"
+      class="submit-button"
+      data-test-id="multicup-submit-button"
+    >
+      <div *ngIf="isLoadingMulticupAction" class="button-spinner-container">
+        <mat-spinner diameter="20" strokeWidth="2" color="primary"></mat-spinner>
+      </div>
+      {{ componentMode }} multicup
+    </button>
+  </form>
+  <ng-template #loading>
+    <div class="loading-block">
+      <mat-spinner diameter="75" strokeWidth="4" color="accent"></mat-spinner>
+    </div>
+  </ng-template>
+</mat-card>

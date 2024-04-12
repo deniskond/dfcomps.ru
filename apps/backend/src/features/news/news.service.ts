@@ -128,7 +128,7 @@ export class NewsService {
       [ArchiveNewsFilter.ALL]: Object.values(NewsTypes),
       [ArchiveNewsFilter.OTHER]: [NewsTypes.SIMPLE],
       [ArchiveNewsFilter.RESULT]: [
-        NewsTypes.DFWC_RESULTS,
+        NewsTypes.DFWC_ROUND_RESULTS,
         NewsTypes.MULTICUP_RESULTS,
         NewsTypes.OFFLINE_RESULTS,
         NewsTypes.ONLINE_RESULTS,
@@ -174,7 +174,7 @@ export class NewsService {
       case NewsTypes.OFFLINE_START:
         return this.mapOfflineStartNews(newsItem, userAccess);
       case NewsTypes.OFFLINE_RESULTS:
-      case NewsTypes.DFWC_RESULTS:
+      case NewsTypes.DFWC_ROUND_RESULTS:
         return this.mapOfflineResultsNews(newsItem);
       case NewsTypes.ONLINE_ANNOUNCE:
         return this.mapOnlineAnnounceNews(newsItem, userAccess);
@@ -194,10 +194,10 @@ export class NewsService {
     const cup: Cup = (await this.cupsRepository
       .createQueryBuilder('cups')
       .leftJoinAndSelect('cups.multicup', 'multicups')
-      .where({ id: news.cup.id })
+      .where({ id: news.cup!.id })
       .getOne())!;
 
-    const levelshot = getMapLevelshot(news.cup.map1!);
+    const levelshot = getMapLevelshot(news.cup!.map1!);
     const canUserSeeFutureCups = checkUserRoles(userAccess.roles, [UserRoles.NEWSMAKER]);
     const isFutureCup: boolean = moment(cup.start_datetime).isAfter(moment()) && !canUserSeeFutureCups;
     let cpmDemo: string | null = null;
@@ -226,7 +226,7 @@ export class NewsService {
       ...baseNews,
       type: NewsTypes.OFFLINE_START,
       levelshot,
-      cup: mapCupEntityToInterface(news.cup, isFutureCup, null, news.id, news.cup.multicup?.id || null),
+      cup: mapCupEntityToInterface(news.cup!, isFutureCup, null, news.id, news.cup!.multicup?.id || null),
       cpmDemo,
       cpmRes,
       vq3Demo,
@@ -241,14 +241,14 @@ export class NewsService {
 
   private async mapOfflineResultsNews(news: News): Promise<NewsOfflineResultsInterface> {
     const baseNews: Omit<NewsInterface, 'type'> = await this.mapBaseNews(news);
-    const levelshot: string = getMapLevelshot(news.cup.map1!);
+    const levelshot: string = getMapLevelshot(news.cup!.map1!);
     const cup: Cup = (await this.cupsRepository
       .createQueryBuilder('cups')
       .leftJoinAndSelect('cups.multicup', 'multicups')
-      .where({ id: news.cup.id })
+      .where({ id: news.cup!.id })
       .getOne())!;
 
-    const isFinishedCup: boolean = moment().isAfter(moment(news.cup.end_datetime));
+    const isFinishedCup: boolean = moment().isAfter(moment(news.cup!.end_datetime));
     const emptyResults: ResultsTableInterface = { valid: [], invalid: [] };
     const cpmResults: ResultsTableInterface = isFinishedCup
       ? await this.tablesService.getOfflineCupTable(cup, Physics.CPM)
@@ -260,7 +260,7 @@ export class NewsService {
     return {
       ...baseNews,
       type: NewsTypes.OFFLINE_RESULTS,
-      cup: mapCupEntityToInterface(news.cup, false, null, news.id, news.cup.multicup?.id || null),
+      cup: mapCupEntityToInterface(news.cup!, false, null, news.id, news.cup!.multicup?.id || null),
       levelshot,
       cpmResults,
       vq3Results,
@@ -275,7 +275,7 @@ export class NewsService {
     const registeredPlayers: CupResult[] = await this.cupsResultsRepository
       .createQueryBuilder('cups_results')
       .leftJoinAndSelect('cups_results.user', 'users')
-      .where('cups_results.cupId = :cupId', { cupId: news.cup.id })
+      .where('cups_results.cupId = :cupId', { cupId: news.cup!.id })
       .orderBy('cups_results.id')
       .getMany();
     const isRegistered = !!registeredPlayers.find((cupResult: CupResult) => cupResult.user.id === userAccess.userId);
@@ -284,7 +284,7 @@ export class NewsService {
       ...baseNews,
       type: NewsTypes.ONLINE_ANNOUNCE,
       isRegistered,
-      cup: mapCupEntityToInterface(news.cup, true, null, news.id, null),
+      cup: mapCupEntityToInterface(news.cup!, true, null, news.id, null),
       registeredPlayers: registeredPlayers.map((cupResult: CupResult) => ({
         country: cupResult.user.country,
         id: cupResult.user.id,
@@ -299,7 +299,7 @@ export class NewsService {
       .createQueryBuilder('cups_results')
       .leftJoinAndSelect('cups_results.user', 'user')
       .leftJoinAndSelect('user.ratingChanges', 'rating_changes', 'cups_results.cupId = rating_changes.cupId')
-      .where({ cup: { id: news.cup.id } })
+      .where({ cup: { id: news.cup!.id } })
       .orderBy('final_sum', 'DESC')
       .addOrderBy('displayed_nick', 'ASC')
       .getMany();
@@ -307,7 +307,7 @@ export class NewsService {
     return {
       ...baseNews,
       type: NewsTypes.ONLINE_RESULTS,
-      cup: mapCupEntityToInterface(news.cup, false, null, news.id, news.cup.multicup?.id || null),
+      cup: mapCupEntityToInterface(news.cup!, false, null, news.id, news.cup!.multicup?.id || null),
       results: cupResults.map((cupResult: CupResult) => ({
         playerId: cupResult.user.id,
         country: cupResult.user.country,
@@ -334,13 +334,13 @@ export class NewsService {
       .getMany();
 
     const vq3Results: MulticupResultInterface[] = await this.tablesService.getMulticupTable(
-      news.multicup_id,
+      news.multicup_id!,
       cups,
       Physics.VQ3,
       multicup.system,
     );
     const cpmResults: MulticupResultInterface[] = await this.tablesService.getMulticupTable(
-      news.multicup_id,
+      news.multicup_id!,
       cups,
       Physics.CPM,
       multicup.system,

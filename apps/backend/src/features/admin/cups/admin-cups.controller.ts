@@ -15,17 +15,22 @@ import {
 } from '@nestjs/common';
 import { AdminCupsService } from './admin-cups.service';
 import {
-  AddCupDto,
+  AddOfflineCupDto,
+  AdminActiveCupInterface,
   AdminActiveMulticupInterface,
-  AdminEditOfflineCupInterface,
+  AdminEditCupInterface,
   AdminValidationInterface,
-  UpdateCupDto,
+  CupTypes,
+  NewsTypes,
+  OnlineCupActionDto,
   ProcessValidationDto,
+  UpdateOfflineCupDto,
   UploadedFileLinkInterface,
   WorldspawnMapInfoInterface,
 } from '@dfcomps/contracts';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MulterFileInterface } from 'apps/backend/src/shared/interfaces/multer.interface';
+import { EnumValidationPipe } from 'apps/backend/src/shared/validation/enum-validation.pipe';
 
 @Controller('admin/cups')
 export class AdminCupsController {
@@ -40,7 +45,7 @@ export class AdminCupsController {
   getSingleCup(
     @Headers('X-Auth') accessToken: string | undefined,
     @Param('cupId', new ParseIntPipe()) cupId: number,
-  ): Promise<AdminEditOfflineCupInterface> {
+  ): Promise<AdminEditCupInterface> {
     return this.adminCupsService.getSingleCup(accessToken, cupId);
   }
 
@@ -52,18 +57,21 @@ export class AdminCupsController {
     return this.adminCupsService.deleteCup(accessToken, cupId);
   }
 
-  @Post('add')
-  addCup(@Headers('X-Auth') accessToken: string | undefined, @Body() cupDto: AddCupDto): Promise<void> {
-    return this.adminCupsService.addCup(accessToken, cupDto);
+  @Post('add-offline-cup')
+  addOfflineCup(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Body() addOfflineCupDto: AddOfflineCupDto,
+  ): Promise<void> {
+    return this.adminCupsService.addOfflineCup(accessToken, addOfflineCupDto);
   }
 
-  @Post('update/:cupId')
-  updateCup(
+  @Post('update-offline-cup/:cupId')
+  updateOfflineCup(
     @Headers('X-Auth') accessToken: string | undefined,
-    @Body() cupDto: UpdateCupDto,
+    @Body() updateOfflineCupDto: UpdateOfflineCupDto,
     @Param('cupId', new ParseIntPipe()) cupId: number,
   ): Promise<void> {
-    return this.adminCupsService.updateCup(accessToken, cupDto, cupId);
+    return this.adminCupsService.updateOfflineCup(accessToken, updateOfflineCupDto, cupId);
   }
 
   @Get('get-validation-demos/:cupId')
@@ -99,9 +107,21 @@ export class AdminCupsController {
     return this.adminCupsService.finishOfflineCup(accessToken, cupId);
   }
 
-  @Get('get-all-active-multicups')
-  getAllActiveMulticups(): Promise<AdminActiveMulticupInterface[]> {
-    return this.adminCupsService.getAllActiveMulticups();
+  @Post('add-online-cup')
+  addOnlineCup(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Body() addOnlineCupDto: OnlineCupActionDto,
+  ): Promise<void> {
+    return this.adminCupsService.addOnlineCup(accessToken, addOnlineCupDto);
+  }
+
+  @Post('update-online-cup/:cupId')
+  updateOnlineCup(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Body() updateOnlineCupDto: OnlineCupActionDto,
+    @Param('cupId', new ParseIntPipe()) cupId: number,
+  ): Promise<void> {
+    return this.adminCupsService.updateOnlineCup(accessToken, updateOnlineCupDto, cupId);
   }
 
   @Get('get-worldspawn-map-info')
@@ -142,5 +162,19 @@ export class AdminCupsController {
     levelshot: MulterFileInterface,
   ): Promise<UploadedFileLinkInterface> {
     return this.adminCupsService.uploadLevelshot(accessToken, levelshot, mapName);
+  }
+
+  @Get('get-all-cups-without-news/:cupType/:newsType')
+  getAllOfflineCupsWithoutNews(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Param('cupType', new EnumValidationPipe(CupTypes)) cupType: CupTypes,
+    @Param('newsType', new EnumValidationPipe(NewsTypes)) newsType: NewsTypes,
+  ): Promise<AdminActiveCupInterface[]> {
+    return this.adminCupsService.getAllCupsWithoutNews(accessToken, cupType, newsType);
+  }
+
+  @Get('get-all-active-multicups')
+  getAllActiveMulticups(@Headers('X-Auth') accessToken: string | undefined): Promise<AdminActiveMulticupInterface[]> {
+    return this.adminCupsService.getAllActiveMulticups(accessToken);
   }
 }

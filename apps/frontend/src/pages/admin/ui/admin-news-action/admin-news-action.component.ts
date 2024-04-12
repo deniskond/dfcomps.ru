@@ -5,20 +5,45 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AdminDataService } from '../../business/admin-data.service';
 import { AdminOperationType } from '../../models/admin-operation-type.enum';
 import * as moment from 'moment-timezone';
-import { debounceTime, Observable, startWith, switchMap } from 'rxjs';
-import { AdminEditNewsInterface } from '@dfcomps/contracts';
+import { combineLatest, debounceTime, map, Observable, ReplaySubject, startWith, switchMap, tap } from 'rxjs';
+import {
+  AdminActiveCupInterface,
+  AdminActiveMulticupInterface,
+  AdminEditNewsInterface,
+  CupTypes,
+  NewsTypes,
+} from '@dfcomps/contracts';
+import { AdminNewsRouting } from '../../models/admin-news-routing.enum';
+import { mapNewsTypeToHumanTitle } from '../../business/admin-news-types.mapper';
+
+const newsTypesWithRequiredCup: NewsTypes[] = [
+  NewsTypes.OFFLINE_START,
+  NewsTypes.OFFLINE_RESULTS,
+  NewsTypes.ONLINE_ANNOUNCE,
+  NewsTypes.ONLINE_RESULTS,
+  NewsTypes.STREAMERS_RESULTS,
+];
 
 @Component({
-  selector: 'admin-add-simple-news',
-  templateUrl: './admin-simple-news.component.html',
-  styleUrls: ['./admin-simple-news.component.less'],
+  selector: 'admin-news-action',
+  templateUrl: './admin-news-action.component.html',
+  styleUrls: ['./admin-news-action.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdminSimpleNewsComponent implements OnInit {
+export class AdminNewsActionComponent implements OnInit {
   public operationType: AdminOperationType;
-  public addSimpleNewsForm: FormGroup;
+  public newsActionForm: FormGroup;
   public youtubeEmbedId$: Observable<string>;
+  public isCupRequired: boolean;
+  public isMulticupRequired: boolean;
+  public availableMulticups$: Observable<AdminActiveMulticupInterface[]>;
+  public availableCups$: Observable<AdminActiveCupInterface[]>;
+  public mapNewsTypeToHumanTitle = mapNewsTypeToHumanTitle;
+  public newsType: NewsTypes;
+  public cupsList$: Observable<AdminActiveCupInterface[]>;
+
   private newsId: string;
+  private selectedCup$: ReplaySubject<AdminActiveCupInterface | null> = new ReplaySubject(1);
 
   constructor(
     private adminDataService: AdminDataService,
@@ -31,21 +56,45 @@ export class AdminSimpleNewsComponent implements OnInit {
   ngOnInit(): void {
     this.operationType = this.activatedRoute.snapshot.params['action'];
     this.newsId = this.activatedRoute.snapshot.params['id'];
+    this.newsType = this.mapNewsRouteToEnum(this.activatedRoute.snapshot.params['newsType']);
+    this.isCupRequired = newsTypesWithRequiredCup.some((newsType: NewsTypes) => newsType === this.newsType);
+    this.isMulticupRequired = this.newsType === NewsTypes.MULTICUP_RESULTS;
+
+    if (this.isMulticupRequired) {
+      this.availableMulticups$ = this.adminDataService.getAllAvailableMulticups$();
+    }
+
+    if (this.newsType === NewsTypes.ONLINE_ANNOUNCE || this.newsType === NewsTypes.ONLINE_RESULTS) {
+      this.availableCups$ = this.adminDataService.getAllCupsWithoutNews$(CupTypes.ONLINE, this.newsType);
+    }
+
+    if (
+      this.newsType === NewsTypes.OFFLINE_START ||
+      this.newsType === NewsTypes.OFFLINE_RESULTS ||
+      this.newsType === NewsTypes.STREAMERS_RESULTS
+    ) {
+      this.availableCups$ = this.adminDataService.getAllCupsWithoutNews$(CupTypes.OFFLINE, this.newsType);
+    }
+
     this.initForm();
+
+    this.cupsList$ = combineLatest([this.availableCups$, this.selectedCup$]).pipe(
+      map(([availableCups, selectedCup]: [AdminActiveCupInterface[], AdminActiveCupInterface | null]) =>
+        selectedCup ? [selectedCup, ...availableCups] : [...availableCups],
+      ),
+    );
   }
 
   public submitNews(): void {
-    Object.keys(this.addSimpleNewsForm.controls).forEach((key: string) =>
-      this.addSimpleNewsForm.get(key)!.markAsDirty(),
-    );
+    Object.keys(this.newsActionForm.controls).forEach((key: string) => this.newsActionForm.get(key)!.markAsDirty());
 
-    if (!this.addSimpleNewsForm.valid) {
+    if (!this.newsActionForm.valid) {
       return;
     }
 
     if (this.operationType === AdminOperationType.ADD) {
       this.adminDataService
-        .postSimpleNews$(this.addSimpleNewsForm.value)
+        .postNews$(this.newsActionForm.value, this.newsType)
         .pipe(switchMap(() => this.adminDataService.getAllNews$(false)))
         .subscribe(() => {
           this.router.navigate(['/admin/news']);
@@ -55,7 +104,7 @@ export class AdminSimpleNewsComponent implements OnInit {
 
     if (this.operationType === AdminOperationType.EDIT) {
       this.adminDataService
-        .editSimpleNews$(this.addSimpleNewsForm.value, this.newsId)
+        .editNews$(this.newsActionForm.value, this.newsId, this.newsType)
         .pipe(switchMap(() => this.adminDataService.getAllNews$(false)))
         .subscribe(() => {
           this.router.navigate(['/admin/news']);
@@ -89,9 +138,22 @@ export class AdminSimpleNewsComponent implements OnInit {
     return moment(datetimezone).tz('Europe/Moscow').format('YYYY-MM-DDTHH:mm');
   }
 
+  private mapNewsRouteToEnum(newsRoute: AdminNewsRouting): NewsTypes {
+    return {
+      [AdminNewsRouting.DFWC_ROUND_RESULTS]: NewsTypes.DFWC_ROUND_RESULTS,
+      [AdminNewsRouting.MULTICUP_RESULTS]: NewsTypes.MULTICUP_RESULTS,
+      [AdminNewsRouting.OFFLINE_RESULTS]: NewsTypes.OFFLINE_RESULTS,
+      [AdminNewsRouting.OFFLINE_START]: NewsTypes.OFFLINE_START,
+      [AdminNewsRouting.ONLINE_ANNOUNCE]: NewsTypes.ONLINE_ANNOUNCE,
+      [AdminNewsRouting.ONLINE_RESULTS]: NewsTypes.ONLINE_RESULTS,
+      [AdminNewsRouting.SIMPLE]: NewsTypes.SIMPLE,
+      [AdminNewsRouting.STREAMERS_RESULTS]: NewsTypes.STREAMERS_RESULTS,
+    }[newsRoute];
+  }
+
   private initForm(): void {
     if (this.operationType === AdminOperationType.ADD) {
-      this.addSimpleNewsForm = new FormGroup(
+      this.newsActionForm = new FormGroup(
         {
           russianTitle: new FormControl('', Validators.required),
           englishTitle: new FormControl('', Validators.required),
@@ -100,16 +162,19 @@ export class AdminSimpleNewsComponent implements OnInit {
           russianText: new FormControl('', Validators.required),
           englishText: new FormControl('', Validators.required),
           youtube: new FormControl(''),
+          cup: new FormControl(null),
+          multicup: new FormControl(null),
         },
         this.postingTimeValidator(),
       );
 
+      this.selectedCup$.next(null);
       this.setYoutubeFieldObservable();
     }
 
     if (this.operationType === AdminOperationType.EDIT) {
       this.adminDataService.getSingleNews$(this.newsId).subscribe((singleNews: AdminEditNewsInterface) => {
-        this.addSimpleNewsForm = new FormGroup(
+        this.newsActionForm = new FormGroup(
           {
             russianTitle: new FormControl(singleNews.newsItem.headerRussian, Validators.required),
             englishTitle: new FormControl(singleNews.newsItem.headerEnglish, Validators.required),
@@ -118,10 +183,13 @@ export class AdminSimpleNewsComponent implements OnInit {
             russianText: new FormControl(singleNews.newsItem.textRussian, Validators.required),
             englishText: new FormControl(singleNews.newsItem.textEnglish, Validators.required),
             youtube: new FormControl(singleNews.newsItem.youtube),
+            cup: new FormControl(singleNews.newsItem.cup?.cupId),
+            multicup: new FormControl(singleNews.newsItem.multicupId),
           },
           this.postingTimeValidator(),
         );
 
+        this.selectedCup$.next(singleNews.newsItem.cup);
         this.changeDetectorRef.markForCheck();
         this.setYoutubeFieldObservable();
       });
@@ -129,8 +197,8 @@ export class AdminSimpleNewsComponent implements OnInit {
   }
 
   private setYoutubeFieldObservable(): void {
-    this.youtubeEmbedId$ = this.addSimpleNewsForm
+    this.youtubeEmbedId$ = this.newsActionForm
       .get('youtube')!
-      .valueChanges.pipe(debounceTime(300), startWith(this.addSimpleNewsForm.get('youtube')!.value));
+      .valueChanges.pipe(debounceTime(300), startWith(this.newsActionForm.get('youtube')!.value));
   }
 }

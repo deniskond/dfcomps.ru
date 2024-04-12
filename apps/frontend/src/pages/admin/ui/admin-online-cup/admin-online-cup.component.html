@@ -1,0 +1,86 @@
+<mat-card class="main-form-card">
+  <h3 *ngIf="!isInitialLoading;" class="header">{{ componentMode }} online cup</h3>
+  <form *ngIf="!isInitialLoading; else loading" [formGroup]="onlineCupForm">
+    <div class="form">
+      <div>
+        Full name
+        <br />
+        <span class="comment">(displayed in news)</span>
+      </div>
+      <div>
+        <input formControlName="fullName" class="input-field" data-test-id="online-cup-fullname-input" />
+        <div *ngIf="hasFieldError(this.onlineCupForm.get('fullName')!)" class="field-error">Field is required</div>
+      </div>
+      <div>
+        Short name
+        <br />
+        <span class="comment">(displayed in cup timer)</span>
+      </div>
+      <div>
+        <input formControlName="shortName" class="input-field" data-test-id="online-cup-shortname-input" />
+        <div *ngIf="hasFieldError(this.onlineCupForm.get('shortName')!)" class="field-error">Field is required</div>
+      </div>
+      <div class="input-label">Physics</div>
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-select formControlName="physics" data-test-id="online-cup-physics-select">
+            <mat-option value="vq3" data-test-id="online-cup-physics-vq3">VQ3</mat-option>
+            <mat-option value="cpm" data-test-id="online-cup-physics-cpm">CPM</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div>
+        Start time
+        <br />
+        <span class="comment">(MSK GMT +3:00)</span>
+      </div>
+      <div>
+        <input
+          formControlName="startTime"
+          class="input-field date"
+          type="datetime-local"
+          data-test-id="online-cup-starttime-input"
+        />
+        <span *ngIf="hasFieldError(this.onlineCupForm.get('startTime')!)" class="field-error">Field is required</span>
+      </div>
+      <div class="input-label">Use two servers</div>
+      <div class="checkbox-container">
+        <mat-checkbox
+          color="primary"
+          formControlName="useTwoServers"
+          data-test-id="online-cup-two-servers-checkbox"
+        ></mat-checkbox>
+      </div>
+      <div class="input-label">Server 1</div>
+      <div>
+        <input formControlName="server1" class="input-field" data-test-id="online-cup-server1-input" />
+        <div *ngIf="hasFieldError(this.onlineCupForm.get('server1')!)" class="field-error">Field is required</div>
+      </div>
+      <ng-container *ngIf="useTwoServers">
+        <div class="input-label">Server 2</div>
+        <div>
+          <input formControlName="server2" class="input-field" data-test-id="online-cup-server2-input" />
+          <div *ngIf="hasFieldError(this.onlineCupForm.get('server2')!)" class="field-error">Field is required</div>
+        </div>
+      </ng-container>
+    </div>
+    <button
+      [disabled]="isLoadingCupAction"
+      (click)="submit()"
+      mat-raised-button
+      color="accent"
+      class="submit-button"
+      data-test-id="online-cup-submit-button"
+    >
+      <div *ngIf="isLoadingCupAction" class="button-spinner-container">
+        <mat-spinner diameter="20" strokeWidth="2" color="primary"></mat-spinner>
+      </div>
+      {{ componentMode }} cup
+    </button>
+  </form>
+  <ng-template #loading>
+    <div class="loading-block">
+      <mat-spinner diameter="75" strokeWidth="4" color="accent"></mat-spinner>
+    </div>
+  </ng-template>
+</mat-card>

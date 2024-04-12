@@ -1,6 +1,7 @@
+import { Transform } from 'class-transformer';
 import { IsNotEmpty } from 'class-validator';
 
-export class AddCupDto {
+export class AddOfflineCupDto {
   @IsNotEmpty()
   fullName: string;
 
@@ -23,7 +24,8 @@ export class AddCupDto {
   weapons: string;
 
   @IsNotEmpty()
-  addNews: boolean;
+  @Transform(({ value }) => value === 'true')
+  addNews: string | boolean;
 
   @IsNotEmpty()
   size: string;

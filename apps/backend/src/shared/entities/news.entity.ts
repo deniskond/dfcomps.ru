@@ -31,7 +31,7 @@ export class News {
   comments_count: number;
 
   @Column({ type: 'integer', nullable: true })
-  multicup_id: number;
+  multicup_id: number | null;
 
   @Column({ type: 'character varying', nullable: true })
   image: string;
@@ -46,13 +46,13 @@ export class News {
   twitch_2: string;
 
   @Column({ type: 'character varying', nullable: true })
-  theme: string;
+  theme: string | null;
 
   @Column({ type: 'boolean' })
   hide_on_main: boolean;
 
   @ManyToOne(() => Cup, { nullable: true })
-  cup: Cup;
+  cup: Cup | null;
 
   @ManyToOne(() => User)
   user: User;
