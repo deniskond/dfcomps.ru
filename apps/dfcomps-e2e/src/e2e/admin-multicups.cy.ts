@@ -22,7 +22,7 @@ describe('admin multicups', () => {
     cy.get('[data-test-id=multicup-name-input]').type(initialMulticupName);
     cy.get('[data-test-id=multicup-rounds-input]').type(initialRounds.toString());
 
-    // adding online cup and checking admin multicups list
+    // adding multicup and checking admin multicups list
     cy.get('[data-test-id=multicup-submit-button]').click(); 
     cy.get('[data-test-id=multicup-name-text]').first().should('contain.text', initialMulticupName);
     cy.get('[data-test-id=multicup-rounds-text]').first().should('contain.text', initialRounds.toString());
