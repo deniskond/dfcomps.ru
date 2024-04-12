@@ -22,7 +22,6 @@ export class AdminOnlineCupComponent implements OnInit {
     fullName: new FormControl('', Validators.required),
     shortName: new FormControl('', Validators.required),
     startTime: new FormControl('', Validators.required),
-    addNews: new FormControl(false),
     useTwoServers: new FormControl(true, Validators.required),
     server1: new FormControl('q3df.ru:27974', Validators.required),
     server2: new FormControl('q3df.ru:27975', Validators.required),
@@ -103,7 +102,6 @@ export class AdminOnlineCupComponent implements OnInit {
       useTwoServers: cup.useTwoServers,
       server1: cup.server1,
       server2: cup.server2,
-      addNews: true,
       physics: cup.physics,
     });
   }

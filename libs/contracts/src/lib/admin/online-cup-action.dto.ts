@@ -12,9 +12,6 @@ export class OnlineCupActionDto {
   startTime: string;
 
   @IsNotEmpty()
-  addNews: boolean;
-
-  @IsNotEmpty()
   useTwoServers: boolean;
 
   @IsNotEmpty()

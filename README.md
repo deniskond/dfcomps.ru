@@ -104,10 +104,10 @@ Test cases:
 ☑ 7. Editing start offline cup news
 ☑ 8. Adding offline cup result news
 ☑ 9. Editing offline cup result news
-☐ 10. Adding online cup announce news
-☐ 11. Adding online cup result news
+☑ 10. Adding online cup announce news
+☑ 11. Adding online cup result news
 ☐ 12. Adding multicup result news
-☐ 13. Adding streamers result news
+☑ 13. Adding streamers result news
 ☐ 14. Uploading valid demo with overbounces turned off
 ☐ 15. Uploading valid demo with overbounces turned on
 ☐ 16. Uploading invalid demo

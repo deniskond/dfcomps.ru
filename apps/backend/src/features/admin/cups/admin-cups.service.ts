@@ -726,7 +726,7 @@ export class AdminCupsService {
     const startDatetime = moment(addOnlineCupDto.startTime).tz('Europe/Moscow').format();
     const endDatetime = moment(addOnlineCupDto.startTime).tz('Europe/Moscow').add(3, 'hours').format();
 
-    const queryResult: InsertResult = await this.cupsRepository
+    await this.cupsRepository
       .createQueryBuilder()
       .insert()
       .into(Cup)
@@ -766,31 +766,6 @@ export class AdminCupsService {
         },
       ])
       .execute();
-
-    if (addOnlineCupDto.addNews) {
-      const cupId: number = queryResult.identifiers[0].id;
-
-      await this.newsRepository
-        .createQueryBuilder()
-        .insert()
-        .into(News)
-        .values([
-          {
-            header: `Анонс ${addOnlineCupDto.fullName}`,
-            header_en: `Announcement: ${addOnlineCupDto.fullName}`,
-            text: '',
-            text_en: '',
-            youtube: null,
-            user: { id: userAccess.userId! },
-            datetimezone: moment().tz('Europe/Moscow').format(),
-            newsType: { id: mapNewsTypeEnumToDBNewsTypeId(NewsTypes.ONLINE_ANNOUNCE) },
-            cup: { id: cupId },
-            comments_count: 0,
-            hide_on_main: false,
-          },
-        ])
-        .execute();
-    }
   }
 
   public async updateOnlineCup(
@@ -832,20 +807,6 @@ export class AdminCupsService {
       })
       .where({ id: cupId })
       .execute();
-
-    if (updateOnlineCupDto.addNews) {
-      await this.newsRepository
-        .createQueryBuilder('news')
-        .update(News)
-        .set({
-          header: `Анонс ${updateOnlineCupDto.fullName}`,
-          header_en: `Announcement: ${updateOnlineCupDto.fullName}`,
-          user: { id: userAccess.userId! },
-        })
-        .where({ cup: { id: cupId } })
-        .andWhere({ newsType: { id: mapNewsTypeEnumToDBNewsTypeId(NewsTypes.ONLINE_ANNOUNCE) } })
-        .execute();
-    }
   }
 
   public async getAllCupsWithoutNews(

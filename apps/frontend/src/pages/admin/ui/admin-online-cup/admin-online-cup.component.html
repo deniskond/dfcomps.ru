@@ -43,18 +43,6 @@
         />
         <span *ngIf="hasFieldError(this.onlineCupForm.get('startTime')!)" class="field-error">Field is required</span>
       </div>
-      <div>
-        {{ componentMode }} start news
-        <br />
-        <span class="comment">(news appear immediately)</span>
-      </div>
-      <div class="checkbox-container">
-        <mat-checkbox
-          color="primary"
-          formControlName="addNews"
-          data-test-id="online-cup-add-news-checkbox"
-        ></mat-checkbox>
-      </div>
       <div class="input-label">Use two servers</div>
       <div class="checkbox-container">
         <mat-checkbox

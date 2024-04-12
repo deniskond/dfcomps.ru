@@ -186,7 +186,6 @@ export class AdminDataService {
       fullName: formValue['fullName'],
       shortName: formValue['shortName'],
       startTime: formValue['startTime'],
-      addNews: formValue['addNews'],
       useTwoServers: formValue['useTwoServers'],
       server1: formValue['server1'],
       server2: formValue['server2'],
