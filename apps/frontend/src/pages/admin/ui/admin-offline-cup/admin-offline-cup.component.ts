@@ -25,6 +25,10 @@ import {
 } from '@dfcomps/contracts';
 import { MatRadioChange } from '@angular/material/radio';
 import * as moment from 'moment-timezone';
+import { isNonNull } from '~shared/helpers';
+import { UserService } from '~shared/services/user-service/user.service';
+import { UserInterface } from '~shared/interfaces/user.interface';
+import { UserRoles, checkUserRoles } from '@dfcomps/auth';
 
 @Component({
   selector: 'admin-offline-cup',
@@ -89,6 +93,7 @@ export class AdminOfflineCupComponent implements OnInit {
     private router: Router,
     private changeDetectorRef: ChangeDetectorRef,
     private route: ActivatedRoute,
+    private userService: UserService,
   ) {}
 
   ngOnInit(): void {
@@ -173,8 +178,11 @@ export class AdminOfflineCupComponent implements OnInit {
     targetObservable$
       .pipe(
         take(1),
-        switchMap(() =>
-          this.offlineCupForm.get('addNews')!.value ? this.adminDataService.getAllNews$(false) : of(null),
+        switchMap(() => this.userService.getCurrentUser$().pipe(filter(isNonNull))),
+        switchMap((user: UserInterface) =>
+          this.offlineCupForm.get('addNews')!.value && checkUserRoles(user.roles, [UserRoles.NEWSMAKER])
+            ? this.adminDataService.getAllNews$(false)
+            : of(null),
         ),
         switchMap(() => this.adminDataService.getAllCups$(false)),
         finalize(() => (this.isLoadingCupAction = false)),

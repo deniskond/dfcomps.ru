@@ -32,7 +32,7 @@ describe('admin panel news', () => {
     cy.get('[data-test-id=russian-text-quill]').find('.ql-editor').type(initialRussianText);
     cy.get('[data-test-id=english-text-quill]').find('.ql-editor').type(initialEnglishText);
     cy.get('[data-test-id=youtube-input]').type(initialYoutubeId);
-    cy.get('[data-test-id=save-simple-news-button]').click();
+    cy.get('[data-test-id=news-action-button]').click();
 
     // checking admin news list
     cy.get('[data-test-id=news-title-text]').first().should('contain.text', initialEnglishTitle);
@@ -59,7 +59,7 @@ describe('admin panel news', () => {
     cy.get('[data-test-id=russian-text-quill]').find('.ql-editor').clear().type(editedRussianText);
     cy.get('[data-test-id=english-text-quill]').find('.ql-editor').clear().type(editedEnglishText);
     cy.get('[data-test-id=youtube-input]').clear().type(editedYoutubeId);
-    cy.get('[data-test-id=save-simple-news-button]').click();
+    cy.get('[data-test-id=news-action-button]').click();
 
     // checking admin news list
     cy.get('[data-test-id=news-title-text]').first().should('contain.text', editedEnglishTitle);

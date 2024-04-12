@@ -855,8 +855,8 @@ export class AdminCupsService {
   ): Promise<AdminActiveCupInterface[]> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
-    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
-      throw new UnauthorizedException('Unauthorized to get cups without CUP_ORGANIZER role');
+    if (!checkUserRoles(userAccess.roles, [UserRoles.NEWSMAKER])) {
+      throw new UnauthorizedException('Unauthorized to get all cups for news without NEWSMAKER role');
     }
 
     const cupsWithNews: Cup[] = await this.cupsRepository
