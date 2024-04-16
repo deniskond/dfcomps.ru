@@ -16,3 +16,4 @@ export { ProcessValidationDto } from './process-validation.dto';
 export { UpdateOfflineCupDto } from './update-offline-cup.dto';
 export { ValidationResultInterface } from './validation-result.interface';
 export { WorldspawnMapInfoInterface } from './worldspawn-map-info.interface';
+export { OnlineCupServersPlayersInterface } from './online-cup-servers-players.interface';

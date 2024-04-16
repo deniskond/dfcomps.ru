@@ -18,6 +18,7 @@ import {
   CupTypes,
   NewsTypes,
   OnlineCupActionDto,
+  OnlineCupServersPlayersInterface,
   Physics,
   ProcessValidationDto,
   ResultsTableInterface,
@@ -836,6 +837,52 @@ export class AdminCupsService {
         cupId: cup.id,
         name: cup.full_name,
       }));
+  }
+
+  public async getOnlineCupServersPlayers(
+    accessToken: string | undefined,
+    cupId: number,
+  ): Promise<OnlineCupServersPlayersInterface> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+      throw new UnauthorizedException('Unauthorized to get online cup servers players without CUP_ORGANIZER role');
+    }
+
+    const cup: Cup | null = await this.cupsRepository.createQueryBuilder('cups').where({ id: cupId }).getOne();
+
+    if (!cup) {
+      throw new NotFoundException(`Cup with id = ${cupId} was not found`);
+    }
+
+    const serversPlayers: CupResult[] = await this.cupsResultsRepository
+      .createQueryBuilder('cups_results')
+      .leftJoinAndSelect('cups_results.user', 'users')
+      .where({ cup: { id: cupId } })
+      .getMany();
+
+    return {
+      servers: [
+        {
+          address: cup.server1,
+          players: serversPlayers
+            .filter((serversPlayers: CupResult) => serversPlayers.server === 1)
+            .map((serversPlayers: CupResult) => ({
+              id: serversPlayers.user.id,
+              playerNick: serversPlayers.user.displayed_nick,
+            })),
+        },
+        {
+          address: cup.server2,
+          players: serversPlayers
+            .filter((serversPlayers: CupResult) => serversPlayers.server === 2)
+            .map((serversPlayers: CupResult) => ({
+              id: serversPlayers.user.id,
+              playerNick: serversPlayers.user.displayed_nick,
+            })),
+        },
+      ],
+    };
   }
 
   private async getPhysicsDemos(cupId: number, physics: Physics): Promise<AdminPlayerDemosValidationInterface[]> {

@@ -24,6 +24,7 @@ import {
   CupTypes,
   NewsTypes,
   OnlineCupActionDto,
+  OnlineCupServersPlayersInterface,
   ProcessValidationDto,
   UpdateOfflineCupDto,
   UploadedFileLinkInterface,
@@ -177,5 +178,13 @@ export class AdminCupsController {
   @Get('get-all-active-multicups')
   getAllActiveMulticups(@Headers('X-Auth') accessToken: string | undefined): Promise<AdminActiveMulticupInterface[]> {
     return this.adminCupsService.getAllActiveMulticups(accessToken);
+  }
+
+  @Get('get-online-cup-servers-players/:cupId')
+  getOnlineCupServersPlayers(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Param('cupId', new ParseIntPipe()) cupId: number,
+  ): Promise<OnlineCupServersPlayersInterface> {
+    return this.adminCupsService.getOnlineCupServersPlayers(accessToken, cupId);
   }
 }
