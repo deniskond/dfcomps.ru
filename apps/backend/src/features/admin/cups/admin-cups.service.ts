@@ -94,6 +94,7 @@ export class AdminCupsService {
         (moment().isAfter(moment(cup.end_datetime)) || isSuperadmin(userAccess.roles)),
       calculateRatingsAvailable: cup.rating_calculated === false && cup.demos_validated === true,
       endDateTime: cup.end_datetime,
+      hasTwoServers: cup.use_two_servers,
     }));
   }
 
@@ -134,6 +135,7 @@ export class AdminCupsService {
       server1: cup.server1,
       server2: cup.server2,
       physics: cup.physics,
+      maps: [cup.map1, cup.map2, cup.map3, cup.map4, cup.map5],
     };
   }
 

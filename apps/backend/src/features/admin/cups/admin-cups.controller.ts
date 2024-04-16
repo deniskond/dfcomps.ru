@@ -18,6 +18,7 @@ import {
   AddOfflineCupDto,
   AdminActiveCupInterface,
   AdminActiveMulticupInterface,
+  AdminCupInterface,
   AdminEditCupInterface,
   AdminValidationInterface,
   CupTypes,
@@ -37,7 +38,7 @@ export class AdminCupsController {
   constructor(private readonly adminCupsService: AdminCupsService) {}
 
   @Get('get-all-cups')
-  getAllCups(@Headers('X-Auth') accessToken: string | undefined): Promise<any> {
+  getAllCups(@Headers('X-Auth') accessToken: string | undefined): Promise<AdminCupInterface[]> {
     return this.adminCupsService.getAllCups(accessToken);
   }
 

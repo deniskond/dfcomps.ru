@@ -10,4 +10,5 @@ export interface AdminCupInterface {
   validationAvailable: boolean;
   calculateRatingsAvailable: boolean;
   endDateTime: string;
+  hasTwoServers: boolean;
 }

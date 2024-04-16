@@ -19,4 +19,5 @@ export interface AdminEditCupInterface {
   server1: string;
   server2: string;
   physics: Physics | 'mixed';
+  maps: (string | null)[];
 }
