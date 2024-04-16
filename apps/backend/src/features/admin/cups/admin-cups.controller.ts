@@ -26,6 +26,7 @@ import {
   OnlineCupActionDto,
   OnlineCupServersPlayersInterface,
   ProcessValidationDto,
+  SetPlayerServerDto,
   UpdateOfflineCupDto,
   UploadedFileLinkInterface,
   WorldspawnMapInfoInterface,
@@ -186,5 +187,13 @@ export class AdminCupsController {
     @Param('cupId', new ParseIntPipe()) cupId: number,
   ): Promise<OnlineCupServersPlayersInterface> {
     return this.adminCupsService.getOnlineCupServersPlayers(accessToken, cupId);
+  }
+
+  @Post('set-player-server')
+  setPlayerServer(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Body() { userId, onlineCupId, serverNumber }: SetPlayerServerDto,
+  ): Promise<void> {
+    return this.adminCupsService.setPlayerServer(accessToken, userId, onlineCupId, serverNumber);
   }
 }

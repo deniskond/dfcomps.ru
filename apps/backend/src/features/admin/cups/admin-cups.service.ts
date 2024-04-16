@@ -885,6 +885,56 @@ export class AdminCupsService {
     };
   }
 
+  public async setPlayerServer(
+    accessToken: string | undefined,
+    userId: number,
+    onlineCupId: number,
+    serverNumber: number,
+  ): Promise<void> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+      throw new UnauthorizedException('Unauthorized to set online cup player server without CUP_ORGANIZER role');
+    }
+
+    const cup: Cup | null = await this.cupsRepository
+      .createQueryBuilder('cups')
+      .where({ id: onlineCupId })
+      .andWhere({ type: CupTypes.ONLINE })
+      .getOne();
+
+    if (!cup) {
+      throw new BadRequestException(`No online cup with id = ${onlineCupId} was found`);
+    }
+
+    const targetUser: User | null = await this.usersRepository
+      .createQueryBuilder('users')
+      .where({ id: userId })
+      .getOne();
+
+    if (!targetUser) {
+      throw new BadRequestException(`No user with id = ${userId} was found`);
+    }
+
+    if (!cup.use_two_servers) {
+      throw new BadRequestException(`Can't change player's server - online cup uses only one server`);
+    }
+
+    if (serverNumber !== 1 && serverNumber !== 2) {
+      throw new BadRequestException(`Wrong server number - must be 1 or 2`);
+    }
+
+    await this.cupsResultsRepository
+      .createQueryBuilder()
+      .update(CupResult)
+      .set({
+        server: serverNumber,
+      })
+      .where({ user: { id: userId } })
+      .andWhere({ cup: { id: onlineCupId } })
+      .execute();
+  }
+
   private async getPhysicsDemos(cupId: number, physics: Physics): Promise<AdminPlayerDemosValidationInterface[]> {
     const demos: CupDemo[] = await this.cupsDemosRepository
       .createQueryBuilder('cups_demos')
