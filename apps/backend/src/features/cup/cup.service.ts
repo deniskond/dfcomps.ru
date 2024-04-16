@@ -1,4 +1,10 @@
-import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  NotImplementedException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
@@ -8,6 +14,8 @@ import {
   ResultsTableInterface,
   ValidDemoInterface,
   ArchiveLinkInterface,
+  OnlineCupInfoInterface,
+  CupTypes,
 } from '@dfcomps/contracts';
 import { AuthService } from '../auth/auth.service';
 import * as moment from 'moment';
@@ -328,6 +336,43 @@ export class CupService {
       .where({ cup: { id: cupId } })
       .andWhere({ user: { id: userAccess.userId } })
       .execute();
+  }
+
+  public async getOnlineCupInfo(accessToken: string | undefined, cupId: number): Promise<OnlineCupInfoInterface> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!userAccess.userId || !checkUserRoles(userAccess.roles, [UserRoles.STREAMER])) {
+      throw new BadRequestException(`Can't get online cup info without STREAMER role`);
+    }
+
+    const cup: Cup | null = await this.cupRepository
+      .createQueryBuilder('cups')
+      .where({ id: cupId })
+      .andWhere({ type: CupTypes.ONLINE })
+      .getOne();
+
+    if (!cup) {
+      throw new NotFoundException(`Online cup with id = ${cupId} not found`);
+    }
+
+    if (!cup.map1 || !cup.map2 || !cup.map3 || !cup.map4 || !cup.map5) {
+      throw new NotImplementedException(`Online cup with id = ${cupId} has no maps yet`);
+    }
+
+    const cups: Cup[] = await this.cupRepository
+      .createQueryBuilder('cups')
+      .where({ type: CupTypes.ONLINE })
+      .orderBy('id', 'ASC')
+      .getMany();
+
+    const cupNumber: number = cups.findIndex((cup: Cup) => cup.id === cupId) + 1;
+
+    return {
+      title: `Online Cup #${cupNumber}`,
+      subtitle: cup.short_name,
+      maps: [cup.map1, cup.map2, cup.map3, cup.map4, cup.map5],
+      roundDuration: 30,
+    };
   }
 
   private formatNumberWithLeadingZeroes(n: number): string {

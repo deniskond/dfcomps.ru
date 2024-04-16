@@ -62,6 +62,6 @@ export class CupController {
     @Headers('X-Auth') accessToken: string | undefined,
     @Param('cupId', new ParseIntPipe()) cupId: number,
   ): Promise<OnlineCupInfoInterface> {
-    return {} as any;
+    return this.cupService.getOnlineCupInfo(accessToken, cupId);
   }
 }
