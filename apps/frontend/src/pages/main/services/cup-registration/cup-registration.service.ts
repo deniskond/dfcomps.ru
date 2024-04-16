@@ -7,10 +7,10 @@ import { Observable } from 'rxjs';
 })
 export class CupRegistrationService extends BackendService {
   public registerForCup$(cupId: number): Observable<void> {
-    return this.post$(URL_PARAMS.CUP.REGISTER(cupId));
+    return this.post$(URL_PARAMS.CUP.REGISTER, { cupId });
   }
 
   public cancelRegistrationForCup$(cupId: number): Observable<void> {
-    return this.post$(URL_PARAMS.CUP.CANCEL_REGISTRATION(cupId));
+    return this.post$(URL_PARAMS.CUP.CANCEL_REGISTRATION, { cupId });
   }
 }

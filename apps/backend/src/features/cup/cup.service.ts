@@ -203,7 +203,7 @@ export class CupService {
       zip.addLocalFile(
         process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${vq3Table.valid[vq3DemoIndex].demopath}`,
         'vq3',
-        this.formatNumberWithLeadingZeroes(vq3DemoIndex + 1) + '.dm_68'
+        this.formatNumberWithLeadingZeroes(vq3DemoIndex + 1) + '.dm_68',
       );
       vq3DemosCount++;
     }
@@ -216,7 +216,7 @@ export class CupService {
       zip.addLocalFile(
         process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${cpmTable.valid[cpmDemoIndex].demopath}`,
         'cpm',
-        this.formatNumberWithLeadingZeroes(cpmDemoIndex + 1) + '.dm_68'
+        this.formatNumberWithLeadingZeroes(cpmDemoIndex + 1) + '.dm_68',
       );
       cpmDemosCount++;
     }
@@ -234,7 +234,102 @@ export class CupService {
       filename: streamersArchiveFileName,
     };
   }
-  
+
+  public async registerForOnlineCup(accessToken: string | undefined, cupId: number): Promise<void> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!userAccess.userId) {
+      throw new BadRequestException(`Can't register for online cup as unauthorized user`);
+    }
+
+    const cup: Cup | null = await this.cupRepository.createQueryBuilder('cups').where({ id: cupId }).getOne();
+
+    if (!cup) {
+      throw new BadRequestException(`Cup with id = ${cupId} not found!`);
+    }
+
+    if (cup.current_round === 6) {
+      throw new BadRequestException(`Cup already ended`);
+    }
+
+    const cupResults: CupResult[] = await this.cupResultRepository
+      .createQueryBuilder('cups_results')
+      .where({ cup: { id: cupId } })
+      .getMany();
+
+    if (cupResults.length >= 40) {
+      throw new BadRequestException(`Max players limit exceeded`);
+    }
+
+    const playerOnlineCupEntry: CupResult | null = await this.cupResultRepository
+      .createQueryBuilder('cups_results')
+      .where({ cup: { id: cupId } })
+      .andWhere({ user: { id: userAccess.userId } })
+      .getOne();
+
+    if (playerOnlineCupEntry) {
+      throw new BadRequestException(`Already registered`);
+    }
+
+    const playersServers: number[] = cupResults.map(({ server }: CupResult) => server);
+    let firstServerCount = 0;
+    let secondServerCount = 0;
+
+    playersServers.forEach((server) => (server === 1 ? firstServerCount++ : secondServerCount++));
+
+    const targetServer: number = firstServerCount > secondServerCount ? 2 : 1;
+
+    await this.cupResultRepository
+      .createQueryBuilder('cups_results')
+      .insert()
+      .into(CupResult)
+      .values([
+        {
+          cup: { id: cupId },
+          user: { id: userAccess.userId },
+          server: targetServer,
+        },
+      ])
+      .execute();
+  }
+
+  public async cancelRegistrationForOnlineCup(accessToken: string | undefined, cupId: number): Promise<void> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!userAccess.userId) {
+      throw new BadRequestException(`Can't cancel registration for online cup as unauthorized user`);
+    }
+
+    const playerResults: CupResult | null = await this.cupResultRepository
+      .createQueryBuilder('cups_results')
+      .where({ user: { id: userAccess.userId } })
+      .andWhere({ cup: { id: cupId } })
+      .getOne();
+
+    if (!playerResults) {
+      throw new BadRequestException(`Can't cancel registration for online cup - user was not registered`);
+    }
+
+    const hasAtLeastOneResult: boolean =
+      !!playerResults.time1 ||
+      !!playerResults.time2 ||
+      !!playerResults.time3 ||
+      !!playerResults.time4 ||
+      !!playerResults.time5;
+
+    if (hasAtLeastOneResult) {
+      throw new BadRequestException(`Can't cancel registration after scoring at least one result`);
+    }
+
+    await this.cupResultRepository
+      .createQueryBuilder('cups_results')
+      .delete()
+      .from(CupResult)
+      .where({ cup: { id: cupId } })
+      .andWhere({ user: { id: userAccess.userId } })
+      .execute();
+  }
+
   private formatNumberWithLeadingZeroes(n: number): string {
     if (n < 10) {
       return `000${n}`;

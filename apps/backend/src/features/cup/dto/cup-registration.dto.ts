@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class CheckCupRegistrationDto {
+export class CupRegistrationDto {
   @IsNotEmpty()
   cupId: number;
 }
