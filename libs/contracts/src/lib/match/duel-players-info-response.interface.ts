@@ -1,4 +1,5 @@
-import { DuelPlayerInfoInterface, Physics } from '@dfcomps/contracts';
+import { Physics } from '../global/physics.enum';
+import { DuelPlayerInfoInterface } from './duel-player-info.interface';
 
 export interface DuelPlayersInfoResponseInterface {
   matchId: number;

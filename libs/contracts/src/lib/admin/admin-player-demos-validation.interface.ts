@@ -13,12 +13,3 @@ export interface AdminPlayerDemosValidationInterface {
     isOutsideCompetition: boolean;
   }[];
 }
-
-export interface AdminValidationInterface {
-  vq3Demos: AdminPlayerDemosValidationInterface[];
-  cpmDemos: AdminPlayerDemosValidationInterface[];
-  cupInfo: {
-    id: number;
-    fullName: string;
-  };
-}

@@ -1,6 +1,11 @@
 import { Body, Controller, Get, Headers, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { CupService } from './cup.service';
-import { CheckCupRegistrationInterface, CupInterface, ArchiveLinkInterface } from '@dfcomps/contracts';
+import {
+  CheckCupRegistrationInterface,
+  CupInterface,
+  ArchiveLinkInterface,
+  OnlineCupInfoInterface,
+} from '@dfcomps/contracts';
 import { CupRegistrationDto } from './dto/cup-registration.dto';
 
 @Controller('cup')
@@ -50,5 +55,13 @@ export class CupController {
     @Body() { cupId }: CupRegistrationDto,
   ): Promise<void> {
     return this.cupService.cancelRegistrationForOnlineCup(accessToken, cupId);
+  }
+
+  @Get('online-cup/:id')
+  getOnlineCupInfo(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Param('cupId', new ParseIntPipe()) cupId: number,
+  ): Promise<OnlineCupInfoInterface> {
+    return {} as any;
   }
 }
