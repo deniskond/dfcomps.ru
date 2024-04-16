@@ -347,10 +347,13 @@ export class TablesService {
             cupResult.round5!,
           ];
 
-          const overall = roundResults.reduce<number>(
-            (sum, roundResult) => (roundResult === 0 ? sum : sum + cupResults.length - roundResult + 1),
-            0,
-          );
+          const overall =
+            cupResult.offset !== 1
+              ? roundResults.reduce<number>(
+                  (sum, roundResult) => (roundResult === 0 ? sum : sum + cupResults.length - roundResult + 1),
+                  0,
+                )
+              : 0;
 
           return {
             playerId: cupResult.user.id,
