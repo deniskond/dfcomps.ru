@@ -340,11 +340,11 @@ export class TablesService {
       const playersResults: MulticupResultInterface[] = cupResults
         .map((cupResult: CupResult) => {
           const roundResults: number[] = [
-            cupResult.round1,
-            cupResult.round2,
-            cupResult.round3,
-            cupResult.round4,
-            cupResult.round5,
+            cupResult.round1!,
+            cupResult.round2!,
+            cupResult.round3!,
+            cupResult.round4!,
+            cupResult.round5!,
           ];
 
           const overall = roundResults.reduce<number>(

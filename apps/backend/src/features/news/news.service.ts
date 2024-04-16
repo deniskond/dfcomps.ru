@@ -312,7 +312,7 @@ export class NewsService {
         playerId: cupResult.user.id,
         country: cupResult.user.country,
         cpmChange: cupResult.user.ratingChanges[0]?.cpm_change || 0,
-        finalSum: cupResult.final_sum,
+        finalSum: cupResult.final_sum!,
         nick: cupResult.user.displayed_nick,
         vq3Change: cupResult.user.ratingChanges[0]?.vq3_change || 0,
       })),
