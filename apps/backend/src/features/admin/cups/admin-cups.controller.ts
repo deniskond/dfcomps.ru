@@ -28,6 +28,7 @@ import {
   ParseServerLogsDto,
   ParsedOnlineCupRoundInterface,
   ProcessValidationDto,
+  SaveOnlineCupRoundDto,
   SetPlayerServerDto,
   UpdateOfflineCupDto,
   UploadedFileLinkInterface,
@@ -183,7 +184,7 @@ export class AdminCupsController {
     return this.adminCupsService.getAllActiveMulticups(accessToken);
   }
 
-  @Get('get-online-cup-servers-players/:cupId')
+  @Get('online/get-servers-players/:cupId')
   getOnlineCupServersPlayers(
     @Headers('X-Auth') accessToken: string | undefined,
     @Param('cupId', new ParseIntPipe()) cupId: number,
@@ -191,7 +192,7 @@ export class AdminCupsController {
     return this.adminCupsService.getOnlineCupServersPlayers(accessToken, cupId);
   }
 
-  @Post('set-player-server')
+  @Post('online/set-player-server')
   setPlayerServer(
     @Headers('X-Auth') accessToken: string | undefined,
     @Body() { userId, onlineCupId, serverNumber }: SetPlayerServerDto,
@@ -199,7 +200,7 @@ export class AdminCupsController {
     return this.adminCupsService.setPlayerServer(accessToken, userId, onlineCupId, serverNumber);
   }
 
-  @Post('parse-server-logs')
+  @Post('online/parse-server-logs')
   @UseInterceptors(FileInterceptor('serverLogs'))
   parseServerLogs(
     @Headers('X-Auth') accessToken: string | undefined,
@@ -208,5 +209,13 @@ export class AdminCupsController {
     @Body() { cupId }: ParseServerLogsDto,
   ): Promise<ParsedOnlineCupRoundInterface> {
     return this.adminCupsService.parseServerLogs(accessToken, serverLogs, cupId);
+  }
+
+  @Post('online/save-round-results')
+  saveRoundResults(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Body() { cupId, roundNumber, roundResults }: SaveOnlineCupRoundDto,
+  ): Promise<void> {
+    return this.adminCupsService.saveRoundResults(accessToken, cupId, roundNumber, roundResults);
   }
 }

@@ -23,6 +23,7 @@ import {
   Physics,
   ProcessValidationDto,
   ResultsTableInterface,
+  RoundResultEntryInterface,
   UpdateOfflineCupDto,
   UploadedFileLinkInterface,
   ValidDemoInterface,
@@ -1034,6 +1035,33 @@ export class AdminCupsService {
     };
 
     return parsedOnlineCupRound;
+  }
+
+  public async saveRoundResults(
+    accessToken: string | undefined,
+    cupId: number,
+    roundNumber: 1 | 2 | 3 | 4 | 5,
+    roundResults: RoundResultEntryInterface[],
+  ): Promise<void> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+      throw new UnauthorizedException('Unauthorized to parse server logs without CUP_ORGANIZER role');
+    }
+
+    if (![1, 2, 3, 4, 5].includes(roundNumber)) {
+      throw new BadRequestException('Wrong roundNumber - should be one of [1, 2, 3, 4, 5]');
+    }
+
+    const roundResultsUpdate: Partial<CupResult>[] = roundResults.map(
+      (roundResultEntry: RoundResultEntryInterface) => ({
+        cup: { id: cupId } as any,
+        user: { id: roundResultEntry.userId } as any,
+        ['time' + roundNumber]: roundResultEntry.time,
+      }),
+    );
+
+    await this.cupsResultsRepository.save(roundResultsUpdate);
   }
 
   private async getPhysicsDemos(cupId: number, physics: Physics): Promise<AdminPlayerDemosValidationInterface[]> {

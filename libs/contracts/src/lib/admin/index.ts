@@ -20,3 +20,5 @@ export { OnlineCupServersPlayersInterface } from './online-cup-servers-players.i
 export { SetPlayerServerDto } from './set-player-server.dto';
 export { ParsedOnlineCupRoundInterface } from './parsed-online-cup-round.interface';
 export { ParseServerLogsDto } from './parse-server-logs.dto';
+export { SaveOnlineCupRoundDto } from './save-online-cup-round.dto';
+export { RoundResultEntryInterface } from './round-result-entry.interface';
