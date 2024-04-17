@@ -1,0 +1,546 @@
+19:06:21 [DR1]Source: bb 29
+19:06:30 tommy reached the finish line in 53:200 (est. 53:200)
+19:07:07 Enter reached the finish line in 33:208 (est. 33:208)
+19:07:23 'Anton,: roman slabiy
+19:07:38 [DR1]Source reached the finish line in 32:472 (est. 32:472)
+19:07:58 DamnedLight.th reached the finish line in 31:200 (est. 31:200)
+19:07:59 DamnedLight.th: ckopocTHou napeHb !!!
+19:08:03 'Anton,: :>
+19:08:17 q3lex reached the finish line in 2:47:264 (est. 2:47:264)
+19:09:25 'Anton, reached the finish line in 40:264 (est. 40:264)
+19:09:48 [fps]Proky reached the finish line in 36:208 (est. 36:208)
+19:09:50 tommy reached the finish line in 47:240 (est. 47:240)
+19:09:56 cenat reached the finish line in 1:10:360 (est. 1:10:360)
+19:11:46 [fps]Proky reached the finish line in 37:032 (est. 37:032)
+19:11:50 'Anton,: finish nereal
+19:11:52 'Anton, joined the spectators.
+19:12:08 'Anton,: seme4ki poka powelkayu
+19:12:11 q3lex reached the finish line in 3:38:944 (est. 3:38:944)
+19:12:14 DamnedLight.th reached the finish line in 31:072 (est. 31:072)
+19:12:40 delta reached the finish line in 28:144 (est. 28:144)
+19:12:40 >>/Nosf: STOP TIME!!!!!!!!
+19:12:41 'Anton,: :>
+19:12:41 >>/Nosf: STOP TIME!!!!!!!!
+19:12:41 >>/Nosf: STOP TIME!!!!!!!!
+19:12:41 >>/Nosf: STOP TIME!!!!!!!!
+19:12:41 >>/Nosf: STOP TIME!!!!!!!!
+19:12:41 >>/Nosf: STOP TIME!!!!!!!!
+19:12:41 >>/Nosf: STOP TIME!!!!!!!!
+19:12:41 >>/Nosf: STOP TIME!!!!!!!!
+19:12:41 >>/Nosf: STOP TIME!!!!!!!!
+19:12:41 >>/Nosf: STOP TIME!!!!!!!!
+19:12:41 >>/Nosf: STOP TIME!!!!!!!!
+19:12:41 >>/Nosf: STOP TIME!!!!!!!!
+19:12:41 >>/Nosf: STOP TIME!!!!!!!!
+19:12:41 >>/Nosf: STOP TIME!!!!!!!!
+19:12:41 >>/Nosf: STOP TIME!!!!!!!!
+19:12:41 >>/Nosf: STOP TIME!!!!!!!!
+19:12:41 >>/Nosf: STOP TIME!!!!!!!!
+19:12:41 >>/Nosf: STOP TIME!!!!!!!!
+19:12:42 >>/Nosf: STOP TIME!!!!!!!!
+19:12:42 >>/Nosf: STOP TIME!!!!!!!!
+19:12:42 >>/Nosf: STOP TIME!!!!!!!!
+19:12:42 Issuing Command: condump 191242
+
+19:12:42 Dumped console text to 191242.txt.
+19:12:43 Wrote screenshots/shot-20220828-191243.jpg
+19:12:44 'Anton, entered the game.
+19:12:45 [DR1]Source: fucking FUCK FUCK FUCK
+19:12:48 ]next
+19:12:48 >>/Nosf: next
+19:12:51 'Anton,: f1
+19:13:04 w00dy.th called a vote: map jjm21-prostrafe.
+19:13:09 Vote passed.
+19:13:09 WARNING: server is not allowed to set df_mp_interferenceOff=3
+19:13:09 ----- FS_Startup -----
+19:13:09 ...loaded in 40 milliseconds
+19:13:09 ----------------------
+19:13:09 90224 files in 2004 pk3 files
+19:13:09 RE_Shutdown( 0 )
+19:13:09 Hunk_Clear: reset the hunk ok
+19:13:09 ----- R_Init -----
+19:13:09
+GL_VENDOR: NVIDIA Corporation
+19:13:09 GL_RENDERER: GeForce GTX 1660 SUPER/PCIe/SSE2
+19:13:09 GL_VERSION: 4.6.0 NVIDIA 461.40
+19:13:09
+19:13:09 GL_MAX_TEXTURE_SIZE: 32768
+19:13:09 GL_MAX_TEXTURE_UNITS_ARB: 8
+19:13:09
+PIXELFORMAT: color(32-bits) Z(24-bit) stencil(8-bits)
+19:13:09 MODE: -1, 1600 x 1024 windowed hz:120
+19:13:09 GAMMA: hardware w/ 0 overbright bits
+19:13:09 CPU: 64-bit AuthenticAMD
+19:13:09 rendering primitives: single glDrawElements
+19:13:09 texturemode: GL_LINEAR_MIPMAP_NEAREST
+19:13:09 picmip: 0
+19:13:09 texture bits: 0
+19:13:09 multitexture: enabled
+19:13:09 compiled vertex arrays: enabled
+19:13:09 texenv add: enabled
+19:13:09 compressed textures: disabled
+19:13:09 HACK: using vertex lightmap approximation
+19:13:09 Initializing Shaders
+19:13:09 ----- finished R_Init -----
+19:13:09 ------ Initializing Sound ------
+19:13:09 Initializing DirectSound
+19:13:09 ----- Sound Info -----
+19:13:09     1 stereo
+19:13:09 32768 samples
+19:13:09    16 samplebits
+19:13:09     1 submission_chunk
+19:13:09 22050 speed
+19:13:09 000000002D3C0090 dma buffer
+19:13:09 No background file.
+19:13:09 ----------------------
+19:13:09 Sound initialization successful.
+19:13:09 --------------------------------
+19:13:09 Sound memory manager started
+19:13:09 Loading dll file ui.
+19:13:09 LoadLibrary 'D:\Quake 3 Ultimate\quake3\defrag\uix86_64.dll' failed
+19:13:09 Failed to load dll, looking for qvm.
+19:13:09 Loading vm file vm/ui.qvm...
+19:13:10 VM file ui compiled to 714990 bytes of code
+19:13:10 ui loaded in 2098176 bytes on the hunk
+19:13:10 110 arenas parsed
+19:13:10 2 arenas ignored to make count divisible by 4
+19:13:10 32 bots parsed
+19:13:10 Loading vm file vm/cgame.qvm...
+19:13:10 VM file cgame compiled to 1271982 bytes of code
+19:13:10 cgame loaded in 8389632 bytes on the hunk
+19:13:10 Cvar: df_promode 0
+19:13:10 Cvar: dmflags 0
+19:13:10 Cvar: sv_cheats 0
+19:13:10 Cvar: timescale 1.00
+19:13:10 Cvar: g_synchronousClients 0
+19:13:10 Cvar: pmove_fixed 1
+19:13:10 Cvar: pmove_msec 8
+19:13:10 Cvar: g_speed 320
+19:13:10 Cvar: g_gravity 800
+19:13:10 Cvar: g_knockback 1000
+19:13:10 stitched 8 LoD cracks
+19:13:10 ...loaded 1329 faces, 70 meshes, 60 trisurfs, 0 flares
+19:13:10 WARNING: Failed to load sound sound/player/crash/taunt.wav!
+19:13:10 WARNING: could not find sound/player/crash/taunt.wav - using default
+19:13:10 Failed to load model file models/players/characters/clobber/lower.md3
+19:13:10 Failed to load model file models/players/characters/sonic/lower.md3
+19:13:10 Failed to load model file models/players/characters/n_duck/lower.md3
+19:13:10 Failed to load model file models/players/characters/bitsumii/lower.md3
+19:13:10 CL_InitCGame:  0.58 seconds
+19:13:10 7 msec to draw all images
+19:13:10 Com_TouchMemory: 0 msec
+19:13:10 copy D:\Quake 3 Ultimate\quake3\defrag\demos\temp\current.tmp to D:\Quake 3
+Ultimate\quake3\defrag\demos\temp\current.dm_68
+19:13:10 Stopped demo recording.
+19:13:10 [DR1]Source entered the game.
+19:13:10 delta entered the game.
+19:13:10 >>/Nosf entered the game.
+19:13:11 tommy entered the game.
+19:13:11 Enter entered the game.
+19:13:11 cenat entered the game.
+19:13:11 [fps]Proky entered the game.
+19:13:12 N4S_ entered the game.
+19:13:14 Raven entered the game.
+19:13:14 'Anton, entered the game.
+19:13:14 q3lex entered the game.
+19:13:15 'Anton,: :>
+19:13:16 DamnedLight.th entered the game.
+19:13:25 cenat disconnected
+19:13:48 [DR1]Source: L
+19:13:59 [DR1]Source joined the spectators.
+19:14:07 [DR1]Source: have fun with this one, delta!
+19:14:10 'Anton,: :>
+19:14:24 delta reached the finish line in 50:400 (est. 50:400)
+19:14:26 'Anton,: :>
+19:14:33 delta: thank god its only first stage
+19:14:36 [fps]Proky reached the finish line in 1:16:000 (est. 1:16:000)
+19:14:54 Raven reached the finish line in 1:37:496 (est. 1:37:496)
+19:14:59 [DR1]Kane: u sure about that?
+19:15:47 delta reached the finish line in 34:104 (est. 34:110)
+19:16:31 Enter reached the finish line in 1:16:592 (est. 1:16:600)
+19:17:12 DamnedLight.th reached the finish line in 2:25:056 (est. 2:25:064)
+19:17:37 [fps]Proky reached the finish line in 2:29:592 (est. 2:29:592)
+19:18:02 'Anton, reached the finish line in 36:216 (est. 36:215)
+19:18:03 'Anton,: :>
+19:19:07 [fps]Proky reached the finish line in 32:848 (est. 32:848)
+19:19:16 [DR1]Kane: lol
+19:19:38 DamnedLight.th reached the finish line in 2:21:856 (est. 2:21:861)
+19:19:46 'Anton, reached the finish line in 29:336 (est. 29:342)
+19:19:50 'Anton,: lead nahooi
+19:19:50 Enter reached the finish line in 33:896 (est. 33:896)
+19:19:53 [DR1]Kane: delta you are beaten
+19:19:57 q3lex reached the finish line in 6:31:480 (est. 6:31:480)
+19:19:59 delta: yep
+19:20:00 'Anton,: :>
+19:20:18 Raven reached the finish line in 2:32:992 (est. 2:32:993)
+19:21:16 Enter reached the finish line in 32:184 (est. 32:188)
+19:21:29 q3lex: yo moye
+19:21:30 [DR1]Source: crazyal is counting u out already delta.
+19:21:37 [DR1]Source: He says Roman KICKS the shit out of u
+19:21:38 q3lex: 3
+19:21:47 q3lex: 3
+19:22:25 'Anton, reached the finish line in 25:904 (est. 25:902)
+19:22:26 Enter reached the finish line in 26:480 (est. 26:476)
+19:22:31 delta reached the finish line in 25:280 (est. 25:277)
+19:22:32 'Anton,: :>
+19:22:47 copy D:\Quake 3 Ultimate\quake3\defrag\demos\temp\current.tmp to D:\Quake 3
+Ultimate\quake3\defrag\demos\temp\current.dm_68
+19:22:47 Stopped demo recording.
+19:22:47 RE_Shutdown( 1 )
+19:22:47 Shutting down OpenGL subsystem
+19:22:47 ...wglMakeCurrent( NULL, NULL ): success
+19:22:47 ...deleting GL context: success
+19:22:47 ...releasing DC: success
+19:22:47 ...destroying window
+19:22:47 ...shutting down QGL
+19:22:47 Hunk_Clear: reset the hunk ok
+19:22:47 ----- Initializing Renderer ----
+19:22:47 -------------------------------
+19:22:47 ----- R_Init -----
+19:22:47 Initializing OpenGL subsystem
+19:22:47 ...initializing QGL
+19:22:47 ...setting mode -1: 1920 1080 FS
+19:22:47 ...using desktop display depth of 32
+19:22:47 ...calling CDS: ok
+19:22:47 ...created window@0,0 (1920x1080)
+19:22:47 Initializing OpenGL driver
+19:22:47 ...getting DC: succeeded
+19:22:47 ...GLW_ChoosePFD( 32, 24, 8 )
+19:22:47 ...219 PFDs found
+19:22:47 ...hardware acceleration found
+19:22:47 ...PIXELFORMAT 11 selected
+19:22:47 ...creating GL context: succeeded
+19:22:47 ...making context current: succeeded
+19:22:47 ...using WGL_EXT_swap_control
+19:22:47 Initializing OpenGL extensions
+19:22:47 ...ignoring GL_EXT_texture_compression_s3tc
+19:22:47 ...using GL_EXT_texture_env_add
+19:22:47 ...using GL_ARB_multitexture
+19:22:47 ...using GL_EXT_compiled_vertex_array
+19:22:47 ...ignoring GL_EXT_texture_filter_anisotropic
+19:22:47 ...using ARB vertex/fragment programs
+19:22:47 ...using ARB vertex buffer objects
+19:22:47
+GL_VENDOR: NVIDIA Corporation
+19:22:47 GL_RENDERER: GeForce GTX 1660 SUPER/PCIe/SSE2
+19:22:47 GL_VERSION: 4.6.0 NVIDIA 461.40
+19:22:47
+19:22:47 GL_MAX_TEXTURE_SIZE: 32768
+19:22:47 GL_MAX_TEXTURE_UNITS_ARB: 8
+19:22:47
+PIXELFORMAT: color(32-bits) Z(24-bit) stencil(8-bits)
+19:22:47 MODE: -2, 1920 x 1080 fullscreen hz:120
+19:22:47 GAMMA: hardware w/ 0 overbright bits
+19:22:47 CPU: 64-bit AuthenticAMD
+19:22:47 rendering primitives: single glDrawElements
+19:22:47 texturemode: GL_LINEAR_MIPMAP_NEAREST
+19:22:47 picmip: 0
+19:22:47 texture bits: 0
+19:22:47 multitexture: enabled
+19:22:47 compiled vertex arrays: enabled
+19:22:47 texenv add: enabled
+19:22:47 compressed textures: disabled
+19:22:47 HACK: using vertex lightmap approximation
+19:22:47 Initializing Shaders
+19:22:47 ----- finished R_Init -----
+19:22:47 ------ Initializing Sound ------
+19:22:47 Initializing DirectSound
+19:22:47 ----- Sound Info -----
+19:22:47     1 stereo
+19:22:47 32768 samples
+19:22:47    16 samplebits
+19:22:47     1 submission_chunk
+19:22:47 22050 speed
+19:22:47 000000002D3C0090 dma buffer
+19:22:47 No background file.
+19:22:47 ----------------------
+19:22:47 Sound initialization successful.
+19:22:47 --------------------------------
+19:22:47 Sound memory manager started
+19:22:47 Loading dll file ui.
+19:22:47 LoadLibrary 'D:\Quake 3 Ultimate\quake3\defrag\uix86_64.dll' failed
+19:22:47 Failed to load dll, looking for qvm.
+19:22:47 Loading vm file vm/ui.qvm...
+19:22:47 VM file ui compiled to 714990 bytes of code
+19:22:47 ui loaded in 2098176 bytes on the hunk
+19:22:47 110 arenas parsed
+19:22:47 2 arenas ignored to make count divisible by 4
+19:22:47 32 bots parsed
+19:22:47 Loading vm file vm/cgame.qvm...
+19:22:47 VM file cgame compiled to 1271982 bytes of code
+19:22:47 cgame loaded in 8389632 bytes on the hunk
+19:22:47 Cvar: df_promode 0
+19:22:47 Cvar: dmflags 0
+19:22:47 Cvar: sv_cheats 0
+19:22:47 Cvar: timescale 1.00
+19:22:47 Cvar: g_synchronousClients 0
+19:22:47 Cvar: pmove_fixed 1
+19:22:47 Cvar: pmove_msec 8
+19:22:47 Cvar: g_speed 320
+19:22:47 Cvar: g_gravity 800
+19:22:47 Cvar: g_knockback 1000
+19:22:47 stitched 8 LoD cracks
+19:22:47 ...loaded 1329 faces, 70 meshes, 60 trisurfs, 0 flares
+19:22:47 WARNING: Failed to load sound sound/player/crash/taunt.wav!
+19:22:47 WARNING: could not find sound/player/crash/taunt.wav - using default
+19:22:47 Failed to load model file models/players/characters/sonic/lower.md3
+19:22:47 Failed to load model file models/players/characters/n_duck/lower.md3
+19:22:47 Failed to load model file models/players/characters/bitsumii/lower.md3
+19:22:48 CL_InitCGame:  0.55 seconds
+19:22:48 6 msec to draw all images
+19:22:48 Com_TouchMemory: 0 msec
+19:22:48 Not recording a demo.
+19:22:50 Enter reached the finish line in 21:624 (est. 21:621)
+19:22:51 DamnedLight.th reached the finish line in 55:504 (est. 55:509)
+19:23:31 q3lex reached the finish line in 1:36:760 (est. 1:36:760)
+19:24:43 DamnedLight.th reached the finish line in 30:976 (est. 30:978)
+19:24:46 tommy reached the finish line in 8:00:920 (est. 8:00:920)
+19:25:53 [DR1]Kane: bbwr lol
+19:26:43 [DR1]Kane: bb sub 20
+19:26:46 w00dy.th: :)
+19:26:56 DamnedLight.th reached the finish line in 24:560 (est. 24:558)
+19:27:02 'Anton, reached the finish line in 22:856 (est. 22:864)
+19:27:02 'Anton,: :>
+19:28:11 [DR1]Source entered the game.
+19:28:16 >>/Nosf reached the finish line in 24:584 (est. 24:587)
+19:28:17 [DR1]Source: door holding allowed?
+19:28:21 N4S_: 8-)
+19:28:21 N4S_: 8-)
+19:28:21 N4S_: 8-)
+19:28:29 w00dy.th: anything allowed but 4ity
+19:28:30 [DR1]Source: nosf
+19:28:35 [DR1]Source: cool
+19:28:37 >>/Nosf: =)
+19:28:39 [DR1]Source: +attack
+19:28:40 q3lex reached the finish line in 1:54:376 (est. 1:54:376)
+19:28:41 [fps]Proky reached the finish line in 34:280 (est. 34:279)
+19:29:21 delta reached the finish line in 18:896 (est. 18:894)
+19:29:25 [DR1]Source: :)
+19:29:49 'Anton, reached the finish line in 19:200 (est. 19:200)
+19:29:50 'Anton,: :>
+19:29:52 'Anton,: ah
+19:29:55 'Anton,: damn
+19:29:55 DamnedLight.th reached the finish line in 25:520 (est. 25:521)
+19:29:57 'Anton,: ok
+19:30:06 'Anton,: :>
+19:30:44 Raven reached the finish line in 39:848 (est. 39:855)
+19:30:45 [DR1]Kane: random ob time
+19:30:51 q3lex reached the finish line in 1:38:400 (est. 1:38:400)
+19:30:53 DamnedLight.th: ckopocTHou napeHb !!!
+19:30:54 N4S_ reached the finish line in 1:20:336 (est. 1:20:342)
+19:30:54 'Anton,: :>
+19:31:14 'Anton,: :>
+19:32:00 tommy reached the finish line in 5:49:960 (est. 5:49:968)
+19:32:24 >>/Nosf reached the finish line in 22:688 (est. 22:687)
+19:32:39 'Anton,: :>
+19:32:50 q3lex reached the finish line in 1:39:208 (est. 1:39:208)
+19:34:10 N4S_ reached the finish line in 29:344 (est. 29:350)
+19:34:28 tommy reached the finish line in 2:24:672 (est. 2:24:668)
+19:34:30 FOLLA connected (RU, Russian Federation)
+19:34:33 FOLLA disconnected
+19:34:35 DamnedLight.th: bon                        jour
+19:34:35 DamnedLight.th: bon                        jour
+19:34:35 DamnedLight.th: bon                        jour
+19:34:35 DamnedLight.th: bon                        jour
+19:34:35 DamnedLight.th: bon                        jour
+19:35:16 w00dy.th connected (RU, Russian Federation)
+19:35:20 w00dy.th entered the game.
+19:35:25 DamnedLight.th: :>
+19:35:25 [fps]Proky reached the finish line in 47:680 (est. 47:680)
+19:35:29 w00dy.th disconnected
+19:35:54 q3lex reached the finish line in 1:56:568 (est. 1:56:568)
+19:35:56 DamnedLight.th: ckopocTHou napeHb !!!
+19:35:58 'Anton,: :>
+19:36:03 w00dy.th: :)
+19:36:04 [DR1]Source: Move out my fuckin way boi u gonna get sliced
+19:36:05 N4S_: ebaca v titki (c)XO3TOBAPBI
+19:36:27 [fps]Proky: delta
+19:36:28 [fps]Proky: Ekarnii babai JMI!!!
+19:36:28 [fps]Proky: Ekarnii babai JMI!!!
+19:36:28 [fps]Proky: Ekarnii babai JMI!!!
+19:36:28 [fps]Proky: Ekarnii babai JMI!!!
+19:36:28 [fps]Proky: Ekarnii babai JMI!!!
+19:36:28 [fps]Proky: Ekarnii babai JMI!!!
+19:36:33 N4S_: 8-)
+19:36:34 N4S_: ladno
+19:36:38 [DR1]Source: lol that train
+19:36:47 [DR1]Source: delta proky enter train!!!
+19:36:59 [fps]Proky reached the finish line in 24:960 (est. 24:964)
+19:37:03 q3lex reached the finish line in 56:896 (est. 56:896)
+19:37:11 [DR1]Source: nice one progaypoop
+19:37:37 [fps]Proky: sam ty gay
+19:37:38 [fps]Proky: !!!!!!!!!
+19:37:45 [fps]Proky: kakawka bl9t'
+19:37:46 N4S_: ya?
+19:37:56 delta reached the finish line in 18:112 (est. 18:112)
+19:37:58 'Anton,: :>
+19:38:01 [DR1]Kane: hell yes
+19:38:02 [fps]Proky: Ekarnii babai JMI!!!
+19:38:02 [fps]Proky: Ekarnii babai JMI!!!
+19:38:02 [fps]Proky: Ekarnii babai JMI!!!
+19:38:02 [fps]Proky: Ekarnii babai JMI!!!
+19:38:03 [fps]Proky: Ekarnii babai JMI!!!
+19:38:03 [fps]Proky: Ekarnii babai JMI!!!
+19:38:03 [fps]Proky: Ekarnii babai JMI!!!
+19:38:03 [fps]Proky: Ekarnii babai JMI!!!
+19:38:03 [fps]Proky: Ekarnii babai JMI!!!
+19:38:03 [fps]Proky: Ekarnii babai JMI!!!
+19:38:03 [fps]Proky: Ekarnii babai JMI!!!
+19:38:03 [fps]Proky: Ekarnii babai JMI!!!
+19:38:04 [fps]Proky: Ekarnii babai JMI!!!
+19:38:08 N4S_: ladno
+19:38:10 [fps]Proky joined the spectators.
+19:38:27 [DR1]Source: roman 17.7!
+19:38:46 tommy reached the finish line in 54:584 (est. 54:586)
+19:38:47 [DR1]Source connected (US, United States)
+19:38:48 [DR1]Source entered the game.
+19:38:48 [DR1]Source joined the spectators.
+19:38:54 q3lex reached the finish line in 1:00:448 (est. 1:00:448)
+19:39:25 >>/Nosf joined the spectators.
+19:39:27 [DR1]Kane: ro source 2
+19:39:30 [DR1]Source: ket 17.5
+19:39:32 'Anton,: :>
+19:39:33 [DR1]Source: bb wr
+19:40:10 'Anton,: ruki drojat uje
+19:40:33 >>/Nosf entered the game.
+19:40:41 q3lex reached the finish line in 1:21:832 (est. 1:21:832)
+19:40:43 DamnedLight.th: ckopocTHou napeHb !!!
+19:41:10 'Anton, reached the finish line in 18:688 (est. 18:696)
+19:41:11 'Anton,: :>
+19:41:14 'Anton,: vse
+19:41:15 'Anton, joined the spectators.
+19:41:32 copy D:\Quake 3 Ultimate\quake3\defrag\demos\temp\current.tmp to D:\Quake 3
+Ultimate\quake3\defrag\demos\temp\current.dm_68
+19:41:32 Stopped demo recording.
+19:41:32 RE_Shutdown( 1 )
+19:41:32 Shutting down OpenGL subsystem
+19:41:32 ...wglMakeCurrent( NULL, NULL ): success
+19:41:32 ...deleting GL context: success
+19:41:32 ...releasing DC: success
+19:41:32 ...destroying window
+19:41:32 ...restoring display settings
+19:41:32 ...shutting down QGL
+19:41:32 Hunk_Clear: reset the hunk ok
+19:41:32 ----- Initializing Renderer ----
+19:41:32 -------------------------------
+19:41:32 ----- R_Init -----
+19:41:32 Initializing OpenGL subsystem
+19:41:32 ...initializing QGL
+19:41:32 ...setting mode -1: 1600 1024 W
+19:41:32 ...created window@128,0 (1606x1053)
+19:41:32 Initializing OpenGL driver
+19:41:32 ...getting DC: succeeded
+19:41:32 ...GLW_ChoosePFD( 32, 24, 8 )
+19:41:32 ...219 PFDs found
+19:41:32 ...hardware acceleration found
+19:41:32 ...PIXELFORMAT 11 selected
+19:41:32 ...creating GL context: succeeded
+19:41:32 ...making context current: succeeded
+19:41:32 ...using WGL_EXT_swap_control
+19:41:32 Initializing OpenGL extensions
+19:41:32 ...ignoring GL_EXT_texture_compression_s3tc
+19:41:32 ...using GL_EXT_texture_env_add
+19:41:32 ...using GL_ARB_multitexture
+19:41:32 ...using GL_EXT_compiled_vertex_array
+19:41:32 ...ignoring GL_EXT_texture_filter_anisotropic
+19:41:32 ...using ARB vertex/fragment programs
+19:41:32 ...using ARB vertex buffer objects
+19:41:32
+GL_VENDOR: NVIDIA Corporation
+19:41:32 GL_RENDERER: GeForce GTX 1660 SUPER/PCIe/SSE2
+19:41:32 GL_VERSION: 4.6.0 NVIDIA 461.40
+19:41:32
+19:41:32 GL_MAX_TEXTURE_SIZE: 32768
+19:41:32 GL_MAX_TEXTURE_UNITS_ARB: 8
+19:41:32
+PIXELFORMAT: color(32-bits) Z(24-bit) stencil(8-bits)
+19:41:32 MODE: -1, 1600 x 1024 windowed hz:120
+19:41:32 GAMMA: hardware w/ 0 overbright bits
+19:41:32 CPU: 64-bit AuthenticAMD
+19:41:32 rendering primitives: single glDrawElements
+19:41:32 texturemode: GL_LINEAR_MIPMAP_NEAREST
+19:41:32 picmip: 0
+19:41:32 texture bits: 0
+19:41:32 multitexture: enabled
+19:41:32 compiled vertex arrays: enabled
+19:41:32 texenv add: enabled
+19:41:32 compressed textures: disabled
+19:41:32 HACK: using vertex lightmap approximation
+19:41:32 Initializing Shaders
+19:41:32 ----- finished R_Init -----
+19:41:32 ------ Initializing Sound ------
+19:41:32 Initializing DirectSound
+19:41:32 ----- Sound Info -----
+19:41:32     1 stereo
+19:41:32 32768 samples
+19:41:32    16 samplebits
+19:41:32     1 submission_chunk
+19:41:32 22050 speed
+19:41:32 000000002D3C0090 dma buffer
+19:41:32 No background file.
+19:41:32 ----------------------
+19:41:32 Sound initialization successful.
+19:41:32 --------------------------------
+19:41:32 Sound memory manager started
+19:41:32 Loading dll file ui.
+19:41:32 LoadLibrary 'D:\Quake 3 Ultimate\quake3\defrag\uix86_64.dll' failed
+19:41:32 Failed to load dll, looking for qvm.
+19:41:32 Loading vm file vm/ui.qvm...
+19:41:32 VM file ui compiled to 714990 bytes of code
+19:41:32 ui loaded in 2098176 bytes on the hunk
+19:41:32 110 arenas parsed
+19:41:32 2 arenas ignored to make count divisible by 4
+19:41:32 32 bots parsed
+19:41:32 Loading vm file vm/cgame.qvm...
+19:41:32 VM file cgame compiled to 1271982 bytes of code
+19:41:32 cgame loaded in 8389632 bytes on the hunk
+19:41:32 Cvar: df_promode 0
+19:41:32 Cvar: dmflags 0
+19:41:32 Cvar: sv_cheats 0
+19:41:32 Cvar: timescale 1.00
+19:41:32 Cvar: g_synchronousClients 0
+19:41:32 Cvar: pmove_fixed 1
+19:41:32 Cvar: pmove_msec 8
+19:41:32 Cvar: g_speed 320
+19:41:32 Cvar: g_gravity 800
+19:41:32 Cvar: g_knockback 1000
+19:41:32 stitched 8 LoD cracks
+19:41:32 ...loaded 1329 faces, 70 meshes, 60 trisurfs, 0 flares
+19:41:33 WARNING: Failed to load sound sound/player/crash/taunt.wav!
+19:41:33 WARNING: could not find sound/player/crash/taunt.wav - using default
+19:41:33 Failed to load model file models/players/characters/sonic/lower.md3
+19:41:33 Failed to load model file models/players/characters/n_duck/lower.md3
+19:41:33 Failed to load model file models/players/characters/bitsumii/lower.md3
+19:41:33 CL_InitCGame:  0.58 seconds
+19:41:33 7 msec to draw all images
+19:41:33 Com_TouchMemory: 0 msec
+19:41:33 Not recording a demo.
+19:41:33 Autorecord: couldn't record from the beginning, please restart your run.
+19:41:51 N4S_ reached the finish line in 31:112 (est. 31:112)
+19:41:59 q3lex reached the finish line in 40:184 (est. 40:184)
+19:42:18 q3lex disconnected
+19:42:38 delta reached the finish line in 18:080 (est. 18:074)
+19:42:40 DamnedLight.th reached the finish line in 23:512 (est. 23:512)
+19:43:02 [fps]Proky entered the game.
+19:43:04 [DR1]Source: yerp
+19:43:05 delta: gg
+19:43:09 >>/Nosf: STOP TIME!!!!!!!!
+19:43:09 >>/Nosf: STOP TIME!!!!!!!!
+19:43:09 >>/Nosf: STOP TIME!!!!!!!!
+19:43:09 >>/Nosf: STOP TIME!!!!!!!!
+19:43:09 >>/Nosf: STOP TIME!!!!!!!!
+19:43:09 >>/Nosf: STOP TIME!!!!!!!!
+19:43:10 >>/Nosf: STOP TIME!!!!!!!!
+19:43:10 >>/Nosf: STOP TIME!!!!!!!!
+19:43:10 >>/Nosf: STOP TIME!!!!!!!!
+19:43:10 >>/Nosf: STOP TIME!!!!!!!!
+19:43:10 >>/Nosf: STOP TIME!!!!!!!!
+19:43:10 >>/Nosf: STOP TIME!!!!!!!!
+19:43:10 >>/Nosf: STOP TIME!!!!!!!!
+19:43:10 >>/Nosf: STOP TIME!!!!!!!!
+19:43:10 >>/Nosf: STOP TIME!!!!!!!!
+19:43:10 >>/Nosf: STOP TIME!!!!!!!!
+19:43:10 >>/Nosf: STOP TIME!!!!!!!!
+19:43:10 Issuing Command: condump 194310
+
+19:43:10 Dumped console text to 194310.txt.

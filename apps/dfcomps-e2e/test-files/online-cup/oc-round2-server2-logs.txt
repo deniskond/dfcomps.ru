@@ -1,0 +1,546 @@
+16:59:46 HACK: using vertex lightmap approximation
+16:59:46 Initializing Shaders
+16:59:46 ----- finished R_Init -----
+16:59:46 ------ Initializing Sound ------
+16:59:46 Initializing DirectSound
+16:59:46 ----- Sound Info -----
+16:59:46     1 stereo
+16:59:46 32768 samples
+16:59:46    16 samplebits
+16:59:46     1 submission_chunk
+16:59:46 22050 speed
+16:59:46 000000002D3C0090 dma buffer
+16:59:46 No background file.
+16:59:46 ----------------------
+16:59:46 Sound initialization successful.
+16:59:46 --------------------------------
+16:59:46 Sound memory manager started
+16:59:46 Loading dll file ui.
+16:59:46 LoadLibrary 'D:\Quake 3 Ultimate\quake3\defrag\uix86_64.dll' failed
+16:59:46 Failed to load dll, looking for qvm.
+16:59:46 Loading vm file vm/ui.qvm...
+16:59:46 VM file ui compiled to 714990 bytes of code
+16:59:46 ui loaded in 2098176 bytes on the hunk
+16:59:46 110 arenas parsed
+16:59:46 2 arenas ignored to make count divisible by 4
+16:59:46 32 bots parsed
+16:59:46 Loading vm file vm/cgame.qvm...
+16:59:46 VM file cgame compiled to 1271982 bytes of code
+16:59:46 cgame loaded in 8389632 bytes on the hunk
+16:59:46 Cvar: df_promode 0
+16:59:46 Cvar: dmflags 0
+16:59:46 Cvar: sv_cheats 0
+16:59:46 Cvar: timescale 1.00
+16:59:46 Cvar: g_synchronousClients 0
+16:59:46 Cvar: pmove_fixed 1
+16:59:46 Cvar: pmove_msec 8
+16:59:46 Cvar: g_speed 320
+16:59:46 Cvar: g_gravity 800
+16:59:46 Cvar: g_knockback 1000
+16:59:46 stitched 16 LoD cracks
+16:59:46 ...loaded 3741 faces, 187 meshes, 1754 trisurfs, 0 flares
+16:59:47 CL_InitCGame:  0.74 seconds
+16:59:47 9 msec to draw all images
+16:59:47 Com_TouchMemory: 0 msec
+16:59:47 >>/Nosf entered the game.
+16:59:56 N4S_ connected (RU, Russian Federation)
+17:00:00 N4S_ entered the game.
+17:00:08 >>/Nosf joined the spectators.
+17:00:13 N4S_: o/
+17:00:22 ]hi
+17:00:22 >>/Nosf: hi
+17:00:23 >>/Nosf: =)
+17:01:00 Existence connected (RU, Russian Federation)
+17:01:03 Existence entered the game.
+17:01:03 [fps]Proky connected (RU, Russian Federation)
+17:01:06 [fps]Proky entered the game.
+17:01:13 w00dy.th connected (RU, Russian Federation)
+17:01:16 w00dy.th entered the game.
+17:01:18 w00dy.th joined the spectators.
+17:01:27 DamnedLight.th connected (FI, Finland)
+17:01:29 DamnedLight.th entered the game.
+17:01:53 delta connected (FR, France)
+17:01:54 delta entered the game.
+17:01:58 delta: ro
+17:02:18 DamnedLight.th: bon                        jour
+17:02:22 [fps]Proky: Dobroe etro, slav9ne
+17:02:22 [fps]Proky: Dobroe etro, slav9ne
+17:02:22 [fps]Proky: Dobroe etro, slav9ne
+17:02:22 N4S_: o/
+17:02:23 w00dy.th: Szia (:
+17:02:36 w00dy.th: Szia (:
+17:02:45 Existence reached the finish line in 1:10:224 (est. 1:10:227)
+17:02:47 q3lex connected (RU, Russian Federation)
+17:02:48 Raven connected (PT, Portugal)
+17:02:50 q3lex entered the game.
+17:02:51 Raven entered the game.
+17:02:51 [fps]Proky reached the finish line in 1:34:424 (est. 1:34:426)
+17:03:33 N4S_ reached the finish line in 44:472 (est. 44:480)
+17:03:42 DamnedLight.th reached the finish line in 1:18:896 (est. 1:18:902)
+17:03:52 Raven: when clicking the server link on the website it gives mes bad server address null:27960
+17:04:01 [DR1]Source connected (US, United States)
+17:04:02 [DR1]Source entered the game.
+17:04:04 [DR1]Source: ro
+17:04:06 delta: ro
+17:04:08 N4S_: o/
+17:04:17 [fps]Proky: Dobroe etro, slav9ne
+17:04:17 [fps]Proky: Dobroe etro, slav9ne
+17:04:32 [fps]Proky: source kak dela?
+17:04:39 [DR1]Source: no hablo espanol
+17:04:44 q3lex reached the finish line in 1:46:400 (est. 1:46:400)
+17:04:50 [fps]Proky: poxui
+17:04:53 delta reached the finish line in 2:09:520 (est. 2:09:522)
+17:04:56 WARNING: Failed to load sound sound/player/crash/taunt.wav!
+17:04:56 WARNING: could not find sound/player/crash/taunt.wav - using default
+17:04:56 Failed to load model file models/players/characters/clobber/lower.md3
+17:04:56 Failed to load model file models/players/characters/sonic/lower.md3
+17:04:56 Failed to load model file models/players/characters/n_duck/lower.md3
+17:04:56 WARNING: Failed to load sound sound/player/crash/taunt.wav!
+17:04:56 WARNING: could not find sound/player/crash/taunt.wav - using default
+17:05:00 ]/bind f10
+17:05:00 "f10" = "varcommand condump $time"
+17:05:37 [DR1]Source reached the finish line in 1:30:824 (est. 1:30:827)
+17:05:47 delta reached the finish line in 38:872 (est. 38:878)
+17:05:48 [DR1]Source: poxuipop
+17:05:54 [fps]Proky: eto ya
+17:06:50 [DR1]Source: where is campetition))
+17:06:53 N4S_ disconnected
+17:07:05 [fps]Proky: CUMpetition
+17:07:07 delta: LMFAO
+17:07:10 delta: bb 28 seconds
+17:07:23 [DR1]Source: wudy hi mens
+17:07:25 N4S_ connected (RU, Russian Federation)
+17:07:28 N4S_ entered the game.
+17:07:45 delta reached the finish line in 28:808 (est. 28:809)
+17:07:49 delta: vgw
+17:07:51 [DR1]Source joined the spectators.
+17:08:23 [DR1]Source: whats vq3 top
+17:08:24 [fps]Proky reached the finish line in 1:06:072 (est. 1:06:072)
+17:08:25 Existence reached the finish line in 39:584 (est. 39:592)
+17:08:30 N4S_: 25s
+17:08:30 delta: sub 26
+17:08:33 [DR1]Source: Daayum
+17:08:45 Existence renamed to cenat
+17:09:19 [DR1]Source: delta..
+17:09:20 [DR1]Source: wrong ip..
+17:09:22 [DR1]Source: q3df.ru:27975
+17:09:24 q3lex reached the finish line in 1:23:344 (est. 1:23:345)
+17:09:29 [DR1]Source: and site says it starts in a few hours
+17:09:33 [DR1]Source: dfcomps.ru
+17:09:49 delta: the hell
+17:09:59 [DR1]Source: isnt it 14:00 gmt
+17:10:01 [DR1]Source: lol
+17:10:04 Raven: it's now
+17:10:12 [DR1]Source: on this server?
+17:10:14 w00dy.th called a vote: map qportal-blue.
+17:10:15 [DR1]Source: or 5
+17:10:17 Vote passed.
+17:10:18 WARNING: server is not allowed to set df_mp_interferenceOff=3
+17:10:18 ----- FS_Startup -----
+17:10:18 ...loaded in 46 milliseconds
+17:10:18 ----------------------
+17:10:18 90224 files in 2004 pk3 files
+17:10:18 RE_Shutdown( 0 )
+17:10:18 Hunk_Clear: reset the hunk ok
+17:10:18 ----- R_Init -----
+17:10:18
+GL_VENDOR: NVIDIA Corporation
+17:10:18 GL_RENDERER: GeForce GTX 1660 SUPER/PCIe/SSE2
+17:10:18 GL_VERSION: 4.6.0 NVIDIA 461.40
+17:10:18
+17:10:18 GL_MAX_TEXTURE_SIZE: 32768
+17:10:18 GL_MAX_TEXTURE_UNITS_ARB: 8
+17:10:18
+PIXELFORMAT: color(32-bits) Z(24-bit) stencil(8-bits)
+17:10:18 MODE: -1, 1600 x 1024 windowed hz:120
+17:10:18 GAMMA: hardware w/ 0 overbright bits
+17:10:18 CPU: 64-bit AuthenticAMD
+17:10:18 rendering primitives: single glDrawElements
+17:10:18 texturemode: GL_LINEAR_MIPMAP_NEAREST
+17:10:18 picmip: 0
+17:10:18 texture bits: 0
+17:10:18 multitexture: enabled
+17:10:18 compiled vertex arrays: enabled
+17:10:18 texenv add: enabled
+17:10:18 compressed textures: disabled
+17:10:18 HACK: using vertex lightmap approximation
+17:10:18 Initializing Shaders
+17:10:18 ----- finished R_Init -----
+17:10:18 ------ Initializing Sound ------
+17:10:18 Initializing DirectSound
+17:10:18 ----- Sound Info -----
+17:10:18     1 stereo
+17:10:18 32768 samples
+17:10:18    16 samplebits
+17:10:18     1 submission_chunk
+17:10:18 22050 speed
+17:10:18 000000002D3C0090 dma buffer
+17:10:18 No background file.
+17:10:18 ----------------------
+17:10:18 Sound initialization successful.
+17:10:18 --------------------------------
+17:10:18 Sound memory manager started
+17:10:18 Loading dll file ui.
+17:10:18 LoadLibrary 'D:\Quake 3 Ultimate\quake3\defrag\uix86_64.dll' failed
+17:10:18 Failed to load dll, looking for qvm.
+17:10:18 Loading vm file vm/ui.qvm...
+17:10:18 VM file ui compiled to 714990 bytes of code
+17:10:18 ui loaded in 2098176 bytes on the hunk
+17:10:18 110 arenas parsed
+17:10:18 2 arenas ignored to make count divisible by 4
+17:10:18 32 bots parsed
+17:10:18 Loading vm file vm/cgame.qvm...
+17:10:18 VM file cgame compiled to 1271982 bytes of code
+17:10:18 cgame loaded in 8389632 bytes on the hunk
+17:10:18 Cvar: df_promode 0
+17:10:18 Cvar: dmflags 0
+17:10:18 Cvar: sv_cheats 0
+17:10:18 Cvar: timescale 1.00
+17:10:18 Cvar: g_synchronousClients 0
+17:10:18 Cvar: pmove_fixed 1
+17:10:18 Cvar: pmove_msec 8
+17:10:18 Cvar: g_speed 320
+17:10:18 Cvar: g_gravity 800
+17:10:18 Cvar: g_knockback 1000
+17:10:18 stitched 0 LoD cracks
+17:10:18 ...loaded 9552 faces, 145 meshes, 0 trisurfs, 0 flares
+17:10:18 WARNING: light grid mismatch
+17:10:18 WARNING: Failed to load sound sound/player/crash/taunt.wav!
+17:10:18 WARNING: could not find sound/player/crash/taunt.wav - using default
+17:10:18 Failed to load model file models/players/characters/clobber/lower.md3
+17:10:19 Failed to load model file models/players/characters/sonic/lower.md3
+17:10:19 Failed to load model file models/players/characters/n_duck/lower.md3
+17:10:19 CL_InitCGame:  0.47 seconds
+17:10:19 4 msec to draw all images
+17:10:19 Com_TouchMemory: 0 msec
+17:10:19 copy D:\Quake 3 Ultimate\quake3\defrag\demos\temp\current.tmp to D:\Quake 3
+Ultimate\quake3\defrag\demos\temp\current.dm_68
+17:10:19 Stopped demo recording.
+17:10:19 delta entered the game.
+17:10:20 [fps]Proky entered the game.
+17:10:24 cenat entered the game.
+17:10:24 Raven entered the game.
+17:10:25 DamnedLight.th entered the game.
+17:10:25 q3lex entered the game.
+17:10:26 N4S_ entered the game.
+17:10:28 delta: the timer on the portal is a rough timer to the cup ending id guess.
+17:10:31 Raven: there are 2 servers
+17:10:34 delta: on the portal?
+17:10:36 delta: on the site
+17:10:48 [DR1]Source: oh ok
+17:10:49 [DR1]Source entered the game.
+17:11:12 tommy connected (RU, Russian Federation)
+17:11:12 [DR1]Source: aand we're live
+17:11:14 tommy entered the game.
+17:12:58 [DR1]Source reached the finish line in 1:10:984 (est. 1:10:988)
+17:13:01 [DR1]Source: loc'd
+17:13:07 q3lex reached the finish line in 2:38:496 (est. 2:38:490)
+17:13:33 N4S_ reached the finish line in 55:872 (est. 55:872)
+17:13:33 [fps]Proky reached the finish line in 1:24:920 (est. 1:24:915)
+17:13:53 DamnedLight.th reached the finish line in 1:27:040 (est. 1:27:043)
+17:13:59 [DR1]Source reached the finish line in 43:584 (est. 43:584)
+17:14:13 tommy reached the finish line in 2:49:344 (est. 2:49:344)
+17:14:26 cenat reached the finish line in 1:57:384 (est. 1:57:385)
+17:14:39 q3lex reached the finish line in 1:12:296 (est. 1:12:296)
+17:14:49 DamnedLight.th reached the finish line in 38:120 (est. 38:120)
+17:15:01 delta reached the finish line in 34:256 (est. 34:261)
+17:15:29 DamnedLight.th reached the finish line in 36:128 (est. 36:128)
+17:16:18 tommy reached the finish line in 1:38:640 (est. 1:38:644)
+17:16:24 DamnedLight.th reached the finish line in 34:952 (est. 34:952)
+17:16:41 Raven reached the finish line in 5:47:648 (est. 5:47:647)
+17:16:56 cenat reached the finish line in 1:07:816 (est. 1:07:814)
+17:17:12 tommy reached the finish line in 48:048 (est. 48:050)
+17:18:03 [fps]Proky reached the finish line in 59:816 (est. 59:817)
+17:19:13 [fps]Proky reached the finish line in 39:752 (est. 39:755)
+17:19:31 [DR1]Source reached the finish line in 32:536 (est. 32:536)
+17:20:22 Raven reached the finish line in 56:048 (est. 56:051)
+17:20:30 q3lex timed out
+17:20:43 [DR1]Source: bbwr
+17:20:50 cenat reached the finish line in 59:744 (est. 59:749)
+17:21:48 N4S_ reached the finish line in 43:824 (est. 43:822)
+17:22:38 [fps]Proky reached the finish line in 35:472 (est. 35:476)
+17:23:01 cenat reached the finish line in 42:936 (est. 42:937)
+17:23:31 [fps]Proky reached the finish line in 34:216 (est. 34:216)
+17:24:11 DamnedLight.th reached the finish line in 33:752 (est. 33:753)
+17:25:00 [DR1]Source: lag
+17:25:05 [fps]Proky: xuyal
+17:25:06 [fps]Proky: )
+17:25:26 [DR1]Source: is that server or just me
+17:25:33 delta: you
+17:25:37 [DR1]Source: ill stop crying then
+17:25:44 Raven reached the finish line in 38:848 (est. 38:845)
+17:26:16 delta reached the finish line in 30:608 (est. 30:607)
+17:26:53 cenat reached the finish line in 2:19:040 (est. 2:19:040)
+17:27:50 tommy reached the finish line in 46:152 (est. 46:154)
+17:28:09 Raven reached the finish line in 39:112 (est. 39:114)
+17:28:46 N4S_ reached the finish line in 37:016 (est. 37:016)
+17:29:18 [fps]Proky: ket 29
+17:29:21 [fps]Proky: delta
+17:29:21 [fps]Proky: Ekarnii babai JMI!!!
+17:29:22 [fps]Proky: Ekarnii babai JMI!!!
+17:29:22 [fps]Proky: Ekarnii babai JMI!!!
+17:29:22 [fps]Proky: Ekarnii babai JMI!!!
+17:29:44 delta reached the finish line in 30:424 (est. 30:420)
+17:29:59 N4S_ reached the finish line in 35:728 (est. 35:731)
+17:32:02 [fps]Proky reached the finish line in 33:848 (est. 33:849)
+17:32:13 N4S_ reached the finish line in 35:976 (est. 35:978)
+17:33:39 Raven reached the finish line in 38:288 (est. 38:289)
+17:33:46 cenat reached the finish line in 43:880 (est. 43:880)
+17:34:19 DamnedLight.th reached the finish line in 33:536 (est. 33:538)
+17:34:50 Raven reached the finish line in 37:864 (est. 37:865)
+17:35:20 [fps]Proky reached the finish line in 33:528 (est. 33:528)
+17:35:35 tommy joined the spectators.
+17:36:08 q3lex connected (RU, Russian Federation)
+17:36:11 q3lex entered the game.
+17:37:17 >>/Nosf entered the game.
+17:37:19 DamnedLight.th: :>
+17:37:20 [DR1]Source: ,hi'
+17:37:25 q3lex reached the finish line in 1:08:992 (est. 1:08:992)
+17:37:27 [fps]Proky: Dobroe etro, slav9ne
+17:37:27 [fps]Proky: Dobroe etro, slav9ne
+17:37:56 cenat reached the finish line in 42:976 (est. 42:973)
+17:38:14 tommy entered the game.
+17:38:43 ]/bind f9
+17:38:43 "f9" = "say STOP TIME!!!!!!!!"
+17:39:14 ]/bind f10
+17:39:14 "f10" = "varcommand condump $time"
+17:39:15 ]/bind f11
+17:39:15 "f11" = "screenshotjpeg"
+17:39:35 q3lex reached the finish line in 1:49:392 (est. 1:49:391)
+17:39:36 w00dy.th: 1 min left
+17:39:37 N4S_ reached the finish line in 36:120 (est. 36:124)
+17:39:51 Raven reached the finish line in 37:080 (est. 37:081)
+17:40:17 >>/Nosf: STOP TIME!!!!!!!!
+17:40:18 >>/Nosf: STOP TIME!!!!!!!!
+17:40:18 >>/Nosf: STOP TIME!!!!!!!!
+17:40:18 >>/Nosf: STOP TIME!!!!!!!!
+17:40:18 >>/Nosf: STOP TIME!!!!!!!!
+17:40:18 >>/Nosf: STOP TIME!!!!!!!!
+17:40:18 >>/Nosf: STOP TIME!!!!!!!!
+17:40:18 >>/Nosf: STOP TIME!!!!!!!!
+17:40:18 >>/Nosf: STOP TIME!!!!!!!!
+17:40:18 >>/Nosf: STOP TIME!!!!!!!!
+17:40:18 >>/Nosf: STOP TIME!!!!!!!!
+17:40:18 Issuing Command: condump 174018
+
+17:40:18 Dumped console text to 174018.txt.
+17:40:19 Wrote screenshots/shot-20220828-174019.jpg
+17:40:22 [DR1]Source reached the finish line in 33:912 (est. 33:911)
+17:40:22 DamnedLight.th: rip
+17:40:23 N4S_: bl9 ((9(
+17:40:24 [DR1]Source: bb wr
+17:40:27 delta: bbwr
+17:40:31 delta: literally bbwr'd the last run
+17:40:32 q3lex reached the finish line in 54:120 (est. 54:124)
+17:40:35 [DR1]Source: you too?
+17:40:38 [DR1]Source: unironix
+17:40:45 delta: finally landed the mid I wanted and failed the easiest jump
+17:40:45 [DR1]Source: can i get an extra 10 mins due to unplayable lag nosf
+17:41:01 ]next
+17:41:01 >>/Nosf: next
+17:41:07 delta: ket tech god
+17:41:09 Enter connected (RU, Russian Federation)
+17:41:11 Enter entered the game.
+17:41:20 q3lex: davno ne igral
+17:41:21 w00dy.th called a vote: map tuffrun.
+17:41:22 Vote passed.
+17:41:23 WARNING: server is not allowed to set df_mp_interferenceOff=3
+17:41:23 ----- FS_Startup -----
+17:41:23 ...loaded in 42 milliseconds
+17:41:23 ----------------------
+17:41:23 90224 files in 2004 pk3 files
+17:41:23 RE_Shutdown( 0 )
+17:41:23 Hunk_Clear: reset the hunk ok
+17:41:23 ----- R_Init -----
+17:41:23
+GL_VENDOR: NVIDIA Corporation
+17:41:23 GL_RENDERER: GeForce GTX 1660 SUPER/PCIe/SSE2
+17:41:23 GL_VERSION: 4.6.0 NVIDIA 461.40
+17:41:23
+17:41:23 GL_MAX_TEXTURE_SIZE: 32768
+17:41:23 GL_MAX_TEXTURE_UNITS_ARB: 8
+17:41:23
+PIXELFORMAT: color(32-bits) Z(24-bit) stencil(8-bits)
+17:41:23 MODE: -1, 1600 x 1024 windowed hz:120
+17:41:23 GAMMA: hardware w/ 0 overbright bits
+17:41:23 CPU: 64-bit AuthenticAMD
+17:41:23 rendering primitives: single glDrawElements
+17:41:23 texturemode: GL_LINEAR_MIPMAP_NEAREST
+17:41:23 picmip: 0
+17:41:23 texture bits: 0
+17:41:23 multitexture: enabled
+17:41:23 compiled vertex arrays: enabled
+17:41:23 texenv add: enabled
+17:41:23 compressed textures: disabled
+17:41:23 HACK: using vertex lightmap approximation
+17:41:23 Initializing Shaders
+17:41:23 ----- finished R_Init -----
+17:41:23 ------ Initializing Sound ------
+17:41:23 Initializing DirectSound
+17:41:23 ----- Sound Info -----
+17:41:23     1 stereo
+17:41:23 32768 samples
+17:41:23    16 samplebits
+17:41:23     1 submission_chunk
+17:41:23 22050 speed
+17:41:23 000000002D3C0090 dma buffer
+17:41:23 No background file.
+17:41:23 ----------------------
+17:41:23 Sound initialization successful.
+17:41:23 --------------------------------
+17:41:23 Sound memory manager started
+17:41:23 Loading dll file ui.
+17:41:23 LoadLibrary 'D:\Quake 3 Ultimate\quake3\defrag\uix86_64.dll' failed
+17:41:23 Failed to load dll, looking for qvm.
+17:41:23 Loading vm file vm/ui.qvm...
+17:41:23 VM file ui compiled to 714990 bytes of code
+17:41:23 ui loaded in 2098176 bytes on the hunk
+17:41:23 110 arenas parsed
+17:41:23 2 arenas ignored to make count divisible by 4
+17:41:23 32 bots parsed
+17:41:23 Loading vm file vm/cgame.qvm...
+17:41:23 VM file cgame compiled to 1271982 bytes of code
+17:41:23 cgame loaded in 8389632 bytes on the hunk
+17:41:23 Cvar: df_promode 0
+17:41:23 Cvar: dmflags 0
+17:41:23 Cvar: sv_cheats 0
+17:41:23 Cvar: timescale 1.00
+17:41:23 Cvar: g_synchronousClients 0
+17:41:23 Cvar: pmove_fixed 1
+17:41:23 Cvar: pmove_msec 8
+17:41:23 Cvar: g_speed 320
+17:41:23 Cvar: g_gravity 800
+17:41:23 Cvar: g_knockback 1000
+17:41:23 stitched 0 LoD cracks
+17:41:23 ...loaded 2783 faces, 20 meshes, 1 trisurfs, 0 flares
+17:41:23 WARNING: Failed to load sound sound/player/crash/taunt.wav!
+17:41:23 WARNING: could not find sound/player/crash/taunt.wav - using default
+17:41:23 Failed to load model file models/players/characters/clobber/lower.md3
+17:41:23 Failed to load model file models/players/characters/sonic/lower.md3
+17:41:23 Failed to load model file models/players/characters/n_duck/lower.md3
+17:41:24 CL_InitCGame:  0.50 seconds
+17:41:24 5 msec to draw all images
+17:41:24 Com_TouchMemory: 0 msec
+17:41:24 copy D:\Quake 3 Ultimate\quake3\defrag\demos\temp\current.tmp to D:\Quake 3
+Ultimate\quake3\defrag\demos\temp\current.dm_68
+17:41:24 Stopped demo recording.
+17:41:24 [DR1]Source entered the game.
+17:41:24 delta entered the game.
+17:41:24 >>/Nosf entered the game.
+17:41:24 cenat entered the game.
+17:41:24 Enter entered the game.
+17:41:25 [fps]Proky entered the game.
+17:41:25 N4S_ entered the game.
+17:41:26 [DR1]Source: wheres ket playing..
+17:41:26 Raven entered the game.
+17:41:26 tommy entered the game.
+17:41:27 DamnedLight.th entered the game.
+17:41:27 q3lex entered the game.
+17:41:44 delta: how do I disable blood particles xd
+17:41:46 w00dy.th: :)
+17:41:50 [DR1]Source: com_blood 0
+17:41:52 delta: ty
+17:42:21 [DR1]Source: privet enter
+17:42:54 delta reached the finish line in 1:19:888 (est. 1:19:887)
+17:43:44 ]n4s, a ti regalsya?
+17:43:44 >>/Nosf: n4s, a ti regalsya?
+17:43:48 N4S_: da
+17:43:52 w00dy.th: nachos
+17:43:57 N4S_: ya ne na tom serve?
+17:44:03 w00dy.th: da vse ok
+17:44:05 w00dy.th: on niki smotrit
+17:44:06 w00dy.th: dla rezos
+17:44:07 ]aa, ponyal
+17:44:07 >>/Nosf: aa, ponyal
+17:44:09 N4S_: 8-)
+17:44:11 w00dy.th: :)
+17:44:11 N4S_: ladno
+17:44:12 DamnedLight.th reached the finish line in 1:16:992 (est. 1:16:992)
+17:44:13 Enter reached the finish line in 1:51:864 (est. 1:51:864)
+17:44:15 DamnedLight.th: xdd
+17:44:24 delta reached the finish line in 38:984 (est. 38:979)
+17:44:27 delta: thats a cool map
+17:44:35 w00dy.th: :)
+17:44:48 Enter reached the finish line in 31:152 (est. 31:154)
+17:44:55 Raven reached the finish line in 2:53:536 (est. 2:53:538)
+17:46:04 delta reached the finish line in 18:808 (est. 18:803)
+17:46:08 [DR1]Source: gg
+17:46:41 tommy reached the finish line in 2:01:208 (est. 2:01:212)
+17:47:00 [fps]Proky: obs: off
+17:47:04 delta reached the finish line in 17:064 (est. 17:064)
+17:47:37 Enter reached the finish line in 1:15:704 (est. 1:15:703)
+17:47:40 [fps]Proky reached the finish line in 1:02:792 (est. 1:02:793)
+17:48:01 tommy reached the finish line in 39:280 (est. 39:277)
+17:48:30 Raven reached the finish line in 25:912 (est. 25:915)
+17:48:53 delta reached the finish line in 16:328 (est. 16:328)
+17:49:24 [DR1]Source: xd
+17:49:27 DamnedLight.th reached the finish line in 57:272 (est. 57:269)
+17:49:50 [fps]Proky reached the finish line in 57:192 (est. 57:194)
+17:50:30 Enter reached the finish line in 38:976 (est. 38:975)
+17:50:35 cenat reached the finish line in 1:14:216 (est. 1:14:216)
+17:51:31 delta reached the finish line in 1:14:480 (est. 1:14:480)
+17:52:13 DamnedLight.th reached the finish line in 39:816 (est. 39:816)
+17:52:22 delta reached the finish line in 15:984 (est. 15:984)
+17:52:57 q3lex reached the finish line in 8:11:056 (est. 8:11:050)
+17:52:59 DamnedLight.th: :>
+17:52:59 DamnedLight.th: :>
+17:53:00 DamnedLight.th: ckopocTHou napeHb !!!
+17:53:01 w00dy.th: :)
+17:53:03 q3lex: EEEE
+17:53:25 [DR1]Source reached the finish line in 24:768 (est. 24:773)
+17:53:25 cenat reached the finish line in 2:36:624 (est. 2:36:624)
+17:53:28 DamnedLight.th: ckopocTHou napeHb !!!
+17:53:34 [DR1]Source: thats you
+17:54:00 [fps]Proky reached the finish line in 16:320 (est. 16:319)
+17:54:15 DamnedLight.th reached the finish line in 20:888 (est. 20:892)
+17:54:26 DamnedLight.th: razryvnaya karta kone4no
+17:54:33 DamnedLight.th: eto neprosto
+17:56:12 cenat reached the finish line in 51:320 (est. 51:321)
+17:56:44 Enter reached the finish line in 20:912 (est. 20:909)
+17:57:28 delta reached the finish line in 16:152 (est. 16:153)
+17:57:54 Enter reached the finish line in 16:944 (est. 16:949)
+17:58:01 cenat reached the finish line in 44:592 (est. 44:597)
+17:58:34 [DR1]Source reached the finish line in 48:376 (est. 48:373)
+18:00:17 delta reached the finish line in 15:872 (est. 15:872)
+18:01:26 w00dy.th: 10 min left
+18:01:41 Enter reached the finish line in 16:408 (est. 16:405)
+18:02:15 delta reached the finish line in 15:720 (est. 15:725)
+18:02:15 tommy reached the finish line in 31:640 (est. 31:635)
+18:03:41 delta reached the finish line in 15:560 (est. 15:556)
+18:03:45 DamnedLight.th reached the finish line in 1:10:208 (est. 1:10:214)
+18:04:38 cenat reached the finish line in 42:544 (est. 42:547)
+18:04:42 tommy reached the finish line in 22:024 (est. 22:024)
+18:05:40 Enter reached the finish line in 16:552 (est. 16:552)
+18:05:53 delta reached the finish line in 15:480 (est. 15:474)
+18:07:25 q3lex reached the finish line in 33:816 (est. 33:820)
+18:07:29 DamnedLight.th: :>
+18:07:30 DamnedLight.th: ckopocTHou napeHb !!!
+18:07:32 q3lex: EEEE
+18:07:41 [fps]Proky: nasos bomj
+18:08:09 N4S_ reached the finish line in 30:072 (est. 30:069)
+18:08:15 delta reached the finish line in 15:464 (est. 15:461)
+18:09:22 Raven reached the finish line in 20:632 (est. 20:632)
+18:09:23 q3lex joined the spectators.
+18:10:02 q3lex entered the game.
+18:10:07 N4S_ reached the finish line in 20:392 (est. 20:394)
+18:10:07 DamnedLight.th reached the finish line in 49:440 (est. 49:437)
+18:10:39 w00dy.th: 1 min left
+18:11:07 cenat reached the finish line in 25:640 (est. 25:639)
+18:11:08 Enter reached the finish line in 15:928 (est. 15:930)
+18:11:16 delta reached the finish line in 15:496 (est. 15:499)
+18:11:24 >>/Nosf: STOP TIME!!!!!!!!
+18:11:25 >>/Nosf: STOP TIME!!!!!!!!
+18:11:25 >>/Nosf: STOP TIME!!!!!!!!
+18:11:25 >>/Nosf: STOP TIME!!!!!!!!
+18:11:25 >>/Nosf: STOP TIME!!!!!!!!
+18:11:25 >>/Nosf: STOP TIME!!!!!!!!
+18:11:25 >>/Nosf: STOP TIME!!!!!!!!
+18:11:25 >>/Nosf: STOP TIME!!!!!!!!
+18:11:25 >>/Nosf: STOP TIME!!!!!!!!
+18:11:25 >>/Nosf: STOP TIME!!!!!!!!
+18:11:25 >>/Nosf: STOP TIME!!!!!!!!
+18:11:25 >>/Nosf: STOP TIME!!!!!!!!
+18:11:25 >>/Nosf: STOP TIME!!!!!!!!
+18:11:26 Issuing Command: condump 181126
+
+18:11:26 Dumped console text to 181126.txt.

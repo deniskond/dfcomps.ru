@@ -25,6 +25,8 @@ import {
   NewsTypes,
   OnlineCupActionDto,
   OnlineCupServersPlayersInterface,
+  ParseServerLogsDto,
+  ParsedOnlineCupRoundInterface,
   ProcessValidationDto,
   SetPlayerServerDto,
   UpdateOfflineCupDto,
@@ -195,5 +197,16 @@ export class AdminCupsController {
     @Body() { userId, onlineCupId, serverNumber }: SetPlayerServerDto,
   ): Promise<void> {
     return this.adminCupsService.setPlayerServer(accessToken, userId, onlineCupId, serverNumber);
+  }
+
+  @Post('parse-server-logs')
+  @UseInterceptors(FileInterceptor('serverLogs'))
+  parseServerLogs(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @UploadedFile(new ParseFilePipe())
+    serverLogs: MulterFileInterface,
+    @Body() { cupId }: ParseServerLogsDto,
+  ): Promise<ParsedOnlineCupRoundInterface> {
+    return this.adminCupsService.parseServerLogs(accessToken, serverLogs, cupId);
   }
 }

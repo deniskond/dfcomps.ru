@@ -18,3 +18,5 @@ export { ValidationResultInterface } from './validation-result.interface';
 export { WorldspawnMapInfoInterface } from './worldspawn-map-info.interface';
 export { OnlineCupServersPlayersInterface } from './online-cup-servers-players.interface';
 export { SetPlayerServerDto } from './set-player-server.dto';
+export { ParsedOnlineCupRoundInterface } from './parsed-online-cup-round.interface';
+export { ParseServerLogsDto } from './parse-server-logs.dto';

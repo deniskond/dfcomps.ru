@@ -19,6 +19,7 @@ import {
   NewsTypes,
   OnlineCupActionDto,
   OnlineCupServersPlayersInterface,
+  ParsedOnlineCupRoundInterface,
   Physics,
   ProcessValidationDto,
   ResultsTableInterface,
@@ -56,6 +57,7 @@ import { NewsComment } from 'apps/backend/src/shared/entities/news-comment.entit
 import { CupResult } from 'apps/backend/src/shared/entities/cup-result.entity';
 import { MulterFileInterface } from 'apps/backend/src/shared/interfaces/multer.interface';
 import { Unpacked } from '@dfcomps/helpers';
+import { distance, closest } from 'fastest-levenshtein';
 
 @Injectable()
 export class AdminCupsService {
@@ -933,6 +935,105 @@ export class AdminCupsService {
       .where({ user: { id: userId } })
       .andWhere({ cup: { id: onlineCupId } })
       .execute();
+  }
+
+  public async parseServerLogs(
+    accessToken: string | undefined,
+    serverLogs: MulterFileInterface,
+    cupId: number,
+  ): Promise<ParsedOnlineCupRoundInterface> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+      throw new UnauthorizedException('Unauthorized to parse server logs without CUP_ORGANIZER role');
+    }
+
+    // R_Init position is used to determine map change on server
+    const stringLogFile: string[] = serverLogs.buffer.toString('utf8').split('----- R_Init -----');
+
+    const logLines: string[] = stringLogFile[stringLogFile.length - 1]
+      .split('\r\n')
+      // fast filtering non-time messages
+      .filter((line: string) => line.includes('reached the finish line in'))
+      // filtering console abuse with text messages with times from players
+      .filter((line: string) => !line.match(/\d\d\:\d\d\:\d\d.*\:\s.*reached the finish in/));
+
+    const parsedTimes: Record<string, number> = {};
+
+    logLines.forEach((line: string) => {
+      const matchResult: RegExpMatchArray | null = line.match(
+        /\d\d\:\d\d\:\d\d\s(.*)\sreached the finish line in (.*) \(.*/,
+      );
+
+      if (!matchResult || !matchResult[0] || !matchResult[1] || !matchResult[2]) {
+        return;
+      }
+
+      const serverNick: string = matchResult[1];
+      const stringTimeSplit: string[] = matchResult[2].split(':');
+      let playerTime: number;
+
+      if (stringTimeSplit.length === 3) {
+        playerTime = Number(stringTimeSplit[0]) * 60 + Number(stringTimeSplit[1]) + Number(stringTimeSplit[2]) / 1000;
+      } else {
+        playerTime = Number(stringTimeSplit[0]) + Number(stringTimeSplit[1]) / 1000;
+      }
+
+      if (!parsedTimes[serverNick] || parsedTimes[serverNick] > playerTime) {
+        parsedTimes[serverNick] = playerTime;
+      }
+    });
+
+    const parsedTimeArray: { serverNick: string; time: number }[] = Object.keys(parsedTimes)
+      .map((serverNick: string) => ({
+        serverNick,
+        time: parsedTimes[serverNick],
+      }))
+      .sort((entryA, entryB) => entryA.time - entryB.time);
+
+    const cupPlayersInfo: { userId: number; nick1: string; nick2: string }[] = (
+      await this.cupsResultsRepository
+        .createQueryBuilder('cups_results')
+        .leftJoinAndSelect('cups_results.user', 'users')
+        .where({ cup: { id: cupId } })
+        .getMany()
+    ).map((cupResult: CupResult) => ({
+      userId: cupResult.user.id,
+      nick1: cupResult.user.displayed_nick,
+      nick2: cupResult.user.login,
+    }));
+
+    const allPlayersNicknames: string[] = cupPlayersInfo.reduce(
+      (acc: string[], elem: { userId: number; nick1: string; nick2: string }) => {
+        return [...acc, elem.nick1, elem.nick2];
+      },
+      [],
+    );
+
+    const parsedOnlineCupRound: ParsedOnlineCupRoundInterface = {
+      roundResults: parsedTimeArray.map(({ serverNick, time }: { serverNick: string; time: number }) => {
+        const closestNick: string = closest(serverNick, allPlayersNicknames);
+        const levenshteinDistance: number = distance(serverNick, closestNick);
+        const userId: number = cupPlayersInfo.find(
+          ({ nick1, nick2 }: { userId: number; nick1: string; nick2: string }) =>
+            nick1 === closestNick || nick2 === closestNick,
+        )!.userId;
+
+        return {
+          serverNick,
+          suggestedPlayer:
+            levenshteinDistance < 5
+              ? {
+                  userId,
+                  nick: closestNick,
+                }
+              : null,
+          time,
+        };
+      }),
+    };
+
+    return parsedOnlineCupRound;
   }
 
   private async getPhysicsDemos(cupId: number, physics: Physics): Promise<AdminPlayerDemosValidationInterface[]> {

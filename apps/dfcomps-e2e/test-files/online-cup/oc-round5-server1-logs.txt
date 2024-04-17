@@ -1,0 +1,546 @@
+18:12:11 Loading vm file vm/ui.qvm...
+18:12:11 VM file ui compiled to 714990 bytes of code
+18:12:11 ui loaded in 2098176 bytes on the hunk
+18:12:11 110 arenas parsed
+18:12:11 2 arenas ignored to make count divisible by 4
+18:12:11 32 bots parsed
+18:12:11 Loading vm file vm/cgame.qvm...
+18:12:11 VM file cgame compiled to 1271982 bytes of code
+18:12:11 cgame loaded in 8389632 bytes on the hunk
+18:12:11 Cvar: df_promode 0
+18:12:11 Cvar: dmflags 0
+18:12:11 Cvar: sv_cheats 0
+18:12:11 Cvar: timescale 1.00
+18:12:11 Cvar: g_synchronousClients 0
+18:12:11 Cvar: pmove_fixed 1
+18:12:11 Cvar: pmove_msec 8
+18:12:11 Cvar: g_speed 320
+18:12:11 Cvar: g_gravity 800
+18:12:11 Cvar: g_knockback 1000
+18:12:11 stitched 0 LoD cracks
+18:12:11 ...loaded 879 faces, 0 meshes, 0 trisurfs, 0 flares
+18:12:11 WARNING: Failed to load sound sound/player/crash/taunt.wav!
+18:12:11 WARNING: could not find sound/player/crash/taunt.wav - using default
+18:12:11 Failed to load model file models/players/characters/supermario/lower.md3
+18:12:11 Leg skin load failure: models/players/characters/mynx/lower_pm.skin
+18:12:11 Torso skin load failure: models/players/characters/mynx/upper_pm.skin
+18:12:11 Head skin load failure: models/players/heads/mynx/head_pm.skin
+18:12:11 Failed to load skin file: mynx : pm, mynx : pm
+18:12:11 Failed to load model file models/players/characters/chaos-marine/lower.md3
+18:12:11 CL_InitCGame:  0.44 seconds
+18:12:11 4 msec to draw all images
+18:12:11 Com_TouchMemory: 0 msec
+18:12:11 copy D:\Quake 3 Ultimate\quake3\defrag\demos\temp\current.tmp to D:\Quake 3
+Ultimate\quake3\defrag\demos\temp\current.dm_68
+18:12:12 Stopped demo recording.
+18:12:12 KeT disconnected
+18:12:12 >>/Nosf entered the game.
+18:12:12 'Roman, entered the game.
+18:12:12 <acc/hyper entered the game.
+18:12:12 AW.Loontick entered the game.
+18:12:13 96+ slow entered the game.
+18:12:14 WP entered the game.
+18:12:14 SiTiH.th entered the game.
+18:12:14 Puzifer entered the game.
+18:12:17 'Roman,: lol!!!
+18:12:18 ]gl
+18:12:18 >>/Nosf: gl
+18:12:19 <acc/hyper: lol
+18:12:20 ]:D
+18:12:20 >>/Nosf: :D
+18:12:20 Puzifer: kavo
+18:12:23 96+ slow: when new karta
+18:12:36 'Roman,: ebat
+18:12:54 'Roman,: pora livat
+18:12:55 <acc/hyper: govoril ne bydet torture
+18:14:43 <acc/hyper reached the finish line in 55:144 (est. 55:141)
+18:14:44 KeT connected (HU, Hungary)
+18:14:46 KeT entered the game.
+18:15:56 <acc/hyper reached the finish line in 35:024 (est. 35:025)
+18:16:01 <acc/hyper: (:
+18:16:51 'Roman, reached the finish line in 1:27:952 (est. 1:27:949)
+18:16:57 96+ slow: i was promised no torture maps
+18:16:57 'Roman,: ny eto trash
+18:17:51 96+ slow reached the finish line in 44:640 (est. 44:636)
+18:19:13 <acc/hyper reached the finish line in 27:432 (est. 27:429)
+18:19:16 <acc/hyper: (:
+18:19:19 'Roman, reached the finish line in 1:18:112 (est. 1:18:112)
+18:19:47 AW.Loontick reached the finish line in 3:15:152 (est. 3:15:151)
+18:19:55 96+ slow reached the finish line in 42:120 (est. 42:122)
+18:20:07 WP reached the finish line in 1:24:240 (est. 1:24:240)
+18:21:20 AW.Loontick reached the finish line in 54:384 (est. 54:384)
+18:21:28 'Roman, reached the finish line in 41:880 (est. 41:876)
+18:24:00 WP reached the finish line in 51:640 (est. 51:636)
+18:24:46 <acc/hyper: bla nexa4y
+18:24:48 <acc/hyper joined the spectators.
+18:24:50 w00dy.th: :)
+18:25:03 SiTiH.th reached the finish line in 2:09:416 (est. 2:09:416)
+18:25:28 96+ slow reached the finish line in 28:248 (est. 28:247)
+18:25:56 AW.Loontick reached the finish line in 40:648 (est. 40:652)
+18:26:02 <acc/hyper: tyt srez kone4no
+18:26:04 <acc/hyper: pzdc
+18:26:19 96+ slow reached the finish line in 25:488 (est. 25:488)
+18:26:26 <acc/hyper entered the game.
+18:26:55 'Roman, reached the finish line in 51:632 (est. 51:632)
+18:27:00 KeT reached the finish line in 1:29:328 (est. 1:29:330)
+18:27:53 'Roman, reached the finish line in 23:200 (est. 23:205)
+18:28:59 SiTiH.th reached the finish line in 1:17:160 (est. 1:17:162)
+18:29:04 WP reached the finish line in 1:13:256 (est. 1:13:257)
+18:29:56 KeT reached the finish line in 22:824 (est. 22:829)
+18:29:58 KeT: Hooopaaaa!
+18:30:03 <acc/hyper: (:
+18:30:03 <acc/hyper: (:
+18:30:09 Puzifer reached the finish line in 39:592 (est. 39:592)
+18:30:11 'Roman,: |)
+18:30:43 AW.Loontick reached the finish line in 32:904 (est. 32:905)
+18:31:01 'Roman, reached the finish line in 23:200 (est. 23:205)
+18:31:02 'Roman,: |D
+18:31:06 'Roman,: replay
+18:31:07 'Roman,: sry
+18:31:12 96+ slow: ban
+18:31:25 w00dy.th: :)
+18:31:53 'Roman, reached the finish line in 21:816 (est. 21:819)
+18:31:56 <acc/hyper: (:
+18:31:56 'Roman,: |)
+18:32:22 <acc/hyper: napryagaet 4erniy fon
+18:32:58 'Roman, reached the finish line in 19:448 (est. 19:448)
+18:33:01 WP reached the finish line in 26:472 (est. 26:467)
+18:33:02 <acc/hyper: (:
+18:33:02 <acc/hyper: (:
+18:33:02 <acc/hyper: (:
+18:33:02 'Roman,: |)
+18:33:08 'Roman,: fuck this map
+18:34:23 SiTiH.th reached the finish line in 40:912 (est. 40:911)
+18:34:27 <acc/hyper joined the spectators.
+18:34:43 [DR1]Source connected (US, United States)
+18:34:44 [DR1]Source entered the game.
+18:34:46 [DR1]Source: ro
+18:34:48 96+ slow: yeyo
+18:34:57 [DR1]Source joined the spectators.
+18:35:03 'Roman, joined the spectators.
+18:35:03 Puzifer reached the finish line in 27:784 (est. 27:784)
+18:36:18 <acc/hyper: ebat treset
+18:36:22 <acc/hyper: (:
+18:36:43 KeT reached the finish line in 21:072 (est. 21:071)
+18:36:44 w00dy.th: 5 min left
+18:36:52 96+ slow reached the finish line in 24:784 (est. 24:778)
+18:37:44 Puzifer reached the finish line in 24:888 (est. 24:888)
+18:37:59 SiTiH.th reached the finish line in 43:944 (est. 43:944)
+18:38:03 <acc/hyper entered the game.
+18:38:06 Puzifer: nenen
+18:38:09 96+ slow reached the finish line in 22:592 (est. 22:595)
+18:39:05 [DR1]Source: u2 al?
+18:39:10 [DR1]Source: easiest skip of my life
+18:39:16 <acc/hyper: (:
+18:39:47 [DR1]Source: im trash at tech but especially vq3 tech
+18:39:55 [DR1]Source: snapwhore cup when
+18:40:01 w00dy.th: soon
+18:40:04 [DR1]Source: :D
+18:40:24 <acc/hyper: lol
+18:40:39 <acc/hyper: anh win
+18:40:41 'Roman,: dada snapwhore
+18:40:42 'Roman,: plz
+18:40:47 [DR1]Source: proky 22.7
+18:40:49 [DR1]Source: 2nd place
+18:41:28 <acc/hyper: vpizdy
+18:41:30 <acc/hyper: map
+18:41:30 <acc/hyper joined the spectators.
+18:41:52 'Roman, entered the game.
+18:42:06 [DR1]Source: :)
+18:42:10 >>/Nosf: STOP TIME!!!!!!!!
+18:42:11 >>/Nosf: STOP TIME!!!!!!!!
+18:42:11 >>/Nosf: STOP TIME!!!!!!!!
+18:42:11 >>/Nosf: STOP TIME!!!!!!!!
+18:42:11 >>/Nosf: STOP TIME!!!!!!!!
+18:42:11 >>/Nosf: STOP TIME!!!!!!!!
+18:42:11 >>/Nosf: STOP TIME!!!!!!!!
+18:42:11 >>/Nosf: STOP TIME!!!!!!!!
+18:42:11 >>/Nosf: STOP TIME!!!!!!!!
+18:42:11 >>/Nosf: STOP TIME!!!!!!!!
+18:42:11 >>/Nosf: STOP TIME!!!!!!!!
+18:42:11 Issuing Command: condump 184211
+
+18:42:11 Dumped console text to 184211.txt.
+18:42:12 Wrote screenshots/shot-20220828-184212.jpg
+18:42:23 96+ slow reached the finish line in 21:736 (est. 21:737)
+18:42:24 ]next
+18:42:24 >>/Nosf: next
+18:42:33 w00dy.th called a vote: map hangtime1-2.
+18:42:36 'Roman,: lol!!!
+18:42:37 Vote passed.
+18:42:37 WARNING: server is not allowed to set df_mp_interferenceOff=3
+18:42:37 ----- FS_Startup -----
+18:42:37 ...loaded in 42 milliseconds
+18:42:37 ----------------------
+18:42:37 90224 files in 2004 pk3 files
+18:42:37 RE_Shutdown( 0 )
+18:42:37 Hunk_Clear: reset the hunk ok
+18:42:37 ----- R_Init -----
+18:42:37
+GL_VENDOR: NVIDIA Corporation
+18:42:37 GL_RENDERER: GeForce GTX 1660 SUPER/PCIe/SSE2
+18:42:37 GL_VERSION: 4.6.0 NVIDIA 461.40
+18:42:37
+18:42:37 GL_MAX_TEXTURE_SIZE: 32768
+18:42:37 GL_MAX_TEXTURE_UNITS_ARB: 8
+18:42:37
+PIXELFORMAT: color(32-bits) Z(24-bit) stencil(8-bits)
+18:42:37 MODE: -1, 1600 x 1024 windowed hz:120
+18:42:37 GAMMA: hardware w/ 0 overbright bits
+18:42:37 CPU: 64-bit AuthenticAMD
+18:42:37 rendering primitives: single glDrawElements
+18:42:37 texturemode: GL_LINEAR_MIPMAP_NEAREST
+18:42:37 picmip: 0
+18:42:37 texture bits: 0
+18:42:37 multitexture: enabled
+18:42:37 compiled vertex arrays: enabled
+18:42:37 texenv add: enabled
+18:42:37 compressed textures: disabled
+18:42:37 HACK: using vertex lightmap approximation
+18:42:37 Initializing Shaders
+18:42:37 ----- finished R_Init -----
+18:42:37 ------ Initializing Sound ------
+18:42:37 Initializing DirectSound
+18:42:37 ----- Sound Info -----
+18:42:37     1 stereo
+18:42:37 32768 samples
+18:42:37    16 samplebits
+18:42:37     1 submission_chunk
+18:42:37 22050 speed
+18:42:37 000000002D790090 dma buffer
+18:42:37 No background file.
+18:42:37 ----------------------
+18:42:37 Sound initialization successful.
+18:42:37 --------------------------------
+18:42:37 Sound memory manager started
+18:42:37 Loading dll file ui.
+18:42:37 LoadLibrary 'D:\Quake 3 Ultimate\quake3\defrag\uix86_64.dll' failed
+18:42:37 Failed to load dll, looking for qvm.
+18:42:37 Loading vm file vm/ui.qvm...
+18:42:37 VM file ui compiled to 714990 bytes of code
+18:42:37 ui loaded in 2098176 bytes on the hunk
+18:42:37 110 arenas parsed
+18:42:37 2 arenas ignored to make count divisible by 4
+18:42:37 32 bots parsed
+18:42:37 Loading vm file vm/cgame.qvm...
+18:42:37 VM file cgame compiled to 1271982 bytes of code
+18:42:37 cgame loaded in 8389632 bytes on the hunk
+18:42:37 Cvar: df_promode 0
+18:42:37 Cvar: dmflags 0
+18:42:37 Cvar: sv_cheats 0
+18:42:37 Cvar: timescale 1.00
+18:42:37 Cvar: g_synchronousClients 0
+18:42:37 Cvar: pmove_fixed 1
+18:42:37 Cvar: pmove_msec 8
+18:42:37 Cvar: g_speed 320
+18:42:37 Cvar: g_gravity 800
+18:42:37 Cvar: g_knockback 1000
+18:42:38 stitched 0 LoD cracks
+18:42:38 ...loaded 1927 faces, 0 meshes, 0 trisurfs, 0 flares
+18:42:38 WARNING: Failed to load sound sound/player/crash/taunt.wav!
+18:42:38 WARNING: could not find sound/player/crash/taunt.wav - using default
+18:42:38 Failed to load model file models/players/characters/supermario/lower.md3
+18:42:38 Leg skin load failure: models/players/characters/mynx/lower_pm.skin
+18:42:38 Torso skin load failure: models/players/characters/mynx/upper_pm.skin
+18:42:38 Head skin load failure: models/players/heads/mynx/head_pm.skin
+18:42:38 Failed to load skin file: mynx : pm, mynx : pm
+18:42:38 Failed to load model file models/players/characters/chaos-marine/lower.md3
+18:42:38 CL_InitCGame:  0.77 seconds
+18:42:38 13 msec to draw all images
+18:42:38 Com_TouchMemory: 0 msec
+18:42:38 copy D:\Quake 3 Ultimate\quake3\defrag\demos\temp\current.tmp to D:\Quake 3
+Ultimate\quake3\defrag\demos\temp\current.dm_68
+18:42:38 Stopped demo recording.
+18:42:39 KeT disconnected
+18:42:39 >>/Nosf entered the game.
+18:42:39 AW.Loontick entered the game.
+18:42:39 'Roman, entered the game.
+18:42:40 96+ slow entered the game.
+18:42:40 SiTiH.th entered the game.
+18:42:43 96+ slow: PB: unknown
+18:42:45 Puzifer entered the game.
+18:42:48 Puzifer: ebana rot
+18:42:49 WP entered the game.
+18:43:29 [DR1]Source entered the game.
+18:43:46 'Roman, reached the finish line in 1:04:872 (est. 1:04:872)
+18:44:33 AW.Loontick reached the finish line in 1:39:576 (est. 1:39:576)
+18:44:53 'Roman, reached the finish line in 36:664 (est. 36:664)
+18:44:54 'Roman,: da
+18:45:15 KeT connected (HU, Hungary)
+18:45:16 WP reached the finish line in 2:25:080 (est. 2:25:080)
+18:45:17 KeT entered the game.
+18:45:29 KeT: Hooopaaaaa!
+18:45:31 <acc/hyper: oy blyyyad
+18:45:31 SiTiH.th reached the finish line in 2:06:072 (est. 2:06:072)
+18:45:33 <acc/hyper entered the game.
+18:45:49 'Roman, reached the finish line in 33:272 (est. 33:272)
+18:45:52 96+ slow: how many rounds
+18:46:01 AW.Loontick reached the finish line in 1:07:848 (est. 1:07:848)
+18:46:03 SiTiH.th: 5
+18:47:25 AW.Loontick reached the finish line in 1:00:920 (est. 1:00:920)
+18:47:31 WP reached the finish line in 2:01:696 (est. 2:01:696)
+18:47:47 SiTiH.th reached the finish line in 1:30:560 (est. 1:30:560)
+18:48:02 96+ slow reached the finish line in 49:720 (est. 49:720)
+18:48:36 AW.Loontick reached the finish line in 44:312 (est. 44:312)
+18:48:42 Puzifer reached the finish line in 1:54:424 (est. 1:54:424)
+18:49:00 KeT reached the finish line in 53:904 (est. 53:904)
+18:49:21 <acc/hyper reached the finish line in 1:47:712 (est. 1:47:712)
+18:50:10 96+ slow reached the finish line in 36:216 (est. 36:216)
+18:50:17 KeT reached the finish line in 42:248 (est. 42:248)
+18:50:49 'Roman, reached the finish line in 29:176 (est. 29:176)
+18:50:57 KeT reached the finish line in 29:384 (est. 29:384)
+18:50:57 KeT: Hooopaaaaa!
+18:50:57 AW.Loontick reached the finish line in 33:136 (est. 33:136)
+18:51:55 <acc/hyper reached the finish line in 1:04:624 (est. 1:04:624)
+18:52:08 SiTiH.th reached the finish line in 1:17:360 (est. 1:17:360)
+18:52:14 96+ slow reached the finish line in 34:184 (est. 34:184)
+18:53:33 WP reached the finish line in 1:31:560 (est. 1:31:560)
+18:53:42 'Roman, reached the finish line in 28:808 (est. 28:808)
+18:53:55 <acc/hyper reached the finish line in 34:680 (est. 34:680)
+18:54:23 KeT reached the finish line in 45:360 (est. 45:360)
+18:54:24 Puzifer reached the finish line in 1:01:352 (est. 1:01:352)
+18:54:29 'Roman, reached the finish line in 28:608 (est. 28:608)
+18:55:10 WP reached the finish line in 58:984 (est. 58:984)
+18:55:13 96+ slow reached the finish line in 34:928 (est. 34:928)
+18:56:02 KeT reached the finish line in 34:184 (est. 34:184)
+18:58:16 <acc/hyper reached the finish line in 37:248 (est. 37:248)
+18:58:49 'Roman, reached the finish line in 28:752 (est. 28:752)
+18:59:05 SiTiH.th reached the finish line in 1:14:200 (est. 1:14:200)
+18:59:19 96+ slow reached the finish line in 39:376 (est. 39:376)
+18:59:55 WP reached the finish line in 51:888 (est. 51:888)
+19:00:15 Puzifer disconnected
+19:01:00 WP reached the finish line in 55:960 (est. 55:960)
+19:01:40 w00dy.th: 11 min left
+19:01:51 KeT: <---- Waiting 4 item!
+19:01:58 w00dy.th: :)
+19:02:12 96+ slow reached the finish line in 33:048 (est. 33:048)
+19:02:59 KeT reached the finish line in 29:312 (est. 29:312)
+19:03:30 SiTiH.th reached the finish line in 44:776 (est. 44:776)
+19:03:35 96+ slow reached the finish line in 32:520 (est. 32:520)
+19:03:57 AW.Loontick reached the finish line in 35:328 (est. 35:328)
+19:04:19 w00dy.th: :)
+19:04:19 w00dy.th: Get WR or DIE trying SiTiH.th
+19:04:27 SiTiH.th: XD
+19:04:45 WP reached the finish line in 39:992 (est. 39:992)
+19:04:49 96+ slow reached the finish line in 31:968 (est. 31:968)
+19:04:58 KeT reached the finish line in 29:088 (est. 29:088)
+19:05:00 KeT: Hooopaaaaa!
+19:05:35 <acc/hyper reached the finish line in 58:344 (est. 58:344)
+19:05:54 WP reached the finish line in 36:392 (est. 36:392)
+19:06:25 96+ slow renamed to 96+ dinner
+19:06:27 96+ dinner joined the spectators.
+19:07:26 'Roman,: v tp ne mogy
+19:07:29 'Roman,: to4nee zaletal
+19:07:31 'Roman,: no dalwe fail
+19:07:56 <acc/hyper: boje start yebiwe
+19:08:15 <acc/hyper joined the spectators.
+19:08:15 <acc/hyper entered the game.
+19:08:15 <acc/hyper joined the spectators.
+19:08:15 <acc/hyper entered the game.
+19:08:15 <acc/hyper joined the spectators.
+19:08:16 <acc/hyper entered the game.
+19:08:16 <acc/hyper joined the spectators.
+19:09:36 WP reached the finish line in 51:672 (est. 51:672)
+19:09:37 SiTiH.th reached the finish line in 39:024 (est. 39:024)
+19:12:36 >>/Nosf: STOP TIME!!!!!!!!
+19:12:37 >>/Nosf: STOP TIME!!!!!!!!
+19:12:37 <acc/hyper entered the game.
+19:12:37 >>/Nosf: STOP TIME!!!!!!!!
+19:12:37 >>/Nosf: STOP TIME!!!!!!!!
+19:12:37 >>/Nosf: STOP TIME!!!!!!!!
+19:12:37 >>/Nosf: STOP TIME!!!!!!!!
+19:12:37 >>/Nosf: STOP TIME!!!!!!!!
+19:12:37 >>/Nosf: STOP TIME!!!!!!!!
+19:12:37 >>/Nosf: STOP TIME!!!!!!!!
+19:12:37 >>/Nosf: STOP TIME!!!!!!!!
+19:12:37 >>/Nosf: STOP TIME!!!!!!!!
+19:12:37 >>/Nosf: STOP TIME!!!!!!!!
+19:12:37 Issuing Command: condump 191237
+
+19:12:37 Dumped console text to 191237.txt.
+19:12:38 Wrote screenshots/shot-20220828-191238.jpg
+19:12:51 ]next
+19:12:51 >>/Nosf: next
+19:13:00 w00dy.th called a vote: map jjm21-prostrafe.
+19:13:05 Vote passed.
+19:13:05 WARNING: server is not allowed to set df_mp_interferenceOff=3
+19:13:05 ----- FS_Startup -----
+19:13:05 ...loaded in 40 milliseconds
+19:13:05 ----------------------
+19:13:05 90224 files in 2004 pk3 files
+19:13:05 RE_Shutdown( 0 )
+19:13:05 Hunk_Clear: reset the hunk ok
+19:13:05 ----- R_Init -----
+19:13:05
+GL_VENDOR: NVIDIA Corporation
+19:13:05 GL_RENDERER: GeForce GTX 1660 SUPER/PCIe/SSE2
+19:13:05 GL_VERSION: 4.6.0 NVIDIA 461.40
+19:13:05
+19:13:05 GL_MAX_TEXTURE_SIZE: 32768
+19:13:05 GL_MAX_TEXTURE_UNITS_ARB: 8
+19:13:05
+PIXELFORMAT: color(32-bits) Z(24-bit) stencil(8-bits)
+19:13:05 MODE: -1, 1600 x 1024 windowed hz:120
+19:13:05 GAMMA: hardware w/ 0 overbright bits
+19:13:05 CPU: 64-bit AuthenticAMD
+19:13:05 rendering primitives: single glDrawElements
+19:13:05 texturemode: GL_LINEAR_MIPMAP_NEAREST
+19:13:05 picmip: 0
+19:13:05 texture bits: 0
+19:13:05 multitexture: enabled
+19:13:05 compiled vertex arrays: enabled
+19:13:05 texenv add: enabled
+19:13:05 compressed textures: disabled
+19:13:05 HACK: using vertex lightmap approximation
+19:13:05 Initializing Shaders
+19:13:05 ----- finished R_Init -----
+19:13:05 ------ Initializing Sound ------
+19:13:05 Initializing DirectSound
+19:13:05 ----- Sound Info -----
+19:13:05     1 stereo
+19:13:05 32768 samples
+19:13:05    16 samplebits
+19:13:05     1 submission_chunk
+19:13:05 22050 speed
+19:13:05 000000002D790090 dma buffer
+19:13:05 No background file.
+19:13:05 ----------------------
+19:13:05 Sound initialization successful.
+19:13:05 --------------------------------
+19:13:05 Sound memory manager started
+19:13:05 Loading dll file ui.
+19:13:05 LoadLibrary 'D:\Quake 3 Ultimate\quake3\defrag\uix86_64.dll' failed
+19:13:05 Failed to load dll, looking for qvm.
+19:13:05 Loading vm file vm/ui.qvm...
+19:13:05 VM file ui compiled to 714990 bytes of code
+19:13:05 ui loaded in 2098176 bytes on the hunk
+19:13:06 110 arenas parsed
+19:13:06 2 arenas ignored to make count divisible by 4
+19:13:06 32 bots parsed
+19:13:06 Loading vm file vm/cgame.qvm...
+19:13:06 VM file cgame compiled to 1271982 bytes of code
+19:13:06 cgame loaded in 8389632 bytes on the hunk
+19:13:06 Cvar: df_promode 0
+19:13:06 Cvar: dmflags 0
+19:13:06 Cvar: sv_cheats 0
+19:13:06 Cvar: timescale 1.00
+19:13:06 Cvar: g_synchronousClients 0
+19:13:06 Cvar: pmove_fixed 1
+19:13:06 Cvar: pmove_msec 8
+19:13:06 Cvar: g_speed 320
+19:13:06 Cvar: g_gravity 800
+19:13:06 Cvar: g_knockback 1000
+19:13:06 stitched 8 LoD cracks
+19:13:06 ...loaded 1329 faces, 70 meshes, 60 trisurfs, 0 flares
+19:13:06 WARNING: Failed to load sound sound/player/crash/taunt.wav!
+19:13:06 WARNING: could not find sound/player/crash/taunt.wav - using default
+19:13:06 Failed to load model file models/players/characters/supermario/lower.md3
+19:13:06 Leg skin load failure: models/players/characters/mynx/lower_pm.skin
+19:13:06 Torso skin load failure: models/players/characters/mynx/upper_pm.skin
+19:13:06 Head skin load failure: models/players/heads/mynx/head_pm.skin
+19:13:06 Failed to load skin file: mynx : pm, mynx : pm
+19:13:06 CL_InitCGame:  0.53 seconds
+19:13:06 7 msec to draw all images
+19:13:06 Com_TouchMemory: 0 msec
+19:13:06 copy D:\Quake 3 Ultimate\quake3\defrag\demos\temp\current.tmp to D:\Quake 3
+Ultimate\quake3\defrag\demos\temp\current.dm_68
+19:13:06 Stopped demo recording.
+19:13:06 'Roman, entered the game.
+19:13:06 >>/Nosf entered the game.
+19:13:06 <acc/hyper entered the game.
+19:13:06 [DR1]Source entered the game.
+19:13:06 AW.Loontick entered the game.
+19:13:07 KeT entered the game.
+19:13:07 WP entered the game.
+19:13:08 SiTiH.th entered the game.
+19:13:09 <acc/hyper: eba
+19:14:29 96+ dinner: PB: 2:25:648
+19:14:30 <acc/hyper reached the finish line in 1:17:592 (est. 1:17:592)
+19:14:32 [DR1]Source joined the spectators.
+19:14:37 [DR1]Source: Nope.jpg
+19:14:42 96+ dinner: yep
+19:14:54 96+ dinner renamed to 96+ snow
+19:14:57 96+ snow: gl
+19:14:59 96+ snow disconnected
+19:15:39 WP joined the spectators.
+19:16:10 'Roman,: |)
+19:17:23 AW.Loontick reached the finish line in 3:51:968 (est. 3:51:966)
+19:17:46 'Roman, reached the finish line in 43:936 (est. 43:935)
+19:18:29 SiTiH.th reached the finish line in 5:06:568 (est. 5:06:568)
+19:20:01 AW.Loontick reached the finish line in 1:22:504 (est. 1:22:511)
+19:21:11 AW.Loontick reached the finish line in 30:032 (est. 30:035)
+19:22:46 'Roman, reached the finish line in 18:056 (est. 18:056)
+19:23:19 AW.Loontick reached the finish line in 27:680 (est. 27:681)
+19:23:34 AW.Loontick: !TOP
+19:23:35 KeT reached the finish line in 24:496 (est. 24:496)
+19:23:45 'Roman,: a doorholdera mojno postavit?)
+19:26:58 <acc/hyper reached the finish line in 24:088 (est. 24:096)
+19:28:07 KeT reached the finish line in 32:288 (est. 32:288)
+19:28:32 'Roman,: 9 pizdec ystal
+19:29:11 SiTiH.th reached the finish line in 1:17:624 (est. 1:17:630)
+19:29:16 <acc/hyper reached the finish line in 23:312 (est. 23:316)
+19:30:25 [DR1]Source entered the game.
+19:30:59 <acc/hyper reached the finish line in 22:808 (est. 22:804)
+19:31:00 <acc/hyper: (:
+19:31:05 'Roman,: a mne nikto ne derjit!
+19:32:10 KeT reached the finish line in 20:992 (est. 20:996)
+19:32:13 'Roman,: skimiw steny potomy4to
+19:32:14 [DR1]Source: tele start unpossible with lags
+19:32:18 'Roman,: i yletaew vpravo
+19:32:23 'Roman,: nado steni ranwe kosnytsa
+19:34:21 <acc/hyper reached the finish line in 22:424 (est. 22:427)
+19:34:45 [DR1]Source joined the spectators.
+19:35:29 w00dy.th connected (RU, Russian Federation)
+19:35:32 w00dy.th entered the game.
+19:35:33 'Roman,: |D
+19:35:37 KeT: Hooopaaaaa!
+19:36:01 'Roman,: |)
+19:36:12 KeT: hodor
+19:36:12 w00dy.th: :)
+19:36:31 AW.Loontick reached the finish line in 25:960 (est. 25:960)
+19:37:26 [DR1]Source entered the game.
+19:37:51 [DR1]Source joined the spectators.
+19:38:02 [DR1]Source: da
+19:38:05 'Roman, reached the finish line in 17:736 (est. 17:734)
+19:38:10 <acc/hyper: (:
+19:38:13 w00dy.th: :)
+19:38:16 KeT: Hooopaaaaa!
+19:38:17 'Roman,: |)
+19:38:47 <acc/hyper: (:
+19:38:47 <acc/hyper: (:
+19:38:47 [DR1]Source disconnected
+19:38:48 'Roman,: |D
+19:39:14 KeT reached the finish line in 17:544 (est. 17:540)
+19:39:15 KeT: Hooopaaaaa!
+19:39:16 'Roman,: |D
+19:39:16 'Roman,: |D
+19:39:16 'Roman,: |D
+19:39:16 <acc/hyper joined the spectators.
+19:39:22 <acc/hyper: (:
+19:39:48 <acc/hyper entered the game.
+19:40:27 'Roman, reached the finish line in 17:640 (est. 17:640)
+19:40:27 SiTiH.th reached the finish line in 32:432 (est. 32:434)
+19:40:33 KeT: nem-nem
+19:40:35 'Roman,: |)
+19:42:08 'Roman, reached the finish line in 17:496 (est. 17:494)
+19:42:33 <acc/hyper: eh bla ewe bi min 10
+19:42:48 'Roman, joined the spectators.
+19:42:50 'Roman, entered the game.
+19:43:04 >>/Nosf: STOP TIME!!!!!!!!
+19:43:05 >>/Nosf: STOP TIME!!!!!!!!
+19:43:05 >>/Nosf: STOP TIME!!!!!!!!
+19:43:05 >>/Nosf: STOP TIME!!!!!!!!
+19:43:05 >>/Nosf: STOP TIME!!!!!!!!
+19:43:05 >>/Nosf: STOP TIME!!!!!!!!
+19:43:05 >>/Nosf: STOP TIME!!!!!!!!
+19:43:05 >>/Nosf: STOP TIME!!!!!!!!
+19:43:05 >>/Nosf: STOP TIME!!!!!!!!
+19:43:05 >>/Nosf: STOP TIME!!!!!!!!
+19:43:05 >>/Nosf: STOP TIME!!!!!!!!
+19:43:05 >>/Nosf: STOP TIME!!!!!!!!
+19:43:05 >>/Nosf: STOP TIME!!!!!!!!
+19:43:05 >>/Nosf: STOP TIME!!!!!!!!
+19:43:05 >>/Nosf: STOP TIME!!!!!!!!
+19:43:06 Issuing Command: condump 194306
+
+19:43:06 Dumped console text to 194306.txt.
