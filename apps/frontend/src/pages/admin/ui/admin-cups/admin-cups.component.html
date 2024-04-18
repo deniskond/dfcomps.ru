@@ -31,12 +31,7 @@
     <div class="card-header">Online cup</div>
     <div class="card-text">5 rounds by 30 minutes each</div>
     <div>
-      <button
-        routerLink="/admin/cups/online/add"
-        mat-raised-button
-        color="accent"
-        data-test-id="add-online-cup-button"
-      >
+      <button routerLink="/admin/cups/online/add" mat-raised-button color="accent" data-test-id="add-online-cup-button">
         Add online cup
       </button>
     </div>
@@ -69,7 +64,23 @@
         </button>
         <ng-container *ngIf="isEditingCupAvailable(cup)">
           <button
-            [routerLink]="cup | invokeFunction : getCupEditLink"
+            *ngIf="cup.hasTwoServers"
+            [routerLink]="'/admin/cups/online/balance-players/' + cup.id"
+            mat-raised-button
+            color="secondary"
+          >
+            Balance players
+          </button>
+          <button
+            *ngIf="cup.type === cupTypes.ONLINE"
+            [routerLink]="'/admin/cups/online/input-results/' + cup.id"
+            mat-raised-button
+            color="secondary"
+          >
+            Input results
+          </button>
+          <button
+            [routerLink]="cup | invokeFunction: getCupEditLink"
             mat-raised-button
             color="basic"
             data-test-id="edit-cup-button"

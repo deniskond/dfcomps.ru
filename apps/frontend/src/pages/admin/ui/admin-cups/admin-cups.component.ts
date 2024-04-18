@@ -18,6 +18,7 @@ import * as moment from 'moment';
 export class AdminCupsComponent implements OnInit {
   public cups: AdminCupInterface[];
   public cups$ = new ReplaySubject<AdminCupInterface[]>(1);
+  public cupTypes = CupTypes;
   private user: UserInterface | null = null;
   private onDestroy$ = new Subject<void>();
 

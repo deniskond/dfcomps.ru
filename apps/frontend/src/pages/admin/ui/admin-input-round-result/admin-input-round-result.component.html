@@ -1,0 +1,9 @@
+<mat-card class="card">
+  <div class="card-header">Input round result</div>
+  <div *ngIf="false; else isLoading"></div>
+  <ng-template #isLoading>
+    <div class="spinner">
+      <mat-spinner diameter="75" strokeWidth="4" color="accent"></mat-spinner>
+    </div>
+  </ng-template>
+</mat-card>
