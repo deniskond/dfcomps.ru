@@ -1,7 +1,7 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, catchError, of } from 'rxjs';
+import { Observable, catchError, of, throwError } from 'rxjs';
 import { UserService } from '~shared/services/user-service/user.service';
 
 @Injectable()
@@ -19,7 +19,7 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
           this.router.navigate(['/']);
         }
 
-        return of(error);
+        return throwError(() => error);
       }),
     );
   }

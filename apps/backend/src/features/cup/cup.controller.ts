@@ -57,7 +57,7 @@ export class CupController {
     return this.cupService.cancelRegistrationForOnlineCup(accessToken, cupId);
   }
 
-  @Get('online-cup/:id')
+  @Get('online-cup/:cupId')
   getOnlineCupInfo(
     @Headers('X-Auth') accessToken: string | undefined,
     @Param('cupId', new ParseIntPipe()) cupId: number,

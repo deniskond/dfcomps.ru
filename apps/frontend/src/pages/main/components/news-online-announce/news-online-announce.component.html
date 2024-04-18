@@ -20,8 +20,7 @@
     scrolling="no"
     height="450"
     width="800"
-  >
-  </iframe>
+  ></iframe>
   <iframe
     *ngIf="currentStream === 1"
     [src]="iframeLink2"
@@ -30,12 +29,13 @@
     scrolling="no"
     height="450"
     width="800"
-  >
-  </iframe>
+  ></iframe>
 </div>
 
 <app-html-news [news]="news"></app-html-news>
-<div class="players-table-description"><span translate translation="listOfRegisteredPlayers"></span>:</div>
+<div class="players-table-description">
+  <span translate translation="listOfRegisteredPlayers"></span>:
+</div>
 <div class="players-table" data-test-id="online-cup-players-table">
   <div *ngFor="let row of range(rowCount)" class="players-row">
     <div *ngFor="let column of range(columnCount)" class="players-cell">
@@ -49,11 +49,21 @@
   </div>
 </div>
 <div class="buttons-container">
-  <button (click)="toggleRegistration()" mat-raised-button color="primary" class="registration-button">
+  <button
+    *ngIf="showStreamersTimerLink$ | async"
+    (click)="goToStreamersTimer()"
+    mat-raised-button
+    color="primary"
+    class="action-button"
+    data-test-id="streamers-timer-button"
+  >
+    <span translate translation="openStreamersTimer"></span>
+  </button>
+  <button (click)="toggleRegistration()" mat-raised-button color="primary" class="action-button">
     <span *ngIf="isRegistered" translate translation="cancelRegistration"></span>
     <span *ngIf="!isRegistered" translate translation="registerForCup"></span>
   </button>
-  <button (click)="openFullTable()" mat-raised-button color="primary" class="full-table-button">
+  <button (click)="openFullTable()" mat-raised-button color="primary" class="action-button">
     <span translate translation="fullTable"></span>
   </button>
 </div>

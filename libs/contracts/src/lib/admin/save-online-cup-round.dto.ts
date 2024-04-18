@@ -7,7 +7,7 @@ export class SaveOnlineCupRoundDto {
   cupId: number;
 
   @IsNotEmpty()
-  roundNumber: number;
+  roundNumber: 1 | 2 | 3 | 4 | 5;
 
   @IsNotEmpty()
   @Transform(({ value }) => JSON.parse(value))

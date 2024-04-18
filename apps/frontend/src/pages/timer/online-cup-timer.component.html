@@ -1,34 +1,18 @@
-<div class="container">
-  <div
-    style="
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      height: 100%;
-      width: 100%;
-    "
-  >
-    <div style="font-size: 4vw;font-family: 'orbitron' !important;">Online Cup #15</div>
-    <div style="font-size: 2.5vw;font-family: 'orbitron' !important;">CPM Rocketruns</div>
-    <div
-      style="
-        display: flex;
-        width: 50vw;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 4vw;
-      "
-    >
-      <div style="font-size: 4vw;font-family: 'orbitron' !important;">{{ displayedMinutes }}:{{ displayedSeconds }}</div>
-      <div style="font-size: 2vw; letter-spacing:2px;font-family: 'orbitron' !important;">
+<div *ngIf="onlineCupInfo" class="container">
+  <div class="inner-container">
+    <div class="title">{{ onlineCupInfo.title }}</div>
+    <div class="subtitle">{{ onlineCupInfo.subtitle }}</div>
+    <div class="timer-and-maps">
+      <div class="timer">{{ displayedMinutes }}:{{ displayedSeconds }}</div>
+      <div class="maps">
         <div
-          *ngFor="let map of maps; let i = index"
+          *ngFor="let map of onlineCupInfo.maps; let i = index"
           [ngClass]="{
             played: currentMap > i + 1,
-            selected: currentMap === i + 1
+            selected: currentMap === i + 1,
+            map: true
           }"
           (click)="setMap(i + 1)"
-          style="cursor:pointer;font-family: 'orbitron' !important;"
         >
           {{ i + 1 }}. {{ currentMap < i + 1 ? placeholder : map }}
         </div>
