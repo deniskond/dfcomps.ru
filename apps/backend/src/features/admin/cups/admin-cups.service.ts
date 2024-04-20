@@ -1064,6 +1064,31 @@ export class AdminCupsService {
     await this.cupsResultsRepository.save(roundResultsUpdate);
   }
 
+  public async setOnlineCupMaps(
+    accessToken: string | undefined,
+    cupId: number,
+    maps: (string | null)[],
+  ): Promise<void> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+      throw new UnauthorizedException('Unauthorized to set online cup maps without CUP_ORGANIZER role');
+    }
+
+    await this.cupsRepository
+      .createQueryBuilder('cups')
+      .update(Cup)
+      .set({
+        map1: maps[0],
+        map2: maps[1],
+        map3: maps[2],
+        map4: maps[3],
+        map5: maps[4],
+      })
+      .where({ id: cupId })
+      .execute();
+  }
+
   private async getPhysicsDemos(cupId: number, physics: Physics): Promise<AdminPlayerDemosValidationInterface[]> {
     const demos: CupDemo[] = await this.cupsDemosRepository
       .createQueryBuilder('cups_demos')

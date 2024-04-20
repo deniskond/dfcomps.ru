@@ -15,3 +15,61 @@
   justify-content: center;
   margin-top: 16px;
 }
+
+.maps-table {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 80px 450px 250px;
+}
+
+.cell {
+  display: flex;
+  padding: 12px;
+  border-right: 1px solid var(--base-border-color);
+  border-bottom: 1px solid var(--base-border-color);
+  align-items: center;
+  justify-content: center;
+
+  &.table-head {
+    border-top: 1px solid var(--base-border-color);
+    background: #f3f3f3;
+  }
+
+  &.first {
+    border-left: 1px solid var(--base-border-color);
+  }
+
+  &.header {
+    justify-content: left;
+  }
+
+  &.buttons button {
+    margin-left: 16px;
+    flex-wrap: wrap;
+
+    &:first-of-type {
+      margin-left: 0;
+    }
+  }
+}
+
+.input-field {
+  height: 32px;
+  font-size: 14px;
+  width: 100%;
+  padding-left: 4px;
+  border: 1px solid rgb(204, 204, 204);
+
+  &.date {
+    width: unset;
+    margin-right: 8px;
+  }
+
+  &.file {
+    padding-top: 4px;
+  }
+}
+
+.save-button-container {
+  margin-top: 12px;
+}

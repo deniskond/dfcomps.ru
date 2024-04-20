@@ -74,7 +74,7 @@ const adminRoutes: Routes = [
           { path: 'online/add', component: AdminOnlineCupComponent },
           { path: 'online/edit/:id', component: AdminOnlineCupComponent },
           { path: 'online/input-results/:id', component: AdminInputResultsComponent },
-          { path: 'online/input-round-result/:id', component: AdminInputRoundResultComponent },
+          { path: 'online/input-round-result/:id/:round', component: AdminInputRoundResultComponent },
           { path: 'online/balance-players/:id', component: AdminBalancePlayersComponent },
         ],
       },

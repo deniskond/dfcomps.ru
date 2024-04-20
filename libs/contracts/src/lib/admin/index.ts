@@ -22,3 +22,4 @@ export { ParsedOnlineCupRoundInterface } from './parsed-online-cup-round.interfa
 export { ParseServerLogsDto } from './parse-server-logs.dto';
 export { SaveOnlineCupRoundDto } from './save-online-cup-round.dto';
 export { RoundResultEntryInterface } from './round-result-entry.interface';
+export { SetOnlineCupMapsDto } from './set-online-cup-maps.dto';

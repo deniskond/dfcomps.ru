@@ -29,6 +29,7 @@ import {
   ParsedOnlineCupRoundInterface,
   ProcessValidationDto,
   SaveOnlineCupRoundDto,
+  SetOnlineCupMapsDto,
   SetPlayerServerDto,
   UpdateOfflineCupDto,
   UploadedFileLinkInterface,
@@ -217,5 +218,13 @@ export class AdminCupsController {
     @Body() { cupId, roundNumber, roundResults }: SaveOnlineCupRoundDto,
   ): Promise<void> {
     return this.adminCupsService.saveRoundResults(accessToken, cupId, roundNumber, roundResults);
+  }
+
+  @Post('online/set-maps')
+  setOnlineCupMaps(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Body() { cupId, maps }: SetOnlineCupMapsDto,
+  ): Promise<void> {
+    return this.adminCupsService.setOnlineCupMaps(accessToken, cupId, maps);
   }
 }

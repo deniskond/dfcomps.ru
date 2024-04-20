@@ -23,6 +23,7 @@ import {
   AdminMulticupActionInterface,
   MulticupActionDto,
   CupTypes,
+  SetOnlineCupMapsDto,
 } from '@dfcomps/contracts';
 import * as moment from 'moment';
 
@@ -268,6 +269,13 @@ export class AdminDataService {
 
   public setMulticups(multicups: AdminMulticupInterface[]): void {
     this.multicups = multicups;
+  }
+
+  public setOnlineCupMaps$(cupId: number, maps: (string | null)[]): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.SET_ONLINE_CUP_MAPS, {
+      cupId,
+      maps,
+    } as SetOnlineCupMapsDto);
   }
 
   private getAdminNewsDto(formValue: Record<string, any>, newsType: NewsTypes): AdminNewsDto {
