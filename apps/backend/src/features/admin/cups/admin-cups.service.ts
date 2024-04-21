@@ -16,6 +16,8 @@ import {
   AdminPlayerDemosValidationInterface,
   AdminValidationInterface,
   CupTypes,
+  MulticupResultInterface,
+  MulticupTableInterface,
   NewsTypes,
   OnlineCupActionDto,
   OnlineCupPlayersInterface,
@@ -1119,6 +1121,36 @@ export class AdminCupsService {
         nick: onlineCupPlayer.user.displayed_nick,
       })),
     };
+  }
+
+  public async finishOnlineCup(accessToken: string | undefined, cupId: number): Promise<void> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+      throw new UnauthorizedException('Unauthorized to get online cup players without CUP_ORGANIZER role');
+    }
+
+    const onlineCupResults: CupResult[] = await this.cupsResultsRepository
+      .createQueryBuilder('cups_results')
+      .leftJoinAndSelect('cups_results.user', 'users')
+      .where({ cup: { id: cupId } })
+      .getMany();
+
+    const onlineCupFullTable: MulticupTableInterface = await this.tablesService.getOnlineCupFullTable(cupId);
+
+    const updatedOnlineCupResults: CupResult[] = onlineCupResults.map((cupResult: CupResult) => {
+      const targetPlayerTableEntry: MulticupResultInterface | undefined = onlineCupFullTable.players.find(
+        (result: MulticupResultInterface) => result.playerId === cupResult.user.id,
+      );
+
+      if (targetPlayerTableEntry) {
+        return { ...cupResult, final_sum: targetPlayerTableEntry.overall };
+      } else {
+        return cupResult;
+      }
+    });
+
+    await this.cupsResultsRepository.save(updatedOnlineCupResults);
   }
 
   private async getPhysicsDemos(cupId: number, physics: Physics): Promise<AdminPlayerDemosValidationInterface[]> {

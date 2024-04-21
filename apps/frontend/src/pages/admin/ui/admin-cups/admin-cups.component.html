@@ -80,6 +80,14 @@
             Input results
           </button>
           <button
+            *ngIf="cup.type === cupTypes.ONLINE"
+            (click)="finishOnlineCup(cup.id)"
+            mat-raised-button
+            color="primary"
+          >
+            Finish cup
+          </button>
+          <button
             [routerLink]="cup | invokeFunction: getCupEditLink"
             mat-raised-button
             color="basic"

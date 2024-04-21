@@ -95,6 +95,10 @@ export class AdminCupsComponent implements OnInit {
       });
   }
 
+  public finishOnlineCup(cupId: number): void {
+    this.adminDataService.finishOnlineCup$(cupId).subscribe();
+  }
+
   public getCupEditLink(cup: AdminCupInterface): string {
     return cup.type === CupTypes.ONLINE ? `/admin/cups/online/edit/${cup.id}` : `/admin/cups/offline/edit/${cup.id}`;
   }

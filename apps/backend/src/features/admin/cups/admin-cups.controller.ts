@@ -235,4 +235,12 @@ export class AdminCupsController {
   ): Promise<OnlineCupPlayersInterface> {
     return this.adminCupsService.getOnlineCupPlayers(accessToken, cupId);
   }
+
+  @Post('online/finish/:cupId')
+  finishOnlineCup(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Param('cupId', new ParseIntPipe()) cupId: number,
+  ): Promise<void> {
+    return this.adminCupsService.finishOnlineCup(accessToken, cupId);
+  }
 }

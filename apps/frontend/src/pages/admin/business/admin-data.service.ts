@@ -223,6 +223,10 @@ export class AdminDataService {
     return this.backendService.post$<void>(URL_PARAMS.ADMIN.FINISH_OFFLINE_CUP(cupId));
   }
 
+  public finishOnlineCup$(cupId: number): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.FINISH_ONLINE_CUP(cupId));
+  }
+
   public getWorldspawnMapInfo$(map: string): Observable<WorldspawnMapInfoInterface> {
     return this.backendService.get$<WorldspawnMapInfoInterface>(URL_PARAMS.ADMIN.GET_WORLDSPAWN_MAP_INFO, {
       map,
