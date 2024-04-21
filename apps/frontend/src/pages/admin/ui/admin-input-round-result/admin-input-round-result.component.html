@@ -16,12 +16,56 @@
     <div [formGroup]="addSingleResultForm" class="add-single-result-table">
       <div class="cell first table-head">Player</div>
       <div class="cell table-head">Time</div>
+      <div class="cell table-head">Action</div>
       <div class="cell first">
-        <input [formControlName]="'map'" class="input-field" />
+        <mat-form-field appearance="outline">
+          <mat-select formControlName="player">
+            <mat-option *ngFor="let player of cupPlayers" [value]="player.userId">
+              {{ player.nick }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
       <div class="cell">
-        <input [formControlName]="'map'" class="input-field" />
+        <input formControlName="time" class="input-field" />
       </div>
+      <div class="cell">
+        <button [disabled]="!addSingleResultForm.valid" (click)="addSingleResult()" mat-raised-button color="accent">
+          Add result
+        </button>
+      </div>
+    </div>
+    <div class="card-header">Round {{ roundNumber }} table</div>
+    <div [formGroup]="roundResultsForm" class="round-results-table">
+      <div class="cell first table-head">Place</div>
+      <div class="cell table-head">Servername</div>
+      <div class="cell table-head">Player</div>
+      <div class="cell table-head">Time</div>
+      <div class="cell table-head">Action</div>
+      <ng-container *ngFor="let result of results; let i = index">
+        <div class="cell first">
+          {{ i + 1 }}
+        </div>
+        <div class="cell">Servername</div>
+        <div class="cell">
+          <mat-form-field appearance="outline">
+            <mat-select>
+              <mat-option *ngFor="let player of cupPlayers" [value]="player.userId">
+                {{ player.nick }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="cell">
+          <input class="input-field" />
+        </div>
+        <div class="cell">
+          <button (click)="deleteResult()" mat-raised-button color="warn">Delete</button>
+        </div>
+      </ng-container>
+    </div>
+    <div class="button-container">
+      <button (click)="saveRoundResults()" mat-raised-button color="accent">Save round results</button>
     </div>
   </ng-container>
   <ng-template #isLoading>

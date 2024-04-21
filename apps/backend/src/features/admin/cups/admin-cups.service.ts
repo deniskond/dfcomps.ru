@@ -18,6 +18,7 @@ import {
   CupTypes,
   NewsTypes,
   OnlineCupActionDto,
+  OnlineCupPlayersInterface,
   OnlineCupServersPlayersInterface,
   ParsedOnlineCupRoundInterface,
   Physics,
@@ -1087,6 +1088,27 @@ export class AdminCupsService {
       })
       .where({ id: cupId })
       .execute();
+  }
+
+  public async getOnlineCupPlayers(accessToken: string | undefined, cupId: number): Promise<OnlineCupPlayersInterface> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+      throw new UnauthorizedException('Unauthorized to get online cup players without CUP_ORGANIZER role');
+    }
+
+    const onlineCupPlayers: CupResult[] = await this.cupsResultsRepository
+      .createQueryBuilder('cups_results')
+      .leftJoinAndSelect('cups_results.user', 'users')
+      .where({ cup: { id: cupId } })
+      .getMany();
+
+    return {
+      players: onlineCupPlayers.map((onlineCupPlayer: CupResult) => ({
+        userId: onlineCupPlayer.user.id,
+        nick: onlineCupPlayer.user.displayed_nick,
+      })),
+    };
   }
 
   private async getPhysicsDemos(cupId: number, physics: Physics): Promise<AdminPlayerDemosValidationInterface[]> {

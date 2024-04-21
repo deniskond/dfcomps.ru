@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { AdminEditCupInterface } from '@dfcomps/contracts';
+import { AdminEditCupInterface, OnlineCupPlayersInterface } from '@dfcomps/contracts';
 import { AdminDataService } from '~pages/admin/business/admin-data.service';
 
 @Component({
@@ -15,8 +15,13 @@ export class AdminInputRoundResultComponent implements OnInit {
   public cupName: string;
   public roundNumber: number;
   public hasTwoServers: boolean;
-  public addSingleResultForm: FormGroup = new FormGroup({});
-  public resultsForm: FormGroup = new FormGroup({});
+  public addSingleResultForm: FormGroup = new FormGroup({
+    player: new FormControl('', Validators.required),
+    time: new FormControl('', Validators.required),
+  });
+  public roundResultsForm: FormGroup = new FormGroup({});
+  public results = new Array(5).fill(null);
+  public cupPlayers: OnlineCupPlayersInterface['players'];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -33,7 +38,23 @@ export class AdminInputRoundResultComponent implements OnInit {
       this.hasTwoServers = cupInfo.useTwoServers;
       this.changeDetectorRef.markForCheck();
     });
+
+    this.adminDataService.getOnlineCupPlayers$(this.cupId).subscribe((cupPlayers: OnlineCupPlayersInterface) => {
+      this.cupPlayers = cupPlayers.players;
+      this.changeDetectorRef.markForCheck();
+    });
   }
 
   public uploadServerLogs(): void {}
+
+  public addSingleResult(): void {
+    this.addSingleResultForm.setValue({
+      player: '',
+      time: '',
+    });
+  }
+
+  public deleteResult(): void {}
+
+  public saveRoundResults(): void {}
 }

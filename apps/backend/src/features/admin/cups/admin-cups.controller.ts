@@ -24,6 +24,7 @@ import {
   CupTypes,
   NewsTypes,
   OnlineCupActionDto,
+  OnlineCupPlayersInterface,
   OnlineCupServersPlayersInterface,
   ParseServerLogsDto,
   ParsedOnlineCupRoundInterface,
@@ -226,5 +227,13 @@ export class AdminCupsController {
     @Body() { cupId, maps }: SetOnlineCupMapsDto,
   ): Promise<void> {
     return this.adminCupsService.setOnlineCupMaps(accessToken, cupId, maps);
+  }
+
+  @Get('online/players/:cupId')
+  getOnlineCupPlayers(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Param('cupId', new ParseIntPipe()) cupId: number,
+  ): Promise<OnlineCupPlayersInterface> {
+    return this.adminCupsService.getOnlineCupPlayers(accessToken, cupId);
   }
 }

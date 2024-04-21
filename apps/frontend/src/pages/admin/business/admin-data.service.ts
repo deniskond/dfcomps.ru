@@ -24,6 +24,7 @@ import {
   MulticupActionDto,
   CupTypes,
   SetOnlineCupMapsDto,
+  OnlineCupPlayersInterface,
 } from '@dfcomps/contracts';
 import * as moment from 'moment';
 
@@ -276,6 +277,10 @@ export class AdminDataService {
       cupId,
       maps,
     } as SetOnlineCupMapsDto);
+  }
+
+  public getOnlineCupPlayers$(cupId: number): Observable<OnlineCupPlayersInterface> {
+    return this.backendService.get$<OnlineCupPlayersInterface>(URL_PARAMS.ADMIN.ONLINE_CUP_PLAYERS(cupId));
   }
 
   private getAdminNewsDto(formValue: Record<string, any>, newsType: NewsTypes): AdminNewsDto {

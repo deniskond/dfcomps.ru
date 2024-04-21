@@ -210,6 +210,7 @@ export class URL_PARAMS {
     DELETE_MULTICUP: (multicupId: number) => string;
     GET_ALL_AVAILABLE_MULTICUPS: string;
     SET_ONLINE_CUP_MAPS: string;
+    ONLINE_CUP_PLAYERS: (cupId: number) => string;
   } {
     return {
       GET_NEWS: `${API_URL}/admin/news/get-all-news`,
@@ -244,6 +245,7 @@ export class URL_PARAMS {
       DELETE_MULTICUP: (multicupId: number) => `${API_URL}/admin/multicups/delete/${multicupId}`,
       GET_ALL_AVAILABLE_MULTICUPS: `${API_URL}/admin/multicups/get-all-active-multicups`,
       SET_ONLINE_CUP_MAPS: `${API_URL}/admin/cups/online/set-maps`,
+      ONLINE_CUP_PLAYERS: (cupId: number) => `${API_URL}/admin/cups/online/players/${cupId}`,
     };
   }
 }

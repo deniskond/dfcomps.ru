@@ -25,11 +25,12 @@ export class MulticupPhysicsTableComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    this.hasRatingChange = this.physicsTable[0].ratingChange !== null;
+    this.hasRatingChange = !!this.physicsTable.length && this.physicsTable?.[0].ratingChange !== null;
     this.slicedPhysicsTable = this.physicsTable.slice(0, MAX_PLAYERS_IN_TABLE);
     this.places = getTablePlaces(this.slicedPhysicsTable.map(({ overall }: MulticupResultInterface) => overall));
 
-    const actualTableCellsCount = this.tableCellsCount > MAX_PLAYERS_IN_TABLE ? MAX_PLAYERS_IN_TABLE : this.tableCellsCount;
+    const actualTableCellsCount =
+      this.tableCellsCount > MAX_PLAYERS_IN_TABLE ? MAX_PLAYERS_IN_TABLE : this.tableCellsCount;
 
     if (this.physicsTable.length < actualTableCellsCount) {
       this.emptyCells = new Array(actualTableCellsCount - this.physicsTable.length).fill(null);
