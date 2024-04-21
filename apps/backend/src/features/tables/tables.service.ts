@@ -386,7 +386,7 @@ export class TablesService {
     return {
       fullName: cup.full_name,
       rounds: 5,
-      currentRound: cup.current_round,
+      currentRound: playersResults[0]?.roundResults.length + 1,
       physics: cup.physics as Physics,
       system,
       players: playersResults,
