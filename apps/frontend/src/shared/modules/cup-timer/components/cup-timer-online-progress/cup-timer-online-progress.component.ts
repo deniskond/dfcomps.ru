@@ -38,19 +38,24 @@ export class CupTimerOnlineProgressComponent implements OnInit, OnChanges {
 
   private endTime$ = new ReplaySubject<string>(1);
 
-  constructor(private languageService: LanguageService, private domSantizer: DomSanitizer) {}
+  constructor(
+    private languageService: LanguageService,
+    private domSantizer: DomSanitizer,
+  ) {}
 
   ngOnInit(): void {
-    this.serverLink = `defrag://${this.server}`;
-
     this.formattedTime$ = combineLatest([this.endTime$, this.languageService.getLanguage$()]).pipe(
       map(([time, language]: [string, Languages]) => formatCupTime(time, language)),
     );
   }
 
-  ngOnChanges({ endTime }: SimpleChanges): void {
+  ngOnChanges({ endTime, server }: SimpleChanges): void {
     if (endTime && endTime.currentValue) {
       this.endTime$.next(endTime.currentValue);
+    }
+
+    if (server && server.currentValue) {
+      this.serverLink = `defrag://${this.server}`;
     }
   }
 

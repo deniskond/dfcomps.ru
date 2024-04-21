@@ -48,7 +48,6 @@ export class CupService {
     if (userAccess.userId) {
       serverInfo = await this.cupResultRepository
         .createQueryBuilder('cups_results')
-        .select('server')
         .where({
           cup: {
             id: nextCup.id,
