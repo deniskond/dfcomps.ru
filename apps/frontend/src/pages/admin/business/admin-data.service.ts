@@ -25,6 +25,7 @@ import {
   CupTypes,
   SetOnlineCupMapsDto,
   OnlineCupPlayersInterface,
+  ParsedOnlineCupRoundInterface,
 } from '@dfcomps/contracts';
 import * as moment from 'moment';
 
@@ -281,6 +282,12 @@ export class AdminDataService {
 
   public getOnlineCupPlayers$(cupId: number): Observable<OnlineCupPlayersInterface> {
     return this.backendService.get$<OnlineCupPlayersInterface>(URL_PARAMS.ADMIN.ONLINE_CUP_PLAYERS(cupId));
+  }
+
+  public uploadServerLogs$(cupId: number, serverLogs: File): Observable<ParsedOnlineCupRoundInterface> {
+    return this.backendService.uploadFile$(URL_PARAMS.ADMIN.PARSE_SERVER_LOGS(cupId), [
+      { fileKey: 'serverLogs', file: serverLogs },
+    ]);
   }
 
   private getAdminNewsDto(formValue: Record<string, any>, newsType: NewsTypes): AdminNewsDto {

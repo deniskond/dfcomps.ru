@@ -954,7 +954,7 @@ export class AdminCupsService {
     const stringLogFile: string[] = serverLogs.buffer.toString('utf8').split('----- R_Init -----');
 
     const logLines: string[] = stringLogFile[stringLogFile.length - 1]
-      .split('\r\n')
+      .split('\n')
       // fast filtering non-time messages
       .filter((line: string) => line.includes('reached the finish line in'))
       // filtering console abuse with text messages with times from players
