@@ -1,6 +1,29 @@
 <mat-card class="card">
-  <div class="card-header">Input round result</div>
-  <div *ngIf="false; else isLoading"></div>
+  <ng-container *ngIf="cupName && roundNumber; else isLoading">
+    <div class="card-header">Setting "{{ cupName }}" round {{ roundNumber }} results</div>
+    <div class="file-input-container">
+      <span class="input-caption">Server 1:</span>
+      <input type="file" />
+    </div>
+    <div *ngIf="hasTwoServers" class="file-input-container">
+      <span class="input-caption">Server 2:</span>
+      <input type="file" />
+    </div>
+    <div class="button-container">
+      <button (click)="uploadServerLogs()" mat-raised-button color="accent">Upload server logs</button>
+    </div>
+    <div class="card-header">Adding single result</div>
+    <div [formGroup]="addSingleResultForm" class="add-single-result-table">
+      <div class="cell first table-head">Player</div>
+      <div class="cell table-head">Time</div>
+      <div class="cell first">
+        <input [formControlName]="'map'" class="input-field" />
+      </div>
+      <div class="cell">
+        <input [formControlName]="'map'" class="input-field" />
+      </div>
+    </div>
+  </ng-container>
   <ng-template #isLoading>
     <div class="spinner">
       <mat-spinner diameter="75" strokeWidth="4" color="accent"></mat-spinner>

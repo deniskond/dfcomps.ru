@@ -1,7 +1,9 @@
 <div class="admin-page">
   <div *ngIf="navigationPage$ | async as navigationPage" class="navigation">
     <div class="logo-container">
-      <img src="../../../../../assets/images/admin/logo.png" />
+      <a href="/">
+        <img src="../../../../../assets/images/admin/logo.png" />
+      </a>
     </div>
     <ng-container *ngIf="user$ | async as user">
       <admin-menu-item

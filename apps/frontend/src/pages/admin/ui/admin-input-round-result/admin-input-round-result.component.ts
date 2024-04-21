@@ -1,4 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { AdminEditCupInterface } from '@dfcomps/contracts';
+import { AdminDataService } from '~pages/admin/business/admin-data.service';
 
 @Component({
   selector: 'admin-input-round-result',
@@ -7,7 +11,29 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminInputRoundResultComponent implements OnInit {
-  constructor() {}
+  public cupId: number;
+  public cupName: string;
+  public roundNumber: number;
+  public hasTwoServers: boolean;
+  public addSingleResultForm: FormGroup = new FormGroup({});
+  public resultsForm: FormGroup = new FormGroup({});
 
-  ngOnInit(): void {}
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private adminDataService: AdminDataService,
+    private changeDetectorRef: ChangeDetectorRef,
+  ) {}
+
+  ngOnInit(): void {
+    this.cupId = this.activatedRoute.snapshot.params['id'];
+    this.roundNumber = this.activatedRoute.snapshot.params['round'];
+
+    this.adminDataService.getSingleCup$(this.cupId).subscribe((cupInfo: AdminEditCupInterface) => {
+      this.cupName = cupInfo.fullName;
+      this.hasTwoServers = cupInfo.useTwoServers;
+      this.changeDetectorRef.markForCheck();
+    });
+  }
+
+  public uploadServerLogs(): void {}
 }
