@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
-import { MAIN_URL } from '~shared/rest-api';
 import { Languages } from '~shared/enums/languages.enum';
 import { LanguageService } from '~shared/services/language/language.service';
 import { NewsInterfaceUnion } from '@dfcomps/contracts';
@@ -38,14 +37,14 @@ export class NewsSocialLinksComponent implements OnInit, OnDestroy {
     this.telegramShareLink$ = mappedHeader$.pipe(
       map(
         (header: string) =>
-          `https://t.me/share/url?url=${MAIN_URL}news/${this.news.id}&text=${encodeURIComponent(header)}`,
+          `https://t.me/share/url?url=https://dfcomps.ru/news/${this.news.id}&text=${encodeURIComponent(header)}`,
       ),
     );
 
     this.twitterShareLink$ = mappedHeader$.pipe(
       map(
         (header: string) =>
-          `https://twitter.com/intent/tweet?text=${encodeURIComponent(header)} ${MAIN_URL}/news/${this.news.id}`,
+          `https://twitter.com/intent/tweet?text=${encodeURIComponent(header)} https://dfcomps.ru/news/${this.news.id}`,
       ),
     );
   }

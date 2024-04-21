@@ -21,6 +21,8 @@
         class="youtube"
       ></app-youtube>
 
+      <app-news-social-links [news]="singleNews"></app-news-social-links>
+
       <ng-container [ngSwitch]="singleNews.type">
         <app-news-simple *ngSwitchCase="newsTypes.SIMPLE" [news]="$any(singleNews)"></app-news-simple>
         <app-news-multicup-results
