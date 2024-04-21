@@ -16,6 +16,7 @@ import {
   NewsSimpleInterface,
   NewsStreamersResultsInterface,
   NewsTypes,
+  OnlineCupResultInterface,
   Physics,
   ResultsTableInterface,
 } from '@dfcomps/contracts';
@@ -308,14 +309,16 @@ export class NewsService {
       ...baseNews,
       type: NewsTypes.ONLINE_RESULTS,
       cup: mapCupEntityToInterface(news.cup!, false, null, news.id, news.cup!.multicup?.id || null),
-      results: cupResults.map((cupResult: CupResult) => ({
-        playerId: cupResult.user.id,
-        country: cupResult.user.country,
-        cpmChange: cupResult.user.ratingChanges[0]?.cpm_change || 0,
-        finalSum: cupResult.final_sum!,
-        nick: cupResult.user.displayed_nick,
-        vq3Change: cupResult.user.ratingChanges[0]?.vq3_change || 0,
-      })),
+      results: cupResults
+        .map((cupResult: CupResult) => ({
+          playerId: cupResult.user.id,
+          country: cupResult.user.country,
+          cpmChange: cupResult.user.ratingChanges[0]?.cpm_change || 0,
+          finalSum: cupResult.final_sum!,
+          nick: cupResult.user.displayed_nick,
+          vq3Change: cupResult.user.ratingChanges[0]?.vq3_change || 0,
+        }))
+        .filter((onlineCupResult: OnlineCupResultInterface) => onlineCupResult.finalSum !== null),
     };
   }
 
