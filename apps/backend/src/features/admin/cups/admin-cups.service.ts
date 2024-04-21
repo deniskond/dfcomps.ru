@@ -1054,15 +1054,25 @@ export class AdminCupsService {
       throw new BadRequestException('Wrong roundNumber - should be one of [1, 2, 3, 4, 5]');
     }
 
-    const roundResultsUpdate: Partial<CupResult>[] = roundResults.map(
-      (roundResultEntry: RoundResultEntryInterface) => ({
-        cup: { id: cupId } as any,
-        user: { id: roundResultEntry.userId } as any,
-        ['time' + roundNumber]: roundResultEntry.time,
-      }),
-    );
+    const cupResults: CupResult[] = await this.cupsResultsRepository
+      .createQueryBuilder('cups_results')
+      .leftJoinAndSelect('cups_results.user', 'users')
+      .where({ cup: { id: cupId } })
+      .getMany();
 
-    await this.cupsResultsRepository.save(roundResultsUpdate);
+    const cupResultsUpdate = cupResults.map((cupResult: CupResult) => {
+      const userResult: RoundResultEntryInterface | undefined = roundResults.find(
+        (result: RoundResultEntryInterface) => result.userId === cupResult.user.id,
+      );
+
+      if (userResult) {
+        return { ...cupResult, ['time' + roundNumber]: userResult.time };
+      } else {
+        return cupResult;
+      }
+    });
+
+    await this.cupsResultsRepository.save(cupResultsUpdate);
   }
 
   public async setOnlineCupMaps(

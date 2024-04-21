@@ -632,6 +632,13 @@ export class TablesService {
     system: MulticupSystems,
   ): MultiCupTableWithPoints[] {
     return singleCupTables.map((table: ResultsTableInterface) => {
+      if (!table.valid.length) {
+        return {
+          valid: [],
+          invalid: [],
+        };
+      }
+
       const topTime: number = table.valid[0].time;
       let currentPlace = 1;
 

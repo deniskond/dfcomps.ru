@@ -40,20 +40,25 @@
       </div>
     </div>
     <div class="card-header">Round {{ roundNumber }} table</div>
-    <div [formGroup]="roundResultsForm" class="round-results-table">
+    <div class="round-results-table">
       <div class="cell first table-head">Place</div>
       <div class="cell table-head">Servername</div>
       <div class="cell table-head">Player</div>
       <div class="cell table-head">Time</div>
       <div class="cell table-head">Action</div>
-      <ng-container *ngFor="let result of results; let i = index">
+      <ng-container
+        *ngFor="let row of range(roundResultsFormArray.controls.length); let i = index"
+        [formGroup]="roundResultsFormArray.controls[i]"
+      >
         <div class="cell first">
           {{ i + 1 }}
         </div>
-        <div class="cell">Servername</div>
+        <div class="cell">
+          <input formControlName="servernick" class="input-field" />
+        </div>
         <div class="cell">
           <mat-form-field appearance="outline">
-            <mat-select>
+            <mat-select formControlName="player">
               <mat-option *ngFor="let player of cupPlayers" [value]="player.userId">
                 {{ player.nick }}
               </mat-option>
@@ -61,10 +66,10 @@
           </mat-form-field>
         </div>
         <div class="cell">
-          <input class="input-field" />
+          <input formControlName="time" class="input-field" />
         </div>
         <div class="cell">
-          <button (click)="deleteResult()" mat-raised-button color="warn">Delete</button>
+          <button (click)="deleteResult(i)" mat-raised-button color="warn">Delete</button>
         </div>
       </ng-container>
     </div>

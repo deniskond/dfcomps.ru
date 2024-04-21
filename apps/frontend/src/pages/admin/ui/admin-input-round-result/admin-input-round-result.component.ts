@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { AdminEditCupInterface, OnlineCupPlayersInterface, ParsedOnlineCupRoundInterface } from '@dfcomps/contracts';
 import { Unpacked } from '@dfcomps/helpers';
@@ -28,14 +29,15 @@ export class AdminInputRoundResultComponent implements OnInit {
     player: new FormControl('', Validators.required),
     time: new FormControl('', Validators.required),
   });
-  public roundResultsForm: FormGroup = new FormGroup({});
-  public results = new Array(5).fill(null);
+  public roundResultsFormArray = new FormArray<FormGroup>([]);
   public cupPlayers: OnlineCupPlayersInterface['players'];
+  public range = (length: number) => new Array(+length).fill(null);
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private adminDataService: AdminDataService,
     private changeDetectorRef: ChangeDetectorRef,
+    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit(): void {
@@ -93,18 +95,60 @@ export class AdminInputRoundResultComponent implements OnInit {
     }
 
     targetObservable$.subscribe((parsedRound: ParsedOnlineCupRoundInterface) => {
-      console.log(parsedRound);
+      parsedRound.roundResults.forEach((roundResultRecord: Unpacked<ParsedOnlineCupRoundInterface['roundResults']>) =>
+        this.roundResultsFormArray.push(
+          new FormGroup({
+            servernick: new FormControl(roundResultRecord.serverNick),
+            player: new FormControl(roundResultRecord.suggestedPlayer?.userId, Validators.required),
+            time: new FormControl(roundResultRecord.time, Validators.required),
+          }),
+        ),
+      );
+
+      this.sortResults();
+      this.changeDetectorRef.markForCheck();
     });
   }
 
   public addSingleResult(): void {
+    this.roundResultsFormArray.push(
+      new FormGroup({
+        player: new FormControl(this.addSingleResultForm.get('player')!.value, Validators.required),
+        time: new FormControl(this.addSingleResultForm.get('time')!.value, Validators.required),
+        servernick: new FormControl('---'),
+      }),
+    );
+
+    this.sortResults();
+
     this.addSingleResultForm.setValue({
       player: '',
       time: '',
     });
   }
 
-  public deleteResult(): void {}
+  public deleteResult(index: number): void {
+    this.roundResultsFormArray.removeAt(index);
+  }
 
-  public saveRoundResults(): void {}
+  public saveRoundResults(): void {
+    this.adminDataService
+      .saveOnlineCupRoundResults$(
+        this.cupId,
+        this.roundNumber,
+        this.roundResultsFormArray.value.map(({ player, time }: { player: number; time: number }) => ({
+          userId: player,
+          time,
+        })),
+      )
+      .subscribe(() => {
+        this.snackBar.open('Online cup round results saved successfully', 'OK', { duration: 3000 });
+      });
+  }
+
+  private sortResults(): void {
+    const allValuesSorted = this.roundResultsFormArray.value.sort((a, b) => a.time - b.time);
+
+    this.roundResultsFormArray.setValue(allValuesSorted);
+  }
 }
