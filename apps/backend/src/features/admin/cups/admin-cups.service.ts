@@ -448,7 +448,7 @@ export class AdminCupsService {
     }
   }
 
-  public async calculateRating(accessToken: string | undefined, cupId: number): Promise<void> {
+  public async calculateOfflineCupRating(accessToken: string | undefined, cupId: number): Promise<void> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!checkUserRoles(userAccess.roles, [UserRoles.VALIDATOR])) {
@@ -469,14 +469,12 @@ export class AdminCupsService {
       throw new BadRequestException("Can't calculate rating - demos are not validated yet");
     }
 
-    if (cup.type === CupTypes.OFFLINE) {
-      this.calculateOfflineRating(cup, Physics.VQ3);
-      this.calculateOfflineRating(cup, Physics.CPM);
-    } else if (cup.type === CupTypes.ONLINE) {
-      this.calculateOnlineRating(cup);
-    } else {
-      throw new NotImplementedException(`Unknown cup type ${cup.type}`);
+    if (cup.type !== CupTypes.OFFLINE) {
+      throw new BadRequestException('Wrong cup type, this endpoint only works for offline cups');
     }
+
+    this.calculateOfflineRating(cup, Physics.VQ3);
+    this.calculateOfflineRating(cup, Physics.CPM);
 
     await this.cupsRepository
       .createQueryBuilder()
@@ -1165,13 +1163,23 @@ export class AdminCupsService {
 
     await this.cupsResultsRepository.save(onlineCupResultsWithFinalSum);
 
+    let bonusPointsEfficiency = (onlineCupResultsWithFinalSum.length - 3) / 27;
+
+    if (bonusPointsEfficiency < 0) {
+      bonusPointsEfficiency = 0;
+    }
+
+    if (bonusPointsEfficiency > 1) {
+      bonusPointsEfficiency = 1;
+    }
+
     let averageRating = 0;
 
-    onlineCupResults.forEach(
-      (cupResult: CupResult) =>
-        (averageRating +=
-          cup.physics === Physics.CPM ? cupResult.user.cpm_rating || 1500 : cupResult.user.vq3_rating || 1500),
-    );
+    onlineCupResultsWithFinalSum.forEach((cupResult: CupResult) => {
+      const playerRating = Physics.CPM ? cupResult.user.cpm_rating || 1500 : cupResult.user.vq3_rating || 1500;
+
+      averageRating += playerRating;
+    });
 
     averageRating /= onlineCupResultsWithFinalSum.length;
 
@@ -1195,7 +1203,7 @@ export class AdminCupsService {
       const efficiency: number = cupResult.final_sum! / (1000 * participatedMapsCount);
       const userRating: number = cup.physics === Physics.VQ3 ? cupResult.user.vq3_rating : cupResult.user.cpm_rating;
       const expectation: number = 1 / (1 + Math.pow(10, (averageRating - userRating) / 400));
-      let ratingChange: number = Math.round(40 * participatedMapsCount * (efficiency - expectation));
+      let ratingChange: number = Math.round(12 * participatedMapsCount * (efficiency - expectation));
 
       // Removing rating loss for players lower than 1700
       if (userRating < 1700 && ratingChange < 0) {
@@ -1204,20 +1212,10 @@ export class AdminCupsService {
 
       // Adding rating for online cup rounds
       if (userRating < 2000) {
-        ratingChange += 3 * participatedMapsCount;
+        ratingChange += 2 * participatedMapsCount;
       }
 
       // Adding ratings for top 3 (+15 +10 +5 for 3 players, +50 +30 +20 for 30+ players)
-      let bonusPointsEfficiency = (onlineCupResultsWithFinalSum.length - 3) / 27;
-
-      if (bonusPointsEfficiency < 0) {
-        bonusPointsEfficiency = 0;
-      }
-
-      if (bonusPointsEfficiency > 1) {
-        bonusPointsEfficiency = 1;
-      }
-
       if (currentPlace === 1) {
         ratingChange += Math.round(bonusPointsEfficiency * (50 - 15) + 15);
       }
@@ -1434,9 +1432,6 @@ export class AdminCupsService {
     await this.usersRepository.save(playersUpdate);
     await this.ratingChangesRepository.createQueryBuilder().insert().into(RatingChange).values(ratingChanges).execute();
   }
-
-  // TODO
-  private async calculateOnlineRating(cup: Cup): Promise<void> {}
 
   /**
    * Counting bonus points (+15 +10 +5 for 3 players, +50 +30 +20 for 30+ players)

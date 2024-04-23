@@ -99,11 +99,11 @@ export class AdminCupsController {
   }
 
   @Post('calculate-rating/:cupId')
-  calculateRating(
+  calculateOfflineCupRating(
     @Headers('X-Auth') accessToken: string | undefined,
     @Param('cupId', new ParseIntPipe()) cupId: number,
   ): Promise<void> {
-    return this.adminCupsService.calculateRating(accessToken, cupId);
+    return this.adminCupsService.calculateOfflineCupRating(accessToken, cupId);
   }
 
   @Post('finish-offline-cup/:cupId')
