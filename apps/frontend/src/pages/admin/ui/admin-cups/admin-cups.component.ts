@@ -82,7 +82,7 @@ export class AdminCupsComponent implements OnInit {
     return checkUserRoles(this.user.roles, [UserRoles.CUP_ORGANIZER]);
   }
 
-  public finishCup(cupId: number): void {
+  public finishOfflineCup(cupId: number): void {
     this.adminDataService
       .calculateCupRating$(cupId)
       .pipe(

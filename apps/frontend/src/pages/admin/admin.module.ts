@@ -29,6 +29,7 @@ import { AdminMulticupComponent } from './ui/admin-multicup/admin-multicup.compo
 import { AdminInputRoundResultComponent } from './ui/admin-input-round-result/admin-input-round-result.component';
 import { AdminInputResultsComponent } from './ui/admin-input-results/admin-input-results.component';
 import { AdminBalancePlayersComponent } from './ui/admin-balance-players/admin-balance-players.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 const adminRoutes: Routes = [
   {
@@ -136,6 +137,7 @@ const adminRoutes: Routes = [
     MatSelectModule,
     MatCheckboxModule,
     QuillModule.forRoot(),
+    MatMenuModule,
   ],
   providers: [HasAdminPanelAccess, HasAdminRights],
 })

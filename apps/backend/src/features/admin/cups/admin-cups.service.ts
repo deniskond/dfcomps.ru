@@ -102,6 +102,7 @@ export class AdminCupsService {
       calculateRatingsAvailable: cup.rating_calculated === false && cup.demos_validated === true,
       endDateTime: cup.end_datetime,
       hasTwoServers: cup.use_two_servers,
+      isFinishAvailable: cup.current_round === 6,
     }));
   }
 

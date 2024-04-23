@@ -11,4 +11,5 @@ export interface AdminCupInterface {
   calculateRatingsAvailable: boolean;
   endDateTime: string;
   hasTwoServers: boolean;
+  isFinishAvailable: boolean;
 }
