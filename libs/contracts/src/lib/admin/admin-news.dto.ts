@@ -11,11 +11,9 @@ export class AdminNewsDto {
   @IsNotEmpty()
   postingTime: string;
 
-  @IsNotEmpty()
-  russianText: string;
+  russianText: string | null;
 
-  @IsNotEmpty()
-  englishText: string;
+  englishText: string | null;
 
   @IsEnum(NewsTypes)
   @IsNotEmpty()

@@ -63,6 +63,7 @@ import { MulterFileInterface } from 'apps/backend/src/shared/interfaces/multer.i
 import { Unpacked } from '@dfcomps/helpers';
 import { distance, closest } from 'fastest-levenshtein';
 
+// TODO Split offline and online cups
 @Injectable()
 export class AdminCupsService {
   constructor(
@@ -1124,11 +1125,18 @@ export class AdminCupsService {
     };
   }
 
+  // TODO Split this into several methods, maybe separate class. Add constants and rating system references
   public async finishOnlineCup(accessToken: string | undefined, cupId: number): Promise<void> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
       throw new UnauthorizedException('Unauthorized to get online cup players without CUP_ORGANIZER role');
+    }
+
+    const cup: Cup | null = await this.cupsRepository.createQueryBuilder('cups').where({ id: cupId }).getOne();
+
+    if (!cup) {
+      throw new NotFoundException(`Cup with id = ${cupId} not found`);
     }
 
     const onlineCupResults: CupResult[] = await this.cupsResultsRepository
@@ -1138,20 +1146,124 @@ export class AdminCupsService {
       .getMany();
 
     const onlineCupFullTable: MulticupTableInterface = await this.tablesService.getOnlineCupFullTable(cupId);
+    const { season }: Season = (await this.seasonRepository.createQueryBuilder('season').getOne())!;
 
-    const updatedOnlineCupResults: CupResult[] = onlineCupResults.map((cupResult: CupResult) => {
-      const targetPlayerTableEntry: MulticupResultInterface | undefined = onlineCupFullTable.players.find(
-        (result: MulticupResultInterface) => result.playerId === cupResult.user.id,
-      );
+    const onlineCupResultsWithFinalSum: CupResult[] = onlineCupResults
+      .map((cupResult: CupResult) => {
+        const targetPlayerTableEntry: MulticupResultInterface | undefined = onlineCupFullTable.players.find(
+          (result: MulticupResultInterface) => result.playerId === cupResult.user.id,
+        );
 
-      if (targetPlayerTableEntry) {
-        return { ...cupResult, final_sum: targetPlayerTableEntry.overall };
+        if (targetPlayerTableEntry) {
+          return { ...cupResult, final_sum: targetPlayerTableEntry.overall };
+        } else {
+          return cupResult;
+        }
+      })
+      .filter((cupResult: CupResult) => !!cupResult.final_sum)
+      .sort((resultA: CupResult, resultB: CupResult) => resultB.final_sum! - resultA.final_sum!);
+
+    await this.cupsResultsRepository.save(onlineCupResultsWithFinalSum);
+
+    let averageRating = 0;
+
+    onlineCupResults.forEach(
+      (cupResult: CupResult) =>
+        (averageRating +=
+          cup.physics === Physics.CPM ? cupResult.user.cpm_rating || 1500 : cupResult.user.vq3_rating || 1500),
+    );
+
+    averageRating /= onlineCupResultsWithFinalSum.length;
+
+    const updatedPlayersRatings: DeepPartial<User>[] = [];
+    const ratingChanges: DeepPartial<RatingChange>[] = [];
+    let currentPlace = 0;
+
+    onlineCupResultsWithFinalSum.forEach((cupResult: CupResult, index: number) => {
+      if (index === 0 || cupResult.final_sum !== onlineCupResultsWithFinalSum[index - 1].final_sum) {
+        currentPlace++;
+      }
+
+      const participatedMapsCount: number = [
+        cupResult.time1,
+        cupResult.time2,
+        cupResult.time3,
+        cupResult.time4,
+        cupResult.time5,
+      ].filter((time: number | null) => !!time).length;
+
+      const efficiency: number = cupResult.final_sum! / (1000 * participatedMapsCount);
+      const userRating: number = cup.physics === Physics.VQ3 ? cupResult.user.vq3_rating : cupResult.user.cpm_rating;
+      const expectation: number = 1 / (1 + Math.pow(10, (averageRating - userRating) / 400));
+      let ratingChange: number = Math.round(40 * participatedMapsCount * (efficiency - expectation));
+
+      // Removing rating loss for players lower than 1700
+      if (userRating < 1700 && ratingChange < 0) {
+        ratingChange = 0;
+      }
+
+      // Adding rating for online cup rounds
+      if (userRating < 2000) {
+        ratingChange += 3 * participatedMapsCount;
+      }
+
+      // Adding ratings for top 3 (+15 +10 +5 for 3 players, +50 +30 +20 for 30+ players)
+      let bonusPointsEfficiency = (onlineCupResultsWithFinalSum.length - 3) / 27;
+
+      if (bonusPointsEfficiency < 0) {
+        bonusPointsEfficiency = 0;
+      }
+
+      if (bonusPointsEfficiency > 1) {
+        bonusPointsEfficiency = 1;
+      }
+
+      if (currentPlace === 1) {
+        ratingChange += Math.round(bonusPointsEfficiency * (50 - 15) + 15);
+      }
+
+      if (currentPlace === 2) {
+        ratingChange += Math.round(bonusPointsEfficiency * (30 - 10) + 10);
+      }
+
+      if (currentPlace === 3) {
+        ratingChange += Math.round(bonusPointsEfficiency * (20 - 5) + 5);
+      }
+
+      if (cup.physics === Physics.VQ3) {
+        updatedPlayersRatings.push({
+          id: cupResult.user.id,
+          vq3_rating: cupResult.user.vq3_rating + ratingChange,
+        });
+
+        ratingChanges.push({
+          user: { id: cupResult.user.id },
+          cup: { id: cupId },
+          season,
+          bonus: false,
+          vq3_change: ratingChange,
+          vq3_place: currentPlace,
+        });
       } else {
-        return cupResult;
+        updatedPlayersRatings.push({
+          id: cupResult.user.id,
+          cpm_rating: cupResult.user.cpm_rating + ratingChange,
+        });
+
+        ratingChanges.push({
+          user: { id: cupResult.user.id },
+          cup: { id: cupId },
+          season,
+          bonus: false,
+          cpm_change: ratingChange,
+          cpm_place: currentPlace,
+        });
       }
     });
 
-    await this.cupsResultsRepository.save(updatedOnlineCupResults);
+    // Updating ratings and inserting rating changes into database
+    await this.usersRepository.save(updatedPlayersRatings);
+    await this.ratingChangesRepository.save(ratingChanges);
   }
 
   private async getPhysicsDemos(cupId: number, physics: Physics): Promise<AdminPlayerDemosValidationInterface[]> {
