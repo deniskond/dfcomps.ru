@@ -869,6 +869,7 @@ export class AdminCupsService {
       .getMany();
 
     return {
+      cupName: cup.full_name,
       servers: [
         {
           address: cup.server1,
@@ -877,6 +878,7 @@ export class AdminCupsService {
             .map((serversPlayers: CupResult) => ({
               id: serversPlayers.user.id,
               playerNick: serversPlayers.user.displayed_nick,
+              country: serversPlayers.user.country,
             })),
         },
         {
@@ -886,6 +888,7 @@ export class AdminCupsService {
             .map((serversPlayers: CupResult) => ({
               id: serversPlayers.user.id,
               playerNick: serversPlayers.user.displayed_nick,
+              country: serversPlayers.user.country,
             })),
         },
       ],

@@ -1,4 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { OnlineCupServersPlayersInterface } from '@dfcomps/contracts';
+import { AdminDataService } from '~pages/admin/business/admin-data.service';
 
 @Component({
   selector: 'admin-balance-players',
@@ -7,7 +10,23 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminBalancePlayersComponent implements OnInit {
-  constructor() {}
+  public serversPlayers: OnlineCupServersPlayersInterface;
+  private cupId: number;
 
-  ngOnInit(): void {}
+  constructor(
+    private adminDataService: AdminDataService,
+    private changeDetectorRef: ChangeDetectorRef,
+    private activatedRoute: ActivatedRoute,
+  ) {}
+
+  ngOnInit(): void {
+    this.cupId = this.activatedRoute.snapshot.params['id'];
+
+    this.adminDataService
+      .getOnlineCupServersPlayers$(this.cupId)
+      .subscribe((serversPlayers: OnlineCupServersPlayersInterface) => {
+        this.serversPlayers = serversPlayers;
+        this.changeDetectorRef.markForCheck();
+      });
+  }
 }

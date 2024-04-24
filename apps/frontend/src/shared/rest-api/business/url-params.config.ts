@@ -214,6 +214,7 @@ export class URL_PARAMS {
     ONLINE_CUP_PLAYERS: (cupId: number) => string;
     PARSE_SERVER_LOGS: (cupId: number) => string;
     ONLINE_CUP_SAVE_ROUND_RESULTS: string;
+    ONLINE_CUP_SERVERS_PLAYERS: (cupId: number) => string;
   } {
     return {
       GET_NEWS: `${API_URL}/admin/news/get-all-news`,
@@ -252,6 +253,7 @@ export class URL_PARAMS {
       ONLINE_CUP_PLAYERS: (cupId: number) => `${API_URL}/admin/cups/online/players/${cupId}`,
       PARSE_SERVER_LOGS: (cupId: number) => `${API_URL}/admin/cups/online/parse-server-logs/${cupId}`,
       ONLINE_CUP_SAVE_ROUND_RESULTS: `${API_URL}/admin/cups/online/save-round-results`,
+      ONLINE_CUP_SERVERS_PLAYERS: (cupId: number) => `${API_URL}/admin/cups/online/get-servers-players/${cupId}`,
     };
   }
 }

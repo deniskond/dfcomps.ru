@@ -1,6 +1,25 @@
 <mat-card class="card">
-  <div class="card-header">Balance players</div>
-  <div *ngIf="false; else isLoading"></div>
+  <ng-container *ngIf="serversPlayers; else isLoading">
+    <div class="card-header">Balance players ({{ serversPlayers.cupName }})</div>
+    <div class="servers-container">
+      <div *ngFor="let server of serversPlayers.servers" class="server-container">
+        <div class="server-address">
+          {{ server.address }}
+        </div>
+        <div *ngFor="let player of server.players" class="player-row">
+          <app-player-cell
+            [country]="player.country"
+            [nick]="player.playerNick"
+            [playerId]="player.id"
+            class="player-cell"
+          ></app-player-cell>
+          <div>
+            <button>Right</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
   <ng-template #isLoading>
     <div class="spinner">
       <mat-spinner diameter="75" strokeWidth="4" color="accent"></mat-spinner>

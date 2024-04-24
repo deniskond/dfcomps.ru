@@ -28,6 +28,7 @@ import {
   ParsedOnlineCupRoundInterface,
   SaveOnlineCupRoundDto,
   RoundResultEntryInterface,
+  OnlineCupServersPlayersInterface,
 } from '@dfcomps/contracts';
 import * as moment from 'moment';
 
@@ -306,6 +307,12 @@ export class AdminDataService {
       roundNumber,
       roundResults: JSON.stringify(roundResults) as any,
     } as SaveOnlineCupRoundDto);
+  }
+
+  public getOnlineCupServersPlayers$(cupId: number): Observable<OnlineCupServersPlayersInterface> {
+    return this.backendService.get$<OnlineCupServersPlayersInterface>(
+      URL_PARAMS.ADMIN.ONLINE_CUP_SERVERS_PLAYERS(cupId),
+    );
   }
 
   private getAdminNewsDto(formValue: Record<string, any>, newsType: NewsTypes): AdminNewsDto {
