@@ -19,7 +19,7 @@ export class AdminNewsDto {
   @IsNotEmpty()
   type: NewsTypes;
 
-  youtube: string | null;
+  youtube?: string;
 
   cupId?: number;
 

@@ -316,8 +316,11 @@ export class AdminDataService {
       russianText: formValue['russianText'],
       englishText: formValue['englishText'],
       type: newsType,
-      youtube: formValue['youtube'],
     };
+
+    if (formValue['youtube']) {
+      adminNewsDto.youtube = formValue['youtube'];
+    }
 
     if (formValue['cup']) {
       adminNewsDto.cupId = formValue['cup'];

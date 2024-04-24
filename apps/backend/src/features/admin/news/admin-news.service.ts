@@ -123,7 +123,7 @@ export class AdminNewsService {
         header_en: adminNewsDto.englishTitle,
         text: adminNewsDto.russianText,
         text_en: adminNewsDto.englishText,
-        youtube: adminNewsDto.youtube,
+        youtube: adminNewsDto.youtube ?? null,
         user: { id: userAccess.userId },
         datetimezone: moment(adminNewsDto.postingTime).tz('Europe/Moscow').format(),
         newsType: { id: mapNewsTypeEnumToDBNewsTypeId(adminNewsDto.type) },
