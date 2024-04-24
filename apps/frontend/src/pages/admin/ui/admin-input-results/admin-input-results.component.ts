@@ -13,8 +13,9 @@ import { AdminDataService } from '~pages/admin/business/admin-data.service';
 })
 export class AdminInputResultsComponent implements OnInit {
   public cupId: number;
-  public cupName: string;
   public onlineCupMapsForm: FormGroup | null = null;
+  public cupInfo: AdminEditCupInterface;
+  public setMaps: (string | null)[];
   public range = (n: number) => new Array(+n).fill(null);
 
   constructor(
@@ -29,20 +30,27 @@ export class AdminInputResultsComponent implements OnInit {
   }
 
   public saveOnlineCupMaps(): void {
-    this.adminDataService
-      .setOnlineCupMaps$(
-        this.cupId,
-        JSON.stringify([
-          this.onlineCupMapsForm?.get('map1')!.value,
-          this.onlineCupMapsForm?.get('map2')!.value,
-          this.onlineCupMapsForm?.get('map3')!.value,
-          this.onlineCupMapsForm?.get('map4')!.value,
-          this.onlineCupMapsForm?.get('map5')!.value,
-        ]) as any,
-      )
-      .subscribe(() => {
-        this.snackBar.open(`Successfully saved online cup (${this.cupName}) maps`, '', { duration: 2000 });
-      });
+    const maps: string[] = [
+      this.onlineCupMapsForm?.get('map1')!.value,
+      this.onlineCupMapsForm?.get('map2')!.value,
+      this.onlineCupMapsForm?.get('map3')!.value,
+      this.onlineCupMapsForm?.get('map4')!.value,
+      this.onlineCupMapsForm?.get('map5')!.value,
+    ];
+
+    this.adminDataService.setOnlineCupMaps$(this.cupId, JSON.stringify(maps) as any).subscribe(() => {
+      this.setMaps = maps;
+      this.changeDetectorRef.markForCheck();
+      this.snackBar.open(`Successfully saved online cup (${this.cupInfo.fullName}) maps`, '', { duration: 2000 });
+    });
+  }
+
+  public isDisabledInputResults(round: number): boolean {
+    return (
+      this.onlineCupMapsForm!.get('map' + round)!.errors?.['required'] ||
+      round > this.cupInfo.currentRound ||
+      !this.setMaps[round - 1]
+    );
   }
 
   private getOnlineCupInfo(): void {
@@ -57,7 +65,8 @@ export class AdminInputResultsComponent implements OnInit {
         map5: new FormControl(cupInfo.maps[4], Validators.required),
       });
 
-      this.cupName = cupInfo.fullName;
+      this.cupInfo = cupInfo;
+      this.setMaps = [cupInfo.maps[0], cupInfo.maps[1], cupInfo.maps[2], cupInfo.maps[3], cupInfo.maps[4]];
       this.changeDetectorRef.markForCheck();
     });
   }

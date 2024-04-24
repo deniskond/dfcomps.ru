@@ -1,6 +1,6 @@
 <mat-card class="card">
-  <ng-container *ngIf="onlineCupMapsForm && cupName; else isLoading">
-    <div class="card-header">Input online cup results ({{ cupName }})</div>
+  <ng-container *ngIf="onlineCupMapsForm && cupInfo.fullName; else isLoading">
+    <div class="card-header">Input online cup results ({{ cupInfo.fullName }})</div>
     <div [formGroup]="onlineCupMapsForm" class="maps-table">
       <div class="cell first table-head">Round</div>
       <div class="cell table-head">Map</div>
@@ -12,7 +12,7 @@
         </div>
         <div class="cell actions buttons">
           <button
-            [disabled]="onlineCupMapsForm.get('map' + (i + 1))!.errors?.['required']"
+            [disabled]="isDisabledInputResults(i + 1)"
             [routerLink]="'/admin/cups/online/input-round-result/' + cupId + '/' + (i + 1)"
             mat-raised-button
             color="primary"

@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { AdminEditCupInterface, OnlineCupPlayersInterface, ParsedOnlineCupRoundInterface } from '@dfcomps/contracts';
 import { Unpacked } from '@dfcomps/helpers';
-import { Observable, combineLatest, map } from 'rxjs';
+import { Observable, combineLatest, map, switchMap } from 'rxjs';
 import { AdminDataService } from '~pages/admin/business/admin-data.service';
 
 @Component({
@@ -141,6 +141,7 @@ export class AdminInputRoundResultComponent implements OnInit {
           time,
         })),
       )
+      .pipe(switchMap(() => this.adminDataService.getAllCups$(false)))
       .subscribe(() => {
         this.snackBar.open('Online cup round results saved successfully', 'OK', { duration: 3000 });
       });

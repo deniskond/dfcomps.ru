@@ -96,9 +96,13 @@ export class AdminCupsComponent implements OnInit {
   }
 
   public finishOnlineCup(cupId: number): void {
-    this.adminDataService.finishOnlineCup$(cupId).subscribe(() => {
-      this.snackBar.open('Online cup finished successfully', 'OK', { duration: 2000 });
-    });
+    this.adminDataService
+      .finishOnlineCup$(cupId)
+      .pipe(switchMap(() => this.adminDataService.getAllCups$(false)))
+      .subscribe((cups: AdminCupInterface[]) => {
+        this.cups$.next(cups);
+        this.snackBar.open('Online cup finished successfully', 'OK', { duration: 2000 });
+      });
   }
 
   public getCupEditLink(cup: AdminCupInterface): string {

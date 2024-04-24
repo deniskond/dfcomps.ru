@@ -20,4 +20,5 @@ export interface AdminEditCupInterface {
   server2: string;
   physics: Physics | 'mixed';
   maps: (string | null)[];
+  currentRound: number;
 }

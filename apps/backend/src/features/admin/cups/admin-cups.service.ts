@@ -145,6 +145,7 @@ export class AdminCupsService {
       server2: cup.server2,
       physics: cup.physics,
       maps: [cup.map1, cup.map2, cup.map3, cup.map4, cup.map5],
+      currentRound: cup.current_round,
     };
   }
 
@@ -1052,6 +1053,12 @@ export class AdminCupsService {
       throw new UnauthorizedException('Unauthorized to parse server logs without CUP_ORGANIZER role');
     }
 
+    const cup: Cup | null = await this.cupsRepository.createQueryBuilder('cups').where({ id: cupId }).getOne();
+
+    if (!cup) {
+      throw new NotFoundException(`Cup with id = ${cupId} not found`);
+    }
+
     if (![1, 2, 3, 4, 5].includes(roundNumber)) {
       throw new BadRequestException('Wrong roundNumber - should be one of [1, 2, 3, 4, 5]');
     }
@@ -1075,6 +1082,15 @@ export class AdminCupsService {
     });
 
     await this.cupsResultsRepository.save(cupResultsUpdate);
+
+    if (cup.current_round === roundNumber) {
+      await this.cupsRepository
+        .createQueryBuilder('cups')
+        .update(Cup)
+        .set({ current_round: roundNumber + 1 })
+        .where({ id: cupId })
+        .execute();
+    }
   }
 
   public async setOnlineCupMaps(
@@ -1262,6 +1278,14 @@ export class AdminCupsService {
     // Updating ratings and inserting rating changes into database
     await this.usersRepository.save(updatedPlayersRatings);
     await this.ratingChangesRepository.save(ratingChanges);
+
+    // Update cup ending time
+    await this.cupsRepository
+      .createQueryBuilder('cups')
+      .update(Cup)
+      .set({ end_datetime: moment().format() })
+      .where({ id: cupId })
+      .execute();
   }
 
   private async getPhysicsDemos(cupId: number, physics: Physics): Promise<AdminPlayerDemosValidationInterface[]> {
