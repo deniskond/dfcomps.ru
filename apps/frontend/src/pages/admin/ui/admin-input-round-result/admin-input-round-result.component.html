@@ -54,7 +54,8 @@
           {{ i + 1 }}
         </div>
         <div class="cell">
-          <input formControlName="servernick" class="input-field" />
+          {{ roundResultsFormArray.controls[i].get('servernick')!.value || '-----' }}
+          <input formControlName="servernick" type="hidden" />
         </div>
         <div class="cell">
           <mat-form-field appearance="outline">

@@ -73,7 +73,7 @@ export class AdminInputRoundResultComponent implements OnInit {
             new FormGroup({
               player: new FormControl(result.userId, Validators.required),
               time: new FormControl(result.time, Validators.required),
-              servernick: new FormControl('---'),
+              servernick: new FormControl('-----'),
             }),
           );
         });
@@ -136,7 +136,7 @@ export class AdminInputRoundResultComponent implements OnInit {
       new FormGroup({
         player: new FormControl(this.addSingleResultForm.get('player')!.value, Validators.required),
         time: new FormControl(this.addSingleResultForm.get('time')!.value, Validators.required),
-        servernick: new FormControl('---'),
+        servernick: new FormControl('-----'),
       }),
     );
 
