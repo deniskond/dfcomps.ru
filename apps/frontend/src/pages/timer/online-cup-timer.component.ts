@@ -30,18 +30,16 @@ export class OnlineCupTimerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const cupId: number = Number(this.activatedRoute.snapshot.params['cupId']);
+    const uuid: string = this.activatedRoute.snapshot.params['uuid'];
 
     this.cupsService
-      .getOnlineCupInfo$(cupId)
+      .getOnlineCupInfo$(uuid)
       .pipe(
         catchError((error: HttpErrorResponse) => {
-          if (error.status === 501) {
-            this.languageService.getTranslations$().subscribe((translations: Record<string, string>) => {
-              this.snackBar.open(translations['error'], translations['onlineCupMapAreNotSet'], { duration: 3000 });
-              this.router.navigate(['/']);
-            });
-          }
+          this.languageService.getTranslations$().subscribe((translations: Record<string, string>) => {
+            this.snackBar.open(translations['error'], translations['onlineCupMapAreNotSet'], { duration: 3000 });
+            this.router.navigate(['/']);
+          });
 
           return throwError(() => error);
         }),

@@ -774,6 +774,7 @@ export class AdminCupsService {
           use_two_servers: addOnlineCupDto.useTwoServers,
           demos_validated: false,
           multicup: null,
+          timerId: v4(),
         },
       ])
       .execute();

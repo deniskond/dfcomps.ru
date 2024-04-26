@@ -112,6 +112,6 @@ export class NewsOnlineAnnounceComponent implements OnInit, OnChanges {
   }
 
   public goToStreamersTimer(): void {
-    this.router.navigate([`/timer/${this.news.cup.id}`]);
+    this.router.navigate([`/timer/${this.news.timerId}`]);
   }
 }

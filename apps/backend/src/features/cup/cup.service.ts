@@ -337,25 +337,19 @@ export class CupService {
       .execute();
   }
 
-  public async getOnlineCupInfo(accessToken: string | undefined, cupId: number): Promise<OnlineCupInfoInterface> {
-    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
-
-    if (!userAccess.userId || !checkUserRoles(userAccess.roles, [UserRoles.STREAMER])) {
-      throw new BadRequestException(`Can't get online cup info without STREAMER role`);
-    }
-
+  public async getOnlineCupInfo(uuid: string): Promise<OnlineCupInfoInterface> {
     const cup: Cup | null = await this.cupRepository
       .createQueryBuilder('cups')
-      .where({ id: cupId })
+      .where({ timerId: uuid })
       .andWhere({ type: CupTypes.ONLINE })
       .getOne();
 
     if (!cup) {
-      throw new NotFoundException(`Online cup with id = ${cupId} not found`);
+      throw new NotFoundException(`Online cup with uuid = ${uuid} not found`);
     }
 
     if (!cup.map1 || !cup.map2 || !cup.map3 || !cup.map4 || !cup.map5) {
-      throw new NotImplementedException(`Online cup with id = ${cupId} has no maps yet`);
+      throw new NotImplementedException(`Online cup with uuid = ${uuid} has no maps yet`);
     }
 
     const cups: Cup[] = await this.cupRepository
@@ -364,7 +358,7 @@ export class CupService {
       .orderBy('id', 'ASC')
       .getMany();
 
-    const cupNumber: number = cups.findIndex((cup: Cup) => cup.id === cupId) + 1;
+    const cupNumber: number = cups.findIndex((cup: Cup) => cup.timerId === uuid) + 1;
 
     return {
       title: `Online Cup #${cupNumber}`,

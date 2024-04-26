@@ -157,7 +157,7 @@ export class URL_PARAMS {
     CHECK_REGISTRATION: () => string;
     VALIDATION_ARCHIVE_LINK: (cupId: number) => string;
     STREAMERS_ARCHIVE_LINK: (cupId: number) => string;
-    ONLINE_CUP_INFO: (cupId: number) => string;
+    ONLINE_CUP_INFO: (uuid: string) => string;
   } {
     return {
       GET_NEXTCUP: `${API_URL}/cup/next-cup-info`,
@@ -166,7 +166,7 @@ export class URL_PARAMS {
       CHECK_REGISTRATION: () => `${API_URL}/cup/is-registered`,
       VALIDATION_ARCHIVE_LINK: (cupId: number) => `${API_URL}/cup/validation-archive-link/${cupId}`,
       STREAMERS_ARCHIVE_LINK: (cupId: number) => `${API_URL}/cup/streamers-archive-link/${cupId}`,
-      ONLINE_CUP_INFO: (cupId: number) => `${API_URL}/cup/online-cup/${cupId}`,
+      ONLINE_CUP_INFO: (uuid: string) => `${API_URL}/cup/online-cup/${uuid}`,
     };
   }
 

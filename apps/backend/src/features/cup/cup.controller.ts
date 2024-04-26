@@ -57,11 +57,8 @@ export class CupController {
     return this.cupService.cancelRegistrationForOnlineCup(accessToken, cupId);
   }
 
-  @Get('online-cup/:cupId')
-  getOnlineCupInfo(
-    @Headers('X-Auth') accessToken: string | undefined,
-    @Param('cupId', new ParseIntPipe()) cupId: number,
-  ): Promise<OnlineCupInfoInterface> {
-    return this.cupService.getOnlineCupInfo(accessToken, cupId);
+  @Get('online-cup/:uuid')
+  getOnlineCupInfo(@Param('uuid') uuid: string): Promise<OnlineCupInfoInterface> {
+    return this.cupService.getOnlineCupInfo(uuid);
   }
 }

@@ -18,7 +18,7 @@ export class CupsService extends BackendService {
     );
   }
 
-  public getOnlineCupInfo$(cupId: number): Observable<OnlineCupInfoInterface> {
-    return this.get$<OnlineCupInfoInterface>(URL_PARAMS.CUP.ONLINE_CUP_INFO(cupId));
+  public getOnlineCupInfo$(uuid: string): Observable<OnlineCupInfoInterface> {
+    return this.get$<OnlineCupInfoInterface>(URL_PARAMS.CUP.ONLINE_CUP_INFO(uuid));
   }
 }

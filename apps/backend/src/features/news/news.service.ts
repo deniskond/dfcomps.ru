@@ -286,6 +286,7 @@ export class NewsService {
       type: NewsTypes.ONLINE_ANNOUNCE,
       isRegistered,
       cup: mapCupEntityToInterface(news.cup!, true, null, news.id, null),
+      timerId: checkUserRoles(userAccess.roles, [UserRoles.STREAMER]) ? news.cup!.timerId : null,
       registeredPlayers: registeredPlayers.map((cupResult: CupResult) => ({
         country: cupResult.user.country,
         id: cupResult.user.id,
