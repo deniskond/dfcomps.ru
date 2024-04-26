@@ -29,4 +29,21 @@ export class AdminBalancePlayersComponent implements OnInit {
         this.changeDetectorRef.markForCheck();
       });
   }
+
+  public transferPlayer(playerId: number, serverIndex: number): void {
+    const targetServer = serverIndex === 0 ? 2 : 1;
+    const targetIndex = targetServer - 1;
+
+    this.adminDataService.setPlayerServer$(playerId, targetServer, this.cupId).subscribe(() => {
+      const targetPlayer = this.serversPlayers.servers[serverIndex].players.find((player) => player.id === playerId)!;
+
+      this.serversPlayers.servers[serverIndex].players = this.serversPlayers.servers[serverIndex].players.filter(
+        (player) => player.id !== playerId,
+      );
+
+      this.serversPlayers.servers[targetIndex].players.push(targetPlayer);
+
+      this.changeDetectorRef.markForCheck();
+    });
+  }
 }

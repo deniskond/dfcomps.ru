@@ -2,19 +2,21 @@
   <ng-container *ngIf="serversPlayers; else isLoading">
     <div class="card-header">Balance players ({{ serversPlayers.cupName }})</div>
     <div class="servers-container">
-      <div *ngFor="let server of serversPlayers.servers" class="server-container">
+      <div *ngFor="let server of serversPlayers.servers; let i = index" class="server-container">
         <div class="server-address">
           {{ server.address }}
         </div>
         <div *ngFor="let player of server.players" class="player-row">
-          <app-player-cell
-            [country]="player.country"
-            [nick]="player.playerNick"
-            [playerId]="player.id"
-            class="player-cell"
-          ></app-player-cell>
-          <div>
-            <button>Right</button>
+          <div class="flag-container">
+            <app-flag [country]="player.country"></app-flag>
+          </div>
+          <div class="player-nick">
+            {{ player.playerNick }}
+          </div>
+          <div class="switch-button-container">
+            <button (click)="transferPlayer(player.id, i)" mat-flat-button color="accent">
+              <mat-icon>{{ i === 0 ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+            </button>
           </div>
         </div>
       </div>

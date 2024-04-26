@@ -45,8 +45,25 @@
 .player-row {
   display: flex;
   height: 40px;
+  align-items: center;
 }
 
-.player-cell {
+.flag-container {
+  display: flex;
+  justify-content: center;
+  width: 40px;
+}
+
+.player-nick {
   flex: 1;
+}
+
+.switch-button-container {
+  margin: 0 12px;
+  transform: scale(60%);
+}
+
+::ng-deep .switch-button-container mat-icon {
+  margin: 0 !important;
+  transform: scale(1.5);
 }
