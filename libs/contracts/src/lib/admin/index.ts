@@ -23,3 +23,4 @@ export { SaveOnlineCupRoundDto } from './save-online-cup-round.dto';
 export { RoundResultEntryInterface } from './round-result-entry.interface';
 export { SetOnlineCupMapsDto } from './set-online-cup-maps.dto';
 export { OnlineCupPlayersInterface } from './online-cup-player.interface';
+export { OnlineCupRoundResultsInterface } from './online-cup-round-results.interface';

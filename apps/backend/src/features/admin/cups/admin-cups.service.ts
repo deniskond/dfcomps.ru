@@ -21,6 +21,7 @@ import {
   NewsTypes,
   OnlineCupActionDto,
   OnlineCupPlayersInterface,
+  OnlineCupRoundResultsInterface,
   OnlineCupServersPlayersInterface,
   ParsedOnlineCupRoundInterface,
   Physics,
@@ -1150,10 +1151,14 @@ export class AdminCupsService {
       throw new UnauthorizedException('Unauthorized to get online cup players without CUP_ORGANIZER role');
     }
 
-    const cup: Cup | null = await this.cupsRepository.createQueryBuilder('cups').where({ id: cupId }).getOne();
+    const cup: Cup | null = await this.cupsRepository
+      .createQueryBuilder('cups')
+      .where({ id: cupId })
+      .andWhere({ type: CupTypes.ONLINE })
+      .getOne();
 
     if (!cup) {
-      throw new NotFoundException(`Cup with id = ${cupId} not found`);
+      throw new NotFoundException(`Online cup with id = ${cupId} not found`);
     }
 
     const onlineCupResults: CupResult[] = await this.cupsResultsRepository
@@ -1289,6 +1294,49 @@ export class AdminCupsService {
       .set({ end_datetime: moment().format() })
       .where({ id: cupId })
       .execute();
+  }
+
+  public async getOnlineCupRoundResults(
+    accessToken: string | undefined,
+    cupId: number,
+    roundNumber: number,
+  ): Promise<OnlineCupRoundResultsInterface> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+      throw new UnauthorizedException('Unauthorized to get online cup round results without CUP_ORGANIZER role');
+    }
+
+    const cup: Cup | null = await this.cupsRepository
+      .createQueryBuilder('cups')
+      .where({ id: cupId })
+      .andWhere({ type: CupTypes.ONLINE })
+      .getOne();
+
+    if (!cup) {
+      throw new NotFoundException(`Online cup with id = ${cupId} not found`);
+    }
+
+    if (![1, 2, 3, 4, 5].includes(roundNumber)) {
+      throw new BadRequestException(`Wrong round number, should be one of [1, 2, 3, 4, 5]`);
+    }
+
+    const cupResults: CupResult[] = await this.cupsResultsRepository
+      .createQueryBuilder('cups_results')
+      .leftJoinAndSelect('cups_results.user', 'users')
+      .where({ cup: { id: cupId } })
+      .getMany();
+
+    return {
+      results: cupResults
+        .map((cupResult: CupResult) => ({
+          nick: cupResult.user.displayed_nick,
+          userId: cupResult.user.id,
+          time: cupResult[`time${roundNumber}` as keyof CupResult] as number | null,
+        }))
+        .filter((result) => !!result.time)
+        .sort((resultA, resultB) => resultA.time! - resultB.time!),
+    } as OnlineCupRoundResultsInterface;
   }
 
   private async getPhysicsDemos(cupId: number, physics: Physics): Promise<AdminPlayerDemosValidationInterface[]> {

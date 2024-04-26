@@ -2,7 +2,12 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnIn
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { AdminEditCupInterface, OnlineCupPlayersInterface, ParsedOnlineCupRoundInterface } from '@dfcomps/contracts';
+import {
+  AdminEditCupInterface,
+  OnlineCupPlayersInterface,
+  OnlineCupRoundResultsInterface,
+  ParsedOnlineCupRoundInterface,
+} from '@dfcomps/contracts';
 import { Unpacked } from '@dfcomps/helpers';
 import { Observable, combineLatest, map, switchMap } from 'rxjs';
 import { AdminDataService } from '~pages/admin/business/admin-data.service';
@@ -59,6 +64,22 @@ export class AdminInputRoundResultComponent implements OnInit {
       this.cupPlayers = cupPlayers.players;
       this.changeDetectorRef.markForCheck();
     });
+
+    this.adminDataService
+      .getOnlineCupRoundResults$(this.cupId, this.roundNumber)
+      .subscribe((roundResults: OnlineCupRoundResultsInterface) => {
+        roundResults.results.forEach((result: Unpacked<OnlineCupRoundResultsInterface['results']>) => {
+          this.roundResultsFormArray.push(
+            new FormGroup({
+              player: new FormControl(result.userId, Validators.required),
+              time: new FormControl(result.time, Validators.required),
+              servernick: new FormControl('---'),
+            }),
+          );
+        });
+
+        this.changeDetectorRef.markForCheck();
+      });
   }
 
   public uploadServerLogs(): void {

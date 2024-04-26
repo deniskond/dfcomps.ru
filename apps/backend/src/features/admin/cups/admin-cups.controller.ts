@@ -25,6 +25,7 @@ import {
   NewsTypes,
   OnlineCupActionDto,
   OnlineCupPlayersInterface,
+  OnlineCupRoundResultsInterface,
   OnlineCupServersPlayersInterface,
   ParsedOnlineCupRoundInterface,
   ProcessValidationDto,
@@ -242,5 +243,14 @@ export class AdminCupsController {
     @Param('cupId', new ParseIntPipe()) cupId: number,
   ): Promise<void> {
     return this.adminCupsService.finishOnlineCup(accessToken, cupId);
+  }
+
+  @Get('online/round-results/:cupId/:roundNumber')
+  getOnlineCupRoundResults(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Param('cupId', new ParseIntPipe()) cupId: number,
+    @Param('roundNumber', new ParseIntPipe()) roundNumber: number,
+  ): Promise<OnlineCupRoundResultsInterface> {
+    return this.adminCupsService.getOnlineCupRoundResults(accessToken, cupId, roundNumber);
   }
 }
