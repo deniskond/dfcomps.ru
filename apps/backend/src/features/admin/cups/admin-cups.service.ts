@@ -966,7 +966,7 @@ export class AdminCupsService {
       // fast filtering non-time messages
       .filter((line: string) => line.includes('reached the finish line in'))
       // filtering console abuse with text messages with times from players
-      .filter((line: string) => !line.match(/\d\d\:\d\d\:\d\d.*\:\s.*reached the finish in/));
+      .filter((line: string) => !line.match(/\d\d\:\d\d\:\d\d.*\:\s.*reached the finish line in/));
 
     const parsedTimes: Record<string, number> = {};
 
