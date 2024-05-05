@@ -21,7 +21,7 @@
       <div class="cell first table-head">Player</div>
       <div class="cell table-head">Time</div>
       <div class="cell table-head">Action</div>
-      <div class="cell first">
+      <div class="cell first increased-padding">
         <mat-form-field appearance="outline">
           <mat-select formControlName="player">
             <mat-option *ngFor="let player of cupPlayers" [value]="player.userId">
@@ -30,10 +30,13 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="cell">
+      <div class="cell validation-cell increased-padding">
         <input formControlName="time" class="input-field" />
+        <div *ngIf="hasFieldError(addSingleResultForm.get('time')!)" class="error-message">
+          {{ (addSingleResultForm.get('time')?.errors)!['time'] }}
+        </div>
       </div>
-      <div class="cell">
+      <div class="cell increased-padding">
         <button [disabled]="!addSingleResultForm.valid" (click)="addSingleResult()" mat-raised-button color="accent">
           Add result
         </button>
@@ -50,32 +53,45 @@
         *ngFor="let row of range(roundResultsFormArray.controls.length); let i = index"
         [formGroup]="roundResultsFormArray.controls[i]"
       >
-        <div class="cell first">
+        <div class="cell first increased-padding">
           {{ i + 1 }}
         </div>
-        <div class="cell">
+        <div class="cell increased-padding">
           {{ roundResultsFormArray.controls[i].get('servernick')!.value || '-----' }}
           <input formControlName="servernick" type="hidden" />
         </div>
-        <div class="cell">
+        <div class="cell increased-padding validation-cell">
           <mat-form-field appearance="outline">
-            <mat-select formControlName="player">
+            <mat-select (selectionChange)="updateFormValidity()" formControlName="player">
               <mat-option *ngFor="let player of cupPlayers" [value]="player.userId">
                 {{ player.nick }}
               </mat-option>
             </mat-select>
           </mat-form-field>
+          <div *ngIf="hasPristineFieldError(roundResultsFormArray.controls[i]!.get('player')!)" class="error-message">
+            {{ (roundResultsFormArray.controls[i].get('player')?.errors)!['player'] }}
+          </div>
         </div>
-        <div class="cell">
+        <div class="cell increased-padding validation-cell">
           <input formControlName="time" class="input-field" />
+          <div *ngIf="hasFieldError(roundResultsFormArray.controls[i].get('time')!)" class="error-message">
+            {{ (roundResultsFormArray.controls[i].get('time')?.errors)!['time'] }}
+          </div>
         </div>
-        <div class="cell">
+        <div class="cell increased-padding">
           <button (click)="deleteResult(i)" mat-raised-button color="warn">Delete</button>
         </div>
       </ng-container>
     </div>
     <div class="button-container">
-      <button (click)="saveRoundResults()" mat-raised-button color="accent">Save round results</button>
+      <button
+        [disabled]="roundResultsFormArray.status !== 'VALID'"
+        (click)="saveRoundResults()"
+        mat-raised-button
+        color="accent"
+      >
+        Save round results
+      </button>
     </div>
   </ng-container>
   <ng-template #isLoading>

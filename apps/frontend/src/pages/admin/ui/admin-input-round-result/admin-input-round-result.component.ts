@@ -1,5 +1,13 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -32,7 +40,7 @@ export class AdminInputRoundResultComponent implements OnInit {
   });
   public addSingleResultForm: FormGroup = new FormGroup({
     player: new FormControl('', Validators.required),
-    time: new FormControl('', Validators.required),
+    time: new FormControl('', [Validators.required, this.timeFormatValidator('time')]),
   });
   public roundResultsFormArray = new FormArray<FormGroup>([]);
   public cupPlayers: OnlineCupPlayersInterface['players'];
@@ -71,8 +79,11 @@ export class AdminInputRoundResultComponent implements OnInit {
         roundResults.results.forEach((result: Unpacked<OnlineCupRoundResultsInterface['results']>) => {
           this.roundResultsFormArray.push(
             new FormGroup({
-              player: new FormControl(result.userId, Validators.required),
-              time: new FormControl(result.time, Validators.required),
+              player: new FormControl(result.userId, [
+                Validators.required,
+                this.playerDuplicateValidator('player').bind(this),
+              ]),
+              time: new FormControl(result.time, [Validators.required, this.timeFormatValidator('time')]),
               servernick: new FormControl('-----'),
             }),
           );
@@ -80,6 +91,48 @@ export class AdminInputRoundResultComponent implements OnInit {
 
         this.changeDetectorRef.markForCheck();
       });
+  }
+
+  // Valid times: `0.008`, `2`, `2.8`, `2.84`, `2.848` (divisible by 8ms, has leading number, 0-3 digits after the dot)
+  // Invalid times: `.008`, `3.`, `3.1`, `3.15`, `3.157`, `3.1600`
+  public timeFormatValidator(controlName: string): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control || !control.value) {
+        return null;
+      }
+
+      const stringTime: string = control.value;
+
+      if (!stringTime.toString().match(/^\d+((\..{1,3})|())$/)) {
+        return { [controlName]: 'Wrong time format' };
+      }
+
+      const time: number = Math.floor(parseFloat(stringTime) * 1000);
+
+      return time % 8 === 0 ? null : { [controlName]: 'Time is not divisible by 0.008' };
+    };
+  }
+
+  public playerDuplicateValidator(controlName: string): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control || !control.value) {
+        return null;
+      }
+
+      const userId: number = control.value;
+
+      const hasDuplicate: boolean =
+        this.roundResultsFormArray.controls.filter((formGroup: FormGroup) => formGroup.get('player')!.value === userId)
+          .length > 1;
+
+      return hasDuplicate ? { [controlName]: 'Duplicate player in results' } : null;
+    };
+  }
+
+  public updateFormValidity(): void {
+    this.roundResultsFormArray.controls.forEach((formGroup: FormGroup) =>
+      formGroup.get('player')!.updateValueAndValidity(),
+    );
   }
 
   public uploadServerLogs(): void {
@@ -120,8 +173,11 @@ export class AdminInputRoundResultComponent implements OnInit {
         this.roundResultsFormArray.push(
           new FormGroup({
             servernick: new FormControl(roundResultRecord.serverNick),
-            player: new FormControl(roundResultRecord.suggestedPlayer?.userId, Validators.required),
-            time: new FormControl(roundResultRecord.time, Validators.required),
+            player: new FormControl(roundResultRecord.suggestedPlayer?.userId, [
+              Validators.required,
+              this.playerDuplicateValidator('player').bind(this),
+            ]),
+            time: new FormControl(roundResultRecord.time, [Validators.required, this.timeFormatValidator('time')]),
           }),
         ),
       );
@@ -134,8 +190,14 @@ export class AdminInputRoundResultComponent implements OnInit {
   public addSingleResult(): void {
     this.roundResultsFormArray.push(
       new FormGroup({
-        player: new FormControl(this.addSingleResultForm.get('player')!.value, Validators.required),
-        time: new FormControl(this.addSingleResultForm.get('time')!.value, Validators.required),
+        player: new FormControl(this.addSingleResultForm.get('player')!.value, [
+          Validators.required,
+          this.playerDuplicateValidator('player').bind(this),
+        ]),
+        time: new FormControl(this.addSingleResultForm.get('time')!.value, [
+          Validators.required,
+          this.timeFormatValidator('time'),
+        ]),
         servernick: new FormControl('-----'),
       }),
     );
@@ -146,10 +208,14 @@ export class AdminInputRoundResultComponent implements OnInit {
       player: '',
       time: '',
     });
+
+    this.addSingleResultForm.markAsPristine();
+    this.updateFormValidity();
   }
 
   public deleteResult(index: number): void {
     this.roundResultsFormArray.removeAt(index);
+    this.updateFormValidity();
   }
 
   public saveRoundResults(): void {
@@ -166,6 +232,14 @@ export class AdminInputRoundResultComponent implements OnInit {
       .subscribe(() => {
         this.snackBar.open('Online cup round results saved successfully', 'OK', { duration: 3000 });
       });
+  }
+
+  public hasFieldError(control: AbstractControl): boolean {
+    return control!.status === 'INVALID' && !control!.pristine;
+  }
+
+  public hasPristineFieldError(control: AbstractControl): boolean {
+    return control!.status === 'INVALID';
   }
 
   private sortResults(): void {
