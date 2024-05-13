@@ -91,6 +91,11 @@ describe('admin offline cups news', () => {
     cy.get('[data-test-id=news-html-text]').first().should('contain.text', editedEnglishText);
     cy.get('[data-test-id=language-toggle]').click();
     cy.get('[data-test-id=cup-map-link]').first().should('contain.text', secondCupMap);
+
+    // cleaning up
+    cy.get('[data-test-id=admin-panel-button]').click();
+    cy.get('[data-test-id=delete-news-button]').first().click();
+    cy.get('mat-snack-bar-container').find('button.mat-mdc-snack-bar-action').click();
   });
 
   it('should add offline cup results news correctly', () => {
@@ -155,6 +160,11 @@ describe('admin offline cups news', () => {
     cy.get('[data-test-id=news-html-text]').first().should('contain.text', editedEnglishText);
     cy.get('[data-test-id=language-toggle]').click();
     cy.get('[data-test-id=offline-results-map-link]').first().should('contain.text', secondCupMap);
+
+    // cleaning up
+    cy.get('[data-test-id=admin-panel-button]').click();
+    cy.get('[data-test-id=delete-news-button]').first().click();
+    cy.get('mat-snack-bar-container').find('button.mat-mdc-snack-bar-action').click();
   });
 
   it('should add offline cup streamer results news correctly', () => {

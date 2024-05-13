@@ -8,7 +8,6 @@ export function addOfflineCup(mapName: string, options: { needToLogin: boolean }
   const testAuthorValue = faker.lorem.word();
 
   if (options.needToLogin) {
-    cy.visit('/');
     loginAs(UserRoles.CUP_ORGANIZER);
   }
 
