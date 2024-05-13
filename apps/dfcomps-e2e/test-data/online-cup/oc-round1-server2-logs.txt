@@ -192,58 +192,58 @@ PIXELFORMAT: color(32-bits) Z(24-bit) stencil(8-bits)
 16:59:55 >>/Nosf: hi
 16:59:56 >>/Nosf: =)
 16:59:57 CrazyAl entered the game.
-17:00:00 WP: Hi
+17:00:00 Kirk: Hi
 17:00:25 CrazyAl joined the spectators.
-17:00:55 96+ slow connected (NL, Netherlands)
-17:00:58 96+ slow entered the game.
-17:01:06 SiTiH.th connected (GB, United Kingdom)
-17:01:06 96+ slow: yeyo
-17:01:09 SiTiH.th entered the game.
-17:01:10 AW.Loontick connected (UA, Ukraine)
-17:01:12 AW.Loontick entered the game.
-17:01:12 AW.Loontick: h
-17:01:18 SiTiH.th: hi
-17:01:18 96+ slow: yeyo
-17:01:41 WP reached the finish line in 52:336 (est. 52:344)
-17:01:55 <acc/hyper connected (RU, Russian Federation)
-17:02:01 <acc/hyper entered the game.
-17:02:02 'Roman, connected (RU, Russian Federation)
-17:02:05 'Roman, entered the game.
-17:02:10 <acc/hyper: hllo everyone
-17:02:10 <acc/hyper: hllo everyone
-17:02:13 WP: Hi
+17:00:55 Benedict connected (NL, Netherlands)
+17:00:58 Benedict entered the game.
+17:01:06 Madelyn connected (GB, United Kingdom)
+17:01:06 Benedict: yeyo
+17:01:09 Madelyn entered the game.
+17:01:10 Joey connected (UA, Ukraine)
+17:01:12 Joey entered the game.
+17:01:12 Joey: h
+17:01:18 Madelyn: hi
+17:01:18 Benedict: yeyo
+17:01:41 Kirk reached the finish line in 52:336 (est. 52:344)
+17:01:55 Junius connected (RU, Russian Federation)
+17:02:01 Junius entered the game.
+17:02:02 Zetta connected (RU, Russian Federation)
+17:02:05 Zetta entered the game.
+17:02:10 Junius: hllo everyone
+17:02:10 Junius: hllo everyone
+17:02:13 Kirk: Hi
 17:02:34 w00dy.th: Szia (:
-17:03:22 Enter connected (RU, Russian Federation)
-17:03:24 Enter entered the game.
-17:04:23 <acc/hyper: Roman WIN
-17:04:53 KeT connected (HU, Hungary)
-17:04:57 KeT entered the game.
+17:03:22 Jermain connected (RU, Russian Federation)
+17:03:24 Jermain entered the game.
+17:04:23 Junius: Roman WIN
+17:04:53 Raymond connected (HU, Hungary)
+17:04:57 Raymond entered the game.
 17:05:06 w00dy.th: :)
 17:05:07 w00dy.th: Szia (:
 17:05:09 Failed to load model file models/players/characters/supermario/lower.md3
-17:05:09 'Roman,: npuBeT!!!
-17:05:58 Enter reached the finish line in 37:632 (est. 37:640)
-17:06:14 'Roman, reached the finish line in 1:53:016 (est. 1:53:021)
-17:06:18 KeT: Hooopaaaaa!
-17:06:21 'Roman,: npuBeT!!!
+17:05:09 Zetta: npuBeT!!!
+17:05:58 Jermain reached the finish line in 37:632 (est. 37:640)
+17:06:14 Zetta reached the finish line in 1:53:016 (est. 1:53:021)
+17:06:18 Raymond: Hooopaaaaa!
+17:06:21 Zetta: npuBeT!!!
 17:06:27 w00dy.th: Szia (:
-17:06:36 'Roman,: ex na4os na drygom servake(
-17:06:53 N4S_ connected (RU, Russian Federation)
-17:06:57 N4S_ entered the game.
-17:06:58 WP: :)
-17:07:00 N4S_: cho nado
-17:07:03 N4S_: ?!?!?!!?
-17:07:10 'Roman,: ooo
-17:07:21 KeT: is this warmup?
-17:07:25 N4S_ disconnected
-17:07:29 WP: for now, yeah
-17:07:34 WP: getting ready to start
+17:06:36 Zetta: ex na4os na drygom servake(
+17:06:53 Scotty connected (RU, Russian Federation)
+17:06:57 Scotty entered the game.
+17:06:58 Kirk: :)
+17:07:00 Scotty: cho nado
+17:07:03 Scotty: ?!?!?!!?
+17:07:10 Zetta: ooo
+17:07:21 Raymond: is this warmup?
+17:07:25 Scotty disconnected
+17:07:29 Kirk: for now, yeah
+17:07:34 Kirk: getting ready to start
 17:07:36 w00dy.th: :)
-17:07:38 KeT: Hooopaaaaa!
+17:07:38 Raymond: Hooopaaaaa!
 17:07:40 w00dy.th: Szia (:
-17:08:16 96+ slow: OBs  off
-17:08:43 KeT reached the finish line in 41:528 (est. 41:533)
-17:09:36 KeT reached the finish line in 38:888 (est. 38:892)
+17:08:16 Benedict: OBs  off
+17:08:43 Raymond reached the finish line in 41:528 (est. 41:533)
+17:09:36 Raymond reached the finish line in 38:888 (est. 38:892)
 17:10:11 w00dy.th called a vote: map qportal-blue.
 17:10:17 Vote passed.
 17:10:18 WARNING: server is not allowed to set df_mp_interferenceOff=3
@@ -330,112 +330,112 @@ PIXELFORMAT: color(32-bits) Z(24-bit) stencil(8-bits)
 Ultimate\quake3\defrag\demos\temp\current.dm_68
 17:10:19 Stopped demo recording.
 17:10:19 >>/Nosf entered the game.
-17:10:19 'Roman, entered the game.
-17:10:19 <acc/hyper entered the game.
-17:10:19 KeT entered the game.
-17:10:19 AW.Loontick entered the game.
-17:10:19 Enter entered the game.
-17:10:20 WP entered the game.
-17:10:20 96+ slow entered the game.
-17:10:21 SiTiH.th entered the game.
-17:10:51 96+ slow: PB: unknown
-17:11:35 96+ slow reached the finish line in 1:09:264 (est. 1:09:261)
-17:11:38 96+ slow: how long are rounds
-17:11:42 WP: 30 min
-17:11:56 'Roman, reached the finish line in 49:984 (est. 49:986)
-17:12:17 96+ slow reached the finish line in 34:672 (est. 34:672)
-17:12:32 <acc/hyper reached the finish line in 1:09:504 (est. 1:09:507)
-17:13:08 AW.Loontick reached the finish line in 40:432 (est. 40:437)
-17:13:18 Enter reached the finish line in 36:008 (est. 36:008)
-17:13:23 WP reached the finish line in 54:216 (est. 54:216)
-17:13:50 <acc/hyper reached the finish line in 42:912 (est. 42:918)
-17:13:59 Enter reached the finish line in 33:272 (est. 33:271)
-17:14:48 <acc/hyper reached the finish line in 35:320 (est. 35:320)
-17:16:12 AW.Loontick reached the finish line in 37:112 (est. 37:114)
-17:17:09 <acc/hyper reached the finish line in 34:664 (est. 34:661)
-17:17:13 <acc/hyper: (:
-17:17:40 <acc/hyper: Saint.p time: 17:17:41
-17:18:00 KeT reached the finish line in 34:096 (est. 34:098)
-17:18:09 'Roman, reached the finish line in 50:128 (est. 50:131)
-17:18:31 Puzifer connected (RU, Russian Federation)
-17:18:37 Puzifer entered the game.
-17:18:41 Puzifer: Hola
-17:18:43 WP: Hi
-17:18:43 96+ slow: yeyo
-17:19:06 96+ slow reached the finish line in 35:504 (est. 35:504)
-17:19:25 KeT reached the finish line in 31:864 (est. 31:865)
-17:19:26 KeT: Hooopaaaaa!
-17:19:36 'Roman, reached the finish line in 31:072 (est. 31:072)
-17:19:39 <acc/hyper: (:
-17:20:32 AW.Loontick reached the finish line in 36:008 (est. 36:004)
-17:20:52 'Roman, reached the finish line in 41:232 (est. 41:232)
-17:21:02 SiTiH.th reached the finish line in 1:09:656 (est. 1:09:655)
-17:21:15 <acc/hyper reached the finish line in 34:360 (est. 34:360)
-17:21:22 Puzifer reached the finish line in 42:592 (est. 42:598)
-17:21:32 'Roman, reached the finish line in 30:664 (est. 30:664)
-17:21:54 <acc/hyper reached the finish line in 34:144 (est. 34:138)
-17:21:56 SiTiH.th reached the finish line in 48:584 (est. 48:580)
-17:22:24 AW.Loontick reached the finish line in 35:672 (est. 35:675)
-17:23:27 Puzifer reached the finish line in 36:520 (est. 36:525)
-17:23:28 96+ slow reached the finish line in 32:384 (est. 32:387)
-17:23:45 AW.Loontick reached the finish line in 35:248 (est. 35:244)
-17:24:38 Enter reached the finish line in 31:040 (est. 31:038)
+17:10:19 Zetta entered the game.
+17:10:19 Junius entered the game.
+17:10:19 Raymond entered the game.
+17:10:19 Joey entered the game.
+17:10:19 Jermain entered the game.
+17:10:20 Kirk entered the game.
+17:10:20 Benedict entered the game.
+17:10:21 Madelyn entered the game.
+17:10:51 Benedict: PB: unknown
+17:11:35 Benedict reached the finish line in 1:09:264 (est. 1:09:261)
+17:11:38 Benedict: how long are rounds
+17:11:42 Kirk: 30 min
+17:11:56 Zetta reached the finish line in 49:984 (est. 49:986)
+17:12:17 Benedict reached the finish line in 34:672 (est. 34:672)
+17:12:32 Junius reached the finish line in 1:09:504 (est. 1:09:507)
+17:13:08 Joey reached the finish line in 40:432 (est. 40:437)
+17:13:18 Jermain reached the finish line in 36:008 (est. 36:008)
+17:13:23 Kirk reached the finish line in 54:216 (est. 54:216)
+17:13:50 Junius reached the finish line in 42:912 (est. 42:918)
+17:13:59 Jermain reached the finish line in 33:272 (est. 33:271)
+17:14:48 Junius reached the finish line in 35:320 (est. 35:320)
+17:16:12 Joey reached the finish line in 37:112 (est. 37:114)
+17:17:09 Junius reached the finish line in 34:664 (est. 34:661)
+17:17:13 Junius: (:
+17:17:40 Junius: Saint.p time: 17:17:41
+17:18:00 Raymond reached the finish line in 34:096 (est. 34:098)
+17:18:09 Zetta reached the finish line in 50:128 (est. 50:131)
+17:18:31 Lonzo connected (RU, Russian Federation)
+17:18:37 Lonzo entered the game.
+17:18:41 Lonzo: Hola
+17:18:43 Kirk: Hi
+17:18:43 Benedict: yeyo
+17:19:06 Benedict reached the finish line in 35:504 (est. 35:504)
+17:19:25 Raymond reached the finish line in 31:864 (est. 31:865)
+17:19:26 Raymond: Hooopaaaaa!
+17:19:36 Zetta reached the finish line in 31:072 (est. 31:072)
+17:19:39 Junius: (:
+17:20:32 Joey reached the finish line in 36:008 (est. 36:004)
+17:20:52 Zetta reached the finish line in 41:232 (est. 41:232)
+17:21:02 Madelyn reached the finish line in 1:09:656 (est. 1:09:655)
+17:21:15 Junius reached the finish line in 34:360 (est. 34:360)
+17:21:22 Lonzo reached the finish line in 42:592 (est. 42:598)
+17:21:32 Zetta reached the finish line in 30:664 (est. 30:664)
+17:21:54 Junius reached the finish line in 34:144 (est. 34:138)
+17:21:56 Madelyn reached the finish line in 48:584 (est. 48:580)
+17:22:24 Joey reached the finish line in 35:672 (est. 35:675)
+17:23:27 Lonzo reached the finish line in 36:520 (est. 36:525)
+17:23:28 Benedict reached the finish line in 32:384 (est. 32:387)
+17:23:45 Joey reached the finish line in 35:248 (est. 35:244)
+17:24:38 Jermain reached the finish line in 31:040 (est. 31:038)
 17:25:22 >>/Nosf joined the spectators.
 17:25:22 Failed to load model file models/players/characters/chaos-marine/lower.md3
-17:25:28 <acc/hyper reached the finish line in 34:424 (est. 34:425)
-17:25:54 AW.Loontick reached the finish line in 34:864 (est. 34:865)
-17:26:41 <acc/hyper reached the finish line in 34:168 (est. 34:171)
-17:28:40 'Roman, reached the finish line in 30:200 (est. 30:201)
-17:29:01 Puzifer reached the finish line in 35:800 (est. 35:799)
-17:29:07 KeT reached the finish line in 29:984 (est. 29:979)
-17:29:08 KeT: Hooopaaaaa!
-17:29:14 'Roman,: |)
-17:29:40 <acc/hyper reached the finish line in 32:608 (est. 32:605)
-17:29:44 <acc/hyper: uuuuu suka
-17:29:46 <acc/hyper: end
-17:29:50 Enter reached the finish line in 30:552 (est. 30:554)
-17:30:05 SiTiH.th reached the finish line in 36:232 (est. 36:232)
-17:30:31 <acc/hyper reached the finish line in 33:192 (est. 33:191)
-17:30:54 SiTiH.th reached the finish line in 35:616 (est. 35:615)
-17:31:20 <acc/hyper reached the finish line in 32:464 (est. 32:467)
-17:31:52 WP reached the finish line in 37:968 (est. 37:969)
-17:32:56 WP reached the finish line in 35:680 (est. 35:686)
-17:33:17 AW.Loontick reached the finish line in 34:528 (est. 34:527)
-17:33:23 'Roman, reached the finish line in 30:432 (est. 30:432)
-17:33:36 96+ slow reached the finish line in 33:384 (est. 33:387)
-17:33:37 <acc/hyper reached the finish line in 32:848 (est. 32:845)
-17:34:08 AW.Loontick reached the finish line in 34:144 (est. 34:143)
-17:35:08 'Roman, reached the finish line in 29:272 (est. 29:272)
-17:35:20 96+ slow reached the finish line in 33:168 (est. 33:166)
-17:35:34 AW.Loontick reached the finish line in 34:480 (est. 34:480)
-17:35:45 'Roman,: |)
-17:36:03 'Roman,: |)
+17:25:28 Junius reached the finish line in 34:424 (est. 34:425)
+17:25:54 Joey reached the finish line in 34:864 (est. 34:865)
+17:26:41 Junius reached the finish line in 34:168 (est. 34:171)
+17:28:40 Zetta reached the finish line in 30:200 (est. 30:201)
+17:29:01 Lonzo reached the finish line in 35:800 (est. 35:799)
+17:29:07 Raymond reached the finish line in 29:984 (est. 29:979)
+17:29:08 Raymond: Hooopaaaaa!
+17:29:14 Zetta: |)
+17:29:40 Junius reached the finish line in 32:608 (est. 32:605)
+17:29:44 Junius: uuuuu suka
+17:29:46 Junius: end
+17:29:50 Jermain reached the finish line in 30:552 (est. 30:554)
+17:30:05 Madelyn reached the finish line in 36:232 (est. 36:232)
+17:30:31 Junius reached the finish line in 33:192 (est. 33:191)
+17:30:54 Madelyn reached the finish line in 35:616 (est. 35:615)
+17:31:20 Junius reached the finish line in 32:464 (est. 32:467)
+17:31:52 Kirk reached the finish line in 37:968 (est. 37:969)
+17:32:56 Kirk reached the finish line in 35:680 (est. 35:686)
+17:33:17 Joey reached the finish line in 34:528 (est. 34:527)
+17:33:23 Zetta reached the finish line in 30:432 (est. 30:432)
+17:33:36 Benedict reached the finish line in 33:384 (est. 33:387)
+17:33:37 Junius reached the finish line in 32:848 (est. 32:845)
+17:34:08 Joey reached the finish line in 34:144 (est. 34:143)
+17:35:08 Zetta reached the finish line in 29:272 (est. 29:272)
+17:35:20 Benedict reached the finish line in 33:168 (est. 33:166)
+17:35:34 Joey reached the finish line in 34:480 (est. 34:480)
+17:35:45 Zetta: |)
+17:36:03 Zetta: |)
 17:36:10 w00dy.th: :)
-17:36:26 KeT: kopp!
-17:36:48 'Roman,: y men9 tyt rek
-17:36:57 KeT reached the finish line in 28:936 (est. 28:936)
-17:36:58 KeT: Hooopaaaaa!
-17:36:59 'Roman,: |D
-17:36:59 'Roman,: |D
-17:36:59 'Roman,: |D
-17:37:01 <acc/hyper joined the spectators.
-17:37:02 'Roman,: gj
-17:37:09 <acc/hyper: !top
-17:37:10 96+ slow reached the finish line in 32:840 (est. 32:839)
-17:37:13 <acc/hyper: ha
+17:36:26 Raymond: kopp!
+17:36:48 Zetta: y men9 tyt rek
+17:36:57 Raymond reached the finish line in 28:936 (est. 28:936)
+17:36:58 Raymond: Hooopaaaaa!
+17:36:59 Zetta: |D
+17:36:59 Zetta: |D
+17:36:59 Zetta: |D
+17:37:01 Junius joined the spectators.
+17:37:02 Zetta: gj
+17:37:09 Junius: !top
+17:37:10 Benedict reached the finish line in 32:840 (est. 32:839)
+17:37:13 Junius: ha
 17:37:23 >>/Nosf entered the game.
-17:37:46 WP reached the finish line in 35:000 (est. 34:997)
+17:37:46 Kirk reached the finish line in 35:000 (est. 34:997)
 17:38:49 ]/bind f9
 17:38:49 "f9" = "say STOP TIME!!!!!!!!"
-17:39:14 KeT: Hooopaaaaa!
-17:39:23 SiTiH.th reached the finish line in 35:232 (est. 35:232)
-17:39:28 96+ slow reached the finish line in 32:024 (est. 32:028)
+17:39:14 Raymond: Hooopaaaaa!
+17:39:23 Madelyn reached the finish line in 35:232 (est. 35:232)
+17:39:28 Benedict reached the finish line in 32:024 (est. 32:028)
 17:39:33 w00dy.th: 1 min left
-17:39:40 Puzifer reached the finish line in 34:496 (est. 34:500)
-17:39:45 AW.Loontick reached the finish line in 33:856 (est. 33:854)
-17:39:59 96+ slow: 1v1 me tic tac toe
-17:40:09 WP reached the finish line in 34:568 (est. 34:570)
-17:40:15 KeT: Hooopaaaaa!
+17:39:40 Lonzo reached the finish line in 34:496 (est. 34:500)
+17:39:45 Joey reached the finish line in 33:856 (est. 33:854)
+17:39:59 Benedict: 1v1 me tic tac toe
+17:40:09 Kirk reached the finish line in 34:568 (est. 34:570)
+17:40:15 Raymond: Hooopaaaaa!
 17:40:21 >>/Nosf: STOP TIME!!!!!!!!
 17:40:22 >>/Nosf: STOP TIME!!!!!!!!
 17:40:22 >>/Nosf: STOP TIME!!!!!!!!

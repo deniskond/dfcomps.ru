@@ -22,7 +22,7 @@ describe('admin multicups', () => {
     cy.get('[data-test-id=multicup-rounds-input]').type(initialRounds.toString());
 
     // adding multicup and checking admin multicups list
-    cy.get('[data-test-id=multicup-submit-button]').click(); 
+    cy.get('[data-test-id=multicup-submit-button]').click();
     cy.get('[data-test-id=multicup-name-text]').first().should('contain.text', initialMulticupName);
     cy.get('[data-test-id=multicup-rounds-text]').first().should('contain.text', initialRounds.toString());
   });
@@ -36,7 +36,7 @@ describe('admin multicups', () => {
     cy.get('[data-test-id=multicup-rounds-input]').clear().type(secondMulticupRounds.toString());
 
     // submitting form and checking admin multicups list
-    cy.get('[data-test-id=multicup-submit-button]').click(); 
+    cy.get('[data-test-id=multicup-submit-button]').click();
     cy.get('[data-test-id=multicup-name-text]').first().should('contain.text', secondMulticupName);
     cy.get('[data-test-id=multicup-rounds-text]').first().should('contain.text', secondMulticupRounds.toString());
   });
@@ -44,15 +44,18 @@ describe('admin multicups', () => {
   it('should delete multicup correctly', () => {
     cy.visit('/admin/multicups');
 
-    const firstMulticupName = cy.get('[data-test-id=multicup-name-text]').first().invoke('text');
+    cy.get('[data-test-id=multicup-name-text]')
+      .first()
+      .invoke('text')
+      .then((firstMulticupName: string) => {
+        cy.get('[data-test-id=delete-multicup-button]').first().click();
+        cy.get('mat-snack-bar-container').find('button.mat-mdc-snack-bar-action').click();
 
-    cy.get('[data-test-id=delete-multicup-button]').first().click();
-    cy.get('mat-snack-bar-container').find('button.mat-mdc-snack-bar-action').click();
+        // checking admin news list
+        cy.get('[data-test-id=multicup-name-text]').first().should('not.contain.text', firstMulticupName);
 
-    // checking admin news list
-    cy.get('[data-test-id=multicup-name-text]').first().should('not.contain.text', firstMulticupName);
-
-    // checking snackbar
-    cy.get('simple-snack-bar').find('.mat-mdc-snack-bar-label').should('contain.text', 'Successfully deleted');
+        // checking snackbar
+        cy.get('simple-snack-bar').find('.mat-mdc-snack-bar-label').should('contain.text', 'Successfully deleted');
+      });
   });
 });

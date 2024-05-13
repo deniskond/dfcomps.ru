@@ -30,6 +30,15 @@ export class AdminBalancePlayersComponent implements OnInit {
       });
   }
 
+  public isLargestServer(serverIndex: number): boolean {
+    const otherServerIndex = serverIndex === 0 ? 1 : 0;
+
+    return (
+      this.serversPlayers.servers[serverIndex].players.length >=
+      this.serversPlayers.servers[otherServerIndex].players.length
+    );
+  }
+
   public transferPlayer(playerId: number, serverIndex: number): void {
     const targetServer = serverIndex === 0 ? 2 : 1;
     const targetIndex = targetServer - 1;

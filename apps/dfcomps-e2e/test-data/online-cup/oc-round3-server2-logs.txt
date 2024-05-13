@@ -1,0 +1,517 @@
+17:41:23 ----- FS_Startup -----
+17:41:23 ...loaded in 42 milliseconds
+17:41:23 ----------------------
+17:41:23 90224 files in 2004 pk3 files
+17:41:23 RE_Shutdown( 0 )
+17:41:23 Hunk_Clear: reset the hunk ok
+17:41:23 ----- R_Init -----
+17:41:23
+GL_VENDOR: NVIDIA Corporation
+17:41:23 GL_RENDERER: GeForce GTX 1660 SUPER/PCIe/SSE2
+17:41:23 GL_VERSION: 4.6.0 NVIDIA 461.40
+17:41:23
+17:41:23 GL_MAX_TEXTURE_SIZE: 32768
+17:41:23 GL_MAX_TEXTURE_UNITS_ARB: 8
+17:41:23
+PIXELFORMAT: color(32-bits) Z(24-bit) stencil(8-bits)
+17:41:23 MODE: -1, 1600 x 1024 windowed hz:120
+17:41:23 GAMMA: hardware w/ 0 overbright bits
+17:41:23 CPU: 64-bit AuthenticAMD
+17:41:23 rendering primitives: single glDrawElements
+17:41:23 texturemode: GL_LINEAR_MIPMAP_NEAREST
+17:41:23 picmip: 0
+17:41:23 texture bits: 0
+17:41:23 multitexture: enabled
+17:41:23 compiled vertex arrays: enabled
+17:41:23 texenv add: enabled
+17:41:23 compressed textures: disabled
+17:41:23 HACK: using vertex lightmap approximation
+17:41:23 Initializing Shaders
+17:41:23 ----- finished R_Init -----
+17:41:23 ------ Initializing Sound ------
+17:41:23 Initializing DirectSound
+17:41:23 ----- Sound Info -----
+17:41:23     1 stereo
+17:41:23 32768 samples
+17:41:23    16 samplebits
+17:41:23     1 submission_chunk
+17:41:23 22050 speed
+17:41:23 000000002D3C0090 dma buffer
+17:41:23 No background file.
+17:41:23 ----------------------
+17:41:23 Sound initialization successful.
+17:41:23 --------------------------------
+17:41:23 Sound memory manager started
+17:41:23 Loading dll file ui.
+17:41:23 LoadLibrary 'D:\Quake 3 Ultimate\quake3\defrag\uix86_64.dll' failed
+17:41:23 Failed to load dll, looking for qvm.
+17:41:23 Loading vm file vm/ui.qvm...
+17:41:23 VM file ui compiled to 714990 bytes of code
+17:41:23 ui loaded in 2098176 bytes on the hunk
+17:41:23 110 arenas parsed
+17:41:23 2 arenas ignored to make count divisible by 4
+17:41:23 32 bots parsed
+17:41:23 Loading vm file vm/cgame.qvm...
+17:41:23 VM file cgame compiled to 1271982 bytes of code
+17:41:23 cgame loaded in 8389632 bytes on the hunk
+17:41:23 Cvar: df_promode 0
+17:41:23 Cvar: dmflags 0
+17:41:23 Cvar: sv_cheats 0
+17:41:23 Cvar: timescale 1.00
+17:41:23 Cvar: g_synchronousClients 0
+17:41:23 Cvar: pmove_fixed 1
+17:41:23 Cvar: pmove_msec 8
+17:41:23 Cvar: g_speed 320
+17:41:23 Cvar: g_gravity 800
+17:41:23 Cvar: g_knockback 1000
+17:41:23 stitched 0 LoD cracks
+17:41:23 ...loaded 2783 faces, 20 meshes, 1 trisurfs, 0 flares
+17:41:23 WARNING: Failed to load sound sound/player/crash/taunt.wav!
+17:41:23 WARNING: could not find sound/player/crash/taunt.wav - using default
+17:41:23 Failed to load model file models/players/characters/clobber/lower.md3
+17:41:23 Failed to load model file models/players/characters/sonic/lower.md3
+17:41:23 Failed to load model file models/players/characters/n_duck/lower.md3
+17:41:24 CL_InitCGame:  0.50 seconds
+17:41:24 5 msec to draw all images
+17:41:24 Com_TouchMemory: 0 msec
+17:41:24 copy D:\Quake 3 Ultimate\quake3\defrag\demos\temp\current.tmp to D:\Quake 3
+Ultimate\quake3\defrag\demos\temp\current.dm_68
+17:41:24 Stopped demo recording.
+17:41:24 Jaylin entered the game.
+17:41:24 Christina entered the game.
+17:41:24 >>/Nosf entered the game.
+17:41:24 Keeley entered the game.
+17:41:24 Jermain entered the game.
+17:41:25 Price entered the game.
+17:41:25 Scotty entered the game.
+17:41:26 Jaylin: wheres ket playing..
+17:41:26 Rodolfo entered the game.
+17:41:26 Melissa entered the game.
+17:41:27 Rhiannon entered the game.
+17:41:27 Giovanni entered the game.
+17:41:44 Christina: how do I disable blood particles xd
+17:41:46 w00dy.th: :)
+17:41:50 Jaylin: com_blood 0
+17:41:52 Christina: ty
+17:42:21 Jaylin: privet enter
+17:42:54 Christina reached the finish line in 1:19:888 (est. 1:19:887)
+17:43:44 ]n4s, a ti regalsya?
+17:43:44 >>/Nosf: n4s, a ti regalsya?
+17:43:48 Scotty: da
+17:43:52 w00dy.th: nachos
+17:43:57 Scotty: ya ne na tom serve?
+17:44:03 w00dy.th: da vse ok
+17:44:05 w00dy.th: on niki smotrit
+17:44:06 w00dy.th: dla rezos
+17:44:07 ]aa, ponyal
+17:44:07 >>/Nosf: aa, ponyal
+17:44:09 Scotty: 8-)
+17:44:11 w00dy.th: :)
+17:44:11 Scotty: ladno
+17:44:12 Rhiannon reached the finish line in 1:16:992 (est. 1:16:992)
+17:44:13 Jermain reached the finish line in 1:51:864 (est. 1:51:864)
+17:44:15 Rhiannon: xdd
+17:44:24 Christina reached the finish line in 38:984 (est. 38:979)
+17:44:27 Christina: thats a cool map
+17:44:35 w00dy.th: :)
+17:44:48 Jermain reached the finish line in 31:152 (est. 31:154)
+17:44:55 Rodolfo reached the finish line in 2:53:536 (est. 2:53:538)
+17:46:04 Christina reached the finish line in 18:808 (est. 18:803)
+17:46:08 Jaylin: gg
+17:46:41 Melissa reached the finish line in 2:01:208 (est. 2:01:212)
+17:47:00 Price: obs: off
+17:47:04 Christina reached the finish line in 17:064 (est. 17:064)
+17:47:37 Jermain reached the finish line in 1:15:704 (est. 1:15:703)
+17:47:40 Price reached the finish line in 1:02:792 (est. 1:02:793)
+17:48:01 Melissa reached the finish line in 39:280 (est. 39:277)
+17:48:30 Rodolfo reached the finish line in 25:912 (est. 25:915)
+17:48:53 Christina reached the finish line in 16:328 (est. 16:328)
+17:49:24 Jaylin: xd
+17:49:27 Rhiannon reached the finish line in 57:272 (est. 57:269)
+17:49:50 Price reached the finish line in 57:192 (est. 57:194)
+17:50:30 Jermain reached the finish line in 38:976 (est. 38:975)
+17:50:35 Keeley reached the finish line in 1:14:216 (est. 1:14:216)
+17:51:31 Christina reached the finish line in 1:14:480 (est. 1:14:480)
+17:52:13 Rhiannon reached the finish line in 39:816 (est. 39:816)
+17:52:22 Christina reached the finish line in 15:984 (est. 15:984)
+17:52:57 Giovanni reached the finish line in 8:11:056 (est. 8:11:050)
+17:52:59 Rhiannon: :>
+17:52:59 Rhiannon: :>
+17:53:00 Rhiannon: ckopocTHou napeHb !!!
+17:53:01 w00dy.th: :)
+17:53:03 Giovanni: EEEE
+17:53:25 Jaylin reached the finish line in 24:768 (est. 24:773)
+17:53:25 Keeley reached the finish line in 2:36:624 (est. 2:36:624)
+17:53:28 Rhiannon: ckopocTHou napeHb !!!
+17:53:34 Jaylin: thats you
+17:54:00 Price reached the finish line in 16:320 (est. 16:319)
+17:54:15 Rhiannon reached the finish line in 20:888 (est. 20:892)
+17:54:26 Rhiannon: razryvnaya karta kone4no
+17:54:33 Rhiannon: eto neprosto
+17:56:12 Keeley reached the finish line in 51:320 (est. 51:321)
+17:56:44 Jermain reached the finish line in 20:912 (est. 20:909)
+17:57:28 Christina reached the finish line in 16:152 (est. 16:153)
+17:57:54 Jermain reached the finish line in 16:944 (est. 16:949)
+17:58:01 Keeley reached the finish line in 44:592 (est. 44:597)
+17:58:34 Jaylin reached the finish line in 48:376 (est. 48:373)
+18:00:17 Christina reached the finish line in 15:872 (est. 15:872)
+18:01:26 w00dy.th: 10 min left
+18:01:41 Jermain reached the finish line in 16:408 (est. 16:405)
+18:02:15 Christina reached the finish line in 15:720 (est. 15:725)
+18:02:15 Melissa reached the finish line in 31:640 (est. 31:635)
+18:03:41 Christina reached the finish line in 15:560 (est. 15:556)
+18:03:45 Rhiannon reached the finish line in 1:10:208 (est. 1:10:214)
+18:04:38 Keeley reached the finish line in 42:544 (est. 42:547)
+18:04:42 Melissa reached the finish line in 22:024 (est. 22:024)
+18:05:40 Jermain reached the finish line in 16:552 (est. 16:552)
+18:05:53 Christina reached the finish line in 15:480 (est. 15:474)
+18:07:25 Giovanni reached the finish line in 33:816 (est. 33:820)
+18:07:29 Rhiannon: :>
+18:07:30 Rhiannon: ckopocTHou napeHb !!!
+18:07:32 Giovanni: EEEE
+18:07:41 Price: nasos bomj
+18:08:09 Scotty reached the finish line in 30:072 (est. 30:069)
+18:08:15 Christina reached the finish line in 15:464 (est. 15:461)
+18:09:22 Rodolfo reached the finish line in 20:632 (est. 20:632)
+18:09:23 Giovanni joined the spectators.
+18:10:02 Giovanni entered the game.
+18:10:07 Scotty reached the finish line in 20:392 (est. 20:394)
+18:10:07 Rhiannon reached the finish line in 49:440 (est. 49:437)
+18:10:39 w00dy.th: 1 min left
+18:11:07 Keeley reached the finish line in 25:640 (est. 25:639)
+18:11:08 Jermain reached the finish line in 15:928 (est. 15:930)
+18:11:16 Christina reached the finish line in 15:496 (est. 15:499)
+18:11:24 >>/Nosf: STOP TIME!!!!!!!!
+18:11:25 >>/Nosf: STOP TIME!!!!!!!!
+18:11:25 >>/Nosf: STOP TIME!!!!!!!!
+18:11:25 >>/Nosf: STOP TIME!!!!!!!!
+18:11:25 >>/Nosf: STOP TIME!!!!!!!!
+18:11:25 >>/Nosf: STOP TIME!!!!!!!!
+18:11:25 >>/Nosf: STOP TIME!!!!!!!!
+18:11:25 >>/Nosf: STOP TIME!!!!!!!!
+18:11:25 >>/Nosf: STOP TIME!!!!!!!!
+18:11:25 >>/Nosf: STOP TIME!!!!!!!!
+18:11:25 >>/Nosf: STOP TIME!!!!!!!!
+18:11:25 >>/Nosf: STOP TIME!!!!!!!!
+18:11:25 >>/Nosf: STOP TIME!!!!!!!!
+18:11:26 Issuing Command: condump 181126
+
+18:11:26 Dumped console text to 181126.txt.
+18:11:26 Wrote screenshots/shot-20220828-181126.jpg
+18:11:31 Rhiannon: fuck this map
+18:11:32 Scotty: 
+18:11:32 Scotty: 
+18:11:32 Scotty: 
+18:11:32 Scotty: 
+18:11:32 Scotty: 
+18:11:32 Scotty: 
+18:11:32 Scotty: 
+18:11:32 Scotty: 
+18:11:32 Scotty: 
+18:11:35 Rhiannon: skill issue'd
+18:11:47 Giovanni: NO BAD
+18:11:49 ]next
+18:11:49 >>/Nosf: next
+18:11:58 Price:
+18:11:58 Price:             
+18:11:58 Price:          
+18:11:58 Price:        
+18:11:58 Price:       
+18:11:58 Price:      
+18:11:58 Price:     
+18:11:58 Price:    
+18:11:58 Price:    
+18:11:58 Price:   
+18:11:58 Price:   
+18:11:58 Price:   
+18:11:58 Price:   
+18:11:58 Price:  
+18:11:58 Price:  
+18:11:58 Price: 
+18:11:58 Price: 
+18:11:58 Price: 
+18:11:58 Price: 
+18:11:58 Price: 
+18:11:58 Price:  
+18:11:58 Price:  
+18:11:58 Price:   
+18:11:58 Price:   
+18:11:58 Price:     
+18:11:58 Price:     
+18:11:58 Price:     
+18:11:58 Price:      
+18:11:58 Price:      
+18:11:58 Price:       
+18:11:58 Price:         
+18:11:58 Price:            
+18:12:10 w00dy.th called a vote: map pea_lshit.
+18:12:17 Vote passed.
+18:12:17 WARNING: server is not allowed to set df_mp_interferenceOff=3
+18:12:17 ----- FS_Startup -----
+18:12:17 ...loaded in 42 milliseconds
+18:12:17 ----------------------
+18:12:17 90224 files in 2004 pk3 files
+18:12:17 RE_Shutdown( 0 )
+18:12:17 Hunk_Clear: reset the hunk ok
+18:12:17 ----- R_Init -----
+18:12:17
+GL_VENDOR: NVIDIA Corporation
+18:12:17 GL_RENDERER: GeForce GTX 1660 SUPER/PCIe/SSE2
+18:12:17 GL_VERSION: 4.6.0 NVIDIA 461.40
+18:12:17
+18:12:17 GL_MAX_TEXTURE_SIZE: 32768
+18:12:17 GL_MAX_TEXTURE_UNITS_ARB: 8
+18:12:17
+PIXELFORMAT: color(32-bits) Z(24-bit) stencil(8-bits)
+18:12:17 MODE: -1, 1600 x 1024 windowed hz:120
+18:12:17 GAMMA: hardware w/ 0 overbright bits
+18:12:17 CPU: 64-bit AuthenticAMD
+18:12:17 rendering primitives: single glDrawElements
+18:12:17 texturemode: GL_LINEAR_MIPMAP_NEAREST
+18:12:17 picmip: 0
+18:12:17 texture bits: 0
+18:12:17 multitexture: enabled
+18:12:17 compiled vertex arrays: enabled
+18:12:17 texenv add: enabled
+18:12:17 compressed textures: disabled
+18:12:17 HACK: using vertex lightmap approximation
+18:12:17 Initializing Shaders
+18:12:17 ----- finished R_Init -----
+18:12:17 ------ Initializing Sound ------
+18:12:17 Initializing DirectSound
+18:12:18 ----- Sound Info -----
+18:12:18     1 stereo
+18:12:18 32768 samples
+18:12:18    16 samplebits
+18:12:18     1 submission_chunk
+18:12:18 22050 speed
+18:12:18 000000002D3C0090 dma buffer
+18:12:18 No background file.
+18:12:18 ----------------------
+18:12:18 Sound initialization successful.
+18:12:18 --------------------------------
+18:12:18 Sound memory manager started
+18:12:18 Loading dll file ui.
+18:12:18 LoadLibrary 'D:\Quake 3 Ultimate\quake3\defrag\uix86_64.dll' failed
+18:12:18 Failed to load dll, looking for qvm.
+18:12:18 Loading vm file vm/ui.qvm...
+18:12:18 VM file ui compiled to 714990 bytes of code
+18:12:18 ui loaded in 2098176 bytes on the hunk
+18:12:18 110 arenas parsed
+18:12:18 2 arenas ignored to make count divisible by 4
+18:12:18 32 bots parsed
+18:12:18 Loading vm file vm/cgame.qvm...
+18:12:18 VM file cgame compiled to 1271982 bytes of code
+18:12:18 cgame loaded in 8389632 bytes on the hunk
+18:12:18 Cvar: df_promode 0
+18:12:18 Cvar: dmflags 0
+18:12:18 Cvar: sv_cheats 0
+18:12:18 Cvar: timescale 1.00
+18:12:18 Cvar: g_synchronousClients 0
+18:12:18 Cvar: pmove_fixed 1
+18:12:18 Cvar: pmove_msec 8
+18:12:18 Cvar: g_speed 320
+18:12:18 Cvar: g_gravity 800
+18:12:18 Cvar: g_knockback 1000
+18:12:18 stitched 0 LoD cracks
+18:12:18 ...loaded 879 faces, 0 meshes, 0 trisurfs, 0 flares
+18:12:18 WARNING: Failed to load sound sound/player/crash/taunt.wav!
+18:12:18 WARNING: could not find sound/player/crash/taunt.wav - using default
+18:12:18 Failed to load model file models/players/characters/clobber/lower.md3
+18:12:18 Failed to load model file models/players/characters/sonic/lower.md3
+18:12:18 Failed to load model file models/players/characters/n_duck/lower.md3
+18:12:18 CL_InitCGame:  0.56 seconds
+18:12:18 6 msec to draw all images
+18:12:18 Com_TouchMemory: 0 msec
+18:12:18 copy D:\Quake 3 Ultimate\quake3\defrag\demos\temp\current.tmp to D:\Quake 3
+Ultimate\quake3\defrag\demos\temp\current.dm_68
+18:12:19 Stopped demo recording.
+18:12:19 Jaylin entered the game.
+18:12:19 Christina entered the game.
+18:12:19 >>/Nosf entered the game.
+18:12:19 Jermain entered the game.
+18:12:19 Rhiannon entered the game.
+18:12:19 Price entered the game.
+18:12:20 Keeley entered the game.
+18:12:20 Rodolfo entered the game.
+18:12:20 Melissa entered the game.
+18:12:20 Giovanni entered the game.
+18:12:21 Scotty entered the game.
+18:12:49 Scotty: o/
+18:12:50 w00dy.th: Szia (:
+18:13:54 Christina reached the finish line in 43:848 (est. 43:847)
+18:14:56 Christina: follow the line
+18:15:35 Melissa reached the finish line in 1:44:384 (est. 1:44:380)
+18:15:39 Rhiannon reached the finish line in 55:968 (est. 55:970)
+18:15:45 Keeley joined the spectators.
+18:16:11 Christina reached the finish line in 2:07:936 (est. 2:07:934)
+18:17:23 Christina reached the finish line in 1:01:048 (est. 1:01:054)
+18:17:50 Christina reached the finish line in 19:888 (est. 19:888)
+18:18:09 Price reached the finish line in 2:36:376 (est. 2:36:381)
+18:18:22 Jermain reached the finish line in 1:58:608 (est. 1:58:608)
+18:18:50 Rhiannon reached the finish line in 33:600 (est. 33:598)
+18:18:55 Rhiannon: Christina wtf
+18:19:37 Rodolfo reached the finish line in 1:27:664 (est. 1:27:663)
+18:20:12 Scotty reached the finish line in 41:568 (est. 41:563)
+18:20:22 Scotty: nachos > kane
+18:20:24 Scotty: 8-)
+18:20:38 Scotty: go kane go
+18:20:49 Jermain reached the finish line in 1:07:528 (est. 1:07:531)
+18:20:51 Scotty: TEAM DR1 JUMP JUMP JUMP
+18:21:25 Melissa reached the finish line in 57:968 (est. 57:963)
+18:22:01 Rhiannon reached the finish line in 45:704 (est. 45:704)
+18:22:27 Jermain reached the finish line in 43:680 (est. 43:676)
+18:22:52 Keeley entered the game.
+18:23:14 Keeley joined the spectators.
+18:24:16 Scotty: ladno
+18:24:31 Price reached the finish line in 1:32:744 (est. 1:32:743)
+18:25:38 Melissa reached the finish line in 39:104 (est. 39:100)
+18:25:57 Rhiannon reached the finish line in 39:520 (est. 39:520)
+18:26:29 Christina reached the finish line in 19:040 (est. 19:040)
+18:26:47 Giovanni reached the finish line in 6:52:152 (est. 6:52:152)
+18:26:51 Rhiannon reached the finish line in 30:360 (est. 30:357)
+18:26:53 Giovanni: EEE
+18:26:56 Rhiannon: ckopocTHou napeHb !!!
+18:27:01 Scotty: blyadno (c) Likey
+18:27:02 Price reached the finish line in 51:832 (est. 51:833)
+18:28:38 Melissa reached the finish line in 37:488 (est. 37:488)
+18:28:52 Jermain reached the finish line in 1:43:800 (est. 1:43:798)
+18:29:09 Rhiannon reached the finish line in 26:360 (est. 26:362)
+18:30:52 Kirsten connected (RU, Russian Federation)
+18:30:54 Kirsten entered the game.
+18:30:54 Kirsten: hey!
+18:30:56 Kirsten: :>
+18:30:56 Rhiannon: bon                        jour
+18:30:57 Scotty: o/
+18:30:59 Christina: h
+18:31:05 Jermain reached the finish line in 1:01:560 (est. 1:01:555)
+18:31:25 Giovanni reached the finish line in 3:02:384 (est. 3:02:384)
+18:31:36 Price: Dobroe etro, slav9ne
+18:31:37 Price: Dobroe etro, slav9ne
+18:31:37 w00dy.th: Szia (:
+18:31:44 Rodolfo reached the finish line in 1:03:448 (est. 1:03:452)
+18:32:23 Jermain reached the finish line in 1:06:776 (est. 1:06:778)
+18:32:46 Jaylin: ro
+18:32:51 Rodolfo reached the finish line in 40:688 (est. 40:692)
+18:32:53 Christina: wb
+18:32:54 Kirsten: :>
+18:32:56 Giovanni reached the finish line in 1:12:384 (est. 1:12:384)
+18:32:59 Rhiannon: ckopocTHou napeHb !!!
+18:33:00 Jaylin: this a map?
+18:33:07 Keeley entered the game.
+18:33:12 Christina: I see two more skips but they're so hard to land
+18:33:37 Jaylin joined the spectators.
+18:33:42 Rhiannon: stop it Christina, we are already dead
+18:33:42 Jermain reached the finish line in 36:248 (est. 36:255)
+18:34:12 Scotty reached the finish line in 31:080 (est. 31:079)
+18:34:17 Jaylin: wheres roman
+18:34:30 Scotty: q3df.ru:27975
+18:34:39 Scotty:                   
+18:34:39 Scotty:              
+18:34:39 Scotty:           
+18:34:39 Scotty:         
+18:34:39 Scotty:       
+18:34:39 Scotty:     
+18:34:39 Scotty:    
+18:34:39 Scotty:   
+18:34:39 Scotty:  
+18:34:39 Scotty:  
+18:34:39 Scotty: 
+18:34:39 Scotty: 
+18:34:39 Scotty: 
+18:34:39 Scotty: 
+18:34:39 Scotty:  
+18:34:39 Scotty:  
+18:34:40 Scotty:   
+18:34:40 Scotty:    
+18:34:40 Scotty:     
+18:34:40 Scotty:       
+18:34:40 Scotty:         
+18:34:40 Scotty:           
+18:34:40 Scotty:              
+18:34:40 Scotty:                  
+18:34:46 Giovanni reached the finish line in 57:776 (est. 57:775)
+18:34:48 Rhiannon: ckopocTHou napeHb !!!
+18:34:54 Christina reached the finish line in 18:432 (est. 18:432)
+18:34:55 Christina: woo
+18:34:56 Christina: landed one
+18:34:58 Price:
+18:34:58 Price:             
+18:34:58 Price:          
+18:34:58 Price:        
+18:34:58 Price:       
+18:34:58 Price:      
+18:34:58 Price:     
+18:34:58 Price:    
+18:34:58 Price:    
+18:34:58 Price:   
+18:34:58 Price:   
+18:34:58 Price:   
+18:34:58 Price:   
+18:34:58 Price:  
+18:34:58 Price:  
+18:34:58 Price: 
+18:34:58 Price: 
+18:34:58 Price: 
+18:34:58 Price: 
+18:34:58 Price: 
+18:34:58 Price:  
+18:34:58 Price:  
+18:34:58 Price:   
+18:34:59 Price:   
+18:34:59 Price:     
+18:34:59 Price:     
+18:34:59 Price:     
+18:34:59 Price:      
+18:34:59 Price:      
+18:34:59 Price:       
+18:34:59 Price:         
+18:34:59 Price:            
+18:35:02 Kirsten: :>
+18:35:16 Rhiannon reached the finish line in 25:776 (est. 25:776)
+18:35:34 Keeley joined the spectators.
+18:36:19 Keeley: !mapinfo
+18:36:43 Scotty: nikak
+18:36:49 w00dy.th: 5 min left
+18:37:34 Scotty: next map
+18:37:57 Kirsten reached the finish line in 1:11:848 (est. 1:11:850)
+18:37:58 Kirsten: ebat
+18:38:02 Jaylin: hi effek
+18:38:05 Kirsten: privet
+18:38:18 Jaylin: Vgw
+18:38:41 Price reached the finish line in 35:728 (est. 35:727)
+18:39:10 Melissa reached the finish line in 33:488 (est. 33:488)
+18:39:25 Rodolfo reached the finish line in 31:696 (est. 31:696)
+18:39:50 Jermain reached the finish line in 44:152 (est. 44:152)
+18:39:55 Kirsten reached the finish line in 42:568 (est. 42:575)
+18:40:01 Kirsten: not last ahaha
+18:40:05 Price reached the finish line in 22:784 (est. 22:784)
+18:40:13 Giovanni reached the finish line in 1:00:144 (est. 1:00:142)
+18:40:41 Kirsten reached the finish line in 35:624 (est. 35:627)
+18:41:13 Kirsten reached the finish line in 27:400 (est. 27:405)
+18:41:13 Kirsten: :>
+18:41:16 Rhiannon reached the finish line in 23:448 (est. 23:447)
+18:41:34 Jermain reached the finish line in 35:240 (est. 35:236)
+18:41:42 Giovanni reached the finish line in 41:608 (est. 41:608)
+18:41:52 Giovanni: uffff
+18:41:55 Rhiannon: ckopocTHou napeHb !!!
+18:41:56 Scotty: harow
+18:42:17 >>/Nosf: STOP TIME!!!!!!!!
+18:42:17 >>/Nosf: STOP TIME!!!!!!!!
+18:42:17 >>/Nosf: STOP TIME!!!!!!!!
+18:42:17 >>/Nosf: STOP TIME!!!!!!!!
+18:42:17 >>/Nosf: STOP TIME!!!!!!!!
+18:42:17 >>/Nosf: STOP TIME!!!!!!!!
+18:42:17 >>/Nosf: STOP TIME!!!!!!!!
+18:42:17 >>/Nosf: STOP TIME!!!!!!!!
+18:42:17 >>/Nosf: STOP TIME!!!!!!!!
+18:42:17 >>/Nosf: STOP TIME!!!!!!!!
+18:42:17 >>/Nosf: STOP TIME!!!!!!!!
+18:42:17 >>/Nosf: STOP TIME!!!!!!!!
+18:42:17 >>/Nosf: STOP TIME!!!!!!!!
+18:42:18 >>/Nosf: STOP TIME!!!!!!!!
+18:42:18 >>/Nosf: STOP TIME!!!!!!!!
+18:42:18 >>/Nosf: STOP TIME!!!!!!!!
+18:42:18 Issuing Command: condump 184218
+
+18:42:18 Dumped console text to 184218.txt.

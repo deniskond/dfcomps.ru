@@ -6,15 +6,24 @@
         <div class="server-address">
           {{ server.address }}
         </div>
-        <div *ngFor="let player of server.players" class="player-row">
+        <div
+          *ngFor="let player of server.players"
+          [ngClass]="{ 'largest-server': isLargestServer(i) }"
+          class="player-row"
+        >
           <div class="flag-container">
             <app-flag [country]="player.country"></app-flag>
           </div>
-          <div class="player-nick">
+          <div class="player-nick" data-test-id="text-balance-player-nick">
             {{ player.playerNick }}
           </div>
           <div class="switch-button-container">
-            <button (click)="transferPlayer(player.id, i)" mat-flat-button color="accent">
+            <button
+              (click)="transferPlayer(player.id, i)"
+              mat-flat-button
+              color="accent"
+              data-test-id="button-transfer-player"
+            >
               <mat-icon>{{ i === 0 ? 'chevron_right' : 'chevron_left' }}</mat-icon>
             </button>
           </div>

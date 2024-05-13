@@ -34,7 +34,8 @@
 
 <app-html-news [news]="news"></app-html-news>
 <div class="players-table-description">
-  <span translate translation="listOfRegisteredPlayers"></span>:
+  <span translate translation="listOfRegisteredPlayers"></span>
+  :
 </div>
 <div class="players-table" data-test-id="online-cup-players-table">
   <div *ngFor="let row of range(rowCount)" class="players-row">
@@ -59,7 +60,13 @@
   >
     <span translate translation="openStreamersTimer"></span>
   </button>
-  <button (click)="toggleRegistration()" mat-raised-button color="primary" class="action-button">
+  <button
+    (click)="toggleRegistration()"
+    mat-raised-button
+    color="primary"
+    class="action-button"
+    data-test-id="button-toggle-cup-registration"
+  >
     <span *ngIf="isRegistered" translate translation="cancelRegistration"></span>
     <span *ngIf="!isRegistered" translate translation="registerForCup"></span>
   </button>

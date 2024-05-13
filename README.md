@@ -122,8 +122,8 @@ Test cases:
 ☑ 25. Deleting multicup
 ☑ 26. Adding online cup
 ☑ 27. Editing online cup
-☐ 28. Online cup with server logs
-☐ 29. Online cup with manual results
+☑ 28. Online cup with server logs
+☑ 29. Online cup with manual results
 ☑ 30. Deleting online cup
 ☐ 31. Ending season
 ☐ 32. Updating profile

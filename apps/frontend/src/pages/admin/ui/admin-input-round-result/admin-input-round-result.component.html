@@ -4,15 +4,21 @@
     <div [formGroup]="uploadLogsForm">
       <div class="file-input-container">
         <span class="input-caption">Server 1:</span>
-        <input #serverLogsInput1 formControlName="server1" type="file" />
+        <input #serverLogsInput1 formControlName="server1" type="file" data-test-id="input-file-1" />
       </div>
       <div *ngIf="hasTwoServers" class="file-input-container">
         <span class="input-caption">Server 2:</span>
-        <input #serverLogsInput2 formControlName="server2" type="file" />
+        <input #serverLogsInput2 formControlName="server2" type="file" data-test-id="input-file-2" />
       </div>
     </div>
     <div class="button-container">
-      <button [disabled]="!uploadLogsForm.valid" (click)="uploadServerLogs()" mat-raised-button color="accent">
+      <button
+        [disabled]="!uploadLogsForm.valid"
+        (click)="uploadServerLogs()"
+        mat-raised-button
+        color="accent"
+        data-test-id="button-upload-server-logs"
+      >
         Upload server logs
       </button>
     </div>
@@ -23,7 +29,7 @@
       <div class="cell table-head">Action</div>
       <div class="cell first increased-padding">
         <mat-form-field appearance="outline">
-          <mat-select formControlName="player">
+          <mat-select formControlName="player" data-test-id="input-manual-player-select">
             <mat-option *ngFor="let player of cupPlayers" [value]="player.userId">
               {{ player.nick }}
             </mat-option>
@@ -31,13 +37,19 @@
         </mat-form-field>
       </div>
       <div class="cell validation-cell increased-padding">
-        <input formControlName="time" class="input-field" />
+        <input formControlName="time" class="input-field" data-test-id="input-manual-time" />
         <div *ngIf="hasFieldError(addSingleResultForm.get('time')!)" class="error-message">
           {{ (addSingleResultForm.get('time')?.errors)!['time'] }}
         </div>
       </div>
       <div class="cell increased-padding">
-        <button [disabled]="!addSingleResultForm.valid" (click)="addSingleResult()" mat-raised-button color="accent">
+        <button
+          [disabled]="!addSingleResultForm.valid"
+          (click)="addSingleResult()"
+          mat-raised-button
+          color="accent"
+          data-test-id="button-add-manual-result"
+        >
           Add result
         </button>
       </div>
@@ -56,13 +68,17 @@
         <div class="cell first increased-padding">
           {{ i + 1 }}
         </div>
-        <div class="cell increased-padding">
+        <div class="cell increased-padding" data-test-id="text-player-servernick">
           {{ roundResultsFormArray.controls[i].get('servernick')!.value || '-----' }}
           <input formControlName="servernick" type="hidden" />
         </div>
         <div class="cell increased-padding validation-cell">
           <mat-form-field appearance="outline">
-            <mat-select (selectionChange)="updateFormValidity()" formControlName="player">
+            <mat-select
+              (selectionChange)="updateFormValidity()"
+              formControlName="player"
+              data-test-id="input-final-player-select"
+            >
               <mat-option *ngFor="let player of cupPlayers" [value]="player.userId">
                 {{ player.nick }}
               </mat-option>
@@ -89,6 +105,7 @@
         (click)="saveRoundResults()"
         mat-raised-button
         color="accent"
+        data-test-id="button-save-round-results"
       >
         Save round results
       </button>

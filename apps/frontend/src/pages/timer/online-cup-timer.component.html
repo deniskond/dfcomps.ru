@@ -1,7 +1,7 @@
 <div *ngIf="onlineCupInfo" class="container">
   <div class="inner-container">
     <div class="title">{{ onlineCupInfo.title }}</div>
-    <div class="subtitle">{{ onlineCupInfo.subtitle }}</div>
+    <div class="subtitle" data-test-id="text-online-cup-name">{{ onlineCupInfo.subtitle }}</div>
     <div class="timer-and-maps">
       <div class="timer">{{ displayedMinutes }}:{{ displayedSeconds }}</div>
       <div class="maps">
@@ -13,6 +13,7 @@
             map: true
           }"
           (click)="setMap(i + 1)"
+          [attr.data-test-id]="'button-map-' + (i + 1)"
         >
           {{ i + 1 }}. {{ currentMap < i + 1 ? placeholder : map }}
         </div>
