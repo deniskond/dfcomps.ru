@@ -1,0 +1,121 @@
+.card {
+  width: 100%;
+  height: 100%;
+  margin-top: 32px;
+  padding: 16px;
+}
+
+.card-header {
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 12px;
+  margin-top: 28px;
+
+  &:first-of-type {
+    margin-top: 0;
+  }
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.file-input-container {
+  margin-top: 12px;
+}
+
+.input-caption {
+  font-weight: bold;
+  margin-right: 12px;
+}
+
+.button-container {
+  margin-top: 18px;
+}
+
+.add-single-result-table {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 200px 200px 150px;
+  font-size: 16px;
+}
+
+.cell {
+  display: flex;
+  padding: 12px;
+  border-right: 1px solid var(--base-border-color);
+  border-bottom: 1px solid var(--base-border-color);
+  align-items: center;
+  justify-content: center;
+
+  &.table-head {
+    border-top: 1px solid var(--base-border-color);
+    background: #f3f3f3;
+  }
+
+  &.first {
+    border-left: 1px solid var(--base-border-color);
+  }
+
+  &.header {
+    justify-content: left;
+  }
+
+  &.buttons button {
+    margin-left: 16px;
+    flex-wrap: wrap;
+
+    &:first-of-type {
+      margin-left: 0;
+    }
+  }
+}
+
+.round-results-table {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 80px 200px 300px 200px 120px;
+  font-size: 16px;
+}
+
+::ng-deep .mat-mdc-form-field-infix {
+  min-height: unset;
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+}
+
+::ng-deep .mdc-text-field {
+  padding: 0 12px !important;
+}
+
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  display: none !important;
+}
+
+.input-field {
+  height: 36px;
+  font-size: 16px;
+  width: 100%;
+  padding-left: 4px;
+  border: 1px solid #9e9e9e;
+  border-radius: 4px;
+}
+
+.validation-cell {
+  flex-direction: column;
+  position: relative;
+}
+
+.increased-padding {
+  padding-bottom: 20px;
+}
+
+.error-message {
+  font-size: 11px;
+  color: red;
+  position: absolute;
+  bottom: 4px;
+  text-align: center;
+}

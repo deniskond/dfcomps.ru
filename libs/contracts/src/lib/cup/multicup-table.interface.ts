@@ -1,4 +1,6 @@
-import { MulticupResultInterface, MulticupSystems, Physics } from '@dfcomps/contracts';
+import { Physics } from '../global/physics.enum';
+import { MulticupResultInterface } from './multicup-result.interface';
+import { MulticupSystems } from './multicup-systems.enum';
 
 export interface MulticupTableInterface {
   fullName: string;

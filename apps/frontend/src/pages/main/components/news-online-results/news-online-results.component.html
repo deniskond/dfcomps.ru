@@ -6,7 +6,10 @@
     [table]="news.results"
     [physics]="news.cup.physics"
     [cupId]="news.cup.id"
-    class="online-results-table"
+    [ngClass]="{
+      'under-youtube': !!news.youtube,
+      'online-results-table': true,
+    }"
     data-test-id="online-results-table"
   >
   </app-online-results-table>

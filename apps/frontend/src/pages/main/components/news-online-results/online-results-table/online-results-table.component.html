@@ -11,7 +11,7 @@
   <div class="player-column">
     <app-player-cell [country]="result.country" [nick]="result.nick" [playerId]="result.playerId"> </app-player-cell>
   </div>
-  <div class="points-column">{{ result.finalSum }}</div>
+  <div class="points-column" data-test-id="text-player-points">{{ result.finalSum }}</div>
   <div class="rating-column">
     <app-rating-change [change]="physics === allPhysics.CPM ? result.cpmChange : result.vq3Change"></app-rating-change>
   </div>

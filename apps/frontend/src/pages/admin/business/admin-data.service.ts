@@ -23,6 +23,14 @@ import {
   AdminMulticupActionInterface,
   MulticupActionDto,
   CupTypes,
+  SetOnlineCupMapsDto,
+  OnlineCupPlayersInterface,
+  ParsedOnlineCupRoundInterface,
+  SaveOnlineCupRoundDto,
+  RoundResultEntryInterface,
+  OnlineCupServersPlayersInterface,
+  SetPlayerServerDto,
+  OnlineCupRoundResultsInterface,
 } from '@dfcomps/contracts';
 import * as moment from 'moment';
 
@@ -218,6 +226,10 @@ export class AdminDataService {
     return this.backendService.post$<void>(URL_PARAMS.ADMIN.FINISH_OFFLINE_CUP(cupId));
   }
 
+  public finishOnlineCup$(cupId: number): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.FINISH_ONLINE_CUP(cupId));
+  }
+
   public getWorldspawnMapInfo$(map: string): Observable<WorldspawnMapInfoInterface> {
     return this.backendService.get$<WorldspawnMapInfoInterface>(URL_PARAMS.ADMIN.GET_WORLDSPAWN_MAP_INFO, {
       map,
@@ -270,6 +282,55 @@ export class AdminDataService {
     this.multicups = multicups;
   }
 
+  public setOnlineCupMaps$(cupId: number, maps: (string | null)[]): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.SET_ONLINE_CUP_MAPS, {
+      cupId,
+      maps,
+    } as SetOnlineCupMapsDto);
+  }
+
+  public getOnlineCupPlayers$(cupId: number): Observable<OnlineCupPlayersInterface> {
+    return this.backendService.get$<OnlineCupPlayersInterface>(URL_PARAMS.ADMIN.ONLINE_CUP_PLAYERS(cupId));
+  }
+
+  public uploadServerLogs$(cupId: number, serverLogs: File): Observable<ParsedOnlineCupRoundInterface> {
+    return this.backendService.uploadFile$(URL_PARAMS.ADMIN.PARSE_SERVER_LOGS(cupId), [
+      { fileKey: 'serverLogs', file: serverLogs },
+    ]);
+  }
+
+  public saveOnlineCupRoundResults$(
+    cupId: number,
+    roundNumber: number,
+    roundResults: RoundResultEntryInterface[],
+  ): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.ONLINE_CUP_SAVE_ROUND_RESULTS, {
+      cupId,
+      roundNumber,
+      roundResults: JSON.stringify(roundResults) as any,
+    } as SaveOnlineCupRoundDto);
+  }
+
+  public getOnlineCupServersPlayers$(cupId: number): Observable<OnlineCupServersPlayersInterface> {
+    return this.backendService.get$<OnlineCupServersPlayersInterface>(
+      URL_PARAMS.ADMIN.ONLINE_CUP_SERVERS_PLAYERS(cupId),
+    );
+  }
+
+  public setPlayerServer$(userId: number, serverNumber: number, onlineCupId: number): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.SET_PLAYER_SERVER, {
+      userId,
+      serverNumber,
+      onlineCupId,
+    } as SetPlayerServerDto);
+  }
+
+  public getOnlineCupRoundResults$(cupId: number, roundNumber: number): Observable<OnlineCupRoundResultsInterface> {
+    return this.backendService.get$<OnlineCupRoundResultsInterface>(
+      URL_PARAMS.ADMIN.GET_ONLINE_CUP_ROUND_RESULTS(cupId, roundNumber),
+    );
+  }
+
   private getAdminNewsDto(formValue: Record<string, any>, newsType: NewsTypes): AdminNewsDto {
     const adminNewsDto: AdminNewsDto = {
       russianTitle: formValue['russianTitle'],
@@ -278,8 +339,11 @@ export class AdminDataService {
       russianText: formValue['russianText'],
       englishText: formValue['englishText'],
       type: newsType,
-      youtube: formValue['youtube'],
     };
+
+    if (formValue['youtube']) {
+      adminNewsDto.youtube = formValue['youtube'];
+    }
 
     if (formValue['cup']) {
       adminNewsDto.cupId = formValue['cup'];

@@ -1,0 +1,546 @@
+16:59:51 MODE: -1, 1600 x 1024 windowed hz:120
+16:59:51 GAMMA: hardware w/ 0 overbright bits
+16:59:51 CPU: 64-bit AuthenticAMD
+16:59:51 rendering primitives: single glDrawElements
+16:59:51 texturemode: GL_LINEAR_MIPMAP_NEAREST
+16:59:51 picmip: 0
+16:59:51 texture bits: 0
+16:59:51 multitexture: enabled
+16:59:51 compiled vertex arrays: enabled
+16:59:51 texenv add: enabled
+16:59:51 compressed textures: disabled
+16:59:51 HACK: using vertex lightmap approximation
+16:59:51 Initializing Shaders
+16:59:51 ----- finished R_Init -----
+16:59:51 ------ Initializing Sound ------
+16:59:51 Initializing DirectSound
+16:59:51 ----- Sound Info -----
+16:59:51     1 stereo
+16:59:51 32768 samples
+16:59:51    16 samplebits
+16:59:51     1 submission_chunk
+16:59:51 22050 speed
+16:59:51 000000002D790090 dma buffer
+16:59:51 No background file.
+16:59:51 ----------------------
+16:59:51 Sound initialization successful.
+16:59:51 --------------------------------
+16:59:51 Sound memory manager started
+16:59:51 Loading dll file ui.
+16:59:51 LoadLibrary 'D:\Quake 3 Ultimate\quake3\defrag\uix86_64.dll' failed
+16:59:51 Failed to load dll, looking for qvm.
+16:59:51 Loading vm file vm/ui.qvm...
+16:59:51 VM file ui compiled to 714990 bytes of code
+16:59:51 ui loaded in 2098176 bytes on the hunk
+16:59:51 110 arenas parsed
+16:59:51 2 arenas ignored to make count divisible by 4
+16:59:51 32 bots parsed
+16:59:51 Loading vm file vm/cgame.qvm...
+16:59:51 VM file cgame compiled to 1271982 bytes of code
+16:59:51 cgame loaded in 8389632 bytes on the hunk
+16:59:51 Cvar: df_promode 0
+16:59:51 Cvar: dmflags 0
+16:59:51 Cvar: sv_cheats 0
+16:59:51 Cvar: timescale 1.00
+16:59:51 Cvar: g_synchronousClients 0
+16:59:51 Cvar: pmove_fixed 1
+16:59:51 Cvar: pmove_msec 8
+16:59:51 Cvar: g_speed 320
+16:59:51 Cvar: g_gravity 800
+16:59:51 Cvar: g_knockback 1000
+16:59:52 stitched 16 LoD cracks
+16:59:52 ...loaded 3741 faces, 187 meshes, 1754 trisurfs, 0 flares
+16:59:52 WARNING: Failed to load sound sound/player/crash/taunt.wav!
+16:59:52 WARNING: could not find sound/player/crash/taunt.wav - using default
+16:59:52 CL_InitCGame:  0.78 seconds
+16:59:52 5 msec to draw all images
+16:59:52 Com_TouchMemory: 0 msec
+16:59:52 >>/Nosf entered the game.
+16:59:55 ]hi
+16:59:55 >>/Nosf: hi
+16:59:56 >>/Nosf: =)
+16:59:57 CrazyAl entered the game.
+17:00:00 Kirk: Hi
+17:00:25 CrazyAl joined the spectators.
+17:00:55 Benedict connected (NL, Netherlands)
+17:00:58 Benedict entered the game.
+17:01:06 Madelyn connected (GB, United Kingdom)
+17:01:06 Benedict: yeyo
+17:01:09 Madelyn entered the game.
+17:01:10 Joey connected (UA, Ukraine)
+17:01:12 Joey entered the game.
+17:01:12 Joey: h
+17:01:18 Madelyn: hi
+17:01:18 Benedict: yeyo
+17:01:41 Kirk reached the finish line in 52:336 (est. 52:344)
+17:01:55 Junius connected (RU, Russian Federation)
+17:02:01 Junius entered the game.
+17:02:02 Zetta connected (RU, Russian Federation)
+17:02:05 Zetta entered the game.
+17:02:10 Junius: hllo everyone
+17:02:10 Junius: hllo everyone
+17:02:13 Kirk: Hi
+17:02:34 w00dy.th: Szia (:
+17:03:22 Jermain connected (RU, Russian Federation)
+17:03:24 Jermain entered the game.
+17:04:23 Junius: Roman WIN
+17:04:53 Raymond connected (HU, Hungary)
+17:04:57 Raymond entered the game.
+17:05:06 w00dy.th: :)
+17:05:07 w00dy.th: Szia (:
+17:05:09 Failed to load model file models/players/characters/supermario/lower.md3
+17:05:09 Zetta: npuBeT!!!
+17:05:58 Jermain reached the finish line in 37:632 (est. 37:640)
+17:06:14 Zetta reached the finish line in 1:53:016 (est. 1:53:021)
+17:06:18 Raymond: Hooopaaaaa!
+17:06:21 Zetta: npuBeT!!!
+17:06:27 w00dy.th: Szia (:
+17:06:36 Zetta: ex na4os na drygom servake(
+17:06:53 Scotty connected (RU, Russian Federation)
+17:06:57 Scotty entered the game.
+17:06:58 Kirk: :)
+17:07:00 Scotty: cho nado
+17:07:03 Scotty: ?!?!?!!?
+17:07:10 Zetta: ooo
+17:07:21 Raymond: is this warmup?
+17:07:25 Scotty disconnected
+17:07:29 Kirk: for now, yeah
+17:07:34 Kirk: getting ready to start
+17:07:36 w00dy.th: :)
+17:07:38 Raymond: Hooopaaaaa!
+17:07:40 w00dy.th: Szia (:
+17:08:16 Benedict: OBs  off
+17:08:43 Raymond reached the finish line in 41:528 (est. 41:533)
+17:09:36 Raymond reached the finish line in 38:888 (est. 38:892)
+17:10:11 w00dy.th called a vote: map qportal-blue.
+17:10:17 Vote passed.
+17:10:18 WARNING: server is not allowed to set df_mp_interferenceOff=3
+17:10:18 ----- FS_Startup -----
+17:10:18 ...loaded in 42 milliseconds
+17:10:18 ----------------------
+17:10:18 90224 files in 2004 pk3 files
+17:10:18 RE_Shutdown( 0 )
+17:10:18 Hunk_Clear: reset the hunk ok
+17:10:18 ----- R_Init -----
+17:10:18
+GL_VENDOR: NVIDIA Corporation
+17:10:18 GL_RENDERER: GeForce GTX 1660 SUPER/PCIe/SSE2
+17:10:18 GL_VERSION: 4.6.0 NVIDIA 461.40
+17:10:18
+17:10:18 GL_MAX_TEXTURE_SIZE: 32768
+17:10:18 GL_MAX_TEXTURE_UNITS_ARB: 8
+17:10:18
+PIXELFORMAT: color(32-bits) Z(24-bit) stencil(8-bits)
+17:10:18 MODE: -1, 1600 x 1024 windowed hz:120
+17:10:18 GAMMA: hardware w/ 0 overbright bits
+17:10:18 CPU: 64-bit AuthenticAMD
+17:10:18 rendering primitives: single glDrawElements
+17:10:18 texturemode: GL_LINEAR_MIPMAP_NEAREST
+17:10:18 picmip: 0
+17:10:18 texture bits: 0
+17:10:18 multitexture: enabled
+17:10:18 compiled vertex arrays: enabled
+17:10:18 texenv add: enabled
+17:10:18 compressed textures: disabled
+17:10:18 HACK: using vertex lightmap approximation
+17:10:18 Initializing Shaders
+17:10:18 ----- finished R_Init -----
+17:10:18 ------ Initializing Sound ------
+17:10:18 Initializing DirectSound
+17:10:18 ----- Sound Info -----
+17:10:18     1 stereo
+17:10:18 32768 samples
+17:10:18    16 samplebits
+17:10:18     1 submission_chunk
+17:10:18 22050 speed
+17:10:18 000000002D790090 dma buffer
+17:10:18 No background file.
+17:10:18 ----------------------
+17:10:18 Sound initialization successful.
+17:10:18 --------------------------------
+17:10:18 Sound memory manager started
+17:10:18 Loading dll file ui.
+17:10:18 LoadLibrary 'D:\Quake 3 Ultimate\quake3\defrag\uix86_64.dll' failed
+17:10:18 Failed to load dll, looking for qvm.
+17:10:18 Loading vm file vm/ui.qvm...
+17:10:18 VM file ui compiled to 714990 bytes of code
+17:10:18 ui loaded in 2098176 bytes on the hunk
+17:10:18 110 arenas parsed
+17:10:18 2 arenas ignored to make count divisible by 4
+17:10:18 32 bots parsed
+17:10:18 Loading vm file vm/cgame.qvm...
+17:10:18 VM file cgame compiled to 1271982 bytes of code
+17:10:18 cgame loaded in 8389632 bytes on the hunk
+17:10:18 Cvar: df_promode 0
+17:10:18 Cvar: dmflags 0
+17:10:18 Cvar: sv_cheats 0
+17:10:18 Cvar: timescale 1.00
+17:10:18 Cvar: g_synchronousClients 0
+17:10:18 Cvar: pmove_fixed 1
+17:10:18 Cvar: pmove_msec 8
+17:10:18 Cvar: g_speed 320
+17:10:18 Cvar: g_gravity 800
+17:10:18 Cvar: g_knockback 1000
+17:10:18 stitched 0 LoD cracks
+17:10:18 ...loaded 9552 faces, 145 meshes, 0 trisurfs, 0 flares
+17:10:18 WARNING: light grid mismatch
+17:10:18 WARNING: Failed to load sound sound/player/crash/taunt.wav!
+17:10:18 WARNING: could not find sound/player/crash/taunt.wav - using default
+17:10:18 Failed to load model file models/players/characters/supermario/lower.md3
+17:10:18 Leg skin load failure: models/players/characters/mynx/lower_pm.skin
+17:10:18 Torso skin load failure: models/players/characters/mynx/upper_pm.skin
+17:10:18 Head skin load failure: models/players/heads/mynx/head_pm.skin
+17:10:18 Failed to load skin file: mynx : pm, mynx : pm
+17:10:19 CL_InitCGame:  0.50 seconds
+17:10:19 4 msec to draw all images
+17:10:19 Com_TouchMemory: 0 msec
+17:10:19 copy D:\Quake 3 Ultimate\quake3\defrag\demos\temp\current.tmp to D:\Quake 3
+Ultimate\quake3\defrag\demos\temp\current.dm_68
+17:10:19 Stopped demo recording.
+17:10:19 >>/Nosf entered the game.
+17:10:19 Zetta entered the game.
+17:10:19 Junius entered the game.
+17:10:19 Raymond entered the game.
+17:10:19 Joey entered the game.
+17:10:19 Jermain entered the game.
+17:10:20 Kirk entered the game.
+17:10:20 Benedict entered the game.
+17:10:21 Madelyn entered the game.
+17:10:51 Benedict: PB: unknown
+17:11:35 Benedict reached the finish line in 1:09:264 (est. 1:09:261)
+17:11:38 Benedict: how long are rounds
+17:11:42 Kirk: 30 min
+17:11:56 Zetta reached the finish line in 49:984 (est. 49:986)
+17:12:17 Benedict reached the finish line in 34:672 (est. 34:672)
+17:12:32 Junius reached the finish line in 1:09:504 (est. 1:09:507)
+17:13:08 Joey reached the finish line in 40:432 (est. 40:437)
+17:13:18 Jermain reached the finish line in 36:008 (est. 36:008)
+17:13:23 Kirk reached the finish line in 54:216 (est. 54:216)
+17:13:50 Junius reached the finish line in 42:912 (est. 42:918)
+17:13:59 Jermain reached the finish line in 33:272 (est. 33:271)
+17:14:48 Junius reached the finish line in 35:320 (est. 35:320)
+17:16:12 Joey reached the finish line in 37:112 (est. 37:114)
+17:17:09 Junius reached the finish line in 34:664 (est. 34:661)
+17:17:13 Junius: (:
+17:17:40 Junius: Saint.p time: 17:17:41
+17:18:00 Raymond reached the finish line in 34:096 (est. 34:098)
+17:18:09 Zetta reached the finish line in 50:128 (est. 50:131)
+17:18:31 Lonzo connected (RU, Russian Federation)
+17:18:37 Lonzo entered the game.
+17:18:41 Lonzo: Hola
+17:18:43 Kirk: Hi
+17:18:43 Benedict: yeyo
+17:19:06 Benedict reached the finish line in 35:504 (est. 35:504)
+17:19:25 Raymond reached the finish line in 31:864 (est. 31:865)
+17:19:26 Raymond: Hooopaaaaa!
+17:19:36 Zetta reached the finish line in 31:072 (est. 31:072)
+17:19:39 Junius: (:
+17:20:32 Joey reached the finish line in 36:008 (est. 36:004)
+17:20:52 Zetta reached the finish line in 41:232 (est. 41:232)
+17:21:02 Madelyn reached the finish line in 1:09:656 (est. 1:09:655)
+17:21:15 Junius reached the finish line in 34:360 (est. 34:360)
+17:21:22 Lonzo reached the finish line in 42:592 (est. 42:598)
+17:21:32 Zetta reached the finish line in 30:664 (est. 30:664)
+17:21:54 Junius reached the finish line in 34:144 (est. 34:138)
+17:21:56 Madelyn reached the finish line in 48:584 (est. 48:580)
+17:22:24 Joey reached the finish line in 35:672 (est. 35:675)
+17:23:27 Lonzo reached the finish line in 36:520 (est. 36:525)
+17:23:28 Benedict reached the finish line in 32:384 (est. 32:387)
+17:23:45 Joey reached the finish line in 35:248 (est. 35:244)
+17:24:38 Jermain reached the finish line in 31:040 (est. 31:038)
+17:25:22 >>/Nosf joined the spectators.
+17:25:22 Failed to load model file models/players/characters/chaos-marine/lower.md3
+17:25:28 Junius reached the finish line in 34:424 (est. 34:425)
+17:25:54 Joey reached the finish line in 34:864 (est. 34:865)
+17:26:41 Junius reached the finish line in 34:168 (est. 34:171)
+17:28:40 Zetta reached the finish line in 30:200 (est. 30:201)
+17:29:01 Lonzo reached the finish line in 35:800 (est. 35:799)
+17:29:07 Raymond reached the finish line in 29:984 (est. 29:979)
+17:29:08 Raymond: Hooopaaaaa!
+17:29:14 Zetta: |)
+17:29:40 Junius reached the finish line in 32:608 (est. 32:605)
+17:29:44 Junius: uuuuu suka
+17:29:46 Junius: end
+17:29:50 Jermain reached the finish line in 30:552 (est. 30:554)
+17:30:05 Madelyn reached the finish line in 36:232 (est. 36:232)
+17:30:31 Junius reached the finish line in 33:192 (est. 33:191)
+17:30:54 Madelyn reached the finish line in 35:616 (est. 35:615)
+17:31:20 Junius reached the finish line in 32:464 (est. 32:467)
+17:31:52 Kirk reached the finish line in 37:968 (est. 37:969)
+17:32:56 Kirk reached the finish line in 35:680 (est. 35:686)
+17:33:17 Joey reached the finish line in 34:528 (est. 34:527)
+17:33:23 Zetta reached the finish line in 30:432 (est. 30:432)
+17:33:36 Benedict reached the finish line in 33:384 (est. 33:387)
+17:33:37 Junius reached the finish line in 32:848 (est. 32:845)
+17:34:08 Joey reached the finish line in 34:144 (est. 34:143)
+17:35:08 Zetta reached the finish line in 29:272 (est. 29:272)
+17:35:20 Benedict reached the finish line in 33:168 (est. 33:166)
+17:35:34 Joey reached the finish line in 34:480 (est. 34:480)
+17:35:45 Zetta: |)
+17:36:03 Zetta: |)
+17:36:10 w00dy.th: :)
+17:36:26 Raymond: kopp!
+17:36:48 Zetta: y men9 tyt rek
+17:36:57 Raymond reached the finish line in 28:936 (est. 28:936)
+17:36:58 Raymond: Hooopaaaaa!
+17:36:59 Zetta: |D
+17:36:59 Zetta: |D
+17:36:59 Zetta: |D
+17:37:01 Junius joined the spectators.
+17:37:02 Zetta: gj
+17:37:09 Junius: !top
+17:37:10 Benedict reached the finish line in 32:840 (est. 32:839)
+17:37:13 Junius: ha
+17:37:23 >>/Nosf entered the game.
+17:37:46 Kirk reached the finish line in 35:000 (est. 34:997)
+17:38:49 ]/bind f9
+17:38:49 "f9" = "say STOP TIME!!!!!!!!"
+17:39:14 Raymond: Hooopaaaaa!
+17:39:23 Madelyn reached the finish line in 35:232 (est. 35:232)
+17:39:28 Benedict reached the finish line in 32:024 (est. 32:028)
+17:39:33 w00dy.th: 1 min left
+17:39:40 Lonzo reached the finish line in 34:496 (est. 34:500)
+17:39:45 Joey reached the finish line in 33:856 (est. 33:854)
+17:39:59 Benedict: 1v1 me tic tac toe
+17:40:09 Kirk reached the finish line in 34:568 (est. 34:570)
+17:40:15 Raymond: Hooopaaaaa!
+17:40:21 >>/Nosf: STOP TIME!!!!!!!!
+17:40:22 >>/Nosf: STOP TIME!!!!!!!!
+17:40:22 >>/Nosf: STOP TIME!!!!!!!!
+17:40:22 >>/Nosf: STOP TIME!!!!!!!!
+17:40:22 >>/Nosf: STOP TIME!!!!!!!!
+17:40:22 >>/Nosf: STOP TIME!!!!!!!!
+17:40:22 >>/Nosf: STOP TIME!!!!!!!!
+17:40:22 >>/Nosf: STOP TIME!!!!!!!!
+17:40:22 >>/Nosf: STOP TIME!!!!!!!!
+17:40:22 >>/Nosf: STOP TIME!!!!!!!!
+17:40:22 >>/Nosf: STOP TIME!!!!!!!!
+17:40:22 >>/Nosf: STOP TIME!!!!!!!!
+17:40:23 Issuing Command: condump 174023
+
+17:40:23 Dumped console text to 174023.txt.
+17:40:24 Wrote screenshots/shot-20220828-174024.jpg
+17:40:36 Junius: 
+17:40:36 Junius: 
+17:40:36 Junius: 
+17:40:36 Junius: 
+17:40:36 Junius: 
+17:40:36 Junius: 
+17:40:36 Junius: 
+17:40:36 Junius: 
+17:40:36 Junius: 
+17:40:36 Junius: 
+17:40:36 Junius: 
+17:40:36 Junius: 
+17:40:36 Junius: 
+17:40:36 Junius: 
+17:40:36 Junius: 
+17:40:36 Junius: 
+17:40:36 Junius: 
+17:40:36 Junius: 
+17:40:36 Junius: 
+17:40:38 Zetta: 28.3
+17:40:42 Zetta: y men9 rek(
+17:40:47 ]go next)
+17:40:47 >>/Nosf: go next)
+17:41:05 Zetta: slojno tam
+17:41:09 Zetta: ispolnit vse
+17:41:09 Jermain disconnected
+17:41:11 Zetta: za pol4asa
+17:41:15 w00dy.th called a vote: map tuffrun.
+17:41:16 Vote passed.
+17:41:17 WARNING: server is not allowed to set df_mp_interferenceOff=3
+17:41:17 ----- FS_Startup -----
+17:41:17 ...loaded in 43 milliseconds
+17:41:17 ----------------------
+17:41:17 90224 files in 2004 pk3 files
+17:41:17 RE_Shutdown( 0 )
+17:41:17 Hunk_Clear: reset the hunk ok
+17:41:17 ----- R_Init -----
+17:41:17
+GL_VENDOR: NVIDIA Corporation
+17:41:17 GL_RENDERER: GeForce GTX 1660 SUPER/PCIe/SSE2
+17:41:17 GL_VERSION: 4.6.0 NVIDIA 461.40
+17:41:17
+17:41:17 GL_MAX_TEXTURE_SIZE: 32768
+17:41:17 GL_MAX_TEXTURE_UNITS_ARB: 8
+17:41:17
+PIXELFORMAT: color(32-bits) Z(24-bit) stencil(8-bits)
+17:41:17 MODE: -1, 1600 x 1024 windowed hz:120
+17:41:17 GAMMA: hardware w/ 0 overbright bits
+17:41:17 CPU: 64-bit AuthenticAMD
+17:41:17 rendering primitives: single glDrawElements
+17:41:17 texturemode: GL_LINEAR_MIPMAP_NEAREST
+17:41:17 picmip: 0
+17:41:17 texture bits: 0
+17:41:17 multitexture: enabled
+17:41:17 compiled vertex arrays: enabled
+17:41:17 texenv add: enabled
+17:41:17 compressed textures: disabled
+17:41:17 HACK: using vertex lightmap approximation
+17:41:17 Initializing Shaders
+17:41:17 ----- finished R_Init -----
+17:41:17 ------ Initializing Sound ------
+17:41:17 Initializing DirectSound
+17:41:17 ----- Sound Info -----
+17:41:17     1 stereo
+17:41:17 32768 samples
+17:41:17    16 samplebits
+17:41:17     1 submission_chunk
+17:41:17 22050 speed
+17:41:17 000000002D790090 dma buffer
+17:41:17 No background file.
+17:41:17 ----------------------
+17:41:17 Sound initialization successful.
+17:41:17 --------------------------------
+17:41:17 Sound memory manager started
+17:41:17 Loading dll file ui.
+17:41:17 LoadLibrary 'D:\Quake 3 Ultimate\quake3\defrag\uix86_64.dll' failed
+17:41:17 Failed to load dll, looking for qvm.
+17:41:17 Loading vm file vm/ui.qvm...
+17:41:17 VM file ui compiled to 714990 bytes of code
+17:41:17 ui loaded in 2098176 bytes on the hunk
+17:41:17 110 arenas parsed
+17:41:17 2 arenas ignored to make count divisible by 4
+17:41:17 32 bots parsed
+17:41:17 Loading vm file vm/cgame.qvm...
+17:41:17 VM file cgame compiled to 1271982 bytes of code
+17:41:17 cgame loaded in 8389632 bytes on the hunk
+17:41:17 Cvar: df_promode 0
+17:41:17 Cvar: dmflags 0
+17:41:17 Cvar: sv_cheats 0
+17:41:17 Cvar: timescale 1.00
+17:41:17 Cvar: g_synchronousClients 0
+17:41:17 Cvar: pmove_fixed 1
+17:41:17 Cvar: pmove_msec 8
+17:41:17 Cvar: g_speed 320
+17:41:17 Cvar: g_gravity 800
+17:41:17 Cvar: g_knockback 1000
+17:41:17 stitched 0 LoD cracks
+17:41:17 ...loaded 2783 faces, 20 meshes, 1 trisurfs, 0 flares
+17:41:17 WARNING: Failed to load sound sound/player/crash/taunt.wav!
+17:41:17 WARNING: could not find sound/player/crash/taunt.wav - using default
+17:41:17 Failed to load model file models/players/characters/supermario/lower.md3
+17:41:17 Leg skin load failure: models/players/characters/mynx/lower_pm.skin
+17:41:17 Torso skin load failure: models/players/characters/mynx/upper_pm.skin
+17:41:17 Head skin load failure: models/players/heads/mynx/head_pm.skin
+17:41:17 Failed to load skin file: mynx : pm, mynx : pm
+17:41:17 Failed to load model file models/players/characters/chaos-marine/lower.md3
+17:41:18 CL_InitCGame:  0.53 seconds
+17:41:18 5 msec to draw all images
+17:41:18 Com_TouchMemory: 0 msec
+17:41:18 copy D:\Quake 3 Ultimate\quake3\defrag\demos\temp\current.tmp to D:\Quake 3
+Ultimate\quake3\defrag\demos\temp\current.dm_68
+17:41:18 Stopped demo recording.
+17:41:18 Raymond disconnected
+17:41:18 >>/Nosf entered the game.
+17:41:18 Joey entered the game.
+17:41:19 Benedict entered the game.
+17:41:19 Kirk entered the game.
+17:41:20 Madelyn entered the game.
+17:41:22 Zetta entered the game.
+17:41:25 Lonzo entered the game.
+17:41:25 Junius entered the game.
+17:41:28 Benedict: PB: unknown
+17:41:34 Lonzo: eben boben
+17:42:24 Zetta reached the finish line in 15:256 (est. 15:256)
+17:42:31 Zetta: |)
+17:43:06 Raymond connected (HU, Hungary)
+17:43:06 Raymond disconnected
+17:43:26 Joey reached the finish line in 42:184 (est. 42:186)
+17:43:32 Raymond connected (HU, Hungary)
+17:43:34 Raymond entered the game.
+17:43:45 Raymond: Hooopaaaaaa!
+17:43:47 Zetta: npuBeT!!!
+17:44:35 Joey reached the finish line in 22:576 (est. 22:578)
+17:45:48 Raymond: no petrovich?
+17:45:51 w00dy.th: Szia (:
+17:46:33 Zetta reached the finish line in 15:016 (est. 15:015)
+17:47:09 Zetta reached the finish line in 14:896 (est. 14:901)
+17:47:10 Zetta: |)
+17:47:11 Zetta joined the spectators.
+17:47:16 Lonzo reached the finish line in 51:832 (est. 51:831)
+17:47:24 Junius: (:
+17:47:35 Benedict reached the finish line in 22:840 (est. 22:843)
+17:49:51 Kirk reached the finish line in 1:26:768 (est. 1:26:765)
+17:50:38 Kirk reached the finish line in 26:552 (est. 26:552)
+17:50:42 Lonzo reached the finish line in 29:448 (est. 29:450)
+17:51:07 Raymond reached the finish line in 16:312 (est. 16:309)
+17:51:34 Raymond reached the finish line in 15:632 (est. 15:630)
+17:51:35 Raymond: Hooopaaaaaa!
+17:51:40 Benedict: !man
+17:52:01 Junius reached the finish line in 18:136 (est. 18:136)
+17:53:57 Madelyn reached the finish line in 34:032 (est. 34:031)
+17:54:03 Raymond reached the finish line in 15:704 (est. 15:704)
+17:54:21 Junius joined the spectators.
+17:54:22 Junius entered the game.
+17:54:22 Junius joined the spectators.
+17:54:22 Junius entered the game.
+17:54:22 Junius joined the spectators.
+17:54:22 Junius entered the game.
+17:54:22 Junius joined the spectators.
+17:54:23 Junius entered the game.
+17:54:48 Benedict reached the finish line in 32:288 (est. 32:288)
+17:55:09 Raymond reached the finish line in 15:576 (est. 15:582)
+17:57:09 Raymond reached the finish line in 16:776 (est. 16:775)
+17:57:53 Benedict reached the finish line in 16:424 (est. 16:424)
+17:58:43 Benedict reached the finish line in 16:464 (est. 16:468)
+17:58:45 Benedict joined the spectators.
+17:58:58 Junius reached the finish line in 17:056 (est. 17:056)
+17:59:38 Junius reached the finish line in 16:424 (est. 16:425)
+17:59:41 Junius: (:
+17:59:49 Madelyn reached the finish line in 21:672 (est. 21:676)
+18:00:12 Junius joined the spectators.
+18:00:56 Raymond reached the finish line in 15:408 (est. 15:412)
+18:01:05 Lonzo reached the finish line in 17:896 (est. 17:900)
+18:01:16 Kirk joined the spectators.
+18:01:20 w00dy.th: ???
+18:01:23 w00dy.th: 10 min left
+18:01:28 Raymond reached the finish line in 15:472 (est. 15:472)
+18:02:02 Junius: a ewe 10 min
+18:02:05 Junius: dymal vse
+18:02:05 Junius: D
+18:02:12 w00dy.th: :)
+18:02:18 Junius entered the game.
+18:02:58 Raymond reached the finish line in 30:184 (est. 30:184)
+18:03:43 Joey reached the finish line in 23:848 (est. 23:850)
+18:03:58 Zetta: DAVAI KET
+18:04:00 Zetta: EBAH
+18:04:05 Zetta: EBASH!
+18:04:11 Junius: (:
+18:04:13 Raymond: hnarozs
+18:05:33 Raymond reached the finish line in 16:664 (est. 16:660)
+18:06:26 Raymond reached the finish line in 15:448 (est. 15:447)
+18:06:33 Madelyn reached the finish line in 22:016 (est. 22:019)
+18:07:16 Junius reached the finish line in 16:512 (est. 16:514)
+18:07:22 Benedict: nice moves Junius keep it up!
+18:07:28 Junius: (:
+18:07:32 Madelyn reached the finish line in 24:360 (est. 24:360)
+18:07:32 Raymond: Hooopaaaaaa!
+18:07:51 Junius reached the finish line in 16:408 (est. 16:408)
+18:07:54 Junius: ez
+18:07:55 Junius: D
+18:08:02 Raymond reached the finish line in 15:392 (est. 15:393)
+18:08:26 Lonzo reached the finish line in 18:088 (est. 18:088)
+18:08:59 Raymond reached the finish line in 15:496 (est. 15:496)
+18:10:02 Junius reached the finish line in 16:624 (est. 16:631)
+18:10:03 Junius joined the spectators.
+18:10:03 Junius entered the game.
+18:10:36 w00dy.th: 1 min left
+18:10:47 Zetta entered the game.
+18:11:20 >>/Nosf: STOP TIME!!!!!!!!
+18:11:20 >>/Nosf: STOP TIME!!!!!!!!
+18:11:20 >>/Nosf: STOP TIME!!!!!!!!
+18:11:20 >>/Nosf: STOP TIME!!!!!!!!
+18:11:20 >>/Nosf: STOP TIME!!!!!!!!
+18:11:20 >>/Nosf: STOP TIME!!!!!!!!
+18:11:20 >>/Nosf: STOP TIME!!!!!!!!
+18:11:20 >>/Nosf: STOP TIME!!!!!!!!
+18:11:20 >>/Nosf: STOP TIME!!!!!!!!
+18:11:20 >>/Nosf: STOP TIME!!!!!!!!
+18:11:20 >>/Nosf: STOP TIME!!!!!!!!
+18:11:20 >>/Nosf: STOP TIME!!!!!!!!
+18:11:21 >>/Nosf: STOP TIME!!!!!!!!
+18:11:21 Issuing Command: condump 181121
+
+18:11:21 Dumped console text to 181121.txt.

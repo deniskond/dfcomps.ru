@@ -18,6 +18,7 @@ import * as moment from 'moment';
 export class AdminCupsComponent implements OnInit {
   public cups: AdminCupInterface[];
   public cups$ = new ReplaySubject<AdminCupInterface[]>(1);
+  public cupTypes = CupTypes;
   private user: UserInterface | null = null;
   private onDestroy$ = new Subject<void>();
 
@@ -81,7 +82,7 @@ export class AdminCupsComponent implements OnInit {
     return checkUserRoles(this.user.roles, [UserRoles.CUP_ORGANIZER]);
   }
 
-  public finishCup(cupId: number): void {
+  public finishOfflineCup(cupId: number): void {
     this.adminDataService
       .calculateCupRating$(cupId)
       .pipe(
@@ -90,7 +91,17 @@ export class AdminCupsComponent implements OnInit {
       )
       .subscribe((cups: AdminCupInterface[]) => {
         this.cups$.next(cups);
-        this.snackBar.open('Cup finished successfully', 'OK', { duration: 2000 });
+        this.snackBar.open('Offline cup finished successfully', 'OK', { duration: 2000 });
+      });
+  }
+
+  public finishOnlineCup(cupId: number): void {
+    this.adminDataService
+      .finishOnlineCup$(cupId)
+      .pipe(switchMap(() => this.adminDataService.getAllCups$(false)))
+      .subscribe((cups: AdminCupInterface[]) => {
+        this.cups$.next(cups);
+        this.snackBar.open('Online cup finished successfully', 'OK', { duration: 2000 });
       });
   }
 

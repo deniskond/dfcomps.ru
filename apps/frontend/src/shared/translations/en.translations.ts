@@ -160,4 +160,6 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
   linkDiscord: 'Link Discord',
   downloadStreamersArchive: 'Download demos archive for streamers',
   other: 'Other',
+  openStreamersTimer: 'Open streamers timer',
+  onlineCupMapAreNotSet: 'Online cup maps are not set yet',
 };

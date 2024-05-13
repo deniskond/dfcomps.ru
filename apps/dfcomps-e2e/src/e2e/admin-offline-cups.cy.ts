@@ -152,15 +152,18 @@ describe('admin offline cups', () => {
   it('should delete simple offline cup correctly', () => {
     cy.visit('/admin/cups');
 
-    const firstCupFullName = cy.get('[data-test-id=cup-fullname-text]').first().invoke('text');
+    cy.get('[data-test-id=cup-fullname-text]')
+      .first()
+      .invoke('text')
+      .then((firstCupFullName: string) => {
+        cy.get('[data-test-id=delete-cup-button]').first().click();
+        cy.get('mat-snack-bar-container').find('button.mat-mdc-snack-bar-action').click();
 
-    cy.get('[data-test-id=delete-cup-button]').first().click();
-    cy.get('mat-snack-bar-container').find('button.mat-mdc-snack-bar-action').click();
+        // checking admin news list
+        cy.get('[data-test-id=cup-fullname-text]').first().should('not.contain.text', firstCupFullName);
 
-    // checking admin news list
-    cy.get('[data-test-id=cup-fullname-text]').first().should('not.contain.text', firstCupFullName);
-
-    // checking snackbar
-    cy.get('simple-snack-bar').find('.mat-mdc-snack-bar-label').should('contain.text', 'Successfully deleted');  
+        // checking snackbar
+        cy.get('simple-snack-bar').find('.mat-mdc-snack-bar-label').should('contain.text', 'Successfully deleted');
+      });
   });
 });

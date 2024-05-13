@@ -159,4 +159,6 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   linkDiscord: 'Привязать Discord',
   downloadStreamersArchive: 'Скачать архив демок для стримеров',
   other: 'Остальные',
+  openStreamersTimer: 'Открыть таймер для стрима',
+  onlineCupMapAreNotSet: 'Карты онлайн-капа еще не установлены',
 };

@@ -18,12 +18,20 @@ import {
   AddOfflineCupDto,
   AdminActiveCupInterface,
   AdminActiveMulticupInterface,
+  AdminCupInterface,
   AdminEditCupInterface,
   AdminValidationInterface,
   CupTypes,
   NewsTypes,
   OnlineCupActionDto,
+  OnlineCupPlayersInterface,
+  OnlineCupRoundResultsInterface,
+  OnlineCupServersPlayersInterface,
+  ParsedOnlineCupRoundInterface,
   ProcessValidationDto,
+  SaveOnlineCupRoundDto,
+  SetOnlineCupMapsDto,
+  SetPlayerServerDto,
   UpdateOfflineCupDto,
   UploadedFileLinkInterface,
   WorldspawnMapInfoInterface,
@@ -37,7 +45,7 @@ export class AdminCupsController {
   constructor(private readonly adminCupsService: AdminCupsService) {}
 
   @Get('get-all-cups')
-  getAllCups(@Headers('X-Auth') accessToken: string | undefined): Promise<any> {
+  getAllCups(@Headers('X-Auth') accessToken: string | undefined): Promise<AdminCupInterface[]> {
     return this.adminCupsService.getAllCups(accessToken);
   }
 
@@ -92,11 +100,11 @@ export class AdminCupsController {
   }
 
   @Post('calculate-rating/:cupId')
-  calculateRating(
+  calculateOfflineCupRating(
     @Headers('X-Auth') accessToken: string | undefined,
     @Param('cupId', new ParseIntPipe()) cupId: number,
   ): Promise<void> {
-    return this.adminCupsService.calculateRating(accessToken, cupId);
+    return this.adminCupsService.calculateOfflineCupRating(accessToken, cupId);
   }
 
   @Post('finish-offline-cup/:cupId')
@@ -176,5 +184,73 @@ export class AdminCupsController {
   @Get('get-all-active-multicups')
   getAllActiveMulticups(@Headers('X-Auth') accessToken: string | undefined): Promise<AdminActiveMulticupInterface[]> {
     return this.adminCupsService.getAllActiveMulticups(accessToken);
+  }
+
+  @Get('online/get-servers-players/:cupId')
+  getOnlineCupServersPlayers(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Param('cupId', new ParseIntPipe()) cupId: number,
+  ): Promise<OnlineCupServersPlayersInterface> {
+    return this.adminCupsService.getOnlineCupServersPlayers(accessToken, cupId);
+  }
+
+  @Post('online/set-player-server')
+  setPlayerServer(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Body() { userId, onlineCupId, serverNumber }: SetPlayerServerDto,
+  ): Promise<void> {
+    return this.adminCupsService.setPlayerServer(accessToken, userId, onlineCupId, serverNumber);
+  }
+
+  @Post('online/parse-server-logs/:cupId')
+  @UseInterceptors(FileInterceptor('serverLogs'))
+  parseServerLogs(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @UploadedFile(new ParseFilePipe())
+    serverLogs: MulterFileInterface,
+    @Param('cupId', new ParseIntPipe()) cupId: number,
+  ): Promise<ParsedOnlineCupRoundInterface> {
+    return this.adminCupsService.parseServerLogs(accessToken, serverLogs, cupId);
+  }
+
+  @Post('online/save-round-results')
+  saveRoundResults(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Body() { cupId, roundNumber, roundResults }: SaveOnlineCupRoundDto,
+  ): Promise<void> {
+    return this.adminCupsService.saveRoundResults(accessToken, cupId, roundNumber, roundResults);
+  }
+
+  @Post('online/set-maps')
+  setOnlineCupMaps(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Body() { cupId, maps }: SetOnlineCupMapsDto,
+  ): Promise<void> {
+    return this.adminCupsService.setOnlineCupMaps(accessToken, cupId, maps);
+  }
+
+  @Get('online/players/:cupId')
+  getOnlineCupPlayers(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Param('cupId', new ParseIntPipe()) cupId: number,
+  ): Promise<OnlineCupPlayersInterface> {
+    return this.adminCupsService.getOnlineCupPlayers(accessToken, cupId);
+  }
+
+  @Post('online/finish/:cupId')
+  finishOnlineCup(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Param('cupId', new ParseIntPipe()) cupId: number,
+  ): Promise<void> {
+    return this.adminCupsService.finishOnlineCup(accessToken, cupId);
+  }
+
+  @Get('online/round-results/:cupId/:roundNumber')
+  getOnlineCupRoundResults(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Param('cupId', new ParseIntPipe()) cupId: number,
+    @Param('roundNumber', new ParseIntPipe()) roundNumber: number,
+  ): Promise<OnlineCupRoundResultsInterface> {
+    return this.adminCupsService.getOnlineCupRoundResults(accessToken, cupId, roundNumber);
   }
 }

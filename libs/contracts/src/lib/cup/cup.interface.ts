@@ -1,4 +1,5 @@
-import { CupTypes, Physics } from '@dfcomps/contracts';
+import { Physics } from '../global/physics.enum';
+import { CupTypes } from './cup-types.enum';
 
 export interface CupInterface {
   archiveLink: string | null;

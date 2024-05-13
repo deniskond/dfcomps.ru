@@ -71,6 +71,7 @@
     "discord.js": "12.3.1",
     "express": "4.19.2",
     "express-ws": "5.0.2",
+    "fastest-levenshtein": "1.0.16",
     "flag-icons": "6.9.5",
     "html-entities": "2.4.0",
     "js-sha256": "0.10.1",

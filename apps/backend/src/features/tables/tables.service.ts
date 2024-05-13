@@ -340,17 +340,20 @@ export class TablesService {
       const playersResults: MulticupResultInterface[] = cupResults
         .map((cupResult: CupResult) => {
           const roundResults: number[] = [
-            cupResult.round1,
-            cupResult.round2,
-            cupResult.round3,
-            cupResult.round4,
-            cupResult.round5,
+            cupResult.round1!,
+            cupResult.round2!,
+            cupResult.round3!,
+            cupResult.round4!,
+            cupResult.round5!,
           ];
 
-          const overall = roundResults.reduce<number>(
-            (sum, roundResult) => (roundResult === 0 ? sum : sum + cupResults.length - roundResult + 1),
-            0,
-          );
+          const overall =
+            cupResult.offset !== 1
+              ? roundResults.reduce<number>(
+                  (sum, roundResult) => (roundResult === 0 ? sum : sum + cupResults.length - roundResult + 1),
+                  0,
+                )
+              : 0;
 
           return {
             playerId: cupResult.user.id,
@@ -383,7 +386,7 @@ export class TablesService {
     return {
       fullName: cup.full_name,
       rounds: 5,
-      currentRound: cup.current_round,
+      currentRound: playersResults[0]?.roundResults.length + 1,
       physics: cup.physics as Physics,
       system,
       players: playersResults,
@@ -629,6 +632,13 @@ export class TablesService {
     system: MulticupSystems,
   ): MultiCupTableWithPoints[] {
     return singleCupTables.map((table: ResultsTableInterface) => {
+      if (!table.valid.length) {
+        return {
+          valid: [],
+          invalid: [],
+        };
+      }
+
       const topTime: number = table.valid[0].time;
       let currentPlace = 1;
 

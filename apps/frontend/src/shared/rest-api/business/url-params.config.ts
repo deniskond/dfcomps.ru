@@ -157,6 +157,7 @@ export class URL_PARAMS {
     CHECK_REGISTRATION: () => string;
     VALIDATION_ARCHIVE_LINK: (cupId: number) => string;
     STREAMERS_ARCHIVE_LINK: (cupId: number) => string;
+    ONLINE_CUP_INFO: (uuid: string) => string;
   } {
     return {
       GET_NEXTCUP: `${API_URL}/cup/next-cup-info`,
@@ -165,6 +166,7 @@ export class URL_PARAMS {
       CHECK_REGISTRATION: () => `${API_URL}/cup/is-registered`,
       VALIDATION_ARCHIVE_LINK: (cupId: number) => `${API_URL}/cup/validation-archive-link/${cupId}`,
       STREAMERS_ARCHIVE_LINK: (cupId: number) => `${API_URL}/cup/streamers-archive-link/${cupId}`,
+      ONLINE_CUP_INFO: (uuid: string) => `${API_URL}/cup/online-cup/${uuid}`,
     };
   }
 
@@ -187,6 +189,7 @@ export class URL_PARAMS {
     PROCESS_VALIDATION: (cupId: number) => string;
     CALCULATE_CUP_RATING: (cupId: number) => string;
     FINISH_OFFLINE_CUP: (cupId: number) => string;
+    FINISH_ONLINE_CUP: (cupId: number) => string;
     GET_ALL_CUPS_WITHOUT_NEWS: (cupType: CupTypes, newsType: NewsTypes) => string;
     ADD_OFFLINE_CUP: string;
     UPLOAD_MAP: (mapName: string) => string;
@@ -207,6 +210,13 @@ export class URL_PARAMS {
     UPDATE_MULTICUP: (multicupId: number) => string;
     DELETE_MULTICUP: (multicupId: number) => string;
     GET_ALL_AVAILABLE_MULTICUPS: string;
+    SET_ONLINE_CUP_MAPS: string;
+    ONLINE_CUP_PLAYERS: (cupId: number) => string;
+    PARSE_SERVER_LOGS: (cupId: number) => string;
+    ONLINE_CUP_SAVE_ROUND_RESULTS: string;
+    ONLINE_CUP_SERVERS_PLAYERS: (cupId: number) => string;
+    SET_PLAYER_SERVER: string;
+    GET_ONLINE_CUP_ROUND_RESULTS: (cupId: number, roundNumber: number) => string;
   } {
     return {
       GET_NEWS: `${API_URL}/admin/news/get-all-news`,
@@ -219,6 +229,7 @@ export class URL_PARAMS {
       PROCESS_VALIDATION: (cupId: number) => `${API_URL}/admin/cups/process-validation/${cupId}`,
       CALCULATE_CUP_RATING: (cupId: number) => `${API_URL}/admin/cups/calculate-rating/${cupId}`,
       FINISH_OFFLINE_CUP: (cupId: number) => `${API_URL}/admin/cups/finish-offline-cup/${cupId}`,
+      FINISH_ONLINE_CUP: (cupId: number) => `${API_URL}/admin/cups/online/finish/${cupId}`,
       GET_ALL_CUPS_WITHOUT_NEWS: (cupType: CupTypes, newsType: NewsTypes) =>
         `${API_URL}/admin/cups/get-all-cups-without-news/${cupType}/${newsType}`,
       ADD_OFFLINE_CUP: `${API_URL}/admin/cups/add-offline-cup`,
@@ -240,6 +251,14 @@ export class URL_PARAMS {
       UPDATE_MULTICUP: (multicupId: number) => `${API_URL}/admin/multicups/update-multicup/${multicupId}`,
       DELETE_MULTICUP: (multicupId: number) => `${API_URL}/admin/multicups/delete/${multicupId}`,
       GET_ALL_AVAILABLE_MULTICUPS: `${API_URL}/admin/multicups/get-all-active-multicups`,
+      SET_ONLINE_CUP_MAPS: `${API_URL}/admin/cups/online/set-maps`,
+      ONLINE_CUP_PLAYERS: (cupId: number) => `${API_URL}/admin/cups/online/players/${cupId}`,
+      PARSE_SERVER_LOGS: (cupId: number) => `${API_URL}/admin/cups/online/parse-server-logs/${cupId}`,
+      ONLINE_CUP_SAVE_ROUND_RESULTS: `${API_URL}/admin/cups/online/save-round-results`,
+      ONLINE_CUP_SERVERS_PLAYERS: (cupId: number) => `${API_URL}/admin/cups/online/get-servers-players/${cupId}`,
+      SET_PLAYER_SERVER: `${API_URL}/admin/cups/online/set-player-server`,
+      GET_ONLINE_CUP_ROUND_RESULTS: (cupId: number, roundNumber: number) =>
+        `${API_URL}/admin/cups/online/round-results/${cupId}/${roundNumber}`,
     };
   }
 }

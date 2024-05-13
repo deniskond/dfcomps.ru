@@ -1,17 +1,21 @@
 <div
   *ngIf="playerId"
   mat-ripple
-  [@hoveredCell]="hovered | invokeFunction: getHoveredState:style"
+  [@hoveredCell]="hovered | invokeFunction: getHoveredState : style"
   (mouseenter)="darkenPlayerRow()"
   (mouseleave)="lightenPlayerRow()"
   (click)="navigateToPlayerProfile(playerId)"
   class="player-nick-container"
 >
   <app-flag [country]="country" [class.light]="style === playerCellStyles.TRANSPARENT" class="flag"></app-flag>
-  <div [class.light]="style === playerCellStyles.TRANSPARENT" class="player-nick">{{ nick }}</div>
+  <div [class.light]="style === playerCellStyles.TRANSPARENT" class="player-nick" data-test-id="text-player-nick">
+    {{ nick }}
+  </div>
 </div>
 
 <div *ngIf="!playerId" class="player-nick-container no-hover">
   <app-flag [country]="country" [class.light]="style === playerCellStyles.TRANSPARENT" class="flag"></app-flag>
-  <div [class.light]="style === playerCellStyles.TRANSPARENT" class="player-nick">{{ nick }}</div>
+  <div [class.light]="style === playerCellStyles.TRANSPARENT" class="player-nick" data-test-id="text-player-nick">
+    {{ nick }}
+  </div>
 </div>

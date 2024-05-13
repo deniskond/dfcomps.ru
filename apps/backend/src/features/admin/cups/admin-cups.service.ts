@@ -16,11 +16,18 @@ import {
   AdminPlayerDemosValidationInterface,
   AdminValidationInterface,
   CupTypes,
+  MulticupResultInterface,
+  MulticupTableInterface,
   NewsTypes,
   OnlineCupActionDto,
+  OnlineCupPlayersInterface,
+  OnlineCupRoundResultsInterface,
+  OnlineCupServersPlayersInterface,
+  ParsedOnlineCupRoundInterface,
   Physics,
   ProcessValidationDto,
   ResultsTableInterface,
+  RoundResultEntryInterface,
   UpdateOfflineCupDto,
   UploadedFileLinkInterface,
   ValidDemoInterface,
@@ -55,7 +62,9 @@ import { NewsComment } from 'apps/backend/src/shared/entities/news-comment.entit
 import { CupResult } from 'apps/backend/src/shared/entities/cup-result.entity';
 import { MulterFileInterface } from 'apps/backend/src/shared/interfaces/multer.interface';
 import { Unpacked } from '@dfcomps/helpers';
+import { distance, closest } from 'fastest-levenshtein';
 
+// TODO Split offline and online cups
 @Injectable()
 export class AdminCupsService {
   constructor(
@@ -94,6 +103,8 @@ export class AdminCupsService {
         (moment().isAfter(moment(cup.end_datetime)) || isSuperadmin(userAccess.roles)),
       calculateRatingsAvailable: cup.rating_calculated === false && cup.demos_validated === true,
       endDateTime: cup.end_datetime,
+      hasTwoServers: cup.use_two_servers,
+      isFinishAvailable: cup.current_round === 6,
     }));
   }
 
@@ -134,6 +145,8 @@ export class AdminCupsService {
       server1: cup.server1,
       server2: cup.server2,
       physics: cup.physics,
+      maps: [cup.map1, cup.map2, cup.map3, cup.map4, cup.map5],
+      currentRound: cup.current_round,
     };
   }
 
@@ -437,7 +450,7 @@ export class AdminCupsService {
     }
   }
 
-  public async calculateRating(accessToken: string | undefined, cupId: number): Promise<void> {
+  public async calculateOfflineCupRating(accessToken: string | undefined, cupId: number): Promise<void> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!checkUserRoles(userAccess.roles, [UserRoles.VALIDATOR])) {
@@ -458,14 +471,12 @@ export class AdminCupsService {
       throw new BadRequestException("Can't calculate rating - demos are not validated yet");
     }
 
-    if (cup.type === CupTypes.OFFLINE) {
-      this.calculateOfflineRating(cup, Physics.VQ3);
-      this.calculateOfflineRating(cup, Physics.CPM);
-    } else if (cup.type === CupTypes.ONLINE) {
-      this.calculateOnlineRating(cup);
-    } else {
-      throw new NotImplementedException(`Unknown cup type ${cup.type}`);
+    if (cup.type !== CupTypes.OFFLINE) {
+      throw new BadRequestException('Wrong cup type, this endpoint only works for offline cups');
     }
+
+    this.calculateOfflineRating(cup, Physics.VQ3);
+    this.calculateOfflineRating(cup, Physics.CPM);
 
     await this.cupsRepository
       .createQueryBuilder()
@@ -763,6 +774,7 @@ export class AdminCupsService {
           use_two_servers: addOnlineCupDto.useTwoServers,
           demos_validated: false,
           multicup: null,
+          timerId: v4(),
         },
       ])
       .execute();
@@ -834,6 +846,498 @@ export class AdminCupsService {
         cupId: cup.id,
         name: cup.full_name,
       }));
+  }
+
+  public async getOnlineCupServersPlayers(
+    accessToken: string | undefined,
+    cupId: number,
+  ): Promise<OnlineCupServersPlayersInterface> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+      throw new UnauthorizedException('Unauthorized to get online cup servers players without CUP_ORGANIZER role');
+    }
+
+    const cup: Cup | null = await this.cupsRepository.createQueryBuilder('cups').where({ id: cupId }).getOne();
+
+    if (!cup) {
+      throw new NotFoundException(`Cup with id = ${cupId} was not found`);
+    }
+
+    const serversPlayers: CupResult[] = await this.cupsResultsRepository
+      .createQueryBuilder('cups_results')
+      .leftJoinAndSelect('cups_results.user', 'users')
+      .where({ cup: { id: cupId } })
+      .getMany();
+
+    return {
+      cupName: cup.full_name,
+      servers: [
+        {
+          address: cup.server1,
+          players: serversPlayers
+            .filter((serversPlayers: CupResult) => serversPlayers.server === 1)
+            .map((serversPlayers: CupResult) => ({
+              id: serversPlayers.user.id,
+              playerNick: serversPlayers.user.displayed_nick,
+              country: serversPlayers.user.country,
+            })),
+        },
+        {
+          address: cup.server2,
+          players: serversPlayers
+            .filter((serversPlayers: CupResult) => serversPlayers.server === 2)
+            .map((serversPlayers: CupResult) => ({
+              id: serversPlayers.user.id,
+              playerNick: serversPlayers.user.displayed_nick,
+              country: serversPlayers.user.country,
+            })),
+        },
+      ],
+    };
+  }
+
+  public async setPlayerServer(
+    accessToken: string | undefined,
+    userId: number,
+    onlineCupId: number,
+    serverNumber: number,
+  ): Promise<void> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+      throw new UnauthorizedException('Unauthorized to set online cup player server without CUP_ORGANIZER role');
+    }
+
+    const cup: Cup | null = await this.cupsRepository
+      .createQueryBuilder('cups')
+      .where({ id: onlineCupId })
+      .andWhere({ type: CupTypes.ONLINE })
+      .getOne();
+
+    if (!cup) {
+      throw new BadRequestException(`No online cup with id = ${onlineCupId} was found`);
+    }
+
+    const targetUser: User | null = await this.usersRepository
+      .createQueryBuilder('users')
+      .where({ id: userId })
+      .getOne();
+
+    if (!targetUser) {
+      throw new BadRequestException(`No user with id = ${userId} was found`);
+    }
+
+    if (!cup.use_two_servers) {
+      throw new BadRequestException(`Can't change player's server - online cup uses only one server`);
+    }
+
+    if (serverNumber !== 1 && serverNumber !== 2) {
+      throw new BadRequestException(`Wrong server number - must be 1 or 2`);
+    }
+
+    await this.cupsResultsRepository
+      .createQueryBuilder()
+      .update(CupResult)
+      .set({
+        server: serverNumber,
+      })
+      .where({ user: { id: userId } })
+      .andWhere({ cup: { id: onlineCupId } })
+      .execute();
+  }
+
+  public async parseServerLogs(
+    accessToken: string | undefined,
+    serverLogs: MulterFileInterface,
+    cupId: number,
+  ): Promise<ParsedOnlineCupRoundInterface> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+      throw new UnauthorizedException('Unauthorized to parse server logs without CUP_ORGANIZER role');
+    }
+
+    // R_Init position is used to determine map change on server
+    const stringLogFile: string[] = serverLogs.buffer.toString('utf8').split('----- R_Init -----');
+
+    const logLines: string[] = stringLogFile[stringLogFile.length - 1]
+      .split('\n')
+      // fast filtering non-time messages
+      .filter((line: string) => line.includes('reached the finish line in'))
+      // filtering console abuse with text messages with times from players
+      .filter((line: string) => !line.match(/\d\d\:\d\d\:\d\d.*\:\s.*reached the finish line in/));
+
+    const parsedTimes: Record<string, number> = {};
+
+    logLines.forEach((line: string) => {
+      const matchResult: RegExpMatchArray | null = line.match(
+        /\d\d\:\d\d\:\d\d\s(.*)\sreached the finish line in (.*) \(.*/,
+      );
+
+      if (!matchResult || !matchResult[0] || !matchResult[1] || !matchResult[2]) {
+        return;
+      }
+
+      const serverNick: string = matchResult[1];
+      const stringTimeSplit: string[] = matchResult[2].split(':');
+      let playerTime: number;
+
+      if (stringTimeSplit.length === 3) {
+        playerTime = Number(stringTimeSplit[0]) * 60 + Number(stringTimeSplit[1]) + Number(stringTimeSplit[2]) / 1000;
+      } else {
+        playerTime = Number(stringTimeSplit[0]) + Number(stringTimeSplit[1]) / 1000;
+      }
+
+      if (!parsedTimes[serverNick] || parsedTimes[serverNick] > playerTime) {
+        parsedTimes[serverNick] = playerTime;
+      }
+    });
+
+    const parsedTimeArray: { serverNick: string; time: number }[] = Object.keys(parsedTimes)
+      .map((serverNick: string) => ({
+        serverNick,
+        time: parsedTimes[serverNick],
+      }))
+      .sort((entryA, entryB) => entryA.time - entryB.time);
+
+    const cupPlayersInfo: { userId: number; nick1: string; nick2: string }[] = (
+      await this.cupsResultsRepository
+        .createQueryBuilder('cups_results')
+        .leftJoinAndSelect('cups_results.user', 'users')
+        .where({ cup: { id: cupId } })
+        .getMany()
+    ).map((cupResult: CupResult) => ({
+      userId: cupResult.user.id,
+      nick1: cupResult.user.displayed_nick,
+      nick2: cupResult.user.login,
+    }));
+
+    const allPlayersNicknames: string[] = cupPlayersInfo.reduce(
+      (acc: string[], elem: { userId: number; nick1: string; nick2: string }) => {
+        return [...acc, elem.nick1, elem.nick2];
+      },
+      [],
+    );
+
+    const parsedOnlineCupRound: ParsedOnlineCupRoundInterface = {
+      roundResults: parsedTimeArray.map(({ serverNick, time }: { serverNick: string; time: number }) => {
+        const closestNick: string = closest(serverNick, allPlayersNicknames);
+        const levenshteinDistance: number = distance(serverNick, closestNick);
+        const userId: number = cupPlayersInfo.find(
+          ({ nick1, nick2 }: { userId: number; nick1: string; nick2: string }) =>
+            nick1 === closestNick || nick2 === closestNick,
+        )!.userId;
+
+        return {
+          serverNick,
+          suggestedPlayer:
+            levenshteinDistance < 5
+              ? {
+                  userId,
+                  nick: closestNick,
+                }
+              : null,
+          time,
+        };
+      }),
+    };
+
+    return parsedOnlineCupRound;
+  }
+
+  public async saveRoundResults(
+    accessToken: string | undefined,
+    cupId: number,
+    roundNumber: 1 | 2 | 3 | 4 | 5,
+    roundResults: RoundResultEntryInterface[],
+  ): Promise<void> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+      throw new UnauthorizedException('Unauthorized to parse server logs without CUP_ORGANIZER role');
+    }
+
+    const cup: Cup | null = await this.cupsRepository.createQueryBuilder('cups').where({ id: cupId }).getOne();
+
+    if (!cup) {
+      throw new NotFoundException(`Cup with id = ${cupId} not found`);
+    }
+
+    if (![1, 2, 3, 4, 5].includes(roundNumber)) {
+      throw new BadRequestException('Wrong roundNumber - should be one of [1, 2, 3, 4, 5]');
+    }
+
+    const cupResults: CupResult[] = await this.cupsResultsRepository
+      .createQueryBuilder('cups_results')
+      .leftJoinAndSelect('cups_results.user', 'users')
+      .where({ cup: { id: cupId } })
+      .getMany();
+
+    const cupResultsUpdate = cupResults.map((cupResult: CupResult) => {
+      const userResult: RoundResultEntryInterface | undefined = roundResults.find(
+        (result: RoundResultEntryInterface) => result.userId === cupResult.user.id,
+      );
+
+      if (userResult) {
+        return { ...cupResult, ['time' + roundNumber]: userResult.time };
+      } else {
+        return cupResult;
+      }
+    });
+
+    await this.cupsResultsRepository.save(cupResultsUpdate);
+
+    if (cup.current_round === roundNumber) {
+      await this.cupsRepository
+        .createQueryBuilder('cups')
+        .update(Cup)
+        .set({ current_round: roundNumber + 1 })
+        .where({ id: cupId })
+        .execute();
+    }
+  }
+
+  public async setOnlineCupMaps(
+    accessToken: string | undefined,
+    cupId: number,
+    maps: (string | null)[],
+  ): Promise<void> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+      throw new UnauthorizedException('Unauthorized to set online cup maps without CUP_ORGANIZER role');
+    }
+
+    await this.cupsRepository
+      .createQueryBuilder('cups')
+      .update(Cup)
+      .set({
+        map1: maps[0],
+        map2: maps[1],
+        map3: maps[2],
+        map4: maps[3],
+        map5: maps[4],
+      })
+      .where({ id: cupId })
+      .execute();
+  }
+
+  public async getOnlineCupPlayers(accessToken: string | undefined, cupId: number): Promise<OnlineCupPlayersInterface> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+      throw new UnauthorizedException('Unauthorized to get online cup players without CUP_ORGANIZER role');
+    }
+
+    const onlineCupPlayers: CupResult[] = await this.cupsResultsRepository
+      .createQueryBuilder('cups_results')
+      .leftJoinAndSelect('cups_results.user', 'users')
+      .where({ cup: { id: cupId } })
+      .getMany();
+
+    return {
+      players: onlineCupPlayers.map((onlineCupPlayer: CupResult) => ({
+        userId: onlineCupPlayer.user.id,
+        nick: onlineCupPlayer.user.displayed_nick,
+      })),
+    };
+  }
+
+  // TODO Split this into several methods, maybe separate class. Add constants and rating system references
+  public async finishOnlineCup(accessToken: string | undefined, cupId: number): Promise<void> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+      throw new UnauthorizedException('Unauthorized to get online cup players without CUP_ORGANIZER role');
+    }
+
+    const cup: Cup | null = await this.cupsRepository
+      .createQueryBuilder('cups')
+      .where({ id: cupId })
+      .andWhere({ type: CupTypes.ONLINE })
+      .getOne();
+
+    if (!cup) {
+      throw new NotFoundException(`Online cup with id = ${cupId} not found`);
+    }
+
+    const onlineCupResults: CupResult[] = await this.cupsResultsRepository
+      .createQueryBuilder('cups_results')
+      .leftJoinAndSelect('cups_results.user', 'users')
+      .where({ cup: { id: cupId } })
+      .getMany();
+
+    const onlineCupFullTable: MulticupTableInterface = await this.tablesService.getOnlineCupFullTable(cupId);
+    const { season }: Season = (await this.seasonRepository.createQueryBuilder('season').getOne())!;
+
+    const onlineCupResultsWithFinalSum: CupResult[] = onlineCupResults
+      .map((cupResult: CupResult) => {
+        const targetPlayerTableEntry: MulticupResultInterface | undefined = onlineCupFullTable.players.find(
+          (result: MulticupResultInterface) => result.playerId === cupResult.user.id,
+        );
+
+        if (targetPlayerTableEntry) {
+          return { ...cupResult, final_sum: targetPlayerTableEntry.overall };
+        } else {
+          return cupResult;
+        }
+      })
+      .filter((cupResult: CupResult) => !!cupResult.final_sum)
+      .sort((resultA: CupResult, resultB: CupResult) => resultB.final_sum! - resultA.final_sum!);
+
+    await this.cupsResultsRepository.save(onlineCupResultsWithFinalSum);
+
+    let bonusPointsEfficiency = (onlineCupResultsWithFinalSum.length - 3) / 27;
+
+    if (bonusPointsEfficiency < 0) {
+      bonusPointsEfficiency = 0;
+    }
+
+    if (bonusPointsEfficiency > 1) {
+      bonusPointsEfficiency = 1;
+    }
+
+    let averageRating = 0;
+
+    onlineCupResultsWithFinalSum.forEach((cupResult: CupResult) => {
+      const playerRating = Physics.CPM ? cupResult.user.cpm_rating || 1500 : cupResult.user.vq3_rating || 1500;
+
+      averageRating += playerRating;
+    });
+
+    averageRating /= onlineCupResultsWithFinalSum.length;
+
+    const updatedPlayersRatings: DeepPartial<User>[] = [];
+    const ratingChanges: DeepPartial<RatingChange>[] = [];
+    let currentPlace = 0;
+
+    onlineCupResultsWithFinalSum.forEach((cupResult: CupResult, index: number) => {
+      if (index === 0 || cupResult.final_sum !== onlineCupResultsWithFinalSum[index - 1].final_sum) {
+        currentPlace++;
+      }
+
+      const participatedMapsCount: number = [
+        cupResult.time1,
+        cupResult.time2,
+        cupResult.time3,
+        cupResult.time4,
+        cupResult.time5,
+      ].filter((time: number | null) => !!time).length;
+
+      const efficiency: number = cupResult.final_sum! / (1000 * participatedMapsCount);
+      const userRating: number = cup.physics === Physics.VQ3 ? cupResult.user.vq3_rating : cupResult.user.cpm_rating;
+      const expectation: number = 1 / (1 + Math.pow(10, (averageRating - userRating) / 400));
+      let ratingChange: number = Math.round(12 * participatedMapsCount * (efficiency - expectation));
+
+      // Removing rating loss for players lower than 1700
+      if (userRating < 1700 && ratingChange < 0) {
+        ratingChange = 0;
+      }
+
+      // Adding rating for online cup rounds
+      if (userRating < 2000) {
+        ratingChange += 2 * participatedMapsCount;
+      }
+
+      // Adding ratings for top 3 (+15 +10 +5 for 3 players, +50 +30 +20 for 30+ players)
+      if (currentPlace === 1) {
+        ratingChange += Math.round(bonusPointsEfficiency * (50 - 15) + 15);
+      }
+
+      if (currentPlace === 2) {
+        ratingChange += Math.round(bonusPointsEfficiency * (30 - 10) + 10);
+      }
+
+      if (currentPlace === 3) {
+        ratingChange += Math.round(bonusPointsEfficiency * (20 - 5) + 5);
+      }
+
+      if (cup.physics === Physics.VQ3) {
+        updatedPlayersRatings.push({
+          id: cupResult.user.id,
+          vq3_rating: cupResult.user.vq3_rating + ratingChange,
+        });
+
+        ratingChanges.push({
+          user: { id: cupResult.user.id },
+          cup: { id: cupId },
+          season,
+          bonus: false,
+          vq3_change: ratingChange,
+          vq3_place: currentPlace,
+        });
+      } else {
+        updatedPlayersRatings.push({
+          id: cupResult.user.id,
+          cpm_rating: cupResult.user.cpm_rating + ratingChange,
+        });
+
+        ratingChanges.push({
+          user: { id: cupResult.user.id },
+          cup: { id: cupId },
+          season,
+          bonus: false,
+          cpm_change: ratingChange,
+          cpm_place: currentPlace,
+        });
+      }
+    });
+
+    // Updating ratings and inserting rating changes into database
+    await this.usersRepository.save(updatedPlayersRatings);
+    await this.ratingChangesRepository.save(ratingChanges);
+
+    // Update cup ending time
+    await this.cupsRepository
+      .createQueryBuilder('cups')
+      .update(Cup)
+      .set({ end_datetime: moment().format() })
+      .where({ id: cupId })
+      .execute();
+  }
+
+  public async getOnlineCupRoundResults(
+    accessToken: string | undefined,
+    cupId: number,
+    roundNumber: number,
+  ): Promise<OnlineCupRoundResultsInterface> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
+      throw new UnauthorizedException('Unauthorized to get online cup round results without CUP_ORGANIZER role');
+    }
+
+    const cup: Cup | null = await this.cupsRepository
+      .createQueryBuilder('cups')
+      .where({ id: cupId })
+      .andWhere({ type: CupTypes.ONLINE })
+      .getOne();
+
+    if (!cup) {
+      throw new NotFoundException(`Online cup with id = ${cupId} not found`);
+    }
+
+    if (![1, 2, 3, 4, 5].includes(roundNumber)) {
+      throw new BadRequestException(`Wrong round number, should be one of [1, 2, 3, 4, 5]`);
+    }
+
+    const cupResults: CupResult[] = await this.cupsResultsRepository
+      .createQueryBuilder('cups_results')
+      .leftJoinAndSelect('cups_results.user', 'users')
+      .where({ cup: { id: cupId } })
+      .getMany();
+
+    return {
+      results: cupResults
+        .map((cupResult: CupResult) => ({
+          nick: cupResult.user.displayed_nick,
+          userId: cupResult.user.id,
+          time: cupResult[`time${roundNumber}` as keyof CupResult] as number | null,
+        }))
+        .filter((result) => !!result.time)
+        .sort((resultA, resultB) => resultA.time! - resultB.time!),
+    } as OnlineCupRoundResultsInterface;
   }
 
   private async getPhysicsDemos(cupId: number, physics: Physics): Promise<AdminPlayerDemosValidationInterface[]> {
@@ -1004,9 +1508,6 @@ export class AdminCupsService {
     await this.usersRepository.save(playersUpdate);
     await this.ratingChangesRepository.createQueryBuilder().insert().into(RatingChange).values(ratingChanges).execute();
   }
-
-  // TODO
-  private async calculateOnlineRating(cup: Cup): Promise<void> {}
 
   /**
    * Counting bonus points (+15 +10 +5 for 3 players, +50 +30 +20 for 30+ players)

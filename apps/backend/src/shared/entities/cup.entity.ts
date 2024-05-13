@@ -110,6 +110,9 @@ export class Cup {
   @Column({ type: 'character varying', nullable: true })
   logo: string;
 
+  @Column({ type: 'character varying', nullable: true })
+  timerId: string;
+
   @OneToMany(() => CupResult, (cupResult) => cupResult.cup)
   cupResults: CupResult[];
 

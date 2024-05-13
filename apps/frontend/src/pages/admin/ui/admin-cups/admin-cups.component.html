@@ -31,12 +31,7 @@
     <div class="card-header">Online cup</div>
     <div class="card-text">5 rounds by 30 minutes each</div>
     <div>
-      <button
-        routerLink="/admin/cups/online/add"
-        mat-raised-button
-        color="accent"
-        data-test-id="add-online-cup-button"
-      >
+      <button routerLink="/admin/cups/online/add" mat-raised-button color="accent" data-test-id="add-online-cup-button">
         Add online cup
       </button>
     </div>
@@ -57,19 +52,64 @@
       <div class="cell type">{{ cup.type }}</div>
       <div class="cell actions buttons">
         <button
-          *ngIf="cup.validationAvailable"
-          [routerLink]="'/admin/validate/' + cup.id"
+          *ngIf="cup.validationAvailable || cup.calculateRatingsAvailable"
           mat-raised-button
           color="basic"
+          [matMenuTriggerFor]="offlineCupMenu"
         >
-          Validate demos
+          Offline cup actions
         </button>
-        <button *ngIf="cup.calculateRatingsAvailable" (click)="finishCup(cup.id)" mat-raised-button color="primary">
-          Finish cup
-        </button>
+        <mat-menu #offlineCupMenu="matMenu">
+          <button [disabled]="!cup.validationAvailable" [routerLink]="'/admin/validate/' + cup.id" mat-menu-item>
+            <mat-icon>checklist_rtl</mat-icon>
+            <span>Validate demos</span>
+          </button>
+          <button [disabled]="!cup.calculateRatingsAvailable" (click)="finishOfflineCup(cup.id)" mat-menu-item>
+            <mat-icon>outlined_flag</mat-icon>
+            <span>Finish cup</span>
+          </button>
+        </mat-menu>
         <ng-container *ngIf="isEditingCupAvailable(cup)">
+          <ng-container *ngIf="cup.type === cupTypes.ONLINE">
+            <button
+              mat-raised-button
+              color="basic"
+              [matMenuTriggerFor]="onlineCupMenu"
+              data-test-id="button-online-cup-actions"
+            >
+              Online cup actions
+            </button>
+            <mat-menu #onlineCupMenu="matMenu">
+              <button
+                [disabled]="!cup.hasTwoServers"
+                [routerLink]="'/admin/cups/online/balance-players/' + cup.id"
+                mat-menu-item
+                data-test-id="button-balance-players"
+              >
+                <mat-icon>sync_alt</mat-icon>
+                <span>Balance players</span>
+              </button>
+              <button
+                [routerLink]="'/admin/cups/online/input-results/' + cup.id"
+                mat-menu-item
+                data-test-id="button-input-results"
+              >
+                <mat-icon>backup_table</mat-icon>
+                <span>Input results</span>
+              </button>
+              <button
+                [disabled]="!cup.isFinishAvailable"
+                (click)="finishOnlineCup(cup.id)"
+                mat-menu-item
+                data-test-id="button-finish-online-cup"
+              >
+                <mat-icon>outlined_flag</mat-icon>
+                <span>Finish cup</span>
+              </button>
+            </mat-menu>
+          </ng-container>
           <button
-            [routerLink]="cup | invokeFunction : getCupEditLink"
+            [routerLink]="cup | invokeFunction: getCupEditLink"
             mat-raised-button
             color="basic"
             data-test-id="edit-cup-button"

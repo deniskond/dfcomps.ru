@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     RouterModule.forChild([
       {
-        path: '',
+        path: ':uuid',
         component: OnlineCupTimerComponent,
       },
     ]),

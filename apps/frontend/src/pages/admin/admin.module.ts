@@ -26,6 +26,10 @@ import { AdminRedirectComponent } from './ui/admin-redirect/admin-redirect.compo
 import { AdminOnlineCupComponent } from './ui/admin-online-cup/admin-online-cup.component';
 import { AdminMulticupsComponent } from './ui/admin-multicups/admin-multicups.component';
 import { AdminMulticupComponent } from './ui/admin-multicup/admin-multicup.component';
+import { AdminInputRoundResultComponent } from './ui/admin-input-round-result/admin-input-round-result.component';
+import { AdminInputResultsComponent } from './ui/admin-input-results/admin-input-results.component';
+import { AdminBalancePlayersComponent } from './ui/admin-balance-players/admin-balance-players.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 const adminRoutes: Routes = [
   {
@@ -43,19 +47,21 @@ const adminRoutes: Routes = [
           },
           {
             path: ':action',
-            children: [{
-              path: ':newsType',
-              children: [
-                {
-                  path: '',
-                  component: AdminNewsActionComponent,
-                },
-                {
-                  path: ':id',
-                  component: AdminNewsActionComponent,
-                },
-              ],
-            }],
+            children: [
+              {
+                path: ':newsType',
+                children: [
+                  {
+                    path: '',
+                    component: AdminNewsActionComponent,
+                  },
+                  {
+                    path: ':id',
+                    component: AdminNewsActionComponent,
+                  },
+                ],
+              },
+            ],
           },
         ],
       },
@@ -68,6 +74,9 @@ const adminRoutes: Routes = [
           { path: 'multicup-round/add', component: AdminOfflineCupComponent, data: { multicup: true } },
           { path: 'online/add', component: AdminOnlineCupComponent },
           { path: 'online/edit/:id', component: AdminOnlineCupComponent },
+          { path: 'online/input-results/:id', component: AdminInputResultsComponent },
+          { path: 'online/input-round-result/:id/:round', component: AdminInputRoundResultComponent },
+          { path: 'online/balance-players/:id', component: AdminBalancePlayersComponent },
         ],
       },
       {
@@ -109,6 +118,9 @@ const adminRoutes: Routes = [
     AdminOnlineCupComponent,
     AdminMulticupsComponent,
     AdminMulticupComponent,
+    AdminBalancePlayersComponent,
+    AdminInputResultsComponent,
+    AdminInputRoundResultComponent,
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
@@ -125,6 +137,7 @@ const adminRoutes: Routes = [
     MatSelectModule,
     MatCheckboxModule,
     QuillModule.forRoot(),
+    MatMenuModule,
   ],
   providers: [HasAdminPanelAccess, HasAdminRights],
 })

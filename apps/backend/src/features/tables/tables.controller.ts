@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Param, ParseEnumPipe, ParseIntPipe, Query } from '@nestjs/common';
+import { BadRequestException, Controller, Get, Param, ParseEnumPipe, ParseIntPipe, Query } from '@nestjs/common';
 import { TablesService } from './tables.service';
 import {
   LeaderTableInterface,

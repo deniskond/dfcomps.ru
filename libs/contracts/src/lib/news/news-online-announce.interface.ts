@@ -8,4 +8,5 @@ export interface NewsOnlineAnnounceInterface extends NewsInterface {
   cup: CupInterface;
   isRegistered: boolean;
   registeredPlayers: RegisteredPlayerInterface[];
+  timerId: string | null;
 }

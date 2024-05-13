@@ -1,0 +1,12 @@
+export { ArchiveLinkInterface } from './archive-link.interface';
+export { CheckCupRegistrationInterface } from './check-cup-registration.interface';
+export { CupTypes } from './cup-types.enum';
+export { CupInterface } from './cup.interface';
+export { MulticupResultInterface } from './multicup-result.interface';
+export { MulticupRoundResultInterface } from './multicup-round-result.interface';
+export { MulticupRoundInterface } from './multicup-round.interface';
+export { MulticupSystems } from './multicup-systems.enum';
+export { MulticupTableInterface } from './multicup-table.interface';
+export { MulticupInterface } from './multicup.interface';
+export { OnlineCupInfoInterface } from './online-cup-info.interface';
+export { VerifiedStatuses } from './verified-statuses.enum';

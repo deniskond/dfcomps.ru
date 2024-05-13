@@ -1,0 +1,39 @@
+<mat-card class="card">
+  <ng-container *ngIf="serversPlayers; else isLoading">
+    <div class="card-header">Balance players ({{ serversPlayers.cupName }})</div>
+    <div class="servers-container">
+      <div *ngFor="let server of serversPlayers.servers; let i = index" class="server-container">
+        <div class="server-address">
+          {{ server.address }}
+        </div>
+        <div
+          *ngFor="let player of server.players"
+          [ngClass]="{ 'largest-server': isLargestServer(i) }"
+          class="player-row"
+        >
+          <div class="flag-container">
+            <app-flag [country]="player.country"></app-flag>
+          </div>
+          <div class="player-nick" data-test-id="text-balance-player-nick">
+            {{ player.playerNick }}
+          </div>
+          <div class="switch-button-container">
+            <button
+              (click)="transferPlayer(player.id, i)"
+              mat-flat-button
+              color="accent"
+              data-test-id="button-transfer-player"
+            >
+              <mat-icon>{{ i === 0 ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #isLoading>
+    <div class="spinner">
+      <mat-spinner diameter="75" strokeWidth="4" color="accent"></mat-spinner>
+    </div>
+  </ng-template>
+</mat-card>
