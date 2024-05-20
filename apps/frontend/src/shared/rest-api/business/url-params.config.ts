@@ -240,10 +240,10 @@ export class URL_PARAMS {
       ADD_ONLINE_CUP: `${API_URL}/admin/cups/add-online-cup`,
       UPDATE_ONLINE_CUP: (cupId: number) => `${API_URL}/admin/cups/update-online-cup/${cupId}`,
       DELETE_CUP: (cupId: number) => `${API_URL}/admin/cups/delete/${cupId}`,
-      SET_SEASON_REWARDS: `${API_URL}/admin/season/set-rewards`, // TODO
-      SAVE_SEASON_RATINGS: `${API_URL}/admin/season/save-ratings`, // TODO
-      RESET_SEASON_RATINGS: `${API_URL}/admin/season/reset-ratings`, // TODO
-      INCREMENT_SEASON: `${API_URL}/admin/season/increment`, // TODO
+      SET_SEASON_REWARDS: `${API_URL}/admin/season/set-rewards`,
+      SAVE_SEASON_RATINGS: `${API_URL}/admin/season/save-ratings`,
+      RESET_SEASON_RATINGS: `${API_URL}/admin/season/reset-ratings`,
+      INCREMENT_SEASON: `${API_URL}/admin/season/increment`,
       GET_WORLDSPAWN_MAP_INFO: `${API_URL}/admin/cups/get-worldspawn-map-info`,
       GET_MULTICUPS: `${API_URL}/admin/multicups/get-all-multicups`,
       GET_SINGLE_MULTICUP: (multicupId: number) => `${API_URL}/admin/multicups/get/${multicupId}`,
