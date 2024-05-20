@@ -7,7 +7,7 @@
       </button>
     </div>
     <ng-container *ngIf="isFinishingSeason">
-      <div>
+      <div class="finish-season-row">
         <span class="button-count">1.</span>
         <button
           [disabled]="currentFinishingStep !== 1 || isLoadingQuery"
@@ -20,7 +20,7 @@
         </button>
         <span *ngIf="currentFinishingStep > 1" class="done-caption">Done!</span>
       </div>
-      <div>
+      <div class="finish-season-row">
         <span class="button-count">2.</span>
         <button
           [disabled]="currentFinishingStep !== 2 || isLoadingQuery"
@@ -33,7 +33,7 @@
         </button>
         <span *ngIf="currentFinishingStep > 2" class="done-caption">Done!</span>
       </div>
-      <div>
+      <div class="finish-season-row">
         <span class="button-count">3.</span>
         <button
           [disabled]="currentFinishingStep !== 3 || isLoadingQuery"
@@ -46,7 +46,7 @@
         </button>
         <span *ngIf="currentFinishingStep > 3" class="done-caption">Done!</span>
       </div>
-      <div>
+      <div class="finish-season-row">
         <span class="button-count">4.</span>
         <button
           [disabled]="currentFinishingStep !== 4 || isLoadingQuery"

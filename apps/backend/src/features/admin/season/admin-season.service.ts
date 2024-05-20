@@ -43,18 +43,21 @@ export class AdminSeasonService {
     const players: User[] = await this.userRepository.createQueryBuilder('users').getMany();
     const oldRatings: DeepPartial<OldRating>[] = players
       .filter((user: User) => user.cpm_rating > 1500 || user.vq3_rating > 1500)
-      .map((user: User) => {
-        return {
-          user: {
-            id: user.id,
-            season,
-            cpm_rating: user.cpm_rating === 1500 ? 0 : user.cpm_rating,
-            vq3_rating: user.vq3_rating === 1500 ? 0 : user.vq3_rating,
-          },
-        };
-      });
+      .map((user: User) => ({
+        user: {
+          id: user.id,
+        },
+        season,
+        cpm_rating: user.cpm_rating === 1500 ? 0 : user.cpm_rating,
+        vq3_rating: user.vq3_rating === 1500 ? 0 : user.vq3_rating,
+      }));
 
-    this.oldRatingRepository.createQueryBuilder('old_ratings').insert().into(OldRating).values(oldRatings).execute();
+    await this.oldRatingRepository
+      .createQueryBuilder('old_ratings')
+      .insert()
+      .into(OldRating)
+      .values(oldRatings)
+      .execute();
   }
 
   public async setSeasonRewards(accessToken: string | undefined): Promise<void> {
@@ -68,6 +71,7 @@ export class AdminSeasonService {
 
     const ratingChanges: RatingChange[] = await this.ratingChangeRepository
       .createQueryBuilder('rating_changes')
+      .leftJoinAndSelect('rating_changes.user', 'users')
       .distinctOn(['rating_changes.userId'])
       .where({ season })
       .getMany();
@@ -108,7 +112,7 @@ export class AdminSeasonService {
       });
     });
 
-    this.rewardRepository.createQueryBuilder('rewards').insert().into(Reward).values(rewards).execute();
+    await this.rewardRepository.createQueryBuilder('rewards').insert().into(Reward).values(rewards).execute();
   }
 
   public async resetRatings(accessToken: string | undefined): Promise<void> {
@@ -126,18 +130,18 @@ export class AdminSeasonService {
     let currentCpmAddition = 1;
 
     cpmPlayers.forEach((user: User, index: number) => {
+      if (index !== 0 && user.cpm_rating !== cpmPlayers[index - 1].cpm_rating) {
+        currentCpmAddition++;
+      }
+
       cpmPlayersUpdate.push({
         id: user.id,
         cpm_rating: 1500 + currentCpmAddition,
         initial_cpm_rating: 1500 + currentCpmAddition,
       });
-
-      if (index !== 0 && user.cpm_rating !== cpmPlayers[index - 1].cpm_rating) {
-        currentCpmAddition++;
-      }
     });
 
-    this.userRepository.save(cpmPlayersUpdate);
+    await this.userRepository.save(cpmPlayersUpdate);
 
     const vq3Players: User[] = (
       await this.userRepository.createQueryBuilder('users').where('vq3_rating != 0 AND vq3_rating != 1500').getMany()
@@ -147,18 +151,18 @@ export class AdminSeasonService {
     let currentVq3Addition = 1;
 
     vq3Players.forEach((user: User, index: number) => {
+      if (index !== 0 && user.vq3_rating !== vq3Players[index - 1].vq3_rating) {
+        currentVq3Addition++;
+      }
+
       vq3PlayersUpdate.push({
         id: user.id,
         vq3_rating: 1500 + currentVq3Addition,
         initial_vq3_rating: 1500 + currentVq3Addition,
       });
-
-      if (index !== 0 && user.vq3_rating !== vq3Players[index - 1].vq3_rating) {
-        currentVq3Addition++;
-      }
     });
 
-    this.userRepository.save(vq3PlayersUpdate);
+    await this.userRepository.save(vq3PlayersUpdate);
   }
 
   public async incrementSeason(accessToken: string | undefined): Promise<void> {

@@ -104,6 +104,14 @@ export class PROFILE_REWARDS {
       [Rewards.HANGTIME3_TOP2_CPM]: 'ht3-top2',
       [Rewards.HANGTIME3_WINNER_VQ3]: 'ht3-top1',
       [Rewards.HANGTIME3_TOP2_VQ3]: 'ht3-top2',
+      [Rewards.TOP1_VQ3_SEVENTH_SEASON]: 'top_1_vq3',
+      [Rewards.TOP2_VQ3_SEVENTH_SEASON]: 'top_2_vq3',
+      [Rewards.TOP3_VQ3_SEVENTH_SEASON]: 'top_3_vq3',
+      [Rewards.TOP1_CPM_SEVENTH_SEASON]: 'top_1_cpm',
+      [Rewards.TOP2_CPM_SEVENTH_SEASON]: 'top_2_cpm',
+      [Rewards.TOP3_CPM_SEVENTH_SEASON]: 'top_3_cpm',
+      [Rewards.TOP10_VQ3_SEVENTH_SEASON]: 'top10',
+      [Rewards.TOP10_CPM_SEVENTH_SEASON]: 'top10',
     };
   }
 }

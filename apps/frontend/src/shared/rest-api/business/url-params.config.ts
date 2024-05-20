@@ -111,7 +111,7 @@ export class URL_PARAMS {
     GET: string;
   } {
     return {
-      GET: `${API_URL}/season/get_season`,
+      GET: `${API_URL}/season/get-season`,
     };
   }
 
