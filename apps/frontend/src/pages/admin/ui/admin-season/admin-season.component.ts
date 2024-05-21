@@ -25,18 +25,18 @@ export class AdminSeasonComponent implements OnInit {
     this.fetchCurrentSeason();
   }
 
-  fetchCurrentSeason(): void {
+  public fetchCurrentSeason(): void {
     this.currentSeasonService
       .getCurrentSeason$()
       .pipe(take(1))
       .subscribe((season: number) => this.currentSeason$.next(season));
   }
 
-  showEndSeasonButtons(): void {
+  public showEndSeasonButtons(): void {
     this.isFinishingSeason = true;
   }
 
-  saveSeasonRatings(): void {
+  public saveSeasonRatings(): void {
     this.isLoadingQuery = true;
     this.adminDataService
       .saveSeasonRatings$()
@@ -52,7 +52,7 @@ export class AdminSeasonComponent implements OnInit {
       });
   }
 
-  setSeasonRewards(): void {
+  public setSeasonRewards(): void {
     this.isLoadingQuery = true;
     this.adminDataService
       .setSeasonRewards$()
@@ -68,7 +68,7 @@ export class AdminSeasonComponent implements OnInit {
       });
   }
 
-  resetSeasonRatings(): void {
+  public resetSeasonRatings(): void {
     this.isLoadingQuery = true;
     this.adminDataService
       .resetSeasonRatings$()
@@ -84,7 +84,7 @@ export class AdminSeasonComponent implements OnInit {
       });
   }
 
-  incrementSeason(): void {
+  public incrementSeason(): void {
     this.isLoadingQuery = true;
 
     this.adminDataService

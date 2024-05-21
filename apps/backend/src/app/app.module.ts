@@ -9,7 +9,6 @@ import { CommentsModule } from '../features/comments/comments.module';
 import { CupModule } from '../features/cup/cup.module';
 import { MoviesModule } from '../features/movies/movies.module';
 import { NewsModule } from '../features/news/news.module';
-import { RatingModule } from '../features/rating/rating.module';
 import { TablesModule } from '../features/tables/tables.module';
 import { CupDemo } from '../shared/entities/cup-demo.entity';
 import { CupResult } from '../shared/entities/cup-result.entity';
@@ -28,6 +27,7 @@ import { DemosModule } from '../features/demos/demos.module';
 import { Match } from '../shared/entities/match.entity';
 import { MatchModule } from '../features/match/match.module';
 import { AdminModule } from '../features/admin/admin.module';
+import { SeasonModule } from '../features/season/season.module';
 
 @Module({
   imports: [
@@ -66,7 +66,7 @@ import { AdminModule } from '../features/admin/admin.module';
     CupModule,
     NewsModule,
     CommentsModule,
-    RatingModule,
+    SeasonModule,
     ProfileModule,
     DemosModule,
     MatchModule,
