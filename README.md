@@ -93,7 +93,7 @@ There are end-to-end tests written in [Cypress](https://www.cypress.io/), which 
 npm run e2e
 npm run e2e-single # edit the test name in this script & run single test
 ```
-Test cases:
+Test cases (☐ - needs to be automated, ☑ - already has e2e test):
 ```
 ☑ 1. Adding simple news
 ☑ 2. Editing simple news
@@ -125,7 +125,7 @@ Test cases:
 ☑ 28. Online cup with server logs
 ☑ 29. Online cup with manual results
 ☑ 30. Deleting online cup
-☐ 31. Ending season
+☑ 31. Ending season
 ☐ 32. Updating profile
 ```
 

@@ -1,8 +1,14 @@
 <mat-card class="container">
   <ng-container *ngIf="currentSeason$ | async as currentSeason; else isLoading">
-    <h3>Current season: {{ currentSeason }}</h3>
+    <h3 data-test-id="text-current-season">Current season: {{ currentSeason }}</h3>
     <div *ngIf="!isFinishingSeason">
-      <button (click)="showEndSeasonButtons()" mat-raised-button color="accent" style="margin-top: 16px">
+      <button
+        (click)="showEndSeasonButtons()"
+        class="finish-season-first-button"
+        mat-raised-button
+        color="accent"
+        data-test-id="button-finish-season-first"
+      >
         Finish season
       </button>
     </div>
@@ -15,6 +21,7 @@
           mat-raised-button
           color="accent"
           class="finish-season-button"
+          data-test-id="button-save-old-ratings"
         >
           Save old ratings
         </button>
@@ -28,6 +35,7 @@
           mat-raised-button
           color="accent"
           class="finish-season-button"
+          data-test-id="button-set-rewards"
         >
           Set rewards
         </button>
@@ -41,6 +49,7 @@
           mat-raised-button
           color="accent"
           class="finish-season-button"
+          data-test-id="button-reset-ratings"
         >
           Reset ratings
         </button>
@@ -54,6 +63,7 @@
           mat-raised-button
           color="accent"
           class="finish-season-button"
+          data-test-id="button-increment-season"
         >
           Increment season counter
         </button>

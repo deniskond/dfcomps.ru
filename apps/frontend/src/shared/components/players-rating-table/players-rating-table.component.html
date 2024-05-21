@@ -17,7 +17,7 @@
     <mat-header-cell *cdkHeaderCellDef class="rating-column">
       <span translate translation="rating"></span>
     </mat-header-cell>
-    <mat-cell *cdkCellDef="let row" class="rating-column"> {{ row.rating }} </mat-cell>
+    <mat-cell *cdkCellDef="let row" class="rating-column" data-test-id="text-player-rating"> {{ row.rating }} </mat-cell>
   </ng-container>
 
   <mat-header-row *cdkHeaderRowDef="['number', 'player', 'rating']"></mat-header-row>
