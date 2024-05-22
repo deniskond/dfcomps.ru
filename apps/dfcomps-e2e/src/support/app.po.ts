@@ -9,6 +9,7 @@ export const loginAs = (role: UserRoles) => {
   cy.get('[data-test-id=login-input]').type(role.toLowerCase());
   cy.get('[data-test-id=password-input]').type(role.toLowerCase());
   cy.get('[data-test-id=login-action-button]').click();
+  cy.get('[data-test-id=logout-button]').should('exist');
 };
 
 export const logOut = (options: { isHeaderVisible: boolean } = { isHeaderVisible: true }) => {
