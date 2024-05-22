@@ -68,6 +68,8 @@ export class DemosService {
       };
     }
 
+    this.makeDemosDirectoryIfNotExists();
+
     const demoDirectory = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cup.id}`;
 
     if (!fs.existsSync(demoDirectory)) {
@@ -195,6 +197,8 @@ export class DemosService {
         message: 'Map was not selected yet',
       };
     }
+
+    this.makeDemosDirectoryIfNotExists();
 
     const demoDirectory = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/matches/match${match.id}`;
 
@@ -335,6 +339,14 @@ export class DemosService {
       physics,
       time,
     }));
+  }
+
+  private makeDemosDirectoryIfNotExists(): void {
+    const demosDirectory = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos`;
+
+    if (!fs.existsSync(demosDirectory)) {
+      fs.mkdirSync(demosDirectory);
+    }
   }
 
   private checkDemo(
