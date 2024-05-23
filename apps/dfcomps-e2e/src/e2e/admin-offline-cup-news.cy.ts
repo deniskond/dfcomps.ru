@@ -22,7 +22,7 @@ describe('admin offline cups news', () => {
 
   before(() => {
     fullNameFirstCup = addOfflineCup(firstCupMap);
-    fullNameSecondCup = addOfflineCup(secondCupMap, { needToLogin: false });
+    fullNameSecondCup = addOfflineCup(secondCupMap, { needToLogin: false, needToAddNews: false });
     logOut({ isHeaderVisible: false });
   });
 

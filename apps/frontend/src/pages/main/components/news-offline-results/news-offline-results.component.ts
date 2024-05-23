@@ -46,6 +46,10 @@ export class NewsOfflineResultsComponent implements OnInit, OnChanges {
       .subscribe(({ filename }) => window.open(`/uploads/demos/cup${this.news.cup.id}/${filename}`));
   }
 
+  public downloadAllDemosArchive(archiveLink: string): void {
+    window.open(archiveLink);
+  }
+
   private getMaxDemosCount(): number {
     if (this.customTable) {
       return CUSTOM_TABLE_NEWS_LIMIT;

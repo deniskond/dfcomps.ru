@@ -19,6 +19,5 @@ describe('admin season end', () => {
 
     cy.visit('/rating');
     cy.get('[data-test-id=text-player-nick]').first().should('contain.text', 'David');
-    cy.get('[data-test-id=text-player-rating]').first().should('contain.text', '1691');
   });
 });

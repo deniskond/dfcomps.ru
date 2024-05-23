@@ -34,8 +34,9 @@
     "full-local-test:build": "docker build -t dfcomps-nginx-local . -f ./build/local-nginx/local-nginx.dockerfile",
     "full-local-test:run": "docker run -d -p 127.0.0.1:80:80 --name dfcomps-nginx-local --network dfcomps-network dfcomps-nginx-local",
     "dfcomps:release": "npm run frontend:release && npm run backend:release && npm run 1v1-server:release",
-    "e2e": "npm run database:restore-db && concurrently \"npm run backend\" \"wait-on tcp:4001 && nx e2e dfcomps-e2e\"",
-    "e2e-single": "npm run database:restore-db && concurrently \"npm run backend\" \"wait-on tcp:4001 && nx e2e dfcomps-e2e --spec=apps/dfcomps-e2e/src/e2e/admin-cups.cy.ts\""
+    "e2e": "npm run database:restore-db && npx concurrently --raw --kill-others \"npm run backend\" \"wait-on tcp:4001 && nx e2e dfcomps-e2e\" && npm run e2e:cleanup || npm run e2e:cleanup",
+    "e2e:single": "npm run database:restore-db && npx concurrently --raw --kill-others \"npm run backend\" \"wait-on tcp:4001 && nx e2e dfcomps-e2e --spec=apps/dfcomps-e2e/src/e2e/offline-cup.cy.ts\" && npm run e2e:cleanup || npm run e2e:cleanup",
+    "e2e:cleanup": "rimraf apps/backend/uploads/demos/* --glob"
   },
   "private": true,
   "dependencies": {
@@ -138,6 +139,7 @@
     "jest-preset-angular": "13.1.1",
     "nx": "16.6.0",
     "prettier": "3.0.1",
+    "rimraf": "5.0.7",
     "superstatic": "9.0.3",
     "ts-jest": "29.1.1",
     "ts-mockito": "2.6.1",

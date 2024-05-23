@@ -42,3 +42,6 @@ Thumbs.db
 
 # Sentry Config File
 .sentryclirc
+
+# Backend test upload files
+/apps/backend/uploads/demos
