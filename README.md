@@ -108,11 +108,11 @@ Test cases (☐ - needs to be automated, ☑ - already has e2e test):
 ☑ 11. Adding online cup result news
 ☑ 12. Adding multicup result news
 ☑ 13. Adding streamers result news
-☐ 14. Uploading valid demo with overbounces turned off
-☐ 15. Uploading valid demo with overbounces turned on
-☐ 16. Uploading invalid demo
-☐ 17. Validation (validators archive + setting results in admin)
-☐ 18. Finishing cup (distribution of rating + making cup archive)
+☑ 14. Uploading valid demo with overbounces turned off
+☑ 15. Uploading valid demo with overbounces turned on
+☑ 16. Uploading invalid demo
+☑ 17. Validation (validators archive + setting results in admin)
+☑ 18. Finishing cup (distribution of rating + making cup archive)
 ☑ 19. Deleting offline cup
 ☑ 20. Adding multicup
 ☑ 21. Editing multicup
