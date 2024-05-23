@@ -489,7 +489,7 @@ export class AdminCupsService {
   public async finishOfflineCup(accessToken: string | undefined, cupId: number): Promise<void> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
-    if (!checkUserRoles(userAccess.roles, [UserRoles.VALIDATOR])) {
+    if (!checkUserRoles(userAccess.roles, [UserRoles.VALIDATOR, UserRoles.CUP_ORGANIZER])) {
       throw new UnauthorizedException('Unauthorized to finish cup, VALIDATOR role needed');
     }
 

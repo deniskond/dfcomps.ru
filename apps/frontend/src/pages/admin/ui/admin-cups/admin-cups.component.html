@@ -56,15 +56,26 @@
           mat-raised-button
           color="basic"
           [matMenuTriggerFor]="offlineCupMenu"
+          data-test-id="button-offline-cup-actions"
         >
           Offline cup actions
         </button>
         <mat-menu #offlineCupMenu="matMenu">
-          <button [disabled]="!cup.validationAvailable" [routerLink]="'/admin/validate/' + cup.id" mat-menu-item>
+          <button
+            [disabled]="!cup.validationAvailable"
+            [routerLink]="'/admin/validate/' + cup.id"
+            mat-menu-item
+            data-test-id="button-validate-demos"
+          >
             <mat-icon>checklist_rtl</mat-icon>
             <span>Validate demos</span>
           </button>
-          <button [disabled]="!cup.calculateRatingsAvailable" (click)="finishOfflineCup(cup.id)" mat-menu-item>
+          <button
+            [disabled]="!cup.calculateRatingsAvailable"
+            (click)="finishOfflineCup(cup.id)"
+            mat-menu-item
+            data-test-id="button-finish-offline-cup"
+          >
             <mat-icon>outlined_flag</mat-icon>
             <span>Finish cup</span>
           </button>

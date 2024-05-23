@@ -3,11 +3,23 @@
   (click)="getValidationArchive()"
   mat-raised-button
   color="primary"
-  class="validation-button"
+  class="download-demos-button"
   data-test-id="button-validation-archive"
 >
   <span translate translation="downloadForValidation"></span>
 </button>
+
+<button
+  *ngIf="news.cup.archiveLink"
+  (click)="downloadAllDemosArchive(news.cup.archiveLink)"
+  mat-raised-button
+  color="primary"
+  class="download-demos-button"
+  data-test-id="button-all-demos-archive"
+>
+  <span translate translation="allDemosArchive"></span>
+</button>
+
 <div class="map-info">
   <div class="levelshot-container">
     <img [src]="news.levelshot" class="levelshot" />
@@ -45,16 +57,6 @@
       </div>
     </div>
   </div>
-</div>
-
-<div *ngIf="news.cup.archiveLink" style="margin-top: 15px; font-size: 17px; text-align: center">
-  <a [href]="news.cup.archiveLink" download>
-    <strong>
-      &gt;&gt;
-      <span translate translation="allDemosArchive"></span>
-      &lt;&lt;
-    </strong>
-  </a>
 </div>
 
 <div class="flex">

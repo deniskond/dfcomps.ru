@@ -1,10 +1,22 @@
 <mat-card class="validation-table-card">
   <ng-container *ngIf="cupValidationInfo$ | async as cupValidationInfo; else isLoading">
     <div>
-      <button (click)="setAllDemosValid()" color="accent" mat-raised-button class="action-button">
+      <button
+        (click)="setAllDemosValid()"
+        color="accent"
+        mat-raised-button
+        class="action-button"
+        data-test-id="button-set-all-demos-valid"
+      >
         Set all demos valid
       </button>
-      <button (click)="submit()" color="accent" mat-raised-button class="action-button">
+      <button
+        (click)="submit()"
+        color="accent"
+        mat-raised-button
+        class="action-button"
+        data-test-id="button-submit-validation"
+      >
         Submit validation result
       </button>
     </div>
@@ -38,21 +50,19 @@
           <div class="cell demos">
             <div *ngFor="let demo of player.demos" class="demo-cell">
               <mat-radio-group [formControlName]="'demo_' + demo.id" aria-label="Select an option">
-                <mat-radio-button [value]="true" color="primary">Valid</mat-radio-button>
-                <mat-radio-button [value]="false" color="primary" class="invalid-radio">Invalid</mat-radio-button>
+                <mat-radio-button [value]="true" color="primary" data-test-id="radio-valid">Valid</mat-radio-button>
+                <mat-radio-button [value]="false" color="primary" class="invalid-radio" data-test-id="radio-invalid">
+                  Invalid
+                </mat-radio-button>
               </mat-radio-group>
               <span>Reason:</span>
-              <input [formControlName]="'reason_' + demo.id" class="reason-input" />
+              <input [formControlName]="'reason_' + demo.id" class="reason-input" data-test-id="input-invalid-reason" />
             </div>
           </div>
           <div class="cell demos">
             <div *ngFor="let demo of player.demos" class="demo-cell">
-              <mat-checkbox color="primary" [formControlName]="'org_' + demo.id">
-                Org
-              </mat-checkbox>
-              <mat-checkbox color="primary" [formControlName]="'exclude_' + demo.id">
-                Exclude
-              </mat-checkbox>
+              <mat-checkbox color="primary" [formControlName]="'org_' + demo.id">Org</mat-checkbox>
+              <mat-checkbox color="primary" [formControlName]="'exclude_' + demo.id">Exclude</mat-checkbox>
             </div>
           </div>
         </ng-container>

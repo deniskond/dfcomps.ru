@@ -31,7 +31,7 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
   loginOrRegister: 'Login or register',
   noUploadedDemos: 'No uploaded demos',
   time: 'Time',
-  allDemosArchive: 'All demos in one archive',
+  allDemosArchive: 'Download all demos in one archive',
   fullTable: 'Full table',
   myDemos: 'My demos',
   delete: 'Delete',
@@ -162,4 +162,5 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
   other: 'Other',
   openStreamersTimer: 'Open streamers timer',
   onlineCupMapAreNotSet: 'Online cup maps are not set yet',
+  invalidDemos: 'Invalid demos',
 };

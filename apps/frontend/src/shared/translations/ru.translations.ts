@@ -31,7 +31,7 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   loginOrRegister: 'Войдите или зарегистрируйтесь',
   noUploadedDemos: 'Нет загруженных демок',
   time: 'Тайм',
-  allDemosArchive: 'Все демки одним архивом',
+  allDemosArchive: 'Скачать все демки одним архивом',
   fullTable: 'Общая таблица',
   myDemos: 'Мои демки',
   delete: 'Удалить',
@@ -161,4 +161,5 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   other: 'Остальные',
   openStreamersTimer: 'Открыть таймер для стрима',
   onlineCupMapAreNotSet: 'Карты онлайн-капа еще не установлены',
+  invalidDemos: 'Невалидные демки',
 };

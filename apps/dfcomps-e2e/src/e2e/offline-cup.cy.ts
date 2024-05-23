@@ -94,20 +94,38 @@ describe('offline cup full cycle', () => {
       cy.get('[data-test-id=button-validation-archive]').first().click();
 
       cy.wait('@validationArchiveRequest').then((interception) => {
-        const statusCode = interception.response.statusCode;
-
-        cy.log(interception.response.body);
-
-        expect(statusCode).to.equal(200);
-      })
+        expect(interception.response.statusCode).to.equal(200);
+      });
     });
   });
 
   it('should set validation result', () => {
-    // validator
+    const invalidDemoText = '6.4 Timereset';
+
+    loginAs(UserRoles.VALIDATOR);
+
+    cy.visit('/admin/cups');
+    cy.get('[data-test-id=button-offline-cup-actions]').first().click();
+    cy.get('[data-test-id=button-validate-demos]').click();
+    cy.get('[data-test-id=button-set-all-demos-valid]').click();
+    cy.get('[data-test-id=radio-invalid]').eq(2).click();
+    cy.get('[data-test-id=input-invalid-reason]').eq(2).type(invalidDemoText);
+    cy.get('[data-test-id=button-submit-validation]').click();
+
+    cy.visit('/');
+    cy.get('.news-block').first().find('[data-test-id=text-invalid-demos]').should('exist');
+    cy.get('.news-block').first().should('contain.text', invalidDemoText);
   });
 
   it('should finish cup correctly', () => {
-    // cup_organizer || validator ?
+    loginAs(UserRoles.VALIDATOR);
+
+    cy.visit('/admin/cups');
+    cy.get('[data-test-id=button-offline-cup-actions]').first().click();
+    cy.get('[data-test-id=button-finish-offline-cup]').click();
+
+    cy.visit('/');
+    cy.get('.news-block').first().find('[data-test-id=text-rating-change]').should('exist');  
+    cy.get('.news-block').first().find('[data-test-id=button-all-demos-archive]').should('exist');
   });
 });
