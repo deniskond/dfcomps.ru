@@ -162,4 +162,11 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   openStreamersTimer: 'Открыть таймер для стрима',
   onlineCupMapAreNotSet: 'Карты онлайн-капа еще не установлены',
   invalidDemos: 'Невалидные демки',
+  mapSuggestion: 'Предложить карту',
+  suggestMapOnWarcup: 'Предложить карту на warcup',
+  mapWasNotFoundOnWS: 'Карта не найдена на ws.q3df.org',
+  mapWasOnCompetition: 'Карта была на',
+  lessThanthreeYearsAgo: 'менее 3 лет назад',
+  mapWasFoundOnWS: 'Карта найдена на ws.q3df.org',
+  mapWasntOnCompetitions: 'Карта не была на турнирах dfcomps в последние 3 года',
 };

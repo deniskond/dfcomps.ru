@@ -10,6 +10,7 @@ import { Subject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { isNonNull } from '../../../../../shared/helpers/is-non-null';
 import { UserRoles, checkUserRoles } from '@dfcomps/auth';
+import { MapSuggestionComponent } from '../map-suggestion/map-suggestion.component';
 
 @Component({
   selector: 'app-user-panel',
@@ -57,10 +58,10 @@ export class UserPanelComponent implements OnInit, OnDestroy {
   }
 
   public hasAdminPanelAccess(user: UserInterface): boolean {
-    return checkUserRoles(user.roles, [
-      UserRoles.VALIDATOR,
-      UserRoles.CUP_ORGANIZER,
-      UserRoles.NEWSMAKER,
-    ]);
+    return checkUserRoles(user.roles, [UserRoles.VALIDATOR, UserRoles.CUP_ORGANIZER, UserRoles.NEWSMAKER]);
+  }
+
+  public onMapSuggestionClick(): void {
+    this.dialog.open(MapSuggestionComponent);
   }
 }
