@@ -29,6 +29,9 @@ export class User {
   @Column({ type: 'timestamp with time zone', nullable: true })
   last_discord_prompt: string | null;
 
+  @Column({ type: 'timestamp with time zone', nullable: true })
+  last_map_suggestion_time: string | null;
+
   @Column({ type: 'character varying' })
   access_token: string;
 

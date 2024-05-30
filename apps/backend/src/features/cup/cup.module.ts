@@ -13,10 +13,22 @@ import { RatingChange } from '../../shared/entities/rating-change.entity';
 import { CupDemo } from '../../shared/entities/cup-demo.entity';
 import { OldRating } from '../../shared/entities/old-rating.entity';
 import { Multicup } from '../../shared/entities/multicup.entity';
+import { MapSuggestion } from '../../shared/entities/map-suggestion.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Cup, News, CupResult, User, OneVOneRating, RatingChange, CupDemo, OldRating, Multicup]),
+    TypeOrmModule.forFeature([
+      Cup,
+      News,
+      CupResult,
+      User,
+      OneVOneRating,
+      RatingChange,
+      CupDemo,
+      OldRating,
+      Multicup,
+      MapSuggestion,
+    ]),
   ],
   controllers: [CupController],
   providers: [CupService, AuthService, TablesService],

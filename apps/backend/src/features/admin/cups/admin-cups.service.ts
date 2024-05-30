@@ -3,7 +3,6 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
-  NotImplementedException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthService } from '../../auth/auth.service';

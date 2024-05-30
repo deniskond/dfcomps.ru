@@ -28,6 +28,7 @@ import { Match } from '../shared/entities/match.entity';
 import { MatchModule } from '../features/match/match.module';
 import { AdminModule } from '../features/admin/admin.module';
 import { SeasonModule } from '../features/season/season.module';
+import { MapSuggestion } from '../shared/entities/map-suggestion.entity';
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import { SeasonModule } from '../features/season/season.module';
         Season,
         Reward,
         Match,
+        MapSuggestion,
       ],
       database: 'dfcomps',
       synchronize: true,

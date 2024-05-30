@@ -16,6 +16,7 @@ import {
   ArchiveLinkInterface,
   OnlineCupInfoInterface,
   CupTypes,
+  CheckPreviousCupsInterface,
 } from '@dfcomps/contracts';
 import { AuthService } from '../auth/auth.service';
 import * as moment from 'moment';
@@ -29,6 +30,10 @@ import * as Zip from 'adm-zip';
 import * as fs from 'fs';
 import { CupDemo } from '../../shared/entities/cup-demo.entity';
 import { v4 } from 'uuid';
+import { User } from '../../shared/entities/user.entity';
+import { getNextWarcupTime } from '@dfcomps/helpers';
+import axios from 'axios';
+import { MapSuggestion } from '../../shared/entities/map-suggestion.entity';
 
 @Injectable()
 export class CupService {
@@ -36,6 +41,8 @@ export class CupService {
     @InjectRepository(Cup) private readonly cupRepository: Repository<Cup>,
     @InjectRepository(CupResult) private readonly cupResultRepository: Repository<CupResult>,
     @InjectRepository(CupDemo) private readonly cupDemosRepository: Repository<CupDemo>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(MapSuggestion) private readonly mapSuggestionRepository: Repository<MapSuggestion>,
     private readonly authService: AuthService,
     private readonly tablesService: TablesService,
   ) {}
@@ -246,7 +253,7 @@ export class CupService {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!userAccess.userId) {
-      throw new BadRequestException(`Can't register for online cup as unauthorized user`);
+      throw new UnauthorizedException(`Can't register for online cup as unauthorized user`);
     }
 
     const cup: Cup | null = await this.cupRepository.createQueryBuilder('cups').where({ id: cupId }).getOne();
@@ -304,7 +311,7 @@ export class CupService {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!userAccess.userId) {
-      throw new BadRequestException(`Can't cancel registration for online cup as unauthorized user`);
+      throw new UnauthorizedException(`Can't cancel registration for online cup as unauthorized user`);
     }
 
     const playerResults: CupResult | null = await this.cupResultRepository
@@ -366,6 +373,117 @@ export class CupService {
       maps: [cup.map1, cup.map2, cup.map3, cup.map4, cup.map5],
       roundDuration: 30,
     };
+  }
+
+  public async suggestMap(accessToken: string | undefined, mapName: string): Promise<void> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!userAccess.userId) {
+      throw new UnauthorizedException(`Can't suggest map as unauthorized user`);
+    }
+
+    const user: User = (await this.userRepository
+      .createQueryBuilder('users')
+      .where({ id: userAccess.userId })
+      .getOne())!;
+
+    const lastMapSuggestionTime: string | null = user.last_map_suggestion_time;
+
+    if (
+      lastMapSuggestionTime &&
+      moment(getNextWarcupTime()).subtract(1, 'week').isBefore(moment(lastMapSuggestionTime))
+    ) {
+      throw new BadRequestException(`Can't suggest map as unauthorized user`);
+    }
+
+    const cupWithSuggestedMap: Cup | null = await this.cupRepository
+      .createQueryBuilder('cups')
+      .where({ map1: mapName })
+      .orWhere({ map2: mapName })
+      .orWhere({ map3: mapName })
+      .orWhere({ map4: mapName })
+      .orWhere({ map5: mapName })
+      .getOne();
+
+    if (cupWithSuggestedMap) {
+      if (moment(cupWithSuggestedMap.end_datetime).add(3, 'years').isAfter(moment())) {
+        throw new BadRequestException(
+          `Map ${mapName} was played in the past 3 years (cup ${cupWithSuggestedMap.full_name})`,
+        );
+      }
+    }
+
+    try {
+      await axios.get(`http://ws.q3df.org/map/${mapName}/`);
+    } catch (e) {
+      throw new NotFoundException(`Map ${mapName} was not found on ws.q3df.org`);
+    }
+
+    const alreadySuggestedMap: MapSuggestion | null = await this.mapSuggestionRepository
+      .createQueryBuilder('map_suggestions')
+      .where({ mapName })
+      .getOne();
+
+    if (alreadySuggestedMap) {
+      await this.mapSuggestionRepository
+        .createQueryBuilder('map_suggestions')
+        .update(MapSuggestion)
+        .set({ suggestions_count: alreadySuggestedMap.suggestions_count + 1 })
+        .where({ mapName })
+        .execute();
+    } else {
+      await this.mapSuggestionRepository
+        .createQueryBuilder('map_suggestions')
+        .insert()
+        .into(MapSuggestion)
+        .values([{ map_name: mapName, suggestions_count: 1 }])
+        .execute();
+    }
+
+    await this.userRepository
+      .createQueryBuilder('users')
+      .update(User)
+      .set({
+        last_map_suggestion_time: moment().format(),
+      })
+      .where({ id: userAccess.userId })
+      .execute();
+  }
+
+  public async checkPreviousCups(
+    accessToken: string | undefined,
+    mapName: string,
+  ): Promise<CheckPreviousCupsInterface> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!userAccess.userId) {
+      throw new UnauthorizedException(`Can't check previous cups as unauthorized user`);
+    }
+
+    if (!mapName) {
+      throw new BadRequestException('Empty mapname');
+    }
+
+    const cupWithSuggestedMap: Cup | null = await this.cupRepository
+      .createQueryBuilder('cups')
+      .where({ map1: mapName })
+      .orWhere({ map2: mapName })
+      .orWhere({ map3: mapName })
+      .orWhere({ map4: mapName })
+      .orWhere({ map5: mapName })
+      .getOne();
+
+    if (cupWithSuggestedMap) {
+      return {
+        wasOnCompetition: true,
+        lastCompetition: cupWithSuggestedMap.full_name,
+      };
+    } else {
+      return {
+        wasOnCompetition: false,
+        lastCompetition: null,
+      };
+    }
   }
 
   private formatNumberWithLeadingZeroes(n: number): string {
