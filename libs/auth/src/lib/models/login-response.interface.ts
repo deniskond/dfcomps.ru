@@ -10,6 +10,7 @@ export interface LoginResponseInterface {
     nick: string;
     roles: UserRoles[];
     discordTag: string | null;
+    lastMapSuggestionTime: string | null;
   };
   token: string;
 }
