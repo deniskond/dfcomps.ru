@@ -127,6 +127,8 @@ Test cases (☐ - needs to be automated, ☑ - already has e2e test):
 ☑ 30. Deleting online cup
 ☑ 31. Ending season
 ☐ 32. Updating profile
+☐ 33. Warcup map suggestion
+☐ 34. Warcup map admin voting
 ```
 
 ## Discord bot
