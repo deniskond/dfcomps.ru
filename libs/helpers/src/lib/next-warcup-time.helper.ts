@@ -1,12 +1,11 @@
-import * as moment from 'moment';
+import * as moment from 'moment-timezone';
 
-// timezone is set to Europe/Moscow by default in main.ts
 const MSK_HOURS_WARCUP_START = 22;
 const MSK_MINUTES_WARCUP_START = 30;
 const SATURDAY_WEEK_NUMBER = 6;
 
-export function getNextWarcupTime(): string | number {
-  const currentMoment = moment();
+export function getNextWarcupTime(): string {
+  const currentMoment = moment().tz('Europe/Moscow');
   let nextSaturday: moment.Moment;
 
   if (currentMoment.day() === SATURDAY_WEEK_NUMBER) {

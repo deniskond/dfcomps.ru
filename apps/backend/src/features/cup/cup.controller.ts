@@ -1,11 +1,12 @@
-import { Body, Controller, Get, Headers, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
 import { CupService } from './cup.service';
 import {
   CheckCupRegistrationInterface,
   CupInterface,
   ArchiveLinkInterface,
   OnlineCupInfoInterface,
-  CheckPreviousCupsInterface,
+  CheckPreviousCupsType,
+  WorldspawnMapInfoInterface,
 } from '@dfcomps/contracts';
 import { CupRegistrationDto } from './dto/cup-registration.dto';
 import { MapSuggestionDto } from './dto/map-suggestion.dto';
@@ -69,11 +70,19 @@ export class CupController {
     return this.cupService.getOnlineCupInfo(uuid);
   }
 
-  @Get('check-previous-cups')
+  @Get('check-previous-cups/:mapName')
   checkPreviousCups(
     @Headers('X-Auth') accessToken: string | undefined,
     @Param('mapName') mapName: string,
-  ): Promise<CheckPreviousCupsInterface> {
+  ): Promise<CheckPreviousCupsType> {
     return this.cupService.checkPreviousCups(accessToken, mapName);
+  }
+
+  @Get('get-worldspawn-map-info')
+  getWorldspawnMapInfo(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Query() { map }: Record<string, string>,
+  ): Promise<WorldspawnMapInfoInterface> {
+    return this.cupService.getWorldspawnMapInfo(accessToken, map);
   }
 }

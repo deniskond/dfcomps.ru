@@ -10,4 +10,4 @@ export { MulticupTableInterface } from './multicup-table.interface';
 export { MulticupInterface } from './multicup.interface';
 export { OnlineCupInfoInterface } from './online-cup-info.interface';
 export { VerifiedStatuses } from './verified-statuses.enum';
-export { CheckPreviousCupsInterface } from './check-previous-cups.interface';
+export { CheckPreviousCupsType } from './check-previous-cups.type';

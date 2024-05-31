@@ -1,4 +1,4 @@
-export type CheckPreviousCupsInterface =
+export type CheckPreviousCupsType =
   | {
       wasOnCompetition: true;
       lastCompetition: string;

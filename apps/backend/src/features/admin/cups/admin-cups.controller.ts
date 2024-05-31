@@ -9,7 +9,6 @@ import {
   ParseFilePipeBuilder,
   ParseIntPipe,
   Post,
-  Query,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -34,7 +33,6 @@ import {
   SetPlayerServerDto,
   UpdateOfflineCupDto,
   UploadedFileLinkInterface,
-  WorldspawnMapInfoInterface,
 } from '@dfcomps/contracts';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MulterFileInterface } from 'apps/backend/src/shared/interfaces/multer.interface';
@@ -130,14 +128,6 @@ export class AdminCupsController {
     @Param('cupId', new ParseIntPipe()) cupId: number,
   ): Promise<void> {
     return this.adminCupsService.updateOnlineCup(accessToken, updateOnlineCupDto, cupId);
-  }
-
-  @Get('get-worldspawn-map-info')
-  getWorldspawnMapInfo(
-    @Headers('X-Auth') accessToken: string | undefined,
-    @Query() { map }: Record<string, string>,
-  ): Promise<WorldspawnMapInfoInterface> {
-    return this.adminCupsService.getWorldspawnMapInfo(accessToken, map);
   }
 
   @Post('upload-map/:mapName')

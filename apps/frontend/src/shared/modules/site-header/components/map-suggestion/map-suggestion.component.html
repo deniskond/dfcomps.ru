@@ -2,42 +2,42 @@
 
 <div class="form-container">
   <div class="input-container">
-    <input formControlName="mapName" class="input-field" data-test-id="input-mapname" />
+    <input [(ngModel)]="mapName" (input)="onMapnameInput()" class="input-field" data-test-id="input-mapname" />
   </div>
 
-  <div *ngIf="true" class="status-container">
+  <div *ngIf="!isPristine && isNotFoundOnWS" class="status-container">
     <img src="../../../../../../assets/images/icons/not-ok.png" class="status-icon" />
     <div translate translation="mapWasNotFoundOnWS" class="error"></div>
   </div>
-  <div *ngIf="true" class="status-container">
+  <div *ngIf="!isPristine && wasPlayedBefore" class="status-container">
     <img src="../../../../../../assets/images/icons/not-ok.png" class="status-icon" />
     <div translate translation="mapWasOnCompetition" class="error"></div>
-    <span class="error">&nbsp;WarCup #348&nbsp;</span>
+    <span class="error">&nbsp;{{ previousCupName }}&nbsp;</span>
     <div translate translation="lessThanthreeYearsAgo" class="error"></div>
   </div>
-  <div *ngIf="true" class="status-container">
+  <div *ngIf="!isPristine && !isNotFoundOnWS" class="status-container">
     <img src="../../../../../../assets/images/icons/ok.png" class="status-icon" />
     <div translate translation="mapWasFoundOnWS" class="success"></div>
   </div>
-  <div *ngIf="true" class="status-container">
+  <div *ngIf="!isPristine && !wasPlayedBefore" class="status-container">
     <img src="../../../../../../assets/images/icons/ok.png" class="status-icon" />
     <div translate translation="mapWasntOnCompetitions" class="success"></div>
   </div>
 
-  <div class="map-info-container">
+  <div *ngIf="mapInfo" class="map-info-container">
     <div class="map-info-item">
       <b class="map-info-caption">Map author:</b>
-      <span>Noskey</span>
+      <span>{{ mapInfo.author }}</span>
     </div>
     <div class="map-info-item">
       <b class="map-info-caption">Weapons:</b>
-      <app-weapons weapons="RUI"></app-weapons>
+      <app-weapons [weapons]="mapWeapons"></app-weapons>
     </div>
   </div>
 
   <div class="dialog-button">
     <mat-spinner *ngIf="isLoading" diameter="20" strokeWidth="2" color="accent" class="spinner"></mat-spinner>
-    <button mat-raised-button color="primary">
+    <button (click)="sendSuggestion()" [disabled]="isLoading || isInvalid" mat-raised-button color="primary">
       <span translate translation="send"></span>
     </button>
   </div>

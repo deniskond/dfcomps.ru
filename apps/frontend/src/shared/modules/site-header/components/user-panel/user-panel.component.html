@@ -13,7 +13,15 @@
     >
       <span translate translation="adminPanel"></span>
     </a>
-    <div (click)="onMapSuggestionClick()" matRipple class="profile-link blue-link">
+    <div *ngIf="isValidSuggestionTime" (click)="onMapSuggestionClick()" matRipple class="profile-link blue-link">
+      <span translate translation="mapSuggestion"></span>
+    </div>
+    <div
+      *ngIf="!isValidSuggestionTime"
+      [matTooltip]="suggestionHintText"
+      matTooltipPosition="above"
+      class="profile-link gray"
+    >
       <span translate translation="mapSuggestion"></span>
     </div>
     <div (click)="onProfileClick()" matRipple class="profile-link blue-link">

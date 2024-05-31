@@ -169,4 +169,6 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   lessThanthreeYearsAgo: 'менее 3 лет назад',
   mapWasFoundOnWS: 'Карта найдена на ws.q3df.org',
   mapWasntOnCompetitions: 'Карта не была на турнирах dfcomps в последние 3 года',
+  mapSuggested: 'Карта была отправлена как предложение на Warcup',
+  suggestionGrayHint: `Будет доступно во время следующего Warcup'a`,
 };

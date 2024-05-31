@@ -230,12 +230,6 @@ export class AdminDataService {
     return this.backendService.post$<void>(URL_PARAMS.ADMIN.FINISH_ONLINE_CUP(cupId));
   }
 
-  public getWorldspawnMapInfo$(map: string): Observable<WorldspawnMapInfoInterface> {
-    return this.backendService.get$<WorldspawnMapInfoInterface>(URL_PARAMS.ADMIN.GET_WORLDSPAWN_MAP_INFO, {
-      map,
-    });
-  }
-
   public addCustomMap$(map: File, mapName: string): Observable<UploadedFileLinkInterface> {
     return this.backendService.uploadFile$(URL_PARAMS.ADMIN.UPLOAD_MAP(mapName), [{ fileKey: 'file', file: map }]);
   }

@@ -170,4 +170,6 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
   lessThanthreeYearsAgo: 'less than three years ago',
   mapWasFoundOnWS: 'Map was found on ws.q3df.org',
   mapWasntOnCompetitions: `Map wasn't on dfcomps competitions in the last 3 years`,
+  mapSuggested: 'Map was sent as a suggestion for Warcup',
+  suggestionGrayHint: 'Suggestion will be available again at the next warcup',
 };
