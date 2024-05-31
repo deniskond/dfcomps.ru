@@ -158,6 +158,9 @@ export class URL_PARAMS {
     VALIDATION_ARCHIVE_LINK: (cupId: number) => string;
     STREAMERS_ARCHIVE_LINK: (cupId: number) => string;
     ONLINE_CUP_INFO: (uuid: string) => string;
+    SUGGEST: string;
+    CHECK_PREVIOUS_CUPS: (mapName: string) => string;
+    GET_WORLDSPAWN_MAP_INFO: string;
   } {
     return {
       GET_NEXTCUP: `${API_URL}/cup/next-cup-info`,
@@ -167,6 +170,9 @@ export class URL_PARAMS {
       VALIDATION_ARCHIVE_LINK: (cupId: number) => `${API_URL}/cup/validation-archive-link/${cupId}`,
       STREAMERS_ARCHIVE_LINK: (cupId: number) => `${API_URL}/cup/streamers-archive-link/${cupId}`,
       ONLINE_CUP_INFO: (uuid: string) => `${API_URL}/cup/online-cup/${uuid}`,
+      SUGGEST: `${API_URL}/cup/suggest`,
+      CHECK_PREVIOUS_CUPS: (mapName: string) => `${API_URL}/cup/check-previous-cups/${mapName}`,
+      GET_WORLDSPAWN_MAP_INFO: `${API_URL}/cup/get-worldspawn-map-info`,
     };
   }
 
@@ -203,7 +209,6 @@ export class URL_PARAMS {
     SAVE_SEASON_RATINGS: string;
     RESET_SEASON_RATINGS: string;
     INCREMENT_SEASON: string;
-    GET_WORLDSPAWN_MAP_INFO: string;
     GET_MULTICUPS: string;
     GET_SINGLE_MULTICUP: (multicupId: number) => string;
     ADD_MULTICUP: string;
@@ -244,7 +249,6 @@ export class URL_PARAMS {
       SAVE_SEASON_RATINGS: `${API_URL}/admin/season/save-ratings`,
       RESET_SEASON_RATINGS: `${API_URL}/admin/season/reset-ratings`,
       INCREMENT_SEASON: `${API_URL}/admin/season/increment`,
-      GET_WORLDSPAWN_MAP_INFO: `${API_URL}/admin/cups/get-worldspawn-map-info`,
       GET_MULTICUPS: `${API_URL}/admin/multicups/get-all-multicups`,
       GET_SINGLE_MULTICUP: (multicupId: number) => `${API_URL}/admin/multicups/get/${multicupId}`,
       ADD_MULTICUP: `${API_URL}/admin/multicups/add-multicup`,

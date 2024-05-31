@@ -18,6 +18,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { NewDiscordAccountComponent } from './components/new-discord-account/new-discord-account.component';
 import { RegisterFormComponent } from './components/register-form/register-form.component';
+import { MapSuggestionComponent } from './components/map-suggestion/map-suggestion.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   imports: [
@@ -34,11 +36,13 @@ import { RegisterFormComponent } from './components/register-form/register-form.
     SharedModule,
     MatSlideToggleModule,
     MatIconModule,
+    MatTooltipModule,
   ],
   declarations: [
     SiteHeaderComponent,
     UserPanelComponent,
     LoginDialogComponent,
+    MapSuggestionComponent,
     RegisterDialogComponent,
     DownloadDfDialogComponent,
     NewDiscordAccountComponent,

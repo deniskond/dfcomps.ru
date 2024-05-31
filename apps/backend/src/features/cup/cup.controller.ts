@@ -1,12 +1,15 @@
-import { Body, Controller, Get, Headers, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
 import { CupService } from './cup.service';
 import {
   CheckCupRegistrationInterface,
   CupInterface,
   ArchiveLinkInterface,
   OnlineCupInfoInterface,
+  CheckPreviousCupsType,
+  WorldspawnMapInfoInterface,
 } from '@dfcomps/contracts';
 import { CupRegistrationDto } from './dto/cup-registration.dto';
+import { MapSuggestionDto } from './dto/map-suggestion.dto';
 
 @Controller('cup')
 export class CupController {
@@ -57,8 +60,29 @@ export class CupController {
     return this.cupService.cancelRegistrationForOnlineCup(accessToken, cupId);
   }
 
+  @Post('suggest')
+  suggestMap(@Headers('X-Auth') accessToken: string | undefined, @Body() { mapName }: MapSuggestionDto): Promise<void> {
+    return this.cupService.suggestMap(accessToken, mapName);
+  }
+
   @Get('online-cup/:uuid')
   getOnlineCupInfo(@Param('uuid') uuid: string): Promise<OnlineCupInfoInterface> {
     return this.cupService.getOnlineCupInfo(uuid);
+  }
+
+  @Get('check-previous-cups/:mapName')
+  checkPreviousCups(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Param('mapName') mapName: string,
+  ): Promise<CheckPreviousCupsType> {
+    return this.cupService.checkPreviousCups(accessToken, mapName);
+  }
+
+  @Get('get-worldspawn-map-info')
+  getWorldspawnMapInfo(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Query() { map }: Record<string, string>,
+  ): Promise<WorldspawnMapInfoInterface> {
+    return this.cupService.getWorldspawnMapInfo(accessToken, map);
   }
 }

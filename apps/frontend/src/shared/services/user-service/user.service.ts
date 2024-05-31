@@ -126,6 +126,28 @@ export class UserService {
       );
   }
 
+  public updatePartialUserInfo(paritalUserInfo: Partial<UserInterface>): void {
+    const localStorageUserString: string | null = localStorage.getItem('user');
+    let localStorageUser: UserInterface | null = null;
+
+    if (!localStorageUserString) {
+      return;
+    }
+
+    try {
+      localStorageUser = JSON.parse(localStorageUserString);
+    } catch (e) {}
+
+    if (!localStorageUser) {
+      return;
+    }
+
+    const updatedUser: UserInterface = { ...localStorageUser, ...paritalUserInfo };
+
+    this.currentUser$.next(updatedUser);
+    localStorage.setItem('user', JSON.stringify(updatedUser));
+  }
+
   private setAuthInfo({ user, token }: LoginResponseInterface) {
     this.currentUser$.next(user);
     this.authService.setToken(token);

@@ -13,8 +13,17 @@
     >
       <span translate translation="adminPanel"></span>
     </a>
-    <!-- TODO [DFRU-30] Страница команды -->
-    <!-- <div matRipple class="profile-link blue-link">Команда</div> -->
+    <div *ngIf="isValidSuggestionTime" (click)="onMapSuggestionClick()" matRipple class="profile-link blue-link">
+      <span translate translation="mapSuggestion"></span>
+    </div>
+    <div
+      *ngIf="!isValidSuggestionTime"
+      [matTooltip]="suggestionHintText"
+      matTooltipPosition="above"
+      class="profile-link gray"
+    >
+      <span translate translation="mapSuggestion"></span>
+    </div>
     <div (click)="onProfileClick()" matRipple class="profile-link blue-link">
       <span translate translation="profile"></span>
     </div>

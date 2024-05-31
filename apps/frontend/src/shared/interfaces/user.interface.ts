@@ -9,4 +9,5 @@ export interface UserInterface {
   vq3Rating: number;
   roles: UserRoles[];
   discordTag: string | null;
+  lastMapSuggestionTime: string | null;
 }

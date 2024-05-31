@@ -49,6 +49,7 @@ export class AuthService {
           nick: user.displayed_nick,
           roles: authRoles.map(({ role }: AuthRole) => role),
           discordTag: user.discord_tag,
+          lastMapSuggestionTime: user.last_map_suggestion_time,
         },
         token: user.access_token,
       };
@@ -94,6 +95,7 @@ export class AuthService {
         nick: user.displayed_nick,
         roles: authRoles.map(({ role }: AuthRole) => role),
         discordTag: discordUserInfo.username,
+        lastMapSuggestionTime: user.last_map_suggestion_time,
       },
       token: user.access_token,
     };
@@ -177,6 +179,7 @@ export class AuthService {
         nick: login,
         roles: [],
         discordTag: discordUsername,
+        lastMapSuggestionTime: null,
       },
       token: userAccessToken,
     };
@@ -296,6 +299,7 @@ export class AuthService {
         nick: user.displayed_nick,
         roles: authRoles.map(({ role }: AuthRole) => role),
         discordTag: discordUserInfo.username,
+        lastMapSuggestionTime: user.last_map_suggestion_time,
       },
       token: user.access_token,
     };

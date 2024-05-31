@@ -52,7 +52,9 @@ export class SmilesDropdownComponent implements OnInit {
       this.languageService.getLanguage$(),
       this.smileSearchForm.get('smile')!.valueChanges.pipe(startWith('')),
     ]).pipe(
-      map(([language, searchInput]: [Languages, string | null]) => this.getSortedAndGroupedSmiles(language, searchInput)),
+      map(([language, searchInput]: [Languages, string | null]) =>
+        this.getSortedAndGroupedSmiles(language, searchInput),
+      ),
     );
   }
 

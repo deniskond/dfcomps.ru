@@ -163,4 +163,13 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
   openStreamersTimer: 'Open streamers timer',
   onlineCupMapAreNotSet: 'Online cup maps are not set yet',
   invalidDemos: 'Invalid demos',
+  mapSuggestion: 'Map suggestion',
+  suggestMapOnWarcup: 'Suggest a map for WarCup',
+  mapWasNotFoundOnWS: `Map wasn't found on ws.q3df.org`,
+  mapWasOnCompetition: 'Map was on',
+  lessThanthreeYearsAgo: 'less than three years ago',
+  mapWasFoundOnWS: 'Map was found on ws.q3df.org',
+  mapWasntOnCompetitions: `Map wasn't on dfcomps competitions in the last 3 years`,
+  mapSuggested: 'Map was sent as a suggestion for Warcup',
+  suggestionGrayHint: 'Suggestion will be available again at the next warcup',
 };

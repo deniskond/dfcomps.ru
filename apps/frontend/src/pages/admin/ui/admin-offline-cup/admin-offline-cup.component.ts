@@ -29,6 +29,7 @@ import { isNonNull } from '~shared/helpers';
 import { UserService } from '~shared/services/user-service/user.service';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { UserRoles, checkUserRoles } from '@dfcomps/auth';
+import { CupsService } from '~shared/services/cups/cups.service';
 
 @Component({
   selector: 'admin-offline-cup',
@@ -89,6 +90,7 @@ export class AdminOfflineCupComponent implements OnInit {
 
   constructor(
     private adminDataService: AdminDataService,
+    private cupsService: CupsService,
     private snackBar: MatSnackBar,
     private router: Router,
     private changeDetectorRef: ChangeDetectorRef,
@@ -143,9 +145,7 @@ export class AdminOfflineCupComponent implements OnInit {
         tap(() => {
           this.isLoadingMapInfo = true;
         }),
-        switchMap((value: string) =>
-          this.adminDataService.getWorldspawnMapInfo$(value).pipe(catchError(() => of(null))),
-        ),
+        switchMap((value: string) => this.cupsService.getWorldspawnMapInfo$(value).pipe(catchError(() => of(null)))),
         takeUntil(this.onDestroy$),
       )
       .subscribe((mapInfo: WorldspawnMapInfoInterface | null) => {
