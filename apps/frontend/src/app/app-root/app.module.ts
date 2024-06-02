@@ -25,7 +25,7 @@ import { UnauthorizedInterceptor } from '~shared/interceptors/unauthorized.inter
     {
       provide: ErrorHandler,
       useValue: Sentry.createErrorHandler({
-        showDialog: true,
+        showDialog: false,
       }),
     },
     {
