@@ -4,11 +4,11 @@ import { Languages } from '~shared/enums/languages.enum';
 import { LanguageService } from '~shared/services/language/language.service';
 
 @Component({
-  templateUrl: './dsi.component.html',
-  styleUrls: ['./dsi.component.less'],
+  templateUrl: './sdfc.component.html',
+  styleUrls: ['./sdfc.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DSIComponent {
+export class SdfcComponent {
   public language$: Observable<Languages> = this.languageService.getLanguage$();
   public languages = Languages;
 
