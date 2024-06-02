@@ -399,32 +399,38 @@ export class CupService {
       throw new BadRequestException(`You already suggested a map this week`);
     }
 
+    const normalizedMapname = mapName.trim().toLowerCase();
+
+    if (!normalizedMapname) {
+      throw new BadRequestException(`Empty map name`);
+    }
+
     const cupWithSuggestedMap: Cup | null = await this.cupRepository
       .createQueryBuilder('cups')
-      .where({ map1: mapName })
-      .orWhere({ map2: mapName })
-      .orWhere({ map3: mapName })
-      .orWhere({ map4: mapName })
-      .orWhere({ map5: mapName })
+      .where({ map1: normalizedMapname })
+      .orWhere({ map2: normalizedMapname })
+      .orWhere({ map3: normalizedMapname })
+      .orWhere({ map4: normalizedMapname })
+      .orWhere({ map5: normalizedMapname })
       .getOne();
 
     if (cupWithSuggestedMap) {
       if (moment(cupWithSuggestedMap.end_datetime).add(3, 'years').isAfter(moment())) {
         throw new BadRequestException(
-          `Map ${mapName} was played in the past 3 years (cup ${cupWithSuggestedMap.full_name})`,
+          `Map ${normalizedMapname} was played in the past 3 years (cup ${cupWithSuggestedMap.full_name})`,
         );
       }
     }
 
     try {
-      await axios.get(`http://ws.q3df.org/map/${mapName}/`);
+      await axios.get(`http://ws.q3df.org/map/${normalizedMapname}/`);
     } catch (e) {
-      throw new NotFoundException(`Map ${mapName} was not found on ws.q3df.org`);
+      throw new NotFoundException(`Map ${normalizedMapname} was not found on ws.q3df.org`);
     }
 
     const alreadySuggestedMap: MapSuggestion | null = await this.mapSuggestionRepository
       .createQueryBuilder('map_suggestions')
-      .where({ map_name: mapName })
+      .where({ map_name: normalizedMapname })
       .getOne();
 
     if (alreadySuggestedMap) {
@@ -432,14 +438,14 @@ export class CupService {
         .createQueryBuilder('map_suggestions')
         .update(MapSuggestion)
         .set({ suggestions_count: alreadySuggestedMap.suggestions_count + 1 })
-        .where({ map_name: mapName })
+        .where({ map_name: normalizedMapname })
         .execute();
     } else {
       await this.mapSuggestionRepository
         .createQueryBuilder('map_suggestions')
         .insert()
         .into(MapSuggestion)
-        .values([{ map_name: mapName, suggestions_count: 1 }])
+        .values([{ map_name: normalizedMapname, suggestions_count: 1 }])
         .execute();
     }
 
