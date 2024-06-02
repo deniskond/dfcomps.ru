@@ -171,4 +171,5 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   mapWasntOnCompetitions: 'Карта не была на турнирах dfcomps в последние 3 года',
   mapSuggested: 'Карта была отправлена как предложение на Warcup',
   suggestionGrayHint: `Будет доступно во время следующего Warcup'a`,
+  seasonPeriod: '01 Июня 2024 - 30 Ноября 2024',
 };

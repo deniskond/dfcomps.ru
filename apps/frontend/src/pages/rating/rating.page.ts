@@ -16,7 +16,7 @@ const MAX_PLAYERS_PER_PAGE = 100;
 export class RatingPageComponent implements OnInit {
   public currentPage = 1;
   public selectedSeason: number;
-  public currentSeason$ = new ReplaySubject<number>(1);
+  public currentSeason: number;
   public vq3Ratings$ = new ReplaySubject<LeaderTableInterface[]>(1);
   public cpmRatings$ = new ReplaySubject<LeaderTableInterface[]>(1);
   public pagesCount$ = new ReplaySubject<number>(1);
@@ -97,12 +97,7 @@ export class RatingPageComponent implements OnInit {
 
   public setSeason(season: number): void {
     this.selectedSeason = season;
-
-    this.currentSeason$
-      .pipe(take(1))
-      .subscribe((currentSeason: number) =>
-        season === currentSeason ? this.loadCurrentSeasonPage(1) : this.loadPreviousSeasonPage(1),
-      );
+    this.currentSeason === season ? this.loadCurrentSeasonPage(1) : this.loadPreviousSeasonPage(1);
   }
 
   public getRange(count: number): Array<null> {
@@ -112,7 +107,8 @@ export class RatingPageComponent implements OnInit {
   private loadCurrentSeason(): void {
     this.currentSeasonService.getCurrentSeason$().subscribe((currentSeason: number) => {
       this.selectedSeason = currentSeason;
-      this.currentSeason$.next(currentSeason);
+      this.currentSeason = currentSeason;
+      this.changeDetectorRef.markForCheck();
     });
   }
 }

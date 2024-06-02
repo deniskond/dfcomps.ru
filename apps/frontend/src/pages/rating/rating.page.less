@@ -5,6 +5,19 @@
   height: 400px;
 }
 
+.block-header {
+  margin: 0 !important;
+
+  span {
+    color: var(--base-header-blue-color);
+    font-family: bebas;
+    font-size: 31px;
+    letter-spacing: 1.5px;
+    font-weight: normal;
+    line-height: initial;
+  }
+}
+
 .top-text {
   line-height: 1.6;
   font-size: 15px;
@@ -50,7 +63,19 @@
 
   a {
     margin: 0 4px;
-    color: var(--base-font-color);
+    color: var(--table-header-color);
     cursor: pointer;
   }
+}
+
+.season-header-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.season-dates {
+  margin-left: 10px;
+  color: #666;
+  font-size: 16px;
 }

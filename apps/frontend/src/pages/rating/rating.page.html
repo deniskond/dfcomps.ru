@@ -1,11 +1,15 @@
 <div class="shadowed-main-block">
-  <ng-container *ngIf="(currentSeason$ | async) as currentSeason; else loader">
-    <h1 *ngIf="currentSeason === selectedSeason" class="h1-block-header">
-      <span translate translation="currentSeasonRatingList"></span>
-    </h1>
+  <ng-container *ngIf="currentSeason; else loader">
+    <div *ngIf="currentSeason === selectedSeason" class="season-header-container">
+      <h1 class="block-header">
+        <span translate translation="currentSeasonRatingList"></span>
+      </h1>
+
+      <span translate translation="seasonPeriod" class="season-dates"></span>
+    </div>
     <h1 *ngIf="currentSeason !== selectedSeason" class="h1-block-header">
       <span translate translation="seasonRatingList"></span>
-      <span>&nbsp;{{ currentSeason }}</span>
+      <span>&nbsp;{{ selectedSeason }}</span>
     </h1>
     <div class="top-text">
       <span translate translation="youCanWatchFullRatingSystemDescription"></span>
@@ -17,7 +21,11 @@
         <span translate translation="ratingsBySeason"></span>
         <span>:</span>
       </span>
-      <a *ngFor="let item of [].constructor(currentSeason); let i = index" (click)="setSeason(i + 1)" class="season-link">
+      <a
+        *ngFor="let item of [].constructor(currentSeason); let i = index"
+        (click)="setSeason(i + 1)"
+        class="season-link"
+      >
         <span translate translation="season"></span>
         <span>&nbsp;{{ i + 1 }}</span>
       </a>
@@ -52,7 +60,9 @@
 
     <ng-template #previousSeason>
       <div *ngIf="(pagesCount$ | async) as pagesCount;" class="pagination-container">
-        <a *ngFor="let page of range(pagesCount); let i = index;" (click)="loadPreviousSeasonPage(i + 1)">{{ i + 1 }}</a>
+        <a *ngFor="let page of range(pagesCount); let i = index;" (click)="loadPreviousSeasonPage(i + 1)">
+          {{ i + 1 }}
+        </a>
       </div>
     </ng-template>
   </ng-container>

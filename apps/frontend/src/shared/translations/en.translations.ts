@@ -172,4 +172,5 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
   mapWasntOnCompetitions: `Map wasn't on dfcomps competitions in the last 3 years`,
   mapSuggested: 'Map was sent as a suggestion for Warcup',
   suggestionGrayHint: 'Suggestion will be available again at the next warcup',
+  seasonPeriod: '01 June 2024 - 30 November 2024',
 };
