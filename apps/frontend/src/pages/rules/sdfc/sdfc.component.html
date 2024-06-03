@@ -1,0 +1,166 @@
+<ng-container *ngIf="(language$ | async) === languages.RU">
+  <div class="shadowed-main-block">
+    <h1 class="h1-block-header">Правила Speedrun DeFrag Cup</h1>
+    <div class="rules-section">
+      <p>
+        <b>1.</b>
+        Действуют общие правила проведения турниров (разделы 1-4
+        <a href="/rules">правил dfcomps</a>)
+      </p>
+      <p>
+        <b>2.</b>
+        Турнир проходит в формате Single Elimination.
+      </p>
+      <p>
+        <b>3.</b>
+        Определение победителя
+      </p>
+      <p>
+        <b>3.1</b>
+        Победителем матча становится игрок, быстрее всего прошедший выбранный набор карт. Итоговое время считается по
+        сумме времени прохождения каждой отдельной карты.
+      </p>
+      <p>
+        <b>3.2</b>
+        Время прохождения карты считается от первого момента срабатывания стартового триггера до срабатывания финишного
+        триггера. При этом, если время от появления игрока на карте до срабатывания первого стартового триггера больше
+        чем 3 секунды, избыток добавляется к общему времени. Например, если игрок потратил 10 секунд на преджамп, к его
+        итоговому времени на карте добавятся 10 - 3 = 7 секунд. Если игрок потратит на преджамп меньше трех секунд, то
+        избыточного времени не будет.
+      </p>
+      <p>
+        <b>4.</b>
+        Процесс выбора карт
+      </p>
+      <p>
+        <b>4.1</b>
+        Полный список карт объявляется заранее.
+      </p>
+      <p>
+        <b>4.2</b>
+        Процесс выбора карт осуществляется по ссылке, доступной в начале матча.
+      </p>
+      <p>
+        <b>4.3</b>
+        Игроки по очереди банят карты, пока не останется набор карт в количестве определенном в туре.
+      </p>
+      <p>
+        <b>4.4</b>
+        Список карт во время бана соответствует тому порядку, в котором карты нужно будет пройти. Список карт для
+        каждого матча определяется случайной перетасовкой.
+      </p>
+      <p>
+        <b>5.</b>
+        Проведение матча
+      </p>
+      <p>
+        <b>5.1</b>
+        Игроки подключаются к разным выделенным серверам, ссылку на сервер получают через сайт dfcomps.
+      </p>
+      <p>
+        <b>5.2</b>
+        Игрокам нужно поставить параметр name такой же, под которым они зарегистрированы на турнире и написать
+        <span class="italic-console-command">!ready</span>
+        в консоль для обозначения готовности.
+      </p>
+      <p>
+        <b>5.3</b>
+        Смена карт и подведение результатов будет происходить автоматически, игрокам не нужно делать callvote.
+      </p>
+      <p>
+        <b>5.4</b>
+        Игрок может сдаться до конца матча, написав в консоли
+        <span class="italic-console-command">!giveup</span>
+        .
+      </p>
+      <p>
+        <b>6.</b>
+        В случае возникновения спорных ситуаций, окончательное решение принимают организаторы.
+      </p>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="(language$ | async) === languages.EN">
+  <div class="shadowed-main-block">
+    <h1 class="h1-block-header">Speedrun DeFrag Cup rules</h1>
+    <div class="rules-section">
+      <p>
+        <b>1.</b>
+        Common tournament ruleset applies (sections 1–4 of the
+        <a href="/rules">dfcomps rules</a>)
+      </p>
+      <p>
+        <b>2.</b>
+        The tournament is held in Single Elimination format.
+      </p>
+      <p>
+        <b>3.</b>
+        Determining winner
+      </p>
+      <p>
+        <b>3.1</b>
+        The winner of the match is the player with the fastest time through all the selected maps.
+        The final time is the sum of times of each individual map.
+      </p>
+      <p>
+        <b>3.2</b>
+        The map time is counted from the first moment of the start trigger to the finish trigger.
+        If time from entering the game to start trigger intersection exceeds 3 seconds, additional time is added to the
+        final results. For example, if a player spends 10 seconds prejumping, 10 - 3 = 7 seconds are added
+        to his time on the map. If the player spends less than three seconds on the prejump, there are no additional
+        time.
+      </p>
+      <p>
+        <b>4.</b>
+        Map selection process
+      </p>
+      <p>
+        <b>4.1</b>
+        The full maplist is published before tournament.
+      </p>
+      <p>
+        <b>4.2</b>
+        Map banning takes place by link provided before the match.
+      </p>
+      <p>
+        <b>4.3</b>
+        Players take turns banning maps until there are required amount of maps left, each player has 2 bans.
+      </p>
+      <p>
+        <b>4.4</b>
+        The list of maps during the ban phase corresponds to the order in which the maps are played.
+        The list of maps for each match is determined by random shuffling.
+      </p>
+      <p>
+        <b>5.</b>
+        Match process
+      </p>
+      <p>
+        <b>5.1</b>
+        Players connect to different dedicated servers, the server link is obtained through the dfcomps website.
+      </p>
+      <p>
+        <b>5.2</b>
+        Players need to set the name parameter equal to name under which they are registered for the tournament and
+        write
+        <span class="italic-console-command">!ready</span>
+        in the console.
+      </p>
+      <p>
+        <b>5.3</b>
+        Changing maps and summarizing results are automatic, players do not need to make a callvote.
+      </p>
+      <p>
+        <b>5.4</b>
+        A player can give up before the end of the match by writing
+        <span class="italic-console-command">!giveup</span>
+        in the console.
+      </p>
+      <p>
+        <b>6.</b>
+        In case of disputes, the final decision is made by the organizers.
+      </p>
+    </div>
+  </div>
+</ng-container>
