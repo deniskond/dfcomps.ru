@@ -43,7 +43,12 @@
       <div class="number">{{ column * rowCount + row + 1 }}</div>
       <div class="player">
         <ng-container *ngIf="registeredPlayers[column * rowCount + row] as player">
-          <app-player-cell [country]="player.country" [nick]="player.nick" [playerId]="player.id"></app-player-cell>
+          <app-player-cell
+            [country]="player.country"
+            [nick]="player.nick"
+            [playerId]="player.id"
+            class="player-cell"
+          ></app-player-cell>
         </ng-container>
       </div>
     </div>
