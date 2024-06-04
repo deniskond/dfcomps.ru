@@ -8,6 +8,7 @@ import {
   catchError,
   combineLatest,
   debounceTime,
+  filter,
   finalize,
   of,
   switchMap,
@@ -51,39 +52,7 @@ export class MapSuggestionComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.mapName$
-      .pipe(
-        tap(() => {
-          this.isLoading = true;
-        }),
-        debounceTime(2000),
-        tap(() => {
-          this.isPristine = false;
-        }),
-        switchMap((mapName: string) =>
-          combineLatest([
-            this.cupsService.getWorldspawnMapInfo$(mapName).pipe(catchError(() => of(null))),
-            this.cupsService.checkPreviousCups$(mapName),
-          ]),
-        ),
-        finalize(() => {
-          this.isLoading = false;
-        }),
-        takeUntil(this.onDestroy$),
-      )
-      .subscribe(([mapInfo, previosCupsInfo]: [WorldspawnMapInfoInterface | null, CheckPreviousCupsType]) => {
-        this.isNotFoundOnWS = !mapInfo;
-        this.mapInfo = mapInfo;
-        this.wasPlayedBefore = previosCupsInfo.wasOnCompetition;
-        this.previousCupName = previosCupsInfo.wasOnCompetition ? previosCupsInfo.lastCompetition : null;
-
-        if (mapInfo) {
-          this.mapWeapons = this.mapWeaponsToString(mapInfo.weapons);
-        }
-
-        this.isLoading = false;
-        this.changeDetectorRef.markForCheck();
-      });
+    this.setMapnameInputSubscription();
   }
 
   ngOnDestroy(): void {
@@ -125,6 +94,43 @@ export class MapSuggestionComponent implements OnInit, OnDestroy {
           .subscribe((translations: Record<string, string>) =>
             this.snackBar.open(translations['mapSuggested'], 'OK', { duration: 3000 }),
           );
+      });
+  }
+
+  private setMapnameInputSubscription(): void {
+    this.mapName$
+      .pipe(
+        filter((mapName: string) => !!mapName),
+        tap(() => {
+          this.isLoading = true;
+        }),
+        debounceTime(2000),
+        tap(() => {
+          this.isPristine = false;
+        }),
+        switchMap((mapName: string) =>
+          combineLatest([
+            this.cupsService.getWorldspawnMapInfo$(mapName).pipe(catchError(() => of(null))),
+            this.cupsService.checkPreviousCups$(mapName),
+          ]),
+        ),
+        finalize(() => {
+          this.isLoading = false;
+        }),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(([mapInfo, previosCupsInfo]: [WorldspawnMapInfoInterface | null, CheckPreviousCupsType]) => {
+        this.isNotFoundOnWS = !mapInfo;
+        this.mapInfo = mapInfo;
+        this.wasPlayedBefore = previosCupsInfo.wasOnCompetition;
+        this.previousCupName = previosCupsInfo.wasOnCompetition ? previosCupsInfo.lastCompetition : null;
+
+        if (mapInfo) {
+          this.mapWeapons = this.mapWeaponsToString(mapInfo.weapons);
+        }
+
+        this.isLoading = false;
+        this.changeDetectorRef.markForCheck();
       });
   }
 

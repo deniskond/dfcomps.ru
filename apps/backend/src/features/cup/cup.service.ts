@@ -405,19 +405,15 @@ export class CupService {
 
     const cupWithSuggestedMap: Cup | null = await this.cupRepository
       .createQueryBuilder('cups')
-      .where({ map1: normalizedMapname })
-      .orWhere({ map2: normalizedMapname })
-      .orWhere({ map3: normalizedMapname })
-      .orWhere({ map4: normalizedMapname })
-      .orWhere({ map5: normalizedMapname })
+      .where(
+        `start_datetime < '${moment().format()}'::date AND (map1 = '${normalizedMapname}' OR map2 = '${normalizedMapname}' OR map3 = '${normalizedMapname}' OR map4 = '${normalizedMapname}' OR map5 = '${normalizedMapname}')`,
+      )
       .getOne();
 
-    if (cupWithSuggestedMap) {
-      if (moment(cupWithSuggestedMap.end_datetime).add(3, 'years').isAfter(moment())) {
-        throw new BadRequestException(
-          `Map ${normalizedMapname} was played in the past 3 years (cup ${cupWithSuggestedMap.full_name})`,
-        );
-      }
+    if (cupWithSuggestedMap && moment(cupWithSuggestedMap.end_datetime).add(3, 'years').isAfter(moment())) {
+      throw new BadRequestException(
+        `Map ${normalizedMapname} was played in the past 3 years (cup ${cupWithSuggestedMap.full_name})`,
+      );
     }
 
     try {
@@ -472,14 +468,12 @@ export class CupService {
 
     const cupWithSuggestedMap: Cup | null = await this.cupRepository
       .createQueryBuilder('cups')
-      .where({ map1: normalizedMapname })
-      .orWhere({ map2: normalizedMapname })
-      .orWhere({ map3: normalizedMapname })
-      .orWhere({ map4: normalizedMapname })
-      .orWhere({ map5: normalizedMapname })
+      .where(
+        `start_datetime < '${moment().format()}'::date AND (map1 = '${normalizedMapname}' OR map2 = '${normalizedMapname}' OR map3 = '${normalizedMapname}' OR map4 = '${normalizedMapname}' OR map5 = '${normalizedMapname}')`,
+      )
       .getOne();
 
-    if (cupWithSuggestedMap) {
+    if (cupWithSuggestedMap && moment(cupWithSuggestedMap.end_datetime).add(3, 'years').isAfter(moment())) {
       return {
         wasOnCompetition: true,
         lastCompetition: cupWithSuggestedMap.full_name,
