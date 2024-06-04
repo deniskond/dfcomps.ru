@@ -368,11 +368,9 @@ export class CupService {
       .orderBy('id', 'ASC')
       .getMany();
 
-    const cupNumber: number = cups.findIndex((cup: Cup) => cup.timerId === uuid) + 1;
-
     return {
-      title: `Online Cup #${cupNumber}`,
-      subtitle: cup.short_name,
+      fullName: cup.full_name,
+      shortName: cup.short_name,
       maps: [cup.map1, cup.map2, cup.map3, cup.map4, cup.map5],
       roundDuration: 30,
     };

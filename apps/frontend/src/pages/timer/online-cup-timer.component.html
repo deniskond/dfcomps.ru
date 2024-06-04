@@ -1,7 +1,7 @@
 <div *ngIf="onlineCupInfo" class="container">
   <div class="inner-container">
-    <div class="title">{{ onlineCupInfo.title }}</div>
-    <div class="subtitle" data-test-id="text-online-cup-name">{{ onlineCupInfo.subtitle }}</div>
+    <div class="title">{{ onlineCupInfo.fullName }}</div>
+    <div class="subtitle" data-test-id="text-online-cup-name">{{ onlineCupInfo.shortName }}</div>
     <div class="timer-and-maps">
       <div class="timer">{{ displayedMinutes }}:{{ displayedSeconds }}</div>
       <div class="maps">

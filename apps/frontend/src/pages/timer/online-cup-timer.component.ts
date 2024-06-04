@@ -50,23 +50,7 @@ export class OnlineCupTimerComponent implements OnInit {
       });
   }
 
-  get minutes(): number {
-    return Math.floor(this.timerValue / 60);
-  }
-
-  get displayedMinutes(): string {
-    return this.minutes < 10 ? `0${this.minutes}` : `${this.minutes}`;
-  }
-
-  get seconds(): number {
-    return this.timerValue - this.minutes * 60;
-  }
-
-  get displayedSeconds(): string {
-    return this.seconds < 10 ? `0${this.seconds}` : `${this.seconds}`;
-  }
-
-  setMap(n: number): void {
+  public setMap(n: number): void {
     clearInterval(this.interval);
     this.currentMap = n;
     this.timerValue = 1800;
@@ -79,5 +63,21 @@ export class OnlineCupTimerComponent implements OnInit {
         clearInterval(this.interval);
       }
     }, 1000);
+  }
+
+  public get displayedMinutes(): string {
+    return this.minutes < 10 ? `0${this.minutes}` : `${this.minutes}`;
+  }
+
+  public get displayedSeconds(): string {
+    return this.seconds < 10 ? `0${this.seconds}` : `${this.seconds}`;
+  }
+
+  private get minutes(): number {
+    return Math.floor(this.timerValue / 60);
+  }
+
+  private get seconds(): number {
+    return this.timerValue - this.minutes * 60;
   }
 }

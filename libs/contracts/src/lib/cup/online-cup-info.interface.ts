@@ -1,6 +1,6 @@
 export interface OnlineCupInfoInterface {
-  title: string;
-  subtitle: string;
+  fullName: string;
+  shortName: string;
   maps: string[];
   roundDuration: number;
 }
