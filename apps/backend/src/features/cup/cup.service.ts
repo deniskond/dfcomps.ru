@@ -466,17 +466,19 @@ export class CupService {
       throw new UnauthorizedException(`Can't check previous cups as unauthorized user`);
     }
 
-    if (!mapName) {
+    const normalizedMapname = mapName.trim().toLowerCase();
+
+    if (!normalizedMapname) {
       throw new BadRequestException('Empty mapname');
     }
 
     const cupWithSuggestedMap: Cup | null = await this.cupRepository
       .createQueryBuilder('cups')
-      .where({ map1: mapName })
-      .orWhere({ map2: mapName })
-      .orWhere({ map3: mapName })
-      .orWhere({ map4: mapName })
-      .orWhere({ map5: mapName })
+      .where({ map1: normalizedMapname })
+      .orWhere({ map2: normalizedMapname })
+      .orWhere({ map3: normalizedMapname })
+      .orWhere({ map4: normalizedMapname })
+      .orWhere({ map5: normalizedMapname })
       .getOne();
 
     if (cupWithSuggestedMap) {
