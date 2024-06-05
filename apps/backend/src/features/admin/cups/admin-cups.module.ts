@@ -13,6 +13,8 @@ import { OldRating } from '../../../shared/entities/old-rating.entity';
 import { Season } from '../../../shared/entities/season.entity';
 import { News } from 'apps/backend/src/shared/entities/news.entity';
 import { NewsComment } from 'apps/backend/src/shared/entities/news-comment.entity';
+import { AdminWarcupsService } from './admin-warcups.service';
+import { WarcupInfo } from 'apps/backend/src/shared/entities/warcup-info.entity';
 
 @Module({
   imports: [
@@ -27,9 +29,10 @@ import { NewsComment } from 'apps/backend/src/shared/entities/news-comment.entit
       Season,
       News,
       NewsComment,
+      WarcupInfo,
     ]),
   ],
   controllers: [AdminCupsController],
-  providers: [AdminCupsService, TablesService],
+  providers: [AdminCupsService, TablesService, AdminWarcupsService],
 })
 export class AdminCupsModule {}

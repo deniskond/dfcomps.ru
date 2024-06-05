@@ -1,7 +1,6 @@
 import {
   BadRequestException,
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -32,7 +31,6 @@ import {
   ValidDemoInterface,
   ValidationResultInterface,
   VerifiedStatuses,
-  WorldspawnMapInfoInterface,
 } from '@dfcomps/contracts';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cup } from '../../../shared/entities/cup.entity';
@@ -50,7 +48,6 @@ import { Season } from '../../../shared/entities/season.entity';
 import * as Zip from 'adm-zip';
 import * as fs from 'fs';
 import { Multicup } from '../../../shared/entities/multicup.entity';
-import axios from 'axios';
 import { getMapLevelshot } from '../../../shared/helpers/get-map-levelshot';
 import { v4 } from 'uuid';
 import { News } from '../../../shared/entities/news.entity';

@@ -33,14 +33,19 @@ import {
   SetPlayerServerDto,
   UpdateOfflineCupDto,
   UploadedFileLinkInterface,
+  WarcupStateInterface,
 } from '@dfcomps/contracts';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MulterFileInterface } from 'apps/backend/src/shared/interfaces/multer.interface';
 import { EnumValidationPipe } from 'apps/backend/src/shared/validation/enum-validation.pipe';
+import { AdminWarcupsService } from './admin-warcups.service';
 
 @Controller('admin/cups')
 export class AdminCupsController {
-  constructor(private readonly adminCupsService: AdminCupsService) {}
+  constructor(
+    private readonly adminCupsService: AdminCupsService,
+    private readonly adminWarcupsService: AdminWarcupsService,
+  ) {}
 
   @Get('get-all-cups')
   getAllCups(@Headers('X-Auth') accessToken: string | undefined): Promise<AdminCupInterface[]> {
@@ -242,5 +247,10 @@ export class AdminCupsController {
     @Param('roundNumber', new ParseIntPipe()) roundNumber: number,
   ): Promise<OnlineCupRoundResultsInterface> {
     return this.adminCupsService.getOnlineCupRoundResults(accessToken, cupId, roundNumber);
+  }
+
+  @Get('warcup-state')
+  getWarcupState(@Headers('X-Auth') accessToken: string | undefined): Promise<WarcupStateInterface> {
+    return this.adminWarcupsService.getWarcupState(accessToken);
   }
 }
