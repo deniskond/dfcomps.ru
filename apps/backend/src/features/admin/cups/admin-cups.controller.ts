@@ -35,6 +35,7 @@ import {
   UploadedFileLinkInterface,
   WarcupStateInterface,
   WarcupSuggestionStatsInterface,
+  WarcupVoteDto,
   WarcupVotingInterface,
 } from '@dfcomps/contracts';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -262,7 +263,15 @@ export class AdminCupsController {
   }
 
   @Get('warcup-voting')
-  getWarcupVoting(@Headers('X-Auth') accessToken: string | undefined): Promise<WarcupVotingInterface> {
-    return this.adminWarcupsService.getWarcupVoting(accessToken);
+  getWarcupVotingInfo(@Headers('X-Auth') accessToken: string | undefined): Promise<WarcupVotingInterface> {
+    return this.adminWarcupsService.getWarcupVotingInfo(accessToken);
+  }
+
+  @Post('warcup-vote')
+  warcupVote(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Body() { mapSuggestionId }: WarcupVoteDto,
+  ): Promise<void> {
+    return this.adminWarcupsService.warcupVote(accessToken, mapSuggestionId);
   }
 }

@@ -23,6 +23,7 @@ export class AdminWarcupsService {
     private readonly authService: AuthService,
     @InjectRepository(WarcupInfo) private readonly warcupInfoRepository: Repository<WarcupInfo>,
     @InjectRepository(MapSuggestion) private readonly mapSuggestionsRepository: Repository<MapSuggestion>,
+    @InjectRepository(WarcupAdminVote) private readonly warcupAdminVoteRepository: Repository<WarcupAdminVote>,
   ) {}
 
   public async getWarcupState(accessToken: string | undefined): Promise<WarcupStateInterface> {
@@ -78,7 +79,7 @@ export class AdminWarcupsService {
     };
   }
 
-  public async getWarcupVoting(accessToken: string | undefined): Promise<WarcupVotingInterface> {
+  public async getWarcupVotingInfo(accessToken: string | undefined): Promise<WarcupVotingInterface> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!checkUserRoles(userAccess.roles, [UserRoles.WARCUP_ADMIN])) {
@@ -130,6 +131,52 @@ export class AdminWarcupsService {
         adminVotes: mapSuggestion.warcupAdminVotes.map(({ user }: WarcupAdminVote) => user.displayed_nick),
       })),
     };
+  }
+
+  public async warcupVote(accessToken: string | undefined, mapSuggestionId: number): Promise<void> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.WARCUP_ADMIN])) {
+      throw new UnauthorizedException('Unauthorized to vote for warcup map without WARCUP_ADMIN role');
+    }
+
+    const warcupState: WarcupStateInterface = await this.getWarcupStateInfo();
+
+    if (warcupState.state !== WarcupVotingState.VOTING) {
+      throw new BadRequestException(`Can't vote for warcup map while state is not VOTING`);
+    }
+
+    const suggestedMap: MapSuggestion | null = await this.mapSuggestionsRepository
+      .createQueryBuilder()
+      .where({ id: mapSuggestionId })
+      .getOne();
+
+    if (!suggestedMap) {
+      throw new BadRequestException(`Map suggestion with id = ${mapSuggestionId} does not exist`);
+    }
+
+    await this.warcupAdminVoteRepository
+      .createQueryBuilder()
+      .delete()
+      .from(WarcupAdminVote)
+      .where({ user: { id: userAccess.userId } })
+      .execute();
+
+    await this.warcupAdminVoteRepository
+      .createQueryBuilder()
+      .insert()
+      .into(WarcupAdminVote)
+      .values([
+        {
+          user: {
+            id: userAccess.userId!,
+          },
+          mapSuggestion: {
+            id: mapSuggestionId,
+          },
+        },
+      ])
+      .execute();
   }
 
   private async getWarcupStateInfo(): Promise<WarcupStateInterface> {
