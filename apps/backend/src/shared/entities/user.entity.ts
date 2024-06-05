@@ -88,5 +88,5 @@ export class User {
   oneVOneRating: OneVOneRating | null;
 
   @OneToMany(() => MapSuggestion, (mapSuggestion) => mapSuggestion.user)
-  mapSuggestion: MapSuggestion[];
+  mapSuggestions: MapSuggestion[];
 }

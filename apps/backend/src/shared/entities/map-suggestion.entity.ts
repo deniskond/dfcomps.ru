@@ -1,6 +1,7 @@
 import { MapType } from '@dfcomps/contracts';
-import { PrimaryGeneratedColumn, Column, Entity, ManyToOne } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, ManyToOne, OneToOne, OneToMany } from 'typeorm';
 import { User } from './user.entity';
+import { WarcupAdminVote } from './warcup-admin-vote.entity';
 
 @Entity({ name: 'map_suggestions' })
 export class MapSuggestion {
@@ -27,4 +28,7 @@ export class MapSuggestion {
 
   @ManyToOne(() => User, { nullable: true })
   user: User;
+
+  @OneToMany(() => WarcupAdminVote, (warcupAdminVote) => warcupAdminVote.mapSuggestion)
+  warcupAdminVotes: WarcupAdminVote[];
 }

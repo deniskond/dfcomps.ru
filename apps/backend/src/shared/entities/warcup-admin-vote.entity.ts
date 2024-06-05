@@ -1,4 +1,4 @@
-import { PrimaryGeneratedColumn, Entity, OneToOne, JoinColumn } from 'typeorm';
+import { PrimaryGeneratedColumn, Entity, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
 import { User } from './user.entity';
 import { MapSuggestion } from './map-suggestion.entity';
 
@@ -11,7 +11,6 @@ export class WarcupAdminVote {
   @JoinColumn()
   user: User;
 
-  @OneToOne(() => MapSuggestion)
-  @JoinColumn()
+  @ManyToOne(() => MapSuggestion)
   mapSuggestion: MapSuggestion;
 }

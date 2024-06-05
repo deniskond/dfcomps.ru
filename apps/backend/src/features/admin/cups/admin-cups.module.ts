@@ -15,6 +15,7 @@ import { News } from 'apps/backend/src/shared/entities/news.entity';
 import { NewsComment } from 'apps/backend/src/shared/entities/news-comment.entity';
 import { AdminWarcupsService } from './admin-warcups.service';
 import { WarcupInfo } from 'apps/backend/src/shared/entities/warcup-info.entity';
+import { MapSuggestion } from 'apps/backend/src/shared/entities/map-suggestion.entity';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { WarcupInfo } from 'apps/backend/src/shared/entities/warcup-info.entity'
       News,
       NewsComment,
       WarcupInfo,
+      MapSuggestion,
     ]),
   ],
   controllers: [AdminCupsController],

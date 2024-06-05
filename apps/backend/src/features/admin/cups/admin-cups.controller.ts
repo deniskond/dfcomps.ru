@@ -35,6 +35,7 @@ import {
   UploadedFileLinkInterface,
   WarcupStateInterface,
   WarcupSuggestionStatsInterface,
+  WarcupVotingInterface,
 } from '@dfcomps/contracts';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MulterFileInterface } from 'apps/backend/src/shared/interfaces/multer.interface';
@@ -258,5 +259,10 @@ export class AdminCupsController {
   @Get('warcup-suggestion-stats')
   getWarcupSuggestioStats(@Headers('X-Auth') accessToken: string | undefined): Promise<WarcupSuggestionStatsInterface> {
     return this.adminWarcupsService.getWarcupSuggestionStats(accessToken);
+  }
+
+  @Get('warcup-voting')
+  getWarcupVoting(@Headers('X-Auth') accessToken: string | undefined): Promise<WarcupVotingInterface> {
+    return this.adminWarcupsService.getWarcupVoting(accessToken);
   }
 }
