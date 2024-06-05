@@ -8,6 +8,7 @@ import { WarcupInfo } from 'apps/backend/src/shared/entities/warcup-info.entity'
 import { getMapLevelshot } from 'apps/backend/src/shared/helpers/get-map-levelshot';
 import { getNextWarcupTime } from '@dfcomps/helpers';
 import * as moment from 'moment';
+import { WarcupAdminVote } from 'apps/backend/src/shared/entities/warcup-admin-vote.entity';
 
 interface VoteResultMapInterface {
   mapName: string;
@@ -24,6 +25,7 @@ export class AdminWarcupsCronService {
     private readonly addOfflineCupService: AdminAddOfflineCupService,
     @InjectRepository(WarcupInfo) private readonly warcupInfoRepository: Repository<WarcupInfo>,
     @InjectRepository(MapSuggestion) private readonly mapSuggestionsRepository: Repository<MapSuggestion>,
+    @InjectRepository(WarcupAdminVote) private readonly warcupAdminVoteRepository: Repository<WarcupAdminVote>,
   ) {}
 
   @Cron('31 21 * * 6', { timeZone: 'Europe/Moscow' })
@@ -81,8 +83,8 @@ export class AdminWarcupsCronService {
   }
 
   @Cron('31 22 * * 6', { timeZone: 'Europe/Moscow' })
-  async cleanupWarcupVotes() {}
-
-  // @Cron('30 52 21 * * 3', { timeZone: 'Europe/Moscow' })
-  // async test() {}
+  async cleanupWarcupVotesAndSuggestions() {
+    await this.warcupAdminVoteRepository.createQueryBuilder().delete().execute();
+    await this.mapSuggestionsRepository.createQueryBuilder().delete().where({ is_admin_suggestion: true }).execute();
+  }
 }
