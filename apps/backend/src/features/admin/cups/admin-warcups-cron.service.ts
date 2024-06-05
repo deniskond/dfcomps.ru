@@ -83,8 +83,22 @@ export class AdminWarcupsCronService {
   }
 
   @Cron('31 22 * * 6', { timeZone: 'Europe/Moscow' })
-  async cleanupWarcupVotesAndSuggestions() {
+  async postWarcupStart() {
     await this.warcupAdminVoteRepository.createQueryBuilder().delete().execute();
     await this.mapSuggestionsRepository.createQueryBuilder().delete().where({ is_admin_suggestion: true }).execute();
+
+    const warcupInfo: WarcupInfo = (await this.warcupInfoRepository.createQueryBuilder().getOne())!;
+    const nextRotation: number = {
+      1: 2,
+      2: 3,
+      3: 1,
+    }[warcupInfo.next_rotation];
+
+    const updatedWarcupInfo: Partial<WarcupInfo> = {
+      next_rotation: nextRotation as 1 | 2 | 3,
+      next_warcup_number: warcupInfo.next_warcup_number + 1,
+    };
+
+    await this.warcupInfoRepository.createQueryBuilder().update(WarcupInfo).set(updatedWarcupInfo).execute();
   }
 }
