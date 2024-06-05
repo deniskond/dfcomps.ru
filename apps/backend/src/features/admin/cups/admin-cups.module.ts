@@ -18,6 +18,8 @@ import { WarcupInfo } from 'apps/backend/src/shared/entities/warcup-info.entity'
 import { MapSuggestion } from 'apps/backend/src/shared/entities/map-suggestion.entity';
 import { WarcupAdminVote } from 'apps/backend/src/shared/entities/warcup-admin-vote.entity';
 import { WorldspawnParseService } from 'apps/backend/src/shared/services/worldspawn-parse.service';
+import { AdminWarcupsCronService } from './admin-warcups-cron.service';
+import { AdminAddOfflineCupService } from './add-offline-cup.service';
 
 @Module({
   imports: [
@@ -38,6 +40,13 @@ import { WorldspawnParseService } from 'apps/backend/src/shared/services/worldsp
     ]),
   ],
   controllers: [AdminCupsController],
-  providers: [AdminCupsService, TablesService, AdminWarcupsService, WorldspawnParseService],
+  providers: [
+    AdminCupsService,
+    TablesService,
+    AdminWarcupsService,
+    WorldspawnParseService,
+    AdminWarcupsCronService,
+    AdminAddOfflineCupService,
+  ],
 })
 export class AdminCupsModule {}

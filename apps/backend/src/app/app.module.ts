@@ -31,6 +31,7 @@ import { SeasonModule } from '../features/season/season.module';
 import { MapSuggestion } from '../shared/entities/map-suggestion.entity';
 import { WarcupAdminVote } from '../shared/entities/warcup-admin-vote.entity';
 import { WarcupInfo } from '../shared/entities/warcup-info.entity';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -77,6 +78,7 @@ import { WarcupInfo } from '../shared/entities/warcup-info.entity';
     DemosModule,
     MatchModule,
     AdminModule,
+    ScheduleModule.forRoot(),
   ],
 })
 export class AppModule {}

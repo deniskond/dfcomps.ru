@@ -239,6 +239,8 @@ export class AdminWarcupsService {
           author: worldspawnMapInfo.author,
           weapons: mapWeaponsToString(worldspawnMapInfo.weapons),
           is_admin_suggestion: true,
+          size: worldspawnMapInfo.size,
+          pk3_link: worldspawnMapInfo.pk3,
         },
       ])
       .execute();
@@ -251,7 +253,7 @@ export class AdminWarcupsService {
       return {
         state: WarcupVotingState.PAUSED,
         nextStateStartTime: null,
-        nextMapType: warcupInfo.next_map_type,
+        nextMapType: this.mapWarcupRotationToMapType(warcupInfo.next_rotation),
       };
     }
 
@@ -280,7 +282,15 @@ export class AdminWarcupsService {
     return {
       state: warcupVotingState,
       nextStateStartTime,
-      nextMapType: warcupInfo.next_map_type,
+      nextMapType: this.mapWarcupRotationToMapType(warcupInfo.next_rotation),
     };
+  }
+
+  private mapWarcupRotationToMapType(rotationNumber: 1 | 2 | 3): MapType {
+    return {
+      1: MapType.STRAFE,
+      2: MapType.WEAPON,
+      3: MapType.WEAPON,
+    }[rotationNumber];
   }
 }

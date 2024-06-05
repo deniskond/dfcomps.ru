@@ -447,6 +447,8 @@ export class CupService {
             author: worldspawnMapInfo.author,
             weapons: mapWeaponsToString(worldspawnMapInfo.weapons),
             is_admin_suggestion: false,
+            size: worldspawnMapInfo.size,
+            pk3_link: worldspawnMapInfo.pk3,
           },
         ])
         .execute();
