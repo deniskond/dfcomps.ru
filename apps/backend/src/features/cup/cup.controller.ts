@@ -83,6 +83,6 @@ export class CupController {
     @Headers('X-Auth') accessToken: string | undefined,
     @Query() { map }: Record<string, string>,
   ): Promise<WorldspawnMapInfoInterface> {
-    return this.cupService.getWorldspawnMapInfo(accessToken, map);
+    return this.cupService.getWorldspawnMapInfoWrapper(accessToken, map);
   }
 }

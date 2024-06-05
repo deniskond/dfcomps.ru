@@ -22,6 +22,7 @@ import { LanguageService } from '~shared/services/language/language.service';
 import { UserService } from '~shared/services/user-service/user.service';
 import * as moment from 'moment';
 import { HttpErrorResponse } from '@angular/common/http';
+import { mapWeaponsToString } from '@dfcomps/helpers';
 
 @Component({
   selector: 'app-map-suggestion',
@@ -126,27 +127,11 @@ export class MapSuggestionComponent implements OnInit, OnDestroy {
         this.previousCupName = previosCupsInfo.wasOnCompetition ? previosCupsInfo.lastCompetition : null;
 
         if (mapInfo) {
-          this.mapWeapons = this.mapWeaponsToString(mapInfo.weapons);
+          this.mapWeapons = mapWeaponsToString(mapInfo.weapons);
         }
 
         this.isLoading = false;
         this.changeDetectorRef.markForCheck();
       });
-  }
-
-  private mapWeaponsToString(weapons: WorldspawnMapInfoInterface['weapons']): string {
-    let weaponsString = '';
-
-    if (weapons['gauntlet']) weaponsString += 'U';
-    if (weapons['rocket']) weaponsString += 'R';
-    if (weapons['shotgun']) weaponsString += 'S';
-    if (weapons['railgun']) weaponsString += 'I';
-    if (weapons['lightning']) weaponsString += 'L';
-    if (weapons['grenade']) weaponsString += 'G';
-    if (weapons['plasma']) weaponsString += 'P';
-    if (weapons['bfg']) weaponsString += 'B';
-    if (weapons['grapple']) weaponsString += 'H';
-
-    return weaponsString;
   }
 }

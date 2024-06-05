@@ -21,7 +21,7 @@ export class MapSuggestion {
   weapons: string;
 
   @Column({ type: 'boolean' })
-  is_admin_suggestion: string;
+  is_admin_suggestion: boolean;
 
   @Column({ type: 'varchar', nullable: true })
   map_type: MapType | null;

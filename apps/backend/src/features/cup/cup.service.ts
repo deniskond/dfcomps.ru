@@ -33,7 +33,7 @@ import * as fs from 'fs';
 import { CupDemo } from '../../shared/entities/cup-demo.entity';
 import { v4 } from 'uuid';
 import { User } from '../../shared/entities/user.entity';
-import { getNextWarcupTime } from '@dfcomps/helpers';
+import { getNextWarcupTime, mapWeaponsToString } from '@dfcomps/helpers';
 import axios from 'axios';
 import { MapSuggestion } from '../../shared/entities/map-suggestion.entity';
 import { getMapLevelshot } from '../../shared/helpers/get-map-levelshot';
@@ -416,8 +416,10 @@ export class CupService {
       );
     }
 
+    let worldspawnMapInfo: WorldspawnMapInfoInterface;
+
     try {
-      await axios.get(`http://ws.q3df.org/map/${normalizedMapname}/`);
+      worldspawnMapInfo = await this.getWorldspawnMapInfo(normalizedMapname);
     } catch (e) {
       throw new NotFoundException(`Map ${normalizedMapname} was not found on ws.q3df.org`);
     }
@@ -439,7 +441,14 @@ export class CupService {
         .createQueryBuilder('map_suggestions')
         .insert()
         .into(MapSuggestion)
-        .values([{ map_name: normalizedMapname, suggestions_count: 1 }])
+        .values([
+          {
+            map_name: normalizedMapname,
+            suggestions_count: 1,
+            author: worldspawnMapInfo.author,
+            weapons: mapWeaponsToString(worldspawnMapInfo.weapons),
+          },
+        ])
         .execute();
     }
 
@@ -486,13 +495,20 @@ export class CupService {
     }
   }
 
-  public async getWorldspawnMapInfo(accessToken: string | undefined, map: string): Promise<WorldspawnMapInfoInterface> {
+  public async getWorldspawnMapInfoWrapper(
+    accessToken: string | undefined,
+    map: string,
+  ): Promise<WorldspawnMapInfoInterface> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!userAccess.userId) {
       throw new UnauthorizedException(`Unauthorized users can't get worldspawn map info`);
     }
 
+    return this.getWorldspawnMapInfo(map);
+  }
+
+  public async getWorldspawnMapInfo(map: string): Promise<WorldspawnMapInfoInterface> {
     const url = `http://ws.q3df.org/map/${map}/`;
     let mapPageHtml: string;
 
