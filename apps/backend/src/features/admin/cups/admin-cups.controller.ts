@@ -34,6 +34,7 @@ import {
   UpdateOfflineCupDto,
   UploadedFileLinkInterface,
   WarcupStateInterface,
+  WarcupSuggestionStatsInterface,
 } from '@dfcomps/contracts';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MulterFileInterface } from 'apps/backend/src/shared/interfaces/multer.interface';
@@ -252,5 +253,10 @@ export class AdminCupsController {
   @Get('warcup-state')
   getWarcupState(@Headers('X-Auth') accessToken: string | undefined): Promise<WarcupStateInterface> {
     return this.adminWarcupsService.getWarcupState(accessToken);
+  }
+
+  @Get('warcup-suggestion-stats')
+  getWarcupSuggestioStats(@Headers('X-Auth') accessToken: string | undefined): Promise<WarcupSuggestionStatsInterface> {
+    return this.adminWarcupsService.getWarcupSuggestionStats(accessToken);
   }
 }
