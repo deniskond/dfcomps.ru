@@ -42,6 +42,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { MulterFileInterface } from 'apps/backend/src/shared/interfaces/multer.interface';
 import { EnumValidationPipe } from 'apps/backend/src/shared/validation/enum-validation.pipe';
 import { AdminWarcupsService } from './admin-warcups.service';
+import { MapSuggestionDto } from '../../cup/dto/map-suggestion.dto';
 
 @Controller('admin/cups')
 export class AdminCupsController {
@@ -273,5 +274,13 @@ export class AdminCupsController {
     @Body() { mapSuggestionId }: WarcupVoteDto,
   ): Promise<void> {
     return this.adminWarcupsService.warcupVote(accessToken, mapSuggestionId);
+  }
+
+  @Post('warcup-suggest')
+  warcupAdminSuggest(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Body() { mapName }: MapSuggestionDto,
+  ): Promise<void> {
+    return this.adminWarcupsService.warcupAdminSuggest(accessToken, mapName);
   }
 }

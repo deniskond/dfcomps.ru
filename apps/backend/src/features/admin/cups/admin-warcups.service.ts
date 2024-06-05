@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from '../../auth/auth.service';
 import {
   MapType,
@@ -6,6 +6,7 @@ import {
   WarcupSuggestionStatsInterface,
   WarcupVotingInterface,
   WarcupVotingState,
+  WorldspawnMapInfoInterface,
 } from '@dfcomps/contracts';
 import { UserAccessInterface } from 'apps/backend/src/shared/interfaces/user-access.interface';
 import { UserRoles, checkUserRoles } from '@dfcomps/auth';
@@ -13,17 +14,21 @@ import { WarcupInfo } from 'apps/backend/src/shared/entities/warcup-info.entity'
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as moment from 'moment';
-import { getNextWarcupTime } from '@dfcomps/helpers';
+import { getNextWarcupTime, mapWeaponsToString } from '@dfcomps/helpers';
 import { MapSuggestion } from 'apps/backend/src/shared/entities/map-suggestion.entity';
 import { WarcupAdminVote } from 'apps/backend/src/shared/entities/warcup-admin-vote.entity';
+import { Cup } from 'apps/backend/src/shared/entities/cup.entity';
+import { WorldspawnParseService } from 'apps/backend/src/shared/services/worldspawn-parse.service';
 
 @Injectable()
 export class AdminWarcupsService {
   constructor(
     private readonly authService: AuthService,
+    private readonly worldspawnParseService: WorldspawnParseService,
     @InjectRepository(WarcupInfo) private readonly warcupInfoRepository: Repository<WarcupInfo>,
     @InjectRepository(MapSuggestion) private readonly mapSuggestionsRepository: Repository<MapSuggestion>,
     @InjectRepository(WarcupAdminVote) private readonly warcupAdminVoteRepository: Repository<WarcupAdminVote>,
+    @InjectRepository(Cup) private readonly cupRepository: Repository<Cup>,
   ) {}
 
   public async getWarcupState(accessToken: string | undefined): Promise<WarcupStateInterface> {
@@ -174,6 +179,66 @@ export class AdminWarcupsService {
           mapSuggestion: {
             id: mapSuggestionId,
           },
+        },
+      ])
+      .execute();
+  }
+
+  public async warcupAdminSuggest(accessToken: string | undefined, mapName: string): Promise<void> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.WARCUP_ADMIN])) {
+      throw new UnauthorizedException(`Can't make warcup admin map suggestion without WARCUP_ADMIN role`);
+    }
+
+    const normalizedMapname = mapName.trim().toLowerCase();
+
+    if (!normalizedMapname) {
+      throw new BadRequestException(`Empty map name`);
+    }
+
+    const cupWithSuggestedMap: Cup | null = await this.cupRepository
+      .createQueryBuilder('cups')
+      .where(
+        `start_datetime < '${moment().format()}'::date AND (map1 = '${normalizedMapname}' OR map2 = '${normalizedMapname}' OR map3 = '${normalizedMapname}' OR map4 = '${normalizedMapname}' OR map5 = '${normalizedMapname}')`,
+      )
+      .getOne();
+
+    if (cupWithSuggestedMap && moment(cupWithSuggestedMap.end_datetime).add(3, 'years').isAfter(moment())) {
+      throw new BadRequestException(
+        `Map ${normalizedMapname} was played in the past 3 years (cup ${cupWithSuggestedMap.full_name})`,
+      );
+    }
+
+    let worldspawnMapInfo: WorldspawnMapInfoInterface;
+
+    try {
+      worldspawnMapInfo = await this.worldspawnParseService.getWorldspawnMapInfo(normalizedMapname);
+    } catch (e) {
+      throw new NotFoundException(`Map ${normalizedMapname} was not found on ws.q3df.org`);
+    }
+
+    const alreadySuggestedAdminMap: MapSuggestion | null = await this.mapSuggestionsRepository
+      .createQueryBuilder()
+      .where({ user: { id: userAccess.userId } })
+      .andWhere({ is_admin_suggestion: true })
+      .getOne();
+
+    if (alreadySuggestedAdminMap) {
+      throw new BadRequestException(`Can't do admin suggests more than one time per week`);
+    }
+
+    await this.mapSuggestionsRepository
+      .createQueryBuilder()
+      .insert()
+      .into(MapSuggestion)
+      .values([
+        {
+          map_name: normalizedMapname,
+          suggestions_count: 1,
+          author: worldspawnMapInfo.author,
+          weapons: mapWeaponsToString(worldspawnMapInfo.weapons),
+          is_admin_suggestion: true,
         },
       ])
       .execute();
