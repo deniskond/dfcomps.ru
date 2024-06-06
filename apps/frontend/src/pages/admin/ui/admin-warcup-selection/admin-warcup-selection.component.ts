@@ -1,7 +1,15 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { MapType, WarcupStateInterface, WarcupSuggestionStatsInterface, WarcupVotingInterface, WarcupVotingState } from '@dfcomps/contracts';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  MapType,
+  WarcupStateInterface,
+  WarcupSuggestionStatsInterface,
+  WarcupVotingInterface,
+  WarcupVotingState,
+} from '@dfcomps/contracts';
 import { Unpacked } from '@dfcomps/helpers';
 import { AdminWarcupDataService } from '~pages/admin/business/admin-warcup-data.service';
+import { MapSuggestionComponent } from '~shared/modules/site-header/components/map-suggestion/map-suggestion.component';
 
 @Component({
   selector: 'admin-warcup-selection',
@@ -12,18 +20,18 @@ import { AdminWarcupDataService } from '~pages/admin/business/admin-warcup-data.
 export class AdminWarcupSelectionComponent implements OnInit {
   public title: string;
   public warcupSuggestionStats: WarcupSuggestionStatsInterface;
-  public selectedMap: string;
+  public chosenMap: string | null;
   public isLoading = true;
   public warcupVotingState: WarcupVotingState | null = null;
   public warcupVotingStates = WarcupVotingState;
   public nextMapType: string;
   public nextStateStartTime: string | null;
   public warcupVotingInfo: WarcupVotingInterface;
-  public suggestedMap: string;
 
   constructor(
     private adminWarcupDataService: AdminWarcupDataService,
     private changeDetectorRef: ChangeDetectorRef,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -38,10 +46,25 @@ export class AdminWarcupSelectionComponent implements OnInit {
     return voteVariant.adminVotes.length;
   }
 
+  public openAdminSuggestPopup(): void {
+    this.dialog
+      .open(MapSuggestionComponent, {
+        data: {
+          isAdmin: true,
+        },
+      })
+      .afterClosed()
+      .subscribe(() => {
+        location.reload();
+      });
+  }
+
   private getWarcupState(): void {
     this.adminWarcupDataService.getWarcupState$().subscribe((warcupState: WarcupStateInterface) => {
       this.title = this.mapStateToComponentTitle(warcupState.state);
       this.nextMapType = this.mapMapTypeToString(warcupState.nextMapType);
+      this.chosenMap = warcupState.chosenMap;
+
       this.nextStateStartTime = warcupState.nextStateStartTime;
       this.warcupVotingState = warcupState.state;
 

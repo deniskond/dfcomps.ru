@@ -8,4 +8,5 @@ export interface WarcupVotingInterface {
     adminVotes: string[];
   }[];
   currentVotedMapSuggestionId: number | null;
+  adminSuggestedMapName: string | null;
 }

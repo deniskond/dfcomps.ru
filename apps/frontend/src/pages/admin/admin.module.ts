@@ -32,6 +32,7 @@ import { AdminBalancePlayersComponent } from './ui/admin-balance-players/admin-b
 import { MatMenuModule } from '@angular/material/menu';
 import { AdminWarcupSelectionComponent } from './ui/admin-warcup-selection/admin-warcup-selection.component';
 import { CupTimerModule } from '~shared/modules/cup-timer/cup-timer.module';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const adminRoutes: Routes = [
   {
@@ -146,6 +147,7 @@ const adminRoutes: Routes = [
     QuillModule.forRoot(),
     MatMenuModule,
     CupTimerModule,
+    MatDialogModule,
   ],
   providers: [HasAdminPanelAccess, HasSuperadminRights],
 })

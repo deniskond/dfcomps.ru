@@ -5,4 +5,5 @@ export interface WarcupStateInterface {
   state: WarcupVotingState;
   nextStateStartTime: string | null;
   nextMapType: MapType;
+  chosenMap: string | null;
 }

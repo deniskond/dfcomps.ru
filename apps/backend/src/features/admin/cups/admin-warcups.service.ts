@@ -101,7 +101,8 @@ export class AdminWarcupsService {
     const mapSuggestions: MapSuggestion[] = await this.mapSuggestionsRepository
       .createQueryBuilder('map_suggestions')
       .leftJoinAndSelect('map_suggestions.warcupAdminVotes', 'warcup_admin_votes')
-      .leftJoinAndSelect('warcup_admin_votes.user', 'users')
+      .leftJoinAndSelect('warcup_admin_votes.user', 'users1')
+      .leftJoinAndSelect('map_suggestions.user', 'users2')
       .orderBy('map_suggestions.suggestions_count', 'DESC')
       .getMany();
 
@@ -135,6 +136,11 @@ export class AdminWarcupsService {
       .where({ user: { id: userAccess.userId } })
       .getOne();
 
+    const adminSuggestedMap: MapSuggestion | undefined = mapSuggestions.find(
+      (mapSuggestion: MapSuggestion) =>
+        mapSuggestion.is_admin_suggestion === true && mapSuggestion.user.id === userAccess.userId,
+    );
+
     return {
       maps: suggestionWithoutDuplicates.map((mapSuggestion: MapSuggestion) => ({
         mapSuggestionId: mapSuggestion.id,
@@ -145,6 +151,7 @@ export class AdminWarcupsService {
         author: mapSuggestion.author,
       })),
       currentVotedMapSuggestionId: currentVote ? currentVote.mapSuggestion.id : null,
+      adminSuggestedMapName: adminSuggestedMap ? adminSuggestedMap.map_name : null,
     };
   }
 
@@ -207,6 +214,16 @@ export class AdminWarcupsService {
       throw new BadRequestException(`Empty map name`);
     }
 
+    const alreadyAdminSuggestedMap: MapSuggestion | null = await this.mapSuggestionsRepository
+      .createQueryBuilder()
+      .where({ is_admin_suggestion: true })
+      .andWhere({ map_name: normalizedMapname })
+      .getOne();
+
+    if (alreadyAdminSuggestedMap) {
+      throw new BadRequestException(`Map ${normalizedMapname} was already suggested in admin vote`);
+    }
+
     const cupWithSuggestedMap: Cup | null = await this.cupRepository
       .createQueryBuilder('cups')
       .where(
@@ -251,6 +268,9 @@ export class AdminWarcupsService {
           is_admin_suggestion: true,
           size: worldspawnMapInfo.size,
           pk3_link: worldspawnMapInfo.pk3,
+          user: {
+            id: userAccess.userId!,
+          },
         },
       ])
       .execute();
@@ -264,6 +284,7 @@ export class AdminWarcupsService {
         state: WarcupVotingState.PAUSED,
         nextStateStartTime: null,
         nextMapType: this.mapWarcupRotationToMapType(warcupInfo.next_rotation),
+        chosenMap: null,
       };
     }
 
@@ -293,6 +314,7 @@ export class AdminWarcupsService {
       state: warcupVotingState,
       nextStateStartTime,
       nextMapType: this.mapWarcupRotationToMapType(warcupInfo.next_rotation),
+      chosenMap: warcupVotingState === WarcupVotingState.CLOSING ? warcupInfo.chosen_map : null,
     };
   }
 

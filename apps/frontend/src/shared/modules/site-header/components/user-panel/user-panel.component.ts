@@ -85,7 +85,11 @@ export class UserPanelComponent implements OnInit, OnDestroy {
   }
 
   public onMapSuggestionClick(): void {
-    this.dialog.open(MapSuggestionComponent);
+    this.dialog.open(MapSuggestionComponent, {
+      data: {
+        isAdmin: false,
+      },
+    });
   }
 
   public checkIsValidSuggestionTime(lastSuggestionTime: string | null): void {

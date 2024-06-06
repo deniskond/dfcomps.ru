@@ -21,11 +21,11 @@ export class AdminWarcupDataService {
     return this.backendService.get$<WarcupVotingInterface>(URL_PARAMS.ADMIN.WARCUP.VOTING_INFO);
   }
 
-  public warcupVote$(): Observable<void> {
-    return this.backendService.post$<void>(URL_PARAMS.ADMIN.WARCUP.VOTE);
+  public warcupVote$(mapSuggestionId: number): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.WARCUP.VOTE, { mapSuggestionId });
   }
 
-  public adminSuggest$(): Observable<void> {
-    return this.backendService.get$<void>(URL_PARAMS.ADMIN.WARCUP.ADMIN_SUGGEST);
+  public adminSuggest$(mapName: string): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.WARCUP.ADMIN_SUGGEST, { mapName });
   }
 }

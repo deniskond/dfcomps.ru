@@ -17,4 +17,7 @@ export class WarcupInfo {
 
   @Column({ type: 'integer', nullable: true })
   warcup_bot_id: number;
+
+  @Column({ type: 'varchar', nullable: true })
+  chosen_map: string;
 }

@@ -1,8 +1,9 @@
-import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, ChangeDetectorRef, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CheckPreviousCupsType, WorldspawnMapInfoInterface } from '@dfcomps/contracts';
 import {
+  Observable,
   ReplaySubject,
   Subject,
   catchError,
@@ -23,6 +24,7 @@ import { UserService } from '~shared/services/user-service/user.service';
 import * as moment from 'moment';
 import { HttpErrorResponse } from '@angular/common/http';
 import { mapWeaponsToString } from '@dfcomps/helpers';
+import { AdminWarcupDataService } from '~pages/admin/business/admin-warcup-data.service';
 
 @Component({
   selector: 'app-map-suggestion',
@@ -46,10 +48,12 @@ export class MapSuggestionComponent implements OnInit, OnDestroy {
   constructor(
     public dialogRef: MatDialogRef<MapSuggestionComponent>,
     private cupsService: CupsService,
+    private adminWarcupDataService: AdminWarcupDataService,
     private changeDetectorRef: ChangeDetectorRef,
     private snackBar: MatSnackBar,
     private languageService: LanguageService,
     private userService: UserService,
+    @Inject(MAT_DIALOG_DATA) public data: { isAdmin: boolean },
   ) {}
 
   ngOnInit(): void {
@@ -72,8 +76,11 @@ export class MapSuggestionComponent implements OnInit, OnDestroy {
   public sendSuggestion(): void {
     this.isLoading = true;
 
-    this.cupsService
-      .suggestMap$(this.mapName)
+    const targetEndpointMethod$: Observable<void> = this.data.isAdmin
+      ? this.adminWarcupDataService.adminSuggest$(this.mapName)
+      : this.cupsService.suggestMap$(this.mapName);
+
+    targetEndpointMethod$
       .pipe(
         catchError((error: HttpErrorResponse) => {
           this.snackBar.open('Error', error.error.message, { duration: 3000 });
@@ -87,7 +94,10 @@ export class MapSuggestionComponent implements OnInit, OnDestroy {
       )
       .subscribe(() => {
         this.dialogRef.close();
-        this.userService.updatePartialUserInfo({ lastMapSuggestionTime: moment().format() });
+
+        if (!this.data.isAdmin) {
+          this.userService.updatePartialUserInfo({ lastMapSuggestionTime: moment().format() });
+        }
 
         this.languageService
           .getTranslations$()
