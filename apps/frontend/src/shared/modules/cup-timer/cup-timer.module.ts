@@ -26,6 +26,6 @@ import { SharedModule } from '../shared.module';
     CupTimerOfflineFinishedComponent,
     CountdownTimerComponent,
   ],
-  exports: [CupTimerComponent],
+  exports: [CupTimerComponent, CountdownTimerComponent],
 })
 export class CupTimerModule {}

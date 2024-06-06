@@ -1,12 +1,12 @@
-<mat-card class="main-form-card">
-  <div *ngIf="!isLoading; else loading">
+<mat-card class="main-card">
+  <div *ngIf="!isLoading; else loading" class="container">
     <h3 class="header">
       {{ title }}
       <span *ngIf="selectedMap">&nbsp;({{ selectedMap }})</span>
     </h3>
     <div class="next-type-caption">
       <b>Next map type:</b>
-      strafe/slick
+      {{ nextMapType }}
     </div>
     <ng-container *ngIf="warcupVotingState === warcupVotingStates.WAITING">
       <div class="suggestions-caption"><b>Suggestion stats:</b></div>
@@ -21,6 +21,37 @@
         </div>
       </div>
     </ng-container>
+    <ng-container>
+      <div class="admin-suggest-container">
+        <div class="admin-suggestion-hint"><b>Wild card:</b></div>
+        <div class="admin-suggestion-hint">admins can suggest one map per week in the final vote</div>
+        <button mat-raised-button color="accent">Suggest a map</button>
+      </div>
+      <div class="next-type-caption">
+        <b>Final vote:</b>
+      </div>
+      <div class="vote-variants-container">
+        <div *ngFor="let voteVariant of warcupVotingInfo.maps" class="vote-variant">
+          <div class="map-info-actions-container">
+            <div class="vote-count">4</div>
+            <div class="levelshot"></div>
+            <div class="info-actions">
+              <div>Map author: author</div>
+              <div>Weapons: weapons</div>
+              <div>Link to WS</div>
+              <button mat-raised-button color="accent">Vote for map</button>
+            </div>
+          </div>
+          <div class="admin-votes-container"></div>
+        </div>
+      </div>
+    </ng-container>
+    <app-countdown-timer
+      *ngIf="nextStateStartTime"
+      [targetTime]="nextStateStartTime"
+      (finished)="onTimerFinished()"
+      class="countdown-timer"
+    ></app-countdown-timer>
   </div>
   <ng-template #loading>
     <div class="loading-block">

@@ -31,6 +31,7 @@ import { AdminInputResultsComponent } from './ui/admin-input-results/admin-input
 import { AdminBalancePlayersComponent } from './ui/admin-balance-players/admin-balance-players.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { AdminWarcupSelectionComponent } from './ui/admin-warcup-selection/admin-warcup-selection.component';
+import { CupTimerModule } from '~shared/modules/cup-timer/cup-timer.module';
 
 const adminRoutes: Routes = [
   {
@@ -144,6 +145,7 @@ const adminRoutes: Routes = [
     MatCheckboxModule,
     QuillModule.forRoot(),
     MatMenuModule,
+    CupTimerModule,
   ],
   providers: [HasAdminPanelAccess, HasSuperadminRights],
 })

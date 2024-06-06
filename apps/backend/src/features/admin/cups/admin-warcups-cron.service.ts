@@ -80,6 +80,13 @@ export class AdminWarcupsCronService {
       },
       warcupInfo.warcup_bot_id,
     );
+
+    this.mapSuggestionsRepository
+      .createQueryBuilder()
+      .delete()
+      .from(MapSuggestion)
+      .where({ map_name: winnerMap })
+      .execute();
   }
 
   @Cron('31 22 * * 6', { timeZone: 'Europe/Moscow' })
