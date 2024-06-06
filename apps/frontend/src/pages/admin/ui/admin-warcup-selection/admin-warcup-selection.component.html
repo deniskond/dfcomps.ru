@@ -1,0 +1,30 @@
+<mat-card class="main-form-card">
+  <div *ngIf="!isLoading; else loading">
+    <h3 class="header">
+      {{ title }}
+      <span *ngIf="selectedMap">&nbsp;({{ selectedMap }})</span>
+    </h3>
+    <div class="next-type-caption">
+      <b>Next map type:</b>
+      strafe/slick
+    </div>
+    <ng-container *ngIf="warcupVotingState === warcupVotingStates.WAITING">
+      <div class="suggestions-caption"><b>Suggestion stats:</b></div>
+      <div class="suggestion-table">
+        <div *ngFor="let mapStats of warcupSuggestionStats.stats" class="map-table-col">
+          <div class="cell upper">
+            {{ mapStats.mapType }}
+          </div>
+          <div class="cell lower">
+            {{ mapStats.count }}
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  <ng-template #loading>
+    <div class="loading-block">
+      <mat-spinner diameter="75" strokeWidth="4" color="accent"></mat-spinner>
+    </div>
+  </ng-template>
+</mat-card>

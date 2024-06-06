@@ -30,6 +30,7 @@ import { AdminInputRoundResultComponent } from './ui/admin-input-round-result/ad
 import { AdminInputResultsComponent } from './ui/admin-input-results/admin-input-results.component';
 import { AdminBalancePlayersComponent } from './ui/admin-balance-players/admin-balance-players.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { AdminWarcupSelectionComponent } from './ui/admin-warcup-selection/admin-warcup-selection.component';
 
 const adminRoutes: Routes = [
   {
@@ -88,6 +89,10 @@ const adminRoutes: Routes = [
         ],
       },
       {
+        path: 'warcup-selection',
+        component: AdminWarcupSelectionComponent,
+      },
+      {
         path: 'validate',
         children: [
           {
@@ -121,6 +126,7 @@ const adminRoutes: Routes = [
     AdminBalancePlayersComponent,
     AdminInputResultsComponent,
     AdminInputRoundResultComponent,
+    AdminWarcupSelectionComponent,
   ],
   imports: [
     RouterModule.forChild(adminRoutes),

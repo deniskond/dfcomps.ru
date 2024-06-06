@@ -1,0 +1,53 @@
+.main-form-card {
+  width: 100%;
+  min-height: 100%;
+  margin-top: 32px;
+  padding: 16px;
+}
+
+.header {
+  margin-bottom: 32px;
+  margin-top: 6px;
+}
+
+.loading-block {
+  display: flex;
+  justify-content: center;
+}
+
+.next-type-caption {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.suggestions-caption {
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+.suggestion-table {
+  display: flex;
+}
+
+.map-table-col {
+  flex: 1;
+
+  &:first-of-type {
+    border-left: 1px solid var(--base-border-color);
+  }
+}
+
+.cell {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  border-right: 1px solid var(--base-border-color);
+  border-bottom: 1px solid var(--base-border-color);
+
+  &.upper {
+    border-top: 1px solid var(--base-border-color);
+    background: whitesmoke;
+  }
+}

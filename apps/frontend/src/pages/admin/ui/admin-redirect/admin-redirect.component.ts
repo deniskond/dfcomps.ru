@@ -22,10 +22,12 @@ export class AdminRedirectComponent implements OnInit {
       .getCurrentUser$()
       .pipe(filter(isNonNull), take(1))
       .subscribe((user: UserInterface) => {
-        if (!checkUserRoles(user.roles, [UserRoles.NEWSMAKER])) {
-          this.router.navigate(['/admin/cups']);
-        } else {
+        if (checkUserRoles(user.roles, [UserRoles.NEWSMAKER])) {
           this.router.navigate(['/admin/news']);
+        } else if (checkUserRoles(user.roles, [UserRoles.VALIDATOR, UserRoles.CUP_ORGANIZER])) {
+          this.router.navigate(['/admin/cups']);
+        } else if (checkUserRoles(user.roles, [UserRoles.WARCUP_ADMIN])) {
+          this.router.navigate(['/admin/warcup-selection']);
         }
       });
   }

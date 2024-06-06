@@ -36,7 +36,7 @@
       ></admin-menu-item>
       <admin-menu-item
         *ngIf="hasWarcupAdminAccess(user)"
-        [isActive]="navigationPage === 'warcup'"
+        [isActive]="navigationPage === 'warcup-selection'"
         routerLink="/admin/warcup-selection"
         caption="Warcup Selection"
         icon="event_repeat"
