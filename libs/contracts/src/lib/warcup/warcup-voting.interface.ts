@@ -5,4 +5,5 @@ export interface WarcupVotingInterface {
     weapons: string;
     adminVotes: string[];
   }[];
+  hasSuggestedAlready: boolean;
 }

@@ -7,7 +7,7 @@ import { UserInterface } from '~shared/interfaces/user.interface';
 import { isSuperadmin } from '@dfcomps/auth';
 
 @Injectable()
-export class HasAdminRights {
+export class HasSuperadminRights {
   constructor(
     private router: Router,
     private userService: UserService,

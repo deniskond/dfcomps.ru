@@ -18,7 +18,7 @@ import { QuillModule } from 'ngx-quill';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AdminSeasonComponent } from './ui/admin-season/admin-season.component';
-import { HasAdminRights } from './business/has-admin-rights.guard';
+import { HasSuperadminRights } from './business/has-superadmin-rights.guard';
 import { SharedModule } from '~shared/modules/shared.module';
 import { HasAdminPanelAccess } from './business/has-admin-panel-access.guard';
 import { AdminOfflineCupComponent } from './ui/admin-offline-cup/admin-offline-cup.component';
@@ -99,7 +99,7 @@ const adminRoutes: Routes = [
       {
         path: 'season',
         children: [{ path: '', component: AdminSeasonComponent }],
-        canActivate: [HasAdminRights],
+        canActivate: [HasSuperadminRights],
       },
     ],
   },
@@ -139,6 +139,6 @@ const adminRoutes: Routes = [
     QuillModule.forRoot(),
     MatMenuModule,
   ],
-  providers: [HasAdminPanelAccess, HasAdminRights],
+  providers: [HasAdminPanelAccess, HasSuperadminRights],
 })
 export class AdminModule {}

@@ -23,10 +23,10 @@ export class MapSuggestion {
   @Column({ type: 'boolean' })
   is_admin_suggestion: boolean;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: true })
   size: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: true })
   pk3_link: string;
 
   @Column({ type: 'varchar', nullable: true })

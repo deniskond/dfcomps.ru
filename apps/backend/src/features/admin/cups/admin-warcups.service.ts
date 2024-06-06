@@ -135,6 +135,9 @@ export class AdminWarcupsService {
         weapons: mapSuggestion.weapons,
         adminVotes: mapSuggestion.warcupAdminVotes.map(({ user }: WarcupAdminVote) => user.displayed_nick),
       })),
+      hasSuggestedAlready: suggestionWithoutDuplicates.some(({ warcupAdminVotes }: MapSuggestion) =>
+        warcupAdminVotes.some(({ user }: WarcupAdminVote) => user.id === userAccess.userId),
+      ),
     };
   }
 

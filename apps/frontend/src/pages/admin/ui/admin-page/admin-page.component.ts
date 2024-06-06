@@ -47,4 +47,8 @@ export class AdminPageComponent implements OnInit {
   public hasCupsAccess(user: UserInterface): boolean {
     return checkUserRoles(user.roles, [UserRoles.CUP_ORGANIZER, UserRoles.VALIDATOR]);
   }
+
+  public hasWarcupAdminAccess(user: UserInterface): boolean {
+    return checkUserRoles(user.roles, [UserRoles.WARCUP_ADMIN]);
+  }
 }
