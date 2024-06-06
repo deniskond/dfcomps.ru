@@ -19,6 +19,7 @@ import { MapSuggestion } from 'apps/backend/src/shared/entities/map-suggestion.e
 import { WarcupAdminVote } from 'apps/backend/src/shared/entities/warcup-admin-vote.entity';
 import { Cup } from 'apps/backend/src/shared/entities/cup.entity';
 import { WorldspawnParseService } from 'apps/backend/src/shared/services/worldspawn-parse.service';
+import { getMapLevelshot } from 'apps/backend/src/shared/helpers/get-map-levelshot';
 
 @Injectable()
 export class AdminWarcupsService {
@@ -128,16 +129,22 @@ export class AdminWarcupsService {
       seenSuggestionIds.add(mapSuggestion.id);
     });
 
+    const currentVote: WarcupAdminVote | null = await this.warcupAdminVoteRepository
+      .createQueryBuilder('warcup_admin_votes')
+      .leftJoinAndSelect('warcup_admin_votes.mapSuggestion', 'map_suggestions')
+      .where({ user: { id: userAccess.userId } })
+      .getOne();
+
     return {
       maps: suggestionWithoutDuplicates.map((mapSuggestion: MapSuggestion) => ({
         mapSuggestionId: mapSuggestion.id,
         name: mapSuggestion.map_name,
         weapons: mapSuggestion.weapons,
         adminVotes: mapSuggestion.warcupAdminVotes.map(({ user }: WarcupAdminVote) => user.displayed_nick),
+        levelshot: getMapLevelshot(mapSuggestion.map_name),
+        author: mapSuggestion.author,
       })),
-      hasSuggestedAlready: suggestionWithoutDuplicates.some(({ warcupAdminVotes }: MapSuggestion) =>
-        warcupAdminVotes.some(({ user }: WarcupAdminVote) => user.id === userAccess.userId),
-      ),
+      currentVotedMapSuggestionId: currentVote ? currentVote.mapSuggestion.id : null,
     };
   }
 

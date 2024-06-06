@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MapType, WarcupStateInterface, WarcupSuggestionStatsInterface, WarcupVotingInterface, WarcupVotingState } from '@dfcomps/contracts';
+import { Unpacked } from '@dfcomps/helpers';
 import { AdminWarcupDataService } from '~pages/admin/business/admin-warcup-data.service';
 
 @Component({
@@ -18,6 +19,7 @@ export class AdminWarcupSelectionComponent implements OnInit {
   public nextMapType: string;
   public nextStateStartTime: string | null;
   public warcupVotingInfo: WarcupVotingInterface;
+  public suggestedMap: string;
 
   constructor(
     private adminWarcupDataService: AdminWarcupDataService,
@@ -30,6 +32,10 @@ export class AdminWarcupSelectionComponent implements OnInit {
 
   public onTimerFinished(): void {
     location.reload();
+  }
+
+  public getVoteCount(voteVariant: Unpacked<WarcupVotingInterface['maps']>): number {
+    return voteVariant.adminVotes.length;
   }
 
   private getWarcupState(): void {

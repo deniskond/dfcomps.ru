@@ -24,8 +24,13 @@
     <ng-container>
       <div class="admin-suggest-container">
         <div class="admin-suggestion-hint"><b>Wild card:</b></div>
-        <div class="admin-suggestion-hint">admins can suggest one map per week in the final vote</div>
-        <button mat-raised-button color="accent">Suggest a map</button>
+        <ng-container *ngIf="true">
+          <div class="admin-suggestion-hint">admins can suggest one map per week in the final vote</div>
+          <button mat-raised-button color="accent">Suggest a map</button>
+        </ng-container>
+        <ng-container *ngIf="false">
+          <div class="admin-suggestion-hint">you suggested {{ suggestedMap }} for this week's Warcup</div>
+        </ng-container>
       </div>
       <div class="next-type-caption">
         <b>Final vote:</b>
@@ -33,16 +38,40 @@
       <div class="vote-variants-container">
         <div *ngFor="let voteVariant of warcupVotingInfo.maps" class="vote-variant">
           <div class="map-info-actions-container">
-            <div class="vote-count">4</div>
-            <div class="levelshot"></div>
+            <div class="vote-count">{{ voteVariant | invokeFunction: getVoteCount }}</div>
+            <div class="levelshot">
+              <img [src]="voteVariant.levelshot" />
+            </div>
             <div class="info-actions">
-              <div>Map author: author</div>
-              <div>Weapons: weapons</div>
-              <div>Link to WS</div>
-              <button mat-raised-button color="accent">Vote for map</button>
+              <div>
+                <b>Map:&nbsp;</b>
+                <a [href]="'https://ws.q3df.org/map/' + voteVariant.name + '/'" class="map-link" target="_blank">
+                  <span>{{ voteVariant.name }}</span>
+                </a>
+              </div>
+              <div class="author-line">
+                <b>Author:</b>
+                {{ voteVariant.author }}
+              </div>
+              <div class="weapons-container">
+                <b>Weapons:</b>
+                <app-weapons [weapons]="voteVariant.weapons" class="weapons"></app-weapons>
+              </div>
+              <button *ngIf="true" mat-raised-button color="accent" class="vote-button">Vote for map</button>
+              <button *ngIf="false" mat-raised-button disabled color="disabled" class="vote-button">
+                You voted this map
+              </button>
             </div>
           </div>
-          <div class="admin-votes-container"></div>
+          <div class="admin-votes-container">
+            <ng-container *ngIf="!!voteVariant.adminVotes.length">
+              <div *ngFor="let adminVote of voteVariant.adminVotes" class="admin-vote">
+                <img src="../../../../../assets/images/icons/ok.png" />
+                <div class="admin-name">{{ adminVote }}</div>
+              </div>
+            </ng-container>
+            <span *ngIf="!voteVariant.adminVotes.length">No votes yet</span>
+          </div>
         </div>
       </div>
     </ng-container>

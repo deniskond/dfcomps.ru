@@ -3,7 +3,9 @@ export interface WarcupVotingInterface {
     mapSuggestionId: number;
     name: string;
     weapons: string;
+    author: string;
+    levelshot: string;
     adminVotes: string[];
   }[];
-  hasSuggestedAlready: boolean;
+  currentVotedMapSuggestionId: number | null;
 }
