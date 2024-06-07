@@ -2,13 +2,15 @@
   <div *ngIf="!isLoading; else loading" class="container">
     <h3 class="header">
       {{ title }}
-      <span *ngIf="chosenMap">&nbsp;({{ chosenMap }})</span>
+      <span *ngIf="chosenMap">({{ chosenMap }})</span>
     </h3>
     <div class="next-type-caption">
       <b>Next map type:</b>
       {{ nextMapType }}
     </div>
-    <ng-container *ngIf="warcupVotingState === warcupVotingStates.WAITING">
+    <ng-container
+      *ngIf="warcupVotingState === warcupVotingStates.WAITING || warcupVotingState === warcupVotingStates.PAUSED"
+    >
       <div class="suggestions-caption"><b>Suggestion stats:</b></div>
       <div class="suggestion-table">
         <div *ngFor="let mapStats of warcupSuggestionStats.stats" class="map-table-col">
@@ -21,7 +23,9 @@
         </div>
       </div>
     </ng-container>
-    <ng-container *ngIf="warcupVotingInfo">
+    <ng-container
+      *ngIf="warcupVotingState === warcupVotingStates.VOTING || warcupVotingState === warcupVotingStates.CLOSING"
+    >
       <div class="admin-suggest-container">
         <div class="admin-suggestion-hint"><b>Wild card:</b></div>
         <ng-container *ngIf="!warcupVotingInfo.adminSuggestedMapName">
@@ -59,24 +63,26 @@
                 <b>Weapons:</b>
                 <app-weapons [weapons]="voteVariant.weapons" class="weapons"></app-weapons>
               </div>
-              <button
-                *ngIf="warcupVotingInfo.currentVotedMapSuggestionId !== voteVariant.mapSuggestionId"
-                (click)="voteForMap(voteVariant.mapSuggestionId)"
-                mat-raised-button
-                color="accent"
-                class="vote-button"
-              >
-                Vote for map
-              </button>
-              <button
-                *ngIf="warcupVotingInfo.currentVotedMapSuggestionId === voteVariant.mapSuggestionId"
-                mat-raised-button
-                disabled
-                color="disabled"
-                class="vote-button"
-              >
-                Vote accepted
-              </button>
+              <ng-container *ngIf="warcupVotingState === warcupVotingStates.VOTING">
+                <button
+                  *ngIf="warcupVotingInfo.currentVotedMapSuggestionId !== voteVariant.mapSuggestionId"
+                  (click)="voteForMap(voteVariant.mapSuggestionId)"
+                  mat-raised-button
+                  color="accent"
+                  class="vote-button"
+                >
+                  Vote for map
+                </button>
+                <button
+                  *ngIf="warcupVotingInfo.currentVotedMapSuggestionId === voteVariant.mapSuggestionId"
+                  mat-raised-button
+                  disabled
+                  color="disabled"
+                  class="vote-button"
+                >
+                  Vote accepted
+                </button>
+              </ng-container>
             </div>
           </div>
           <div class="admin-votes-container">

@@ -23,16 +23,16 @@ export class MapSuggestion {
   @Column({ type: 'boolean' })
   is_admin_suggestion: boolean;
 
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ type: 'varchar' })
   size: string;
 
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ type: 'varchar' })
   pk3_link: string;
 
   @Column({ type: 'varchar', nullable: true })
   map_type: MapType | null;
 
-  @ManyToOne(() => User, { nullable: true })
+  @ManyToOne(() => User)
   user: User;
 
   @OneToMany(() => WarcupAdminVote, (warcupAdminVote) => warcupAdminVote.mapSuggestion)

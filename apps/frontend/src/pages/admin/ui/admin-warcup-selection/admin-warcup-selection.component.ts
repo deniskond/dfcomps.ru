@@ -40,7 +40,8 @@ export class AdminWarcupSelectionComponent implements OnInit {
 
   public onTimerFinished(): void {
     this.isLoading = true;
-    this.getWarcupState();
+
+    setTimeout(() => this.getWarcupState(), 3000);
   }
 
   public getVoteCount(voteVariant: Unpacked<WarcupVotingInterface['maps']>): number {

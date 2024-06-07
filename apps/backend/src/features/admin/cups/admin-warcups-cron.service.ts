@@ -28,7 +28,7 @@ export class AdminWarcupsCronService {
     @InjectRepository(WarcupAdminVote) private readonly warcupAdminVoteRepository: Repository<WarcupAdminVote>,
   ) {}
 
-  @Cron('31 21 * * 6', { timeZone: 'Europe/Moscow' })
+  @Cron('30 21 * * 6', { timeZone: 'Europe/Moscow' })
   async addWarcup() {
     const mapSuggestions: MapSuggestion[] = await this.mapSuggestionsRepository
       .createQueryBuilder('map_suggestions')
@@ -65,8 +65,8 @@ export class AdminWarcupsCronService {
 
     this.addOfflineCupService.addOfflineCup(
       {
-        fullName: `WarCup ${warcupInfo.next_warcup_number}`,
-        shortName: `WarCup ${warcupInfo.next_warcup_number}`,
+        fullName: `WarCup #${warcupInfo.next_warcup_number}`,
+        shortName: `WarCup #${warcupInfo.next_warcup_number}`,
         startTime: getNextWarcupTime(),
         endTime: moment(getNextWarcupTime()).add(1, 'week').format(),
         mapName: winnerMap.mapName,
@@ -81,11 +81,12 @@ export class AdminWarcupsCronService {
       warcupInfo.warcup_bot_id,
     );
 
-    this.mapSuggestionsRepository
+    this.warcupInfoRepository
       .createQueryBuilder()
-      .delete()
-      .from(MapSuggestion)
-      .where({ map_name: winnerMap })
+      .update(WarcupInfo)
+      .set({
+        chosen_map: winnerMap.mapName,
+      })
       .execute();
   }
 
@@ -107,5 +108,12 @@ export class AdminWarcupsCronService {
     };
 
     await this.warcupInfoRepository.createQueryBuilder().update(WarcupInfo).set(updatedWarcupInfo).execute();
+
+    this.mapSuggestionsRepository
+      .createQueryBuilder()
+      .delete()
+      .from(MapSuggestion)
+      .where({ map_name: warcupInfo.chosen_map })
+      .execute();
   }
 }
