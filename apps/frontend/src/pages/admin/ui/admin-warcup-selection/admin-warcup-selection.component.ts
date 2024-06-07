@@ -39,7 +39,8 @@ export class AdminWarcupSelectionComponent implements OnInit {
   }
 
   public onTimerFinished(): void {
-    location.reload();
+    this.isLoading = true;
+    this.getWarcupState();
   }
 
   public getVoteCount(voteVariant: Unpacked<WarcupVotingInterface['maps']>): number {
@@ -55,8 +56,16 @@ export class AdminWarcupSelectionComponent implements OnInit {
       })
       .afterClosed()
       .subscribe(() => {
-        location.reload();
+        this.isLoading = true;
+        this.getWarcupVotingInfo();
       });
+  }
+
+  public voteForMap(mapSuggestionId: number): void {
+    this.adminWarcupDataService.warcupVote$(mapSuggestionId).subscribe(() => {
+      this.isLoading = true;
+      this.getWarcupVotingInfo();
+    });
   }
 
   private getWarcupState(): void {

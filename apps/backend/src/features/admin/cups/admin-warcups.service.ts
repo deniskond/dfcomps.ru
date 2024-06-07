@@ -118,7 +118,7 @@ export class AdminWarcupsService {
       ...adminSuggestions,
       ...adminVotedSuggestions,
     ];
-    const suggestionWithoutDuplicates: MapSuggestion[] = [];
+    let suggestionWithoutDuplicates: MapSuggestion[] = [];
     const seenSuggestionIds = new Set<number>();
 
     suggestionsWithDuplicates.forEach((mapSuggestion: MapSuggestion) => {
@@ -129,6 +129,10 @@ export class AdminWarcupsService {
       suggestionWithoutDuplicates.push(mapSuggestion);
       seenSuggestionIds.add(mapSuggestion.id);
     });
+
+    suggestionWithoutDuplicates = suggestionWithoutDuplicates.sort(
+      (suggestionA, suggestionB) => suggestionA.id - suggestionB.id,
+    );
 
     const currentVote: WarcupAdminVote | null = await this.warcupAdminVoteRepository
       .createQueryBuilder('warcup_admin_votes')
