@@ -1,6 +1,4 @@
-import { WorldspawnMapInfoInterface } from '@dfcomps/contracts';
-
-export function mapWeaponsToString(weapons: WorldspawnMapInfoInterface['weapons']): string {
+export function mapWeaponsToString(weapons: Record<string, boolean>): string {
   let weaponsString = '';
 
   if (weapons['gauntlet']) weaponsString += 'U';
