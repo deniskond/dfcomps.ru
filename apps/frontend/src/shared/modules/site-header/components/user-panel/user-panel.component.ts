@@ -81,7 +81,12 @@ export class UserPanelComponent implements OnInit, OnDestroy {
   }
 
   public hasAdminPanelAccess(user: UserInterface): boolean {
-    return checkUserRoles(user.roles, [UserRoles.VALIDATOR, UserRoles.CUP_ORGANIZER, UserRoles.NEWSMAKER]);
+    return checkUserRoles(user.roles, [
+      UserRoles.VALIDATOR,
+      UserRoles.CUP_ORGANIZER,
+      UserRoles.NEWSMAKER,
+      UserRoles.WARCUP_ADMIN,
+    ]);
   }
 
   public onMapSuggestionClick(): void {

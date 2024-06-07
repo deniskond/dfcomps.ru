@@ -21,6 +21,7 @@ export class HasAdminPanelAccess {
           UserRoles.VALIDATOR,
           UserRoles.CUP_ORGANIZER,
           UserRoles.NEWSMAKER,
+          UserRoles.WARCUP_ADMIN,
         ]),
       ),
       tap((hasAccess: boolean) => {
