@@ -11,7 +11,6 @@ import {
   ValidationResultInterface,
   VerifiedStatuses,
   AdminActiveMulticupInterface,
-  WorldspawnMapInfoInterface,
   UploadedFileLinkInterface,
   AdminEditCupInterface,
   AddOfflineCupDto,

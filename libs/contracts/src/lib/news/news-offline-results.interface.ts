@@ -1,8 +1,7 @@
-
+import { CupInterface } from '../cup/cup.interface';
 import { ResultsTableInterface } from '../tables/results-table.interface';
 import { NewsTypes } from './news-types.enum';
 import { NewsInterface } from './news.interface';
-import { CupInterface } from '@dfcomps/contracts';
 
 export interface NewsOfflineResultsInterface extends NewsInterface {
   type: NewsTypes.OFFLINE_RESULTS;

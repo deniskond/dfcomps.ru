@@ -222,6 +222,13 @@ export class URL_PARAMS {
     ONLINE_CUP_SERVERS_PLAYERS: (cupId: number) => string;
     SET_PLAYER_SERVER: string;
     GET_ONLINE_CUP_ROUND_RESULTS: (cupId: number, roundNumber: number) => string;
+    WARCUP: {
+      STATE: string;
+      SUGGESTION_STATS: string;
+      VOTING_INFO: string;
+      VOTE: string;
+      ADMIN_SUGGEST: string;
+    }
   } {
     return {
       GET_NEWS: `${API_URL}/admin/news/get-all-news`,
@@ -263,6 +270,13 @@ export class URL_PARAMS {
       SET_PLAYER_SERVER: `${API_URL}/admin/cups/online/set-player-server`,
       GET_ONLINE_CUP_ROUND_RESULTS: (cupId: number, roundNumber: number) =>
         `${API_URL}/admin/cups/online/round-results/${cupId}/${roundNumber}`,
+      WARCUP: {
+        STATE: `${API_URL}/admin/cups/warcup-state`,
+        SUGGESTION_STATS: `${API_URL}/admin/cups/warcup-suggestion-stats`,
+        VOTING_INFO: `${API_URL}/admin/cups/warcup-voting`,
+        VOTE: `${API_URL}/admin/cups/warcup-vote`,
+        ADMIN_SUGGEST: `${API_URL}/admin/cups/warcup-suggest`,
+      }
     };
   }
 }

@@ -1,4 +1,7 @@
-<div translate translation="suggestMapOnWarcup" class="h1-block-header dialog-header"></div>
+<div class="header-container">
+  <div translate translation="suggestMapOnWarcup" class="h1-block-header dialog-header"></div>
+  <div *ngIf="data.isAdmin" class="h1-block-header dialog-header">&nbsp;(admin)</div>
+</div>
 
 <div class="form-container">
   <div class="input-container">

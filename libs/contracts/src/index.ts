@@ -8,3 +8,4 @@ export * from './lib/news';
 export * from './lib/profile';
 export * from './lib/rating';
 export * from './lib/tables';
+export * from './lib/warcup';

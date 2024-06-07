@@ -33,14 +33,23 @@ import {
   SetPlayerServerDto,
   UpdateOfflineCupDto,
   UploadedFileLinkInterface,
+  WarcupStateInterface,
+  WarcupSuggestionStatsInterface,
+  WarcupVoteDto,
+  WarcupVotingInterface,
 } from '@dfcomps/contracts';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MulterFileInterface } from 'apps/backend/src/shared/interfaces/multer.interface';
 import { EnumValidationPipe } from 'apps/backend/src/shared/validation/enum-validation.pipe';
+import { AdminWarcupsService } from './admin-warcups.service';
+import { MapSuggestionDto } from '../../cup/dto/map-suggestion.dto';
 
 @Controller('admin/cups')
 export class AdminCupsController {
-  constructor(private readonly adminCupsService: AdminCupsService) {}
+  constructor(
+    private readonly adminCupsService: AdminCupsService,
+    private readonly adminWarcupsService: AdminWarcupsService,
+  ) {}
 
   @Get('get-all-cups')
   getAllCups(@Headers('X-Auth') accessToken: string | undefined): Promise<AdminCupInterface[]> {
@@ -242,5 +251,36 @@ export class AdminCupsController {
     @Param('roundNumber', new ParseIntPipe()) roundNumber: number,
   ): Promise<OnlineCupRoundResultsInterface> {
     return this.adminCupsService.getOnlineCupRoundResults(accessToken, cupId, roundNumber);
+  }
+
+  @Get('warcup-state')
+  getWarcupState(@Headers('X-Auth') accessToken: string | undefined): Promise<WarcupStateInterface> {
+    return this.adminWarcupsService.getWarcupState(accessToken);
+  }
+
+  @Get('warcup-suggestion-stats')
+  getWarcupSuggestioStats(@Headers('X-Auth') accessToken: string | undefined): Promise<WarcupSuggestionStatsInterface> {
+    return this.adminWarcupsService.getWarcupSuggestionStats(accessToken);
+  }
+
+  @Get('warcup-voting')
+  getWarcupVotingInfo(@Headers('X-Auth') accessToken: string | undefined): Promise<WarcupVotingInterface> {
+    return this.adminWarcupsService.getWarcupVotingInfo(accessToken);
+  }
+
+  @Post('warcup-vote')
+  warcupVote(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Body() { mapSuggestionId }: WarcupVoteDto,
+  ): Promise<void> {
+    return this.adminWarcupsService.warcupVote(accessToken, mapSuggestionId);
+  }
+
+  @Post('warcup-suggest')
+  warcupAdminSuggest(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Body() { mapName }: MapSuggestionDto,
+  ): Promise<void> {
+    return this.adminWarcupsService.warcupAdminSuggest(accessToken, mapName);
   }
 }

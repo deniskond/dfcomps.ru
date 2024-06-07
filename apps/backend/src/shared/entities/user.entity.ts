@@ -8,6 +8,7 @@ import { Smile } from './smile.entity';
 import { OldRating } from './old-rating.entity';
 import { Reward } from './reward.entity';
 import { OneVOneRating } from './1v1-rating.entity';
+import { MapSuggestion } from './map-suggestion.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -85,4 +86,7 @@ export class User {
 
   @OneToOne(() => OneVOneRating, (oneVOneRating) => oneVOneRating.user, { nullable: true })
   oneVOneRating: OneVOneRating | null;
+
+  @OneToMany(() => MapSuggestion, (mapSuggestion) => mapSuggestion.user)
+  mapSuggestions: MapSuggestion[];
 }

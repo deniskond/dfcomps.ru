@@ -1,0 +1,192 @@
+.main-card {
+  width: 100%;
+  min-height: 100%;
+  margin-top: 32px;
+  padding: 16px;
+}
+
+.container {
+  position: relative;
+}
+
+.header {
+  margin-bottom: 32px;
+  margin-top: 6px;
+}
+
+.loading-block {
+  display: flex;
+  justify-content: center;
+}
+
+.next-type-caption {
+  font-size: 16px;
+}
+
+.suggestions-caption {
+  font-size: 16px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.suggestion-table {
+  display: flex;
+}
+
+.map-table-col {
+  flex: 1;
+
+  &:first-of-type {
+    border-left: 1px solid var(--base-border-color);
+  }
+}
+
+.cell {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  border-right: 1px solid var(--base-border-color);
+  border-bottom: 1px solid var(--base-border-color);
+
+  &.upper {
+    border-top: 1px solid var(--base-border-color);
+    background: whitesmoke;
+  }
+}
+
+.countdown-timer {
+  position: absolute;
+  right: 0;
+  top: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #999;
+
+  ::ng-deep {
+    .days-caption {
+      margin-right: 4px;
+    }
+  }
+}
+
+.admin-suggestion-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 4px;
+  color: #333;
+  font-size: 16px;
+
+  & + & {
+    margin-right: 12px;
+  }
+}
+
+.admin-suggest-container {
+  display: flex;
+  height: 36px;
+}
+
+.vote-variants-container {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 12px;
+}
+
+.vote-variant {
+  width: 100%;
+  height: 190px;
+  border: 1px solid var(--base-border-color);
+}
+
+.map-info-actions-container {
+  display: flex;
+  position: relative;
+  height: 150px;
+  border-bottom: 1px solid var(--base-border-color);
+}
+
+.info-actions {
+  padding: 10px;
+}
+
+.vote-count {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid var(--base-border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.levelshot {
+  width: 50%;
+  border-right: 1px solid var(--base-border-color);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.weapons-container {
+  display: flex;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.weapons {
+  margin-left: 8px;
+}
+
+.author-line {
+  margin-top: 10px;
+}
+
+.vote-button {
+  margin-top: 20px;
+}
+
+.map-link {
+  font-weight: 600;
+}
+
+.admin-votes-container {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  padding: 12px;
+}
+
+.admin-vote {
+  display: flex;
+  margin-left: 12px;
+
+  &:first-of-type {
+    margin-left: 0;
+  }
+
+  img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.admin-name {
+  display: flex;
+  align-items: center;
+  margin-left: 6px;
+}

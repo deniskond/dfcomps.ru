@@ -18,7 +18,7 @@ import { QuillModule } from 'ngx-quill';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AdminSeasonComponent } from './ui/admin-season/admin-season.component';
-import { HasAdminRights } from './business/has-admin-rights.guard';
+import { HasSuperadminRights } from './business/has-superadmin-rights.guard';
 import { SharedModule } from '~shared/modules/shared.module';
 import { HasAdminPanelAccess } from './business/has-admin-panel-access.guard';
 import { AdminOfflineCupComponent } from './ui/admin-offline-cup/admin-offline-cup.component';
@@ -30,6 +30,9 @@ import { AdminInputRoundResultComponent } from './ui/admin-input-round-result/ad
 import { AdminInputResultsComponent } from './ui/admin-input-results/admin-input-results.component';
 import { AdminBalancePlayersComponent } from './ui/admin-balance-players/admin-balance-players.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { AdminWarcupSelectionComponent } from './ui/admin-warcup-selection/admin-warcup-selection.component';
+import { CupTimerModule } from '~shared/modules/cup-timer/cup-timer.module';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const adminRoutes: Routes = [
   {
@@ -88,6 +91,10 @@ const adminRoutes: Routes = [
         ],
       },
       {
+        path: 'warcup-selection',
+        component: AdminWarcupSelectionComponent,
+      },
+      {
         path: 'validate',
         children: [
           {
@@ -99,7 +106,7 @@ const adminRoutes: Routes = [
       {
         path: 'season',
         children: [{ path: '', component: AdminSeasonComponent }],
-        canActivate: [HasAdminRights],
+        canActivate: [HasSuperadminRights],
       },
     ],
   },
@@ -121,6 +128,7 @@ const adminRoutes: Routes = [
     AdminBalancePlayersComponent,
     AdminInputResultsComponent,
     AdminInputRoundResultComponent,
+    AdminWarcupSelectionComponent,
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
@@ -138,7 +146,9 @@ const adminRoutes: Routes = [
     MatCheckboxModule,
     QuillModule.forRoot(),
     MatMenuModule,
+    CupTimerModule,
+    MatDialogModule,
   ],
-  providers: [HasAdminPanelAccess, HasAdminRights],
+  providers: [HasAdminPanelAccess, HasSuperadminRights],
 })
 export class AdminModule {}

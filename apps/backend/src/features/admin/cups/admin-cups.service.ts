@@ -1,10 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from '../../auth/auth.service';
 import {
   AddOfflineCupDto,
@@ -32,7 +26,6 @@ import {
   ValidDemoInterface,
   ValidationResultInterface,
   VerifiedStatuses,
-  WorldspawnMapInfoInterface,
 } from '@dfcomps/contracts';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cup } from '../../../shared/entities/cup.entity';
@@ -50,7 +43,6 @@ import { Season } from '../../../shared/entities/season.entity';
 import * as Zip from 'adm-zip';
 import * as fs from 'fs';
 import { Multicup } from '../../../shared/entities/multicup.entity';
-import axios from 'axios';
 import { getMapLevelshot } from '../../../shared/helpers/get-map-levelshot';
 import { v4 } from 'uuid';
 import { News } from '../../../shared/entities/news.entity';
@@ -62,6 +54,7 @@ import { CupResult } from 'apps/backend/src/shared/entities/cup-result.entity';
 import { MulterFileInterface } from 'apps/backend/src/shared/interfaces/multer.interface';
 import { Unpacked } from '@dfcomps/helpers';
 import { distance, closest } from 'fastest-levenshtein';
+import { AdminAddOfflineCupService } from './add-offline-cup.service';
 
 // TODO Split offline and online cups
 @Injectable()
@@ -69,6 +62,7 @@ export class AdminCupsService {
   constructor(
     private readonly authService: AuthService,
     private readonly tablesService: TablesService,
+    private readonly addOfflineCupService: AdminAddOfflineCupService,
     @InjectRepository(Cup) private readonly cupsRepository: Repository<Cup>,
     @InjectRepository(News) private readonly newsRepository: Repository<News>,
     @InjectRepository(NewsComment) private readonly newsCommentsRepository: Repository<NewsComment>,
@@ -156,95 +150,7 @@ export class AdminCupsService {
       throw new UnauthorizedException('Unauthorized to add cup without CUP_ORGANIZER role');
     }
 
-    const startDatetime = moment(addOfflineCupDto.startTime).tz('Europe/Moscow').format();
-    const endDatetime = moment(addOfflineCupDto.endTime).tz('Europe/Moscow').format();
-
-    const queryResult: InsertResult = await this.cupsRepository
-      .createQueryBuilder()
-      .insert()
-      .into(Cup)
-      .values([
-        {
-          full_name: addOfflineCupDto.fullName,
-          short_name: addOfflineCupDto.shortName,
-          youtube: null,
-          twitch: null,
-          current_round: 1,
-          start_datetime: startDatetime,
-          end_datetime: endDatetime,
-          server1: '',
-          server2: '',
-          map1: addOfflineCupDto.mapName,
-          map2: null,
-          map3: null,
-          map4: null,
-          map5: null,
-          physics: 'mixed',
-          type: CupTypes.OFFLINE,
-          map_weapons: addOfflineCupDto.weapons,
-          map_author: addOfflineCupDto.mapAuthor,
-          map_pk3: addOfflineCupDto.mapPk3Link,
-          map_size: addOfflineCupDto.size,
-          archive_link: null,
-          bonus_rating: 0,
-          system: null,
-          custom_map: addOfflineCupDto.mapPk3Link,
-          custom_news: null,
-          validation_archive_link: null,
-          timer: false,
-          rating_calculated: false,
-          use_two_servers: false,
-          demos_validated: false,
-          multicup: addOfflineCupDto.multicupId ? { id: addOfflineCupDto.multicupId } : null,
-        },
-      ])
-      .execute();
-
-    if (addOfflineCupDto.addNews) {
-      const cupId: number = queryResult.identifiers[0].id;
-
-      await this.newsRepository
-        .createQueryBuilder()
-        .insert()
-        .into(News)
-        .values([
-          {
-            header: `Старт ${addOfflineCupDto.fullName}!`,
-            header_en: `${addOfflineCupDto.fullName} start!`,
-            text: '',
-            text_en: '',
-            youtube: null,
-            user: { id: userAccess.userId! },
-            datetimezone: startDatetime,
-            newsType: { id: mapNewsTypeEnumToDBNewsTypeId(NewsTypes.OFFLINE_START) },
-            cup: { id: cupId },
-            comments_count: 0,
-            hide_on_main: false,
-          },
-        ])
-        .execute();
-
-      await this.newsRepository
-        .createQueryBuilder()
-        .insert()
-        .into(News)
-        .values([
-          {
-            header: `Результаты ${addOfflineCupDto.fullName}`,
-            header_en: `Results: ${addOfflineCupDto.fullName}`,
-            text: '',
-            text_en: '',
-            youtube: null,
-            user: { id: userAccess.userId! },
-            datetimezone: endDatetime,
-            newsType: { id: mapNewsTypeEnumToDBNewsTypeId(NewsTypes.OFFLINE_RESULTS) },
-            cup: { id: cupId },
-            comments_count: 0,
-            hide_on_main: false,
-          },
-        ])
-        .execute();
-    }
+    await this.addOfflineCupService.addOfflineCup(addOfflineCupDto, userAccess.userId!);
   }
 
   public async updateOfflineCup(

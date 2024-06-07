@@ -29,6 +29,9 @@ import { MatchModule } from '../features/match/match.module';
 import { AdminModule } from '../features/admin/admin.module';
 import { SeasonModule } from '../features/season/season.module';
 import { MapSuggestion } from '../shared/entities/map-suggestion.entity';
+import { WarcupAdminVote } from '../shared/entities/warcup-admin-vote.entity';
+import { WarcupInfo } from '../shared/entities/warcup-info.entity';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -57,6 +60,8 @@ import { MapSuggestion } from '../shared/entities/map-suggestion.entity';
         Reward,
         Match,
         MapSuggestion,
+        WarcupAdminVote,
+        WarcupInfo,
       ],
       database: 'dfcomps',
       synchronize: true,
@@ -73,6 +78,7 @@ import { MapSuggestion } from '../shared/entities/map-suggestion.entity';
     DemosModule,
     MatchModule,
     AdminModule,
+    ScheduleModule.forRoot(),
   ],
 })
 export class AppModule {}

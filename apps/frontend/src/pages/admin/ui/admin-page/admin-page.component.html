@@ -18,14 +18,14 @@
         [isActive]="navigationPage === 'cups'"
         routerLink="/admin/cups"
         caption="Cups"
-        icon="grade"
+        icon="emoji_events"
       ></admin-menu-item>
       <admin-menu-item
         *ngIf="hasCupsAccess(user)"
         [isActive]="navigationPage === 'multicups'"
         routerLink="/admin/multicups"
         caption="Multicups"
-        icon="dataset"
+        icon="date_range"
       ></admin-menu-item>
       <admin-menu-item
         *ngIf="hasSeasonAccess(user)"
@@ -33,6 +33,13 @@
         routerLink="/admin/season"
         caption="Season"
         icon="auto_mode"
+      ></admin-menu-item>
+      <admin-menu-item
+        *ngIf="hasWarcupAdminAccess(user)"
+        [isActive]="navigationPage === 'warcup-selection'"
+        routerLink="/admin/warcup-selection"
+        caption="Warcup Selection"
+        icon="event_repeat"
       ></admin-menu-item>
     </ng-container>
   </div>

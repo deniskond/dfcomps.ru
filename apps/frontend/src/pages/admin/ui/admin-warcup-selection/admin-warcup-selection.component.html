@@ -1,0 +1,112 @@
+<mat-card class="main-card">
+  <div *ngIf="!isLoading; else loading" class="container">
+    <h3 class="header">
+      {{ title }}
+      <span *ngIf="chosenMap">({{ chosenMap }})</span>
+    </h3>
+    <div class="next-type-caption">
+      <b>Next map type:</b>
+      {{ nextMapType }}
+    </div>
+    <ng-container
+      *ngIf="warcupVotingState === warcupVotingStates.WAITING || warcupVotingState === warcupVotingStates.PAUSED"
+    >
+      <div class="suggestions-caption"><b>Suggestion stats:</b></div>
+      <div class="suggestion-table">
+        <div *ngFor="let mapStats of warcupSuggestionStats.stats" class="map-table-col">
+          <div class="cell upper">
+            {{ mapStats.mapType }}
+          </div>
+          <div class="cell lower">
+            {{ mapStats.count }}
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container
+      *ngIf="warcupVotingState === warcupVotingStates.VOTING || warcupVotingState === warcupVotingStates.CLOSING"
+    >
+      <div class="admin-suggest-container">
+        <div class="admin-suggestion-hint"><b>Wild card:</b></div>
+        <ng-container *ngIf="!warcupVotingInfo.adminSuggestedMapName">
+          <div class="admin-suggestion-hint">admins can suggest one map per week in the final vote</div>
+          <button (click)="openAdminSuggestPopup()" mat-raised-button color="accent">Suggest a map</button>
+        </ng-container>
+        <ng-container *ngIf="warcupVotingInfo.adminSuggestedMapName">
+          <div class="admin-suggestion-hint">
+            you suggested {{ warcupVotingInfo.adminSuggestedMapName }} for this week's Warcup
+          </div>
+        </ng-container>
+      </div>
+      <div class="next-type-caption">
+        <b>Final vote:</b>
+      </div>
+      <div class="vote-variants-container">
+        <div *ngFor="let voteVariant of warcupVotingInfo.maps" class="vote-variant">
+          <div class="map-info-actions-container">
+            <div class="vote-count">{{ voteVariant | invokeFunction: getVoteCount }}</div>
+            <div class="levelshot">
+              <img [src]="voteVariant.levelshot" />
+            </div>
+            <div class="info-actions">
+              <div>
+                <b>Map:&nbsp;</b>
+                <a [href]="'https://ws.q3df.org/map/' + voteVariant.name + '/'" class="map-link" target="_blank">
+                  <span>{{ voteVariant.name }}</span>
+                </a>
+              </div>
+              <div class="author-line">
+                <b>Author:</b>
+                {{ voteVariant.author }}
+              </div>
+              <div class="weapons-container">
+                <b>Weapons:</b>
+                <app-weapons [weapons]="voteVariant.weapons" class="weapons"></app-weapons>
+              </div>
+              <ng-container *ngIf="warcupVotingState === warcupVotingStates.VOTING">
+                <button
+                  *ngIf="warcupVotingInfo.currentVotedMapSuggestionId !== voteVariant.mapSuggestionId"
+                  (click)="voteForMap(voteVariant.mapSuggestionId)"
+                  mat-raised-button
+                  color="accent"
+                  class="vote-button"
+                >
+                  Vote for map
+                </button>
+                <button
+                  *ngIf="warcupVotingInfo.currentVotedMapSuggestionId === voteVariant.mapSuggestionId"
+                  mat-raised-button
+                  disabled
+                  color="disabled"
+                  class="vote-button"
+                >
+                  Vote accepted
+                </button>
+              </ng-container>
+            </div>
+          </div>
+          <div class="admin-votes-container">
+            <ng-container *ngIf="!!voteVariant.adminVotes.length">
+              <div *ngFor="let adminVote of voteVariant.adminVotes" class="admin-vote">
+                <img src="../../../../../assets/images/icons/ok.png" />
+                <div class="admin-name">{{ adminVote }}</div>
+              </div>
+            </ng-container>
+            <span *ngIf="!voteVariant.adminVotes.length">No votes yet</span>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <app-countdown-timer
+      *ngIf="nextStateStartTime"
+      [targetTime]="nextStateStartTime"
+      (finished)="onTimerFinished()"
+      class="countdown-timer"
+    ></app-countdown-timer>
+  </div>
+  <ng-template #loading>
+    <div class="loading-block">
+      <mat-spinner diameter="75" strokeWidth="4" color="accent"></mat-spinner>
+    </div>
+  </ng-template>
+</mat-card>

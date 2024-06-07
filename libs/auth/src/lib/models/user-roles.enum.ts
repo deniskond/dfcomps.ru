@@ -7,4 +7,5 @@ export enum UserRoles {
   ADMIN = 'ADMIN',
   SUPERADMIN = 'SUPERADMIN',
   STREAMER = 'STREAMER',
+  WARCUP_ADMIN = 'WARCUP_ADMIN',
 }
