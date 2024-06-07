@@ -98,12 +98,20 @@ export class AdminWarcupsService {
       throw new BadRequestException(`Can't fetch warcup voting info while state is PAUSED or WAITING`);
     }
 
+    const warcupInfo: WarcupInfo = (await this.warcupInfoRepository.createQueryBuilder().getOne())!;
+    const nextWarcupMapType: MapType = {
+      1: MapType.STRAFE,
+      2: MapType.WEAPON,
+      3: MapType.WEAPON,
+    }[warcupInfo.next_rotation];
+
     const mapSuggestions: MapSuggestion[] = await this.mapSuggestionsRepository
       .createQueryBuilder('map_suggestions')
       .leftJoinAndSelect('map_suggestions.warcupAdminVotes', 'warcup_admin_votes')
       .leftJoinAndSelect('warcup_admin_votes.user', 'users1')
       .leftJoinAndSelect('map_suggestions.user', 'users2')
       .orderBy('map_suggestions.suggestions_count', 'DESC')
+      .where('map_suggestions.map_type = :mapType', { mapType: nextWarcupMapType })
       .getMany();
 
     const top3Suggestions: MapSuggestion[] = mapSuggestions.slice(0, 3);
