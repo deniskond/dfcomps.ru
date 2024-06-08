@@ -90,7 +90,7 @@ export class AdminWarcupsCronService {
       .execute();
   }
 
-  @Cron('31 22 * * 6', { timeZone: 'Europe/Moscow' })
+  @Cron('30 22 * * 6', { timeZone: 'Europe/Moscow' })
   async postWarcupStart() {
     await this.warcupAdminVoteRepository.createQueryBuilder().delete().execute();
     await this.mapSuggestionsRepository.createQueryBuilder().delete().where({ is_admin_suggestion: true }).execute();
