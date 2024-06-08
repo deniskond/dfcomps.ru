@@ -22,8 +22,12 @@ import {
   CompetitionCreateInfo,
   RawCompetitionView,
   IncompleteMapInfo,
+  CustomizableConfig,
+  RoundProgressView,
+  isArray,
+  isInteger,
 } from './interfaces/views.interface';
-import { CompetitionData, RoundData } from './interfaces/data.interface';
+import { CompetitionData, RoundData, RoundProgress } from './interfaces/data.interface';
 import { createHash } from 'crypto';
 
 /* scenario:
@@ -49,9 +53,19 @@ export class RaceController {
     this.serverHostPort = serverHostPort;
   }
 
-  public createCompetition(info: CompetitionCreateInfo, token: string | undefined): Result<CompetitionView> {
+  public async createCompetition(
+    info: CompetitionCreateInfo,
+    token: string | undefined,
+  ): Promise<Result<CompetitionView>> {
     if (token === undefined) {
       return notAllowed('You must be logged in to create competitions');
+    }
+    if (info.rules.raceServerHost !== undefined) {
+      if (!(await this.validateRaceHost(info.rules.raceServerHost))) {
+        return badRequest(
+          `Host at '${info.rules.raceServerHost}' doesn't match required minimal version of RaceAPI 1.0.0`,
+        );
+      }
     }
     const res = { id: v4(), mapPool: [], players: [], ...info };
     this.competitions[res.id] = { view: res, adminToken: token, rounds: {} };
@@ -78,7 +92,7 @@ export class RaceController {
       competition.mapPool = infos as any;
     }
     const res = { id: v4(), ...competition };
-    const err = this.isValidCompetition(res);
+    const err = await this.isValidCompetition(res);
     if (err !== null) {
       return badRequest(err);
     }
@@ -86,11 +100,20 @@ export class RaceController {
     return result(res);
   }
 
-  private isValidCompetition(x: CompetitionView) {
+  private async isValidCompetition(x: CompetitionView) {
     if (x.players.length < 2) return 'Expected at least 2 players';
     const nrounds = Math.pow(2, Math.ceil(Math.log2(x.players.length))) - 1;
     if (x.mapPool.length === 0) return 'Expected at least one map in pool';
-    if (x.rules.numBans > x.mapPool.length / 6) return 'Not enough maps in pool';
+    if (x.rules.forbidBans) {
+      if (x.rules.numBans > x.mapPool.length / 6) return 'Not enough maps in pool';
+    } else {
+      if (x.rules.numBans > x.mapPool.length / 2) return 'Not enough maps in pool';
+    }
+    if (x.rules.raceServerHost !== undefined) {
+      if (!(await this.validateRaceHost(x.rules.raceServerHost))) {
+        return `Host at '${x.rules.raceServerHost}' doesn't match required minimal version of RaceAPI 1.0.0`;
+      }
+    }
     if (x.brackets !== undefined) {
       if (x.brackets.rounds.length !== nrounds)
         return `Invalid rounds count, expected ${nrounds} got ${x.brackets.rounds.length}`;
@@ -122,6 +145,17 @@ export class RaceController {
     return null;
   }
 
+  private defaultedConfig(
+    x?: Partial<CustomizableConfig>,
+    base_config?: CustomizableConfig,
+  ): Partial<CustomizableConfig> {
+    if (x === undefined) return {};
+    const result: Partial<CustomizableConfig> = { ...x };
+    if (result.obsEnabled === undefined) result.obsEnabled = base_config?.obsEnabled;
+    if (result.promode === undefined) result.promode = base_config?.promode;
+    return result;
+  }
+
   private async ensureMapInfo(x: IncompleteMapInfo): Promise<MapInfo | undefined> {
     const ls = x.levelShotUrl;
     const url = x.worldspawnUrl;
@@ -130,6 +164,8 @@ export class RaceController {
         mapName: x.mapName,
         levelShotUrl: ls,
         worldspawnUrl: url,
+        config: this.defaultedConfig(x.config),
+        estTime: x.estTime === undefined ? -1 : x.estTime,
         stats: x.stats,
       };
     }
@@ -137,7 +173,7 @@ export class RaceController {
     if (info === undefined) {
       return undefined;
     }
-    return info;
+    return { ...info, config: this.defaultedConfig(x.config), estTime: x.estTime === undefined ? -1 : x.estTime };
   }
 
   public getCompetition(
@@ -169,16 +205,20 @@ export class RaceController {
     } else {
       res = Object.keys(this.competitions).map((x) => ({ id: x, name: this.competitions[x].view.name }));
     }
-    console.log(JSON.stringify(res));
     return result(res);
   }
-  public competitionUpdateRules(
+  public async competitionUpdateRules(
     competitionId: string,
     token: string | undefined,
     rules: CompetitionRules,
-  ): Result<CompetitionView> {
+  ): Promise<Result<CompetitionView>> {
     const { err, result: competition } = this.validateCompetition(competitionId, token);
     if (err !== undefined) return error(err);
+    if (rules.raceServerHost !== undefined) {
+      if (!(await this.validateRaceHost(rules.raceServerHost))) {
+        return badRequest(`Host at '${rules.raceServerHost}' doesn't match required minimal version of RaceAPI 1.0.0`);
+      }
+    }
     competition.view.rules = rules;
     return result(competition.view);
   }
@@ -205,6 +245,23 @@ export class RaceController {
       return badRequest(`Map ${mapName} is not found`);
     }
     return result(competition.mapPool.push(mapInfo) - 1);
+  }
+  public updateMapConfig(
+    competitionId: string,
+    token: string | undefined,
+    mapName: string,
+    config: Partial<CustomizableConfig>,
+  ): Result<boolean> {
+    const { err, result: competitionData } = this.validateCompetition(competitionId, token);
+    if (err !== undefined) return error(err);
+    const competition = competitionData.view;
+    const index = competition.mapPool.findIndex((x) => x.mapName === mapName);
+    if (index === -1) return result(false);
+    competition.mapPool[index].config = {
+      ...competition.mapPool[index].config,
+      ...config,
+    };
+    return result(true);
   }
   public competitionRemoveMapFromPool(
     competitionId: string,
@@ -257,10 +314,22 @@ export class RaceController {
     const { err, result: competitionData } = this.validateCompetition(competitionId, token);
     if (err !== undefined) return error(err);
     const competition = competitionData.view;
-    if (competition.rules.numBans > competition.mapPool.length / 6) {
-      return badRequest(
-        `Not enough maps in pool for ${competition.rules.numBans}. At least ${6 * competition.rules.numBans} expected`,
-      );
+    if (competition.rules.forbidBans) {
+      if (competition.rules.numBans > competition.mapPool.length / 6) {
+        return badRequest(
+          `Not enough maps in pool for ${competition.rules.numBans}. At least ${
+            6 * competition.rules.numBans
+          } expected`,
+        );
+      }
+    } else {
+      if (competition.rules.numBans > competition.mapPool.length / 2) {
+        return badRequest(
+          `Not enough maps in pool for ${competition.rules.numBans}. At least ${
+            2 * competition.rules.numBans
+          } expected`,
+        );
+      }
     }
     const playersShuffle = competition.players
       .map((x, i) => ({
@@ -287,7 +356,9 @@ export class RaceController {
     while (n > 1) {
       circle = [];
       for (let i = 0; i < n >> 1; ++i) {
-        circle.push({ players: [null, null] });
+        circle.push({
+          players: [null, null],
+        });
       }
       circles.push(circle);
       // n = Math.floor(n / 2);
@@ -332,7 +403,7 @@ export class RaceController {
     }
     const r0 = competition.brackets.rounds[(round << 1) + 1];
     const r1 = competition.brackets.rounds[(round << 1) + 2];
-    const forbiddenBans = [...(r0?.bannedMaps ?? []), ...(r1?.bannedMaps ?? [])];
+    const forbiddenBans = competition.rules.forbidBans ? [...(r0?.bannedMaps ?? []), ...(r1?.bannedMaps ?? [])] : [];
     const order = competition.mapPool
       .map((x, i) => ({
         map: i,
@@ -403,6 +474,81 @@ export class RaceController {
     return result({ ...round.view, index });
   }
 
+  private toProgressView(
+    competition: CompetitionData,
+    roundId: number,
+    progress: Record<string, RoundProgress>,
+  ): RoundProgressView {
+    const view = competition.rounds[roundId].view;
+    const banned = Object.keys(view.bans).map((x) => parseInt(x));
+    return {
+      roundId,
+      maps: view.order.filter((x) => banned.every((y) => y !== x)).map((x) => competition.view.mapPool[x]),
+      players: view.players.map((x) => x.info),
+      progress,
+    };
+  }
+
+  public async getRoundProgress(
+    competitionId: string,
+    roundId?: number,
+  ): Promise<Result<RoundProgressView | { roundId: -1 }>> {
+    const { err, result: competitionData } = this.validateCompetition(competitionId, undefined, false);
+    if (err !== undefined) return error(err);
+    const curtime = new Date().getTime();
+    let rId = roundId;
+    if (roundId === undefined) {
+      const rounds = Object.values(competitionData.rounds).filter((x) => x.view.stage === 'Running');
+      if (rounds.length === 0) return result({ roundId: -1 });
+      rId = rounds[0].round;
+    }
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const rndId: number = rId!;
+    if (competitionData.rounds[rndId]?.view.stage !== 'Running') return result({ roundId: -1 });
+    if (
+      competitionData.lastProgressRequest !== undefined &&
+      rndId === competitionData.lastProgressRequest.roundId &&
+      curtime - competitionData.lastProgressRequest.time < 1000
+    ) {
+      return result(this.toProgressView(competitionData, rndId, competitionData.lastProgressRequest.progress));
+    }
+    competitionData.lastProgressRequest = {
+      time: curtime,
+      roundId: rndId,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      progress: undefined!,
+    };
+
+    const p = this.getRaceHost(competitionId);
+    if (p === undefined) return error({ code: 'NotAllowed', message: 'Server is not running' });
+    const url = `${p}/round/stage`;
+    try {
+      const serverHostRequest = await axios.post(url, {
+        competitionId,
+        roundId: rndId,
+      });
+      if (serverHostRequest.status >= 300) {
+        console.warn(`ServerHost[${serverHostRequest.status}]`);
+        return error({
+          code: 'InternalError',
+          message: `Connection failed with status code ${serverHostRequest.status}`,
+        });
+      }
+      competitionData.lastProgressRequest.progress = serverHostRequest.data;
+      return result(this.toProgressView(competitionData, rndId, competitionData.lastProgressRequest.progress));
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (e: any) {
+      if (e.response) {
+        console.warn(`ServerHost[${e.response.status}]: ${JSON.stringify(e.response.data)}`);
+        return error({ code: 'InternalError', message: `Connection failed with status code ${e.response.status}` });
+      } else if (e.request) {
+        return error({ code: 'InternalError', message: `Empty response` });
+      } else {
+        return error({ code: 'InternalError', message: e.message });
+      }
+    }
+  }
+
   public roundBan(
     competitionId: string,
     roundId: number,
@@ -453,6 +599,18 @@ export class RaceController {
     this.notifyRoundUpdate(round);
     return result(round.view);
   }
+
+  private toConfigStrings(cfg?: Partial<CustomizableConfig>, always_define = false): string[] {
+    const result = [];
+    let killobs = undefined;
+    let promode = undefined;
+    if (always_define || cfg?.obsEnabled !== undefined) killobs = cfg?.obsEnabled ?? false ? '0' : '1';
+    if (always_define || cfg?.promode !== undefined) promode = cfg?.promode ?? true ? '1' : '0';
+    if (killobs !== undefined) result.push(`df_ob_killobs ${killobs}`);
+    if (promode !== undefined) result.push(`df_promode ${promode}`);
+    return result;
+  }
+
   public async roundSet(
     competitionId: string,
     roundId: number,
@@ -485,21 +643,27 @@ export class RaceController {
       if (competition.brackets === undefined) {
         return badRequest('Brackets are dead');
       }
+
       const banned = Object.keys(round.view.bans).map((x) => parseInt(x));
-      const maps = round.view.order
+      const maps: { mapName: string; config?: string[]; estTime?: number }[] = round.view.order
         .filter((x) => banned.every((y) => y !== x))
-        .map((x) => competition.mapPool[x].mapName);
+        .map((x) => ({
+          ...competition.mapPool[x],
+          config: this.toConfigStrings(competition.mapPool[x].config),
+        }));
       const ports = await this.startServer(
         competitionId,
         roundId,
         maps,
         round.view.players.map((x) => x.info.playerName),
         token,
+        this.toConfigStrings(v.result.competition.rules, true),
       );
       if (ports.err !== undefined) return ports;
       competition.brackets.rounds[roundId].bannedMaps = banned;
-      if (this.serverHostAddress !== undefined) {
-        const addr = this.serverHostAddress.split('//').reverse()[0];
+      const address = this.getRaceHost(competitionId);
+      if (address !== undefined) {
+        const addr = address.split('//').reverse()[0].split(':')[0];
         for (const p of round.view.players) {
           p.serverUrl = `${addr}:${ports.result[p.info.playerName]}`;
         }
@@ -593,9 +757,10 @@ export class RaceController {
   private async startServer(
     competitionId: string,
     roundId: number,
-    maps: string[],
+    maps: { mapName: string; config?: string[]; estTime?: number }[],
     players: string[],
     token: string | undefined,
+    customConfig?: string[],
   ): Promise<Result<Record<string, number>>> {
     // request data type: {
     //   "token": string,
@@ -604,7 +769,7 @@ export class RaceController {
     //   "competitionId": string,
     //   "roundId": int,
     //   "players": string[],
-    //   "maps": string[],
+    //   "maps": { name: string; config?: string[]; estTime?: number }[],
     //   "warmup_map": string,
     //   "warmup_time": float,
     //   "max_disconnects": int,
@@ -613,9 +778,9 @@ export class RaceController {
     //   "aftermatch_time": float,
     //   "beforestart_gap": float,
     // }
-    if (this.serverHostAddress === undefined) return result({});
-    const p = this.serverHostPort === undefined ? '' : `:${this.serverHostPort}`;
-    const url = `${this.serverHostAddress}${p}/round/start`;
+    const p = this.getRaceHost(competitionId);
+    if (p === undefined) return result({});
+    const url = `${p}/round/start`;
     try {
       const serverHostRequest = await axios.post(url, {
         token,
@@ -625,6 +790,7 @@ export class RaceController {
         reset_path: `/competitions/${competitionId}/rounds/${roundId}/reset`,
         players,
         maps,
+        custom_config: customConfig,
       });
       if (serverHostRequest.status >= 300) {
         console.warn(`ServerHost[${serverHostRequest.status}]`);
@@ -666,9 +832,9 @@ export class RaceController {
     //   "competitionId": string,
     //   "roundId": int,
     // }
-    if (this.serverHostAddress === undefined) return result({});
-    const p = this.serverHostPort === undefined ? '' : `:${this.serverHostPort}`;
-    const url = `${this.serverHostAddress}${p}/round/terminate`;
+    const p = this.getRaceHost(competitionId);
+    if (p === undefined) return result({});
+    const url = `${p}/round/terminate`;
     try {
       const serverHostRequest = await axios.post(url, {
         token,
@@ -708,6 +874,8 @@ export class RaceController {
         mapName,
         levelShotUrl: `http://ws.q3df.org/images/authorshots/512x384/${mapName}.jpg`,
         worldspawnUrl: url,
+        config: {},
+        estTime: -1,
       };
     } catch {
       return undefined;
@@ -717,5 +885,30 @@ export class RaceController {
     return {
       playerName: playerName,
     };
+  }
+
+  private getRaceHost(competitionId?: string): string | undefined {
+    const { err, result: compet } =
+      competitionId !== undefined
+        ? this.validateCompetition(competitionId, undefined, false)
+        : { err: undefined, result: undefined };
+    const p =
+      this.serverHostPort === undefined ? this.serverHostAddress : `${this.serverHostAddress}:${this.serverHostPort}`;
+    if (err === undefined && compet !== undefined && compet.view.rules.raceServerHost !== undefined) {
+      return compet.view.rules.raceServerHost;
+    }
+    return p;
+  }
+
+  private async validateRaceHost(url: string): Promise<boolean> {
+    const res = await axios.get(`${url}/version`);
+    if (res.status >= 300) return false;
+    const data = res.data;
+    return (
+      data['version'] !== undefined &&
+      isArray(data['version'], isInteger) &&
+      data['version'].length === 3 &&
+      data['version'][0] >= 1
+    );
   }
 }

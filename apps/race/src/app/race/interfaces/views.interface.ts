@@ -1,3 +1,6 @@
+import { RoundProgress } from './data.interface';
+
+type HostUrl = string;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface Round {
   players: (number | null)[];
@@ -13,6 +16,8 @@ export interface MapInfo {
   mapName: string;
   levelShotUrl: string;
   worldspawnUrl: string;
+  config: Partial<CustomizableConfig>;
+  estTime: number;
   stats?: unknown; // tbd
 }
 
@@ -20,14 +25,23 @@ export interface IncompleteMapInfo {
   mapName: string;
   levelShotUrl?: string;
   worldspawnUrl?: string;
+  config?: Partial<CustomizableConfig>;
+  estTime?: number;
   stats?: unknown; // tbd
 }
 export interface PlayerInfo {
   playerName: string;
 }
 
-export interface CompetitionRules {
+export interface CustomizableConfig {
+  promode: boolean;
+  obsEnabled: boolean;
+}
+
+export interface CompetitionRules extends CustomizableConfig {
   numBans: number;
+  forbidBans: boolean;
+  raceServerHost?: HostUrl;
 }
 
 export interface CompetitionCreateInfo {
@@ -58,6 +72,13 @@ export interface RoundView {
   stage: 'Ban' | 'Running' | 'Completed';
 }
 
+export interface RoundProgressView {
+  roundId: number;
+  maps: IncompleteMapInfo[];
+  players: PlayerInfo[];
+  progress: Record<string, RoundProgress>;
+}
+
 export function isArray<T>(x: any, pred: (y: any) => y is T): x is T[] {
   if (!Array.isArray(x)) return false;
   return x.every((y) => pred(y));
@@ -86,8 +107,18 @@ export function nullable<T>(pred: (y: any) => y is T): (x: any) => x is T | null
 export function isInteger(x: any): x is number {
   return parseInt(x) == x;
 }
+
 export function isString(x: any): x is string {
   return typeof x === 'string';
+}
+
+export function isBoolean(x: any): x is boolean {
+  return typeof x === 'boolean';
+}
+
+export function isValidHost(x: any): x is HostUrl {
+  // [FIXME] use more specific url validation format
+  return isString(x) && x.match(/^https?:\/\/[a-zA-Z0-9.]*$/) !== null;
 }
 
 export function isRound(x: any): x is Round {
@@ -119,8 +150,21 @@ export function isBrackets(x: any): x is Brackets {
   return x instanceof Object && isArray(x['rounds'], isRound);
 }
 
+export function isOptionalCustomizableConfig(x: any): x is Partial<CustomizableConfig> {
+  return (
+    x instanceof Object &&
+    (!('promode' in x) || isBoolean(x['promode'])) &&
+    (!('obsEnabled' in x) || isBoolean(x['obsEnabled']))
+  );
+}
+
 export function isCompetitionRules(x: any): x is CompetitionRules {
-  return x instanceof Object && 'numBans' in x && isInteger(x['numBans']);
+  const res =
+    x instanceof Object &&
+    'numBans' in x &&
+    isInteger(x['numBans']) &&
+    (x['raceServerHost'] === undefined || isValidHost(x['raceServerHost']));
+  return res;
 }
 
 export function isCompetitionCreateInfo(x: any): x is CompetitionCreateInfo {

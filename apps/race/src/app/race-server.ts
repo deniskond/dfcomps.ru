@@ -8,9 +8,12 @@ import { RaceController } from './race/race-controller';
 import { ErrorCode, Result, badRequest, notAllowed, result } from './race/types/result';
 import { isInMessage } from './interfaces/message.interface';
 import { createHash, createCipheriv, randomBytes } from 'crypto';
-import { isCompetitionCreateInfo, isRawCompetitionInfo } from './race/interfaces/views.interface';
+import {
+  isCompetitionCreateInfo,
+  isOptionalCustomizableConfig,
+  isRawCompetitionInfo,
+} from './race/interfaces/views.interface';
 import { AddressInfo } from 'net';
-// import { ParsedQs } from 'qs';
 
 export class RaceServer {
   private readonly SERVER_PORT = 4006;
@@ -71,6 +74,7 @@ export class RaceServer {
       logins.push({ login: 'w00deh', password: 'w00deh' });
       logins.push({ login: 'rantrave', password: 'rantrave' });
       logins.push({ login: 'Nosf', password: 'Nosf' });
+      logins.push({ login: '', password: '' });
     }
     this._allowed_tokens = {};
     for (const l of logins) {
@@ -151,7 +155,7 @@ export class RaceServer {
           this.invalidType(res, 'CompetitionRules expected at body');
           return;
         }
-        this.response(res, this.raceController.createCompetition(req.body, token));
+        this.raceController.createCompetition(req.body, token).then((x) => this.response(res, x));
       })
       .get((req: express.Request, res: express.Response) => {
         const token = this.getAdminToken(req);
@@ -175,6 +179,10 @@ export class RaceServer {
         const token = this.getAdminToken(req);
         this.response(res, this.raceController.removeCompetition(req.params.competitionId, token));
       });
+
+    app.route('/competitions/:competitionId/stage').get((req, res) => {
+      this.raceController.getRoundProgress(req.params.competitionId, undefined).then((x) => this.response(res, x));
+    });
 
     app
       .route('/competitions/:competitionId/players')
@@ -220,6 +228,22 @@ export class RaceServer {
           .then((r) => this.response(res, r))
           .catch((r) => this.log(r));
       })
+      .post((req, res) => {
+        const token = this.getAdminToken(req);
+        if (req.query.name === undefined || typeof req.query.name !== 'string') {
+          this.invalidType(res, "Expected 'map' query string parameter");
+          return;
+        }
+        const config = req.body;
+        if (!isOptionalCustomizableConfig(config)) {
+          this.invalidType(res, 'OptionalCustomizableConfig expected at body');
+          return;
+        }
+        this.response(
+          res,
+          this.raceController.updateMapConfig(req.params.competitionId, token, req.query.name, config),
+        );
+      })
       .get((req, res) => {
         const v = this.raceController.getCompetition(req.params.competitionId, undefined);
         if (v.err !== undefined) {
@@ -264,6 +288,15 @@ export class RaceServer {
         }
         this.response(res, this.raceController.getRoundView(req.params.competitionId, roundId, token));
       });
+
+    app.route('/competitions/:competitionId/rounds/:roundId/stage').get((req, res) => {
+      const roundId = parseInt(req.params.roundId);
+      if (isNaN(roundId)) {
+        this.invalidType(res, "Expected 'roundId' to be round index");
+        return;
+      }
+      this.raceController.getRoundProgress(req.params.competitionId, roundId).then((x) => this.response(res, x));
+    });
     app.route('/competitions/:competitionId/rounds/:roundId/complete').post(async (req, res) => {
       const token = this.getAdminToken(req);
       const roundId = parseInt(req.params.roundId);

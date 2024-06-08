@@ -2,8 +2,8 @@ import json
 import aiohttp
 import asyncio
 import lxml.html.soupparser as htmlparser
+import math
 import os
-import random
 import subprocess
 import sys
 import threading
@@ -14,7 +14,11 @@ import re
 import zipfile
 from aiohttp import web
 
-from typing import Dict
+from typing import Dict, List
+
+
+RACE_SERVER_VERSION_INFO=json.dumps({"version": (1, 0, 0)})
+GAME="quake3e.ded.x64"
 
 
 def uniq(it, key):
@@ -106,12 +110,39 @@ class quake_factory:
         )
 
     def comand_line(self, config):
-        cl = [self.binary,  *(x for v in config for x in ('+' + v.strip()).split(' '))]
+        cl = [self.binary,  *(f'+{v}' for v in config)] # for x in ('+' + v.strip()).split(' '))]
         print(cl)
         return cl
 
+class map_info:
+    def __init__(self, name, config=[], est_time=None):
+        self.name = name
+        self.config = config if config is not None else []
+        self.est_time = est_time
+
+    @classmethod
+    def from_dict(cls, d: dict):
+        if d is None: return None
+        if isinstance(d, str): return map_info(d)
+        if not isinstance(d, dict): return None
+        if "mapName" not in d: return None
+        n = d["mapName"]
+        cfg = d.get("config", [])
+        if not isinstance(cfg, list): cfg = []
+        cfg = [x for x in cfg if x]
+        if any((not isinstance(x, str) for x in cfg)): cfg = []
+        est = d.get("estTime", -1)
+        if not isinstance(est, int) and not isinstance(est, float): est = -1
+        if est < 0: est = -1
+        return map_info(n, cfg, est)
+
+    def __str__(self) -> str:
+        return f"{self.name}[{self.est_time}] <{self.config}>"
+    def __repr__(self) -> str:
+        return f"{self.name}[{self.est_time}] <{self.config}>"
+
 class rules:
-    def __init__(self, maps=[], warmup_map="tr1ckhouse-beta3", warmup_time=300, max_disconnects=3, reconnect_timeout=20, afterlevel_time=0.5, aftermatch_time=120, beforestart_gap=3.0):
+    def __init__(self, maps=[], warmup_map="tr1ckhouse-beta3", warmup_time=3000, max_disconnects=3, reconnect_timeout=20, afterlevel_time=0.5, aftermatch_time=120, beforestart_gap=3.0):
         self.warmup_map = warmup_map
         self.warmup_time = warmup_time
         self.max_disconnects = max_disconnects
@@ -133,14 +164,14 @@ class race_game:
         self.__color_re = re.compile(r'\^.')
         self.quakepath = quakepath
         self.rules = rules
-        self.maplist = rules.maps
+        self.maplist: List[map_info] = rules.maps
         self.players = player_ports #set([self.__remove_colors(p) for p in players])
         self.events = asyncio.Queue()
         self.report_hook = report_hook
         self.reset_hook = reset_hook
         self.gamestate = {
             player: {
-                "times": [{"map": m, "start": None, "end": None, "demo": None} for m in self.maplist],
+                "times": [{"map": m.name, "start": None, "end": None, "demo": None} for m in self.maplist],
                 "ready": False,
                 "finished": False,
                 "disqualified": False,
@@ -164,8 +195,39 @@ class race_game:
             None
         ]
 
+    @staticmethod
+    def get_stage(gs):
+        if gs["disqualified"]: return "Disqualified"
+        if gs["finished"]: return "Finished"
+        if gs["current_map"] < 0:
+            if gs["ready"]: return "Ready"
+            return "Warmup"
+        return "Running"
+
+    def get_current_stage(self):
+        def p(v):
+            x = min(0, v)
+            return -math.exp(x) + 1
+        result = {}
+        for player, gs in self.gamestate.items():
+            cur = gs["current_map"]
+            progress = 1.0
+            if cur >= 0 and gs["times"][cur]["end"] is None:
+                progress = 0.0
+                start = gs["times"][cur]["start"]
+                est = self.maplist[cur].est_time
+                if start is not None and est > 0:
+                    # print(f"[{player}]: {(start - time.time()) / est}  {p((start  - time.time()) / est)}")
+                    progress = p((start - time.time()) / est)
+            result[player] = {
+                "stage": race_game.get_stage(gs),
+                "currentMap": cur,
+                "progress": progress,
+            }
+        return result
+
     async def prepare(self, custom_config=[]):
-        binpath = os.path.join(self.quakepath, "ioq3ded")
+        binpath = os.path.join(self.quakepath, GAME)
         modpath = os.path.join(self.quakepath, "defrag")
         if not os.path.exists(binpath):
             return {"err": {"code": "BadConfig", "message": f"ioquake3 dedicated server is not found at '{binpath}'"} }
@@ -178,8 +240,8 @@ class race_game:
                 with zipfile.ZipFile(os.path.join(modpath, i)) as f:
                     listmaps += [os.path.basename(x.filename[:-4]).lower() for x in f.filelist if x.filename.endswith('.bsp')]
         print(listmaps)
-        reqmaps = self.maplist + [self.rules.warmup_map]
-        todownload = [x for x in reqmaps if x.lower() not in listmaps]
+        reqmaps = self.maplist + [map_info.from_dict({"mapName": self.rules.warmup_map})]
+        todownload = [x.name for x in reqmaps if x.name.lower() not in listmaps]
         urls = list(uniq(zip(todownload, await asyncio.gather(*[self.get_ref(x) for x in todownload])), key=lambda x: x[1]))
         print(urls)
         errors = [y for y in await asyncio.gather(*[self.download(x[0], x[1]) for x in urls]) if y is not None]
@@ -231,6 +293,15 @@ class race_game:
     async def __all_recv_task(self):
         await asyncio.gather(*[self.__recv_task(x) for x in self.processes])
         print("__all_recv_task dead")
+
+    async def __go_map(self, cur, player=None):
+        cfg = [x for x in self.maplist[cur].config]
+        cfg.append(f"map {self.maplist[cur].name}")
+        print(f"Starting map: {cfg}")
+        if player is None:
+            await self.broadcast("; ".join(cfg))
+        else:
+            await self.send(player, "; ".join(cfg))
 
     async def __main_task(self):
         try:
@@ -312,7 +383,8 @@ class race_game:
                                 if curmap["start"] is not None:
                                     curmap["start"] = None
                                 # restart map and wait for next connection
-                                await self.send(player, f"map {self.maplist[cmap]}")
+                                await self.__go_map(cmap, player)
+                                # await self.send(player, f"map {self.maplist[cmap].name}")
                 elif msg.type == "finish":
                     gs = self.gamestate[msg.player]
                     cmdplayer = msg.content["player"]
@@ -344,6 +416,7 @@ class race_game:
                                 # required player is not connected
                                 to_disconnect.append(p)
                         for p in to_disconnect:
+                            await self.send(p, "quit")
                             self.processes[p].shutdown()
                             del self.processes[p]
                         if len(self.processes) < 2:
@@ -353,8 +426,8 @@ class race_game:
                     elif mtype == "start":
                         for p, g in self.gamestate.items():
                             g["current_map"] = 0
-                        m = self.maplist[0]
-                        await self.broadcast(f"map {m}")
+                        await self.__go_map(0, None)
+                        # await self.broadcast(f"map {m}")
                         # await asyncio.gather(*[x.send(f"map {m}") for x in self.processes.values()])
                     elif mtype == "reconnect":
                         gs = self.gamestate[msg.player]
@@ -442,11 +515,11 @@ class race_game:
         cmap = gs["current_map"]
         cmap += 1
         if cmap < len(self.maplist):
-            print(f"next map is {self.maplist[cmap]}")
+            print(f"next map is {self.maplist[cmap].name}")
             gs["current_map"] = cmap
-            await self.send(player, f"say ^3Going to {self.maplist[cmap]}")
+            await self.send(player, f"say ^3Going to {self.maplist[cmap].name}")
             await asyncio.sleep(self.rules.afterlevel_time)
-            await self.send(player, f"map {self.maplist[cmap]}")
+            await self.__go_map(cmap, player)
         else:
             print(f"round done!")
             await self.send(player, f"map {self.rules.warmup_map}")
@@ -617,6 +690,17 @@ class HttpScheduler:
                 self.running_tasks[token][key].terminate(True)
                 del self.running_tasks[token][key]
 
+    async def get_stage(self, competitionId, roundId):
+        async with self._free_lock:
+            key = f'{competitionId}/{roundId}'
+            rnd = None
+            for k, v in self.running_tasks.items():
+                if key in v:
+                    rnd = v[key]
+            if rnd is None:
+                return None
+            return rnd.get_current_stage()
+
     def start(self, port):
         self._app = web.Application()
         for i in self.ports:
@@ -639,9 +723,31 @@ class HttpScheduler:
         #   "beforestart_gap": float,
         #   "custom_config": string[],
         # }
+        self._app.add_routes([web.post('/version', lambda rq: self.request_version(rq))])
         self._app.add_routes([web.post('/round/start', lambda rq: self.request_game(rq))])
         self._app.add_routes([web.post('/round/terminate', lambda rq: self.request_terminate(rq))])
+        self._app.add_routes([web.post('/round/stage', lambda rq: self.request_stage(rq))])
         web.run_app(self._app, port=port)
+
+    async def request_version(self, _request: web.Request):
+        return web.Response(
+            status=200,
+            content_type="application/json",
+            body=RACE_SERVER_VERSION_INFO,
+        )
+
+    async def request_stage(self, request: web.Request):
+        d = await request.json()
+        competitionId = d.get("competitionId", None)
+        roundId = d.get("roundId", None)
+        if roundId is None or competitionId is None: return web.Response(status=400)
+        result = await self.get_stage(competitionId, roundId)
+        if result is None: return web.Response(status=404)
+        return web.Response(
+            status=200,
+            content_type="application/json",
+            body=json.dumps(result),
+        )
 
     async def request_terminate(self, request: web.Request):
         d = await request.json()
@@ -653,6 +759,7 @@ class HttpScheduler:
 
     async def request_game(self, request: web.Request):
         d = await request.json()
+        # print(f"StartRequest: {json.dumps(d)}")
         token = d.get("token", "")
         competitionId = d.get("competitionId", "")
         roundId = d.get("roundId", 0)
@@ -660,7 +767,7 @@ class HttpScheduler:
         report_path = d.get("report_path", None)
         reset_path = d.get("reset_path", None)
         players = d["players"]
-        maps = d["maps"]
+        maps = [map_info.from_dict(x) for x in d["maps"]]
         warmup_map = d.get("warmup_map", None)
         warmup_time = d.get("warmup_time", None)
         max_disconnects = d.get("max_disconnects", None)
@@ -671,6 +778,7 @@ class HttpScheduler:
         custom_config = [*self.custom_config, *d.get("custom_config", [])]
         print(f"Maps to run: {maps}")
         bads = []
+        if any((x is None for x in maps)): bads.append("'maps' format is inappropriate, expected: (string | {name: string, config?: string[], estTime?: number})[]")
         if warmup_map is not None and not isinstance(warmup_map, str): bads.append("'warmup_map' must be string")
         if max_disconnects is not None and not isinstance(max_disconnects, int) and max_disconnects < 0: bads.append("'max_disconnects' must be non negative int")
         if reconnect_timeout is not None and not is_number(reconnect_timeout) and reconnect_timeout < 0: bads.append("'reconnect_timeout' must be non negative float")
@@ -759,7 +867,7 @@ if __name__ == "__main__":
     # GAME_PATH - folder with defrag and ioq3ded (e.g. "/home/rantrave/games/defrag")
     custom_config = ["exec server.cfg"]
     game = os.getenv("GAME_PATH")
-    if game is None or not os.path.isdir(game) or not os.path.isfile(os.path.join(game, "ioq3ded")) or not os.path.isdir(os.path.join(game, "defrag")):
+    if game is None or not os.path.isdir(game) or not os.path.isfile(os.path.join(game, GAME)) or not os.path.isdir(os.path.join(game, "defrag")):
         print(f"game at {game} is configured improperly")
         exit(1)
     scheduler = HttpScheduler([27968, 27969, 27970, 27971, 27972], os.environ.get("GAME_PATH"), custom_config)

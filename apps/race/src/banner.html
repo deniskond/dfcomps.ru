@@ -553,46 +553,39 @@
     }
 
     .map-list {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+      /* display: grid; */
+      /* grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; */
       padding-left: 0;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      margin: 0px auto;
     }
 
     .map-list li {
       list-style-type: none;
+      /* display: flex;
+      align-items: center;
+      flex-direction: column; */
+      margin: 0px;
+      width: 100%;
     }
 
     .lshot {
-      height: 90px;
+      height: 80px;
+      width: 100%;
       position: relative;
       user-select: none;
       /* white-space: nowrap; */
       /* font-family: "Helvetica Narrow", "Arial Narrow", Tahoma, Arial, Helvetica, sans-serif; */
       border: 2px solid;
       border-image-slice: 1;
-      border-image-source: linear-gradient(90deg, #00000000 0%, #ff5300a0 50%, #00000000 100%);
-      background: linear-gradient(90deg, #00000000 0%, #00000080 50%, #00000000 100%);
-      margin: 10px;
+      border-image-source: linear-gradient(180deg, #ff5300a0 0%, #00000000 100%);
+      /* border-image-source: linear-gradient(90deg, #00000000 0%, #ff5300a0 50%, #00000000 100%); */
+      /* background: linear-gradient(90deg, #00000000 0%, #00000080 50%, #00000000 100%); */
+      /* margin: 10px; */
       color: #ccc;
-      margin-bottom: 28px;
-    }
-
-    .limage {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .lcap {
-      text-align: center;
-      font-family: monospace;
-      font-size: 14px;
-      font-weight: bold;
-      overflow-wrap: break-word;
-      text-shadow:
-        0 0 5px #000000ff,
-        0 0 10px #000000ff,
-        0 0 20px #00000000;
+      /* margin-bottom: 28px; */
     }
 
     .lshot.highlight {
@@ -604,14 +597,6 @@
           #00000000 100%);
     }
 
-    .lcap.highlight {
-      text-shadow:
-        0 0 5px #ff5300ff,
-        0 0 10px #aa5300ff,
-        0 0 20px #00000000;
-      color: #ff5300ff;
-    }
-
     .lshot.frozen {
       border-image-source: linear-gradient(90deg,
           #00000000 0%,
@@ -621,12 +606,43 @@
           #00000000 100%);
     }
 
-    .lcap.frozen {
-      color: #e0e0e0ff;
-    }
-
     .lshot.banned {
       border-image-source: linear-gradient(90deg, #00000000 0%, #808080ff 50%, #00000000 100%);
+    }
+
+    .limage {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 90%;
+    }
+
+    .lcap {
+      position: absolute;
+      left: 50%;
+      bottom: 2px;
+      transform: translate(-50%, 0);
+      text-align: center;
+      font-family: monospace;
+      font-size: 14px;
+      font-weight: bold;
+      overflow-wrap: break-word;
+      text-shadow:
+        0 0 5px #000000ff,
+        0 0 10px #000000ff,
+        0 0 20px #00000000;
+    }
+
+    .lcap.highlight {
+      text-shadow:
+        0 0 5px #ff5300ff,
+        0 0 10px #aa5300ff,
+        0 0 20px #00000000;
+      color: #ff5300ff;
+    }
+
+    .lcap.frozen {
+      color: #e0e0e0ff;
     }
 
     .lcap.banned {
@@ -659,6 +675,26 @@
         0 0 30px #00000000;
     }
 
+    .prog0 {
+      position: absolute;
+      left: 0px;
+      top: 2px;
+      width: 20%;
+      height: 10px;
+      background: #ffd010ff;
+      box-shadow: 0 0 2px #ffffffff, 0 0 5px #ffff80ff, 0 0 10px #00000000;
+    }
+
+    .prog1 {
+      position: absolute;
+      left: 0px;
+      bottom: 2px;
+      width: 100%;
+      height: 10px;
+      background: #8000ffff;
+      box-shadow: 0 0 2px #8080ffff, 0 0 5px #ff80ffff, 0 0 10px #00000000;
+    }
+
     .players-content {
       display: flex;
       pointer-events: none;
@@ -667,16 +703,66 @@
 
     .rplayers {
       flex: 1;
+      margin-top: 0px;
       font-family: sans-serif;
       font-weight: bold;
       color: #ff5300ff;
     }
 
+    .status {
+      right: 0px;
+      width: 24px;
+      height: 24px;
+      border: 4px outset;
+      border-radius: 16px;
+      margin-left: 8px;
+      margin-right: 8px;
+      background: #202020;
+      background-image: radial-gradient(#404040 20%, #001000 100%);
+      rotate: 45deg;
+    }
+
+    .status.left {
+      box-shadow: 0 0 2px #ffd010ff, 0 0 5px #ffd010ff, 0 0 10px #00000000;
+    }
+
+    .status.right {
+      color: #8000ffff;
+      box-shadow: 0 0 2px rgb(185, 116, 255), 0 0 5px rgb(188, 121, 255), 0 0 10px #00000000;
+    }
+
+    .status.finished {
+      background: #f0f0f0;
+      background-image: linear-gradient(45deg, #101010 25%, transparent 25%),
+        linear-gradient(-45deg, #101010 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #101010 75%),
+        linear-gradient(-45deg, transparent 75%, #101010 75%);
+      background-size: 10px 10px;
+      /* background-position: 0 0, 0 5px, 5px -5px, -5px 0px; */
+    }
+
+    .status.warmup {
+      background-image: radial-gradient(#ffff20ff 20%, #001000 100%);
+    }
+
+    .status.ready {
+      background-image: radial-gradient(#20ff20ff 20%, #001000 100%);
+    }
+
+    .status.running {
+      background-image: radial-gradient(#ffa300ff 20%, #001000 100%);
+    }
+
+    .status.disqualified {
+      background-image: radial-gradient(#ff0000ff 20%, #001000 100%);
+    }
+
     .rpcaption {
-      display: inline-block;
+      /* display: inline-block; */
+      display: flex;
       box-sizing: border-box;
       flex: 1;
-      padding: 20px;
+      padding: 10px;
       font-size: 24px;
       border-color: #ff5300ff;
     }
@@ -684,13 +770,19 @@
     .rpcaption.left {
       border-left: 4px solid;
       padding-left: 4cqb;
-      background: linear-gradient(270deg, #00000000 5%, #27150060 70%, #522b0080 99%, #00000000 100%);
+      color: #ffd010ff;
+      background: linear-gradient(270deg, #00000000 5%, #20200060 70%, #70700080 99%, #00000000 100%);
+      text-shadow: 0 0 7px #000000ff, 0 0 8px #ffd010ff, 0 0 10px #00000000;
+      ;
     }
+
 
     .rpcaption.right {
       border-right: 4px solid;
       padding-right: 40px;
-      background: linear-gradient(90deg, #00000000 5%, #27150060 70%, #522b0080 100%);
+      color: rgb(52, 0, 103);
+      background: linear-gradient(90deg, #00000000 5%, #10003060 70%, #50007080 99%, #00000000 100%);
+      text-shadow: 0 0 7px #a080ffff, 0 0 8px #a050ffff, 0 0 10px #00000000;
       text-align: end;
     }
 
@@ -830,7 +922,7 @@
       }
     }
 
-    function set_listbox(box, tid, els, tf) {
+    function set_listbox(box, tid, pfx, els, tf) {
       if (!box) return;
       /** @type {HTMLElement} */
       const t = qid(box, tid);
@@ -850,7 +942,19 @@
         e.id = null;
         delete e.id;
         e.hidden = false;
+        e.id = `${pfx}${i}`;
         tf(e, i, el);
+      }
+    }
+
+    function update_listbox(box, tid, pfx, els, tf) {
+      if (!box) return;
+      /** @type {HTMLElement} */
+      const t = qid(box, tid);
+      for (let i of box.children) {
+        if (i.id === tid) continue;
+        idx = i.id.slice(pfx.length);
+        tf(i, idx, els[idx]);
       }
     }
 
@@ -858,12 +962,14 @@
       return x === null || x === undefined;
     }
 
-    async function navigation() {
+    function navigation() {
       localStorage.removeItem('nav-comp-selected');
+      localStorage.removeItem('nav-mode-selected');
       const loc = window.location;
       if (!loc.search) return;
       let {
         competition: c,
+        mode: m
       } = Object.fromEntries(
         loc.search
           .slice(1)
@@ -873,48 +979,105 @@
       if (!nd(c)) {
         localStorage.setItem('nav-comp-selected', c);
       }
+      if (!nd(m)) {
+        localStorage.setItem('nav-mode-selected', m);
+      } else {
+        localStorage.setItem('nav-mode-selected', "brackets");
+      }
     }
 
-    async function update_page(update = true) {
-      if (document._next_update !== undefined) {
-        const now = Date.now();
-        if (now < document._next_update) {
-          await progress(sl(document._next_update - now));
-        }
-      }
-      document._next_update = Date.now() + 200;
-      const competitionBrowser = document.getElementById('cb');
-      competitionBrowser.hidden = true;
-
+    async function update_page() {
       navigation();
+      const mode = localStorage.getItem('nav-mode-selected');
       const compet = localStorage.getItem('nav-comp-selected');
-      if (compet) {
-        const comp = await progress(get_competition(compet, !update));
-        if (comp === undefined) {
+      if (mode === "brackets") {
+        start_brackets_cycle(compet);
+      } else if (mode === "progress") {
+        start_progress_cycle(compet);
+      }
+    }
+    function progress_cycle(compet) {
+      document.prg_i++;
+      if (document.prg_i > 24000) clearInterval(document.prg_loop);
+      if ((document.prg_i % 40) === 0) {
+        rq('GET', `/competitions/${compet}/stage`, undefined, (d) => {
+          document.prg_next = d;
+          return d;
+        });
+      }
+      const frame = document.prg_next;
+      if (frame === undefined || frame.roundId < 0) return;
+      if (document.prg_cur === undefined || frame === undefined || document.prg_cur.roundId !== frame.roundId) {
+        document.prg_cur = frame;
+        update_progress_bar(frame, true);
+        return;
+      }
+      const ps = document.prg_cur.players;
+      if (ps.length < 2) return;
+
+      const pp0 = document.prg_cur.progress[ps[0].playerName];
+      const pdp0 = frame.progress[ps[0].playerName];
+      if (pp0.currentMap === pdp0.currentMap) {
+        document.prg_cur.progress[ps[0].playerName].progress = pp0.progress * 0.95 + pdp0.progress * 0.05;
+      } else {
+        document.prg_cur.progress[ps[0].playerName].currentMap = pdp0.currentMap;
+        document.prg_cur.progress[ps[0].playerName].progress = pdp0.progress;
+      }
+      const pp1 = document.prg_cur.progress[ps[1].playerName];
+      const pdp1 = frame.progress[ps[1].playerName];
+      if (pp1.currentMap === pdp1.currentMap) {
+        document.prg_cur.progress[ps[1].playerName].progress = pp1.progress * 0.95 + pdp1.progress * 0.05;
+      } else {
+        document.prg_cur.progress[ps[1].playerName].currentMap = pdp1.currentMap;
+        document.prg_cur.progress[ps[1].playerName].progress = pdp1.progress;
+      }
+      update_progress_bar(document.prg_cur, false);
+    }
+    function start_progress_cycle(compet) {
+      if (document.prg_loop) {
+        document.prg_i = 0;
+        return;
+      }
+      document.prg_i = 0;
+      document.prg_cur = undefined;
+      document.prg_next = undefined;
+      document.prg_loop = setInterval(() => progress_cycle(compet), 50);
+    }
+
+    async function brackets_cycle(compet) {
+      const brackets = document.getElementById('cb-br');
+      // brackets.hidden = true;
+      const comp = await get_competition(compet);
+      if (comp === undefined) {
+        lerr(`Competition ${compet} is not found or not started yet. Try to refresh page later.`);
+      } else {
+        try {
+          await update_competition(comp);
+          // brackets.hidden = false;
+          return;
+        } catch (e) {
           lerr(`Competition ${compet} is not found or not started yet. Try to refresh page later.`);
-        } else {
-          try {
-            await progress(update_competition(comp));
-            competitionBrowser.hidden = false;
-            return;
-          } catch (e) {
-            lerr(`Competition ${compet} is not found or not started yet. Try to refresh page later.`);
-          }
         }
       }
     }
-    async function get_competition(compet, cache = false) {
-      if (cache) {
-        let c = localStorage.getItem('cache-comp');
-        if (c !== null && c.id === compet) return JSON.parse(c);
+
+    function start_brackets_cycle(compet) {
+      if (document.compet_loop) {
+        document.compet_i = 0;
+        return;
       }
+      document.compet_i = 0;
+      document.compet_loop = setInterval(() => brackets_cycle(compet), 5000);
+    }
+
+    async function get_competition(compet) {
       return await rq('GET', `/competitions/${compet}`, undefined, (d) => {
         localStorage.setItem('cache-comp', JSON.stringify(d));
         return d;
       });
     }
     async function update_competition(comp) {
-      document.getElementById('cb-hdr').innerText = comp.name;
+      // document.getElementById('cb-hdr').innerText = comp.name;
       const pbr = qid(document, 'cb-br');
       pbr.hidden = true;
       // return;
@@ -928,6 +1091,64 @@
         );
       } else {
         lerr(`Competition ${compet} is not started yet. Try to refresh page later.`);
+      }
+    }
+    async function update_progress_bar(pgv, rebuild) {
+      const page = qid(document, 'cb-prg');
+      if (pgv === undefined || pgv.roundId < 0 || pgv.players === undefined || pgv.players.length < 2) {
+        page.hidden = true;
+        return;
+      } else {
+        page.hidden = false;
+      }
+
+      const pls = qid(document, 'rp');
+      const rp0n = qid(pls, 'rp-p0-n');
+      const rp0s = qid(pls, 'rp-p0-s');
+      const rp1n = qid(pls, 'rp-p1-n');
+      const rp1s = qid(pls, 'rp-p1-s');
+
+      const p0 = pgv.players[0].playerName;
+      const p1 = pgv.players[1].playerName;
+      const pp0 = pgv.progress[p0];
+      const pp1 = pgv.progress[p1];
+
+      rp0n.innerHTML = p0;
+      rp1n.innerHTML = p1;
+      for (const i of ["warmup", "ready", "finished", "disqualified", "running"]) {
+        rp0s.classList.remove(i);
+        rp1s.classList.remove(i);
+      }
+      rp0s.classList.add(pp0['stage'].toLowerCase());
+      rp1s.classList.add(pp1['stage'].toLowerCase());
+
+      const ndata = pgv.maps.map((x, i) => {
+        return {
+          index: i,
+          mapName: x.mapName,
+          levelShotUrl: x.levelShotUrl,
+          progress0: (pp0.currentMap < i) ? 0.0 : ((pp0.currentMap > i) ? 1.0 : pp0.progress),
+          progress1: (pp1.currentMap < i) ? 0.0 : ((pp1.currentMap > i) ? 1.0 : pp1.progress),
+        }
+      })
+      const update = (li, i, el) => {
+        const lbl = qid(li, 'rm-l-t-n');
+        const pic = qid(li, 'rm-l-t-ls');
+
+        const p0 = qid(li, 'rm-l-t-p0');
+        const p1 = qid(li, 'rm-l-t-p1');
+
+        lbl.innerHTML = el.mapName;
+        pic.src = el.levelShotUrl;
+
+        p0.style.width = `${el.progress0 * 100}%`;
+        p1.style.width = `${el.progress1 * 100}%`;
+      };
+      const list = qid(document, 'rm-l');
+      if (rebuild) {
+        set_listbox(list, 'rm-l-t', 'rm_', ndata, update);
+      } else {
+        update_listbox(list, 'rm-l-t', 'rm_', ndata, update);
       }
     }
     function build_brackets(par, rnds, pnames) {
@@ -1044,16 +1265,16 @@
 
 <body>
   <div>
-    <div class="back" style="background-color: #000"></div>
-    <image src="https://dfcomps.ru/uploads/images/back.png" class="back" />
+    <!-- <div class="back" style="background-color: #000"></div>
+    <image src="https://dfcomps.ru/uploads/images/back.png" class="back" /> -->
     <div class="chat-and-main-container">
-      <div class="main-block" id="cb" hidden>
+      <div class="main-block" id="cb">
         <div class="main-content">
-          <div class="header-container">
+          <!-- <div class="header-container">
             <div id="cb-hdr" class="header-caption"></div>
             <div class="header-underline"></div>
-          </div>
-          <div id="cb-br">
+          </div> -->
+          <div id="cb-br" hidden>
             <div class="box scrollable" style="margin: 1%;">
               <table id="cb-br-t" cellspacing="0" style="border-spacing: 0; border-collapse: collapse">
                 <colgroup></colgroup>
@@ -1061,6 +1282,30 @@
                   <tr id="cb-br-t-r"></tr>
                 </tbody>
               </table>
+            </div>
+          </div>
+          <div id="cb-prg" hidden>
+            <ul id="rm-l" class="map-list">
+              <li id="rm-l-t" hidden>
+                <div id="rm-l-t-b" class="lshot">
+                  <img id="rm-l-t-ls" class="limage" src="http://ws.q3df.org/images/authorshots/512x384/">
+                  <div id="rm-l-t-p0" class="prog0"></div>
+                  <div id="rm-l-t-p1" class="prog1"></div>
+                  <div id="rm-l-t-bn" hidden>
+                    <div id="rm-l-t-n" class="lcap">futs bunker rox df</div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <div id="rp" class="rplayers" style="display: flex;">
+              <div id="rp-p0" class="rpcaption left">
+                <div id="rp-p0-s" class="status finished left"></div>
+                <div id="rp-p0-n" style="margin-right: auto;"></div>
+              </div>
+              <div id="rp-p1" class="rpcaption right">
+                <div id="rp-p1-n" style="text-align: end; margin-left: auto;"></div>
+                <div id="rp-p1-s" class="status warmup right"></div>
+              </div>
             </div>
           </div>
         </div>
