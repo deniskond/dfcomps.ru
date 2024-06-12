@@ -13,7 +13,7 @@ describe('offline cup full cycle', () => {
   it('should display errors on invalid demo upload', () => {
     loginAs(UserRoles.USER);
 
-    cy.get('[data-test-id=input-demo-upload]').selectFile(
+    cy.get('[data-test-id=input-demo-upload]').first().selectFile(
       'test-data/offline-cup/fully-invalid/st1[df.vq3]00.05.616(Nosf.Russia).dm_68',
     );
     cy.get('[data-test-id=button-demo-upload]').click();
@@ -123,6 +123,7 @@ describe('offline cup full cycle', () => {
     cy.visit('/admin/cups');
     cy.get('[data-test-id=button-offline-cup-actions]').first().click();
     cy.get('[data-test-id=button-finish-offline-cup]').click();
+    cy.get('simple-snack-bar').find('.mat-mdc-snack-bar-label').should('exist');
 
     cy.visit('/');
     cy.get('.news-block').first().find('[data-test-id=text-rating-change]').should('exist');  
