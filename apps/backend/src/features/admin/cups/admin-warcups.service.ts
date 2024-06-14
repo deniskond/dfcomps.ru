@@ -111,10 +111,11 @@ export class AdminWarcupsService {
       .leftJoinAndSelect('warcup_admin_votes.user', 'users1')
       .leftJoinAndSelect('map_suggestions.user', 'users2')
       .orderBy('map_suggestions.suggestions_count', 'DESC')
-      .where('map_suggestions.map_type = :mapType', { mapType: nextWarcupMapType })
       .getMany();
 
-    const top3Suggestions: MapSuggestion[] = mapSuggestions.slice(0, 3);
+    const top3Suggestions: MapSuggestion[] = mapSuggestions
+      .filter(({ map_type }: MapSuggestion) => map_type === nextWarcupMapType)
+      .slice(0, 3);
     const adminSuggestions: MapSuggestion[] = mapSuggestions.filter(
       (mapSuggestion: MapSuggestion) => mapSuggestion.is_admin_suggestion,
     );
