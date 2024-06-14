@@ -1,9 +1,8 @@
 import { Component, Input, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
-import { Languages } from '~shared/enums/languages.enum';
 import { LanguageService } from '~shared/services/language/language.service';
-import { NewsInterfaceUnion } from '@dfcomps/contracts';
+import { Languages, NewsInterfaceUnion } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-news-social-links',

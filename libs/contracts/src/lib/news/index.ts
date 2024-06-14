@@ -16,3 +16,5 @@ export { NewsInterface } from './news.interface';
 export { OnlineCupResultInterface } from './online-cup-result.interface';
 export { RegisteredPlayerInterface } from './registered-player.interface';
 export { UploadedDemoInterface } from './uploaded-demo.interface';
+export { StreamingPlatforms } from './streaming-platforms.enum';
+export { NewsStreamInterface } from './news-stream.interface';

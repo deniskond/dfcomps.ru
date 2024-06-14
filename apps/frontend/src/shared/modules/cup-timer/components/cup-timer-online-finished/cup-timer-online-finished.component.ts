@@ -1,9 +1,9 @@
-import { Languages } from './../../../../enums/languages.enum';
 import { LanguageService } from '../../../../services/language/language.service';
 import { Component, OnInit, OnChanges, Input, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { Observable, ReplaySubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { formatCupTime } from '../../helpers/cup-time-format.helpers';
+import { Languages } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-cup-timer-online-finished',

@@ -40,16 +40,13 @@ export class News {
   table_json: string;
 
   @Column({ type: 'character varying', nullable: true })
-  twitch_1: string;
-
-  @Column({ type: 'character varying', nullable: true })
-  twitch_2: string;
-
-  @Column({ type: 'character varying', nullable: true })
   theme: string | null;
 
   @Column({ type: 'boolean' })
   hide_on_main: boolean;
+
+  @Column({ type: 'text', nullable: true })
+  streams: string | null;
 
   @ManyToOne(() => Cup, { nullable: true })
   cup: Cup | null;

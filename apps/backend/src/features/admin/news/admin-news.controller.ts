@@ -1,6 +1,25 @@
-import { Body, Controller, Get, Headers, Param, ParseIntPipe, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Headers,
+  HttpStatus,
+  Param,
+  ParseFilePipeBuilder,
+  ParseIntPipe,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AdminNewsService } from './admin-news.service';
-import { AdminEditNewsInterface, AdminNewsListInterface, AdminNewsDto } from '@dfcomps/contracts';
+import {
+  AdminEditNewsInterface,
+  AdminNewsListInterface,
+  AdminNewsDto,
+  UploadedFileLinkInterface,
+} from '@dfcomps/contracts';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { MulterFileInterface } from 'apps/backend/src/shared/interfaces/multer.interface';
 
 @Controller('admin/news')
 export class AdminNewsController {
@@ -39,5 +58,26 @@ export class AdminNewsController {
     @Param('newsId', new ParseIntPipe()) newsId: number,
   ): Promise<void> {
     return this.adminNewsService.updateNews(accessToken, AdminNewsDto, newsId);
+  }
+
+  @Post('upload-news-image')
+  @UseInterceptors(FileInterceptor('image'))
+  uploadNewsImage(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: /jpg|png|gif|jpeg/,
+        })
+        .addMaxSizeValidator({
+          maxSize: 5000000,
+        })
+        .build({
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        }),
+    )
+    image: MulterFileInterface,
+  ): Promise<UploadedFileLinkInterface> {
+    return this.adminNewsService.uploadNewsImage(accessToken, image);
   }
 }

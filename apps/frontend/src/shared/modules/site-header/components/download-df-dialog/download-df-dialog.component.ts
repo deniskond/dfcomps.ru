@@ -1,8 +1,8 @@
 import { LanguageService } from './../../../../services/language/language.service';
 import { MAIN_URL } from '~shared/rest-api';
-import { Languages } from '../../../../enums/languages.enum';
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { Languages } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-download-df-dialog',

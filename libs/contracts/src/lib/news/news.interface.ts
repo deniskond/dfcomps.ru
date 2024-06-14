@@ -1,4 +1,5 @@
 import { CommentInterface } from './comments.interface';
+import { NewsStreamInterface } from './news-stream.interface';
 import { NewsTypes } from './news-types.enum';
 
 export interface NewsInterface {
@@ -18,8 +19,7 @@ export interface NewsInterface {
   textEn: string | null;
   youtube: string | null;
   tableJson: string;
-  twitch1: string;
-  twitch2: string;
   comments: CommentInterface[];
   preposted: boolean;
+  streams: NewsStreamInterface[];
 }

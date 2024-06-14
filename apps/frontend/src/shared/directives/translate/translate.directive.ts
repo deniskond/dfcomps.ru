@@ -1,10 +1,10 @@
 import { RUSSIAN_TRANSLATIONS } from './../../translations/ru.translations';
 import { ENGLISH_TRANSLATIONS } from './../../translations/en.translations';
-import { Languages } from '../../enums/languages.enum';
 import { LanguageService } from '../../services/language/language.service';
 import { Directive, ElementRef, Input, OnInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { Subject, ReplaySubject, combineLatest } from 'rxjs';
+import { Languages } from '@dfcomps/contracts';
 
 @Directive({
   selector: '[translate]',

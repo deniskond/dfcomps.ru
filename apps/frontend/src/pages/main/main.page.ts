@@ -4,13 +4,12 @@ import * as moment from 'moment';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { isEqual } from 'lodash';
-import { Languages } from '~shared/enums/languages.enum';
 import { LanguageService } from '~shared/services/language/language.service';
 import { NewsService } from '~shared/services/news-service/news.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NewDiscordAccountComponent } from '~shared/modules/site-header';
 import { UserService } from '~shared/services/user-service/user.service';
-import { NewsInterfaceUnion, NewsTypes } from '@dfcomps/contracts';
+import { Languages, NewsInterfaceUnion, NewsTypes } from '@dfcomps/contracts';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({

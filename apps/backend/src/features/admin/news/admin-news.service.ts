@@ -1,14 +1,24 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { News } from '../../../shared/entities/news.entity';
 import { UserAccessInterface } from '../../../shared/interfaces/user-access.interface';
 import { AuthService } from '../../auth/auth.service';
-import { AdminEditNewsInterface, AdminNewsListInterface, AdminNewsDto } from '@dfcomps/contracts';
+import {
+  AdminEditNewsInterface,
+  AdminNewsListInterface,
+  AdminNewsDto,
+  UploadedFileLinkInterface,
+  StreamingPlatforms,
+  Languages,
+} from '@dfcomps/contracts';
 import { mapNewsTypeEnumToDBNewsTypeId } from '../../../shared/mappers/news-types.mapper';
 import { NewsComment } from '../../../shared/entities/news-comment.entity';
 import { UserRoles, checkUserRoles } from '@dfcomps/auth';
 import * as moment from 'moment-timezone';
+import { MulterFileInterface } from 'apps/backend/src/shared/interfaces/multer.interface';
+import sharp = require('sharp');
+import * as fs from 'fs';
 
 @Injectable()
 export class AdminNewsService {
@@ -16,7 +26,9 @@ export class AdminNewsService {
     @InjectRepository(News) private readonly newsRepository: Repository<News>,
     @InjectRepository(NewsComment) private readonly newsCommentsRepository: Repository<NewsComment>,
     private readonly authService: AuthService,
-  ) {}
+  ) {
+    this.convertYoutubeToStreams();
+  }
 
   public async getAllNews(accessToken: string | undefined): Promise<AdminNewsListInterface[]> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
@@ -151,5 +163,52 @@ export class AdminNewsService {
       .execute();
 
     await this.newsRepository.createQueryBuilder('news').delete().from(News).where({ id: newsId }).execute();
+  }
+
+  public async uploadNewsImage(
+    accessToken: string | undefined,
+    image: MulterFileInterface,
+  ): Promise<UploadedFileLinkInterface> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!userAccess.userId || !checkUserRoles(userAccess.roles, [UserRoles.NEWSMAKER])) {
+      throw new UnauthorizedException('Unauthorized to upload news image without NEWSMAKER role');
+    }
+
+    const newsImageFileName = moment().format('x');
+
+    const resizedImage: Buffer = await sharp(image.buffer)
+      .resize(800)
+      .jpeg()
+      .toBuffer()
+      .catch(() => {
+        throw new InternalServerErrorException('Failed to resize image');
+      });
+
+    const relativePath = '/images/news/' + newsImageFileName + '.jpg';
+
+    fs.writeFileSync(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + relativePath, resizedImage);
+
+    return {
+      link: process.env.DFCOMPS_FILES_RELATIVE_PATH + relativePath,
+    };
+  }
+
+  private async convertYoutubeToStreams(): Promise<void> {
+    const allNews: News[] = await this.newsRepository.createQueryBuilder().getMany();
+
+    const mappedNews = allNews.map((newsItem: News) => ({
+      ...newsItem,
+      streams: newsItem.youtube
+        ? JSON.stringify([{
+            streamer: 'w00dy',
+            platform: StreamingPlatforms.YOUTUBE,
+            streamId: newsItem.youtube,
+            language: Languages.RU,
+          }])
+        : null,
+    }));
+
+    await this.newsRepository.save(mappedNews);
   }
 }
