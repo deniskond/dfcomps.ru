@@ -822,7 +822,7 @@
       let h = {};
       const tok = localStorage.getItem("token");
       if (!nd(tok)) {
-        h = { "X-Auth": tok };
+        h = { "X-Auth": tok?.replace('"', '')?.replace('"', '') };
       }
       let b = undefined;
       if (data !== undefined) {
@@ -955,7 +955,7 @@
         token: t,
         admin: adm,
       } = parse_location();
-      const authToken = localStorage.getItem("token");
+      const authToken = localStorage.getItem("token")?.replace('"', '')?.replace('"', '');
       if (relog && nd(t) && (!nd(adm) || nd(authToken))) await progress(ensure_token());
       let token = localStorage.getItem('app-token');
       if (nd(adm) && !nd(authToken)) {
