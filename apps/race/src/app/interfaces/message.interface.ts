@@ -37,11 +37,18 @@ export interface OutUpdate {
   result: RoundView;
 }
 
-type InMessage = InRoundBan | InRoundUnban | InRoundReset | InRoundStart | InRoundComplete | InUpdate;
+type InMessage =
+  | InUpdate
+  | ((InRoundBan | InRoundUnban | InRoundReset | InRoundStart | InRoundComplete) & {
+      roundId: number;
+    });
 
 export function isInMessage(x: any): x is InMessage {
   return (
-    (x instanceof Object && (x['action'] === 'Ban' || x['action'] === 'Unban') && !isNaN(parseInt(x['mapIndex']))) ||
+    (x instanceof Object &&
+      !isNaN(parseInt(x['roundId'])) &&
+      (x['action'] === 'Ban' || x['action'] === 'Unban') &&
+      !isNaN(parseInt(x['mapIndex']))) ||
     x['action'] === 'Update' ||
     x['action'] === 'Reset' ||
     x['action'] === 'Start' ||

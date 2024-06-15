@@ -49,6 +49,12 @@ export class RaceServer {
     if (token === undefined || !(token in this._allowed_tokens)) return undefined;
     return token;
   }
+  private getUserToken(request: express.Request): string | undefined {
+    const token = request.headers['X-Auth'];
+    if (token === undefined) return token;
+    if (typeof token === 'string') return token;
+    return token[0];
+  }
   private hashPassword(password: string): string {
     const hash = createHash('sha256');
     return hash.update(password, 'utf-8').digest('base64');
@@ -268,26 +274,15 @@ export class RaceServer {
       const token = this.getAdminToken(req);
       this.raceController.competitionStart(req.params.competitionId, token).then((r) => this.response(res, r));
     });
-    app
-      .route('/competitions/:competitionId/rounds/:roundId')
-      .post((req, res) => {
-        const token = this.getAdminToken(req);
-        const roundId = parseInt(req.params.roundId);
-        if (isNaN(roundId)) {
-          this.invalidType(res, "Expected 'roundId' to be round index");
-          return;
-        }
-        this.response(res, this.raceController.createRound(req.params.competitionId, token, roundId));
-      })
-      .get((req, res) => {
-        const token = this.getAdminToken(req);
-        const roundId = parseInt(req.params.roundId);
-        if (isNaN(roundId)) {
-          this.invalidType(res, "Expected 'roundId' to be round index");
-          return;
-        }
-        this.response(res, this.raceController.getRoundView(req.params.competitionId, roundId, token));
-      });
+    app.route('/competitions/:competitionId/rounds/:roundId').post((req, res) => {
+      const token = this.getAdminToken(req);
+      const roundId = parseInt(req.params.roundId);
+      if (isNaN(roundId)) {
+        this.invalidType(res, "Expected 'roundId' to be round index");
+        return;
+      }
+      this.response(res, this.raceController.createRound(req.params.competitionId, token, roundId));
+    });
 
     app.route('/competitions/:competitionId/rounds/:roundId/stage').get((req, res) => {
       const roundId = parseInt(req.params.roundId);
@@ -320,23 +315,22 @@ export class RaceServer {
       }
       this.response(res, await this.raceController.roundSet(req.params.competitionId, roundId, token, 'Restart'));
     });
-    app.ws('/bracket/:competitionId/rounds/:roundId', (ws, req: express.Request) => {
-      this.log(`new connection to ${req.params.competitionId}/${req.params.roundId}`);
+    app.ws('/bracket/:competitionId', async (ws, req: express.Request) => {
+      this.log(`new connection to ${req.params.competitionId}`);
       const competitionId = req.params.competitionId;
-      const roundId = parseInt(req.params.roundId);
       const adminToken = this.getAdminToken(req);
-      let userToken: string | undefined = undefined;
+      let userToken: string | undefined = this.getUserToken(req);
 
       if (req.query.token !== undefined && typeof req.query.token == 'string') {
         userToken = req.query.token;
       }
       const token = adminToken ?? userToken;
-      if (isNaN(roundId)) {
-        ws.send(JSON.stringify({ err: { code: 'BadRequest', message: "Expected 'roundId' to be round index" } }));
-        ws.close();
-        return;
-      }
-      const subscription = this.raceController.subscribeRound(competitionId, roundId, token, (x) => {
+      // if (isNaN(roundId)) {
+      //   ws.send(JSON.stringify({ err: { code: 'BadRequest', message: "Expected 'roundId' to be round index" } }));
+      //   ws.close();
+      //   return;
+      // }
+      const subscription = await this.raceController.subscribe(competitionId, token, (x) => {
         ws.send(JSON.stringify(result(x)));
       });
       if (subscription.err !== undefined) {
@@ -349,7 +343,8 @@ export class RaceServer {
         console.log('Connection closed');
         return;
       }
-      ws.send(JSON.stringify(this.raceController.getRoundView(competitionId, roundId, token)));
+      await this.raceController.getUpdate(competitionId, token);
+      // ws.send(JSON.stringify(this.raceController.getRoundView(competitionId, roundId, token)));
       subscription.result.add(() => {
         ws.close(200);
       });
@@ -363,18 +358,21 @@ export class RaceServer {
         let res;
         switch (message.action) {
           case 'Update':
-            ws.send(JSON.stringify(this.raceController.getRoundView(competitionId, roundId, token)));
+            res = await this.raceController.getUpdate(competitionId, token);
+            if (res.err !== undefined) {
+              this.log(`${message.action}: ${res.err.message}`);
+              ws.send(JSON.stringify(res));
+            }
             break;
-          // ws.send();
           case 'Ban':
-            res = this.raceController.roundBan(competitionId, roundId, token, message.mapIndex);
+            res = await this.raceController.roundBan(competitionId, message.roundId, token, message.mapIndex);
             if (res.err !== undefined) {
               this.log(`${message.action}: ${res.err.message}`);
               ws.send(JSON.stringify(res));
             }
             break;
           case 'Unban':
-            res = this.raceController.roundUnban(competitionId, roundId, token, message.mapIndex);
+            res = await this.raceController.roundUnban(competitionId, message.roundId, token, message.mapIndex);
             if (res.err !== undefined) {
               this.log(`${message.action}: ${res.err.message}`);
               ws.send(JSON.stringify(res));
@@ -382,14 +380,14 @@ export class RaceServer {
             break;
           case 'Start':
           case 'Reset':
-            res = await this.raceController.roundSet(competitionId, roundId, token, message.action);
+            res = await this.raceController.roundSet(competitionId, message.roundId, token, message.action);
             if (res.err !== undefined) {
               this.log(`${message.action}: ${res.err.message}`);
               ws.send(JSON.stringify(res));
             }
             break;
           case 'Complete':
-            res = await this.raceController.roundSet(competitionId, roundId, token, message.winner);
+            res = await this.raceController.roundSet(competitionId, message.roundId, token, message.winner);
             if (res.err !== undefined) {
               this.log(`${message.action}: ${res.err.message}`);
               ws.send(JSON.stringify(res));

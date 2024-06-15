@@ -5,6 +5,7 @@ import { GetDiscordTokenDto } from './dto/get-discord-token.dto';
 import { CheckLoginDto } from './dto/check-login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { DiscordPromptInterface, LoginAvailableInterface, LoginResponseInterface } from '@dfcomps/auth';
+import { UserAccessInterface } from '../../shared/interfaces/user-access.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -33,6 +34,16 @@ export class AuthController {
   @Get('discord-prompt')
   getDiscordPrompt(@Headers('X-Auth') accessToken: string | undefined): Promise<DiscordPromptInterface> {
     return this.authService.getDiscordPrompt(accessToken);
+  }
+
+  @Get('user')
+  async getUser(@Headers('X-Auth') accessToken: string | undefined): Promise<number | null> {
+    const info = await this.authService.getUserInfoByAccessToken(accessToken);
+    return info.userId;
+  }
+  @Get('user-info')
+  getUserInfo(@Headers('X-Auth') accessToken: string | undefined): Promise<UserAccessInterface> {
+    return this.authService.getUserInfoByAccessToken(accessToken);
   }
 
   @Post('link-discord')

@@ -30,6 +30,7 @@ export interface IncompleteMapInfo {
   stats?: unknown; // tbd
 }
 export interface PlayerInfo {
+  userId?: number;
   playerName: string;
 }
 
@@ -118,7 +119,7 @@ export function isBoolean(x: any): x is boolean {
 
 export function isValidHost(x: any): x is HostUrl {
   // [FIXME] use more specific url validation format
-  return isString(x) && x.match(/^https?:\/\/[a-zA-Z0-9.]*$/) !== null;
+  return isString(x) && x.match(/^https?:\/\/[a-zA-Z0-9:.]*$/) !== null;
 }
 
 export function isRound(x: any): x is Round {

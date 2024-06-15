@@ -4,6 +4,7 @@ import {
   Physics,
   ProfileDemosInterface,
   ProfileInterface,
+  ProfileMainInfoInterface,
 } from '@dfcomps/contracts';
 import {
   BadRequestException,
@@ -38,6 +39,34 @@ export class ProfileService {
     @InjectRepository(Reward) private readonly rewardRepository: Repository<Reward>,
     private readonly authService: AuthService,
   ) {}
+
+  public async getPlayerProfileMainInfo(userId: number): Promise<ProfileMainInfoInterface> {
+    const player: User | null = await this.userRepository
+      .createQueryBuilder('user')
+      .select(['user.id', 'user.avatar', 'user.displayed_nick', 'user.vq3_rating', 'user.cpm_rating', 'user.country'])
+      .where({ id: userId })
+      .getOne();
+
+    if (!player) {
+      throw new NotFoundException(`Player with id ${userId} not found`);
+    }
+    return {
+      avatar: player.avatar,
+      nick: player.displayed_nick,
+      vq3Rating: player.vq3_rating,
+      cpmRating: player.cpm_rating,
+      country: player.country,
+    };
+  }
+
+  public async searchPlayersByNick(nick: string): Promise<any[]> {
+    const players: User[] = await this.userRepository
+      .createQueryBuilder('users')
+      .select(['users.displayed_nick', 'users.id'])
+      .where({ displayed_nick: nick })
+      .getMany();
+    return players.map((x) => x.id);
+  }
 
   public async getPlayerProfile(userId: number): Promise<ProfileInterface> {
     const player: User | null = await this.userRepository.createQueryBuilder('users').where({ id: userId }).getOne();

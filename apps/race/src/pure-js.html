@@ -445,6 +445,37 @@
       background-color: #a02b0040;
     }
 
+    .toggle-button {
+      height: 36px;
+      width: 36px;
+      box-sizing: border-box;
+      border-radius: 50%;
+      border: 0px;
+      user-select: none;
+      appearance: none;
+      color: #ff5300a0;
+      background-color: #00000000;
+      font-size: 18px;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana,
+        sans-serif;
+    }
+
+    .toggle-button.button-on {
+      color: #0f980b;
+      text-shadow:
+        0 0 10px #00ff20,
+        0 0 20px #108010,
+        0 0 40px #00000000;
+    }
+
+    .toggle-button.button-off {
+      color: #211f1f;
+      text-shadow:
+        0 0 10px rgba(109, 0, 0, 0.811),
+        0 0 20px rgba(53, 8, 8, 0.595),
+        0 0 40px #00000000;
+    }
+
     .brackets-board {
       border-left: 1px solid #ff5300ff;
       background: linear-gradient(180deg, #a02b0020 0%, #27150010 50%, #00000000 100%);
@@ -787,11 +818,15 @@
       await sl(500.0);
       ul.removeChild(li);
     }
-    async function rq(method, path, data, success = undefined, fail = undefined, failelem = undefined, log = true) {
+    async function rq(method, path, data, success = undefined, fail = undefined, failelem = undefined, log = true, headers = {}) {
       let h = {};
+      const tok = localStorage.getItem("token");
+      if (!nd(tok)) {
+        h = { "X-Auth": tok };
+      }
       let b = undefined;
       if (data !== undefined) {
-        h = { 'Content-type': 'application/json; charset=UTF-8' };
+        h = { ...h, 'Content-type': 'application/json; charset=UTF-8' };
         b = JSON.stringify(data);
       }
 
@@ -834,7 +869,7 @@
           '/authorize',
           { login, passwordHash },
           async function (d) {
-            localStorage.setItem('token', d);
+            localStorage.setItem('app-token', d);
             await update_page(false);
           },
           undefined,
@@ -849,7 +884,7 @@
         {},
         undefined,
         async (x) => {
-          localStorage.removeItem('token');
+          localStorage.removeItem('app-token');
         },
         undefined,
         false,
@@ -884,62 +919,70 @@
       return x === null || x === undefined;
     }
 
-    async function navigation(logged = false) {
-      if (logged) {
-        return;
-      }
-      localStorage.removeItem('nav-comp-selected');
-      localStorage.removeItem('nav-round-selected');
-      localStorage.removeItem('client-token');
+    function parse_location() {
       const loc = window.location;
-      if (!loc.search) return;
-      let {
-        competition: c,
-        round: r,
-        token: t,
-      } = Object.fromEntries(
+      if (!loc.search) {
+        return {
+          competition: undefined,
+          round: undefined,
+          token: undefined,
+          admin: undefined,
+        }
+      }
+      const result = Object.fromEntries(
         loc.search
           .slice(1)
           .split('&')
           .map((x) => x.split('=').map((y) => decodeURI(y))),
       );
-      // "nav-comp-selected"
-      // "nav-round-selected"
-      if (!nd(c)) {
-        localStorage.setItem('nav-comp-selected', c);
-      }
-      if (!nd(r)) {
-        r = Number.parseInt(r);
-        if (Number.isNaN(r)) return;
-        localStorage.setItem('nav-round-selected', r);
-      }
-      if (!nd(t)) {
-        localStorage.setItem('client-token', t);
-      }
+      return result;
     }
 
     async function update_page(relog = true, update = true) {
-      if (document._next_update !== undefined) {
-        const now = Date.now();
-        if (now < document._next_update) {
-          await progress(sl(document._next_update - now));
-        }
-      }
-      document._next_update = Date.now() + 200;
-      const rounds = document.getElementById('rounds');
       const login = document.getElementById('login');
       const competitions = document.getElementById('competitions');
       const competitionBrowser = document.getElementById('cb');
+      const rounds = document.getElementById('rounds');
 
-      rounds.hidden = true;
-      competitions.hidden = true;
       login.hidden = true;
+      competitions.hidden = true;
       competitionBrowser.hidden = true;
+      rounds.hidden = true;
 
-      if (relog) await progress(ensure_token());
-      const token = localStorage.getItem('token');
-      const logged = !nd(token);
-      navigation(logged);
+      let {
+        competition: c,
+        round: r,
+        token: t,
+        admin: adm,
+      } = parse_location();
+      const authToken = localStorage.getItem("token");
+      if (relog && nd(t) && (!nd(adm) || nd(authToken))) await progress(ensure_token());
+      let token = localStorage.getItem('app-token');
+      if (nd(adm) && !nd(authToken)) {
+        token = authToken;
+      }
+      if (nd(adm) || nd(token)) {
+        console.log(`COMP ${c}`)
+        localStorage.removeItem('nav-comp-selected');
+        localStorage.removeItem('nav-round-selected');
+        localStorage.removeItem('client-token');
+        // "nav-comp-selected"
+        // "nav-round-selected"
+        if (!nd(c)) {
+          localStorage.setItem('nav-comp-selected', c);
+        }
+        if (!nd(r)) {
+          r = Number.parseInt(r);
+          if (Number.isNaN(r)) return;
+          localStorage.setItem('nav-round-selected', r);
+        }
+        if (!nd(t)) {
+          if (nd(token)) {
+            token = t;
+          }
+          localStorage.setItem('client-token', t);
+        }
+      }
       const clientToken = localStorage.getItem('client-token');
       const compet = localStorage.getItem('nav-comp-selected');
       const round = localStorage.getItem('nav-round-selected');
@@ -950,33 +993,50 @@
           animate_error(qid(qid(document, 'competition-list'), `c-${compet}`));
           window.location = window.location.origin + window.location.pathname;
         } else {
-          if (round !== null) {
-            try {
-              await progress(round_connect(comp, round, clientToken, update));
-            } catch (e) {
-              console.error(e);
-            }
-            return;
-          } else {
-            try {
-              await progress(update_competition(comp));
-              competitionBrowser.hidden = false;
-              return;
-            } catch (e) {
-              console.log(e);
-              await progress(close_competition());
-              animate_error(qid(qid(document, 'competition-list'), `c-${compet}`));
-            }
-          }
+          await progress(competition_connect(comp, clientToken ?? token));
+          await draw_competition_page(!nd(adm));
         }
       }
       if (!token) {
         login.hidden = false;
         return;
       }
-      try {
-        await progress(update_competitions_list(competitions));
-      } catch { }
+
+      if (nd(compet)) {
+        try {
+          await progress(update_competitions_list(competitions));
+        } catch { }
+      }
+    }
+
+    async function draw_competition_page(isadmin) {
+      const competitionBrowser = document.getElementById('cb');
+      const rounds = document.getElementById('rounds');
+      competitionBrowser.hidden = true;
+      rounds.hidden = true;
+
+      const round = localStorage.getItem('nav-round-selected');
+
+      const comp = document.__connected_comp;
+
+      if (nd(round)) {
+        try {
+          rounds.hidden = true;
+          competitionBrowser.hidden = false;
+          console.log(`=== COMPET ${comp.id} ${isadmin}  ===`)
+          await progress(draw_competition(comp, isadmin));
+          return;
+        } catch (e) {
+          console.log(e);
+          await progress(close_competition());
+          animate_error(qid(qid(document, 'competition-list'), `c-${comp.id}`));
+        }
+      } else {
+        rounds.hidden = false;
+        competitionBrowser.hidden = true;
+        console.log(`=== ROUND ${round}  ${isadmin} ===`)
+        await progress(draw_round(comp, round, isadmin));
+      }
     }
 
     async function remove_player(compet, name) {
@@ -999,6 +1059,15 @@
         update_page(false, true),
       );
     }
+    async function toggle_obs(compet, name) {
+      let obs = compet.mapPool.find(x => x.mapName == name);
+      if (!obs) return;
+      return await rq('POST', `/competitions/${compet.id}/maps?name=${encodeURI(name)}`, {
+        obsEnabled: !obs.config.obsEnabled
+      }, () =>
+        update_page(false, true),
+      );
+    }
     async function add_map(compet, inp) {
       return await rq(
         'PUT',
@@ -1010,12 +1079,17 @@
       );
     }
     async function get_competition(compet, cache = false) {
-      if (cache) {
-        let c = localStorage.getItem('cache-comp');
-        if (c !== null && c.id === compet) return JSON.parse(c);
-      }
+      // if (cache) {
+      //   let c = localStorage.getItem('cache-comp');
+      //   if (c !== null && c.id === compet) return JSON.parse(c);
+      // }
       return await rq('GET', `/competitions/${compet}`, undefined, (d) => {
-        localStorage.setItem('cache-comp', JSON.stringify(d));
+        // localStorage.setItem('cache-comp', JSON.stringify(d));
+        if (!nd(document.__connected_comp) && d.id === document.__connected_comp.id) {
+          document.__connected_comp = { ...document.__connected_comp, ...d };
+        } else {
+          document.__connected_comp = d;
+        }
         return d;
       });
     }
@@ -1052,10 +1126,7 @@
         b,
       );
     }
-    async function round_connect(comp, round, token = undefined, reconnect = false) {
-      if (comp.owned) {
-        await start_round(comp, round);
-      }
+    async function competition_connect(comp, token = undefined, reconnect = false) {
       const dd = {};
       const p = new Promise((r, j) => {
         dd.res = r;
@@ -1064,7 +1135,7 @@
       let ws;
       try {
         if (document.__ws && document.__ws.readyState !== WebSocket.CLOSED) {
-          if (reconnect) {
+          if (reconnect || document.__connected_comp?.id !== comp.id) {
             try {
               document.__ws.close(200);
             } catch { }
@@ -1074,9 +1145,10 @@
           }
         }
         let gotMsg = false;
+        document.__connected_comp = comp;
         const loc = window.location;
         const protocol = loc.protocol.startsWith('https') ? 'wss' : 'ws';
-        const pathname = new URL(`./bracket/${comp.id}/rounds/${round}`, loc.href).pathname;
+        const pathname = new URL(`./bracket/${comp.id}`, loc.href).pathname;
         if (token !== undefined) {
           ws = new WebSocket(`${protocol}://${loc.host}${pathname}?token=${encodeURI(token)}`);
         } else {
@@ -1088,16 +1160,15 @@
             if ('err' in d) {
               if (d.err.code === 'NotFound') {
                 if (!gotMsg) {
-                  dd.rej('Round is not started');
+                  dd.rej('Competition is not found');
                   gotMsg = true;
                 }
               } else {
                 lerr(d.err.message);
               }
             } else if ('result' in d) {
-              update_round(comp, round, d.result);
-              const rounds = document.getElementById('rounds');
-              rounds.hidden = false;
+              update_view(comp, d.result);
+              draw_competition_page(!nd(comp.adminData));
             }
             if (!gotMsg) {
               gotMsg = true;
@@ -1136,6 +1207,44 @@
       }
     }
 
+    async function update_view(comp, msg) {
+      console.log("------------ message ------------")
+      console.log(msg)
+      if (msg.roundUpdate) {
+        if (comp.view === undefined) {
+          comp.view = {}
+        }
+        for (const k of Object.keys(msg.roundUpdate)) {
+          const rw = msg.roundUpdate[k];
+          if (nd(rw)) {
+            delete comp.view[k]
+          } else {
+            comp.view[k] = rw;
+          }
+        }
+      }
+      if (!nd(msg.adminData)) {
+        comp.adminData = msg.adminData;
+      }
+      if (msg.bracketUpdate) {
+        comp.brackets = msg.bracketUpdate;
+      }
+      if (msg.currentRound) {
+        if (msg.currentRound.roundId < 0) {
+          comp.currentRound = undefined;
+        } else {
+          comp.currentRound = msg.currentRound;
+        }
+        if (!msg.adminData) {
+          if (nd(comp.currentRound)) {
+            localStorage.removeItem('nav-round-selected');
+          } else {
+            localStorage.setItem('nav-round-selected', comp.currentRound.roundId);
+          }
+        }
+      }
+    }
+
     function copy_invite(button, ind) {
       const text = localStorage.getItem(`rnd-p-invite-${ind}`);
       if (text === null) {
@@ -1170,22 +1279,25 @@
       }
     }
 
-    async function round_ban(ind) {
-      await send_ws({ action: 'Ban', mapIndex: ind });
+    async function get_update() {
+      await send_ws({ action: 'Update', roundId, mapIndex: ind });
     }
-    async function round_unban(ind) {
-      await send_ws({ action: 'Unban', mapIndex: ind });
+    async function round_ban(roundId, ind) {
+      await send_ws({ action: 'Ban', roundId, mapIndex: ind });
     }
-    async function round_start() {
-      await send_ws({ action: 'Start' });
+    async function round_unban(roundId, ind) {
+      await send_ws({ action: 'Unban', roundId, mapIndex: ind });
     }
-    async function round_winner(winner) {
-      await send_ws({ action: 'Complete', winner });
+    async function round_start(roundId) {
+      await send_ws({ action: 'Start', roundId });
     }
-    async function round_reset() {
-      await send_ws({ action: 'Reset' });
+    async function round_winner(roundId, winner) {
+      await send_ws({ action: 'Complete', roundId, winner });
     }
-    const stages = ["Final", "Semifinal", "Quaterfinal"];
+    async function round_reset(roundId) {
+      await send_ws({ action: 'Reset', roundId });
+    }
+    const stages = ["Final", "Semifinal", "Quaterfinal", "1/8", "1/16"];
     function getRoundTitle(roundIndex) {
       const x = parseInt(roundIndex);
       const stage = Math.floor(Math.log2(x + 1));
@@ -1199,7 +1311,7 @@
       return `Last ${Math.pow(2, stage)} #${num + 1}`;
     }
 
-    async function update_round(comp, ind, view) {
+    async function draw_round(comp, ind, isadmin) {
       const rnds = qid(document, 'rounds');
       const ul = qid(rnds, 'rm-l');
       const msg = qid(rnds, 'rm-msg');
@@ -1218,7 +1330,23 @@
       back.hidden = true;
       chat.hidden = true;
       const loc = window.location;
-      isadmin = !nd(view.tokens);
+      let trueadmin = !nd(comp.adminData);
+      let view = (comp.view ?? {})[ind];
+      if (nd(view)) {
+        if (trueadmin) {
+          const r = await start_round(comp, ind);
+          update_view(comp, r);
+          view = comp.view[ind];
+          trueadmin = !nd(comp.adminData);
+        } else {
+          localStorage.removeItem("nav-round-selected");
+          return;
+        }
+      }
+      if (trueadmin && nd(comp.adminData[ind])) {
+        return;
+      }
+      const index = comp.currentRound?.index ?? -1;
 
       qid(rnds, 'rm-hdr').innerText = getRoundTitle(ind);
 
@@ -1229,8 +1357,8 @@
       for (let p in view.players) {
         let rp = rps[p];
 
-        if (isadmin) {
-          url = `${loc.origin}${loc.pathname}?competition=${comp.id}&round=${ind}&token=${view.tokens[p].token}`;
+        if (trueadmin) {
+          url = `${loc.origin}${loc.pathname}?competition=${comp.id}&round=${ind}&token=${comp.adminData[ind][p].token}`;
           localStorage.setItem(`rnd-p-invite-${p}`, url);
         }
         rp.innerText = view.players[p].info.playerName;
@@ -1238,20 +1366,20 @@
         rp.classList.remove('looser');
         rp.classList.remove('highlight');
       }
-      const turn = view.index === view.banTurn;
+      const turn = index === view.banTurn;
       if (view.stage === 'Ban') {
         if (Object.keys(view.bans).length >= comp.rules.numBans * 2) {
           msg.innerText = 'BAN STAGE COMPLETE';
           // enable admin start button
-          if (isadmin) {
+          if (trueadmin) {
             inv.hidden = false;
             st.hidden = false;
             const stb = qid(st, 'rm-st-b');
-            stb.onclick = async () => await progress(round_start());
+            stb.onclick = async () => await progress(round_start(ind));
           }
         } else {
           rps[view.banTurn].classList.add('highlight');
-          if (isadmin) {
+          if (trueadmin) {
             inv.hidden = false;
             msg.innerText = 'PLAYERS ARE BANNING';
           } else {
@@ -1263,18 +1391,18 @@
           }
         }
       } else if (view.stage === 'Running') {
-        if (view.index in [0, 1]) {
-          if (view.players[view.index].serverUrl === undefined) {
+        if (index in [0, 1]) {
+          if (view.players[index].serverUrl === undefined) {
             msg.innerHTML = 'CONNECT TO YOUR SERVER';
           } else {
             msg.innerHTML =
-              `<a class="inline-button" style="pointer-events: all;" href="defrag://${view.players[view.index].serverUrl
-              }">defrag://${view.players[view.index].serverUrl}</a>` +
-              ` to <button class="button" onclick="navigator.clipboard.writeText('/connect ${view.players[view.index].serverUrl
+              `<a class="inline-button" style="pointer-events: all;" href="defrag://${view.players[index].serverUrl
+              }">defrag://${view.players[index].serverUrl}</a>` +
+              ` to <button class="button" onclick="navigator.clipboard.writeText('/connect ${view.players[index].serverUrl
               }');">copy command</button>`;
           }
         } else {
-          if (isadmin) {
+          if (trueadmin) {
             if (view.players[0].serverUrl === undefined || view.players[1].serverUrl === undefined) {
               msg.innerHTML = 'SERVER HOST IS NOT DEFINED';
             } else {
@@ -1290,16 +1418,16 @@
             //   `<a style="pointer-events: all;user-select: all;" href="defrag://${view.players[1].serverUrl}">defrag://${view.players[1].serverUrl}</a>`;
           }
         }
-        if (isadmin) {
+        if (trueadmin) {
           win.hidden = false;
-          qid(win, 'rm-win-0').onclick = async () => await progress(round_winner(0));
-          qid(win, 'rm-win-1').onclick = async () => await progress(round_winner(1));
+          qid(win, 'rm-win-0').onclick = async () => await progress(round_winner(ind, 0));
+          qid(win, 'rm-win-1').onclick = async () => await progress(round_winner(ind, 1));
         }
       } else {
         msg.innerText = 'ROUND COMPLETE';
-        if (isadmin) {
+        if (trueadmin) {
           res.hidden = false;
-          qid(res, 'rm-res-b').onclick = async () => await progress(round_reset());
+          qid(res, 'rm-res-b').onclick = async () => await progress(round_reset(ind));
         }
         try {
           for (let p of rps) {
@@ -1342,7 +1470,7 @@
           ls.setAttribute('src', el.info.levelShotUrl);
 
           if (el.state === undefined) {
-            if (turn || isadmin) {
+            if (turn || trueadmin) {
               btn.onmouseenter = () => {
                 btn.classList.add('highlight');
                 ls.classList.add('highlight');
@@ -1357,16 +1485,15 @@
                 bn.hidden = true;
               };
               btn.onclick = async () => {
-                await progress(round_ban(el.index));
+                await progress(round_ban(ind, el.index));
               };
             }
           } else {
             if (el.state === 'banned') {
-              if (isadmin) {
+              if (trueadmin) {
                 btn.onclick = async () => {
-                  await progress(round_unban(el.index));
+                  await progress(round_unban(ind, el.index));
                 };
-
                 // if admin enable unban
               }
             }
@@ -1383,20 +1510,26 @@
       });
     }
 
-    async function update_competition(comp) {
+    async function draw_competition(comp, isadmin) {
       document.getElementById('cb-hdr').innerText = comp.name;
       const p = qid(document, 'cb-pr');
       const pbr = qid(document, 'cb-br');
       p.hidden = true;
       pbr.hidden = true;
+
+      // const isadmin = comp.adminData !== undefined;
+
+      const compButtons = document.getElementById('cb-but');
+      compButtons.hidden = !isadmin;
       // return;
       if (comp.brackets) {
         // if (true) {
         pbr.hidden = false;
-        build_brackets(
+        draw_brackets(
           pbr,
           comp.brackets.rounds,
           comp.players.map((x) => x.playerName),
+          isadmin,
         );
       } else {
         p.hidden = false;
@@ -1426,6 +1559,17 @@
         set_listbox(ml, 'cb-pr-ml-t', comp.mapPool, function (t, i, e) {
           qid(t, 'cb-pr-ml-t-n').innerText = e.mapName;
           qid(t, 'cb-pr-ml-t-ls').src = e.levelShotUrl;
+          const ob = qid(t, 'cb-pr-ml-t-ob');
+          if (e.config.obsEnabled) {
+            ob.classList.add("button-on");
+            ob.classList.remove("button-off");
+          } else {
+            ob.classList.add("button-off");
+            ob.classList.remove("button-on");
+          }
+          ob.onclick = async function () {
+            await progress(toggle_obs(comp, e.mapName));
+          }
           qid(t, 'cb-pr-ml-t-r').onclick = async function () {
             await progress(remove_map(comp, e.mapName));
           };
@@ -1447,7 +1591,7 @@
       //   players: PlayerInfo[];
       // }
     }
-    function build_brackets(par, rnds, pnames) {
+    function draw_brackets(par, rnds, pnames, isadmin = true) {
       const nt = Math.log2(rnds.length + 1);
       const tb = qid(par, 'cb-br-t');
       const co = tb.querySelector('colgroup');
@@ -1459,13 +1603,14 @@
         tr.removeChild(tr.lastChild);
       }
       let n = rnds.length;
-      let h = 96;
+      let h = 58;
+      const w = 320;
       let m = (n + 1) / 2;
       let r = 0;
       const tlst = {};
       for (let i = 0; i < nt; ++i) {
         const ct = document.createElement('col');
-        ct.style = 'min-width: 280px';
+        ct.style = `min-width: ${w}px`;
         co.appendChild(ct);
         let cv = document.createElement('td');
         let hd = document.createElement('div');
@@ -1474,9 +1619,9 @@
         cv = tr.appendChild(cv);
         let brt;
         if (m > 1) {
-          brt = [build_bracket(hd, h, true), build_bracket(hd, h, false)];
+          brt = [build_bracket(hd, h, true, w - 40), build_bracket(hd, h, false, w - 40)];
         } else {
-          brt = build_bracket(hd, h, undefined);
+          brt = build_bracket(hd, h, undefined, w - 40);
         }
         const lst = [];
         for (let j = 0; j < m; ++j) {
@@ -1493,10 +1638,12 @@
           const rr = rnds[cr];
           const p0 = qid(e, 'bl-0');
           const p1 = qid(e, 'bl-1');
-          e.onclick = async () => {
-            localStorage.setItem('nav-round-selected', cr);
-            await update_page(false, true);
-          };
+          if (isadmin) {
+            e.onclick = async () => {
+              localStorage.setItem('nav-round-selected', cr);
+              await draw_competition_page(isadmin);
+            };
+          }
           tlst[cr] = {
             w: rr.winnerIndex,
             el: [p0, p1],
@@ -1560,31 +1707,32 @@
         m /= 2;
       }
     }
-    function build_bracket(to, h, up) {
+    function build_bracket(to, h, up, w) {
       let ub = 0;
       let db = 0;
       if (up === true) ub = 2;
       if (up === false) db = 2;
+      const rh = 36;
       to.innerHTML = `<div style="position: relative; height: ${h}px;">
-                      <div style="position: absolute; width: 240px">
-                        <div style="height: ${h / 2 - 36}px;"></div>
-                        <div id="bl" class="brackets-board" style="height: 72px;">
-                          <div id="bl-0" class="brackets-label" style="height: 36px; width: 218px; padding-left:20px"></div>
-                          <div id="bl-1" class="brackets-label" style="height: 36px; width: 218px; padding-left:20px"></div></div>
-                        <div style="height: ${h / 2 - 36}px;"></div></div>
-                      <div style="position: absolute; display: flex; left: 240px; width: 40px; height: ${h}px">
+                      <div style="position: absolute; width: ${w}px">
+                        <div style="height: ${h / 2 - rh / 2}px;"></div>
+                        <div id="bl" class="brackets-board" style="height: ${rh}px;">
+                          <div id="bl-0" class="brackets-label" style="font-size: ${rh / 2 - 2}px; height: ${rh / 2}px; width: ${w - 2 - 20}px; padding-left:20px"></div>
+                          <div id="bl-1" class="brackets-label" style="font-size: ${rh / 2 - 2}px; height: ${rh / 2}px; width: ${w - 2 - 20}px; padding-left:20px"></div></div>
+                        <div style="height: ${h / 2 - rh / 2}px;"></div></div>
+                      <div style="position: absolute; display: flex; left: ${w}px; width: 40px; height: ${h}px">
                         <div style="display: inline-block; width: 20px">
                           <div style="height: ${h / 2
         }px; border-bottom: ${ub}px solid; border-color:revert-layer;" class="brackets-line"></div>
                           <div style="height: ${h / 2
         }px;    border-top: ${db}px solid; border-color:revert-layer;" class="brackets-line"></div></div>
                         <div style=" display: inline-block; width: 20px; height: ${h}px;">
-                          <div style="height: 18px;"></div>
-                          <div class="brackets-line" style="height: ${h / 2 - 18
+                          <div style="height: ${rh / 4}px;"></div>
+                          <div class="brackets-line" style="height: ${h / 2 - rh / 4
         }px;border: ${ub}px solid;border-right: 0; border-bottom: 0;border-color:revert-layer;"></div>
-                          <div class="brackets-line" style="height: ${h / 2 - 18
+                          <div class="brackets-line" style="height: ${h / 2 - rh / 4
         }px;border: ${db}px solid;border-right: 0;    border-top: 0;border-color:revert-layer;"></div>
-                          <div style="height: 18px;"></div></div></div></div></td>`;
+                          <div style="height: ${rh / 4}px;"></div></div></div></div></td>`;
       return to.firstChild;
     }
 
@@ -1627,11 +1775,21 @@
         return;
       }
       const maxbans = qid(createDialog, 'cc-max-bans');
+      const forbid = qid(createDialog, 'cc-forbid');
+      const promode = qid(createDialog, 'cc-promode');
+      const obs = qid(createDialog, 'cc-obs-en');
+      const rh = qid(createDialog, 'cc-rh');
       const maxbansValue = Number.parseInt(maxbans.value);
       if (maxbansValue === undefined || maxbansValue === null || Number.isNaN(maxbansValue)) {
         animate_error(maxbans);
         return;
       }
+      let rhValue = rh.value.trim();
+      if (rhValue && rhValue.match(/^https?:\/\/[a-zA-Z0-9:\.]*$/) === null) {
+        animate_error(rh);
+        return;
+      }
+      if (!rhValue) rhValue = undefined;
       await rq(
         'POST',
         '/competitions',
@@ -1639,6 +1797,10 @@
           name: name.value,
           rules: {
             numBans: maxbansValue,
+            forbidBans: forbid.checked,
+            promode: promode.checked,
+            obsEnabled: obs.checked,
+            raceServerHost: rhValue,
           },
         },
         (d) => {
@@ -1710,7 +1872,7 @@
         });
       }
 
-      update_page();
+      update_page(true, true);
     }
     window.onload = initialize;
   </script>
@@ -1765,7 +1927,7 @@
         </div>
       </div>
       <div class="main-block" id="cb" hidden>
-        <div class="back-button">
+        <div class="back-button" id="cb-but">
           <button class="button" onclick="copy_competition(this);">COPY JSON</button>
           <button class="button" onclick="close_competition();">BACK</button>
         </div>
@@ -1818,6 +1980,9 @@
                             class="map-preview" />
                           <div id="cb-pr-ml-t-n" class="map-preview-name" style="padding-left: 8px; font-size: 24px">
                           </div>
+                        </div>
+                        <div style="width: 36px">
+                          <button id="cb-pr-ml-t-ob" class="toggle-button">OB</button>
                         </div>
                         <div style="width: 36px">
                           <button id="cb-pr-ml-t-r" class="inline-button">
@@ -1965,6 +2130,30 @@
                 <div class="text-field" style="width: 49%; display: inline-block"><span>MAX BANS</span></div>
                 <div style="width: 50%; display: inline-block">
                   <input id="cc-max-bans" class="text-input" value="2" autocomplete="off" />
+                </div>
+              </div>
+              <div style="width: 80%; margin-left: 10%; margin-right: 10%; margin-bottom: 20px">
+                <div class="text-field" style="width: 49%; display: inline-block"><span>FORBID BANS</span></div>
+                <div style="width: 50%; display: inline-block">
+                  <input id="cc-forbid" type="checkbox" />
+                </div>
+              </div>
+              <div style="width: 80%; margin-left: 10%; margin-right: 10%; margin-bottom: 20px">
+                <div class="text-field" style="width: 49%; display: inline-block"><span>CPM</span></div>
+                <div style="width: 50%; display: inline-block">
+                  <input id="cc-promode" type="checkbox" checked />
+                </div>
+              </div>
+              <div style="width: 80%; margin-left: 10%; margin-right: 10%; margin-bottom: 20px">
+                <div class="text-field" style="width: 49%; display: inline-block"><span>OBS ENABLED</span></div>
+                <div style="width: 50%; display: inline-block">
+                  <input id="cc-obs-en" type="checkbox" />
+                </div>
+              </div>
+              <div style="width: 80%; margin-left: 10%; margin-right: 10%; margin-bottom: 20px">
+                <div class="text-field" style="width: 49%; display: inline-block"><span>CUSTOM RACE HOST</span></div>
+                <div style="width: 50%; display: inline-block">
+                  <input id="cc-rh" class="text-input" autocomplete="off" />
                 </div>
               </div>
               <div style="width: 80%; margin-left: 10%; margin-right: 10%; margin-bottom: 20px">

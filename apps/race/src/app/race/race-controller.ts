@@ -27,7 +27,7 @@ import {
   isArray,
   isInteger,
 } from './interfaces/views.interface';
-import { CompetitionData, RoundData, RoundProgress } from './interfaces/data.interface';
+import { CompetitionData, RoundData, RoundProgress, UpdateMessage } from './interfaces/data.interface';
 import { createHash } from 'crypto';
 
 /* scenario:
@@ -68,7 +68,12 @@ export class RaceController {
       }
     }
     const res = { id: v4(), mapPool: [], players: [], ...info };
-    this.competitions[res.id] = { view: res, adminToken: token, rounds: {} };
+    this.competitions[res.id] = {
+      view: res,
+      adminToken: token,
+      rounds: {},
+      stream: new Subject<UpdateMessage>(),
+    };
     return result(res);
   }
 
@@ -96,7 +101,12 @@ export class RaceController {
     if (err !== null) {
       return badRequest(err);
     }
-    this.competitions[res.id] = { view: res, adminToken: token, rounds: {} };
+    this.competitions[res.id] = {
+      view: res,
+      adminToken: token,
+      rounds: {},
+      stream: new Subject<UpdateMessage>(),
+    };
     return result(res);
   }
 
@@ -187,13 +197,7 @@ export class RaceController {
   public removeCompetition(competitionId: string, token: string | undefined): Result<boolean> {
     const { err, result: competition } = this.validateCompetition(competitionId, token);
     if (err !== undefined) return error(err);
-    const toRemove: string[] = [];
-    for (const [id, round] of Object.entries(competition.rounds)) {
-      if (round.competitionId === competitionId) {
-        round.stream.complete();
-        toRemove.push(id);
-      }
-    }
+    competition.stream.complete();
     return result(delete this.competitions[competitionId]);
   }
   public listCompetitions(token: string | undefined): Result<{ id: string; name: string }[]> {
@@ -285,15 +289,16 @@ export class RaceController {
   ): AsyncResult<number> {
     const { err, result: competitionData } = this.validateCompetition(competitionId, token);
     if (err !== undefined) return error(err);
+
     const competition = competitionData.view;
     if (competition.players.find((x) => x.playerName === playerName) !== undefined) {
       return duplicate(`Player ${playerName} is already added`);
     }
-    const mapInfo = await this.getPlayerInfo(playerName);
-    if (mapInfo === undefined) {
+    const playerInfo = await this.getPlayerInfo(playerName);
+    if (playerInfo === undefined) {
       return notFound(`Player ${playerName} is not found`);
     }
-    return result(competition.players.push(mapInfo) - 1);
+    return result(competition.players.push(playerInfo) - 1);
   }
   public competitionRemovePlayer(
     competitionId: string,
@@ -374,11 +379,7 @@ export class RaceController {
     return result(competition.brackets.rounds.length);
   }
 
-  public createRound(
-    competitionId: string,
-    token: string | undefined,
-    round: number,
-  ): Result<RoundView & { tokens: { token: string }[] }> {
+  public createRound(competitionId: string, token: string | undefined, round: number): Result<UpdateMessage> {
     const { err, result: competitionData } = this.validateCompetition(competitionId, token);
     if (err !== undefined) return error(err);
     const competition = competitionData.view;
@@ -428,50 +429,90 @@ export class RaceController {
     };
     competitionData.rounds[round] = {
       view: roundView,
-      stream: new Subject<RoundView>(),
-      players: [{ token: v4() }, { token: v4() }],
+      players: roundView.players.map((x) => ({ userId: x.info.userId, token: v4() })),
       competitionId,
       round,
     };
-    return result({ ...roundView, tokens: competitionData.rounds[round].players });
-  }
-  public subscribeRound(
-    competitionId: string,
-    roundId: number,
-    token: string | undefined,
-    onUpdate: (x: RoundView & { tokens?: { token: string }[]; index: number }) => void,
-  ): Result<Subscription> {
-    const { err, result: competitionData } = this.validateCompetition(competitionId, undefined, false);
-    if (err !== undefined) return error(err);
-    const round = competitionData.rounds[roundId];
-    if (round === undefined) {
-      return notFound(`Round with id='${roundId}' is not found in competition ${competitionId}`);
-    }
-    const index = round.players.findIndex((x) => x.token === token);
-    if (competitionData.adminToken === token) {
-      return result(
-        round.stream.subscribe((rw) => onUpdate({ ...rw, tokens: competitionData.rounds[roundId].players, index })),
-      );
-    }
-    return result(round.stream.subscribe((rw) => onUpdate({ ...rw, index })));
+
+    const adminData =
+      competitionData.adminToken === token
+        ? Object.fromEntries(Object.entries(competitionData.rounds).map((x) => [x[0], x[1].players]))
+        : undefined;
+    competitionData.stream.next({
+      id: competitionId,
+      roundUpdate: { [round]: roundView },
+    });
+    return result({
+      id: competitionId,
+      adminData,
+      roundUpdate: { [round]: roundView },
+    });
   }
 
-  public getRoundView(
+  public async subscribe(
     competitionId: string,
-    roundId: number,
-    token?: string,
-  ): Result<RoundView & { index: number; tokens?: { token: string }[] }> {
+    token: string | undefined,
+    onUpdate: (x: UpdateMessage) => void,
+  ): AsyncResult<Subscription> {
     const { err, result: competitionData } = this.validateCompetition(competitionId, undefined, false);
     if (err !== undefined) return error(err);
-    const round = competitionData.rounds[roundId];
-    if (round === undefined) {
-      return notFound(`Round with id='${roundId}' is not found in competition ${competitionId}`);
+    const userId = await this.getUserIdAuth(token);
+
+    return result(
+      competitionData.stream.subscribe((x) =>
+        onUpdate({
+          ...x,
+          adminData:
+            competitionData.adminToken === token
+              ? Object.fromEntries(Object.entries(competitionData.rounds).map((x) => [x[0], x[1].players]))
+              : undefined,
+          currentRound: this.getCurrentRound(competitionData, userId, token),
+        }),
+      ),
+    );
+  }
+
+  public getCurrentRound(competition: CompetitionData, userId: number | undefined, token: string | undefined) {
+    let result: { roundId: number; index: number } | undefined = {
+      roundId: -1,
+      index: 0,
+    };
+    for (const [roundId, roundData] of Object.entries(competition.rounds)) {
+      if (roundData.view.winner !== undefined) continue;
+      const index = roundData.players.findIndex(
+        (x) => (x.userId !== undefined && x.userId === userId) || x.token === token,
+      );
+      if (index !== -1) {
+        result = {
+          roundId: parseInt(roundId),
+          index,
+        };
+        break;
+      }
     }
-    if (competitionData.adminToken === token) {
-      return result({ ...round.view, index: -1, tokens: competitionData.rounds[roundId].players });
-    }
-    const index = round.players.findIndex((x) => x.token === token);
-    return result({ ...round.view, index });
+    console.log('CURRENT:');
+    console.log(result);
+    return result;
+  }
+
+  public async getUpdate(competitionId: string, token?: string): AsyncResult<UpdateMessage> {
+    const { err, result: competitionData } = this.validateCompetition(competitionId, undefined, false);
+    if (err !== undefined) return error(err);
+    const userId = await this.getUserIdAuth(token);
+    const currentRound = this.getCurrentRound(competitionData, userId, token);
+    const adminData =
+      competitionData.adminToken === token
+        ? Object.fromEntries(Object.entries(competitionData.rounds).map((x) => [x[0], x[1].players]))
+        : undefined;
+    const msg: UpdateMessage = {
+      id: competitionId,
+      roundUpdate: Object.fromEntries(Object.entries(competitionData.rounds).map((x) => [x[0], x[1].view])),
+      bracketUpdate: competitionData.view.brackets,
+      currentRound,
+      adminData,
+    };
+    competitionData.stream.next(msg);
+    return result(msg);
   }
 
   private toProgressView(
@@ -549,13 +590,13 @@ export class RaceController {
     }
   }
 
-  public roundBan(
+  public async roundBan(
     competitionId: string,
     roundId: number,
     token: string | undefined,
     mapIndex: number,
-  ): Result<RoundView> {
-    const v = this.validateBanRound(competitionId, roundId, token, false, true);
+  ): AsyncResult<RoundView> {
+    const v = await this.validateBanRound(competitionId, roundId, token, false, true);
     if (v.err !== undefined) return v;
     const { round, competition } = v.result;
     const currentPlayer = round.players[round.view.banTurn];
@@ -582,13 +623,13 @@ export class RaceController {
     return result(round.view);
   }
   // only for admin
-  public roundUnban(
+  public async roundUnban(
     competitionId: string,
     roundId: number,
     token: string | undefined,
     mapIndex: number,
-  ): Result<RoundView> {
-    const v = this.validateBanRound(competitionId, roundId, token, true, true);
+  ): AsyncResult<RoundView> {
+    const v = await this.validateBanRound(competitionId, roundId, token, true, true);
     if (v.err !== undefined) return v;
     const { round } = v.result;
     // admin forces unban
@@ -616,8 +657,8 @@ export class RaceController {
     roundId: number,
     token: string | undefined,
     stateOrWinner: 'Restart' | 'Reset' | 'Start' | number,
-  ): Promise<Result<RoundView>> {
-    const v = this.validateBanRound(competitionId, roundId, token, true, false);
+  ): AsyncResult<RoundView> {
+    const v = await this.validateBanRound(competitionId, roundId, token, true, false);
     if (v.err !== undefined) return v;
     const { round, competition } = v.result;
     if (stateOrWinner === 'Reset') {
@@ -682,10 +723,11 @@ export class RaceController {
         );
       }
       competition.brackets.rounds[round.round].winnerIndex = stateOrWinner;
-      this.updateBracket(competition);
       round.view.stage = 'Completed';
       round.view.winner = stateOrWinner;
+      this.updateBracket(competition);
       await this.terminateServer(competitionId, roundId, token);
+
       // delete this.rounds[round.view.id];
     }
     this.notifyRoundUpdate(round);
@@ -702,13 +744,13 @@ export class RaceController {
     return result(competition);
   }
 
-  private validateBanRound(
+  private async validateBanRound(
     competitionId: string,
     roundId: number,
     token: string | undefined,
     adminOnly: boolean,
     checkBanStage: boolean,
-  ): Result<{ round: RoundData; competition: CompetitionView }> {
+  ): AsyncResult<{ round: RoundData; competition: CompetitionView }> {
     const { err, result: competitionData } = this.validateCompetition(competitionId, token, false);
     if (err !== undefined) return error(err);
     const competition = competitionData.view;
@@ -723,19 +765,36 @@ export class RaceController {
 
     if (competition === undefined || competition.brackets === undefined) {
       // dangling round by any reason (hasn't to be happened)
-      round.stream.complete();
+      this.notifyRoundRemoved(competitionData.rounds[roundId]);
       delete competitionData.rounds[roundId];
       return notFound(`Round with id='${roundId}' is not associated with any competition`);
     }
     const currentPlayer = round.players[round.view.banTurn];
-    if (competitionData.adminToken !== token && (adminOnly || currentPlayer.token !== token)) {
+    const userId = await this.getUserIdAuth(token);
+    if (
+      competitionData.adminToken !== token &&
+      (adminOnly ||
+        ((currentPlayer.userId === undefined || currentPlayer.userId !== userId) && currentPlayer.token !== token))
+    ) {
       return notAllowed('Map ban is not allowed with this user');
     }
     return result({ round, competition });
   }
 
   private notifyRoundUpdate(round: RoundData) {
-    round.stream.next(round.view);
+    this.competitions[round.competitionId]?.stream?.next({
+      id: round.competitionId,
+      roundUpdate: {
+        [round.round]: round.view,
+      },
+    });
+  }
+
+  private notifyRoundRemoved(round: RoundData) {
+    this.competitions[round.competitionId]?.stream?.next({
+      id: round.competitionId,
+      roundUpdate: { [round.round]: null },
+    });
   }
 
   private updateBracket(competition: CompetitionView) {
@@ -752,6 +811,10 @@ export class RaceController {
         competition.brackets.rounds[i].players[1] = competition.brackets.rounds[r1].players[w1];
       }
     }
+    this.competitions[competition.id]?.stream?.next({
+      id: competition.id,
+      bracketUpdate: competition.brackets,
+    });
   }
   // #endregion
   private async startServer(
@@ -882,9 +945,43 @@ export class RaceController {
     }
   }
   private async getPlayerInfo(playerName: string): Promise<PlayerInfo | undefined> {
-    return {
-      playerName: playerName,
-    };
+    // return { playerName };
+    const result = { playerName };
+    const url = process.env.NODE_ENV === 'production' ? 'api/profile/search' : 'http://localhost:4001/profile/search';
+    try {
+      const response = await axios.get(url, {
+        params: {
+          nick: playerName,
+        },
+      });
+      if (response.status >= 300) return result;
+      if (!response.data?.length) return result;
+      return {
+        userId: response.data[0],
+        playerName,
+      };
+    } catch {
+      return result;
+    }
+  }
+
+  private async getUserIdAuth(token: string | undefined): Promise<number | undefined> {
+    if (token === undefined) return undefined;
+    // return undefined;
+    const url = process.env.NODE_ENV === 'production' ? 'api/auth/user' : 'http://localhost:4001/auth/user';
+    console.log(url);
+    console.log(token);
+    try {
+      const response = await axios.get(url, {
+        headers: { 'X-Auth': token },
+      });
+
+      if (response.status >= 300) return undefined;
+      console.log(response.data);
+      return response.data ?? undefined;
+    } catch {
+      return undefined;
+    }
   }
 
   private getRaceHost(competitionId?: string): string | undefined {
@@ -901,14 +998,19 @@ export class RaceController {
   }
 
   private async validateRaceHost(url: string): Promise<boolean> {
-    const res = await axios.get(`${url}/version`);
-    if (res.status >= 300) return false;
-    const data = res.data;
-    return (
-      data['version'] !== undefined &&
-      isArray(data['version'], isInteger) &&
-      data['version'].length === 3 &&
-      data['version'][0] >= 1
-    );
+    try {
+      console.log(`Checking host ${url}/version`);
+      const res = await axios.get(`${url}/version`);
+      if (res.status >= 300) return false;
+      const data = res.data;
+      return (
+        data['version'] !== undefined &&
+        isArray(data['version'], isInteger) &&
+        data['version'].length === 3 &&
+        data['version'][0] >= 1
+      );
+    } catch {
+      return false;
+    }
   }
 }

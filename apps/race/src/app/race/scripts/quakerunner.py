@@ -723,7 +723,7 @@ class HttpScheduler:
         #   "beforestart_gap": float,
         #   "custom_config": string[],
         # }
-        self._app.add_routes([web.post('/version', lambda rq: self.request_version(rq))])
+        self._app.add_routes([web.get('/version', lambda rq: self.request_version(rq))])
         self._app.add_routes([web.post('/round/start', lambda rq: self.request_game(rq))])
         self._app.add_routes([web.post('/round/terminate', lambda rq: self.request_terminate(rq))])
         self._app.add_routes([web.post('/round/stage', lambda rq: self.request_stage(rq))])
