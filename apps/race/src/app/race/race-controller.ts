@@ -947,7 +947,7 @@ export class RaceController {
   private async getPlayerInfo(playerName: string): Promise<PlayerInfo | undefined> {
     // return { playerName };
     const result = { playerName };
-    const url = process.env.NODE_ENV === 'production' ? 'api/profile/search' : 'http://localhost:4001/profile/search';
+    const url = process.env.NODE_ENV === 'production' ? '/api/profile/search' : 'http://localhost:4001/profile/search';
     try {
       const response = await axios.get(url, {
         params: {
@@ -968,7 +968,7 @@ export class RaceController {
   private async getUserIdAuth(token: string | undefined): Promise<number | undefined> {
     if (token === undefined) return undefined;
     // return undefined;
-    const url = process.env.NODE_ENV === 'production' ? 'api/auth/user' : 'http://localhost:4001/auth/user';
+    const url = process.env.NODE_ENV === 'production' ? '/api/auth/user' : 'http://localhost:4001/auth/user';
     console.log(url);
     console.log(token);
     try {
