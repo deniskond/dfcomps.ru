@@ -10,9 +10,10 @@ import {
   Headers,
   ParseFilePipeBuilder,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { ProfileService } from './profile.service';
-import { NickChangeResponseInterface, ProfileInterface } from '@dfcomps/contracts';
+import { NickChangeResponseInterface, ProfileInterface, ProfileMainInfoInterface } from '@dfcomps/contracts';
 import { ProfileUpdateDto } from './dto/profile-update.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MulterFileInterface } from '../../shared/interfaces/multer.interface';
@@ -24,6 +25,16 @@ export class ProfileController {
   @Get('get/:id')
   getPlayerProfile(@Param('id', new ParseIntPipe()) playerId: number): Promise<ProfileInterface> {
     return this.profileService.getPlayerProfile(playerId);
+  }
+
+  @Get('get/:id/info')
+  getPlayerProfileMainInfo(@Param('id', new ParseIntPipe()) playerId: number): Promise<ProfileMainInfoInterface> {
+    return this.profileService.getPlayerProfileMainInfo(playerId);
+  }
+
+  @Get('search')
+  searchPlayersByNick(@Query('nick') nick: string): Promise<number[]> {
+    return this.profileService.searchPlayersByNick(nick);
   }
 
   @Get('check_last_nick_change_time')
