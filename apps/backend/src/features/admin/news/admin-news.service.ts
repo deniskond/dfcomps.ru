@@ -27,7 +27,8 @@ export class AdminNewsService {
     @InjectRepository(NewsComment) private readonly newsCommentsRepository: Repository<NewsComment>,
     private readonly authService: AuthService,
   ) {
-    this.convertYoutubeToStreams();
+    // TODO Run once and then delete
+    // this.convertYoutubeToStreams();
   }
 
   public async getAllNews(accessToken: string | undefined): Promise<AdminNewsListInterface[]> {
@@ -115,6 +116,7 @@ export class AdminNewsService {
           hide_on_main: false,
           cup: adminNewsDto.cupId ? { id: Number(adminNewsDto.cupId) } : null,
           multicup_id: adminNewsDto.multicupId,
+          streams: adminNewsDto.streams,
         },
       ])
       .execute();
@@ -143,6 +145,7 @@ export class AdminNewsService {
         hide_on_main: false,
         cup: adminNewsDto.cupId ? { id: Number(adminNewsDto.cupId) } : null,
         multicup_id: adminNewsDto.multicupId,
+        streams: adminNewsDto.streams,
       })
       .where({ id: newsId })
       .execute();
@@ -200,12 +203,14 @@ export class AdminNewsService {
     const mappedNews = allNews.map((newsItem: News) => ({
       ...newsItem,
       streams: newsItem.youtube
-        ? JSON.stringify([{
-            streamer: 'w00dy',
-            platform: StreamingPlatforms.YOUTUBE,
-            streamId: newsItem.youtube,
-            language: Languages.RU,
-          }])
+        ? JSON.stringify([
+            {
+              streamer: 'w00dy',
+              platform: StreamingPlatforms.YOUTUBE,
+              streamId: newsItem.youtube,
+              language: Languages.RU,
+            },
+          ])
         : null,
     }));
 

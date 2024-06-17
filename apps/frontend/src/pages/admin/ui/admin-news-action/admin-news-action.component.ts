@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AdminDataService } from '../../business/admin-data.service';
 import { AdminOperationType } from '../../models/admin-operation-type.enum';
 import * as moment from 'moment-timezone';
-import { combineLatest, debounceTime, map, Observable, ReplaySubject, startWith, switchMap, tap } from 'rxjs';
+import { combineLatest, map, Observable, ReplaySubject, switchMap } from 'rxjs';
 import {
   AdminActiveCupInterface,
   AdminActiveMulticupInterface,
@@ -33,7 +33,6 @@ const newsTypesWithRequiredCup: NewsTypes[] = [
 export class AdminNewsActionComponent implements OnInit {
   public operationType: AdminOperationType;
   public newsActionForm: FormGroup;
-  public youtubeEmbedId$: Observable<string>;
   public isCupRequired: boolean;
   public isMulticupRequired: boolean;
   public availableMulticups$: Observable<AdminActiveMulticupInterface[]>;
@@ -41,6 +40,7 @@ export class AdminNewsActionComponent implements OnInit {
   public mapNewsTypeToHumanTitle = mapNewsTypeToHumanTitle;
   public newsType: NewsTypes;
   public cupsList$: Observable<AdminActiveCupInterface[]>;
+  public streamsCount = 3;
 
   private newsId: string;
   private selectedCup$: ReplaySubject<AdminActiveCupInterface | null> = new ReplaySubject(1);
@@ -133,6 +133,14 @@ export class AdminNewsActionComponent implements OnInit {
     };
   }
 
+  public addStream(): void {}
+
+  public focusInput(event: any): void {
+    const targetElement = event.target as HTMLDivElement;
+    
+    (targetElement.parentElement?.getElementsByTagName('input')[0] as HTMLInputElement).focus();
+  }
+
   // TODO Move out to mappers after typization
   private mapDateTimeZoneToInput(datetimezone: string): string {
     return moment(datetimezone).tz('Europe/Moscow').format('YYYY-MM-DDTHH:mm');
@@ -161,7 +169,6 @@ export class AdminNewsActionComponent implements OnInit {
           postingTime: new FormControl(''),
           russianText: new FormControl(''),
           englishText: new FormControl(''),
-          youtube: new FormControl(''),
           cup: new FormControl(null),
           multicup: new FormControl(null),
         },
@@ -169,7 +176,6 @@ export class AdminNewsActionComponent implements OnInit {
       );
 
       this.selectedCup$.next(null);
-      this.setYoutubeFieldObservable();
     }
 
     if (this.operationType === AdminOperationType.EDIT) {
@@ -182,7 +188,6 @@ export class AdminNewsActionComponent implements OnInit {
             postingTime: new FormControl(this.mapDateTimeZoneToInput(singleNews.newsItem.date)),
             russianText: new FormControl(singleNews.newsItem.textRussian),
             englishText: new FormControl(singleNews.newsItem.textEnglish),
-            youtube: new FormControl(singleNews.newsItem.youtube),
             cup: new FormControl(singleNews.newsItem.cup?.cupId),
             multicup: new FormControl(singleNews.newsItem.multicupId),
           },
@@ -191,14 +196,7 @@ export class AdminNewsActionComponent implements OnInit {
 
         this.selectedCup$.next(singleNews.newsItem.cup);
         this.changeDetectorRef.markForCheck();
-        this.setYoutubeFieldObservable();
       });
     }
-  }
-
-  private setYoutubeFieldObservable(): void {
-    this.youtubeEmbedId$ = this.newsActionForm
-      .get('youtube')!
-      .valueChanges.pipe(debounceTime(300), startWith(this.newsActionForm.get('youtube')!.value));
   }
 }

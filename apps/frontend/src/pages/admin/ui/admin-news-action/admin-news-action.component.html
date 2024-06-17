@@ -14,6 +14,76 @@
         <input formControlName="englishTitle" class="input-field" data-test-id="english-news-title-input" />
         <div *ngIf="hasFieldError(this.newsActionForm.get('englishTitle')!)" class="field-error">Field is required</div>
       </div>
+      <div class="input-title">Image</div>
+      <div class="input-file-container"><input type="file" accept=".png, .jpg, .jpeg, .gif" /></div>
+      <div class="input-title">Russian text</div>
+      <div class="wysiwyg-container">
+        <quill-editor formControlName="russianText" class="quill" data-test-id="russian-text-quill"></quill-editor>
+        <div *ngIf="hasFieldError(this.newsActionForm.get('russianText')!)" class="field-error">Field is required</div>
+      </div>
+      <div class="input-title">English text</div>
+      <div class="wysiwyg-container">
+        <quill-editor formControlName="englishText" class="quill" data-test-id="english-text-quill"></quill-editor>
+        <div *ngIf="hasFieldError(this.newsActionForm.get('englishText')!)" class="field-error">Field is required</div>
+      </div>
+      <div class="input-title">Streams</div>
+      <div class="streams-form-container">
+        <div class="streams-form">
+          <div class="streams-form-header"></div>
+          <div class="streams-form-header">Platform</div>
+          <div class="streams-form-header">Stream link</div>
+          <div class="streams-form-header">Streamer</div>
+          <div class="streams-form-header">Language</div>
+          <div class="streams-form-header"></div>
+
+          <ng-container>
+            <div style="display: flex; align-items: center">1.</div>
+            <div>
+              <mat-form-field appearance="outline" class="medium-size-select">
+                <mat-select value="youtube">
+                  <mat-option value="youtube">YouTube</mat-option>
+                  <mat-option value="twitch">Twitch</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div>
+              <div class="pseudo-input">
+                <div class="pseudo-input-fixed-text" (click)="focusInput($event)">https://youtube.com/?v=</div>
+                <input class="input-field-stream-link" />
+              </div>
+            </div>
+            <div>
+              <input class="input-field" />
+            </div>
+            <div>
+              <mat-form-field appearance="outline" class="medium-size-select">
+                <mat-select value="russian">
+                  <mat-option value="russian">Russian</mat-option>
+                  <mat-option value="english">English</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div>
+              <button mat-mini-fab color="warn" class="delete-button">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </ng-container>
+        </div>
+        <div class="add-button-container">
+          <button
+            (click)="addStream()"
+            class="add-stream-button"
+            color="basic"
+            mat-raised-button
+            data-test-id="add-stream-button"
+          >
+            <mat-icon>add</mat-icon>
+            Add stream
+          </button>
+          <div class="add-unavailable-text">3 streams max</div>
+        </div>
+      </div>
       <div class="input-title">
         Time to post
         <br />
@@ -79,28 +149,6 @@
           </div>
         </ng-container>
       </ng-container>
-
-      <div class="input-title">Russian text</div>
-      <div class="wysiwyg-container">
-        <quill-editor formControlName="russianText" class="quill" data-test-id="russian-text-quill"></quill-editor>
-        <div *ngIf="hasFieldError(this.newsActionForm.get('russianText')!)" class="field-error">Field is required</div>
-      </div>
-      <div class="input-title">English text</div>
-      <div class="wysiwyg-container">
-        <quill-editor formControlName="englishText" class="quill" data-test-id="english-text-quill"></quill-editor>
-        <div *ngIf="hasFieldError(this.newsActionForm.get('englishText')!)" class="field-error">Field is required</div>
-      </div>
-      <div class="input-title">Youtube embed ID</div>
-      <div>
-        <input formControlName="youtube" class="input-field" data-test-id="youtube-input" />
-        <app-youtube
-          *ngIf="youtubeEmbedId$ | async as youtubeEmbedId"
-          [id]="youtubeEmbedId"
-          [width]="800"
-          [height]="450"
-          class="youtube"
-        ></app-youtube>
-      </div>
     </div>
     <button
       (click)="submitNews()"

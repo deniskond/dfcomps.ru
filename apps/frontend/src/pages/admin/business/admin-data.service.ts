@@ -30,6 +30,7 @@ import {
   OnlineCupServersPlayersInterface,
   SetPlayerServerDto,
   OnlineCupRoundResultsInterface,
+  NewsStreamInterface,
 } from '@dfcomps/contracts';
 import * as moment from 'moment';
 
@@ -325,6 +326,8 @@ export class AdminDataService {
   }
 
   private getAdminNewsDto(formValue: Record<string, any>, newsType: NewsTypes): AdminNewsDto {
+    const streams: NewsStreamInterface[] = [];
+
     const adminNewsDto: AdminNewsDto = {
       russianTitle: formValue['russianTitle'],
       englishTitle: formValue['englishTitle'],
@@ -332,6 +335,7 @@ export class AdminDataService {
       russianText: formValue['russianText'],
       englishText: formValue['englishText'],
       type: newsType,
+      streams: JSON.stringify(streams),
     };
 
     if (formValue['youtube']) {

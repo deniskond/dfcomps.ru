@@ -10,7 +10,7 @@
 }
 
 .input-field {
-  height: 32px;
+  height: 40px;
   font-size: 14px;
   width: 100%;
   padding-left: 4px;
@@ -21,6 +21,13 @@
     margin-left: 16px;
     margin-right: 8px;
   }
+}
+
+.input-field-stream-link {
+  height: 38px;
+  font-size: 14px;
+  width: 110px;
+  border: 0;
 }
 
 .form {
@@ -81,16 +88,94 @@
   width: 300px;
 }
 
-::ng-deep .mat-mdc-form-field-infix {
-  min-height: unset;
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
+.input-file-container {
+  display: flex;
+  align-items: center;
+  height: 32px;
 }
 
-::ng-deep .mdc-text-field {
-  padding: 0 12px !important;
+.streams-form-header {
+  height: 32px;
 }
 
-::ng-deep .mat-mdc-form-field-subscript-wrapper {
-  display: none !important;
+.streams-form-container {
+  padding-top: 8px;
+}
+
+.streams-form {
+  display: grid;
+  grid-template-columns: 15px 150px 278px 150px 150px 40px;
+  grid-column-gap: 15px;
+}
+
+.medium-size-select {
+  width: 150px;
+}
+
+.delete-button {
+  transform: scale(0.7);
+}
+
+.pseudo-input {
+  border: 1px solid rgb(204, 204, 204);
+  display: inline-flex;
+}
+
+.pseudo-input-fixed-text {
+  display: flex;
+  align-items: center;
+  padding-left: 4px;
+  user-select: none;
+  font-size: 14px;
+}
+
+.add-button-container {
+  display: flex;
+  margin-top: 12px;
+}
+
+.add-unavailable-text {
+  margin-left: 12px;
+  display: flex;
+  align-items: center;
+  color: #aaa;
+}
+
+::ng-deep {
+  .mat-mdc-form-field-infix {
+    min-height: unset;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+
+  .mdc-text-field {
+    padding: 0 12px !important;
+  }
+
+  .mat-mdc-form-field-subscript-wrapper {
+    display: none !important;
+  }
+
+  .mdc-notched-outline__leading {
+    border-color: rgb(204, 204, 204) !important;
+    border-radius: 0px !important;
+  }
+
+  .mdc-notched-outline__trailing {
+    border-color: rgb(204, 204, 204) !important;
+    border-radius: 0px !important;
+  }
+
+  .mat-mdc-select-min-line {
+    font-size: 14px !important;
+  }
+
+  .mdc-list-item__primary-text {
+    font-size: 14px !important;
+  }
+
+  .mdc-text-field {
+    min-height: 40px !important;
+    height: 40px !important;
+  }
 }
