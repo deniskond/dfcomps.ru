@@ -36,6 +36,7 @@ import { NewsService } from '~shared/services/news-service/news.service';
 import { ThemeNewsPageComponent } from './components/theme-news-page/theme-news-page.component';
 import { NewsStreamersResultsComponent } from './components/news-streamers-results/news-streamers-results.component';
 import { NewsElementComponent } from './components/news-element/news-element.component';
+import { NewsStreamsComponent } from './components/news-streams/news-streams.component';
 
 const routes: Routes = [
   {
@@ -95,6 +96,7 @@ const routes: Routes = [
     ThemeNewsPageComponent,
     NewsStreamersResultsComponent,
     NewsElementComponent,
+    NewsStreamsComponent,
   ],
   providers: [NewsService],
 })

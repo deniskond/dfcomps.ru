@@ -1,0 +1,23 @@
+<ng-container *ngIf="streams.length === 1">1 stream</ng-container>
+
+<ng-container *ngIf="streams.length === 2">2 streams</ng-container>
+
+<ng-container *ngIf="streams.length === 3">
+  <div class="three-streams-container">
+    <div *ngFor="let stream of streams">
+      <div class="stream-title">{{ stream.streamer }} ({{ stream.language }})</div>
+      <app-youtube
+        *ngIf="stream.platform === streamingPlatforms.YOUTUBE"
+        [id]="stream.streamId"
+        [width]="257"
+        [height]="145"
+      ></app-youtube>
+      <app-twitch
+        *ngIf="stream.platform === streamingPlatforms.TWITCH"
+        [id]="stream.streamId"
+        [width]="257"
+        [height]="145"
+      ></app-twitch>
+    </div>
+  </div>
+</ng-container>

@@ -1,7 +1,6 @@
 <app-html-news [news]="news"></app-html-news>
 
 <div class="table-container">
-  <app-youtube *ngIf="news.youtube" [id]="news.youtube" [width]="800" [height]="500" class="youtube"> </app-youtube>
   <app-online-results-table
     [table]="news.results"
     [physics]="news.cup.physics"

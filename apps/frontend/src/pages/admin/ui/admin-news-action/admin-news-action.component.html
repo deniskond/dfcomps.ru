@@ -17,7 +17,6 @@
       <div class="input-title">Image</div>
       <div class="input-file-container">
         <input #imageFileInput type="file" accept=".png, .jpg, .jpeg, .gif" />
-        
       </div>
       <div class="input-title">Russian text</div>
       <div class="wysiwyg-container">
@@ -58,9 +57,9 @@
                 <div class="pseudo-input-fixed-text" (click)="focusInput($event)">
                   {{ streamsFormArray.controls[i].get('platform')?.value | invokeFunction: getStreamLinkPrefix }}
                 </div>
-                <input formControlName="link" class="input-field-stream-link" />
+                <input formControlName="streamId" class="input-field-stream-link" />
               </div>
-              <div *ngIf="hasFieldError(streamsFormArray.controls[i].get('link')!)" class="field-error">
+              <div *ngIf="hasFieldError(streamsFormArray.controls[i].get('streamId')!)" class="field-error">
                 Field is required
               </div>
             </div>

@@ -20,6 +20,7 @@ import {
   AdminEditNewsInterface,
   CupTypes,
   Languages,
+  NewsStreamInterface,
   NewsTypes,
   StreamingPlatforms,
   UploadedFileLinkInterface,
@@ -124,7 +125,11 @@ export class AdminNewsActionComponent implements OnInit {
       imageUploadStream$
         .pipe(
           switchMap(() =>
-            this.adminDataService.postNews$(this.newsActionForm.value, this.newsType, this.streamsFormArray.value),
+            this.adminDataService.postNews$(
+              this.newsActionForm.value,
+              this.newsType,
+              this.streamsFormArray.value as NewsStreamInterface[],
+            ),
           ),
           switchMap(() => this.adminDataService.getAllNews$(false)),
         )
@@ -142,7 +147,7 @@ export class AdminNewsActionComponent implements OnInit {
               this.newsActionForm.value,
               this.newsId,
               this.newsType,
-              this.streamsFormArray.value,
+              this.streamsFormArray.value as NewsStreamInterface[],
             ),
           ),
           switchMap(() => this.adminDataService.getAllNews$(false)),
@@ -178,7 +183,7 @@ export class AdminNewsActionComponent implements OnInit {
     this.streamsFormArray.push(
       new FormGroup({
         platform: new FormControl(StreamingPlatforms.YOUTUBE, [Validators.required]),
-        link: new FormControl('', [Validators.required]),
+        streamId: new FormControl('', [Validators.required]),
         streamer: new FormControl('', [Validators.required]),
         language: new FormControl(Languages.RU, [Validators.required]),
       }),
@@ -197,7 +202,7 @@ export class AdminNewsActionComponent implements OnInit {
 
   public getStreamLinkPrefix(platform: StreamingPlatforms): string {
     return {
-      [StreamingPlatforms.TWITCH]: 'https://twitch.tv/',
+      [StreamingPlatforms.TWITCH]: 'https://player.twitch.tv/?',
       [StreamingPlatforms.YOUTUBE]: 'https://youtube.com/?v=',
     }[platform];
   }

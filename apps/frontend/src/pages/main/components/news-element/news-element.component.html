@@ -18,6 +18,8 @@
 
   <app-news-social-links [news]="newsElement"></app-news-social-links>
 
+  <img *ngIf="newsElement.image" [src]="newsElement.image" class="news-image" />
+
   <ng-container [ngSwitch]="newsElement.type">
     <app-news-simple *ngSwitchCase="newsTypes.SIMPLE" [news]="$any(newsElement)"></app-news-simple>
     <app-news-multicup-results
@@ -50,6 +52,8 @@
       [news]="$any(newsElement)"
     ></app-news-streamers-results>
   </ng-container>
+
+  <app-news-streams [streams]="newsElement.streams"></app-news-streams>
 </div>
 <app-news-comments
   [comments]="newsElement.comments"

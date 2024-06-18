@@ -128,7 +128,7 @@ export class AdminDataService {
   public postNews$(
     formValue: Record<string, any>,
     newsType: NewsTypes,
-    streamsFormValue: Record<string, any>,
+    streamsFormValue: NewsStreamInterface[],
   ): Observable<void> {
     return this.backendService.post$<void>(
       URL_PARAMS.ADMIN.POST_NEWS,
@@ -144,7 +144,7 @@ export class AdminDataService {
     formValue: Record<string, any>,
     newsId: string,
     newsType: NewsTypes,
-    streamsFormValue: Record<string, any>,
+    streamsFormValue: NewsStreamInterface[],
   ): Observable<void> {
     return this.backendService.post$<void>(
       URL_PARAMS.ADMIN.UPDATE_NEWS(newsId),
@@ -344,7 +344,7 @@ export class AdminDataService {
   private getAdminNewsDto(
     formValue: Record<string, any>,
     newsType: NewsTypes,
-    streamsFormValue: Record<string, any>,
+    streamsFormValue: NewsStreamInterface[],
   ): AdminNewsDto {
     const adminNewsDto: AdminNewsDto = {
       russianTitle: formValue['russianTitle'],

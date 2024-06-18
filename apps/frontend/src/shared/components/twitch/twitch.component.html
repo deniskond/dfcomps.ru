@@ -1,0 +1,16 @@
+<div *ngIf="!iframeShown; else twitchEmbed" (click)="iframeShown = true" class="image-container">
+  <div [ngStyle]="{ width: width + 'px', height: height + 'px' }" class="twitch-placeholder"></div>
+  <div class="play"></div>
+</div>
+
+<ng-template #twitchEmbed>
+  <iframe
+    *ngIf="iframeLink"
+    [src]="iframeLink"
+    [height]="height"
+    [width]="width"
+    frameborder="0"
+    allowfullscreen="true"
+    scrolling="no"
+  ></iframe>
+</ng-template>
