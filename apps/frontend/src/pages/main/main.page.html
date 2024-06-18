@@ -8,72 +8,24 @@
       class="block-link"
     ></div>
     <ng-container *ngIf="showPrepostedNews">
-      <ng-container *ngFor="let singleNews of prepostedNews$ | async; let i = index;">
-        <ng-container *ngTemplateOutlet="newsElem; context: { singleNews: singleNews }"></ng-container>
-      </ng-container>
+      <app-news-element
+        *ngFor="let singleNews of prepostedNews$ | async;"
+        [newsElement]="singleNews"
+        [isHeaderSelectable]="true"
+        [areCommentsExpanded]="false"
+        class="news-element"
+      ></app-news-element>
     </ng-container>
   </ng-container>
-
-  <ng-container *ngFor="let singleNews of postedNews$ | async; let i = index;">
-    <ng-container *ngTemplateOutlet="newsElem; context: { singleNews: singleNews }"></ng-container>
-  </ng-container>
-
+  <app-news-element
+    *ngFor="let singleNews of postedNews$ | async;"
+    [newsElement]="singleNews"
+    [isHeaderSelectable]="true"
+    [areCommentsExpanded]="false"
+    class="news-element"
+  ></app-news-element>
   <div translate translation="goToArchive" (click)="navigateToArchive()" class="block-link archive"></div>
 </div>
-
-<ng-template #newsElem let-singleNews="singleNews">
-  <div class="shadowed-main-block news-block">
-    <h1 class="h1-block-header no-margin" data-test-id="news-header-text">
-      <a *ngIf="language$ | async as language" routerLink="/news/{{ singleNews.id }}" class="news_header_link">
-        {{ language === languages.EN ? singleNews.headerEn : singleNews.header }}
-      </a>
-    </h1>
-
-    <div class="author-and-date">
-      <span translate translation="author"></span>:
-      <a routerLink="/profile/{{ singleNews.authorId }}" class="black-link">{{ singleNews.authorName }}</a>,
-      <span>{{ singleNews.datetimezone | invokeFunction : formatDate }}</span>
-    </div>
-
-    <app-youtube
-      *ngIf="singleNews.youtube && singleNews.type !== newsTypes.ONLINE_RESULTS"
-      [id]="singleNews.youtube"
-      [width]="800"
-      [height]="450"
-      class="youtube"
-    ></app-youtube>
-
-    <app-news-social-links [news]="singleNews"></app-news-social-links>
-
-    <ng-container [ngSwitch]="singleNews.type">
-      <app-news-simple *ngSwitchCase="newsTypes.SIMPLE" [news]="singleNews"></app-news-simple>
-      <app-news-multicup-results
-        *ngSwitchCase="newsTypes.MULTICUP_RESULTS"
-        [news]="singleNews"
-      ></app-news-multicup-results>
-      <app-news-online-announce
-        *ngSwitchCase="newsTypes.ONLINE_ANNOUNCE"
-        [news]="singleNews"
-      ></app-news-online-announce>
-      <app-news-online-results *ngSwitchCase="newsTypes.ONLINE_RESULTS" [news]="singleNews"></app-news-online-results>
-      <app-news-offline-start
-        *ngSwitchCase="newsTypes.OFFLINE_START"
-        [news]="singleNews"
-        (reloadNews)="reloadNews()"
-      ></app-news-offline-start>
-      <app-news-offline-results
-        *ngSwitchCase="newsTypes.OFFLINE_RESULTS"
-        [news]="singleNews"
-      ></app-news-offline-results>
-      <app-news-dfwc-results *ngSwitchCase="newsTypes.DFWC_ROUND_RESULTS" [news]="singleNews"></app-news-dfwc-results>
-      <app-news-streamers-results
-        *ngSwitchCase="newsTypes.STREAMERS_RESULTS"
-        [news]="$any(singleNews)"
-      ></app-news-streamers-results>
-    </ng-container>
-  </div>
-  <app-news-comments [comments]="singleNews.comments" [newsId]="singleNews.id" [expanded]="false"></app-news-comments>
-</ng-template>
 
 <ng-template #loader>
   <div class="shadowed-main-block">
