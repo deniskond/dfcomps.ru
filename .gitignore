@@ -45,3 +45,4 @@ Thumbs.db
 
 # Backend test upload files
 /apps/backend/uploads/demos
+/apps/backend/uploads/images

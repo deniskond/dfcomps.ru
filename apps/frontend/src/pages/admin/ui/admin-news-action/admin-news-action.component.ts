@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -13,7 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AdminDataService } from '../../business/admin-data.service';
 import { AdminOperationType } from '../../models/admin-operation-type.enum';
 import * as moment from 'moment-timezone';
-import { combineLatest, map, Observable, ReplaySubject, switchMap } from 'rxjs';
+import { combineLatest, map, Observable, of, ReplaySubject, switchMap, tap } from 'rxjs';
 import {
   AdminActiveCupInterface,
   AdminActiveMulticupInterface,
@@ -22,6 +22,7 @@ import {
   Languages,
   NewsTypes,
   StreamingPlatforms,
+  UploadedFileLinkInterface,
 } from '@dfcomps/contracts';
 import { AdminNewsRouting } from '../../models/admin-news-routing.enum';
 import { mapNewsTypeToHumanTitle } from '../../business/admin-news-types.mapper';
@@ -41,6 +42,8 @@ const newsTypesWithRequiredCup: NewsTypes[] = [
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminNewsActionComponent implements OnInit {
+  @ViewChild('imageFileInput') imageFileInput: ElementRef;
+
   public operationType: AdminOperationType;
   public newsActionForm: FormGroup;
   public isCupRequired: boolean;
@@ -109,10 +112,22 @@ export class AdminNewsActionComponent implements OnInit {
       return;
     }
 
+    const imageUploadStream$: Observable<UploadedFileLinkInterface | null> = this.imageFileInput.nativeElement.files[0]
+      ? this.adminDataService.uploadNewsImage$(this.imageFileInput.nativeElement.files[0]).pipe(
+          tap(({ link }: UploadedFileLinkInterface) => {
+            this.newsActionForm.get('imageLink')!.setValue(link);
+          }),
+        )
+      : of(null);
+
     if (this.operationType === AdminOperationType.ADD) {
-      this.adminDataService
-        .postNews$(this.newsActionForm.value, this.newsType, this.streamsFormArray.value)
-        .pipe(switchMap(() => this.adminDataService.getAllNews$(false)))
+      imageUploadStream$
+        .pipe(
+          switchMap(() =>
+            this.adminDataService.postNews$(this.newsActionForm.value, this.newsType, this.streamsFormArray.value),
+          ),
+          switchMap(() => this.adminDataService.getAllNews$(false)),
+        )
         .subscribe(() => {
           this.router.navigate(['/admin/news']);
           this.snackBar.open('News added successfully', 'OK', { duration: 3000 });
@@ -120,9 +135,18 @@ export class AdminNewsActionComponent implements OnInit {
     }
 
     if (this.operationType === AdminOperationType.EDIT) {
-      this.adminDataService
-        .editNews$(this.newsActionForm.value, this.newsId, this.newsType, this.streamsFormArray.value)
-        .pipe(switchMap(() => this.adminDataService.getAllNews$(false)))
+      imageUploadStream$
+        .pipe(
+          switchMap(() =>
+            this.adminDataService.editNews$(
+              this.newsActionForm.value,
+              this.newsId,
+              this.newsType,
+              this.streamsFormArray.value,
+            ),
+          ),
+          switchMap(() => this.adminDataService.getAllNews$(false)),
+        )
         .subscribe(() => {
           this.router.navigate(['/admin/news']);
           this.snackBar.open('News edited successfully', 'OK', { duration: 3000 });
@@ -208,6 +232,7 @@ export class AdminNewsActionComponent implements OnInit {
           englishText: new FormControl(''),
           cup: new FormControl(null),
           multicup: new FormControl(null),
+          imageLink: new FormControl(null),
         },
         this.postingTimeValidator(),
       );
@@ -227,6 +252,7 @@ export class AdminNewsActionComponent implements OnInit {
             englishText: new FormControl(singleNews.newsItem.textEnglish),
             cup: new FormControl(singleNews.newsItem.cup?.cupId),
             multicup: new FormControl(singleNews.newsItem.multicupId),
+            imageLink: new FormControl(singleNews.newsItem.imageLink),
           },
           this.postingTimeValidator(),
         );

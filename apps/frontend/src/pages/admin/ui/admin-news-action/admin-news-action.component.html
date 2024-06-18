@@ -15,7 +15,10 @@
         <div *ngIf="hasFieldError(this.newsActionForm.get('englishTitle')!)" class="field-error">Field is required</div>
       </div>
       <div class="input-title">Image</div>
-      <div class="input-file-container"><input type="file" accept=".png, .jpg, .jpeg, .gif" /></div>
+      <div class="input-file-container">
+        <input #imageFileInput type="file" accept=".png, .jpg, .jpeg, .gif" />
+        
+      </div>
       <div class="input-title">Russian text</div>
       <div class="wysiwyg-container">
         <quill-editor formControlName="russianText" class="quill" data-test-id="russian-text-quill"></quill-editor>

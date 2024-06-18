@@ -34,7 +34,7 @@ export class News {
   multicup_id: number | null;
 
   @Column({ type: 'character varying', nullable: true })
-  image: string;
+  image: string | null;
 
   @Column({ type: 'text', nullable: true })
   table_json: string;

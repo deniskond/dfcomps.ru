@@ -13,5 +13,6 @@ export interface AdminEditNewsInterface {
     youtube: string | null;
     cup: AdminActiveCupInterface | null;
     multicupId: number | null;
+    imageLink: string | null;
   };
 }

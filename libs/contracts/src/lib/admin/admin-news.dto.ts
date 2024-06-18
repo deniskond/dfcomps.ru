@@ -15,6 +15,8 @@ export class AdminNewsDto {
 
   englishText: string | null;
 
+  imageLink: string | null;
+
   @IsEnum(NewsTypes)
   @IsNotEmpty()
   type: NewsTypes;

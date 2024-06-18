@@ -337,6 +337,10 @@ export class AdminDataService {
     );
   }
 
+  public uploadNewsImage$(image: File): Observable<UploadedFileLinkInterface> {
+    return this.backendService.uploadFile$(URL_PARAMS.ADMIN.UPLOAD_NEWS_IMAGE, [{ fileKey: 'image', file: image }]);
+  }
+
   private getAdminNewsDto(
     formValue: Record<string, any>,
     newsType: NewsTypes,
@@ -350,6 +354,7 @@ export class AdminDataService {
       englishText: formValue['englishText'],
       type: newsType,
       streams: JSON.stringify(streamsFormValue),
+      imageLink: formValue['imageLink'] || '',
     };
 
     if (formValue['cup']) {

@@ -87,6 +87,7 @@ export class AdminNewsService {
         youtube: newsItem.youtube,
         cup: newsItem.cup ? { cupId: newsItem.cup.id, name: newsItem.cup.full_name } : null,
         multicupId: newsItem.multicup_id,
+        imageLink: newsItem.image || null,
       },
     };
   }
@@ -117,6 +118,7 @@ export class AdminNewsService {
           cup: adminNewsDto.cupId ? { id: Number(adminNewsDto.cupId) } : null,
           multicup_id: adminNewsDto.multicupId,
           streams: adminNewsDto.streams,
+          image: adminNewsDto.imageLink || null,
         },
       ])
       .execute();
@@ -146,6 +148,7 @@ export class AdminNewsService {
         cup: adminNewsDto.cupId ? { id: Number(adminNewsDto.cupId) } : null,
         multicup_id: adminNewsDto.multicupId,
         streams: adminNewsDto.streams,
+        image: adminNewsDto.imageLink,
       })
       .where({ id: newsId })
       .execute();
@@ -189,6 +192,14 @@ export class AdminNewsService {
       });
 
     const relativePath = '/images/news/' + newsImageFileName + '.jpg';
+
+    if (!fs.existsSync(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + '/images')) {
+      fs.mkdirSync(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + '/images');
+    }
+
+    if (!fs.existsSync(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + '/images/news')) {
+      fs.mkdirSync(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + '/images/news');
+    }
 
     fs.writeFileSync(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + relativePath, resizedImage);
 

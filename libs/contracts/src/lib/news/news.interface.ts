@@ -11,7 +11,7 @@ export interface NewsInterface {
   datetimezone: string;
   header: string;
   headerEn: string;
-  image: string;
+  image: string | null;
   cupId: number | null;
   multicupId: number | null;
   startTime: string | null;
