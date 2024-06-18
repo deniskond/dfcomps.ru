@@ -28,7 +28,7 @@
       </div>
       <div class="input-title">Streams</div>
       <div class="streams-form-container">
-        <div class="streams-form">
+        <div *ngIf="!!streamsFormArray.controls.length" class="streams-form">
           <div class="streams-form-header"></div>
           <div class="streams-form-header">Platform</div>
           <div class="streams-form-header">Stream link</div>
@@ -36,42 +36,55 @@
           <div class="streams-form-header">Language</div>
           <div class="streams-form-header"></div>
 
-          <ng-container>
-            <div style="display: flex; align-items: center">1.</div>
+          <ng-container
+            *ngFor="let row of range(streamsFormArray.controls.length); let i = index"
+            [formGroup]="streamsFormArray.controls[i]"
+          >
+            <div class="stream-number">{{ i + 1 }}.</div>
             <div>
               <mat-form-field appearance="outline" class="medium-size-select">
-                <mat-select value="youtube">
-                  <mat-option value="youtube">YouTube</mat-option>
-                  <mat-option value="twitch">Twitch</mat-option>
+                <mat-select formControlName="platform">
+                  <mat-option *ngFor="let platform of streamingPlatforms" [value]="platform">
+                    {{ platform | titlecase }}
+                  </mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
             <div>
               <div class="pseudo-input">
-                <div class="pseudo-input-fixed-text" (click)="focusInput($event)">https://youtube.com/?v=</div>
-                <input class="input-field-stream-link" />
+                <div class="pseudo-input-fixed-text" (click)="focusInput($event)">
+                  {{ streamsFormArray.controls[i].get('platform')?.value | invokeFunction: getStreamLinkPrefix }}
+                </div>
+                <input formControlName="link" class="input-field-stream-link" />
+              </div>
+              <div *ngIf="hasFieldError(streamsFormArray.controls[i].get('link')!)" class="field-error">
+                Field is required
               </div>
             </div>
             <div>
-              <input class="input-field" />
+              <input formControlName="streamer" class="input-field" />
+              <div *ngIf="hasFieldError(streamsFormArray.controls[i].get('streamer')!)" class="field-error">
+                Field is required
+              </div>
             </div>
             <div>
               <mat-form-field appearance="outline" class="medium-size-select">
-                <mat-select value="russian">
-                  <mat-option value="russian">Russian</mat-option>
-                  <mat-option value="english">English</mat-option>
+                <mat-select formControlName="language" value="russian">
+                  <mat-option [value]="languages.RU">Russian</mat-option>
+                  <mat-option [value]="languages.EN">English</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
             <div>
-              <button mat-mini-fab color="warn" class="delete-button">
+              <button (click)="deleteStream(i)" mat-mini-fab color="warn" class="delete-button">
                 <mat-icon>delete</mat-icon>
               </button>
             </div>
           </ng-container>
         </div>
-        <div class="add-button-container">
+        <div [ngClass]="{ 'no-margin': !streamsFormArray.controls.length }" class="add-button-container">
           <button
+            [disabled]="streamsFormArray.controls.length === 3"
             (click)="addStream()"
             class="add-stream-button"
             color="basic"
@@ -81,7 +94,7 @@
             <mat-icon>add</mat-icon>
             Add stream
           </button>
-          <div class="add-unavailable-text">3 streams max</div>
+          <div *ngIf="streamsFormArray.controls.length === 3" class="add-unavailable-text">3 streams max</div>
         </div>
       </div>
       <div class="input-title">

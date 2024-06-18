@@ -26,8 +26,9 @@
 .input-field-stream-link {
   height: 38px;
   font-size: 14px;
-  width: 110px;
+  flex: 1;
   border: 0;
+  width: 0;
 }
 
 .form {
@@ -80,10 +81,6 @@
   justify-content: center;
 }
 
-.youtube {
-  margin-top: 16px;
-}
-
 .select {
   width: 300px;
 }
@@ -94,10 +91,6 @@
   height: 32px;
 }
 
-.streams-form-header {
-  height: 32px;
-}
-
 .streams-form-container {
   padding-top: 8px;
 }
@@ -105,7 +98,11 @@
 .streams-form {
   display: grid;
   grid-template-columns: 15px 150px 278px 150px 150px 40px;
-  grid-column-gap: 15px;
+  grid-gap: 15px;
+}
+
+.stream-number {
+  margin-top: 14px;
 }
 
 .medium-size-select {
@@ -118,7 +115,7 @@
 
 .pseudo-input {
   border: 1px solid rgb(204, 204, 204);
-  display: inline-flex;
+  display: flex;
 }
 
 .pseudo-input-fixed-text {
@@ -131,7 +128,11 @@
 
 .add-button-container {
   display: flex;
-  margin-top: 12px;
+  margin-top: 15px;
+
+  &.no-margin {
+    margin-top: 0;
+  }
 }
 
 .add-unavailable-text {

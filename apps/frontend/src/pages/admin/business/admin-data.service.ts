@@ -125,18 +125,30 @@ export class AdminDataService {
     return this.backendService.post$<void>(URL_PARAMS.ADMIN.PROCESS_VALIDATION(cupId), processValidationDto);
   }
 
-  public postNews$(formValue: Record<string, any>, newsType: NewsTypes): Observable<void> {
-    return this.backendService.post$<void>(URL_PARAMS.ADMIN.POST_NEWS, this.getAdminNewsDto(formValue, newsType));
+  public postNews$(
+    formValue: Record<string, any>,
+    newsType: NewsTypes,
+    streamsFormValue: Record<string, any>,
+  ): Observable<void> {
+    return this.backendService.post$<void>(
+      URL_PARAMS.ADMIN.POST_NEWS,
+      this.getAdminNewsDto(formValue, newsType, streamsFormValue),
+    );
   }
 
   public getSingleNews$(newsId: string): Observable<AdminEditNewsInterface> {
     return this.backendService.get$<AdminEditNewsInterface>(URL_PARAMS.ADMIN.GET_SINGLE_NEWS(newsId));
   }
 
-  public editNews$(formValue: Record<string, any>, newsId: string, newsType: NewsTypes): Observable<void> {
+  public editNews$(
+    formValue: Record<string, any>,
+    newsId: string,
+    newsType: NewsTypes,
+    streamsFormValue: Record<string, any>,
+  ): Observable<void> {
     return this.backendService.post$<void>(
       URL_PARAMS.ADMIN.UPDATE_NEWS(newsId),
-      this.getAdminNewsDto(formValue, newsType),
+      this.getAdminNewsDto(formValue, newsType, streamsFormValue),
     );
   }
 
@@ -325,9 +337,11 @@ export class AdminDataService {
     );
   }
 
-  private getAdminNewsDto(formValue: Record<string, any>, newsType: NewsTypes): AdminNewsDto {
-    const streams: NewsStreamInterface[] = [];
-
+  private getAdminNewsDto(
+    formValue: Record<string, any>,
+    newsType: NewsTypes,
+    streamsFormValue: Record<string, any>,
+  ): AdminNewsDto {
     const adminNewsDto: AdminNewsDto = {
       russianTitle: formValue['russianTitle'],
       englishTitle: formValue['englishTitle'],
@@ -335,12 +349,8 @@ export class AdminDataService {
       russianText: formValue['russianText'],
       englishText: formValue['englishText'],
       type: newsType,
-      streams: JSON.stringify(streams),
+      streams: JSON.stringify(streamsFormValue),
     };
-
-    if (formValue['youtube']) {
-      adminNewsDto.youtube = formValue['youtube'];
-    }
 
     if (formValue['cup']) {
       adminNewsDto.cupId = formValue['cup'];

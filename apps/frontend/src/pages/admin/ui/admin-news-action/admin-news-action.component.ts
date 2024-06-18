@@ -1,5 +1,13 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdminDataService } from '../../business/admin-data.service';
@@ -11,7 +19,9 @@ import {
   AdminActiveMulticupInterface,
   AdminEditNewsInterface,
   CupTypes,
+  Languages,
   NewsTypes,
+  StreamingPlatforms,
 } from '@dfcomps/contracts';
 import { AdminNewsRouting } from '../../models/admin-news-routing.enum';
 import { mapNewsTypeToHumanTitle } from '../../business/admin-news-types.mapper';
@@ -40,7 +50,10 @@ export class AdminNewsActionComponent implements OnInit {
   public mapNewsTypeToHumanTitle = mapNewsTypeToHumanTitle;
   public newsType: NewsTypes;
   public cupsList$: Observable<AdminActiveCupInterface[]>;
-  public streamsCount = 3;
+  public streamsFormArray = new FormArray<FormGroup>([]);
+  public range = (length: number) => new Array(+length).fill(null);
+  public streamingPlatforms = Object.values(StreamingPlatforms);
+  public languages = Languages;
 
   private newsId: string;
   private selectedCup$: ReplaySubject<AdminActiveCupInterface | null> = new ReplaySubject(1);
@@ -88,13 +101,17 @@ export class AdminNewsActionComponent implements OnInit {
   public submitNews(): void {
     Object.keys(this.newsActionForm.controls).forEach((key: string) => this.newsActionForm.get(key)!.markAsDirty());
 
-    if (!this.newsActionForm.valid) {
+    this.streamsFormArray.controls.forEach((formGroup: FormGroup) => {
+      Object.keys(formGroup.controls).forEach((key: string) => formGroup.get(key)!.markAsDirty());
+    });
+
+    if (!this.newsActionForm.valid || !this.streamsFormArray.valid) {
       return;
     }
 
     if (this.operationType === AdminOperationType.ADD) {
       this.adminDataService
-        .postNews$(this.newsActionForm.value, this.newsType)
+        .postNews$(this.newsActionForm.value, this.newsType, this.streamsFormArray.value)
         .pipe(switchMap(() => this.adminDataService.getAllNews$(false)))
         .subscribe(() => {
           this.router.navigate(['/admin/news']);
@@ -104,7 +121,7 @@ export class AdminNewsActionComponent implements OnInit {
 
     if (this.operationType === AdminOperationType.EDIT) {
       this.adminDataService
-        .editNews$(this.newsActionForm.value, this.newsId, this.newsType)
+        .editNews$(this.newsActionForm.value, this.newsId, this.newsType, this.streamsFormArray.value)
         .pipe(switchMap(() => this.adminDataService.getAllNews$(false)))
         .subscribe(() => {
           this.router.navigate(['/admin/news']);
@@ -133,12 +150,32 @@ export class AdminNewsActionComponent implements OnInit {
     };
   }
 
-  public addStream(): void {}
+  public addStream(): void {
+    this.streamsFormArray.push(
+      new FormGroup({
+        platform: new FormControl(StreamingPlatforms.YOUTUBE, [Validators.required]),
+        link: new FormControl('', [Validators.required]),
+        streamer: new FormControl('', [Validators.required]),
+        language: new FormControl(Languages.RU, [Validators.required]),
+      }),
+    );
+  }
+
+  public deleteStream(streamIndex: number): void {
+    this.streamsFormArray.removeAt(streamIndex);
+  }
 
   public focusInput(event: any): void {
     const targetElement = event.target as HTMLDivElement;
-    
+
     (targetElement.parentElement?.getElementsByTagName('input')[0] as HTMLInputElement).focus();
+  }
+
+  public getStreamLinkPrefix(platform: StreamingPlatforms): string {
+    return {
+      [StreamingPlatforms.TWITCH]: 'https://twitch.tv/',
+      [StreamingPlatforms.YOUTUBE]: 'https://youtube.com/?v=',
+    }[platform];
   }
 
   // TODO Move out to mappers after typization
