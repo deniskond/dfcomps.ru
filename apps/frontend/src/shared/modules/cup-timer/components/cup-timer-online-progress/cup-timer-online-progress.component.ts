@@ -1,4 +1,3 @@
-import { Languages } from './../../../../enums/languages.enum';
 import { LanguageService } from '../../../../services/language/language.service';
 import {
   Component,
@@ -14,6 +13,7 @@ import { Observable, ReplaySubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { formatCupTime } from '../../helpers/cup-time-format.helpers';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Languages } from '@dfcomps/contracts';
 
 @Component({
   selector: 'app-cup-timer-online-progress',

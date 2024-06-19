@@ -1,10 +1,10 @@
-import { Languages } from '../../enums/languages.enum';
 import { Injectable } from '@angular/core';
 import { ReplaySubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { formatCupTime } from '../../modules/cup-timer/helpers/cup-time-format.helpers';
 import { ENGLISH_TRANSLATIONS } from '../../translations/en.translations';
 import { RUSSIAN_TRANSLATIONS } from '../../translations/ru.translations';
+import { Languages } from '@dfcomps/contracts';
 
 @Injectable({
   providedIn: 'root',

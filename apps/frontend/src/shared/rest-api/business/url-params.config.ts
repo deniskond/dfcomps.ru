@@ -228,7 +228,8 @@ export class URL_PARAMS {
       VOTING_INFO: string;
       VOTE: string;
       ADMIN_SUGGEST: string;
-    }
+    };
+    UPLOAD_NEWS_IMAGE: string;
   } {
     return {
       GET_NEWS: `${API_URL}/admin/news/get-all-news`,
@@ -276,7 +277,8 @@ export class URL_PARAMS {
         VOTING_INFO: `${API_URL}/admin/cups/warcup-voting`,
         VOTE: `${API_URL}/admin/cups/warcup-vote`,
         ADMIN_SUGGEST: `${API_URL}/admin/cups/warcup-suggest`,
-      }
+      },
+      UPLOAD_NEWS_IMAGE: `${API_URL}/admin/news/upload-news-image`,
     };
   }
 }

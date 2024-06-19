@@ -4,12 +4,11 @@ import { Observable, combineLatest } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { FormGroup, FormControl } from '@angular/forms';
 import { SmileInterface, SMILES_CONFIG, SmileGroups } from '~shared/configs/smiles.config';
-import { Languages } from '~shared/enums/languages.enum';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { LanguageService } from '~shared/services/language/language.service';
 import { ENGLISH_TRANSLATIONS } from '~shared/translations/en.translations';
 import { RUSSIAN_TRANSLATIONS } from '~shared/translations/ru.translations';
-import { PersonalSmileInterface } from '@dfcomps/contracts';
+import { Languages, PersonalSmileInterface } from '@dfcomps/contracts';
 
 interface SortedSmileGroupsInterface {
   name: string;

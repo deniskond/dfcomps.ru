@@ -4,9 +4,8 @@ import { range } from 'lodash';
 import { take } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
-import { Languages } from '~shared/enums/languages.enum';
 import { LanguageService } from '~shared/services/language/language.service';
-import { ArchiveNewsFilter, ArchiveNewsInterface, ArchiveNewsResultInterface } from '@dfcomps/contracts';
+import { ArchiveNewsFilter, ArchiveNewsInterface, ArchiveNewsResultInterface, Languages } from '@dfcomps/contracts';
 
 const NEWS_ON_PAGE = 50;
 

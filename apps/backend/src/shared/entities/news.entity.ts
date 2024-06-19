@@ -21,9 +21,6 @@ export class News {
   @Column({ type: 'text', nullable: true })
   text_en: string | null;
 
-  @Column({ type: 'character varying', nullable: true })
-  youtube: string | null;
-
   @Column({ type: 'timestamp with time zone' })
   datetimezone: string;
 
@@ -34,22 +31,19 @@ export class News {
   multicup_id: number | null;
 
   @Column({ type: 'character varying', nullable: true })
-  image: string;
+  image: string | null;
 
   @Column({ type: 'text', nullable: true })
   table_json: string;
-
-  @Column({ type: 'character varying', nullable: true })
-  twitch_1: string;
-
-  @Column({ type: 'character varying', nullable: true })
-  twitch_2: string;
 
   @Column({ type: 'character varying', nullable: true })
   theme: string | null;
 
   @Column({ type: 'boolean' })
   hide_on_main: boolean;
+
+  @Column({ type: 'text', nullable: true })
+  streams: string | null;
 
   @ManyToOne(() => Cup, { nullable: true })
   cup: Cup | null;

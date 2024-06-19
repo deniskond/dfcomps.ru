@@ -1,16 +1,13 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
-import * as moment from 'moment';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { isEqual } from 'lodash';
-import { Languages } from '~shared/enums/languages.enum';
-import { LanguageService } from '~shared/services/language/language.service';
 import { NewsService } from '~shared/services/news-service/news.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NewDiscordAccountComponent } from '~shared/modules/site-header';
 import { UserService } from '~shared/services/user-service/user.service';
-import { NewsInterfaceUnion, NewsTypes } from '@dfcomps/contracts';
+import { Languages, NewsInterfaceUnion } from '@dfcomps/contracts';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -22,15 +19,12 @@ export class MainPageComponent implements OnInit {
   public news$: Observable<NewsInterfaceUnion[]>;
   public prepostedNews$: Observable<NewsInterfaceUnion[]>;
   public postedNews$: Observable<NewsInterfaceUnion[]>;
-  public language$: Observable<Languages>;
-  public newsTypes = NewsTypes;
   public languages = Languages;
   public showPrepostedNews = false;
 
   constructor(
     private router: Router,
     private newsService: NewsService,
-    private languageService: LanguageService,
     private dialog: MatDialog,
     private userService: UserService,
     private snackBar: MatSnackBar,
@@ -40,10 +34,6 @@ export class MainPageComponent implements OnInit {
     this.newsService.loadMainPageNews();
     this.initObservables();
     this.checkDiscordOauth();
-  }
-
-  public formatDate(date: string): string {
-    return moment(date).format('DD.MM.YYYY HH:mm');
   }
 
   public reloadNews(): void {
@@ -62,7 +52,6 @@ export class MainPageComponent implements OnInit {
     this.prepostedNews$ = this.news$.pipe(
       map((news: NewsInterfaceUnion[]) => news.filter((newsElem: NewsInterfaceUnion) => newsElem.preposted)),
     );
-    this.language$ = this.languageService.getLanguage$();
   }
 
   private checkDiscordOauth(): void {

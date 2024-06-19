@@ -10,11 +10,10 @@ import { MatchInterface } from './services/interfaces/match.interface';
 import { PickbanPhases } from './enums/pickban-phases.enum';
 import { MatchFinishedService } from './services/match-finsihed.service';
 import { JoinQueueService } from './services/join-queue.service';
-import { Languages } from '~shared/enums/languages.enum';
 import { UserService } from '~shared/services/user-service/user.service';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { LanguageService } from '~shared/services/language/language.service';
-import { Physics } from '@dfcomps/contracts';
+import { Languages, Physics } from '@dfcomps/contracts';
 import { DuelPlayersInfoInterface } from './interfaces/duel-players-info.interface';
 import { formatResultTime } from '@dfcomps/helpers';
 

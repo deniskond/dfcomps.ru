@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Languages } from '@dfcomps/contracts';
 import { Observable } from 'rxjs';
-import { Languages } from '~shared/enums/languages.enum';
 import { LanguageService } from '~shared/services/language/language.service';
 
 @Component({

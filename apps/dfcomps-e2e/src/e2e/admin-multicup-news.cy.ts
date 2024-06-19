@@ -10,7 +10,6 @@ describe('admin multicup news', () => {
   const englishTitle = faker.lorem.words();
   const russianText = faker.lorem.words();
   const englishText = faker.lorem.words();
-  const youtubeId = 'hN6VNnOPYaw';
 
   before(() => {
     multicupName = addMultiCup();
@@ -34,7 +33,6 @@ describe('admin multicup news', () => {
     cy.get('[data-test-id=news-posting-time-input]').type(moment().format('YYYY-MM-DDTHH:mm'));
     cy.get('[data-test-id=russian-text-quill]').find('.ql-editor').type(russianText);
     cy.get('[data-test-id=english-text-quill]').find('.ql-editor').type(englishText);
-    cy.get('[data-test-id=youtube-input]').type(youtubeId);
 
     cy.get('[data-test-id=news-multicup-select]').click();
     cy.get('mat-option').contains(multicupName).click();
@@ -48,7 +46,6 @@ describe('admin multicup news', () => {
     cy.visit('/');
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', russianTitle);
     cy.get('[data-test-id=news-html-text]').first().should('contain.text', russianText);
-    cy.get('[data-test-id=youtube-cover-image]').first().invoke('attr', 'src').should('contain', youtubeId);
     cy.get('[data-test-id=language-toggle]').click();
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', englishTitle);
     cy.get('[data-test-id=news-html-text]').first().should('contain.text', englishText);

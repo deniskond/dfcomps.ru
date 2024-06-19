@@ -33,8 +33,6 @@ export class NewsOnlineAnnounceComponent implements OnInit, OnChanges {
   public rowCount = 10;
   public isRegistered: boolean;
   public registeredPlayers: RegisteredPlayerInterface[];
-  public iframeLink1: SafeUrl;
-  public iframeLink2: SafeUrl;
   public currentStream = 0;
   public showStreamersTimerLink$: Observable<boolean>;
 
@@ -42,19 +40,10 @@ export class NewsOnlineAnnounceComponent implements OnInit, OnChanges {
     private cupRegistrationService: CupRegistrationService,
     private userService: UserService,
     private router: Router,
-    private domSantizer: DomSanitizer,
     private changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
-    this.iframeLink1 = this.domSantizer.bypassSecurityTrustResourceUrl(
-      `https://player.twitch.tv/?channel=${this.news.twitch1}}&autoplay=false`,
-    );
-
-    this.iframeLink2 = this.domSantizer.bypassSecurityTrustResourceUrl(
-      `https://player.twitch.tv/?channel=${this.news.twitch2}}&autoplay=false`,
-    );
-
     this.showStreamersTimerLink$ = this.userService.getCurrentUser$().pipe(
       take(1),
       map((user) => !!user && checkUserRoles(user.roles, [UserRoles.STREAMER])),

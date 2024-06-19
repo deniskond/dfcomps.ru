@@ -14,6 +14,105 @@
         <input formControlName="englishTitle" class="input-field" data-test-id="english-news-title-input" />
         <div *ngIf="hasFieldError(this.newsActionForm.get('englishTitle')!)" class="field-error">Field is required</div>
       </div>
+      <div class="input-title">Image</div>
+      <div>
+        <div *ngIf="this.newsActionForm.get('imageLink')!.value as imageLink" class="uploaded-image-container">
+          <img [src]="imageLink" class="uploaded-image" />
+          <button
+            (click)="deleteImage()"
+            mat-mini-fab
+            color="warn"
+            class="delete-image-button"
+            data-test-id="button-delete-image"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+        <div class="input-file-container">
+          <input #imageFileInput type="file" accept=".png, .jpg, .jpeg, .gif" data-test-id="input-image-upload" />
+        </div>
+      </div>
+      <div class="input-title">Russian text</div>
+      <div class="wysiwyg-container">
+        <quill-editor formControlName="russianText" class="quill" data-test-id="russian-text-quill"></quill-editor>
+        <div *ngIf="hasFieldError(this.newsActionForm.get('russianText')!)" class="field-error">Field is required</div>
+      </div>
+      <div class="input-title">English text</div>
+      <div class="wysiwyg-container">
+        <quill-editor formControlName="englishText" class="quill" data-test-id="english-text-quill"></quill-editor>
+        <div *ngIf="hasFieldError(this.newsActionForm.get('englishText')!)" class="field-error">Field is required</div>
+      </div>
+      <div class="input-title">Streams</div>
+      <div class="streams-form-container">
+        <div *ngIf="!!streamsFormArray.controls.length" class="streams-form">
+          <div class="streams-form-header"></div>
+          <div class="streams-form-header">Platform</div>
+          <div class="streams-form-header">Stream link</div>
+          <div class="streams-form-header">Streamer</div>
+          <div class="streams-form-header">Language</div>
+          <div class="streams-form-header"></div>
+
+          <ng-container
+            *ngFor="let row of range(streamsFormArray.controls.length); let i = index"
+            [formGroup]="streamsFormArray.controls[i]"
+          >
+            <div class="stream-number">{{ i + 1 }}.</div>
+            <div>
+              <mat-form-field appearance="outline" class="medium-size-select">
+                <mat-select formControlName="platform" data-test-id="select-streaming-platform">
+                  <mat-option *ngFor="let platform of streamingPlatforms" [value]="platform">
+                    {{ platform | invokeFunction: mapStreamingPlatformName }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div>
+              <div class="pseudo-input">
+                <div class="pseudo-input-fixed-text" (click)="focusInput($event)">
+                  {{ streamsFormArray.controls[i].get('platform')?.value | invokeFunction: getStreamLinkPrefix }}
+                </div>
+                <input formControlName="streamId" class="input-field-stream-link" data-test-id="input-stream-link" />
+              </div>
+              <div *ngIf="hasFieldError(streamsFormArray.controls[i].get('streamId')!)" class="field-error">
+                Field is required
+              </div>
+            </div>
+            <div>
+              <input formControlName="streamer" class="input-field" data-test-id="input-streamer-name" />
+              <div *ngIf="hasFieldError(streamsFormArray.controls[i].get('streamer')!)" class="field-error">
+                Field is required
+              </div>
+            </div>
+            <div>
+              <mat-form-field appearance="outline" class="medium-size-select">
+                <mat-select formControlName="language" data-test-id="select-stream-language">
+                  <mat-option [value]="languages.RU">Russian</mat-option>
+                  <mat-option [value]="languages.EN">English</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div>
+              <button (click)="deleteStream(i)" mat-mini-fab color="warn" class="delete-button">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </ng-container>
+        </div>
+        <div [ngClass]="{ 'no-margin': !streamsFormArray.controls.length }" class="add-button-container">
+          <button
+            [disabled]="streamsFormArray.controls.length === 3"
+            (click)="addStream()"
+            class="add-stream-button"
+            color="basic"
+            mat-raised-button
+            data-test-id="add-stream-button"
+          >
+            <mat-icon>add</mat-icon>
+            Add stream
+          </button>
+          <div *ngIf="streamsFormArray.controls.length === 3" class="add-unavailable-text">3 streams max</div>
+        </div>
+      </div>
       <div class="input-title">
         Time to post
         <br />
@@ -79,28 +178,6 @@
           </div>
         </ng-container>
       </ng-container>
-
-      <div class="input-title">Russian text</div>
-      <div class="wysiwyg-container">
-        <quill-editor formControlName="russianText" class="quill" data-test-id="russian-text-quill"></quill-editor>
-        <div *ngIf="hasFieldError(this.newsActionForm.get('russianText')!)" class="field-error">Field is required</div>
-      </div>
-      <div class="input-title">English text</div>
-      <div class="wysiwyg-container">
-        <quill-editor formControlName="englishText" class="quill" data-test-id="english-text-quill"></quill-editor>
-        <div *ngIf="hasFieldError(this.newsActionForm.get('englishText')!)" class="field-error">Field is required</div>
-      </div>
-      <div class="input-title">Youtube embed ID</div>
-      <div>
-        <input formControlName="youtube" class="input-field" data-test-id="youtube-input" />
-        <app-youtube
-          *ngIf="youtubeEmbedId$ | async as youtubeEmbedId"
-          [id]="youtubeEmbedId"
-          [width]="800"
-          [height]="450"
-          class="youtube"
-        ></app-youtube>
-      </div>
     </div>
     <button
       (click)="submitNews()"

@@ -1,4 +1,3 @@
-import * as faker from 'faker';
 import { combineLatest, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { DuelWebsocketClientActions } from '../enums/duel-websocket-client-actions.enum';

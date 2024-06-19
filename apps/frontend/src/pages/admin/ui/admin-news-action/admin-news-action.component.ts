@@ -1,17 +1,29 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  AbstractControl,
+  FormArray,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdminDataService } from '../../business/admin-data.service';
 import { AdminOperationType } from '../../models/admin-operation-type.enum';
 import * as moment from 'moment-timezone';
-import { combineLatest, debounceTime, map, Observable, ReplaySubject, startWith, switchMap, tap } from 'rxjs';
+import { combineLatest, map, Observable, of, ReplaySubject, switchMap, tap } from 'rxjs';
 import {
   AdminActiveCupInterface,
   AdminActiveMulticupInterface,
   AdminEditNewsInterface,
   CupTypes,
+  Languages,
+  NewsStreamInterface,
   NewsTypes,
+  StreamingPlatforms,
+  UploadedFileLinkInterface,
 } from '@dfcomps/contracts';
 import { AdminNewsRouting } from '../../models/admin-news-routing.enum';
 import { mapNewsTypeToHumanTitle } from '../../business/admin-news-types.mapper';
@@ -31,9 +43,10 @@ const newsTypesWithRequiredCup: NewsTypes[] = [
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminNewsActionComponent implements OnInit {
+  @ViewChild('imageFileInput') imageFileInput: ElementRef;
+
   public operationType: AdminOperationType;
   public newsActionForm: FormGroup;
-  public youtubeEmbedId$: Observable<string>;
   public isCupRequired: boolean;
   public isMulticupRequired: boolean;
   public availableMulticups$: Observable<AdminActiveMulticupInterface[]>;
@@ -41,6 +54,10 @@ export class AdminNewsActionComponent implements OnInit {
   public mapNewsTypeToHumanTitle = mapNewsTypeToHumanTitle;
   public newsType: NewsTypes;
   public cupsList$: Observable<AdminActiveCupInterface[]>;
+  public streamsFormArray = new FormArray<FormGroup>([]);
+  public range = (length: number) => new Array(+length).fill(null);
+  public streamingPlatforms = Object.values(StreamingPlatforms);
+  public languages = Languages;
 
   private newsId: string;
   private selectedCup$: ReplaySubject<AdminActiveCupInterface | null> = new ReplaySubject(1);
@@ -88,14 +105,34 @@ export class AdminNewsActionComponent implements OnInit {
   public submitNews(): void {
     Object.keys(this.newsActionForm.controls).forEach((key: string) => this.newsActionForm.get(key)!.markAsDirty());
 
-    if (!this.newsActionForm.valid) {
+    this.streamsFormArray.controls.forEach((formGroup: FormGroup) => {
+      Object.keys(formGroup.controls).forEach((key: string) => formGroup.get(key)!.markAsDirty());
+    });
+
+    if (!this.newsActionForm.valid || !this.streamsFormArray.valid) {
       return;
     }
 
+    const imageUploadStream$: Observable<UploadedFileLinkInterface | null> = this.imageFileInput.nativeElement.files[0]
+      ? this.adminDataService.uploadNewsImage$(this.imageFileInput.nativeElement.files[0]).pipe(
+          tap(({ link }: UploadedFileLinkInterface) => {
+            this.newsActionForm.get('imageLink')!.setValue(link);
+          }),
+        )
+      : of(null);
+
     if (this.operationType === AdminOperationType.ADD) {
-      this.adminDataService
-        .postNews$(this.newsActionForm.value, this.newsType)
-        .pipe(switchMap(() => this.adminDataService.getAllNews$(false)))
+      imageUploadStream$
+        .pipe(
+          switchMap(() =>
+            this.adminDataService.postNews$(
+              this.newsActionForm.value,
+              this.newsType,
+              this.streamsFormArray.value as NewsStreamInterface[],
+            ),
+          ),
+          switchMap(() => this.adminDataService.getAllNews$(false)),
+        )
         .subscribe(() => {
           this.router.navigate(['/admin/news']);
           this.snackBar.open('News added successfully', 'OK', { duration: 3000 });
@@ -103,9 +140,18 @@ export class AdminNewsActionComponent implements OnInit {
     }
 
     if (this.operationType === AdminOperationType.EDIT) {
-      this.adminDataService
-        .editNews$(this.newsActionForm.value, this.newsId, this.newsType)
-        .pipe(switchMap(() => this.adminDataService.getAllNews$(false)))
+      imageUploadStream$
+        .pipe(
+          switchMap(() =>
+            this.adminDataService.editNews$(
+              this.newsActionForm.value,
+              this.newsId,
+              this.newsType,
+              this.streamsFormArray.value as NewsStreamInterface[],
+            ),
+          ),
+          switchMap(() => this.adminDataService.getAllNews$(false)),
+        )
         .subscribe(() => {
           this.router.navigate(['/admin/news']);
           this.snackBar.open('News edited successfully', 'OK', { duration: 3000 });
@@ -131,6 +177,47 @@ export class AdminNewsActionComponent implements OnInit {
 
       return { postingTimeEmpty: { value: control.get('postingTime')!.value } };
     };
+  }
+
+  public addStream(): void {
+    this.streamsFormArray.push(
+      new FormGroup({
+        platform: new FormControl(StreamingPlatforms.YOUTUBE, [Validators.required]),
+        streamId: new FormControl('', [Validators.required]),
+        streamer: new FormControl('', [Validators.required]),
+        language: new FormControl(Languages.RU, [Validators.required]),
+      }),
+    );
+  }
+
+  public deleteStream(streamIndex: number): void {
+    this.streamsFormArray.removeAt(streamIndex);
+  }
+
+  public focusInput(event: any): void {
+    const targetElement = event.target as HTMLDivElement;
+
+    (targetElement.parentElement?.getElementsByTagName('input')[0] as HTMLInputElement).focus();
+  }
+
+  public getStreamLinkPrefix(platform: StreamingPlatforms): string {
+    return {
+      [StreamingPlatforms.TWITCH_CHANNEL]: 'https://player.twitch.tv/?channel=',
+      [StreamingPlatforms.TWITCH_VIDEO]: 'https://player.twitch.tv/?video=',
+      [StreamingPlatforms.YOUTUBE]: 'https://youtube.com/?v=',
+    }[platform];
+  }
+
+  public mapStreamingPlatformName(platform: StreamingPlatforms): string {
+    return {
+      [StreamingPlatforms.TWITCH_CHANNEL]: 'Twitch channel',
+      [StreamingPlatforms.TWITCH_VIDEO]: 'Twitch video',
+      [StreamingPlatforms.YOUTUBE]: 'YouTube',
+    }[platform];
+  }
+
+  public deleteImage(): void {
+    this.newsActionForm.get('imageLink')!.setValue(null);
   }
 
   // TODO Move out to mappers after typization
@@ -161,15 +248,14 @@ export class AdminNewsActionComponent implements OnInit {
           postingTime: new FormControl(''),
           russianText: new FormControl(''),
           englishText: new FormControl(''),
-          youtube: new FormControl(''),
           cup: new FormControl(null),
           multicup: new FormControl(null),
+          imageLink: new FormControl(null),
         },
         this.postingTimeValidator(),
       );
 
       this.selectedCup$.next(null);
-      this.setYoutubeFieldObservable();
     }
 
     if (this.operationType === AdminOperationType.EDIT) {
@@ -182,23 +268,27 @@ export class AdminNewsActionComponent implements OnInit {
             postingTime: new FormControl(this.mapDateTimeZoneToInput(singleNews.newsItem.date)),
             russianText: new FormControl(singleNews.newsItem.textRussian),
             englishText: new FormControl(singleNews.newsItem.textEnglish),
-            youtube: new FormControl(singleNews.newsItem.youtube),
             cup: new FormControl(singleNews.newsItem.cup?.cupId),
             multicup: new FormControl(singleNews.newsItem.multicupId),
+            imageLink: new FormControl(singleNews.newsItem.imageLink),
           },
           this.postingTimeValidator(),
         );
 
+        singleNews.newsItem.streams.forEach((stream: NewsStreamInterface) => {
+          this.streamsFormArray.push(
+            new FormGroup({
+              platform: new FormControl(stream.platform, [Validators.required]),
+              streamId: new FormControl(stream.streamId, [Validators.required]),
+              streamer: new FormControl(stream.streamer, [Validators.required]),
+              language: new FormControl(stream.language, [Validators.required]),
+            }),
+          );
+        });
+
         this.selectedCup$.next(singleNews.newsItem.cup);
         this.changeDetectorRef.markForCheck();
-        this.setYoutubeFieldObservable();
       });
     }
-  }
-
-  private setYoutubeFieldObservable(): void {
-    this.youtubeEmbedId$ = this.newsActionForm
-      .get('youtube')!
-      .valueChanges.pipe(debounceTime(300), startWith(this.newsActionForm.get('youtube')!.value));
   }
 }

@@ -14,6 +14,7 @@ import {
   NewsOnlineAnnounceInterface,
   NewsOnlineResultsInterface,
   NewsSimpleInterface,
+  NewsStreamInterface,
   NewsStreamersResultsInterface,
   NewsTypes,
   OnlineCupResultInterface,
@@ -383,6 +384,12 @@ export class NewsService {
 
     const preposted: boolean = moment(news.datetimezone).isAfter(moment());
 
+    let streams: NewsStreamInterface[] = [];
+
+    try {
+      streams = news.streams ? JSON.parse(news.streams) : [];
+    } catch (e) {}
+
     return {
       id: news.id,
       authorId: news.user.id,
@@ -397,10 +404,8 @@ export class NewsService {
       startTime: news.cup?.start_datetime || null,
       text: news.text,
       textEn: news.text_en,
-      youtube: news.youtube,
       tableJson: news.table_json,
-      twitch1: news.twitch_1,
-      twitch2: news.twitch_2,
+      streams,
       comments: comments.map((newsComment: NewsComment) => ({
         commentId: newsComment.id,
         comment: newsComment.comment,

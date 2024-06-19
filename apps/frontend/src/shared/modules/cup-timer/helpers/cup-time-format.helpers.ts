@@ -1,4 +1,4 @@
-import { Languages } from '../../../enums/languages.enum';
+import { Languages } from '@dfcomps/contracts';
 import * as moment from 'moment';
 
 export function formatCupTime(dateTime: string, language: Languages): string {
