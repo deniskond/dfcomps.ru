@@ -11,6 +11,7 @@ import {
   UploadedFileLinkInterface,
   StreamingPlatforms,
   Languages,
+  NewsStreamInterface,
 } from '@dfcomps/contracts';
 import { mapNewsTypeEnumToDBNewsTypeId } from '../../../shared/mappers/news-types.mapper';
 import { NewsComment } from '../../../shared/entities/news-comment.entity';
@@ -75,6 +76,12 @@ export class AdminNewsService {
       throw new NotFoundException(`News item with id = ${newsId} not found`);
     }
 
+    let streams: NewsStreamInterface[] = [];
+
+    try {
+      streams = newsItem.streams ? JSON.parse(newsItem.streams) : [];
+    } catch (e) {}
+
     return {
       newsItem: {
         headerRussian: newsItem.header,
@@ -88,6 +95,7 @@ export class AdminNewsService {
         cup: newsItem.cup ? { cupId: newsItem.cup.id, name: newsItem.cup.full_name } : null,
         multicupId: newsItem.multicup_id,
         imageLink: newsItem.image || null,
+        streams,
       },
     };
   }

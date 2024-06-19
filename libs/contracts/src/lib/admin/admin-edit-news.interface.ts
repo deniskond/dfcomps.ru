@@ -1,3 +1,4 @@
+import { NewsStreamInterface } from '../news';
 import { NewsTypes } from '../news/news-types.enum';
 import { AdminActiveCupInterface } from './admin-active-cup.interface';
 
@@ -14,5 +15,6 @@ export interface AdminEditNewsInterface {
     cup: AdminActiveCupInterface | null;
     multicupId: number | null;
     imageLink: string | null;
+    streams: NewsStreamInterface[];
   };
 }

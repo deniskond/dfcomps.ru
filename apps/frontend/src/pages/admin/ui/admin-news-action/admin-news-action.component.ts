@@ -216,6 +216,10 @@ export class AdminNewsActionComponent implements OnInit {
     }[platform];
   }
 
+  public deleteImage(): void {
+    this.newsActionForm.get('imageLink')!.setValue(null);
+  }
+
   // TODO Move out to mappers after typization
   private mapDateTimeZoneToInput(datetimezone: string): string {
     return moment(datetimezone).tz('Europe/Moscow').format('YYYY-MM-DDTHH:mm');
@@ -270,6 +274,17 @@ export class AdminNewsActionComponent implements OnInit {
           },
           this.postingTimeValidator(),
         );
+
+        singleNews.newsItem.streams.forEach((stream: NewsStreamInterface) => {
+          this.streamsFormArray.push(
+            new FormGroup({
+              platform: new FormControl(stream.platform, [Validators.required]),
+              streamId: new FormControl(stream.streamId, [Validators.required]),
+              streamer: new FormControl(stream.streamer, [Validators.required]),
+              language: new FormControl(stream.language, [Validators.required]),
+            }),
+          );
+        });
 
         this.selectedCup$.next(singleNews.newsItem.cup);
         this.changeDetectorRef.markForCheck();
