@@ -25,7 +25,7 @@
 </ng-container>
 
 <ng-template let-width="width" let-height="height" let-stream="stream" #streamBlock>
-  <div class="stream-title">{{ stream.streamer }} ({{ stream.language }})</div>
+  <div class="stream-title" data-test-id="text-stream-title">{{ stream.streamer }} ({{ stream.language }})</div>
   <app-youtube
     *ngIf="stream.platform === streamingPlatforms.YOUTUBE"
     [id]="stream.streamId"

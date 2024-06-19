@@ -91,7 +91,6 @@ describe('admin online cup full cycle', () => {
     const englishTitle = faker.lorem.words();
     const russianText = faker.lorem.words();
     const englishText = faker.lorem.words();
-    const youtubeId = 'hN6VNnOPYaw';
 
     cy.visit('/admin/news');
     cy.get('[data-test-id=admin-news-type-select]').click();
@@ -105,7 +104,6 @@ describe('admin online cup full cycle', () => {
     cy.get('[data-test-id=news-posting-time-input]').type(moment().format('YYYY-MM-DDTHH:mm'));
     cy.get('[data-test-id=russian-text-quill]').find('.ql-editor').type(russianText);
     cy.get('[data-test-id=english-text-quill]').find('.ql-editor').type(englishText);
-    cy.get('[data-test-id=youtube-input]').type(youtubeId);
     cy.get('[data-test-id=news-cup-select]').click();
     cy.get('mat-option').contains(onlineCupName).click();
 
@@ -118,7 +116,6 @@ describe('admin online cup full cycle', () => {
     cy.visit('/');
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', russianTitle);
     cy.get('[data-test-id=news-html-text]').first().should('contain.text', russianText);
-    cy.get('[data-test-id=youtube-cover-image]').first().invoke('attr', 'src').should('contain', youtubeId);
     cy.get('[data-test-id=language-toggle]').click();
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', englishTitle);
     cy.get('[data-test-id=news-html-text]').first().should('contain.text', englishText);
@@ -292,7 +289,6 @@ describe('admin online cup full cycle', () => {
     const englishTitle = faker.lorem.words();
     const russianText = faker.lorem.words();
     const englishText = faker.lorem.words();
-    const youtubeId = 'hN6VNnOPYaw';
 
     cy.visit('/admin/news');
     cy.get('[data-test-id=admin-news-type-select]').click();
@@ -306,7 +302,6 @@ describe('admin online cup full cycle', () => {
     cy.get('[data-test-id=news-posting-time-input]').type(moment().format('YYYY-MM-DDTHH:mm'));
     cy.get('[data-test-id=russian-text-quill]').find('.ql-editor').type(russianText);
     cy.get('[data-test-id=english-text-quill]').find('.ql-editor').type(englishText);
-    cy.get('[data-test-id=youtube-input]').type(youtubeId);
     cy.get('[data-test-id=news-cup-select]').click();
     cy.get('mat-option').contains(onlineCupName).click();
 
@@ -319,7 +314,6 @@ describe('admin online cup full cycle', () => {
     cy.visit('/');
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', russianTitle);
     cy.get('[data-test-id=news-html-text]').first().should('contain.text', russianText);
-    cy.get('[data-test-id=youtube-cover-image]').first().invoke('attr', 'src').should('contain', youtubeId);
     cy.get('[data-test-id=language-toggle]').click();
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', englishTitle);
     cy.get('[data-test-id=news-html-text]').first().should('contain.text', englishText);

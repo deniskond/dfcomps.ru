@@ -18,7 +18,7 @@
 
   <app-news-social-links [news]="newsElement"></app-news-social-links>
 
-  <img *ngIf="newsElement.image" [src]="newsElement.image" class="news-image" />
+  <img *ngIf="newsElement.image" [src]="newsElement.image" class="news-image" data-test-id="image-news" />
 
   <ng-container [ngSwitch]="newsElement.type">
     <app-news-simple *ngSwitchCase="newsTypes.SIMPLE" [news]="$any(newsElement)"></app-news-simple>

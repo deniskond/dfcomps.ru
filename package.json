@@ -35,8 +35,8 @@
     "full-local-test:run": "docker run -d -p 127.0.0.1:80:80 --name dfcomps-nginx-local --network dfcomps-network dfcomps-nginx-local",
     "dfcomps:release": "npm run frontend:release && npm run backend:release && npm run 1v1-server:release",
     "e2e": "npm run database:restore-db && npx concurrently --raw --kill-others \"npm run backend\" \"wait-on tcp:4001 && nx e2e dfcomps-e2e\" && npm run e2e:cleanup || npm run e2e:cleanup",
-    "e2e:single": "npm run database:restore-db && npx concurrently --raw --kill-others \"npm run backend\" \"wait-on tcp:4001 && nx e2e dfcomps-e2e --spec=apps/dfcomps-e2e/src/e2e/offline-cup.cy.ts\" && npm run e2e:cleanup || npm run e2e:cleanup",
-    "e2e:cleanup": "rimraf apps/backend/uploads/demos/* --glob"
+    "e2e:single": "npm run database:restore-db && npx concurrently --raw --kill-others \"npm run backend\" \"wait-on tcp:4001 && nx e2e dfcomps-e2e --spec=apps/dfcomps-e2e/src/e2e/admin-simple-news.cy.ts\" && npm run e2e:cleanup || npm run e2e:cleanup",
+    "e2e:cleanup": "rimraf apps/backend/uploads/demos/* --glob && rimraf apps/backend/uploads/images/* --glob"
   },
   "private": true,
   "dependencies": {

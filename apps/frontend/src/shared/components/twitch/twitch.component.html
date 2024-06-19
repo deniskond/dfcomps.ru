@@ -1,5 +1,9 @@
 <div *ngIf="!iframeShown; else twitchEmbed" (click)="iframeShown = true" class="image-container">
-  <div [ngStyle]="{ width: width + 'px', height: height + 'px' }" class="twitch-placeholder"></div>
+  <div
+    [ngStyle]="{ width: width + 'px', height: height + 'px' }"
+    class="twitch-placeholder"
+    data-test-id="twitch-placeholder-image"
+  ></div>
   <div class="play"></div>
 </div>
 

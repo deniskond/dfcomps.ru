@@ -18,12 +18,18 @@
       <div>
         <div *ngIf="this.newsActionForm.get('imageLink')!.value as imageLink" class="uploaded-image-container">
           <img [src]="imageLink" class="uploaded-image" />
-          <button (click)="deleteImage()" mat-mini-fab color="warn" class="delete-image-button">
+          <button
+            (click)="deleteImage()"
+            mat-mini-fab
+            color="warn"
+            class="delete-image-button"
+            data-test-id="button-delete-image"
+          >
             <mat-icon>delete</mat-icon>
           </button>
         </div>
         <div class="input-file-container">
-          <input #imageFileInput type="file" accept=".png, .jpg, .jpeg, .gif" />
+          <input #imageFileInput type="file" accept=".png, .jpg, .jpeg, .gif" data-test-id="input-image-upload" />
         </div>
       </div>
       <div class="input-title">Russian text</div>
@@ -53,7 +59,7 @@
             <div class="stream-number">{{ i + 1 }}.</div>
             <div>
               <mat-form-field appearance="outline" class="medium-size-select">
-                <mat-select formControlName="platform">
+                <mat-select formControlName="platform" data-test-id="select-streaming-platform">
                   <mat-option *ngFor="let platform of streamingPlatforms" [value]="platform">
                     {{ platform | invokeFunction: mapStreamingPlatformName }}
                   </mat-option>
@@ -65,21 +71,21 @@
                 <div class="pseudo-input-fixed-text" (click)="focusInput($event)">
                   {{ streamsFormArray.controls[i].get('platform')?.value | invokeFunction: getStreamLinkPrefix }}
                 </div>
-                <input formControlName="streamId" class="input-field-stream-link" />
+                <input formControlName="streamId" class="input-field-stream-link" data-test-id="input-stream-link" />
               </div>
               <div *ngIf="hasFieldError(streamsFormArray.controls[i].get('streamId')!)" class="field-error">
                 Field is required
               </div>
             </div>
             <div>
-              <input formControlName="streamer" class="input-field" />
+              <input formControlName="streamer" class="input-field" data-test-id="input-streamer-name" />
               <div *ngIf="hasFieldError(streamsFormArray.controls[i].get('streamer')!)" class="field-error">
                 Field is required
               </div>
             </div>
             <div>
               <mat-form-field appearance="outline" class="medium-size-select">
-                <mat-select formControlName="language" value="russian">
+                <mat-select formControlName="language" data-test-id="select-stream-language">
                   <mat-option [value]="languages.RU">Russian</mat-option>
                   <mat-option [value]="languages.EN">English</mat-option>
                 </mat-select>
