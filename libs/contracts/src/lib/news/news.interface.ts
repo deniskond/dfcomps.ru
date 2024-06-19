@@ -17,7 +17,6 @@ export interface NewsInterface {
   startTime: string | null;
   text: string | null;
   textEn: string | null;
-  youtube: string | null;
   tableJson: string;
   comments: CommentInterface[];
   preposted: boolean;

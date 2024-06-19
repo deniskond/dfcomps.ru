@@ -404,7 +404,6 @@ export class NewsService {
       startTime: news.cup?.start_datetime || null,
       text: news.text,
       textEn: news.text_en,
-      youtube: news.youtube,
       tableJson: news.table_json,
       streams,
       comments: comments.map((newsComment: NewsComment) => ({

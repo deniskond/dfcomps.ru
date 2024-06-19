@@ -9,8 +9,6 @@ import {
   AdminNewsListInterface,
   AdminNewsDto,
   UploadedFileLinkInterface,
-  StreamingPlatforms,
-  Languages,
   NewsStreamInterface,
 } from '@dfcomps/contracts';
 import { mapNewsTypeEnumToDBNewsTypeId } from '../../../shared/mappers/news-types.mapper';
@@ -27,10 +25,7 @@ export class AdminNewsService {
     @InjectRepository(News) private readonly newsRepository: Repository<News>,
     @InjectRepository(NewsComment) private readonly newsCommentsRepository: Repository<NewsComment>,
     private readonly authService: AuthService,
-  ) {
-    // TODO Run once and then delete
-    // this.convertYoutubeToStreams();
-  }
+  ) {}
 
   public async getAllNews(accessToken: string | undefined): Promise<AdminNewsListInterface[]> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
@@ -91,7 +86,6 @@ export class AdminNewsService {
         typeName: newsItem.newsType.name_rus,
         date: newsItem.datetimezone,
         type: newsItem.newsType.name,
-        youtube: newsItem.youtube,
         cup: newsItem.cup ? { cupId: newsItem.cup.id, name: newsItem.cup.full_name } : null,
         multicupId: newsItem.multicup_id,
         imageLink: newsItem.image || null,
@@ -117,7 +111,6 @@ export class AdminNewsService {
           header_en: adminNewsDto.englishTitle,
           text: adminNewsDto.russianText,
           text_en: adminNewsDto.englishText,
-          youtube: adminNewsDto.youtube,
           user: { id: userAccess.userId },
           datetimezone: moment(adminNewsDto.postingTime).tz('Europe/Moscow').format(),
           newsType: { id: mapNewsTypeEnumToDBNewsTypeId(adminNewsDto.type) },
@@ -147,7 +140,6 @@ export class AdminNewsService {
         header_en: adminNewsDto.englishTitle,
         text: adminNewsDto.russianText,
         text_en: adminNewsDto.englishText,
-        youtube: adminNewsDto.youtube ?? null,
         user: { id: userAccess.userId },
         datetimezone: moment(adminNewsDto.postingTime).tz('Europe/Moscow').format(),
         newsType: { id: mapNewsTypeEnumToDBNewsTypeId(adminNewsDto.type) },
@@ -214,25 +206,5 @@ export class AdminNewsService {
     return {
       link: process.env.DFCOMPS_FILES_RELATIVE_PATH + relativePath,
     };
-  }
-
-  private async convertYoutubeToStreams(): Promise<void> {
-    const allNews: News[] = await this.newsRepository.createQueryBuilder().getMany();
-
-    const mappedNews = allNews.map((newsItem: News) => ({
-      ...newsItem,
-      streams: newsItem.youtube
-        ? JSON.stringify([
-            {
-              streamer: 'w00dy',
-              platform: StreamingPlatforms.YOUTUBE,
-              streamId: newsItem.youtube,
-              language: Languages.RU,
-            },
-          ])
-        : null,
-    }));
-
-    await this.newsRepository.save(mappedNews);
   }
 }
