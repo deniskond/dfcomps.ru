@@ -202,8 +202,17 @@ export class AdminNewsActionComponent implements OnInit {
 
   public getStreamLinkPrefix(platform: StreamingPlatforms): string {
     return {
-      [StreamingPlatforms.TWITCH]: 'https://player.twitch.tv/?',
+      [StreamingPlatforms.TWITCH_CHANNEL]: 'https://player.twitch.tv/?channel=',
+      [StreamingPlatforms.TWITCH_VIDEO]: 'https://player.twitch.tv/?video=',
       [StreamingPlatforms.YOUTUBE]: 'https://youtube.com/?v=',
+    }[platform];
+  }
+
+  public mapStreamingPlatformName(platform: StreamingPlatforms): string {
+    return {
+      [StreamingPlatforms.TWITCH_CHANNEL]: 'Twitch channel',
+      [StreamingPlatforms.TWITCH_VIDEO]: 'Twitch video',
+      [StreamingPlatforms.YOUTUBE]: 'YouTube',
     }[platform];
   }
 

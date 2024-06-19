@@ -1,23 +1,42 @@
-<ng-container *ngIf="streams.length === 1">1 stream</ng-container>
+<ng-container *ngIf="streams.length === 1">
+  <ng-container
+    *ngTemplateOutlet="streamBlock; context: { width: 800, height: 450, stream: streams[0] }"
+  ></ng-container>
+</ng-container>
 
-<ng-container *ngIf="streams.length === 2">2 streams</ng-container>
+<ng-container *ngIf="streams.length === 2">
+  <div class="two-streams-container">
+    <div *ngFor="let stream of streams">
+      <ng-container
+        *ngTemplateOutlet="streamBlock; context: { width: 392, height: 221, stream: stream }"
+      ></ng-container>
+    </div>
+  </div>
+</ng-container>
 
 <ng-container *ngIf="streams.length === 3">
   <div class="three-streams-container">
     <div *ngFor="let stream of streams">
-      <div class="stream-title">{{ stream.streamer }} ({{ stream.language }})</div>
-      <app-youtube
-        *ngIf="stream.platform === streamingPlatforms.YOUTUBE"
-        [id]="stream.streamId"
-        [width]="257"
-        [height]="145"
-      ></app-youtube>
-      <app-twitch
-        *ngIf="stream.platform === streamingPlatforms.TWITCH"
-        [id]="stream.streamId"
-        [width]="257"
-        [height]="145"
-      ></app-twitch>
+      <ng-container
+        *ngTemplateOutlet="streamBlock; context: { width: 257, height: 145, stream: stream }"
+      ></ng-container>
     </div>
   </div>
 </ng-container>
+
+<ng-template let-width="width" let-height="height" let-stream="stream" #streamBlock>
+  <div class="stream-title">{{ stream.streamer }} ({{ stream.language }})</div>
+  <app-youtube
+    *ngIf="stream.platform === streamingPlatforms.YOUTUBE"
+    [id]="stream.streamId"
+    [width]="width"
+    [height]="height"
+  ></app-youtube>
+  <app-twitch
+    *ngIf="stream.platform === streamingPlatforms.TWITCH_VIDEO || stream.platform === streamingPlatforms.TWITCH_CHANNEL"
+    [id]="stream.streamId"
+    [width]="width"
+    [height]="height"
+    [videoType]="stream.platform"
+  ></app-twitch>
+</ng-template>

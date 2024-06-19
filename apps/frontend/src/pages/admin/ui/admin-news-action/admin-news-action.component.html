@@ -47,7 +47,7 @@
               <mat-form-field appearance="outline" class="medium-size-select">
                 <mat-select formControlName="platform">
                   <mat-option *ngFor="let platform of streamingPlatforms" [value]="platform">
-                    {{ platform | titlecase }}
+                    {{ platform | invokeFunction : mapStreamingPlatformName }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
