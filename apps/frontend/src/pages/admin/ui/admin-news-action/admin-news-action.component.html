@@ -17,7 +17,7 @@
       <div class="input-title">Image</div>
       <div>
         <div *ngIf="this.newsActionForm.get('imageLink')!.value as imageLink" class="uploaded-image-container">
-          <img [src]="imageLink" class="uploaded-image" />
+          <img [src]="imageLink | invokeFunction: getImageSrc" class="uploaded-image" />
           <button
             (click)="deleteImage()"
             mat-mini-fab

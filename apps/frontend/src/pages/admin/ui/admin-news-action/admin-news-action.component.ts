@@ -220,6 +220,10 @@ export class AdminNewsActionComponent implements OnInit {
     this.newsActionForm.get('imageLink')!.setValue(null);
   }
 
+  public getImageSrc(imageTimestamp: string): string {
+    return `/uploads/images/news/${imageTimestamp}.jpg`;
+  }
+
   // TODO Move out to mappers after typization
   private mapDateTimeZoneToInput(datetimezone: string): string {
     return moment(datetimezone).tz('Europe/Moscow').format('YYYY-MM-DDTHH:mm');
