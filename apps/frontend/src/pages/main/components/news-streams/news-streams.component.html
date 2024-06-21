@@ -25,12 +25,12 @@
 </ng-container>
 
 <ng-template let-width="width" let-height="height" let-stream="stream" #streamBlock>
-  <div class="stream-title" data-test-id="text-stream-title">{{ stream.streamer }} ({{ stream.language }})</div>
   <app-youtube
     *ngIf="stream.platform === streamingPlatforms.YOUTUBE"
     [id]="stream.streamId"
     [width]="width"
     [height]="height"
+    [title]="stream.streamer + ' (' + stream.language + ')'"
   ></app-youtube>
   <app-twitch
     *ngIf="stream.platform === streamingPlatforms.TWITCH_VIDEO || stream.platform === streamingPlatforms.TWITCH_CHANNEL"
@@ -38,5 +38,6 @@
     [width]="width"
     [height]="height"
     [videoType]="stream.platform"
+    [title]="stream.streamer + ' (' + stream.language + ')'"
   ></app-twitch>
 </ng-template>

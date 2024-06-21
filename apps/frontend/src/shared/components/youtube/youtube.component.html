@@ -1,4 +1,5 @@
 <div *ngIf="!iframeShown; else youtubeEmbed" (click)="iframeShown = true" class="image-container">
+  <div class="stream-title" data-test-id="text-stream-title">{{ title }}</div>
   <img
     [width]="width"
     [height]="height"

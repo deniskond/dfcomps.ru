@@ -14,6 +14,8 @@ export class YoutubeComponent implements OnInit {
   width: number;
   @Input()
   height: number;
+  @Input()
+  title: string;
 
   public iframeShown = false;
   public iframeLink: SafeUrl;

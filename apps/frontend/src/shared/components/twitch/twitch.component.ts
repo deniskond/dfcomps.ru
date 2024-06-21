@@ -17,6 +17,8 @@ export class TwitchComponent implements OnInit {
   height: number;
   @Input()
   videoType: StreamingPlatforms.TWITCH_CHANNEL | StreamingPlatforms.TWITCH_VIDEO;
+  @Input()
+  title: string;
 
   public iframeShown = false;
   public iframeLink: SafeUrl;
