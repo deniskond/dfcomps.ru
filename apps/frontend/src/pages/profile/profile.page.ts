@@ -1,7 +1,6 @@
-import { API_URL } from '~shared/rest-api';
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { switchMap, tap, takeUntil, map, withLatestFrom, filter } from 'rxjs/operators';
+import { switchMap, tap, takeUntil, map, withLatestFrom } from 'rxjs/operators';
 import { Subject, Observable, combineLatest } from 'rxjs';
 import { ProfileService } from './services/profile.service';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -35,7 +34,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   public rewards: Rewards[];
   public isLoading$ = new Subject<boolean>();
   public physics = Physics;
-  public apiUrl = API_URL;
   public isEditProfileAvailable$: Observable<boolean>;
   public isNickChangeAllowed = false;
   public profileUpdate$ = new Subject<void>();
@@ -66,7 +64,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     this.onDestroy$.complete();
   }
 
-  public getAvatarSrc(avatar: string, apiUrl: string): string {
+  public getAvatarSrc(avatar: string): string {
     return avatar ? `/uploads/images/avatars/${avatar}.jpg` : `/uploads/images/avatars/no_avatar.png`;
   }
 

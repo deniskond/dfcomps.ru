@@ -1,4 +1,10 @@
-import { Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { News } from '../../../shared/entities/news.entity';
@@ -132,6 +138,18 @@ export class AdminNewsService {
       throw new UnauthorizedException('Unauthorized to update news list without NEWSMAKER role');
     }
 
+    const targetNews: News | null = await this.newsRepository.createQueryBuilder().where({ id: newsId }).getOne();
+
+    if (!targetNews) {
+      throw new BadRequestException(`No news with id = ${newsId}`);
+    }
+
+    const fullImagePath = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/images/news/${targetNews.image}.jpg`;
+
+    if (targetNews.image && targetNews.image !== adminNewsDto.imageLink && fs.existsSync(fullImagePath)) {
+      fs.rmSync(fullImagePath);
+    }
+
     await this.newsRepository
       .createQueryBuilder()
       .update(News)
@@ -204,7 +222,7 @@ export class AdminNewsService {
     fs.writeFileSync(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + relativePath, resizedImage);
 
     return {
-      link: process.env.DFCOMPS_FILES_RELATIVE_PATH + relativePath,
+      link: newsImageFileName,
     };
   }
 }

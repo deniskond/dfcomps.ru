@@ -31,4 +31,8 @@ export class NewsElementComponent implements OnInit {
   public formatDate(date: string): string {
     return moment(date).format('DD.MM.YYYY HH:mm');
   }
+
+  public getImageSrc(imageTimestamp: string): string {
+    return `/uploads/images/news/${imageTimestamp}.jpg`;
+  }
 }

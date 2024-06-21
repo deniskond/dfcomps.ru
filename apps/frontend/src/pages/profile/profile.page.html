@@ -31,7 +31,7 @@
   <ng-container *ngIf="(isLoading$ | async) === false; else loader">
     <div class="info-and-charts">
       <div class="player-info">
-        <img [src]="mainInfo.avatar | invokeFunction : getAvatarSrc : apiUrl" class="avatar" />
+        <img [src]="mainInfo.avatar | invokeFunction : getAvatarSrc" class="avatar" />
         <div class="rating-and-country">
           <div>
             <b>VQ3 <span translate translation="rating" class="lowercase"></span>:</b> {{ mainInfo.vq3Rating }}

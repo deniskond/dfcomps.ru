@@ -29,7 +29,13 @@
           </button>
         </div>
         <div class="input-file-container">
-          <input #imageFileInput type="file" accept=".png, .jpg, .jpeg, .gif" data-test-id="input-image-upload" />
+          <input
+            #imageFileInput
+            (change)="deleteImage()"
+            type="file"
+            accept=".png, .jpg, .jpeg, .gif"
+            data-test-id="input-image-upload"
+          />
         </div>
       </div>
       <div class="input-title">Russian text</div>

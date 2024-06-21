@@ -54,10 +54,10 @@ export class AdminNewsController {
   @Post('update/:newsId')
   updateNews(
     @Headers('X-Auth') accessToken: string | undefined,
-    @Body() AdminNewsDto: AdminNewsDto,
+    @Body() adminNewsDto: AdminNewsDto,
     @Param('newsId', new ParseIntPipe()) newsId: number,
   ): Promise<void> {
-    return this.adminNewsService.updateNews(accessToken, AdminNewsDto, newsId);
+    return this.adminNewsService.updateNews(accessToken, adminNewsDto, newsId);
   }
 
   @Post('upload-news-image')
