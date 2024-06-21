@@ -49,7 +49,7 @@ export function addOfflineCup(
   // filling the form
   cy.get('[data-test-id=offline-cup-fullname-input]').type(fullName);
   cy.get('[data-test-id=offline-cup-shortname-input]').type(faker.lorem.words());
-  cy.get('[data-test-id=offline-cup-starttime-input]').type(moment().subtract('1', 'day').format('YYYY-MM-DDTHH:mm'));
+  cy.get('[data-test-id=offline-cup-starttime-input]').type(moment().format('YYYY-MM-DDTHH:mm'));
   cy.get('[data-test-id=offline-cup-endtime-input]').type(moment().add('1', 'day').format('YYYY-MM-DDTHH:mm'));
   cy.get('[data-test-id=offline-cup-map-ws-radio]').click();
   cy.get('[data-test-id=cup-mapname-input]').type(mapName);

@@ -63,7 +63,7 @@ export class NewsService {
       .leftJoinAndSelect('news.cup', 'cups')
       .leftJoinAndSelect('cups.multicup', 'multicups')
       .orderBy('news.datetimezone', 'DESC')
-      .addOrderBy('news_types.id', 'ASC')
+      .addOrderBy('news.id', 'DESC')
       .where('news.datetimezone < :targetTime', { targetTime })
       .andWhere('news.hide_on_main = :hideOnMain', { hideOnMain: false })
       .limit(10)

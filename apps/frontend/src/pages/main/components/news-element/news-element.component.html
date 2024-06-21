@@ -12,7 +12,7 @@
     <span translate translation="author"></span>
     <span>:&nbsp;</span>
     <a routerLink="/profile/{{ newsElement.authorId }}" class="black-link">{{ newsElement.authorName }}</a>
-    <span>,</span>
+    <span>,&nbsp;</span>
     <span>{{ newsElement.datetimezone | invokeFunction: formatDate }}</span>
   </div>
 
