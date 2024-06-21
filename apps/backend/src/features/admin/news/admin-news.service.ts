@@ -158,7 +158,6 @@ export class AdminNewsService {
         header_en: adminNewsDto.englishTitle,
         text: adminNewsDto.russianText,
         text_en: adminNewsDto.englishText,
-        user: { id: userAccess.userId },
         datetimezone: moment(adminNewsDto.postingTime).tz('Europe/Moscow').format(),
         newsType: { id: mapNewsTypeEnumToDBNewsTypeId(adminNewsDto.type) },
         comments_count: 0,
