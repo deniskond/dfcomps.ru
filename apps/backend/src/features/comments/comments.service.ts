@@ -242,11 +242,10 @@ export class CommentsService {
       .createQueryBuilder('news_comments')
       .leftJoinAndSelect('news_comments.news', 'news')
       .where({ id: commentId })
-      .andWhere('news_comments.userId = :userId', { userId: userAccess.userId })
       .getOne();
 
     if (!newsComment) {
-      throw new UnauthorizedException(`No access to deleting comment with id ${commentId}`);
+      throw new NotFoundException(`Comment with id = ${commentId} not found`);
     }
 
     await this.newsCommentsRepository
@@ -260,6 +259,7 @@ export class CommentsService {
       .createQueryBuilder('news_comments')
       .leftJoinAndSelect('news_comments.user', 'users')
       .where('news_comments.newsId = :newsId', { newsId: newsComment.news.id })
+      .orderBy('news_comments.id', 'ASC')
       .getMany();
 
     return updatedComments.map((newsComment: NewsComment) => ({

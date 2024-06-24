@@ -39,7 +39,7 @@ export class CommentsController {
     return this.commentsService.updateComment(accessToken, text, commentId);
   }
 
-  @Post('moderator_delete')
+  @Post('moderator-delete')
   moderatorDeleteComment(
     @Body() { commentId, reason }: ModeratorDeleteCommentDto,
     @Headers('X-Auth') accessToken: string | undefined,

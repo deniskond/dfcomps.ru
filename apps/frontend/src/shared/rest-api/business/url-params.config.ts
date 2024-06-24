@@ -103,7 +103,7 @@ export class URL_PARAMS {
       ADD: `${API_URL}/comments/add`,
       DELETE: `${API_URL}/comments/delete/`,
       UPDATE: `${API_URL}/comments/update/`,
-      MODERATOR_DELETE: `${API_URL}/comments/moderator_delete/`,
+      MODERATOR_DELETE: `${API_URL}/comments/moderator-delete/`,
     };
   }
 
