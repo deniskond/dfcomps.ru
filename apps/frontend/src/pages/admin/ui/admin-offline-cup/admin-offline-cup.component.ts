@@ -284,7 +284,7 @@ export class AdminOfflineCupComponent implements OnInit {
 
   private addOfflineCup$(): Observable<any> {
     if (this.mapType === 'ws') {
-      return this.adminDataService.addOfflineCup$(this.offlineCupForm.value);
+      return this.adminDataService.addOfflineCup$(this.offlineCupForm.value, { isCustomMap: false });
     } else {
       const mapName: string = this.offlineCupForm.get('mapName')!.value;
 
@@ -296,14 +296,14 @@ export class AdminOfflineCupComponent implements OnInit {
           this.offlineCupForm.get('mapPk3Link')!.setValue(mapLink);
           this.offlineCupForm.get('mapLevelshotLink')!.setValue(levelshotLink);
         }),
-        switchMap(() => this.adminDataService.addOfflineCup$(this.offlineCupForm.value)),
+        switchMap(() => this.adminDataService.addOfflineCup$(this.offlineCupForm.value, { isCustomMap: true })),
       );
     }
   }
 
   private editOfflineCup$(): Observable<any> {
     if (this.mapType === 'ws') {
-      return this.adminDataService.editOfflineCup$(this.offlineCupForm.value, this.cupId!);
+      return this.adminDataService.editOfflineCup$(this.offlineCupForm.value, this.cupId!, { isCustomMap: false });
     } else {
       const mapName: string = this.offlineCupForm.get('mapName')!.value;
       const pk3FileValue: string | undefined = this.offlineCupForm.get('mapPk3File')!.value;
@@ -324,7 +324,9 @@ export class AdminOfflineCupComponent implements OnInit {
             this.offlineCupForm.get('mapLevelshotLink')!.setValue(uploadedLevelshot.link);
           }
         }),
-        switchMap(() => this.adminDataService.editOfflineCup$(this.offlineCupForm.value, this.cupId!)),
+        switchMap(() =>
+          this.adminDataService.editOfflineCup$(this.offlineCupForm.value, this.cupId!, { isCustomMap: true }),
+        ),
       );
     }
   }

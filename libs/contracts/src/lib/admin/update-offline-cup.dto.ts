@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import { IsNotEmpty } from 'class-validator';
 
 export class UpdateOfflineCupDto {
@@ -27,6 +28,10 @@ export class UpdateOfflineCupDto {
 
   @IsNotEmpty()
   size: string;
+
+  @IsNotEmpty()
+  @Transform(({ value }) => value === 'true')
+  isCustomMap: boolean;
 
   mapLevelshotLink: string | undefined;
 

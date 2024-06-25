@@ -77,6 +77,7 @@ export class AdminWarcupsCronService {
         mapLevelshotLink: getMapLevelshot(winnerMap.mapName),
         mapPk3Link: winnerMap.mapPk3Link,
         multicupId: undefined,
+        isCustomMap: false,
       },
       warcupInfo.warcup_bot_id,
     );

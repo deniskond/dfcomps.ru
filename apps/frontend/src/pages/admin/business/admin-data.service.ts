@@ -162,8 +162,8 @@ export class AdminDataService {
     );
   }
 
-  public addOfflineCup$(formValue: Record<string, any>): Observable<void> {
-    return this.backendService.post$<void>(URL_PARAMS.ADMIN.ADD_OFFLINE_CUP, {
+  public addOfflineCup$(formValue: Record<string, any>, { isCustomMap }: { isCustomMap: boolean }): Observable<void> {
+    const addOfflineCupDto: AddOfflineCupDto = {
       fullName: formValue['fullName'],
       shortName: formValue['shortName'],
       startTime: formValue['startTime'],
@@ -176,10 +176,17 @@ export class AdminDataService {
       size: formValue['size'],
       mapLevelshotLink: formValue['mapLevelshotLink'],
       mapPk3Link: formValue['mapPk3Link'],
-    } as AddOfflineCupDto);
+      isCustomMap,
+    };
+
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.ADD_OFFLINE_CUP, addOfflineCupDto);
   }
 
-  public editOfflineCup$(formValue: Record<string, any>, cupId: number): Observable<void> {
+  public editOfflineCup$(
+    formValue: Record<string, any>,
+    cupId: number,
+    { isCustomMap }: { isCustomMap: boolean },
+  ): Observable<void> {
     const updateCupDto: UpdateOfflineCupDto = {
       fullName: formValue['fullName'],
       shortName: formValue['shortName'],
@@ -192,6 +199,7 @@ export class AdminDataService {
       size: formValue['size'],
       mapLevelshotLink: formValue['mapLevelshotLink'] || undefined,
       mapPk3Link: formValue['mapPk3Link'] || undefined,
+      isCustomMap,
     };
 
     if (formValue['multicup']) {

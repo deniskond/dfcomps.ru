@@ -47,7 +47,7 @@ export class AdminAddOfflineCupService {
           archive_link: null,
           bonus_rating: 0,
           system: null,
-          custom_map: addOfflineCupDto.mapPk3Link,
+          custom_map: addOfflineCupDto.isCustomMap ? addOfflineCupDto.mapPk3Link : null,
           custom_news: null,
           validation_archive_link: null,
           timer: false,
