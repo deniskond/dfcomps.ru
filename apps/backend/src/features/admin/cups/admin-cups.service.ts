@@ -775,19 +775,37 @@ export class AdminCupsService {
     // R_Init position is used to determine map change on server
     const stringLogFile: string[] = serverLogs.buffer.toString('utf8').split('----- R_Init -----');
 
-    const logLines: string[] = stringLogFile[stringLogFile.length - 1]
-      .split('\n')
+    const logLines: string[] = stringLogFile[stringLogFile.length - 1].split('\n');
+
+    // The following code segment processes two server log formats - with timestamps and without
+    // Console command: con_timestamp 1|0
+    const hasTimestamps = logLines.some(
+      (line: string) => !!line.match(/\d\d\:\d\d\:\d\d\s(.*)\sreached the finish line in (.*) \(.*/),
+    );
+
+    const filterConsoleMessageRegexpWithTimestamp = /\d\d\:\d\d\:\d\d.*\:\s.*reached the finish line in/;
+    const parsingTimeRegexpWithTimestamp = /\d\d\:\d\d\:\d\d\s(.*)\sreached the finish line in (.*) \(.*/;
+    const filterConsoleMessageRegexpWithoutTimestamp = /.*\:\s.*reached the finish line in/;
+    const parsingTimeRegexpWithoutTimestamp = /(.*)\sreached the finish line in (.*) \(.*/;
+
+    const filterConsoleMessageRegexp = hasTimestamps
+      ? filterConsoleMessageRegexpWithTimestamp
+      : filterConsoleMessageRegexpWithoutTimestamp;
+
+    const parsingConsoleMessageRegexp = hasTimestamps
+      ? parsingTimeRegexpWithTimestamp
+      : parsingTimeRegexpWithoutTimestamp;
+
+    const filteredlogLines: string[] = logLines
       // fast filtering non-time messages
       .filter((line: string) => line.includes('reached the finish line in'))
       // filtering console abuse with text messages with times from players
-      .filter((line: string) => !line.match(/\d\d\:\d\d\:\d\d.*\:\s.*reached the finish line in/));
+      .filter((line: string) => !line.match(filterConsoleMessageRegexp));
 
     const parsedTimes: Record<string, number> = {};
 
-    logLines.forEach((line: string) => {
-      const matchResult: RegExpMatchArray | null = line.match(
-        /\d\d\:\d\d\:\d\d\s(.*)\sreached the finish line in (.*) \(.*/,
-      );
+    filteredlogLines.forEach((line: string) => {
+      const matchResult: RegExpMatchArray | null = line.match(parsingConsoleMessageRegexp);
 
       if (!matchResult || !matchResult[0] || !matchResult[1] || !matchResult[2]) {
         return;
@@ -836,6 +854,14 @@ export class AdminCupsService {
 
     const parsedOnlineCupRound: ParsedOnlineCupRoundInterface = {
       roundResults: parsedTimeArray.map(({ serverNick, time }: { serverNick: string; time: number }) => {
+        if (!allPlayersNicknames.length) {
+          return {
+            serverNick,
+            suggestedPlayer: null,
+            time,
+          };
+        }
+
         const closestNick: string = closest(serverNick, allPlayersNicknames);
         const levenshteinDistance: number = distance(serverNick, closestNick);
         const userId: number = cupPlayersInfo.find(
