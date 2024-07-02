@@ -1,14 +1,17 @@
-import { IsEnum, IsNotEmpty } from 'class-validator';
+import { IsEnum, IsNumber } from 'class-validator';
 import { ArchiveNewsFilter } from './archive-news-filter.enum';
+import { Transform } from 'class-transformer';
+import { transformNumber } from '@dfcomps/helpers';
 
 export class NewsArchiveFilterDto {
-  @IsNotEmpty()
+  @IsNumber()
+  @Transform(transformNumber)
   startIndex: number;
 
-  @IsNotEmpty()
+  @IsNumber()
+  @Transform(transformNumber)
   endIndex: number;
 
-  @IsNotEmpty()
   @IsEnum(ArchiveNewsFilter)
   filter: ArchiveNewsFilter;
 }

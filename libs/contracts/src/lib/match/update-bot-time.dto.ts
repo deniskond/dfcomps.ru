@@ -1,17 +1,21 @@
-import { IsEnum, IsNotEmpty } from 'class-validator';
+import { IsEnum, IsNumber } from 'class-validator';
 import { Physics } from '../global/physics.enum';
+import { transformNumber } from '@dfcomps/helpers';
+import { Transform } from 'class-transformer';
 
 export class UpdateBotTimeDto {
-  @IsNotEmpty()
+  @IsNumber()
+  @Transform(transformNumber)
   firstPlayerId: number;
 
-  @IsNotEmpty()
+  @IsNumber()
+  @Transform(transformNumber)
   secondPlayerId: number;
 
-  @IsNotEmpty()
   @IsEnum(Physics)
   physics: Physics;
 
-  @IsNotEmpty()
+  @IsNumber()
+  @Transform(transformNumber)
   wr: number;
 }

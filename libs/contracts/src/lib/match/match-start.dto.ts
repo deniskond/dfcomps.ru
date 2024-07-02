@@ -1,14 +1,17 @@
-import { IsEnum, IsNotEmpty } from 'class-validator';
+import { IsEnum, IsNumber } from 'class-validator';
 import { Physics } from '../global/physics.enum';
+import { Transform } from 'class-transformer';
+import { transformNumber } from '@dfcomps/helpers';
 
 export class MatchStartDto {
-  @IsNotEmpty()
+  @IsNumber()
+  @Transform(transformNumber)
   firstPlayerId: number;
 
-  @IsNotEmpty()
+  @IsNumber()
+  @Transform(transformNumber)
   secondPlayerId: number;
 
-  @IsNotEmpty()
   @IsEnum(Physics)
   physics: Physics;
 }

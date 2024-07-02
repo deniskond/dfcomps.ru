@@ -1,13 +1,14 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { ValidationResultInterface } from './validation-result.interface';
+import { transformJSON, transformNumber } from '@dfcomps/helpers';
 
 export class ProcessValidationDto {
   @IsNotEmpty()
-  @Transform(({ value }) => JSON.parse(value))
+  @Transform(transformJSON<ValidationResultInterface[]>)
   validationResults: ValidationResultInterface[];
 
-  @IsNotEmpty()
-  @Transform(({ value }) => Number(value))
+  @IsNumber()
+  @Transform(transformNumber)
   allDemosCount: number;
 }

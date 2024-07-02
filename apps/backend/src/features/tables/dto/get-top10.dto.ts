@@ -1,10 +1,10 @@
 import { Physics, RatingTablesModes } from '@dfcomps/contracts';
-import { IsNotEmpty } from 'class-validator';
+import { IsEnum } from 'class-validator';
 
 export class GetTop10Dto {
-  @IsNotEmpty()
+  @IsEnum(Physics)
   physics: Physics;
 
-  @IsNotEmpty()
+  @IsEnum(RatingTablesModes)
   mode: RatingTablesModes;
 }

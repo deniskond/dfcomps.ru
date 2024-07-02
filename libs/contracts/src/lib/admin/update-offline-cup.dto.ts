@@ -1,5 +1,6 @@
+import { transformBoolean, transformNumber } from '@dfcomps/helpers';
 import { Transform } from 'class-transformer';
-import { IsNotEmpty } from 'class-validator';
+import { IsBoolean, IsNotEmpty } from 'class-validator';
 
 export class UpdateOfflineCupDto {
   @IsNotEmpty()
@@ -23,19 +24,21 @@ export class UpdateOfflineCupDto {
   @IsNotEmpty()
   weapons: string;
 
-  @IsNotEmpty()
+  @IsBoolean()
+  @Transform(transformBoolean)
   addNews: boolean;
 
   @IsNotEmpty()
   size: string;
 
-  @IsNotEmpty()
-  @Transform(({ value }) => value === 'true')
+  @IsBoolean()
+  @Transform(transformBoolean)
   isCustomMap: boolean;
 
   mapLevelshotLink: string | undefined;
 
   mapPk3Link: string | undefined;
 
+  @Transform(transformNumber)
   multicupId?: number;
 }

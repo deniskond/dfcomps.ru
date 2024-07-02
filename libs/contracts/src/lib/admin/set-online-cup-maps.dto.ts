@@ -1,11 +1,13 @@
+import { transformJSON, transformNumber } from '@dfcomps/helpers';
 import { Transform } from 'class-transformer';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 
 export class SetOnlineCupMapsDto {
-  @IsNotEmpty()
+  @IsNumber()
+  @Transform(transformNumber)
   cupId: number;
 
   @IsNotEmpty()
-  @Transform(({ value }) => JSON.parse(value))
+  @Transform(transformJSON<(string | null)[]>)
   maps: (string | null)[];
 }

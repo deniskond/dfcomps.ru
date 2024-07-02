@@ -1,9 +1,12 @@
-import { IsNotEmpty } from 'class-validator';
+import { transformNumber } from '@dfcomps/helpers';
+import { Transform } from 'class-transformer';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 
 export class AddCommentDto {
   @IsNotEmpty()
   text: string;
 
-  @IsNotEmpty()
+  @IsNumber()
+  @Transform(transformNumber)
   newsId: number;
 }

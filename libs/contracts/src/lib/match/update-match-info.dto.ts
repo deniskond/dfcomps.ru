@@ -1,10 +1,14 @@
-import { IsNotEmpty } from 'class-validator';
+import { transformNumber } from '@dfcomps/helpers';
+import { Transform } from 'class-transformer';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 
 export class UpdateMatchInfoDto {
-  @IsNotEmpty()
+  @IsNumber()
+  @Transform(transformNumber)
   firstPlayerId: number;
 
-  @IsNotEmpty()
+  @IsNumber()
+  @Transform(transformNumber)
   secondPlayerId: number;
 
   @IsNotEmpty()

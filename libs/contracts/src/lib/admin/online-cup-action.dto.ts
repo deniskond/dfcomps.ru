@@ -1,5 +1,7 @@
-import { IsEnum, IsNotEmpty } from 'class-validator';
+import { IsBoolean, IsEnum, IsNotEmpty } from 'class-validator';
 import { Physics } from '../global/physics.enum';
+import { Transform } from 'class-transformer';
+import { transformBoolean } from '@dfcomps/helpers';
 
 export class OnlineCupActionDto {
   @IsNotEmpty()
@@ -11,14 +13,14 @@ export class OnlineCupActionDto {
   @IsNotEmpty()
   startTime: string;
 
-  @IsNotEmpty()
+  @IsBoolean()
+  @Transform(transformBoolean)
   useTwoServers: boolean;
 
   @IsNotEmpty()
   server1: string;
 
   @IsEnum(Physics)
-  @IsNotEmpty()
   physics: Physics;
 
   server2: string | undefined;

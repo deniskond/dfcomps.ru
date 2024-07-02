@@ -1,15 +1,17 @@
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { transformNumber } from '@dfcomps/helpers';
+import { Transform } from 'class-transformer';
+import { IsNumber } from 'class-validator';
 
 export class SetPlayerServerDto {
   @IsNumber()
-  @IsNotEmpty()
+  @Transform(transformNumber)
   userId: number;
 
   @IsNumber()
-  @IsNotEmpty()
+  @Transform(transformNumber)
   onlineCupId: number;
 
   @IsNumber()
-  @IsNotEmpty()
+  @Transform(transformNumber)
   serverNumber: number;
 }

@@ -1,5 +1,7 @@
 import { IsEnum, IsNotEmpty } from 'class-validator';
 import { NewsTypes } from '../news/news-types.enum';
+import { transformNumber } from '@dfcomps/helpers';
+import { Transform } from 'class-transformer';
 
 export class AdminNewsDto {
   @IsNotEmpty()
@@ -18,7 +20,6 @@ export class AdminNewsDto {
   imageLink: string | null;
 
   @IsEnum(NewsTypes)
-  @IsNotEmpty()
   type: NewsTypes;
 
   @IsNotEmpty()
@@ -26,7 +27,9 @@ export class AdminNewsDto {
 
   youtube?: string;
 
+  @Transform(transformNumber)
   cupId?: number;
 
+  @Transform(transformNumber)
   multicupId?: number;
 }
