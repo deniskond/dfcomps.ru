@@ -1,4 +1,4 @@
-import { AddOfflineCupDto, CupTypes, NewsTypes } from '@dfcomps/contracts';
+import { AddOfflineCupDto, CupStates, CupTypes, NewsTypes } from '@dfcomps/contracts';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cup } from 'apps/backend/src/shared/entities/cup.entity';
@@ -55,6 +55,7 @@ export class AdminAddOfflineCupService {
           use_two_servers: false,
           demos_validated: false,
           multicup: addOfflineCupDto.multicupId ? { id: addOfflineCupDto.multicupId } : null,
+          state: CupStates.WAITING_FOR_FINISH,
         },
       ])
       .execute();
