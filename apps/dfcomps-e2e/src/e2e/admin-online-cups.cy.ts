@@ -140,7 +140,7 @@ describe('admin online cup full cycle', () => {
     loginAs(UserRoles.CUP_ORGANIZER);
 
     cy.visit('/admin/cups');
-    cy.get('[data-test-id=button-online-cup-actions]').click();
+    cy.get('[data-test-id=button-online-cup-actions]').first().click();
     cy.get('[data-test-id=button-input-results]').click();
 
     // checking buttons states
@@ -203,7 +203,7 @@ describe('admin online cup full cycle', () => {
     loginAs(UserRoles.CUP_ORGANIZER);
 
     cy.visit('/admin/cups');
-    cy.get('[data-test-id=button-online-cup-actions]').click();
+    cy.get('[data-test-id=button-online-cup-actions]').first().click();
     cy.get('[data-test-id=button-balance-players]').click();
 
     cy.get('[data-test-id=text-balance-player-nick]')

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { CupTimerStates } from '../../enums/cup-timer-states.enum';
 import { getCurrentTimerState } from '../../helpers/cup-timer-state.helper';
+import { CupTimerStates } from '~shared/enums/cup-timer-states.enum';
 
 @Component({
   selector: 'app-cup-timer-offline',

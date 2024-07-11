@@ -1,5 +1,5 @@
-import { CupTimerStates } from '../enums/cup-timer-states.enum';
 import * as moment from 'moment';
+import { CupTimerStates } from '~shared/enums/cup-timer-states.enum';
 
 export function getCurrentTimerState(startTime: string, endTime: string): CupTimerStates {
   if (moment().isBefore(moment(startTime))) {

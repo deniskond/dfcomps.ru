@@ -62,7 +62,7 @@
           </button>
           <mat-menu #offlineCupMenu="matMenu">
             <button
-              [disabled]="cup.state | invokeFunction: isValidationAvailable : this"
+              [disabled]="!(cup.state | invokeFunction: isValidationAvailable : this)"
               [routerLink]="'/admin/validate/' + cup.id"
               mat-menu-item
               data-test-id="button-validate-demos"
