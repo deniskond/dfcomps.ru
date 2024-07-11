@@ -8,6 +8,7 @@ import {
   AdminEditCupInterface,
   AdminPlayerDemosValidationInterface,
   AdminValidationInterface,
+  CupStates,
   CupTypes,
   MulticupResultInterface,
   MulticupTableInterface,
@@ -83,22 +84,28 @@ export class AdminCupsService {
 
     const cups: Cup[] = await this.cupsRepository.createQueryBuilder('cups').orderBy('id', 'DESC').getMany();
 
-    return cups.map((cup: Cup) => ({
-      id: cup.id,
-      fullName: cup.full_name,
-      duration: getHumanTime(cup.start_datetime) + ' - ' + getHumanTime(cup.end_datetime),
-      physics: cup.physics,
-      type: cup.type,
-      validationAvailable:
-        cup.rating_calculated === false &&
-        cup.type === CupTypes.OFFLINE &&
-        checkUserRoles(userAccess.roles, [UserRoles.VALIDATOR]) &&
-        (moment().isAfter(moment(cup.end_datetime)) || isSuperadmin(userAccess.roles)),
-      calculateRatingsAvailable: cup.rating_calculated === false && cup.demos_validated === true,
-      endDateTime: cup.end_datetime,
-      hasTwoServers: cup.use_two_servers,
-      isFinishAvailable: cup.current_round === 6,
-    }));
+    return cups.map((cup: Cup) => {
+      let state: CupStates = cup.state;
+
+      if (
+        cup.state === CupStates.WAITING_FOR_FINISH &&
+        moment().isAfter(moment(cup.end_datetime)) &&
+        cup.type === CupTypes.OFFLINE
+      ) {
+        state = CupStates.WAITING_FOR_VALIDATION;
+      }
+
+      return {
+        id: cup.id,
+        fullName: cup.full_name,
+        duration: getHumanTime(cup.start_datetime) + ' - ' + getHumanTime(cup.end_datetime),
+        physics: cup.physics,
+        type: cup.type,
+        endDateTime: cup.end_datetime,
+        hasTwoServers: cup.use_two_servers,
+        state,
+      };
+    });
   }
 
   public async getSingleCup(accessToken: string | undefined, cupId: number): Promise<AdminEditCupInterface> {
@@ -343,13 +350,31 @@ export class AdminCupsService {
       }),
     );
 
+    // this saves either partial validation or full validation results; demos can be validated before cup endtime
     await this.cupsDemosRepository.save(targetEntries);
 
     if (moment().isAfter(moment(cup.end_datetime)) && targetEntries.length === allDemosCount) {
+      // full validation complete
       await this.cupsRepository
         .createQueryBuilder()
         .update(Cup)
-        .set({ demos_validated: true, validator_id: userAccess.userId })
+        .set({
+          demos_validated: true,
+          validator_id: userAccess.userId,
+          state: CupStates.WAITING_FOR_RATING_CALCULATION,
+        })
+        .where({ id: cupId })
+        .execute();
+    } else {
+      // only for partial validation
+      await this.cupsRepository
+        .createQueryBuilder()
+        .update(Cup)
+        .set({
+          demos_validated: false,
+          validator_id: userAccess.userId,
+          state: CupStates.WAITING_FOR_VALIDATION,
+        })
         .where({ id: cupId })
         .execute();
     }
@@ -386,7 +411,7 @@ export class AdminCupsService {
     await this.cupsRepository
       .createQueryBuilder()
       .update(Cup)
-      .set({ rating_calculated: true })
+      .set({ rating_calculated: true, state: CupStates.FINISHED })
       .where({ id: cupId })
       .execute();
   }
@@ -589,6 +614,7 @@ export class AdminCupsService {
           demos_validated: false,
           multicup: null,
           timerId: v4(),
+          state: CupStates.WAITING_FOR_FINISH,
         },
       ])
       .execute();
@@ -936,6 +962,17 @@ export class AdminCupsService {
         .where({ id: cupId })
         .execute();
     }
+
+    if (cup.current_round === 5) {
+      await this.cupsRepository
+        .createQueryBuilder()
+        .update(Cup)
+        .set({
+          state: CupStates.WAITING_FOR_RATING_CALCULATION,
+        })
+        .where({ id: cupId })
+        .execute();
+    }
   }
 
   public async setOnlineCupMaps(
@@ -1128,11 +1165,10 @@ export class AdminCupsService {
     await this.usersRepository.save(updatedPlayersRatings);
     await this.ratingChangesRepository.save(ratingChanges);
 
-    // Update cup ending time
     await this.cupsRepository
       .createQueryBuilder('cups')
       .update(Cup)
-      .set({ end_datetime: moment().format() })
+      .set({ state: CupStates.FINISHED })
       .where({ id: cupId })
       .execute();
   }

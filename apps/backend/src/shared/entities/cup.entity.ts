@@ -1,6 +1,6 @@
 import { PrimaryGeneratedColumn, Column, Entity, OneToMany, ManyToOne } from 'typeorm';
 import { CupResult } from './cup-result.entity';
-import { CupTypes, Physics } from '@dfcomps/contracts';
+import { CupStates, CupTypes, Physics } from '@dfcomps/contracts';
 import { Multicup } from './multicup.entity';
 import { CupDemo } from './cup-demo.entity';
 import { RatingChange } from './rating-change.entity';
@@ -112,6 +112,9 @@ export class Cup {
 
   @Column({ type: 'character varying', nullable: true })
   timerId: string;
+
+  @Column({ type: 'character varying', nullable: true })
+  state: CupStates;
 
   @OneToMany(() => CupResult, (cupResult) => cupResult.cup)
   cupResults: CupResult[];

@@ -18,13 +18,13 @@ import { ValidationDialogComponent } from './validation-dialog/validation-dialog
 import { PlayerDemosDialogComponent } from './player-demos-dialog/player-demos-dialog.component';
 import { OverbouncesWarningDialogComponent } from './overbounces-warning-dialog/overbounces-warning-dialog.component';
 import { SDCRulesDialogComponent } from './sdc-rules-dialog/sdc-rules-dialog.component';
-import { CupStates } from '~shared/enums/cup-states.enum';
 import { isNonNull } from '~shared/helpers';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { DemosService } from '~shared/services/demos/demos.service';
 import { LanguageService } from '~shared/services/language/language.service';
 import { UserService } from '~shared/services/user-service/user.service';
 import { DemoUploadResult, NewsOfflineStartInterface, UploadDemoResponseInterface } from '@dfcomps/contracts';
+import { CupTimerStates } from '~shared/enums/cup-timer-states.enum';
 
 const SNACKBAR_DURATION = 3000;
 
@@ -44,8 +44,8 @@ export class NewsOfflineStartComponent implements OnInit {
   @ViewChild('fileInput') fileInput: ElementRef;
 
   public user$: Observable<UserInterface | null>;
-  public cupState: CupStates;
-  public cupStates = CupStates;
+  public cupTimerState: CupTimerStates;
+  public cupTimerStates = CupTimerStates;
   public isUploading = false;
 
   constructor(
@@ -58,7 +58,7 @@ export class NewsOfflineStartComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.cupState = this.getCupState();
+    this.cupTimerState = this.getCupTimerState();
     this.user$ = this.userService.getCurrentUser$();
   }
 
@@ -136,19 +136,19 @@ export class NewsOfflineStartComponent implements OnInit {
     this.dialog.open(SDCRulesDialogComponent);
   }
 
-  private getCupState(): CupStates {
+  private getCupTimerState(): CupTimerStates {
     const startTime: string = this.news.cup.startDateTime;
     const endTime: string = this.news.cup.endDateTime;
 
     if (moment().isBefore(moment(startTime))) {
-      return CupStates.NOT_STARTED;
+      return CupTimerStates.AWAITING_START;
     }
 
     if (moment().isAfter(moment(endTime))) {
-      return CupStates.FINISHED;
+      return CupTimerStates.FINISHED;
     }
 
-    return CupStates.IN_PROGRESS;
+    return CupTimerStates.IN_PROGRESS;
   }
 
   private openSnackBar(title: string, message: string, needMessageTranslation = true): void {

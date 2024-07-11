@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ReplaySubject, Subject, filter, switchMap, take, takeUntil } from 'rxjs';
 import { AdminDataService } from '../../business/admin-data.service';
-import { AdminCupInterface, CupTypes } from '@dfcomps/contracts';
+import { AdminCupInterface, CupTypes, CupStates } from '@dfcomps/contracts';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { UserRoles, checkUserRoles } from '@dfcomps/auth';
+import { UserRoles, checkUserRoles, isSuperadmin } from '@dfcomps/auth';
 import { UserService } from '~shared/services/user-service/user.service';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { isNonNull } from '~shared/helpers';
@@ -19,6 +19,7 @@ export class AdminCupsComponent implements OnInit {
   public cups: AdminCupInterface[];
   public cups$ = new ReplaySubject<AdminCupInterface[]>(1);
   public cupTypes = CupTypes;
+  public cupStates = CupStates;
   private user: UserInterface | null = null;
   private onDestroy$ = new Subject<void>();
 
@@ -70,18 +71,6 @@ export class AdminCupsComponent implements OnInit {
     return checkUserRoles(this.user.roles, [UserRoles.CUP_ORGANIZER]);
   }
 
-  public isEditingCupAvailable(cup: AdminCupInterface): boolean {
-    if (!this.user) {
-      return false;
-    }
-
-    if (moment().isAfter(moment(cup.endDateTime))) {
-      return false;
-    }
-
-    return checkUserRoles(this.user.roles, [UserRoles.CUP_ORGANIZER]);
-  }
-
   public finishOfflineCup(cupId: number): void {
     this.adminDataService
       .calculateCupRating$(cupId)
@@ -107,6 +96,28 @@ export class AdminCupsComponent implements OnInit {
 
   public getCupEditLink(cup: AdminCupInterface): string {
     return cup.type === CupTypes.ONLINE ? `/admin/cups/online/edit/${cup.id}` : `/admin/cups/offline/edit/${cup.id}`;
+  }
+
+  public isValidationAvailable(cupState: CupStates, context: AdminCupsComponent): boolean {
+    if (!context.user) {
+      return false;
+    }
+
+    if (
+      [CupStates.WAITING_FOR_FINISH, CupStates.WAITING_FOR_VALIDATION].includes(cupState) &&
+      isSuperadmin(context.user.roles)
+    ) {
+      return true;
+    }
+
+    if (
+      [CupStates.WAITING_FOR_VALIDATION].includes(cupState) &&
+      checkUserRoles(context.user.roles, [UserRoles.VALIDATOR])
+    ) {
+      return true;
+    }
+
+    return false;
   }
 
   private initCurrentUserSubscription(): void {
