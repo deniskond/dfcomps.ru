@@ -1,4 +1,4 @@
-import express from 'express';
+import * as express from 'express';
 import * as http from 'http';
 import * as WebSocket from 'ws';
 import { OneVOneHandler } from './1v1/1v1';

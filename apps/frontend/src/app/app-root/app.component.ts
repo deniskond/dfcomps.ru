@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { distinctUntilChanged, filter, take, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, filter, pairwise, startWith, take, takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { isEqual } from 'lodash';
 import { UserInterface } from '~shared/interfaces/user.interface';
@@ -46,19 +46,21 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private initUserSubscriptions(): void {
-    this.user$.pipe(distinctUntilChanged(isEqual), takeUntil(this.onDestroy$)).subscribe((user: UserInterface) => {
-      if (user) {
-        this.userService
-          .checkDiscordPrompt$()
-          .pipe(filter((prompt) => !!prompt))
-          .subscribe(() => this.openDiscordPrompt());
-        this.duelService.openConnection();
+    this.user$
+      .pipe(startWith(null), distinctUntilChanged(isEqual), pairwise(), takeUntil(this.onDestroy$))
+      .subscribe(([userPrevious, userCurrent]: [userPrevious: UserInterface, userCurrent: UserInterface]) => {
+        if (!userPrevious && userCurrent) {
+          this.userService
+            .checkDiscordPrompt$()
+            .pipe(filter((prompt) => !!prompt))
+            .subscribe(() => this.openDiscordPrompt());
+          this.duelService.openConnection();
+        }
 
-        return;
-      }
-
-      this.duelService.closeConnection();
-    });
+        if (!userCurrent && userPrevious) {
+          this.duelService.closeConnection();
+        }
+      });
   }
 
   private registerMatIcons(): void {

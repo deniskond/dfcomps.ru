@@ -6,7 +6,6 @@
     "module": "commonjs",
     "types": ["node", "jest"],
     "strict": true,
-    "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "strictNullChecks": true,
