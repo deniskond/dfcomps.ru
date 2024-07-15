@@ -88,7 +88,7 @@ b {
 
 .mat-mdc-dialog-surface {
   padding: 20px 24px 16px !important;
-  border: 6px solid var(--comments-border-color);
+  border: 4px solid var(--comments-border-color);
   background: var(--base-background);
   color: var(--base-font-color);
   border-radius: 4px;
@@ -191,7 +191,8 @@ mat-slide-toggle {
   }
 }
 
-.mdc-switch__track::before, .mdc-switch__track::after {
+.mdc-switch__track::before,
+.mdc-switch__track::after {
   background: var(--toggle-background-color) !important;
 }
 
@@ -229,4 +230,12 @@ mat-slide-toggle {
 
 .mdc-button {
   letter-spacing: normal;
+}
+
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  background-color: var(--dialog-container-color) !important;
+}
+
+.mat-mdc-raised-button:disabled {
+  color: light-dark(rgba(16, 16, 16, 0.3), rgba(255, 255, 255, 0.3)) !important;
 }

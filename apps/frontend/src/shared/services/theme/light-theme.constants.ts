@@ -22,4 +22,5 @@ export const LIGHT_THEME_VARS = {
   '--rules-hightlight-color': '#e8e8e8',
   '--button-disabled-color': 'rgba(0,0,0,.12)',
   '--1v1-text-color': '#555',
+  '--dialog-container-color': 'white',
 };

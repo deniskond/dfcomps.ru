@@ -22,4 +22,5 @@ export const DARK_THEME_VARS = {
   '--rules-hightlight-color': '#333',
   '--button-disabled-color': '#333',
   '--1v1-text-color': 'rgb(178, 172, 162)',
+  '--dialog-container-color': '#222',
 };
