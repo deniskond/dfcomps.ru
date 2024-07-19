@@ -30,7 +30,7 @@
   <div class="place-column"></div>
   <div class="player-column"></div>
   <div class="points-column"></div>
-  <div class="ratings-column"></div>
+  <div *ngIf="hasRatingChange" class="ratings-column"></div>
 </div>
 <div class="multicup-footer">
   <button (click)="navigateToMultiCup()" mat-raised-button color="primary">
