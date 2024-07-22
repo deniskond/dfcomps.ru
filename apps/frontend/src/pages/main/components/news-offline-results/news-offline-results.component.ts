@@ -5,6 +5,7 @@ import { UserService } from '~shared/services/user-service/user.service';
 import { NewsService } from '~shared/services/news-service/news.service';
 import { InvalidDemoInterface, NewsOfflineResultsInterface, Physics } from '@dfcomps/contracts';
 import { UserRoles, checkUserRoles } from '@dfcomps/auth';
+import { UserInterface } from '~shared/interfaces/user.interface';
 
 @Component({
   selector: 'app-news-offline-results',
@@ -30,7 +31,13 @@ export class NewsOfflineResultsComponent implements OnInit, OnChanges {
     this.maxDemosCount = this.getMaxDemosCount();
     this.showDemosForValidationLink$ = this.userService.getCurrentUser$().pipe(
       take(1),
-      map((user) => !!user && checkUserRoles(user.roles, [UserRoles.VALIDATOR]) && !this.news.cup.demosValidated),
+      map(
+        (user: UserInterface | null) =>
+          !!user &&
+          checkUserRoles(user.roles, [UserRoles.VALIDATOR]) &&
+          !this.news.cup.demosValidated &&
+          !this.customTable,
+      ),
     );
   }
 

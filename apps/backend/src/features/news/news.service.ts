@@ -261,7 +261,7 @@ export class NewsService {
 
     return {
       ...baseNews,
-      type: NewsTypes.OFFLINE_RESULTS,
+      type: news.newsType.name as NewsTypes.OFFLINE_RESULTS | NewsTypes.DFWC_ROUND_RESULTS,
       cup: mapCupEntityToInterface(news.cup!, false, null, news.id, news.cup!.multicup?.id || null),
       levelshot,
       cpmResults,

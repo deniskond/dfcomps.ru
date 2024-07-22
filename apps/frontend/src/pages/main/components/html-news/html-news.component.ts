@@ -82,8 +82,6 @@ export class HtmlNewsComponent implements OnInit, OnDestroy {
     return `<div class="smile" style="background-position-x: -${(smile.col - 1) * 32}px; background-position-y: -${
       (smile.row - 1) * 32
     }px;
-    width: 24px;
-    height: 24px;
     display: inline-block;
     vertical-align: middle;"></div>`;
   }
