@@ -1336,18 +1336,10 @@ export class AdminCupsService {
 
         ratingChange += sub2KBonusRatingChange + cup.bonus_rating;
 
-        const hasBothPhysicsBonus: boolean = otherPhysicsOfflineCupTable.some(
-          (otherDemo: ValidDemoInterface) => otherDemo.playerId === demo.playerId,
-        );
-
-        if (hasBothPhysicsBonus) {
-          ratingChange += 5;
-        }
-
         return {
           ...demo,
           ratingChange,
-          hasBothPhysicsBonus,
+          hasBothPhysicsBonus: false,
           placeInTable: currentPlayerPlace,
         };
       },
@@ -1355,6 +1347,7 @@ export class AdminCupsService {
 
     tableWithCalculatedRatings = this.addTop3BonusRatings(tableWithCalculatedRatings);
     tableWithCalculatedRatings = this.recalculateChangeFor1700(tableWithCalculatedRatings);
+    tableWithCalculatedRatings = this.addTwoPhysicsBonus(tableWithCalculatedRatings, otherPhysicsOfflineCupTable);
 
     const playersUpdate: Partial<User>[] = tableWithCalculatedRatings.map(
       ({ playerId, ratingChange, rating }: TableEntryWithRatingInterface) => ({
@@ -1452,6 +1445,25 @@ export class AdminCupsService {
       return {
         ...tableEntry,
         ratingChange,
+      };
+    });
+  }
+
+  private addTwoPhysicsBonus(
+    offlineCupTable: TableEntryWithRatingInterface[],
+    otherPhysicsOfflineCupTable: ValidDemoInterface[],
+  ): TableEntryWithRatingInterface[] {
+    return offlineCupTable.map((demo: TableEntryWithRatingInterface) => {
+      const hasBothPhysicsBonus: boolean = otherPhysicsOfflineCupTable.some(
+        (otherDemo: ValidDemoInterface) => otherDemo.playerId === demo.playerId,
+      );
+
+      const bothPhysicsBonusRating = hasBothPhysicsBonus ? 5 : 0;
+
+      return {
+        ...demo,
+        ratingChange: demo.ratingChange + bothPhysicsBonusRating,
+        hasBothPhysicsBonus,
       };
     });
   }
