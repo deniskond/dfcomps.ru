@@ -32,9 +32,11 @@ import { MapSuggestion } from '../shared/entities/map-suggestion.entity';
 import { WarcupAdminVote } from '../shared/entities/warcup-admin-vote.entity';
 import { WarcupInfo } from '../shared/entities/warcup-info.entity';
 import { ScheduleModule } from '@nestjs/schedule';
+import { SentryModule } from '@sentry/nestjs/setup';
 
 @Module({
   imports: [
+    SentryModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.NODE_ENV === 'production' ? 'local_pgdb' : '127.0.0.1',
