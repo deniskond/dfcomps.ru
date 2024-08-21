@@ -61,6 +61,8 @@
     "@nx/nest": "16.6.0",
     "@sentry/angular-ivy": "7.104.0",
     "@sentry/cli": "2.28.6",
+    "@sentry/nestjs": "^8.26.0",
+    "@sentry/profiling-node": "^8.26.0",
     "@types/cookie-parser": "1.4.4",
     "@types/express-ws": "3.0.2",
     "adm-zip": "0.5.10",
