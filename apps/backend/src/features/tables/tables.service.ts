@@ -109,7 +109,7 @@ export class TablesService {
       )
       .reduce((demos: ValidDemoInterface[], demo: CupDemo) => {
         const userPhysicsRatingChanges: RatingChange[] = demo.user.ratingChanges.filter(
-          (ratingChange: RatingChange) => !!ratingChange[`${physics}_change`],
+          (ratingChange: RatingChange) => ratingChange[`${physics}_change`] !== null,
         );
 
         const ratingChange: number | null =
