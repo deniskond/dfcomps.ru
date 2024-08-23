@@ -28,15 +28,8 @@
     >
       <div class="admin-suggest-container">
         <div class="admin-suggestion-hint"><b>Wild card:</b></div>
-        <ng-container *ngIf="!warcupVotingInfo.adminSuggestedMapName">
-          <div class="admin-suggestion-hint">admins can suggest one map per week in the final vote</div>
-          <button (click)="openAdminSuggestPopup()" mat-raised-button color="accent">Suggest a map</button>
-        </ng-container>
-        <ng-container *ngIf="warcupVotingInfo.adminSuggestedMapName">
-          <div class="admin-suggestion-hint">
-            you suggested {{ warcupVotingInfo.adminSuggestedMapName }} for this week's Warcup
-          </div>
-        </ng-container>
+        <div class="admin-suggestion-hint">admins can suggest maps for the final vote</div>
+        <button (click)="openAdminSuggestPopup()" mat-raised-button color="accent">Suggest a map</button>
       </div>
       <div class="next-type-caption">
         <b>Final vote:</b>

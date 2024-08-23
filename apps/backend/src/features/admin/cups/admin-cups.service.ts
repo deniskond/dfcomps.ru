@@ -30,7 +30,7 @@ import {
 } from '@dfcomps/contracts';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cup } from '../../../shared/entities/cup.entity';
-import { DeepPartial, InsertResult, Repository } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
 import { getHumanTime } from '../../../shared/helpers/get-human-time';
 import { UserAccessInterface } from '../../../shared/interfaces/user-access.interface';
 import { UserRoles, checkUserRoles, isSuperadmin } from '@dfcomps/auth';

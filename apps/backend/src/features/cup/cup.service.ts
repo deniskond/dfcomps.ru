@@ -457,14 +457,16 @@ export class CupService {
         .execute();
     }
 
-    await this.userRepository
-      .createQueryBuilder('users')
-      .update(User)
-      .set({
-        last_map_suggestion_time: moment().format(),
-      })
-      .where({ id: userAccess.userId })
-      .execute();
+    if (!checkUserRoles(userAccess.roles, [UserRoles.WARCUP_ADMIN])) {
+      await this.userRepository
+        .createQueryBuilder('users')
+        .update(User)
+        .set({
+          last_map_suggestion_time: moment().format(),
+        })
+        .where({ id: userAccess.userId })
+        .execute();
+    }
   }
 
   public async checkPreviousCups(accessToken: string | undefined, mapName: string): Promise<CheckPreviousCupsType> {

@@ -164,7 +164,6 @@ export class AdminWarcupsService {
         author: mapSuggestion.author,
       })),
       currentVotedMapSuggestionId: currentVote ? currentVote.mapSuggestion.id : null,
-      adminSuggestedMapName: adminSuggestedMap ? adminSuggestedMap.map_name : null,
     };
   }
 
@@ -256,16 +255,6 @@ export class AdminWarcupsService {
       worldspawnMapInfo = await this.worldspawnParseService.getWorldspawnMapInfo(normalizedMapname);
     } catch (e) {
       throw new NotFoundException(`Map ${normalizedMapname} was not found on ws.q3df.org`);
-    }
-
-    const alreadySuggestedAdminMap: MapSuggestion | null = await this.mapSuggestionsRepository
-      .createQueryBuilder()
-      .where({ user: { id: userAccess.userId } })
-      .andWhere({ is_admin_suggestion: true })
-      .getOne();
-
-    if (alreadySuggestedAdminMap) {
-      throw new BadRequestException(`Can't do admin suggests more than one time per week`);
     }
 
     await this.mapSuggestionsRepository

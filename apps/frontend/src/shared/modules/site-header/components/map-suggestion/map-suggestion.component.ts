@@ -25,6 +25,8 @@ import * as moment from 'moment';
 import { HttpErrorResponse } from '@angular/common/http';
 import { mapWeaponsToString } from '@dfcomps/helpers';
 import { AdminWarcupDataService } from '~pages/admin/business/admin-warcup-data.service';
+import { UserInterface } from '~shared/interfaces/user.interface';
+import { checkUserRoles, UserRoles } from '@dfcomps/auth';
 
 @Component({
   selector: 'app-map-suggestion',
@@ -44,6 +46,7 @@ export class MapSuggestionComponent implements OnInit, OnDestroy {
 
   private mapName$ = new ReplaySubject<string>(1);
   private onDestroy$ = new Subject<void>();
+  private user: UserInterface | null = null;
 
   constructor(
     public dialogRef: MatDialogRef<MapSuggestionComponent>,
@@ -58,6 +61,10 @@ export class MapSuggestionComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setMapnameInputSubscription();
+    this.userService
+      .getCurrentUser$()
+      .pipe(take(1))
+      .subscribe((user: UserInterface | null) => (this.user = user));
   }
 
   ngOnDestroy(): void {
@@ -95,7 +102,7 @@ export class MapSuggestionComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.dialogRef.close();
 
-        if (!this.data.isAdmin) {
+        if (!this.user || !checkUserRoles(this.user.roles, [UserRoles.WARCUP_ADMIN])) {
           this.userService.updatePartialUserInfo({ lastMapSuggestionTime: moment().format() });
         }
 
