@@ -8,7 +8,6 @@ export interface ValidDemoInterface {
   playerId: number;
   rating: number;
   time: number;
-  isPreliminaryResult?: boolean;
   absoluteLink?: boolean;
   isOrganizer: boolean;
   isOutsideCompetition: boolean;

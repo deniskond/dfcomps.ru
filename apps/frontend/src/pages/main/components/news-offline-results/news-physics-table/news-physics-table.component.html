@@ -29,7 +29,7 @@
       <app-rating-change [change]="result.change" [zeroIfNull]="cup.ratingCalculated"></app-rating-change>
       <img *ngIf="result.bonus === true" class="bonus-plus" src="/assets/images/icons/plus.png" />
     </ng-container>
-    <span *ngIf="customTable" [class.preliminary]="result.isPreliminaryResult">{{ result.rating || '-' }}</span>
+    <span *ngIf="customTable">{{ result.rating || '-' }}</span>
   </div>
 </div>
 
