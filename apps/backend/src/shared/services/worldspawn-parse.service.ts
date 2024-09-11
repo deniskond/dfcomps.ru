@@ -86,7 +86,7 @@ export class WorldspawnParseService {
       author: authorMatches && authorMatches.length === 5 ? authorMatches[4] : 'Unknown',
       pk3: `https://ws.q3df.org/maps/downloads/${pk3Matches[1]}.pk3`,
       weapons: mapWeapons,
-      levelshot: getMapLevelshot(map),
+      levelshot: `https://ws.q3df.org/images/authorshots/512x384/${map}.jpg`,
     };
   }
 }

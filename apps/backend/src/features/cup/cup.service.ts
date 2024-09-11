@@ -35,6 +35,7 @@ import { User } from '../../shared/entities/user.entity';
 import { getNextWarcupTime, mapWeaponsToString } from '@dfcomps/helpers';
 import { MapSuggestion } from '../../shared/entities/map-suggestion.entity';
 import { WorldspawnParseService } from '../../shared/services/worldspawn-parse.service';
+import { LevelshotsService } from '../../shared/services/levelshots.service';
 
 @Injectable()
 export class CupService {
@@ -47,6 +48,7 @@ export class CupService {
     private readonly authService: AuthService,
     private readonly tablesService: TablesService,
     private readonly worldspawnParseService: WorldspawnParseService,
+    private readonly levelshotsService: LevelshotsService,
   ) {}
 
   public async getNextCupInfo(accessToken: string | undefined): Promise<CupInterface> {
@@ -436,6 +438,8 @@ export class CupService {
         .where({ map_name: normalizedMapname })
         .execute();
     } else {
+      this.levelshotsService.downloadLevelshot(normalizedMapname);
+
       await this.mapSuggestionRepository
         .createQueryBuilder('map_suggestions')
         .insert()

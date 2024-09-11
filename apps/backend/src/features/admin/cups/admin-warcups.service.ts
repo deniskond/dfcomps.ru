@@ -20,12 +20,14 @@ import { WarcupAdminVote } from 'apps/backend/src/shared/entities/warcup-admin-v
 import { Cup } from 'apps/backend/src/shared/entities/cup.entity';
 import { WorldspawnParseService } from 'apps/backend/src/shared/services/worldspawn-parse.service';
 import { getMapLevelshot } from 'apps/backend/src/shared/helpers/get-map-levelshot';
+import { LevelshotsService } from 'apps/backend/src/shared/services/levelshots.service';
 
 @Injectable()
 export class AdminWarcupsService {
   constructor(
     private readonly authService: AuthService,
     private readonly worldspawnParseService: WorldspawnParseService,
+    private readonly levelshotsService: LevelshotsService,
     @InjectRepository(WarcupInfo) private readonly warcupInfoRepository: Repository<WarcupInfo>,
     @InjectRepository(MapSuggestion) private readonly mapSuggestionsRepository: Repository<MapSuggestion>,
     @InjectRepository(WarcupAdminVote) private readonly warcupAdminVoteRepository: Repository<WarcupAdminVote>,
@@ -256,6 +258,8 @@ export class AdminWarcupsService {
     } catch (e) {
       throw new NotFoundException(`Map ${normalizedMapname} was not found on ws.q3df.org`);
     }
+
+    this.levelshotsService.downloadLevelshot(normalizedMapname);
 
     await this.mapSuggestionsRepository
       .createQueryBuilder()

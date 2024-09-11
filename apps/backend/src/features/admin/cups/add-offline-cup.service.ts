@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Cup } from 'apps/backend/src/shared/entities/cup.entity';
 import { News } from 'apps/backend/src/shared/entities/news.entity';
 import { mapNewsTypeEnumToDBNewsTypeId } from 'apps/backend/src/shared/mappers/news-types.mapper';
+import { LevelshotsService } from 'apps/backend/src/shared/services/levelshots.service';
 import * as moment from 'moment-timezone';
 import { InsertResult, Repository } from 'typeorm';
 
@@ -12,11 +13,14 @@ export class AdminAddOfflineCupService {
   constructor(
     @InjectRepository(Cup) private readonly cupsRepository: Repository<Cup>,
     @InjectRepository(News) private readonly newsRepository: Repository<News>,
+    private readonly levelshotsService: LevelshotsService,
   ) {}
 
   public async addOfflineCup(addOfflineCupDto: AddOfflineCupDto, userId: number): Promise<void> {
     const startDatetime = moment(addOfflineCupDto.startTime).tz('Europe/Moscow').format();
     const endDatetime = moment(addOfflineCupDto.endTime).tz('Europe/Moscow').format();
+
+    this.levelshotsService.downloadLevelshot(addOfflineCupDto.mapName);
 
     const queryResult: InsertResult = await this.cupsRepository
       .createQueryBuilder()

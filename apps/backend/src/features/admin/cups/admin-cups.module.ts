@@ -20,6 +20,7 @@ import { WarcupAdminVote } from 'apps/backend/src/shared/entities/warcup-admin-v
 import { WorldspawnParseService } from 'apps/backend/src/shared/services/worldspawn-parse.service';
 import { AdminWarcupsCronService } from './admin-warcups-cron.service';
 import { AdminAddOfflineCupService } from './add-offline-cup.service';
+import { LevelshotsService } from 'apps/backend/src/shared/services/levelshots.service';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { AdminAddOfflineCupService } from './add-offline-cup.service';
     WorldspawnParseService,
     AdminWarcupsCronService,
     AdminAddOfflineCupService,
+    LevelshotsService,
   ],
 })
 export class AdminCupsModule {}

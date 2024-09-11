@@ -15,6 +15,7 @@ import { OldRating } from '../../shared/entities/old-rating.entity';
 import { Multicup } from '../../shared/entities/multicup.entity';
 import { MapSuggestion } from '../../shared/entities/map-suggestion.entity';
 import { WorldspawnParseService } from '../../shared/services/worldspawn-parse.service';
+import { LevelshotsService } from '../../shared/services/levelshots.service';
 
 @Module({
   imports: [
@@ -32,6 +33,6 @@ import { WorldspawnParseService } from '../../shared/services/worldspawn-parse.s
     ]),
   ],
   controllers: [CupController],
-  providers: [CupService, AuthService, TablesService, WorldspawnParseService],
+  providers: [CupService, AuthService, TablesService, WorldspawnParseService, LevelshotsService],
 })
 export class CupModule {}

@@ -56,6 +56,7 @@ import { MulterFileInterface } from 'apps/backend/src/shared/interfaces/multer.i
 import { Unpacked } from '@dfcomps/helpers';
 import { distance, closest } from 'fastest-levenshtein';
 import { AdminAddOfflineCupService } from './add-offline-cup.service';
+import { LevelshotsService } from 'apps/backend/src/shared/services/levelshots.service';
 
 // TODO Split offline and online cups
 @Injectable()
@@ -64,6 +65,7 @@ export class AdminCupsService {
     private readonly authService: AuthService,
     private readonly tablesService: TablesService,
     private readonly addOfflineCupService: AdminAddOfflineCupService,
+    private readonly levelshotsService: LevelshotsService,
     @InjectRepository(Cup) private readonly cupsRepository: Repository<Cup>,
     @InjectRepository(News) private readonly newsRepository: Repository<News>,
     @InjectRepository(NewsComment) private readonly newsCommentsRepository: Repository<NewsComment>,
@@ -191,6 +193,8 @@ export class AdminCupsService {
         fs.rmSync(absolutePk3Link);
       }
     }
+
+    this.levelshotsService.downloadLevelshot(updateOfflineCupDto.mapName);
 
     await this.cupsRepository
       .createQueryBuilder()
@@ -984,6 +988,12 @@ export class AdminCupsService {
 
     if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
       throw new UnauthorizedException('Unauthorized to set online cup maps without CUP_ORGANIZER role');
+    }
+
+    for (let mapNumber = 0; mapNumber < maps.length; mapNumber++) {
+      if (maps[mapNumber]) {
+        this.levelshotsService.downloadLevelshot(maps[mapNumber]!);
+      }
     }
 
     await this.cupsRepository
