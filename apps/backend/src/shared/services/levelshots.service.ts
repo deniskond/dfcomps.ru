@@ -8,12 +8,6 @@ export class LevelshotsService {
   // This is used to calculate if levelshot is present, since WorldSpawn answers with 200 and default levelshot on unknown map
   private readonly NO_LEVELSHOT_FILESIZE = 11419;
 
-  public getLevelshot(mapname: string): string {
-    return fs.existsSync(`./uploads/images/maps/${mapname}.jpg`)
-      ? `./uploads/images/maps/${mapname}.jpg`
-      : `./uploads/images/maps/no-levelshot.jpg`;
-  }
-
   public async downloadLevelshot(mapname: string): Promise<void> {
     if (fs.existsSync(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/images/maps/${mapname}.jpg`)) {
       return;
