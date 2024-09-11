@@ -46,7 +46,7 @@ describe('admin offline cups', () => {
             machinegun: false,
             gauntlet: false,
           },
-          levelshot: 'https://ws.q3df.org/images/levelshots/512x384/crosspath.jpg',
+          levelshot: 'https://ws.q3df.org/images/authorshots/512x384/crosspath.jpg',
         },
       },
     );
@@ -65,7 +65,7 @@ describe('admin offline cups', () => {
       .should('contain', 'https://ws.q3df.org/maps/downloads/crosspath.pk3');
     cy.get('[data-test-id=offline-cup-levelshotlink-input]')
       .invoke('val')
-      .should('contain', 'https://ws.q3df.org/images/levelshots/512x384/crosspath.jpg');
+      .should('contain', 'https://ws.q3df.org/images/authorshots/512x384/crosspath.jpg');
     cy.get('[data-test-id=offline-cup-mapauthor-input]').invoke('val').should('contain', 'Rust7');
     cy.get('[data-test-id=offline-cup-weapon-g-checkbox]').should('have.class', 'mat-mdc-checkbox-checked');
     cy.get('[data-test-id=offline-cup-weapon-r-checkbox]').should('have.class', 'mat-mdc-checkbox-checked');
@@ -112,7 +112,7 @@ describe('admin offline cups', () => {
             machinegun: false,
             gauntlet: true,
           },
-          levelshot: 'https://ws.q3df.org/images/levelshots/512x384/st1.jpg',
+          levelshot: 'https://ws.q3df.org/images/authorshots/512x384/st1.jpg',
         },
       },
     );
@@ -129,7 +129,7 @@ describe('admin offline cups', () => {
       .should('contain', 'https://ws.q3df.org/maps/downloads/st1.pk3');
     cy.get('[data-test-id=offline-cup-levelshotlink-input]')
       .invoke('val')
-      .should('contain', 'https://ws.q3df.org/images/levelshots/512x384/st1.jpg');
+      .should('contain', 'https://ws.q3df.org/images/authorshots/512x384/st1.jpg');
     cy.get('[data-test-id=offline-cup-mapauthor-input]').invoke('val').should('contain', 'NoSkey');
     cy.get('[data-test-id=offline-cup-weapon-u-checkbox]').should('have.class', 'mat-mdc-checkbox-checked');
     cy.get('[data-test-id=offline-cup-weapon-g-checkbox]').should('not.have.class', 'mat-mdc-checkbox-checked');
