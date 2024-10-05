@@ -61,6 +61,9 @@
           </div>
           <div class="cell demos">
             <div *ngFor="let demo of player.demos" class="demo-cell">
+              <mat-checkbox color="primary" [formControlName]="'impressive_' + demo.id">
+                <img src="../../../../../assets/images/icons/impressive.png" style="width: 16px; height: 16px;margin-top: 5px;" />
+              </mat-checkbox>
               <mat-checkbox color="primary" [formControlName]="'org_' + demo.id">Org</mat-checkbox>
               <mat-checkbox color="primary" [formControlName]="'exclude_' + demo.id">Exclude</mat-checkbox>
             </div>

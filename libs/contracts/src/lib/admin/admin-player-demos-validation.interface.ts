@@ -11,5 +11,6 @@ export interface AdminPlayerDemosValidationInterface {
     id: number;
     isOrganizer: boolean;
     isOutsideCompetition: boolean;
+    isImpressive: boolean;
   }[];
 }

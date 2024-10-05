@@ -115,6 +115,7 @@ export class AdminDataService {
       reason: formValue['reason_' + demoId]?.toString() || null,
       isOrganizer: !!formValue['org_' + demoId],
       isOutsideCompetition: !!formValue['exclude_' + demoId],
+      isImpressive: !!formValue['impressive_' + demoId],
     }));
 
     const processValidationDto: ProcessValidationDto = {

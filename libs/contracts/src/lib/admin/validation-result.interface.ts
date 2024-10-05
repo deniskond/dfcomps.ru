@@ -6,4 +6,5 @@ export interface ValidationResultInterface {
   reason: string | null;
   isOrganizer: boolean;
   isOutsideCompetition: boolean;
+  isImpressive: boolean;
 }

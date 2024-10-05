@@ -93,6 +93,7 @@ export class AdminValidateComponent implements OnInit {
           ['reason_' + demo.id]: new FormControl(demo.validationFailedReason),
           ['org_' + demo.id]: new FormControl(demo.isOrganizer),
           ['exclude_' + demo.id]: new FormControl(demo.isOutsideCompetition),
+          ['impressive_' + demo.id]: new FormControl(demo.isImpressive),
         }),
         {},
       );

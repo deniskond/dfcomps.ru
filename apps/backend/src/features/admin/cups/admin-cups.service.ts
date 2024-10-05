@@ -345,12 +345,20 @@ export class AdminCupsService {
     }
 
     const targetEntries: Partial<CupDemo>[] = validationResults.map(
-      ({ id, validationStatus, reason, isOrganizer, isOutsideCompetition }: ValidationResultInterface) => ({
+      ({
+        id,
+        validationStatus,
+        reason,
+        isOrganizer,
+        isOutsideCompetition,
+        isImpressive,
+      }: ValidationResultInterface) => ({
         id,
         reason,
         verified_status: validationStatus,
         isOrganizer,
         isOutsideCompetition,
+        impressive: isImpressive,
       }),
     );
 
@@ -1249,6 +1257,7 @@ export class AdminCupsService {
             id: playerDemo.id,
             isOrganizer: playerDemo.isOrganizer,
             isOutsideCompetition: playerDemo.isOutsideCompetition,
+            isImpressive: playerDemo.impressive,
           };
 
           demos[playerDemoIndex].demos.push(addedDemo);
@@ -1268,6 +1277,7 @@ export class AdminCupsService {
               id: playerDemo.id,
               isOrganizer: playerDemo.isOrganizer,
               isOutsideCompetition: playerDemo.isOutsideCompetition,
+              isImpressive: playerDemo.impressive,
             },
           ],
         };
