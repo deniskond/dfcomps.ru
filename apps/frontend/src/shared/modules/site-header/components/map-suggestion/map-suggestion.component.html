@@ -3,6 +3,17 @@
   <div *ngIf="data.isAdmin" class="h1-block-header dialog-header">&nbsp;(admin)</div>
 </div>
 
+<div class="mappers-info-block">
+  <div><mat-icon class="info-icon">info</mat-icon></div>
+  <div class="mappers-info-text">
+    <b>
+      <span translate translation="forMappers"></span>
+      <span>:</span>
+    </b>
+    <span translate translation="mappersSuggestionInfo" class="map-suggestion-text"></span>
+  </div>
+</div>
+
 <div class="form-container">
   <div class="input-container">
     <input [(ngModel)]="mapName" (input)="onMapnameInput()" class="input-field" data-test-id="input-mapname" />

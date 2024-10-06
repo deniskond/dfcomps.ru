@@ -173,4 +173,6 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
   mapSuggested: 'Map was sent as a suggestion for Warcup',
   suggestionGrayHint: 'Suggestion will be available again at the next warcup',
   seasonPeriod: '01 June 2024 - 30 November 2024',
+  forMappers: 'For mappers',
+  mappersSuggestionInfo: 'if you want to suggest your new map on warcup, write PM in Discord n0sf',
 };
