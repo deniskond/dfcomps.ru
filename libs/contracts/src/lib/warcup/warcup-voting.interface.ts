@@ -6,6 +6,7 @@ export interface WarcupVotingInterface {
     author: string;
     levelshot: string;
     adminVotes: string[];
+    suggestBy: string;
   }[];
   currentVotedMapSuggestionId: number | null;
 }

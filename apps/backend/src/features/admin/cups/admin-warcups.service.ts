@@ -148,6 +148,7 @@ export class AdminWarcupsService {
     const currentVote: WarcupAdminVote | null = await this.warcupAdminVoteRepository
       .createQueryBuilder('warcup_admin_votes')
       .leftJoinAndSelect('warcup_admin_votes.mapSuggestion', 'map_suggestions')
+      .leftJoinAndSelect('warcup_admin_votes.user', 'users')
       .where({ user: { id: userAccess.userId } })
       .getOne();
 
@@ -164,6 +165,7 @@ export class AdminWarcupsService {
         adminVotes: mapSuggestion.warcupAdminVotes.map(({ user }: WarcupAdminVote) => user.displayed_nick),
         levelshot: getMapLevelshot(mapSuggestion.map_name),
         author: mapSuggestion.author,
+        suggestBy: mapSuggestion.user.displayed_nick,
       })),
       currentVotedMapSuggestionId: currentVote ? currentVote.mapSuggestion.id : null,
     };
