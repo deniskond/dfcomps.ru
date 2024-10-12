@@ -52,6 +52,10 @@
                 <b>Author:</b>
                 {{ voteVariant.author }}
               </div>
+              <div class="author-line">
+                <b>Suggested by:</b>
+                {{ voteVariant.suggestBy }}
+              </div>
               <div class="weapons-container">
                 <b>Weapons:</b>
                 <app-weapons [weapons]="voteVariant.weapons" class="weapons"></app-weapons>
