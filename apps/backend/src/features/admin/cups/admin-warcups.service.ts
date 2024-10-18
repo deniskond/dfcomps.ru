@@ -241,19 +241,6 @@ export class AdminWarcupsService {
       throw new BadRequestException(`Map ${normalizedMapname} was already suggested in admin vote`);
     }
 
-    const cupWithSuggestedMap: Cup | null = await this.cupRepository
-      .createQueryBuilder('cups')
-      .where(
-        `start_datetime < '${moment().format()}'::date AND (map1 = '${normalizedMapname}' OR map2 = '${normalizedMapname}' OR map3 = '${normalizedMapname}' OR map4 = '${normalizedMapname}' OR map5 = '${normalizedMapname}')`,
-      )
-      .getOne();
-
-    if (cupWithSuggestedMap && moment(cupWithSuggestedMap.end_datetime).add(3, 'years').isAfter(moment())) {
-      throw new BadRequestException(
-        `Map ${normalizedMapname} was played in the past 3 years (cup ${cupWithSuggestedMap.full_name})`,
-      );
-    }
-
     let worldspawnMapInfo: WorldspawnMapInfoInterface;
 
     try {

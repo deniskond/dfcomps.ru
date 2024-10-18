@@ -73,7 +73,7 @@ export class MapSuggestionComponent implements OnInit, OnDestroy {
   }
 
   public get isInvalid(): boolean {
-    return this.isNotFoundOnWS || this.wasPlayedBefore || !this.mapName;
+    return this.isNotFoundOnWS || (this.wasPlayedBefore && !this.data.isAdmin) || !this.mapName;
   }
 
   public onMapnameInput(): void {
