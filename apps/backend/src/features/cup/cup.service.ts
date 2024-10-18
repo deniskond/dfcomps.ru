@@ -453,6 +453,7 @@ export class CupService {
             is_admin_suggestion: false,
             size: worldspawnMapInfo.size,
             pk3_link: worldspawnMapInfo.pk3,
+            is_blacklisted: false,
             user: {
               id: userAccess.userId!,
             },

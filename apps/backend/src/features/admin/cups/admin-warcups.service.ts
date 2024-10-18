@@ -112,6 +112,7 @@ export class AdminWarcupsService {
       .leftJoinAndSelect('map_suggestions.warcupAdminVotes', 'warcup_admin_votes')
       .leftJoinAndSelect('warcup_admin_votes.user', 'users1')
       .leftJoinAndSelect('map_suggestions.user', 'users2')
+      .where({ is_blacklisted: false })
       .orderBy('map_suggestions.suggestions_count', 'DESC')
       .getMany();
 
@@ -276,6 +277,7 @@ export class AdminWarcupsService {
           is_admin_suggestion: true,
           size: worldspawnMapInfo.size,
           pk3_link: worldspawnMapInfo.pk3,
+          is_blacklisted: false,
           user: {
             id: userAccess.userId!,
           },

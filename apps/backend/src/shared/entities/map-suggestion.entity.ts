@@ -32,6 +32,9 @@ export class MapSuggestion {
   @Column({ type: 'varchar', nullable: true })
   map_type: MapType | null;
 
+  @Column({ type: 'boolean', nullable: true })
+  is_blacklisted: boolean;
+
   @ManyToOne(() => User)
   user: User;
 
