@@ -116,9 +116,9 @@ export class AdminWarcupsService {
       .orderBy('map_suggestions.suggestions_count', 'DESC')
       .getMany();
 
-    const top3Suggestions: MapSuggestion[] = mapSuggestions
-      .filter(({ map_type }: MapSuggestion) => map_type === nextWarcupMapType)
-      .slice(0, 3);
+    const allSuggestionsForNextMapType: MapSuggestion[] = mapSuggestions.filter(
+      ({ map_type }: MapSuggestion) => map_type === nextWarcupMapType,
+    );
     const adminSuggestions: MapSuggestion[] = mapSuggestions.filter(
       (mapSuggestion: MapSuggestion) => mapSuggestion.is_admin_suggestion,
     );
@@ -126,7 +126,7 @@ export class AdminWarcupsService {
       (mapSuggestion: MapSuggestion) => mapSuggestion.warcupAdminVotes.length > 0,
     );
     const suggestionsWithDuplicates: MapSuggestion[] = [
-      ...top3Suggestions,
+      ...allSuggestionsForNextMapType,
       ...adminSuggestions,
       ...adminVotedSuggestions,
     ];
