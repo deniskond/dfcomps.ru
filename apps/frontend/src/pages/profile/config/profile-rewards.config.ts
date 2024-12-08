@@ -112,6 +112,14 @@ export class PROFILE_REWARDS {
       [Rewards.TOP3_CPM_SEVENTH_SEASON]: 'top_3_cpm',
       [Rewards.TOP10_VQ3_SEVENTH_SEASON]: 'top10',
       [Rewards.TOP10_CPM_SEVENTH_SEASON]: 'top10',
+      [Rewards.TOP1_VQ3_EIGHTH_SEASON]: 'top_1_vq3',
+      [Rewards.TOP2_VQ3_EIGHTH_SEASON]: 'top_2_vq3',
+      [Rewards.TOP3_VQ3_EIGHTH_SEASON]: 'top_3_vq3',
+      [Rewards.TOP1_CPM_EIGHTH_SEASON]: 'top_1_cpm',
+      [Rewards.TOP2_CPM_EIGHTH_SEASON]: 'top_2_cpm',
+      [Rewards.TOP3_CPM_EIGHTH_SEASON]: 'top_3_cpm',
+      [Rewards.TOP10_VQ3_EIGHTH_SEASON]: 'top10',
+      [Rewards.TOP10_CPM_EIGHTH_SEASON]: 'top10',
     };
   }
 }

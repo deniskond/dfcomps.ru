@@ -108,4 +108,12 @@ export enum Rewards {
   TOP3_CPM_SEVENTH_SEASON = 'Top 3 CPM (season 7)',
   TOP10_VQ3_SEVENTH_SEASON = 'Top 10 VQ3 (season 7)',
   TOP10_CPM_SEVENTH_SEASON = 'Top 10 CPM (season 7)',
+  TOP1_VQ3_EIGHTH_SEASON = 'Top 1 VQ3 (season 8)',
+  TOP2_VQ3_EIGHTH_SEASON = 'Top 2 VQ3 (season 8)',
+  TOP3_VQ3_EIGHTH_SEASON = 'Top 3 VQ3 (season 8)',
+  TOP1_CPM_EIGHTH_SEASON = 'Top 1 CPM (season 8)',
+  TOP2_CPM_EIGHTH_SEASON = 'Top 2 CPM (season 8)',
+  TOP3_CPM_EIGHTH_SEASON = 'Top 3 CPM (season 8)',
+  TOP10_VQ3_EIGHTH_SEASON = 'Top 10 VQ3 (season 8)',
+  TOP10_CPM_EIGHTH_SEASON = 'Top 10 CPM (season 8)',
 }
