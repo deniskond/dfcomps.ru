@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import { DemoConfigInterface } from './demo-config.interface';
 
 const Q3_MESSAGE_MAX_SIZE = 0x4000;
 const Q3_MAX_STRING_CHARS = 1024;
@@ -7,7 +8,7 @@ const Q3_PERCENT_CHAR_BYTE = 37;
 const Q3_DOT_CHAR_BYTE = 46;
 
 export class DemoParser {
-  public parseDemo(demoName: string) {
+  public parseDemo(demoName: string): DemoConfigInterface | null {
     return Q3DemoParser.getFriendlyConfig(demoName);
   }
 }
@@ -352,7 +353,7 @@ export class Q3DemoParser {
     this.fileName = fileName;
   }
 
-  public parseConfig(): any {
+  public parseConfig(): Record<number, string> | undefined | null {
     const msgParser = new Q3DemoConfigParser();
 
     this.doParse(msgParser);
@@ -379,36 +380,32 @@ export class Q3DemoParser {
     return msgParser;
   }
 
-  public static getRawConfigStrings(fileName: string): any[] | null {
+  public static getRawConfigStrings(fileName: string): Record<number, string> | undefined | null {
     return new Q3DemoParser(fileName).parseConfig();
   }
 
-  public static getFriendlyConfig(fileName: string): any | null {
-    const conf = Q3DemoParser.getRawConfigStrings(fileName);
+  public static getFriendlyConfig(fileName: string): DemoConfigInterface | null {
+    const rawConfigStrings: Record<number, string> | undefined | null = Q3DemoParser.getRawConfigStrings(fileName);
 
-    if (!conf) {
+    if (!rawConfigStrings) {
       return null;
     }
 
-    const result: any = {};
+    const playerRawString: string | undefined = rawConfigStrings[Q3Const.Q3_DEMO_CFG_FIELD_PLAYER];
+    const client: DemoConfigInterface['client'] = Q3Utils.splitConfig(
+      rawConfigStrings[Q3Const.Q3_DEMO_CFG_FIELD_CLIENT],
+    );
+    const player: DemoConfigInterface['player'] = playerRawString
+      ? Q3Utils.splitConfig<{ hc: string }>(playerRawString)
+      : null;
 
-    if (conf[Q3Const.Q3_DEMO_CFG_FIELD_CLIENT]) {
-      result.client = Q3Utils.splitConfig(conf[Q3Const.Q3_DEMO_CFG_FIELD_CLIENT]);
-      result.client_version = result.client.version;
-      result.physic = result.client.df_promode === '0' ? 'vq3' : 'cpm';
-    }
-
-    if (conf[Q3Const.Q3_DEMO_CFG_FIELD_GAME]) {
-      result.game = Q3Utils.splitConfig(conf[Q3Const.Q3_DEMO_CFG_FIELD_GAME]);
-    }
-
-    if (conf[Q3Const.Q3_DEMO_CFG_FIELD_PLAYER]) {
-      result.player = Q3Utils.splitConfig(conf[Q3Const.Q3_DEMO_CFG_FIELD_PLAYER]);
-    }
-
-    result.raw = conf;
-
-    return result;
+    return {
+      client,
+      physic: client.df_promode === '0' ? 'vq3' : 'cpm',
+      game: Q3Utils.splitConfig<DemoConfigInterface['game']>(rawConfigStrings[Q3Const.Q3_DEMO_CFG_FIELD_GAME]),
+      player,
+      raw: rawConfigStrings,
+    } as DemoConfigInterface;
   }
 }
 
@@ -532,7 +529,7 @@ class Q3MessageStream {
 }
 
 class Q3Utils {
-  public static splitConfig(src: string): Record<string, string> {
+  public static splitConfig<T extends Record<string, string>>(src: string): T {
     const begin_ind = src[0] === '\\' ? 1 : 0;
     const srcParts = src.split('\\');
     const result: Record<string, string> = {};
@@ -541,7 +538,7 @@ class Q3Utils {
       result[srcParts[k].toLowerCase()] = srcParts[k + 1];
     }
 
-    return result;
+    return result as T;
   }
 
   public static unpack(data: Buffer): number[] {
@@ -567,13 +564,13 @@ class Q3Utils {
 }
 
 class Q3DemoConfigParser {
-  private configs?: { [key: number]: string };
+  private configs?: Record<number, string>;
 
   hasConfigs(): boolean {
     return this.configs !== undefined;
   }
 
-  getRawConfigs(): { [key: number]: string } | undefined {
+  getRawConfigs(): Record<number, string> | undefined {
     return this.configs;
   }
 

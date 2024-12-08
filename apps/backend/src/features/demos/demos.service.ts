@@ -356,7 +356,12 @@ export class DemosService {
     securityCode: string | null = null,
     demoAcceptMode = DemoAcceptMode.OFFLINE_AND_ONLINE,
   ): DemoCheckResultInterface {
-    const demoConfig: DemoConfigInterface = new DemoParser().parseDemo(demoPath); 
+    const demoConfig: DemoConfigInterface | null = new DemoParser().parseDemo(demoPath); 
+
+    if (!demoConfig) {
+      throw new BadRequestException('Demo could not be parsed');
+    }
+
     let valid = true;
     const errors: Record<string, ValidationErrorInterface> = {};
     const warnings = [];
@@ -388,10 +393,10 @@ export class DemosService {
           expected: '125',
         };
       }
-      if (demoConfig.player.hc !== '100') {
+      if (demoConfig.player!.hc !== '100') {
         valid = false;
         errors.defrag_svfps = {
-          actual: demoConfig.player.hc,
+          actual: demoConfig.player!.hc,
           expected: '100',
         };
       }

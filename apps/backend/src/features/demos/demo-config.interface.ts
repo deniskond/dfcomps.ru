@@ -5,10 +5,9 @@ export interface DemoConfigInterface {
     defrag_gametype: string;
     mapname: string;
     defrag_vers: string;
+    df_promode: '0' | '1';
   };
-  raw: {
-    '544': string;
-  };
+  raw: Record<number, string>;
   game: {
     defrag_svfps: string;
     g_gravity: string;
@@ -23,6 +22,6 @@ export interface DemoConfigInterface {
   };
   player: {
     hc: string;
-  };
+  } | null;
   physic: Physics;
 }
