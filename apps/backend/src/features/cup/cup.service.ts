@@ -36,6 +36,7 @@ import { getNextWarcupTime, mapWeaponsToString } from '@dfcomps/helpers';
 import { MapSuggestion } from '../../shared/entities/map-suggestion.entity';
 import { WorldspawnParseService } from '../../shared/services/worldspawn-parse.service';
 import { LevelshotsService } from '../../shared/services/levelshots.service';
+import { OLD_WARCUP_MAPS } from './old-warcup-maps';
 
 @Injectable()
 export class CupService {
@@ -404,17 +405,23 @@ export class CupService {
       throw new BadRequestException(`Empty map name`);
     }
 
-    const cupWithSuggestedMap: Cup | null = await this.cupRepository
+    const dfcompsCupWithSuggestedMap: Cup | null = await this.cupRepository
       .createQueryBuilder('cups')
       .where(
-        `start_datetime < '${moment().format()}'::date AND (map1 = '${normalizedMapname}' OR map2 = '${normalizedMapname}' OR map3 = '${normalizedMapname}' OR map4 = '${normalizedMapname}' OR map5 = '${normalizedMapname}')`,
+        `map1 = '${normalizedMapname}' OR map2 = '${normalizedMapname}' OR map3 = '${normalizedMapname}' OR map4 = '${normalizedMapname}' OR map5 = '${normalizedMapname}'`,
       )
       .getOne();
 
-    if (cupWithSuggestedMap && moment(cupWithSuggestedMap.end_datetime).add(3, 'years').isAfter(moment())) {
+    if (dfcompsCupWithSuggestedMap) {
       throw new BadRequestException(
-        `Map ${normalizedMapname} was played in the past 3 years (cup ${cupWithSuggestedMap.full_name})`,
+        `Map ${normalizedMapname} was already played (cup ${dfcompsCupWithSuggestedMap.full_name})`,
       );
+    }
+
+    const oldWarcup = OLD_WARCUP_MAPS.find(({ name }) => name.toLowerCase() === normalizedMapname);
+
+    if (oldWarcup) {
+      throw new BadRequestException(`Map ${normalizedMapname} was already played (cup Warcup #${oldWarcup.number})`);
     }
 
     let worldspawnMapInfo: WorldspawnMapInfoInterface;
@@ -487,17 +494,28 @@ export class CupService {
       throw new BadRequestException('Empty mapname');
     }
 
+    let oldCompetitionName: string | null = null;
     const cupWithSuggestedMap: Cup | null = await this.cupRepository
       .createQueryBuilder('cups')
       .where(
-        `start_datetime < '${moment().format()}'::date AND (map1 = '${normalizedMapname}' OR map2 = '${normalizedMapname}' OR map3 = '${normalizedMapname}' OR map4 = '${normalizedMapname}' OR map5 = '${normalizedMapname}')`,
+        `map1 = '${normalizedMapname}' OR map2 = '${normalizedMapname}' OR map3 = '${normalizedMapname}' OR map4 = '${normalizedMapname}' OR map5 = '${normalizedMapname}'`,
       )
       .getOne();
 
-    if (cupWithSuggestedMap && moment(cupWithSuggestedMap.end_datetime).add(3, 'years').isAfter(moment())) {
+    if (cupWithSuggestedMap) {
+      oldCompetitionName = cupWithSuggestedMap.full_name;
+    }
+
+    const oldWarcup = OLD_WARCUP_MAPS.find(({ name }) => name.toLowerCase() === normalizedMapname);
+
+    if (oldWarcup) {
+      oldCompetitionName = `Warcup #${oldWarcup.number}`;
+    }
+
+    if (oldCompetitionName) {
       return {
         wasOnCompetition: true,
-        lastCompetition: cupWithSuggestedMap.full_name,
+        lastCompetition: oldCompetitionName,
       };
     } else {
       return {

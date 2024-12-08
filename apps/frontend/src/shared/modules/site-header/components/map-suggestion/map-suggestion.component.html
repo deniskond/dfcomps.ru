@@ -26,8 +26,7 @@
   <div *ngIf="!isPristine && wasPlayedBefore" class="status-container">
     <img src="../../../../../../assets/images/icons/not-ok.png" class="status-icon" />
     <div translate translation="mapWasOnCompetition" class="error"></div>
-    <span class="error">&nbsp;{{ previousCupName }}&nbsp;</span>
-    <div translate translation="lessThanthreeYearsAgo" class="error"></div>
+    <span class="error">&nbsp;{{ previousCupName }}</span>
   </div>
   <div *ngIf="!isPristine && !isNotFoundOnWS" class="status-container">
     <img src="../../../../../../assets/images/icons/ok.png" class="status-icon" />
