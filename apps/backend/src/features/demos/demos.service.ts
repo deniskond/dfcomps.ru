@@ -23,6 +23,7 @@ import { DemoCheckResultInterface } from './demo-check-result.interface';
 import { DemoConfigInterface } from './demo-config.interface';
 import { Match } from '../../shared/entities/match.entity';
 import { MulterFileInterface } from '../../shared/interfaces/multer.interface';
+import { LoggerService } from '../../shared/services/logger.service';
 
 @Injectable()
 export class DemosService {
@@ -31,6 +32,7 @@ export class DemosService {
     @InjectRepository(CupDemo) private readonly cupsDemosRepository: Repository<CupDemo>,
     @InjectRepository(Match) private readonly matchRepository: Repository<Match>,
     private readonly authService: AuthService,
+    private readonly loggerService: LoggerService,
   ) {}
 
   public async upload(
@@ -42,6 +44,8 @@ export class DemosService {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!userAccess.userId) {
+      this.loggerService.log(`Demo upload for cup ${cupId} and map ${mapName} failed: not authorized`);
+
       return {
         status: DemoUploadResult.ERROR,
         message: 'Not authorized',
@@ -55,6 +59,10 @@ export class DemosService {
       .getOne();
 
     if (!cup) {
+      this.loggerService.log(
+        `Demo upload for cup ${cupId} and map ${mapName} failed: cup not found. User ID: ${userAccess.userId}`,
+      );
+
       return {
         status: DemoUploadResult.ERROR,
         message: 'Cup not found',
@@ -62,6 +70,10 @@ export class DemosService {
     }
 
     if (moment().isAfter(moment(cup.end_datetime))) {
+      this.loggerService.log(
+        `Demo upload for cup ${cupId} and map ${mapName} failed: cup already finished. User ID: ${userAccess.userId}`,
+      );
+
       return {
         status: DemoUploadResult.ERROR,
         message: 'Cup already finished',
@@ -77,10 +89,16 @@ export class DemosService {
     }
 
     const fileName = demo.originalname;
-    const pattern = new RegExp(`${mapName}\\[(df|mdf)\\.(vq3|cpm)\\](\\d+)\\.(\\d+)\\.(\\d{3})\\((.*)\\.(.*)\\)\\.dm_68`);
+    const pattern = new RegExp(
+      `${mapName}\\[(df|mdf)\\.(vq3|cpm)\\](\\d+)\\.(\\d+)\\.(\\d{3})\\((.*)\\.(.*)\\)\\.dm_68`,
+    );
     const patternMatch: RegExpMatchArray | null = fileName.match(pattern);
 
     if (!patternMatch) {
+      this.loggerService.log(
+        `Demo upload for cup ${cupId} and map ${mapName} failed: wrong df_ar_format (${fileName}). User ID: ${userAccess.userId}`,
+      );
+
       return {
         status: DemoUploadResult.ERROR,
         message: 'Wrong demo name, check df_ar_format',
@@ -90,6 +108,10 @@ export class DemosService {
     const physics: Physics | string = patternMatch[2];
 
     if (physics !== Physics.CPM && physics !== Physics.VQ3) {
+      this.loggerService.log(
+        `Demo upload for cup ${cupId} and map ${mapName} failed: wrong physics. User ID: ${userAccess.userId}`,
+      );
+
       return {
         status: DemoUploadResult.ERROR,
         message: 'Wrong physics',
@@ -104,6 +126,10 @@ export class DemosService {
       .getMany();
 
     if (playerDemos.length >= 3) {
+      this.loggerService.log(
+        `Demo upload for cup ${cupId} and map ${mapName} failed: more than three demos. User ID: ${userAccess.userId}`,
+      );
+
       return {
         status: DemoUploadResult.ERROR,
         message: 'More than three demos',
@@ -149,6 +175,8 @@ export class DemosService {
         ])
         .execute();
 
+      this.loggerService.log(`Demo upload for cup ${cupId} and map ${mapName} success. User ID: ${userAccess.userId}`);
+
       return {
         status: DemoUploadResult.SUCCESS,
         errors: demoCheckResult.errors,
@@ -156,6 +184,12 @@ export class DemosService {
       };
     } else {
       fs.rmSync(demoFullName);
+
+      this.loggerService.log(
+        `Demo upload for cup ${cupId} and map ${mapName} failed: invalid demo. Validation errors: ${JSON.stringify(
+          demoCheckResult.errors,
+        )}. User ID: ${userAccess.userId}`,
+      );
 
       return {
         status: DemoUploadResult.INVALID,
@@ -356,7 +390,7 @@ export class DemosService {
     securityCode: string | null = null,
     demoAcceptMode = DemoAcceptMode.OFFLINE_AND_ONLINE,
   ): DemoCheckResultInterface {
-    const demoConfig: DemoConfigInterface = new DemoParser().parseDemo(demoPath); 
+    const demoConfig: DemoConfigInterface = new DemoParser().parseDemo(demoPath);
     let valid = true;
     const errors: Record<string, ValidationErrorInterface> = {};
     const warnings = [];
