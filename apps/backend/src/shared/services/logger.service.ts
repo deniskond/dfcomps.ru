@@ -24,8 +24,6 @@ export class LoggerService {
   }
 
   public log(message: string) {
-    if (process.env.NODE_ENV !== 'development') {
-      this.logger.info(message);
-    }
+    this.logger.info(message);
   }
 }
