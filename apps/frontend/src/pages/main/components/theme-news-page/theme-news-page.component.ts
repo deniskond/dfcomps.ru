@@ -36,6 +36,7 @@ export class ThemeNewsPageComponent {
   public formatDate(date: string): string {
     return moment(date).format('DD.MM.YYYY HH:mm');
   }
+
   public reloadNews(): void {
     this.activatedRoute.params
       .pipe(take(1))
