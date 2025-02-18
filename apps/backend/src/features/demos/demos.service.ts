@@ -175,7 +175,9 @@ export class DemosService {
         ])
         .execute();
 
-      this.loggerService.info(`Demo upload for cup ${cupId} and map ${mapName} success. User ID: ${userAccess.userId}`);
+      this.loggerService.info(
+        `Demo upload for cup ${cupId} and map ${mapName} success. Demo: ${resultFilename}. User ID: ${userAccess.userId}`,
+      );
 
       return {
         status: DemoUploadResult.SUCCESS,
@@ -341,12 +343,16 @@ export class DemosService {
     const cup: Cup | null = await this.cupRepository.createQueryBuilder('cups').where({ id: cupId }).getOne();
 
     if (!cup) {
-      this.loggerService.error(`Demo delete for cup ${cupId} and demo ${demoName} failed: cup not found. User ID: ${userAccess.userId}`);
+      this.loggerService.error(
+        `Demo delete for cup ${cupId} and demo ${demoName} failed: cup not found. User ID: ${userAccess.userId}`,
+      );
       throw new BadRequestException(`No cup with id = ${cupId}`);
     }
 
     if (moment().isAfter(moment(cup.end_datetime))) {
-      this.loggerService.error(`Demo delete for cup ${cupId} and demo ${demoName} failed: cup already finished. User ID: ${userAccess.userId}`);
+      this.loggerService.error(
+        `Demo delete for cup ${cupId} and demo ${demoName} failed: cup already finished. User ID: ${userAccess.userId}`,
+      );
       throw new BadRequestException('Cup already finished');
     }
 
@@ -355,7 +361,9 @@ export class DemosService {
     if (fs.existsSync(demoPath)) {
       fs.rmSync(demoPath);
     } else {
-      this.loggerService.error(`Demo delete for cup ${cupId} and demo ${demoName} failed: demo not found. User ID: ${userAccess.userId}`);
+      this.loggerService.error(
+        `Demo delete for cup ${cupId} and demo ${demoName} failed: demo not found. User ID: ${userAccess.userId}`,
+      );
       throw new BadRequestException(`No demo with name = ${demoName}`);
     }
 
