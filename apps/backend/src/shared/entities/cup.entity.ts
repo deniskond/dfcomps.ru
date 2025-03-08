@@ -117,7 +117,7 @@ export class Cup {
   @Column({ type: 'character varying', nullable: true })
   state: CupStates;
 
-  @Column({ type: 'integer', nullable: true })
+  @Column({ type: 'float', nullable: true })
   map_rating: number | null;
 
   @Column({ type: 'integer', nullable: true })

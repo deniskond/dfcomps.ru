@@ -13,14 +13,14 @@ export class RatingStarComponent implements OnChanges {
 
   ngOnChanges({ fillValue }: SimpleChanges): void {
     if (fillValue && this.fillValue) {
-      let fillPx = Math.round(22 * this.fillValue);
+      let fillPx = Math.round(20 * this.fillValue);
 
-      if (fillPx > 15 && this.fillValue !== 1) {
-        fillPx = 15;
+      if (fillPx > 13 && this.fillValue !== 1) {
+        fillPx = 13;
       }
 
-      if (fillPx < 9 && this.fillValue !== 0) {
-        fillPx = 9;
+      if (fillPx < 8 && this.fillValue !== 0) {
+        fillPx = 8;
       }
 
       this.fillWidth = `${fillPx}px`;

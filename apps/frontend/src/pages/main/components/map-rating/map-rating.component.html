@@ -1,5 +1,6 @@
 <div
-  [ngClass]="{ 'hover-disabled': componentState === componentStates.USER_VOTED }"
+  *ngIf="componentState !== componentStates.VOTE_CLOSED_WITH_NO_VOTES"
+  [ngClass]="{ 'hover-disabled': componentState !== componentStates.WAITING_FOR_VOTE }"
   (mouseleave)="resetToSelectedRating()"
   class="rating-stars-container"
 >
@@ -11,8 +12,8 @@
     class="rating-star"
   ></app-rating-star>
 </div>
-<div *ngIf="componentState === componentStates.USER_VOTED" class="rating-info-container">
-  <div class="rating-value">{{ rating }}/5</div>
+<div *ngIf="componentState === componentStates.VOTE_CLOSED" class="rating-info-container">
+  <div class="rating-value">{{ selectedRating }}/5</div>
   <mat-icon [matTooltip]="tooltipContent" matTooltipPosition="right" class="info-icon" style="white-space: pre-line">
     info
   </mat-icon>
@@ -24,4 +25,8 @@
   <div *ngIf="isRequestInProcess" class="spinner">
     <mat-spinner diameter="20" strokeWidth="2" color="accent"></mat-spinner>
   </div>
+</div>
+
+<div *ngIf="componentState === componentStates.VOTE_CLOSED_WITH_NO_VOTES">
+  <span translate translation="noReviews"></span>
 </div>

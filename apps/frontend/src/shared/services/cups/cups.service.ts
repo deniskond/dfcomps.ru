@@ -6,6 +6,7 @@ import {
   CheckCupRegistrationInterface,
   CheckPreviousCupsType,
   CupInterface,
+  MapRatingInterface,
   OnlineCupInfoInterface,
   WorldspawnMapInfoInterface,
 } from '@dfcomps/contracts';
@@ -39,6 +40,13 @@ export class CupsService extends BackendService {
   public getWorldspawnMapInfo$(map: string): Observable<WorldspawnMapInfoInterface> {
     return this.get$<WorldspawnMapInfoInterface>(URL_PARAMS.CUP.GET_WORLDSPAWN_MAP_INFO, {
       map,
+    });
+  }
+
+  public reviewMap$(cupId: number, vote: number): Observable<MapRatingInterface> {
+    return this.post$<MapRatingInterface>(URL_PARAMS.CUP.REVIEW, {
+      cupId,
+      vote,
     });
   }
 }

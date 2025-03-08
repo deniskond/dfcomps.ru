@@ -577,17 +577,20 @@ export class CupService {
       throw new BadRequestException(`Map rating voting is unavailable - two weeks passed since cup finish time`);
     }
 
-    const cupResultForUser: CupResult | null = await this.cupResultRepository
-      .createQueryBuilder('cups_results')
+    const cupDemoForUser: CupDemo | null = await this.cupDemosRepository
+      .createQueryBuilder('cups_demos')
       .where({ user: { id: userAccess.userId } })
       .andWhere({ cup: { id: cupId } })
       .getOne();
 
-    const isCupParticipant = !!cupResultForUser;
+    const isCupParticipant = !!cupDemoForUser;
     const currentMapRating = cup.map_rating || 0;
-    const resultingInternalVoteCount = (cup.internal_vote_count || 0) + (isCupParticipant ? 2 : 1);
+    const currentInternalVoteCount = cup.internal_vote_count || 0;
+    const numberOfVotesForCurrentUser = isCupParticipant ? 2 : 1;
+    const resultingInternalVoteCount = currentInternalVoteCount + numberOfVotesForCurrentUser;
     const resultingDisplayVoteCount = (cup.display_vote_count || 0) + 1;
-    const resultingMapRating = (currentMapRating + vote) / resultingInternalVoteCount;
+    const resultingMapRating =
+      (currentMapRating * currentInternalVoteCount + vote * numberOfVotesForCurrentUser) / resultingInternalVoteCount;
 
     await this.cupRepository
       .createQueryBuilder('cups')
@@ -597,7 +600,20 @@ export class CupService {
         internal_vote_count: resultingInternalVoteCount,
         display_vote_count: resultingDisplayVoteCount,
       })
-      .where({ cup: { id: cupId } })
+      .where({ id: cupId })
+      .execute();
+
+    await this.cupReviewRepository
+      .createQueryBuilder()
+      .insert()
+      .into(CupReview)
+      .values([
+        {
+          user: { id: userAccess.userId },
+          cup: { id: cupId },
+          vote,
+        },
+      ])
       .execute();
 
     return {

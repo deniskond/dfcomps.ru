@@ -1,13 +1,15 @@
-import { Component, ChangeDetectionStrategy, Input, OnInit, OnDestroy } from '@angular/core';
-import { Languages } from '@dfcomps/contracts';
-import { combineLatest, ReplaySubject, Subject, takeUntil } from 'rxjs';
+import { Component, ChangeDetectionStrategy, Input, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Languages, MapRatingInterface } from '@dfcomps/contracts';
+import { combineLatest, finalize, ReplaySubject, Subject, takeUntil } from 'rxjs';
+import { CupsService } from '~shared/services/cups/cups.service';
 import { LanguageService } from '~shared/services/language/language.service';
 
 const DEFAULT_RATING = 3;
 
 enum MapRatingComponentState {
-  USER_VOTED,
   WAITING_FOR_VOTE,
+  VOTE_CLOSED,
+  VOTE_CLOSED_WITH_NO_VOTES,
 }
 
 @Component({
@@ -17,9 +19,10 @@ enum MapRatingComponentState {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MapRatingComponent implements OnInit, OnDestroy {
-  @Input() isUserVoted: boolean;
-  @Input() rating: number;
-  @Input() userVoteValue: number;
+  @Input() rating: number | null;
+  @Input() userVoteValue: number | null;
+  @Input() isVotingAvailable: boolean;
+  @Input() cupId: number;
 
   public componentState: MapRatingComponentState;
   public componentStates = MapRatingComponentState;
@@ -27,16 +30,25 @@ export class MapRatingComponent implements OnInit, OnDestroy {
   public selectedRating: number;
   public isRequestInProcess = false;
   public tooltipContent: string;
-  public userVoteValue$ = new ReplaySubject<number>();
+  public userVoteValue$ = new ReplaySubject<number | null>();
 
   private onDestroy$ = new Subject<void>();
 
-  constructor(private languageService: LanguageService) {}
+  constructor(
+    private languageService: LanguageService,
+    private cupsService: CupsService,
+    private changeDetectorRef: ChangeDetectorRef,
+  ) {}
 
   ngOnInit(): void {
-    if (this.isUserVoted) {
-      this.componentState = MapRatingComponentState.USER_VOTED;
-      this.selectedRating = this.rating;
+    if (this.userVoteValue || !this.isVotingAvailable) {
+      if (this.rating) {
+        this.userVoteValue$.next(this.userVoteValue);
+        this.componentState = MapRatingComponentState.VOTE_CLOSED;
+        this.selectedRating = this.rating;
+      } else {
+        this.componentState = MapRatingComponentState.VOTE_CLOSED_WITH_NO_VOTES;
+      }
     } else {
       this.componentState = MapRatingComponentState.WAITING_FOR_VOTE;
       this.selectedRating = DEFAULT_RATING;
@@ -44,10 +56,6 @@ export class MapRatingComponent implements OnInit, OnDestroy {
 
     this.setRatingValues(this.selectedRating);
     this.setLanguageServiceSubscription();
-
-    if (this.userVoteValue) {
-      this.userVoteValue$.next(this.userVoteValue);
-    }
   }
 
   ngOnDestroy(): void {
@@ -56,7 +64,7 @@ export class MapRatingComponent implements OnInit, OnDestroy {
   }
 
   public onStarHover(index: number): void {
-    if (this.componentState === MapRatingComponentState.USER_VOTED) {
+    if (this.componentState === MapRatingComponentState.VOTE_CLOSED) {
       return;
     }
 
@@ -64,7 +72,7 @@ export class MapRatingComponent implements OnInit, OnDestroy {
   }
 
   public onStarClick(index: number): void {
-    if (this.componentState === MapRatingComponentState.USER_VOTED) {
+    if (this.componentState === MapRatingComponentState.VOTE_CLOSED) {
       return;
     }
 
@@ -76,12 +84,23 @@ export class MapRatingComponent implements OnInit, OnDestroy {
   }
 
   public onVoteSubmit(): void {
-    // this.isRequestInProcess = true;
-
-    this.componentState = MapRatingComponentState.USER_VOTED;
+    this.isRequestInProcess = true;
     this.userVoteValue$.next(this.selectedRating);
-    this.selectedRating = this.rating;
-    this.setRatingValues(this.selectedRating);
+
+    this.cupsService
+      .reviewMap$(this.cupId, this.selectedRating)
+      .pipe(
+        finalize(() => {
+          this.isRequestInProcess = false;
+          this.changeDetectorRef.markForCheck();
+        }),
+      )
+      .subscribe(({ mapRating }: MapRatingInterface) => {
+        this.componentState = MapRatingComponentState.VOTE_CLOSED;
+        this.selectedRating = mapRating;
+        this.setRatingValues(this.selectedRating);
+        this.changeDetectorRef.markForCheck();
+      });
   }
 
   private setRatingValues(rating: number): void {
@@ -101,13 +120,17 @@ export class MapRatingComponent implements OnInit, OnDestroy {
   private setLanguageServiceSubscription(): void {
     combineLatest([this.userVoteValue$, this.languageService.getLanguage$()])
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe(([userVote, language]: [number, Languages]) => {
+      .subscribe(([userVote, language]: [number | null, Languages]) => {
         if (language === Languages.RU) {
-          this.tooltipContent = `Ваш голос: ${userVote}\nПри подсчете среднего значения голоса участников турнира учитываются за 2 голоса`;
+          const yourVoteText = userVote ? `Ваш голос: ${userVote}\n` : '';
+
+          this.tooltipContent = `${yourVoteText}При подсчете среднего значения голоса участников турнира учитываются за 2 голоса`;
         }
 
         if (language === Languages.EN) {
-          this.tooltipContent = `Your vote: ${userVote}\nWhen calculating the average rating, each participant's vote counts as 2 votes.`;
+          const yourVoteText = userVote ? `Your vote: ${userVote}\n` : '';
+
+          this.tooltipContent = `${yourVoteText}When calculating the average rating, each participant's vote counts as 2 votes.`;
         }
       });
   }

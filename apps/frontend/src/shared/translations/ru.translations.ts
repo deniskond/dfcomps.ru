@@ -174,4 +174,5 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   forMappers: 'Для мапперов',
   mappersSuggestionInfo: 'если хотите предложить свою новую карту на warcup, пишите в ЛС в дискорд n0sf',
   score: 'Оценка',
+  noReviews: 'Оценок нет',
 };
