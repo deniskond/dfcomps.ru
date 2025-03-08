@@ -8,4 +8,8 @@
   ></app-rating-star>
 </div>
 <div *ngIf="componentState === componentStates.USER_VOTED" class="vote-button-container">{{ rating }}/5</div>
-<div *ngIf="componentState === componentStates.WAITING_FOR_VOTE" class="vote-button-container">Button</div>
+<div *ngIf="componentState === componentStates.WAITING_FOR_VOTE" class="vote-button-container">
+  <button mat-stroked-button class="rate-map-button">
+    <span translate translation="send"></span>
+  </button>
+</div>
