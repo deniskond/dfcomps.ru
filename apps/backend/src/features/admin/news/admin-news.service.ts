@@ -138,9 +138,11 @@ export class AdminNewsService {
       throw new UnauthorizedException('Unauthorized to update news list without NEWSMAKER role');
     }
 
-    const targetNews: News | null = await this.newsRepository.createQueryBuilder()
+    const targetNews: News | null = await this.newsRepository
+      .createQueryBuilder('news')
       .leftJoinAndSelect('news.user', 'user')
-      .where({ id: newsId }).getOne();
+      .where({ id: newsId })
+      .getOne();
 
     if (!targetNews) {
       throw new BadRequestException(`No news with id = ${newsId}`);
@@ -180,8 +182,22 @@ export class AdminNewsService {
   public async deleteNews(accessToken: string | undefined, newsId: number): Promise<void> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
-    if (!userAccess.userId || !checkUserRoles(userAccess.roles, [UserRoles.SUPERADMIN])) {
-      throw new UnauthorizedException('Unauthorized to delete news without SUPERADMIN role');
+    if (!userAccess.userId || !checkUserRoles(userAccess.roles, [UserRoles.NEWSMAKER])) {
+      throw new UnauthorizedException('Unauthorized to delete news without NEWSMAKER role');
+    }
+
+    const targetNews: News | null = await this.newsRepository
+      .createQueryBuilder('news')
+      .leftJoinAndSelect('news.user', 'user')
+      .where({ id: newsId })
+      .getOne();
+
+    if (!targetNews) {
+      throw new BadRequestException(`No news with id = ${newsId}`);
+    }
+
+    if (!checkUserRoles(userAccess.roles, [UserRoles.SUPERADMIN]) && userAccess.userId !== targetNews.user.id) {
+      throw new UnauthorizedException('Unauthorized to delete news from other users');
     }
 
     await this.newsCommentsRepository
