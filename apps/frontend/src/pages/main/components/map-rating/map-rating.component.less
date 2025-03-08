@@ -17,10 +17,44 @@
   }
 }
 
+.vote-button-container {
+  position: relative;
+  margin-left: 8px;
+}
+
 .rate-map-button {
   font-size: 13px;
   height: 24px;
   padding: 1px 8px 0 8px;
   font-family: elektra;
+}
+
+.spinner {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rating-info-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-left: 8px;
+  margin-top: 3px;
+}
+
+.info-icon {
+  transform: scale(0.75);
+  margin-top: -2px;
+  margin-left: 2px;
+  color: var(--navigation-color);
+  opacity: 0.4;
+}
+
+::ng-deep .mdc-tooltip {
+  white-space: pre-line !important;
 }

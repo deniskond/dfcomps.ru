@@ -39,6 +39,7 @@ import { NewsElementComponent } from './components/news-element/news-element.com
 import { NewsStreamsComponent } from './components/news-streams/news-streams.component';
 import { RatingStarComponent } from './components/rating-star/rating-star.component';
 import { MapRatingComponent } from './components/map-rating/map-rating.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const routes: Routes = [
   {
@@ -70,6 +71,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     MatExpansionModule,
     MatIconModule,
+    MatTooltipModule,
   ],
   declarations: [
     MainPageComponent,
