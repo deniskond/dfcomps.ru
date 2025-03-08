@@ -9,6 +9,7 @@ import { OldRating } from './old-rating.entity';
 import { Reward } from './reward.entity';
 import { OneVOneRating } from './1v1-rating.entity';
 import { MapSuggestion } from './map-suggestion.entity';
+import { CupReview } from './cups-reviews.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -83,6 +84,9 @@ export class User {
 
   @OneToMany(() => Reward, (reward) => reward.user)
   rewards: Reward[];
+
+  @OneToMany(() => CupReview, (cupReview) => cupReview.user)
+  cupReviews: CupReview[];
 
   @OneToOne(() => OneVOneRating, (oneVOneRating) => oneVOneRating.user, { nullable: true })
   oneVOneRating: OneVOneRating | null;

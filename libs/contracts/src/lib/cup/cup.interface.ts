@@ -35,4 +35,6 @@ export interface CupInterface {
   customNews: string | null;
   cupId: number | null;
   logo: string | null;
+  mapRating: number | null;
+  voteCount: number;
 }

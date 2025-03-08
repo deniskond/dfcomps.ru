@@ -161,6 +161,7 @@ export class URL_PARAMS {
     SUGGEST: string;
     CHECK_PREVIOUS_CUPS: (mapName: string) => string;
     GET_WORLDSPAWN_MAP_INFO: string;
+    REVIEW: string;
   } {
     return {
       GET_NEXTCUP: `${API_URL}/cup/next-cup-info`,
@@ -173,6 +174,7 @@ export class URL_PARAMS {
       SUGGEST: `${API_URL}/cup/suggest`,
       CHECK_PREVIOUS_CUPS: (mapName: string) => `${API_URL}/cup/check-previous-cups/${mapName}`,
       GET_WORLDSPAWN_MAP_INFO: `${API_URL}/cup/get-worldspawn-map-info`,
+      REVIEW: `${API_URL}/cup/review`,
     };
   }
 

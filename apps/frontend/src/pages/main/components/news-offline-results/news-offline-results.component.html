@@ -56,6 +56,17 @@
         <app-weapons [weapons]="news.cup.mapWeapons!"></app-weapons>
       </div>
     </div>
+    <div class="map-info-table-row">
+      <div translate translation="score" class="map-info-cell-desc"></div>
+      <div class="map-info-cell-info">
+        <app-map-rating
+          [rating]="news.cup.mapRating"
+          [userVoteValue]="news.userVote"
+          [isVotingAvailable]="news.isVotingAvailable"
+          [cupId]="news.cup.id"
+        ></app-map-rating>
+      </div>
+    </div>
   </div>
 </div>
 

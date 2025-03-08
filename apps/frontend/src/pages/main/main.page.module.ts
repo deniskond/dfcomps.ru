@@ -37,6 +37,9 @@ import { ThemeNewsPageComponent } from './components/theme-news-page/theme-news-
 import { NewsStreamersResultsComponent } from './components/news-streamers-results/news-streamers-results.component';
 import { NewsElementComponent } from './components/news-element/news-element.component';
 import { NewsStreamsComponent } from './components/news-streams/news-streams.component';
+import { RatingStarComponent } from './components/rating-star/rating-star.component';
+import { MapRatingComponent } from './components/map-rating/map-rating.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const routes: Routes = [
   {
@@ -68,6 +71,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     MatExpansionModule,
     MatIconModule,
+    MatTooltipModule,
   ],
   declarations: [
     MainPageComponent,
@@ -97,6 +101,8 @@ const routes: Routes = [
     NewsStreamersResultsComponent,
     NewsElementComponent,
     NewsStreamsComponent,
+    RatingStarComponent,
+    MapRatingComponent,
   ],
   providers: [NewsService],
 })

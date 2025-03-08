@@ -7,9 +7,11 @@ import {
   OnlineCupInfoInterface,
   CheckPreviousCupsType,
   WorldspawnMapInfoInterface,
+  MapRatingInterface,
 } from '@dfcomps/contracts';
 import { CupRegistrationDto } from './dto/cup-registration.dto';
 import { MapSuggestionDto } from './dto/map-suggestion.dto';
+import { MapReviewDto } from './dto/map-review.dto';
 
 @Controller('cup')
 export class CupController {
@@ -84,5 +86,13 @@ export class CupController {
     @Query() { map }: Record<string, string>,
   ): Promise<WorldspawnMapInfoInterface> {
     return this.cupService.getWorldspawnMapInfo(accessToken, map);
+  }
+
+  @Post('review')
+  reviewMap(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Body() { cupId, vote }: MapReviewDto,
+  ): Promise<MapRatingInterface> {
+    return this.cupService.reviewMap(accessToken, cupId, vote);
   }
 }

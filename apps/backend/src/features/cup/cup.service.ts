@@ -18,6 +18,7 @@ import {
   CupTypes,
   CheckPreviousCupsType,
   WorldspawnMapInfoInterface,
+  MapRatingInterface,
 } from '@dfcomps/contracts';
 import { AuthService } from '../auth/auth.service';
 import * as moment from 'moment';
@@ -37,6 +38,7 @@ import { MapSuggestion } from '../../shared/entities/map-suggestion.entity';
 import { WorldspawnParseService } from '../../shared/services/worldspawn-parse.service';
 import { LevelshotsService } from '../../shared/services/levelshots.service';
 import { OLD_WARCUP_MAPS } from './old-warcup-maps';
+import { CupReview } from '../../shared/entities/cups-reviews.entity';
 
 @Injectable()
 export class CupService {
@@ -46,6 +48,7 @@ export class CupService {
     @InjectRepository(CupDemo) private readonly cupDemosRepository: Repository<CupDemo>,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @InjectRepository(MapSuggestion) private readonly mapSuggestionRepository: Repository<MapSuggestion>,
+    @InjectRepository(CupReview) private readonly cupReviewRepository: Repository<CupReview>,
     private readonly authService: AuthService,
     private readonly tablesService: TablesService,
     private readonly worldspawnParseService: WorldspawnParseService,
@@ -533,6 +536,89 @@ export class CupService {
     }
 
     return await this.worldspawnParseService.getWorldspawnMapInfo(map);
+  }
+
+  public async reviewMap(accessToken: string | undefined, cupId: number, vote: number): Promise<MapRatingInterface> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!userAccess.userId) {
+      throw new UnauthorizedException("Unauthorized users can't vote for map rating");
+    }
+
+    const cup: Cup | null = await this.cupRepository.createQueryBuilder('cups').where({ id: cupId }).getOne();
+
+    if (!cup) {
+      throw new NotFoundException(`Cup with id = ${cupId} not found`);
+    }
+
+    if (![1, 2, 3, 4, 5].includes(vote)) {
+      throw new BadRequestException(`Wrong value for vote, should be in [1, 2, 3, 4, 5]`);
+    }
+
+    const previousCupReview: CupReview | null = await this.cupReviewRepository
+      .createQueryBuilder('cups_reviews')
+      .where({ user: { id: userAccess.userId } })
+      .andWhere({ cup: { id: cupId } })
+      .getOne();
+
+    if (previousCupReview) {
+      throw new BadRequestException(`Can't vote for map rating twice`);
+    }
+
+    const isFinishedCup: boolean = moment().isAfter(moment(cup.end_datetime));
+
+    if (!isFinishedCup) {
+      throw new BadRequestException(`Map rating voting is unavailable - cup is not finished`);
+    }
+
+    const isAfterTwoWeeks: boolean = moment().isAfter(moment(cup.end_datetime).add(2, 'weeks'));
+
+    if (isAfterTwoWeeks) {
+      throw new BadRequestException(`Map rating voting is unavailable - two weeks passed since cup finish time`);
+    }
+
+    const cupDemoForUser: CupDemo | null = await this.cupDemosRepository
+      .createQueryBuilder('cups_demos')
+      .where({ user: { id: userAccess.userId } })
+      .andWhere({ cup: { id: cupId } })
+      .getOne();
+
+    const isCupParticipant = !!cupDemoForUser;
+    const currentMapRating = cup.map_rating || 0;
+    const currentInternalVoteCount = cup.internal_vote_count || 0;
+    const numberOfVotesForCurrentUser = isCupParticipant ? 2 : 1;
+    const resultingInternalVoteCount = currentInternalVoteCount + numberOfVotesForCurrentUser;
+    const resultingDisplayVoteCount = (cup.display_vote_count || 0) + 1;
+    const resultingMapRating =
+      (currentMapRating * currentInternalVoteCount + vote * numberOfVotesForCurrentUser) / resultingInternalVoteCount;
+
+    await this.cupRepository
+      .createQueryBuilder('cups')
+      .update(Cup)
+      .set({
+        map_rating: Number(resultingMapRating.toFixed(5)),
+        internal_vote_count: resultingInternalVoteCount,
+        display_vote_count: resultingDisplayVoteCount,
+      })
+      .where({ id: cupId })
+      .execute();
+
+    await this.cupReviewRepository
+      .createQueryBuilder()
+      .insert()
+      .into(CupReview)
+      .values([
+        {
+          user: { id: userAccess.userId },
+          cup: { id: cupId },
+          vote,
+        },
+      ])
+      .execute();
+
+    return {
+      mapRating: Number(resultingMapRating.toFixed(1)),
+    };
   }
 
   private formatNumberWithLeadingZeroes(n: number): string {

@@ -174,4 +174,6 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
   seasonPeriod: '1 December 2024 - 31 May 2025',
   forMappers: 'For mappers',
   mappersSuggestionInfo: 'if you want to suggest your new map on warcup, write PM in Discord n0sf',
+  score: 'Score',
+  noReviews: 'No reviews',
 };

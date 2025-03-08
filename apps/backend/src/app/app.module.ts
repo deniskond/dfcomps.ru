@@ -33,6 +33,7 @@ import { WarcupAdminVote } from '../shared/entities/warcup-admin-vote.entity';
 import { WarcupInfo } from '../shared/entities/warcup-info.entity';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SentryModule } from '@sentry/nestjs/setup';
+import { CupReview } from '../shared/entities/cups-reviews.entity';
 
 @Module({
   imports: [
@@ -64,6 +65,7 @@ import { SentryModule } from '@sentry/nestjs/setup';
         MapSuggestion,
         WarcupAdminVote,
         WarcupInfo,
+        CupReview,
       ],
       database: 'dfcomps',
       synchronize: true,
