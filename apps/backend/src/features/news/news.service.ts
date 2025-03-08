@@ -177,7 +177,7 @@ export class NewsService {
         return this.mapOfflineStartNews(newsItem, userAccess);
       case NewsTypes.OFFLINE_RESULTS:
       case NewsTypes.DFWC_ROUND_RESULTS:
-        return this.mapOfflineResultsNews(newsItem);
+        return this.mapOfflineResultsNews(newsItem, userAccess);
       case NewsTypes.ONLINE_ANNOUNCE:
         return this.mapOnlineAnnounceNews(newsItem, userAccess);
       case NewsTypes.ONLINE_RESULTS:
@@ -241,12 +241,18 @@ export class NewsService {
     };
   }
 
-  private async mapOfflineResultsNews(news: News): Promise<NewsOfflineResultsInterface> {
+  private async mapOfflineResultsNews(
+    news: News,
+    userAccess: UserAccessInterface,
+  ): Promise<NewsOfflineResultsInterface> {
     const baseNews: Omit<NewsInterface, 'type'> = await this.mapBaseNews(news);
     const levelshot: string = getMapLevelshot(news.cup!.map1!);
     const cup: Cup = (await this.cupsRepository
       .createQueryBuilder('cups')
       .leftJoinAndSelect('cups.multicup', 'multicups')
+      .leftJoinAndSelect('cups.cup_reviews', 'cup_reviews', 'cup_reviews.userId = :userId', {
+        userId: userAccess.userId,
+      })
       .where({ id: news.cup!.id })
       .getOne())!;
 
@@ -258,6 +264,8 @@ export class NewsService {
     const vq3Results: ResultsTableInterface = isFinishedCup
       ? await this.tablesService.getOfflineCupTable(cup, Physics.VQ3)
       : emptyResults;
+    const userVote = cup.cup_reviews.length ? cup.cup_reviews[0].vote : null;
+    const isAfterTwoWeeks: boolean = moment().isAfter(moment(news.cup!.end_datetime).add(2, 'weeks'));
 
     return {
       ...baseNews,
@@ -266,6 +274,8 @@ export class NewsService {
       levelshot,
       cpmResults,
       vq3Results,
+      userVote,
+      isVotingAvailable: isFinishedCup && !isAfterTwoWeeks,
     };
   }
 

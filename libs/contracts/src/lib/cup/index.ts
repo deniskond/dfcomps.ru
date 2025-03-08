@@ -12,3 +12,4 @@ export { OnlineCupInfoInterface } from './online-cup-info.interface';
 export { VerifiedStatuses } from './verified-statuses.enum';
 export { CheckPreviousCupsType } from './check-previous-cups.type';
 export { CupStates } from './cup-states.enum';
+export { MapRatingInterface } from './map-rating.interface';

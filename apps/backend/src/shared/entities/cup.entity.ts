@@ -5,6 +5,7 @@ import { Multicup } from './multicup.entity';
 import { CupDemo } from './cup-demo.entity';
 import { RatingChange } from './rating-change.entity';
 import { News } from './news.entity';
+import { CupReview } from './cups-reviews.entity';
 
 @Entity({ name: 'cups' })
 export class Cup {
@@ -116,6 +117,15 @@ export class Cup {
   @Column({ type: 'character varying', nullable: true })
   state: CupStates;
 
+  @Column({ type: 'integer', nullable: true })
+  map_rating: number | null;
+
+  @Column({ type: 'integer', nullable: true })
+  internal_vote_count: number | null;
+
+  @Column({ type: 'integer', nullable: true })
+  display_vote_count: number | null;
+
   @OneToMany(() => CupResult, (cupResult) => cupResult.cup)
   cupResults: CupResult[];
 
@@ -123,10 +133,13 @@ export class Cup {
   news: News[];
 
   @OneToMany(() => RatingChange, (ratingChange) => ratingChange.cup)
-  ratingChanges: RatingChange[];
+  rating_changes: RatingChange[];
 
   @OneToMany(() => CupDemo, (cupDemo) => cupDemo.cup)
-  cupDemos: CupDemo[];
+  cup_demos: CupDemo[];
+
+  @OneToMany(() => CupReview, (cupReview) => cupReview.cup)
+  cup_reviews: CupReview[];
 
   @ManyToOne(() => Multicup, { nullable: true })
   multicup: Multicup | null;

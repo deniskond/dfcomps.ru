@@ -9,4 +9,6 @@ export interface NewsOfflineResultsInterface extends NewsInterface {
   vq3Results: ResultsTableInterface;
   cup: CupInterface;
   levelshot: string;
+  userVote: number | null;
+  isVotingAvailable: boolean;
 }
