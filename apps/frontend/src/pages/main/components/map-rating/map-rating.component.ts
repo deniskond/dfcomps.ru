@@ -56,10 +56,18 @@ export class MapRatingComponent implements OnInit, OnDestroy {
   }
 
   public onStarHover(index: number): void {
+    if (this.componentState === MapRatingComponentState.USER_VOTED) {
+      return;
+    }
+
     this.setRatingValues(index + 1);
   }
 
   public onStarClick(index: number): void {
+    if (this.componentState === MapRatingComponentState.USER_VOTED) {
+      return;
+    }
+
     this.selectedRating = index + 1;
   }
 

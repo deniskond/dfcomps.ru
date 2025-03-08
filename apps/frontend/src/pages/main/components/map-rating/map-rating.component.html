@@ -1,4 +1,8 @@
-<div (mouseleave)="resetToSelectedRating()" class="rating-stars-container">
+<div
+  [ngClass]="{ 'hover-disabled': componentState === componentStates.USER_VOTED }"
+  (mouseleave)="resetToSelectedRating()"
+  class="rating-stars-container"
+>
   <app-rating-star
     *ngFor="let ratingValue of ratingValues; let i = index"
     [fillValue]="ratingValue"
@@ -9,7 +13,9 @@
 </div>
 <div *ngIf="componentState === componentStates.USER_VOTED" class="rating-info-container">
   <div class="rating-value">{{ rating }}/5</div>
-  <mat-icon [matTooltip]="tooltipContent" matTooltipPosition="right" class="info-icon" style="white-space: pre-line;">info</mat-icon>
+  <mat-icon [matTooltip]="tooltipContent" matTooltipPosition="right" class="info-icon" style="white-space: pre-line">
+    info
+  </mat-icon>
 </div>
 <div *ngIf="componentState === componentStates.WAITING_FOR_VOTE" class="vote-button-container">
   <button [disabled]="isRequestInProcess" (click)="onVoteSubmit()" mat-stroked-button class="rate-map-button">
