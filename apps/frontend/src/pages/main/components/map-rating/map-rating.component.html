@@ -1,0 +1,11 @@
+<div (mouseleave)="resetToSelectedRating()" class="rating-stars-container">
+  <app-rating-star
+    *ngFor="let ratingValue of ratingValues; let i = index"
+    [fillValue]="ratingValue"
+    (mouseenter)="onStarHover(i)"
+    (click)="onStarClick(i)"
+    class="rating-star"
+  ></app-rating-star>
+</div>
+<div *ngIf="componentState === componentStates.USER_VOTED" class="vote-button-container">{{ rating }}/5</div>
+<div *ngIf="componentState === componentStates.WAITING_FOR_VOTE" class="vote-button-container">Button</div>
