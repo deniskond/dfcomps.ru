@@ -21,11 +21,17 @@ export class NewsElementComponent implements OnInit {
   public newsTypes = NewsTypes;
   public languages = Languages;
   public language$: Observable<Languages>;
+  public showStreamsOnTop: boolean;
 
   constructor(private languageService: LanguageService) {}
 
   ngOnInit(): void {
     this.language$ = this.languageService.getLanguage$();
+
+    this.showStreamsOnTop =
+      !this.newsElement.image &&
+      !!this.newsElement.streams.length &&
+      this.newsElement.type !== NewsTypes.STREAMERS_RESULTS;
   }
 
   public formatDate(date: string): string {
