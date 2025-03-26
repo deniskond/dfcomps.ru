@@ -1,41 +1,44 @@
 <div class="shadowed-main-block relative">
   <div class="news-filter-buttons">
-    <button
+    <a
       mat-raised-button
       color="primary"
       [class.filter-selected]="currentFilter === archiveNewsFilter.ALL"
-      (click)="filterNewsBy(archiveNewsFilter.ALL)"
+      [routerLink]="['/archive']"
       class="filter-button"
     >
       <span translate translation="allNews"></span>
-    </button>
-    <button
+    </a>
+    <a
       mat-raised-button
       color="primary"
       [class.filter-selected]="currentFilter === archiveNewsFilter.START"
-      (click)="filterNewsBy(archiveNewsFilter.START)"
+      [routerLink]="['/archive', 'filter', archiveNewsFilter.START]"
       class="filter-button"
+      rel="nofollow"
     >
       <span translate translation="start"></span>
-    </button>
-    <button
+    </a>
+    <a
       mat-raised-button
       color="primary"
       [class.filter-selected]="currentFilter === archiveNewsFilter.RESULT"
-      (click)="filterNewsBy(archiveNewsFilter.RESULT)"
+      [routerLink]="['/archive', 'filter', archiveNewsFilter.RESULT]"
       class="filter-button"
+      rel="nofollow"
     >
       <span translate translation="result"></span>
-    </button>
-    <button
+    </a>
+    <a
       mat-raised-button
       color="primary"
       [class.filter-selected]="currentFilter === archiveNewsFilter.OTHER"
-      (click)="filterNewsBy(archiveNewsFilter.OTHER)"
+      [routerLink]="['/archive', 'filter', archiveNewsFilter.OTHER]"
       class="filter-button"
+      rel="nofollow"
     >
       <span translate translation="other"></span>
-    </button>
+    </a>
   </div>
 
   <h1 translate translation="newsArchive" class="h1-block-header"></h1>
@@ -43,28 +46,28 @@
   <div *ngIf="news; else loader" class="movies-container">
     <ng-container *ngIf="!!news.length; else loader">
       <div class="news-container">
-        <div *ngFor="let singleNews of news" (click)="navigateToNewsPage(+singleNews.id)" class="archive-news-row">
+        <a *ngFor="let singleNews of news" [routerLink]="['/news', singleNews.id]" class="archive-news-row">
           <span>
-            <a *ngIf="language" class="blue-link bold">
+            <span *ngIf="language" class="blue-link bold">
               {{ language === languages.RU ? singleNews.header : singleNews.headerEn }}
-            </a>
+            </span>
             <span class="map-name">{{ singleNews.mapName }}</span>
           </span>
           <div>{{ singleNews.datetimezone | invokeFunction : formatDate }}</div>
-        </div>
+        </a>
       </div>
 
       <div class="pagination-container">
         <div class="pagination">
-          <div
+          <a
             *ngFor="let page of range(pagesCount)"
+            [routerLink]="getPaginationLink(page)"
             [class.selected]="currentPage === page"
-            (click)="changePagination(page)"
-            matRipple
             class="page blue-link"
+            matRipple
           >
             {{ page + 1 }}
-          </div>
+          </a>
         </div>
       </div>
     </ng-container>
