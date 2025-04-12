@@ -30,7 +30,6 @@ export class NewsElementComponent implements OnInit {
 
     this.showStreamsOnTop =
       !this.newsElement.image &&
-      !!this.newsElement.streams.length &&
       this.newsElement.type !== NewsTypes.STREAMERS_RESULTS;
   }
 

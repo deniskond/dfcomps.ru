@@ -25,7 +25,7 @@
     data-test-id="image-news"
   />
 
-  <app-news-streams *ngIf="showStreamsOnTop" [streams]="newsElement.streams"></app-news-streams>
+  <app-news-streams *ngIf="newsElement.streams.length && showStreamsOnTop" [streams]="newsElement.streams"></app-news-streams>
 
   <ng-container [ngSwitch]="newsElement.type">
     <app-news-simple *ngSwitchCase="newsTypes.SIMPLE" [news]="$any(newsElement)"></app-news-simple>
@@ -60,7 +60,7 @@
     ></app-news-streamers-results>
   </ng-container>
 
-  <app-news-streams *ngIf="!showStreamsOnTop" [streams]="newsElement.streams"></app-news-streams>
+  <app-news-streams *ngIf="newsElement.streams.length && !showStreamsOnTop" [streams]="newsElement.streams"></app-news-streams>
 </div>
 <app-news-comments
   [comments]="newsElement.comments"
