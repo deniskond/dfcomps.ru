@@ -438,7 +438,7 @@ export class DemosService {
       }
       if (demoConfig.player.hc !== '100') {
         valid = false;
-        errors.defrag_svfps = {
+        errors.handicap = {
           actual: demoConfig.player.hc,
           expected: '100',
         };
