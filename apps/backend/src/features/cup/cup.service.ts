@@ -617,7 +617,7 @@ export class CupService {
       .execute();
 
     return {
-      mapRating: Number(resultingMapRating.toFixed(1)),
+      mapRating: Number(resultingMapRating.toFixed(2)),
     };
   }
 

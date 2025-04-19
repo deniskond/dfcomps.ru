@@ -42,7 +42,7 @@ export function mapCupEntityToInterface(
     customNews: isFutureCup ? null : cup.custom_news,
     cupId: cup.id,
     logo: cup.logo,
-    mapRating: cup.map_rating ? Number(cup.map_rating.toFixed(1)) : null,
+    mapRating: cup.map_rating ? Number(cup.map_rating.toFixed(2)) : null,
     voteCount: cup.display_vote_count || 0,
   };
 }
