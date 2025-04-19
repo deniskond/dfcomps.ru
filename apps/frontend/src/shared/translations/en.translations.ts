@@ -176,4 +176,5 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
   mappersSuggestionInfo: 'if you want to suggest your new map on warcup, write PM in Discord n0sf',
   score: 'Score',
   noReviews: 'No reviews',
+  loginToAddReview: 'Log in or sign up to add review',
 };

@@ -1,8 +1,10 @@
 import { Component, ChangeDetectionStrategy, Input, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Languages, MapRatingInterface } from '@dfcomps/contracts';
 import { combineLatest, finalize, ReplaySubject, Subject, takeUntil } from 'rxjs';
+import { UserInterface } from '~shared/interfaces/user.interface';
 import { CupsService } from '~shared/services/cups/cups.service';
 import { LanguageService } from '~shared/services/language/language.service';
+import { UserService } from '~shared/services/user-service/user.service';
 
 const DEFAULT_RATING = 3;
 
@@ -10,6 +12,7 @@ enum MapRatingComponentState {
   WAITING_FOR_VOTE,
   VOTE_CLOSED,
   VOTE_CLOSED_WITH_NO_VOTES,
+  NOT_LOGGED,
 }
 
 @Component({
@@ -23,6 +26,7 @@ export class MapRatingComponent implements OnInit, OnDestroy {
   @Input() userVoteValue: number | null;
   @Input() isVotingAvailable: boolean;
   @Input() cupId: number;
+  @Input() voteCount: number;
 
   public componentState: MapRatingComponentState;
   public componentStates = MapRatingComponentState;
@@ -38,22 +42,11 @@ export class MapRatingComponent implements OnInit, OnDestroy {
     private languageService: LanguageService,
     private cupsService: CupsService,
     private changeDetectorRef: ChangeDetectorRef,
+    private userService: UserService,
   ) {}
 
   ngOnInit(): void {
-    if (this.userVoteValue || !this.isVotingAvailable) {
-      if (this.rating) {
-        this.userVoteValue$.next(this.userVoteValue);
-        this.componentState = MapRatingComponentState.VOTE_CLOSED;
-        this.selectedRating = this.rating;
-      } else {
-        this.componentState = MapRatingComponentState.VOTE_CLOSED_WITH_NO_VOTES;
-      }
-    } else {
-      this.componentState = MapRatingComponentState.WAITING_FOR_VOTE;
-      this.selectedRating = DEFAULT_RATING;
-    }
-
+    this.setUserSubscription();
     this.setRatingValues(this.selectedRating);
     this.setLanguageServiceSubscription();
   }
@@ -77,6 +70,10 @@ export class MapRatingComponent implements OnInit, OnDestroy {
     }
 
     this.selectedRating = index + 1;
+  }
+
+  public formatRating(rating: number): string {
+    return rating.toFixed(2);
   }
 
   public resetToSelectedRating(): void {
@@ -103,6 +100,21 @@ export class MapRatingComponent implements OnInit, OnDestroy {
       });
   }
 
+  private setComponentStateForLoggedUser(): void {
+    if (this.userVoteValue || !this.isVotingAvailable) {
+      if (this.rating) {
+        this.userVoteValue$.next(this.userVoteValue);
+        this.componentState = MapRatingComponentState.VOTE_CLOSED;
+        this.selectedRating = this.rating;
+      } else {
+        this.componentState = MapRatingComponentState.VOTE_CLOSED_WITH_NO_VOTES;
+      }
+    } else {
+      this.componentState = MapRatingComponentState.WAITING_FOR_VOTE;
+      this.selectedRating = DEFAULT_RATING;
+    }
+  }
+
   private setRatingValues(rating: number): void {
     const result = [0, 0, 0, 0, 0];
 
@@ -124,14 +136,29 @@ export class MapRatingComponent implements OnInit, OnDestroy {
         if (language === Languages.RU) {
           const yourVoteText = userVote ? `Ваш голос: ${userVote}\n` : '';
 
-          this.tooltipContent = `${yourVoteText}При подсчете среднего значения голоса участников турнира учитываются за 2 голоса`;
+          this.tooltipContent = `${yourVoteText}Всего голосов: ${this.voteCount}\nПри подсчете среднего значения голоса участников турнира учитываются за 2 голоса`;
         }
 
         if (language === Languages.EN) {
           const yourVoteText = userVote ? `Your vote: ${userVote}\n` : '';
 
-          this.tooltipContent = `${yourVoteText}When calculating the average rating, each participant's vote counts as 2 votes.`;
+          this.tooltipContent = `${yourVoteText}Total votes: ${this.voteCount}\nWhen calculating the average rating, each participant's vote counts as 2 votes.`;
         }
+      });
+  }
+
+  private setUserSubscription(): void {
+    this.userService
+      .getCurrentUser$()
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((user: UserInterface | null) => {
+        if (user) {
+          this.setComponentStateForLoggedUser();
+        } else {
+          this.componentState = MapRatingComponentState.NOT_LOGGED;
+        }
+
+        this.changeDetectorRef.markForCheck();
       });
   }
 }

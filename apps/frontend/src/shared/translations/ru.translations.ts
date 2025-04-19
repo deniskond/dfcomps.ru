@@ -175,4 +175,5 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   mappersSuggestionInfo: 'если хотите предложить свою новую карту на warcup, пишите в ЛС в дискорд n0sf',
   score: 'Оценка',
   noReviews: 'Оценок нет',
+  loginToAddReview: 'Войдите или зарегистрируйтесь, чтобы оставить оценку',
 };
