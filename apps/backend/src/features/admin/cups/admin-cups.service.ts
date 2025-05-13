@@ -417,8 +417,8 @@ export class AdminCupsService {
       throw new BadRequestException('Wrong cup type, this endpoint only works for offline cups');
     }
 
-    this.calculateOfflineRating(cup, Physics.VQ3);
-    this.calculateOfflineRating(cup, Physics.CPM);
+    await this.calculateOfflineRating(cup, Physics.VQ3);
+    await this.calculateOfflineRating(cup, Physics.CPM);
 
     await this.cupsRepository
       .createQueryBuilder()
