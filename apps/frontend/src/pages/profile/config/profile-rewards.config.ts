@@ -120,6 +120,12 @@ export class PROFILE_REWARDS {
       [Rewards.TOP3_CPM_EIGHTH_SEASON]: 'top_3_cpm',
       [Rewards.TOP10_VQ3_EIGHTH_SEASON]: 'top10',
       [Rewards.TOP10_CPM_EIGHTH_SEASON]: 'top10',
+      [Rewards.FPSCUP03_WINNER_VQ3]: 'fps-cup-03-top1',
+      [Rewards.FPSCUP03_WINNER_CPM]: 'fps-cup-03-top1',
+      [Rewards.FPSCUP03_TOP2_VQ3]: 'fps-cup-03-top2',
+      [Rewards.FPSCUP03_TOP2_CPM]: 'fps-cup-03-top2',
+      [Rewards.FPSCUP03_TOP3_VQ3]: 'fps-cup-03-top3',
+      [Rewards.FPSCUP03_TOP3_CPM]: 'fps-cup-03-top3',
     };
   }
 }

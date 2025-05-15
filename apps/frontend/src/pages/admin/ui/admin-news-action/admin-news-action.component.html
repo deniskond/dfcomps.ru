@@ -170,13 +170,13 @@
       </ng-container>
 
       <ng-container *ngIf="isMulticupRequired">
-        <ng-container *ngIf="availableMulticups$ | async as availableMulticups">
+        <ng-container *ngIf="allMulticups$ | async as allMulticups">
           <div class="input-title">Multicup</div>
           <div>
             <mat-form-field appearance="outline" class="select">
               <mat-select formControlName="multicup" data-test-id="news-multicup-select">
-                <mat-option *ngFor="let availableMulticup of availableMulticups" [value]="availableMulticup.multicupId">
-                  {{ availableMulticup.name }}
+                <mat-option *ngFor="let multicup of allMulticups" [value]="multicup.id">
+                  {{ multicup.name }}
                 </mat-option>
               </mat-select>
             </mat-form-field>

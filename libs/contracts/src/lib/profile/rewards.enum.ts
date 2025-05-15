@@ -116,4 +116,10 @@ export enum Rewards {
   TOP3_CPM_EIGHTH_SEASON = 'Top 3 CPM (season 8)',
   TOP10_VQ3_EIGHTH_SEASON = 'Top 10 VQ3 (season 8)',
   TOP10_CPM_EIGHTH_SEASON = 'Top 10 CPM (season 8)',
+  FPSCUP03_WINNER_VQ3 = 'FPS Cup 03 - Winner (VQ3)',
+  FPSCUP03_TOP2_VQ3 = 'FPS Cup 03 - Top 2 (VQ3)',
+  FPSCUP03_TOP3_VQ3 = 'FPS Cup 03 - Top 3 (VQ3)',
+  FPSCUP03_WINNER_CPM = 'FPS Cup 03 - Winner (CPM)',
+  FPSCUP03_TOP2_CPM = 'FPS Cup 03 - Top 2 (CPM)',
+  FPSCUP03_TOP3_CPM = 'FPS Cup 03 - Top 3 (CPM)',
 }

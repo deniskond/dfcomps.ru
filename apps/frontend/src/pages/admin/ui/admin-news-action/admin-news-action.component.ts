@@ -16,8 +16,8 @@ import * as moment from 'moment-timezone';
 import { combineLatest, map, Observable, of, ReplaySubject, switchMap, tap } from 'rxjs';
 import {
   AdminActiveCupInterface,
-  AdminActiveMulticupInterface,
   AdminEditNewsInterface,
+  AdminMulticupInterface,
   CupTypes,
   Languages,
   NewsStreamInterface,
@@ -49,7 +49,7 @@ export class AdminNewsActionComponent implements OnInit {
   public newsActionForm: FormGroup;
   public isCupRequired: boolean;
   public isMulticupRequired: boolean;
-  public availableMulticups$: Observable<AdminActiveMulticupInterface[]>;
+  public allMulticups$: Observable<AdminMulticupInterface[]>;
   public availableCups$: Observable<AdminActiveCupInterface[]>;
   public mapNewsTypeToHumanTitle = mapNewsTypeToHumanTitle;
   public newsType: NewsTypes;
@@ -78,7 +78,7 @@ export class AdminNewsActionComponent implements OnInit {
     this.isMulticupRequired = this.newsType === NewsTypes.MULTICUP_RESULTS;
 
     if (this.isMulticupRequired) {
-      this.availableMulticups$ = this.adminDataService.getAllAvailableMulticups$();
+      this.allMulticups$ = this.adminDataService.getAllMulticups$();
     }
 
     if (this.newsType === NewsTypes.ONLINE_ANNOUNCE || this.newsType === NewsTypes.ONLINE_RESULTS) {
