@@ -23,8 +23,8 @@ export class AdminMulticupsService {
   public async getAllMulticups(accessToken: string | undefined): Promise<AdminMulticupInterface[]> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
-    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER, UserRoles.VALIDATOR])) {
-      throw new UnauthorizedException('Unauthorized to get admin multicups list without CUP_ORGANIZER role');
+    if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER, UserRoles.VALIDATOR, UserRoles.NEWSMAKER])) {
+      throw new UnauthorizedException('Unauthorized to get admin multicups list without appropriate role');
     }
 
     const multicups: Multicup[] = await this.multicupsRepository
