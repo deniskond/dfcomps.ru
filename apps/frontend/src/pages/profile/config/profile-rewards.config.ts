@@ -11,6 +11,7 @@ export class PROFILE_REWARDS {
       [Rewards.SEASON_SIX_PARTICIPANT]: 's6',
       [Rewards.SEASON_SEVEN_PARTICIPANT]: 's7',
       [Rewards.SEASON_EIGHT_PARTICIPANT]: 's8',
+      [Rewards.SEASON_NINE_PARTICIPANT]: 's9',
       [Rewards.TOP1_VQ3_FIRST_SEASON]: 'top_1_vq3',
       [Rewards.TOP2_VQ3_FIRST_SEASON]: 'top_2_vq3',
       [Rewards.TOP3_VQ3_FIRST_SEASON]: 'top_3_vq3',
@@ -126,6 +127,14 @@ export class PROFILE_REWARDS {
       [Rewards.FPSCUP03_TOP2_CPM]: 'fps-cup-03-top2',
       [Rewards.FPSCUP03_TOP3_VQ3]: 'fps-cup-03-top3',
       [Rewards.FPSCUP03_TOP3_CPM]: 'fps-cup-03-top3',
+      [Rewards.TOP1_VQ3_NINTH_SEASON]: 'top_1_vq3',
+      [Rewards.TOP2_VQ3_NINTH_SEASON]: 'top_2_vq3',
+      [Rewards.TOP3_VQ3_NINTH_SEASON]: 'top_3_vq3',
+      [Rewards.TOP1_CPM_NINTH_SEASON]: 'top_1_cpm',
+      [Rewards.TOP2_CPM_NINTH_SEASON]: 'top_2_cpm',
+      [Rewards.TOP3_CPM_NINTH_SEASON]: 'top_3_cpm',
+      [Rewards.TOP10_VQ3_NINTH_SEASON]: 'top10',
+      [Rewards.TOP10_CPM_NINTH_SEASON]: 'top10',
     };
   }
 }

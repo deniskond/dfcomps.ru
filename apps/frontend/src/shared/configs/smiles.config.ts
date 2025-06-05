@@ -1249,6 +1249,30 @@ export class SMILES_CONFIG {
         col: 11,
         group: SmileGroups.PERSONAL,
       },
+      {
+        name: 'frostie1',
+        row: 14,
+        col: 12,
+        group: SmileGroups.PERSONAL,
+      },
+      {
+        name: 'puz2',
+        row: 14,
+        col: 13,
+        group: SmileGroups.PERSONAL,
+      },
+      {
+        name: 'moskal2',
+        row: 14,
+        col: 14,
+        group: SmileGroups.PERSONAL,
+      },
+      {
+        name: 'moskal3',
+        row: 14,
+        col: 15,
+        group: SmileGroups.PERSONAL,
+      },
     ];
   }
 
