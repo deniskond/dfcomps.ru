@@ -297,14 +297,14 @@ export class AdminWarcupsService {
       warcupVotingState = WarcupVotingState.CLOSING;
       nextStateStartTime = nextWarcupStartingTime.format();
     } else if (
-      currentTime.isSameOrAfter(nextWarcupStartingTime.clone().subtract(1, 'day')) &&
+      currentTime.isSameOrAfter(nextWarcupStartingTime.clone().add(1, 'minute').subtract(7, 'day')) &&
       currentTime.isBefore(nextWarcupStartingTime.clone().subtract(1, 'hour'))
     ) {
       warcupVotingState = WarcupVotingState.VOTING;
       nextStateStartTime = nextWarcupStartingTime.clone().subtract(1, 'hour').format();
     } else {
       warcupVotingState = WarcupVotingState.WAITING;
-      nextStateStartTime = nextWarcupStartingTime.clone().subtract(1, 'day').format();
+      nextStateStartTime = nextWarcupStartingTime.clone().add(1, 'minute').subtract(7, 'day').format();
     }
 
     return {

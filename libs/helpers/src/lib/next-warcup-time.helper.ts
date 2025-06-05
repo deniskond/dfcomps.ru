@@ -1,7 +1,7 @@
 import * as moment from 'moment-timezone';
 
-const MSK_HOURS_WARCUP_START = 22;
-const MSK_MINUTES_WARCUP_START = 30;
+const MSK_HOURS_WARCUP_START = 19;
+const MSK_MINUTES_WARCUP_START = 0;
 const SATURDAY_WEEK_NUMBER = 6;
 
 export function getNextWarcupTime(): string {

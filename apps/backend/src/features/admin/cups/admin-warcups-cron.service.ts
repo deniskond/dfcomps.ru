@@ -28,7 +28,7 @@ export class AdminWarcupsCronService {
     @InjectRepository(WarcupAdminVote) private readonly warcupAdminVoteRepository: Repository<WarcupAdminVote>,
   ) {}
 
-  @Cron('30 21 * * 6', { timeZone: 'Europe/Moscow' })
+  @Cron('00 18 * * 6', { timeZone: 'Europe/Moscow' })
   async addWarcup() {
     const warcupInfo: WarcupInfo = (await this.warcupInfoRepository.createQueryBuilder().getOne())!;
 
@@ -96,7 +96,7 @@ export class AdminWarcupsCronService {
       .execute();
   }
 
-  @Cron('30 22 * * 6', { timeZone: 'Europe/Moscow' })
+  @Cron('00 19 * * 6', { timeZone: 'Europe/Moscow' })
   async postWarcupStart() {
     const warcupInfo: WarcupInfo = (await this.warcupInfoRepository.createQueryBuilder().getOne())!;
 
