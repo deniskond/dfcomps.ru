@@ -19,6 +19,7 @@ import {
   CheckPreviousCupsType,
   WorldspawnMapInfoInterface,
   MapRatingInterface,
+  MapType,
 } from '@dfcomps/contracts';
 import { AuthService } from '../auth/auth.service';
 import * as moment from 'moment';
@@ -448,6 +449,8 @@ export class CupService {
         .where({ map_name: normalizedMapname })
         .execute();
     } else {
+      const weaponsString = mapWeaponsToString(worldspawnMapInfo.weapons);
+
       this.levelshotsService.downloadLevelshot(normalizedMapname);
 
       await this.mapSuggestionRepository
@@ -459,9 +462,10 @@ export class CupService {
             map_name: normalizedMapname,
             suggestions_count: 1,
             author: worldspawnMapInfo.author,
-            weapons: mapWeaponsToString(worldspawnMapInfo.weapons),
+            weapons: weaponsString,
             is_admin_suggestion: false,
             size: worldspawnMapInfo.size,
+            map_type: weaponsString.includes('U') ? MapType.STRAFE : MapType.WEAPON,
             pk3_link: worldspawnMapInfo.pk3,
             is_blacklisted: false,
             user: {
