@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { CommentsService } from '../../services/comments/comments.service';
 import { ReplaySubject, Observable, combineLatest } from 'rxjs';
-import { take, finalize, map, switchMap } from 'rxjs/operators';
+import { take, finalize, map, switchMap, filter } from 'rxjs/operators';
 import * as moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -146,7 +146,10 @@ export class NewsCommentsComponent implements OnInit, OnChanges {
     this.dialog
       .open(ModeratorDeleteCommentDialogComponent)
       .afterClosed()
-      .pipe(switchMap((reason: string) => this.commentsService.moderatorDeleteComment$(commentId, reason)))
+      .pipe(
+        filter((reason: string) => !!reason),
+        switchMap((reason: string) => this.commentsService.moderatorDeleteComment$(commentId, reason)),
+      )
       .subscribe((updatedComments: CommentInterface[]) => {
         this.comments$.next(updatedComments);
         this.textarea.nativeElement.value = '';
