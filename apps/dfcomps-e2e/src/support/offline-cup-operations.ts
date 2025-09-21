@@ -20,7 +20,7 @@ export function addOfflineCup(
   cy.intercept(
     {
       method: 'GET',
-      url: `/api/cup/get-worldspawn-map-info?map=${mapName}`,
+      url: `/api/cup/get-parsed-map-info?map=${mapName}`,
     },
     {
       statusCode: 200,

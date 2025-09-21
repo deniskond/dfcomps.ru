@@ -17,7 +17,7 @@ import { AdminWarcupsService } from './admin-warcups.service';
 import { WarcupInfo } from 'apps/backend/src/shared/entities/warcup-info.entity';
 import { MapSuggestion } from 'apps/backend/src/shared/entities/map-suggestion.entity';
 import { WarcupAdminVote } from 'apps/backend/src/shared/entities/warcup-admin-vote.entity';
-import { WorldspawnParseService } from 'apps/backend/src/shared/services/worldspawn-parse.service';
+import { MapParsingService } from 'apps/backend/src/shared/services/map-parsing.service';
 import { AdminWarcupsCronService } from './admin-warcups-cron.service';
 import { AdminAddOfflineCupService } from './add-offline-cup.service';
 import { LevelshotsService } from 'apps/backend/src/shared/services/levelshots.service';
@@ -45,7 +45,7 @@ import { LevelshotsService } from 'apps/backend/src/shared/services/levelshots.s
     AdminCupsService,
     TablesService,
     AdminWarcupsService,
-    WorldspawnParseService,
+    MapParsingService,
     AdminWarcupsCronService,
     AdminAddOfflineCupService,
     LevelshotsService,

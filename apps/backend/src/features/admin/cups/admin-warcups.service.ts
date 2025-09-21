@@ -6,7 +6,7 @@ import {
   WarcupSuggestionStatsInterface,
   WarcupVotingInterface,
   WarcupVotingState,
-  WorldspawnMapInfoInterface,
+  ParsedMapInfoInterface,
 } from '@dfcomps/contracts';
 import { UserAccessInterface } from 'apps/backend/src/shared/interfaces/user-access.interface';
 import { UserRoles, checkUserRoles } from '@dfcomps/auth';
@@ -18,15 +18,15 @@ import { getNextWarcupTime, mapWeaponsToString } from '@dfcomps/helpers';
 import { MapSuggestion } from 'apps/backend/src/shared/entities/map-suggestion.entity';
 import { WarcupAdminVote } from 'apps/backend/src/shared/entities/warcup-admin-vote.entity';
 import { Cup } from 'apps/backend/src/shared/entities/cup.entity';
-import { WorldspawnParseService } from 'apps/backend/src/shared/services/worldspawn-parse.service';
 import { getMapLevelshot } from 'apps/backend/src/shared/helpers/get-map-levelshot';
 import { LevelshotsService } from 'apps/backend/src/shared/services/levelshots.service';
+import { MapParsingService } from 'apps/backend/src/shared/services/map-parsing.service';
 
 @Injectable()
 export class AdminWarcupsService {
   constructor(
     private readonly authService: AuthService,
-    private readonly worldspawnParseService: WorldspawnParseService,
+    private readonly mapParsingService: MapParsingService,
     private readonly levelshotsService: LevelshotsService,
     @InjectRepository(WarcupInfo) private readonly warcupInfoRepository: Repository<WarcupInfo>,
     @InjectRepository(MapSuggestion) private readonly mapSuggestionsRepository: Repository<MapSuggestion>,
@@ -241,10 +241,10 @@ export class AdminWarcupsService {
       throw new BadRequestException(`Map ${normalizedMapname} was already suggested in admin vote`);
     }
 
-    let worldspawnMapInfo: WorldspawnMapInfoInterface;
+    let parsedMapInfo: ParsedMapInfoInterface;
 
     try {
-      worldspawnMapInfo = await this.worldspawnParseService.getWorldspawnMapInfo(normalizedMapname);
+      parsedMapInfo = await this.mapParsingService.getParsedMapInfo(normalizedMapname);
     } catch (e) {
       throw new NotFoundException(`Map ${normalizedMapname} was not found on ws.q3df.org`);
     }
@@ -259,11 +259,11 @@ export class AdminWarcupsService {
         {
           map_name: normalizedMapname,
           suggestions_count: 1,
-          author: worldspawnMapInfo.author,
-          weapons: mapWeaponsToString(worldspawnMapInfo.weapons),
+          author: parsedMapInfo.author,
+          weapons: mapWeaponsToString(parsedMapInfo.weapons),
           is_admin_suggestion: true,
-          size: worldspawnMapInfo.size,
-          pk3_link: worldspawnMapInfo.pk3,
+          size: parsedMapInfo.size,
+          pk3_link: parsedMapInfo.pk3,
           is_blacklisted: false,
           user: {
             id: userAccess.userId!,

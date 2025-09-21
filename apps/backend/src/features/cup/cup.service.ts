@@ -17,7 +17,7 @@ import {
   OnlineCupInfoInterface,
   CupTypes,
   CheckPreviousCupsType,
-  WorldspawnMapInfoInterface,
+  ParsedMapInfoInterface,
   MapRatingInterface,
   MapType,
 } from '@dfcomps/contracts';
@@ -36,10 +36,10 @@ import { v4 } from 'uuid';
 import { User } from '../../shared/entities/user.entity';
 import { getNextWarcupTime, mapWeaponsToString } from '@dfcomps/helpers';
 import { MapSuggestion } from '../../shared/entities/map-suggestion.entity';
-import { WorldspawnParseService } from '../../shared/services/worldspawn-parse.service';
 import { LevelshotsService } from '../../shared/services/levelshots.service';
 import { OLD_WARCUP_MAPS } from './old-warcup-maps';
 import { CupReview } from '../../shared/entities/cups-reviews.entity';
+import { MapParsingService } from '../../shared/services/map-parsing.service';
 
 @Injectable()
 export class CupService {
@@ -52,7 +52,7 @@ export class CupService {
     @InjectRepository(CupReview) private readonly cupReviewRepository: Repository<CupReview>,
     private readonly authService: AuthService,
     private readonly tablesService: TablesService,
-    private readonly worldspawnParseService: WorldspawnParseService,
+    private readonly mapParsingService: MapParsingService,
     private readonly levelshotsService: LevelshotsService,
   ) {}
 
@@ -428,10 +428,10 @@ export class CupService {
       throw new BadRequestException(`Map ${normalizedMapname} was already played (cup Warcup #${oldWarcup.number})`);
     }
 
-    let worldspawnMapInfo: WorldspawnMapInfoInterface;
+    let parsedMapInfo: ParsedMapInfoInterface;
 
     try {
-      worldspawnMapInfo = await this.worldspawnParseService.getWorldspawnMapInfo(normalizedMapname);
+      parsedMapInfo = await this.mapParsingService.getParsedMapInfo(normalizedMapname);
     } catch (e) {
       throw new NotFoundException(`Map ${normalizedMapname} was not found on ws.q3df.org`);
     }
@@ -449,7 +449,7 @@ export class CupService {
         .where({ map_name: normalizedMapname })
         .execute();
     } else {
-      const weaponsString = mapWeaponsToString(worldspawnMapInfo.weapons);
+      const weaponsString = mapWeaponsToString(parsedMapInfo.weapons);
 
       this.levelshotsService.downloadLevelshot(normalizedMapname);
 
@@ -461,12 +461,12 @@ export class CupService {
           {
             map_name: normalizedMapname,
             suggestions_count: 1,
-            author: worldspawnMapInfo.author,
+            author: parsedMapInfo.author,
             weapons: weaponsString,
             is_admin_suggestion: false,
-            size: worldspawnMapInfo.size,
+            size: parsedMapInfo.size,
             map_type: weaponsString.includes('U') ? MapType.STRAFE : MapType.WEAPON,
-            pk3_link: worldspawnMapInfo.pk3,
+            pk3_link: parsedMapInfo.pk3,
             is_blacklisted: false,
             user: {
               id: userAccess.userId!,
@@ -532,14 +532,14 @@ export class CupService {
     }
   }
 
-  public async getWorldspawnMapInfo(accessToken: string | undefined, map: string): Promise<WorldspawnMapInfoInterface> {
+  public async getParsedMapInfo(accessToken: string | undefined, map: string): Promise<ParsedMapInfoInterface> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!userAccess.userId) {
-      throw new UnauthorizedException(`Unauthorized users can't get worldspawn map info`);
+      throw new UnauthorizedException(`Unauthorized users can't get parsed map info`);
     }
 
-    return await this.worldspawnParseService.getWorldspawnMapInfo(map);
+    return await this.mapParsingService.getParsedMapInfo(map);
   }
 
   public async reviewMap(accessToken: string | undefined, cupId: number, vote: number): Promise<MapRatingInterface> {

@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, ChangeDetectorRef, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { CheckPreviousCupsType, WorldspawnMapInfoInterface } from '@dfcomps/contracts';
+import { CheckPreviousCupsType, ParsedMapInfoInterface } from '@dfcomps/contracts';
 import {
   Observable,
   ReplaySubject,
@@ -40,7 +40,7 @@ export class MapSuggestionComponent implements OnInit, OnDestroy {
   public isNotFoundOnWS = false;
   public isLoading = false;
   public mapName = '';
-  public mapInfo: WorldspawnMapInfoInterface | null = null;
+  public mapInfo: ParsedMapInfoInterface | null = null;
   public previousCupName: string | null = null;
   public mapWeapons: string;
 
@@ -128,7 +128,7 @@ export class MapSuggestionComponent implements OnInit, OnDestroy {
         }),
         switchMap((mapName: string) =>
           combineLatest([
-            this.cupsService.getWorldspawnMapInfo$(mapName).pipe(catchError(() => of(null))),
+            this.cupsService.getParsedMapInfo$(mapName).pipe(catchError(() => of(null))),
             this.cupsService.checkPreviousCups$(mapName),
           ]),
         ),
@@ -137,7 +137,7 @@ export class MapSuggestionComponent implements OnInit, OnDestroy {
         }),
         takeUntil(this.onDestroy$),
       )
-      .subscribe(([mapInfo, previosCupsInfo]: [WorldspawnMapInfoInterface | null, CheckPreviousCupsType]) => {
+      .subscribe(([mapInfo, previosCupsInfo]: [ParsedMapInfoInterface | null, CheckPreviousCupsType]) => {
         this.isNotFoundOnWS = !mapInfo;
         this.mapInfo = mapInfo;
         this.wasPlayedBefore = previosCupsInfo.wasOnCompetition;

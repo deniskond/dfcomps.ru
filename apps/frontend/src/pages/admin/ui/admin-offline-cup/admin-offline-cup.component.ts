@@ -21,7 +21,7 @@ import {
   AdminActiveMulticupInterface,
   AdminEditCupInterface,
   UploadedFileLinkInterface,
-  WorldspawnMapInfoInterface,
+  ParsedMapInfoInterface,
 } from '@dfcomps/contracts';
 import { MatRadioChange } from '@angular/material/radio';
 import * as moment from 'moment-timezone';
@@ -145,10 +145,10 @@ export class AdminOfflineCupComponent implements OnInit {
         tap(() => {
           this.isLoadingMapInfo = true;
         }),
-        switchMap((value: string) => this.cupsService.getWorldspawnMapInfo$(value).pipe(catchError(() => of(null)))),
+        switchMap((value: string) => this.cupsService.getParsedMapInfo$(value).pipe(catchError(() => of(null)))),
         takeUntil(this.onDestroy$),
       )
-      .subscribe((mapInfo: WorldspawnMapInfoInterface | null) => {
+      .subscribe((mapInfo: ParsedMapInfoInterface | null) => {
         this.isLoadingMapInfo = false;
 
         if (!mapInfo) {
@@ -230,7 +230,7 @@ export class AdminOfflineCupComponent implements OnInit {
     this.weaponControls.forEach((controlName: string) => this.offlineCupForm.get(controlName)!.setValue(false));
   }
 
-  private setMapInfoFormValues(mapInfo: WorldspawnMapInfoInterface): void {
+  private setMapInfoFormValues(mapInfo: ParsedMapInfoInterface): void {
     this.offlineCupForm.get('mapAuthor')!.setValue(mapInfo.author);
     this.offlineCupForm.get('mapPk3Link')!.setValue(mapInfo.pk3);
     this.offlineCupForm.get('mapLevelshotLink')!.setValue(mapInfo.levelshot);
@@ -239,7 +239,7 @@ export class AdminOfflineCupComponent implements OnInit {
     this.weaponControls.forEach((control: string) =>
       this.offlineCupForm
         .get(control)!
-        .setValue(mapInfo.weapons[control as keyof WorldspawnMapInfoInterface['weapons']]),
+        .setValue(mapInfo.weapons[control as keyof ParsedMapInfoInterface['weapons']]),
     );
   }
 

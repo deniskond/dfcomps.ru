@@ -6,7 +6,7 @@ import {
   ArchiveLinkInterface,
   OnlineCupInfoInterface,
   CheckPreviousCupsType,
-  WorldspawnMapInfoInterface,
+  ParsedMapInfoInterface,
   MapRatingInterface,
 } from '@dfcomps/contracts';
 import { CupRegistrationDto } from './dto/cup-registration.dto';
@@ -80,12 +80,12 @@ export class CupController {
     return this.cupService.checkPreviousCups(accessToken, mapName);
   }
 
-  @Get('get-worldspawn-map-info')
-  getWorldspawnMapInfo(
+  @Get('get-parsed-map-info')
+  getParsedMapInfo(
     @Headers('X-Auth') accessToken: string | undefined,
     @Query() { map }: Record<string, string>,
-  ): Promise<WorldspawnMapInfoInterface> {
-    return this.cupService.getWorldspawnMapInfo(accessToken, map);
+  ): Promise<ParsedMapInfoInterface> {
+    return this.cupService.getParsedMapInfo(accessToken, map);
   }
 
   @Post('review')
