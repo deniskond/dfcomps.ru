@@ -2,6 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import * as fs from 'fs';
 import axios, { AxiosResponse } from 'axios';
 import * as sharp from 'sharp';
+import { GlobalConfig } from '../configs/global-config';
 
 @Injectable()
 export class LevelshotsService {
@@ -9,6 +10,10 @@ export class LevelshotsService {
   private readonly NO_LEVELSHOT_FILESIZE = 11419;
 
   public async downloadLevelshot(mapname: string): Promise<void> {
+    if (!GlobalConfig.settings.isWorldspawnParserEnabled) {
+      return;
+    }
+
     if (fs.existsSync(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/images/maps/${mapname}.jpg`)) {
       return;
     }
