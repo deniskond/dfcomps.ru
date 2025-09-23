@@ -13,6 +13,7 @@ import { UserService } from '~shared/services/user-service/user.service';
 import {
   Physics,
   ProfileCupResponseInterface,
+  ProfileCupStatInterface,
   ProfileDemosInterface,
   ProfileInterface,
   ProfileMainInfoInterface,
@@ -31,6 +32,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   public vq3Chart: number[];
   public demos: ProfileDemosInterface[];
   public cups: ProfileCupInterface[];
+  public stats: ProfileCupStatInterface;
   public rewards: Rewards[];
   public isLoading$ = new Subject<boolean>();
   public physics = Physics;
@@ -124,6 +126,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     this.vq3Chart = profileInfo.rating.vq3;
     this.demos = profileInfo.demos;
     this.cups = this.mapCupsToView(profileInfo.cups);
+    this.stats = profileInfo.stats;
     this.rewards = profileInfo.rewards.map(({ name }: ProfileRewardsInterface) => name);
 
     this.sanitizer.bypassSecurityTrustResourceUrl(`/assets/images/avatars/${this.mainInfo.avatar}.jpg`);
