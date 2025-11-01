@@ -41,7 +41,7 @@ import { User } from '../../../shared/entities/user.entity';
 import { TableEntryWithRatingInterface } from './table-entry-with-rating.interface';
 import { RatingChange } from '../../../shared/entities/rating-change.entity';
 import { Season } from '../../../shared/entities/season.entity';
-import * as Zip from 'adm-zip';
+import * as archiver from 'archiver';
 import * as fs from 'fs';
 import { Multicup } from '../../../shared/entities/multicup.entity';
 import { getMapLevelshot } from '../../../shared/helpers/get-map-levelshot';
@@ -452,7 +452,6 @@ export class AdminCupsService {
     const vq3Table: ResultsTableInterface = await this.tablesService.getOfflineCupTable(cup, Physics.VQ3);
     const cpmTable: ResultsTableInterface = await this.tablesService.getOfflineCupTable(cup, Physics.CPM);
     const cupName: string = cup.full_name.replace(/#/g, '').replace(/\s/g, '_');
-    const zip = new Zip();
     const archiveFileName = `${cupName}_all_demos.zip`;
     const relativeArchiveFilePath = process.env.DFCOMPS_FILES_RELATIVE_PATH + `/demos/cup${cupId}/${archiveFileName}`;
     const archiveFilePath = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${archiveFileName}`;
@@ -461,15 +460,24 @@ export class AdminCupsService {
       fs.rmSync(archiveFilePath);
     }
 
+    const writeStream = fs.createWriteStream(archiveFilePath);
+    const archive = archiver('zip', { zlib: { level: 9 } });
+
+    archive.pipe(writeStream);
+
     vq3Table.valid.forEach((demo: ValidDemoInterface) => {
-      zip.addLocalFile(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${demo.demopath}`, 'vq3');
+      archive.file(`${process.env.DFCOMPS_FILES_ABSOLUTE_PATH}/demos/cup${cupId}/${demo.demopath}`, {
+        name: `vq3/${demo.demopath}`,
+      });
     });
 
     cpmTable.valid.forEach((demo: ValidDemoInterface) => {
-      zip.addLocalFile(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${demo.demopath}`, 'cpm');
+      archive.file(`${process.env.DFCOMPS_FILES_ABSOLUTE_PATH}/demos/cup${cupId}/${demo.demopath}`, {
+        name: `cpm/${demo.demopath}`,
+      });
     });
 
-    zip.writeZip(archiveFilePath);
+    await archive.finalize();
 
     const allValidDemos: CupDemo[] = await this.cupsDemosRepository
       .createQueryBuilder('cups_demos')

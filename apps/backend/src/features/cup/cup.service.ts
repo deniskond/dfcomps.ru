@@ -29,8 +29,9 @@ import { UserAccessInterface } from '../../shared/interfaces/user-access.interfa
 import { mapCupEntityToInterface } from '../../shared/mappers/cup.mapper';
 import { UserRoles, checkUserRoles } from '@dfcomps/auth';
 import { TablesService } from '../tables/tables.service';
-import * as Zip from 'adm-zip';
 import * as fs from 'fs';
+import * as path from 'path';
+import * as archiver from 'archiver';
 import { CupDemo } from '../../shared/entities/cup-demo.entity';
 import { v4 } from 'uuid';
 import { User } from '../../shared/entities/user.entity';
@@ -131,7 +132,6 @@ export class CupService {
     const vq3Table: ResultsTableInterface = await this.tablesService.getOfflineCupTable(cup, Physics.VQ3);
     const cpmTable: ResultsTableInterface = await this.tablesService.getOfflineCupTable(cup, Physics.CPM);
     const cupName: string = cup.full_name.replace(/#/g, '').replace(/\s/g, '_');
-    const zip = new Zip();
     const validationArchiveFileName = `${cupName}_all_demos_validation.zip`;
     const validationArchiveFilePath =
       process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${validationArchiveFileName}`;
@@ -140,32 +140,32 @@ export class CupService {
       fs.rmSync(validationArchiveFilePath);
     }
 
+    const writeStream = fs.createWriteStream(validationArchiveFilePath);
+    const archive = archiver('zip', { zlib: { level: 9 } });
+
+    archive.pipe(writeStream);
+
     const allCupDemos: CupDemo[] = await this.cupDemosRepository
       .createQueryBuilder('cups_demos')
       .where('cups_demos.cupId = :cupId', { cupId })
       .getMany();
 
     allCupDemos.forEach((demo: CupDemo) => {
-      const isVq3TableDemo = vq3Table.valid.some((vq3Demo: ValidDemoInterface) => vq3Demo.demopath === demo.demopath);
+      const demoPath = path.join(process.env.DFCOMPS_FILES_ABSOLUTE_PATH!, `demos/cup${cupId}/${demo.demopath}`);
+      let folder: string;
 
-      if (isVq3TableDemo) {
-        zip.addLocalFile(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${demo.demopath}`, 'vq3');
-
-        return;
+      if (vq3Table.valid.some((vq3Demo: ValidDemoInterface) => vq3Demo.demopath === demo.demopath)) {
+        folder = 'vq3';
+      } else if (cpmTable.valid.some((cpmDemo: ValidDemoInterface) => cpmDemo.demopath === demo.demopath)) {
+        folder = 'cpm';
+      } else {
+        folder = 'bonus';
       }
 
-      const isCpmTableDemo = cpmTable.valid.some((cpmDemo: ValidDemoInterface) => cpmDemo.demopath === demo.demopath);
-
-      if (isCpmTableDemo) {
-        zip.addLocalFile(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${demo.demopath}`, 'cpm');
-
-        return;
-      }
-
-      zip.addLocalFile(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${demo.demopath}`, 'bonus');
+      archive.file(demoPath, { name: path.join(folder, path.basename(demo.demopath)) });
     });
 
-    zip.writeZip(validationArchiveFilePath);
+    await archive.finalize();
 
     await this.cupRepository
       .createQueryBuilder()
@@ -206,7 +206,6 @@ export class CupService {
     const vq3Table: ResultsTableInterface = await this.tablesService.getOfflineCupTable(cup, Physics.VQ3);
     const cpmTable: ResultsTableInterface = await this.tablesService.getOfflineCupTable(cup, Physics.CPM);
     const cupName: string = cup.full_name.replace(/#/g, '').replace(/\s/g, '_');
-    const zip = new Zip();
     const streamersArchiveFileName = `${cupName}_streamers_demos_${v4().substring(0, 12)}.zip`;
     const streamersArchiveFilePath =
       process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${streamersArchiveFileName}`;
@@ -214,6 +213,11 @@ export class CupService {
     if (fs.existsSync(streamersArchiveFilePath)) {
       fs.rmSync(streamersArchiveFilePath);
     }
+
+    const writeStream = fs.createWriteStream(streamersArchiveFilePath);
+    const archive = archiver('zip', { zlib: { level: 9 } });
+
+    archive.pipe(writeStream);
 
     let cpmDemosCount = 0;
     let vq3DemosCount = 0;
@@ -223,10 +227,12 @@ export class CupService {
       vq3DemoIndex < vq3Table.valid.length && vq3DemoIndex < MAX_DEMOS_FOR_PHYSICS;
       vq3DemoIndex++
     ) {
-      zip.addLocalFile(
-        process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${vq3Table.valid[vq3DemoIndex].demopath}`,
-        'vq3',
-        this.formatNumberWithLeadingZeroes(vq3DemoIndex + 1) + '.dm_68',
+      archive.file(
+        path.join(
+          process.env.DFCOMPS_FILES_ABSOLUTE_PATH!,
+          `demos/cup${cupId}/${vq3Table.valid[vq3DemoIndex].demopath}`,
+        ),
+        { name: path.join('vq3', this.formatNumberWithLeadingZeroes(vq3DemoIndex + 1) + '.dm_68') },
       );
       vq3DemosCount++;
     }
@@ -236,15 +242,17 @@ export class CupService {
       cpmDemoIndex < cpmTable.valid.length && cpmDemoIndex < MAX_DEMOS_FOR_PHYSICS;
       cpmDemoIndex++
     ) {
-      zip.addLocalFile(
-        process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${cpmTable.valid[cpmDemoIndex].demopath}`,
-        'cpm',
-        this.formatNumberWithLeadingZeroes(cpmDemoIndex + 1) + '.dm_68',
+      archive.file(
+        path.join(
+          process.env.DFCOMPS_FILES_ABSOLUTE_PATH!,
+          `demos/cup${cupId}/${cpmTable.valid[cpmDemoIndex].demopath}`,
+        ),
+        { name: path.join('cpm', this.formatNumberWithLeadingZeroes(cpmDemoIndex + 1) + '.dm_68') },
       );
       cpmDemosCount++;
     }
 
-    zip.writeZip(streamersArchiveFilePath);
+    await archive.finalize();
 
     await this.cupRepository
       .createQueryBuilder()
