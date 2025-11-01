@@ -27,6 +27,7 @@ import { mapWeaponsToString } from '@dfcomps/helpers';
 import { AdminWarcupDataService } from '~pages/admin/business/admin-warcup-data.service';
 import { UserInterface } from '~shared/interfaces/user.interface';
 import { checkUserRoles, UserRoles } from '@dfcomps/auth';
+import { GlobalConfig } from '@dfcomps/helpers';
 
 @Component({
   selector: 'app-map-suggestion',
@@ -43,6 +44,7 @@ export class MapSuggestionComponent implements OnInit, OnDestroy {
   public mapInfo: ParsedMapInfoInterface | null = null;
   public previousCupName: string | null = null;
   public mapWeapons: string;
+  public parsingSite = GlobalConfig.settings['isWorldspawnParserEnabled'] ? 'ws.q3df.org' : 'defrag.racing';
 
   private mapName$ = new ReplaySubject<string>(1);
   private onDestroy$ = new Subject<void>();

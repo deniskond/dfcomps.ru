@@ -21,7 +21,9 @@
 
   <div *ngIf="!isPristine && isNotFoundOnWS" class="status-container">
     <img src="../../../../../../assets/images/icons/not-ok.png" class="status-icon" />
-    <div translate translation="mapWasNotFoundOnWS" class="error"></div>
+    <div class="error">
+      <span translate translation="mapWasNotFoundOnWS"></span>&nbsp;{{ parsingSite }}
+    </div>
   </div>
   <div *ngIf="!isPristine && wasPlayedBefore" class="status-container">
     <img src="../../../../../../assets/images/icons/not-ok.png" class="status-icon" />
@@ -30,7 +32,9 @@
   </div>
   <div *ngIf="!isPristine && !isNotFoundOnWS" class="status-container">
     <img src="../../../../../../assets/images/icons/ok.png" class="status-icon" />
-    <div translate translation="mapWasFoundOnWS" class="success"></div>
+    <div class="success">
+      <span translate translation="mapWasFoundOnWS" class="success"></span>&nbsp;{{ parsingSite }}
+    </div>
   </div>
   <div *ngIf="!isPristine && !wasPlayedBefore" class="status-container">
     <img src="../../../../../../assets/images/icons/ok.png" class="status-icon" />

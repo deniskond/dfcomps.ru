@@ -246,7 +246,7 @@ export class AdminWarcupsService {
     try {
       parsedMapInfo = await this.mapParsingService.getParsedMapInfo(normalizedMapname);
     } catch (e) {
-      throw new NotFoundException(`Map ${normalizedMapname} was not found on ws.q3df.org`);
+      throw new NotFoundException(`Map ${normalizedMapname} was not found`);
     }
 
     this.levelshotsService.downloadLevelshot(normalizedMapname);

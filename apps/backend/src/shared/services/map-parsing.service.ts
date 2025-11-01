@@ -1,7 +1,7 @@
 import { ParsedMapInfoInterface } from '@dfcomps/contracts';
+import { GlobalConfig } from '@dfcomps/helpers';
 import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import axios from 'axios';
-import { GlobalConfig } from '../configs/global-config';
 
 @Injectable()
 export class MapParsingService {
