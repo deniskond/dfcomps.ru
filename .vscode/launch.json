@@ -1,0 +1,71 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Chrome - local backend",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:4000",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "frontend:local-db",
+      "postDebugTask": "stop"
+    },
+    {
+      "name": "Debug Chrome - dfcomps.ru backend",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:4000",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "frontend:dfcomps",
+      "postDebugTask": "stop"
+    },
+    {
+      "name": "Debug Edge - local backend",
+      "type": "msedge",
+      "request": "launch",
+      "url": "http://localhost:4000",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "frontend:local-db",
+      "postDebugTask": "stop"
+    },
+    {
+      "name": "Debug Edge - dfcomps.ru backend",
+      "type": "msedge",
+      "request": "launch",
+      "url": "http://localhost:4000",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "frontend:dfcomps",
+      "postDebugTask": "stop"
+    },
+    {
+      "name": "Debug Firefox - local backend",
+      "type": "firefox",
+      "request": "launch",
+      "url": "http://localhost:4000",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "frontend:local-db",
+      "postDebugTask": "stop",
+      "pathMappings": [
+        {
+          "url": "webpack:///apps",
+          "path": "${workspaceFolder}/apps"
+        }
+      ]
+    },
+    {
+      "name": "Debug Firefox - dfcomps.ru backend",
+      "type": "firefox",
+      "request": "launch",
+      "url": "http://localhost:4000",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "frontend:dfcomps",
+      "postDebugTask": "stop",
+      "pathMappings": [
+        {
+          "url": "webpack:///apps",
+          "path": "${workspaceFolder}/apps"
+        }
+      ]
+    }
+  ]
+}
