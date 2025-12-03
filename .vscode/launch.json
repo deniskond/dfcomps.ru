@@ -2,16 +2,34 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug Chrome - local backend",
+      "name": "Local Backend",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "backend"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "openOnSessionStart",
+      "autoAttachChildProcesses": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "cwd": "${workspaceFolder}/apps/backend",
+      "presentation": {
+        "hidden": true
+      }
+    },
+    {
+      "name": "Chrome Frontend",
       "type": "chrome",
       "request": "launch",
       "url": "http://localhost:4000",
       "webRoot": "${workspaceFolder}",
       "preLaunchTask": "frontend:local-db",
-      "postDebugTask": "stop"
+      "postDebugTask": "stop",
+      "presentation": {
+        "hidden": true
+      }
     },
     {
-      "name": "Debug Chrome - dfcomps.ru backend",
+      "name": "Debug Chrome - Frontend",
       "type": "chrome",
       "request": "launch",
       "url": "http://localhost:4000",
@@ -20,16 +38,19 @@
       "postDebugTask": "stop"
     },
     {
-      "name": "Debug Edge - local backend",
+      "name": "Edge Frontend",
       "type": "msedge",
       "request": "launch",
       "url": "http://localhost:4000",
       "webRoot": "${workspaceFolder}",
       "preLaunchTask": "frontend:local-db",
-      "postDebugTask": "stop"
+      "postDebugTask": "stop",
+      "presentation": {
+        "hidden": true
+      }
     },
     {
-      "name": "Debug Edge - dfcomps.ru backend",
+      "name": "Debug Edge - Frontend",
       "type": "msedge",
       "request": "launch",
       "url": "http://localhost:4000",
@@ -38,7 +59,7 @@
       "postDebugTask": "stop"
     },
     {
-      "name": "Debug Firefox - local backend",
+      "name": "Firefox Frontend",
       "type": "firefox",
       "request": "launch",
       "url": "http://localhost:4000",
@@ -50,10 +71,13 @@
           "url": "webpack:///apps",
           "path": "${workspaceFolder}/apps"
         }
-      ]
+      ],
+      "presentation": {
+        "hidden": true
+      }
     },
     {
-      "name": "Debug Firefox - dfcomps.ru backend",
+      "name": "Debug Firefox - Frontend",
       "type": "firefox",
       "request": "launch",
       "url": "http://localhost:4000",
@@ -66,6 +90,20 @@
           "path": "${workspaceFolder}/apps"
         }
       ]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Debug Chrome - Fullstack",
+      "configurations": ["Local Backend", "Chrome Frontend"]
+    },
+    {
+      "name": "Debug Edge - Fullstack",
+      "configurations": ["Local Backend", "Edge Frontend"]
+    },
+    {
+      "name": "Debug Firefox - Fullstack",
+      "configurations": ["Local Backend", "Firefox Frontend"]
     }
   ]
 }

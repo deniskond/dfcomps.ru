@@ -2,40 +2,11 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "local-backend",
-      "type": "shell",
-      "isBackground": true,
-      "command": "npm",
-      "args": ["run", "backend"],
-      "problemMatcher": [
-        {
-          "pattern": [
-            {
-              "regexp": ".*", // match any output
-              "file": 1,
-              "location": 2,
-              "message": 3
-            }
-          ],
-          "background": {
-            "activeOnStart": true,
-            "beginsPattern": ".*",
-            "endsPattern": "Application is running" // indicates backend is ready
-          }
-        }
-      ],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      }
-    },
-    {
       "label": "frontend:local-db",
       "type": "shell",
       "isBackground": true,
       "command": "npm",
       "args": ["run", "frontend-local-vscode"],
-      "dependsOn": ["local-backend"],
       "problemMatcher": [
         {
           "pattern": [
