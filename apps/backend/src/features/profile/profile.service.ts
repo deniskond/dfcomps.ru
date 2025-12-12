@@ -5,6 +5,7 @@ import {
   ProfileDemosInterface,
   ProfileInterface,
   ProfileMainInfoInterface,
+  ProfileCupResponseInterface,
 } from '@dfcomps/contracts';
 import {
   BadRequestException,
@@ -51,6 +52,7 @@ export class ProfileService {
       throw new NotFoundException(`Player with id ${userId} not found`);
     }
     return {
+      id: player.id,
       avatar: player.avatar,
       nick: player.displayed_nick,
       vq3Rating: player.vq3_rating,
@@ -68,13 +70,11 @@ export class ProfileService {
     return players.map((x) => x.id);
   }
 
-  public async getPlayerProfile(userId: number): Promise<ProfileInterface> {
-    const player: User | null = await this.userRepository.createQueryBuilder('users').where({ id: userId }).getOne();
-
-    if (!player) {
-      throw new NotFoundException(`Player with id ${userId} not found`);
-    }
-
+  public async getPlayerCups(
+    userId: number,
+    startIndex: number,
+    endIndex: number,
+  ): Promise<ProfileCupResponseInterface[]> {
     const cups: RatingChange[] = await this.ratingChangeRepository
       .createQueryBuilder('rating_changes')
       .leftJoinAndSelect('rating_changes.cup', 'cups')
@@ -82,8 +82,38 @@ export class ProfileService {
       .where('rating_changes.userId = :userId', { userId })
       .andWhere('cups.rating_calculated = true')
       .orderBy('cups.id', 'DESC')
-      .limit(10)
+      .offset(startIndex)
+      .limit(endIndex - startIndex)
       .getMany();
+
+    return cups.map((ratingChange: RatingChange) => ({
+      full_name: ratingChange.cup.full_name,
+      short_name: ratingChange.cup.type === CupTypes.ONLINE ? ratingChange.cup.short_name : ratingChange.cup.map1!,
+      news_id: ratingChange.cup.news[0]?.id || null,
+      cpm_place: ratingChange.cpm_place,
+      vq3_place: ratingChange.vq3_place,
+      cpm_change: ratingChange.cpm_change,
+      vq3_change: ratingChange.vq3_change,
+    }));
+  }
+
+  public async getPlayerProfile(userId: number): Promise<ProfileInterface> {
+    const player: User | null = await this.userRepository.createQueryBuilder('users').where({ id: userId }).getOne();
+
+    if (!player) {
+      throw new NotFoundException(`Player with id ${userId} not found`);
+    }
+
+    const cups: ProfileCupResponseInterface[] = await this.getPlayerCups(userId, 0, 15);
+
+    const totalCupsCount: number = await this.ratingChangeRepository
+      .createQueryBuilder('rating_changes')
+      .leftJoinAndSelect('rating_changes.cup', 'cups')
+      .leftJoinAndSelect('cups.news', 'news', 'news.newsTypeId = 5 OR news.newsTypeId = 1')
+      .where('rating_changes.userId = :userId', { userId })
+      .andWhere('cups.rating_calculated = true')
+      .orderBy('cups.id', 'DESC')
+      .getCount();
 
     const demos: CupDemo[] = await this.cupsDemosRepository
       .createQueryBuilder('cups_demos')
@@ -132,6 +162,7 @@ export class ProfileService {
 
     return {
       player: {
+        id: player.id,
         avatar: player.avatar,
         nick: player.displayed_nick,
         vq3Rating: player.vq3_rating,
@@ -143,18 +174,11 @@ export class ProfileService {
         vq3: vq3RatingChanges,
       },
       demos: filteredDemos,
-      cups: cups.map((ratingChange: RatingChange) => ({
-        full_name: ratingChange.cup.full_name,
-        short_name: ratingChange.cup.type === CupTypes.ONLINE ? ratingChange.cup.short_name : ratingChange.cup.map1!,
-        news_id: ratingChange.cup.news[0]?.id || null,
-        cpm_place: ratingChange.cpm_place,
-        vq3_place: ratingChange.vq3_place,
-        cpm_change: ratingChange.cpm_change,
-        vq3_change: ratingChange.vq3_change,
-      })),
+      cups: cups,
       rewards: rewards.map((reward: Reward) => ({
         name: reward.name_en,
       })),
+      cupsCount: totalCupsCount,
     };
   }
 

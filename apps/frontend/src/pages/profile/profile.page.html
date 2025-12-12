@@ -51,6 +51,19 @@
     </div>
     <app-profile-rewards [rewards]="rewards" class="bottom-16"></app-profile-rewards>
     <app-profile-cups-table [cups]="cups" class="bottom-16"></app-profile-cups-table>
+    <div class="pagination-container">
+      <div class="pagination">
+        <a
+          *ngFor="let page of range(pagesCount)"
+          (click)="getProfileCupsPage(page)"
+          [class.selected]="currentCupsPage === page"
+          class="page blue-link"
+          matRipple
+        >
+          {{ page + 1 }}
+        </a>
+      </div>
+    </div>
     <app-profile-last-demos [demos]="demos"></app-profile-last-demos>
   </ng-container>
 

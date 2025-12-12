@@ -4,6 +4,7 @@ import { switchMap, tap, takeUntil, map, withLatestFrom } from 'rxjs/operators';
 import { Subject, Observable, combineLatest } from 'rxjs';
 import { ProfileService } from './services/profile.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { range } from 'lodash';
 import { ProfileCupInterface } from './interfaces/profile-cup.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { EditProfileDialogComponent } from './components/edit-profile-dialog/edit-profile-dialog';
@@ -20,6 +21,8 @@ import {
   Rewards,
 } from '@dfcomps/contracts';
 
+const CUPS_ON_PAGE = 15;
+
 @Component({
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.less'],
@@ -31,7 +34,10 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   public vq3Chart: number[];
   public demos: ProfileDemosInterface[];
   public cups: ProfileCupInterface[];
+  public pagesCount: number;
+  public currentCupsPage = 0;
   public rewards: Rewards[];
+  public range = range;
   public isLoading$ = new Subject<boolean>();
   public physics = Physics;
   public isEditProfileAvailable$: Observable<boolean>;
@@ -84,6 +90,11 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       'https://discord.com/oauth2/authorize?response_type=token&client_id=1154028126783946772&scope=identify&state=link';
   }
 
+  public getProfileCupsPage(page: number) {
+    this.currentCupsPage = page;
+    this.fetchCups();
+  }
+
   private initObservables(): void {
     this.isEditProfileAvailable$ = combineLatest([this.activatedRoute.params, this.userService.getCurrentUser$()]).pipe(
       map(([{ id }, user]: [Params, UserInterface | null]) => (user ? +id === user.id : false)),
@@ -125,7 +136,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     this.demos = profileInfo.demos;
     this.cups = this.mapCupsToView(profileInfo.cups);
     this.rewards = profileInfo.rewards.map(({ name }: ProfileRewardsInterface) => name);
-
+    this.pagesCount = Math.ceil(profileInfo.cupsCount / CUPS_ON_PAGE);
     this.sanitizer.bypassSecurityTrustResourceUrl(`/assets/images/avatars/${this.mainInfo.avatar}.jpg`);
 
     setTimeout(() => {
@@ -147,5 +158,14 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
         ratingChange: physics === Physics.CPM ? cup.cpm_change! : cup.vq3_change!,
       };
     });
+  }
+
+  private fetchCups(): void {
+    this.profileService
+      .getPlayerCups$(this.mainInfo.id, this.currentCupsPage * CUPS_ON_PAGE, (this.currentCupsPage + 1) * CUPS_ON_PAGE)
+      .subscribe((nextCups: ProfileCupResponseInterface[]) => {
+        this.cups = this.mapCupsToView(nextCups);
+        this.changeDetectorRef.markForCheck();
+      });
   }
 }

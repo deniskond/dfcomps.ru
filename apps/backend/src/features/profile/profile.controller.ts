@@ -13,10 +13,11 @@ import {
   Query,
 } from '@nestjs/common';
 import { ProfileService } from './profile.service';
-import { NickChangeResponseInterface, ProfileInterface, ProfileMainInfoInterface } from '@dfcomps/contracts';
+import { NickChangeResponseInterface, ProfileInterface, ProfileMainInfoInterface, ProfileCupResponseInterface } from '@dfcomps/contracts';
 import { ProfileUpdateDto } from './dto/profile-update.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MulterFileInterface } from '../../shared/interfaces/multer.interface';
+import { ProfileCupPaginateDto } from './dto/profile-cup-paginate.dto';
 
 @Controller('profile')
 export class ProfileController {
@@ -69,5 +70,12 @@ export class ProfileController {
     avatar: MulterFileInterface,
   ): Promise<void> {
     return this.profileService.updateProfileAvatar(accessToken, avatar);
+  }
+
+  @Post('get-profile-cups')
+  getPlayerCups(
+    @Body() { userId, startIndex, endIndex }: ProfileCupPaginateDto,
+  ): Promise<ProfileCupResponseInterface[]> {
+    return this.profileService.getPlayerCups(userId, startIndex, endIndex);
   }
 }
