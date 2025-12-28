@@ -170,7 +170,7 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   mapWasntOnCompetitions: 'Карта не была на турнирах dfcomps',
   mapSuggested: 'Карта была отправлена как предложение на Warcup',
   suggestionGrayHint: `Будет доступно во время следующего Warcup'a`,
-  seasonPeriod: '1 Июня 2025 - 29 Ноября 2025',
+  seasonPeriod: '20 Декабря 2025 - 27 Июня 2026',
   forMappers: 'Для мапперов',
   mappersSuggestionInfo: 'если хотите предложить свою новую карту на warcup, пишите в ЛС в дискорд n0sf',
   score: 'Оценка',
