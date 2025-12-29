@@ -1,39 +1,66 @@
-<div class="bold-15">
-  Tournament stats:
-</div>
+<div class="bold-15">Tournament stats:</div>
 <div class="stat-container">
-  <div class="vq3-container">
-    <span class="stat physics purple">VQ3</span>
-    <label class="stat stat-wide purple">TOTAL: {{ stats.vq3_cups }} </label>
-    <label class="stat stat-wide purple">AVG: {{ stats.vq3_avg }} </label>
-    <label class="stat medal gold">
-      <img src="/assets/images/icons/result-tables/gold.png" class="icon" />
-       {{ stats.vq3_first_place }} 
-    </label>
-    <label class="stat medal silver">
-      <img src="/assets/images/icons/result-tables/silver.png" class="icon" />
-      {{ stats.vq3_second_place }} 
-    </label>
-    <label class="stat medal bronze">
-      <img src="/assets/images/icons/result-tables/bronze.png" class="icon" />
-      {{ stats.vq3_third_place }} 
-    </label> 
+  <div class="physics-container">
+    <div class="physics-header">
+      <div>
+        <div class="physics-badge vq3">VQ3</div>
+      </div>
+      <div class="overall-row">
+        <div class="fade-horizontal"></div>
+        <span class="overall-count">{{ stats.vq3_cups }}</span>
+      </div>
+    </div>
+    <div class="stat-row">
+      <mat-icon class="bar-chart-icon">bar_chart</mat-icon>
+      <div class="stat-name">Average place</div>
+      <div class="stat-value">{{ stats.vq3_avg }}</div>
+    </div>
+    <div class="stat-row">
+      <img class="place-icon" src="/assets/images/icons/result-tables/gold.png" />
+      <div class="stat-name">1st places</div>
+      <div class="stat-value">{{ stats.vq3_first_place }}</div>
+    </div>
+    <div class="stat-row">
+      <img class="place-icon" src="/assets/images/icons/result-tables/silver.png" />
+      <div class="stat-name">2nd places</div>
+      <div class="stat-value">{{ stats.vq3_second_place }}</div>
+    </div>
+    <div class="stat-row last">
+      <img class="place-icon" src="/assets/images/icons/result-tables/bronze.png" />
+      <div class="stat-name">3rd places</div>
+      <div class="stat-value">{{ stats.vq3_third_place }}</div>
+    </div>
   </div>
-  <div class="cpm-container">
-    <span class="stat physics purple">CPM</span>
-    <label class="stat stat-wide purple">TOTAL: {{ stats.cpm_cups }} </label>
-    <label class="stat stat-wide purple">AVG: {{ stats.cpm_avg }} </label>
-    <label class="stat medal gold">
-      <img src="/assets/images/icons/result-tables/gold.png" class="icon" />
-      {{ stats.cpm_first_place }} 
-    </label>
-    <label class="stat medal silver">
-      <img src="/assets/images/icons/result-tables/silver.png" class="icon" />
-      {{ stats.cpm_second_place }} 
-    </label>
-    <label class="stat medal bronze">
-      <img src="/assets/images/icons/result-tables/bronze.png" class="icon" />
-      {{ stats.cpm_third_place }} 
-    </label>  
+  <div class="vertical-separator"></div>
+  <div class="physics-container">
+    <div class="physics-header">
+      <div>
+        <div class="physics-badge cpm">CPM</div>
+      </div>
+      <div class="overall-row">
+        <div class="fade-horizontal"></div>
+        <span class="overall-count">{{ stats.cpm_cups }}</span>
+      </div>
+    </div>
+    <div class="stat-row">
+      <mat-icon class="bar-chart-icon">bar_chart</mat-icon>
+      <div class="stat-name">Average place</div>
+      <div class="stat-value">{{ stats.cpm_avg }}</div>
+    </div>
+    <div class="stat-row">
+      <img class="place-icon" src="/assets/images/icons/result-tables/gold.png" />
+      <div class="stat-name">1st places</div>
+      <div class="stat-value">{{ stats.cpm_first_place }}</div>
+    </div>
+    <div class="stat-row">
+      <img class="place-icon" src="/assets/images/icons/result-tables/silver.png" />
+      <div class="stat-name">2nd places</div>
+      <div class="stat-value">{{ stats.cpm_second_place }}</div>
+    </div>
+    <div class="stat-row last">
+      <img class="place-icon" src="/assets/images/icons/result-tables/bronze.png" />
+      <div class="stat-name">3rd places</div>
+      <div class="stat-value">{{ stats.cpm_third_place }}</div>
+    </div>
   </div>
 </div>

@@ -4,62 +4,110 @@
   align-items: center;
   color: white;
   text-align: left;
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
 }
 
-.vq3-container {
-  padding: 16px 8px 4px 8px;
+.physics-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
-.cpm-container {
-  padding: 4px 8px 16px 8px;
+.physics-header {
+  display: flex;
+  margin-bottom: 8px;
 }
 
-.stat {
-  display: inline-block;
-  border-radius: 8px;
-  padding: 8px;
-  margin: 0 4px;
-  height: 32px;
+.physics-badge {
+  width: 80px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  color: #ffffff;
+  font-family: bebas;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+  font-size: 26px;
+  letter-spacing: 1px;
+
+  &.vq3 {
+    background: linear-gradient(to bottom, #a7383b 0%, #882e33 100%);
+  }
+
+  &.cpm {
+    background: linear-gradient(to bottom, #3b64ae 0%, #2a447e 100%);
+  }
+}
+
+.fade-horizontal {
+  flex: 0.85;
+  height: 24px;
+  background: var(--profile-tournament-stats-gradient);
+}
+
+.overall-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.wind-image {
+  width: 90%;
+}
+
+.vertical-separator {
+  width: 1px;
+  height: 188px;
+  margin: 0px 16px 0px 16px;
+  background: var(--comments-border-color);
+}
+
+.bar-chart-icon {
+  color: var(--1v1-text-color);
+  transform: scale(0.9);
+}
+
+.overall-count {
+  font-family: bebas;
+  font-size: 28px;
+  color: var(--base-font-color);
+  position: absolute;
+  right: 8px;
+  top: 2px;
+}
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  border-bottom: 1px solid var(--comments-border-color);
+
+  &.last {
+    border-bottom: 0;
+  }
+}
+
+.stat-name {
+  color: var(--base-font-color);
+  margin-left: 8px;
+  flex: 1;
+}
+
+.stat-value {
+  color: var(--base-font-color);
+  font-family: bebas;
+  font-size: 24px;
+  width: 36px;
   text-align: center;
-  cursor: default;
 }
 
-.physics {
-  width: 52px;
-}
-
-.stat-wide {
-  width: 102px;
-}
-
-.medal {
-  width: 74px;
-  height: 32px;
-  text-align: center;
-  text-shadow: black 0px 0px 2px;
-}
-
-.purple {
-  background: linear-gradient(to left, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1)), #673ab7;
-  box-shadow: inset 4px 4px 0px #8259cc;
-}
-
-.gold {
-  background: linear-gradient(to left, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1)), gold;
-  box-shadow: inset 4px 4px 0px gold;
-}
-
-.silver {
-  background: linear-gradient(to left, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1)), silver;
-  box-shadow: inset 4px 4px 0px silver;
-}
-
-.bronze {
-  background: linear-gradient(to left, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1)), #bf8f31;
-  box-shadow: inset 4px 4px 0px #bf8f31;
-}
-
-.icon {
-  width: 18px;
-  margin: -4px auto;
+.place-icon {
+  width: 16px;
+  height: 16px;
+  margin-left: 4px;
+  margin-right: 4px;
 }

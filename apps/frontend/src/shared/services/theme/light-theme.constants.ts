@@ -23,4 +23,6 @@ export const LIGHT_THEME_VARS = {
   '--button-disabled-color': 'rgba(0,0,0,.12)',
   '--1v1-text-color': '#555',
   '--dialog-container-color': 'white',
+  '--profile-tournament-stats-gradient':
+    'linear-gradient(to right, #efeff3 0%, #ededed 50%, #ededed 50%, rgba(237, 237, 237, 0) 100%)',
 };

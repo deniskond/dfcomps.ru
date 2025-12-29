@@ -23,4 +23,6 @@ export const DARK_THEME_VARS = {
   '--button-disabled-color': '#333',
   '--1v1-text-color': 'rgb(178, 172, 162)',
   '--dialog-container-color': '#222',
+  '--profile-tournament-stats-gradient':
+    'linear-gradient(to right, #2a2d31 0%, #24272b 60%, #24272b 60%, rgba(36, 39, 43, 0) 100%)',
 };
