@@ -26,10 +26,13 @@
     font-size: 14px;
     line-height: 28px;
     text-decoration: none;
-    cursor: pointer;
 
     &:last-child {
       border: 0;
+    }
+
+    &:hover {
+      background-color: var(--base-background-hover-color);
     }
   }
 }
@@ -50,6 +53,8 @@
   border-bottom: 1px solid var(--divider-border-color);
   transition: 0.3s;
   padding: 0px 12px;
+  text-decoration: none;
+  color: inherit;
 
   &:last-of-type {
     border: 0;
@@ -81,6 +86,8 @@
   margin-right: 10px;
   height: 28px;
   box-shadow: none;
+  text-decoration: none;
+  padding-top: 1px;
 }
 
 .filter-selected {

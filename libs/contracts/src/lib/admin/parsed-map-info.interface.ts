@@ -1,4 +1,4 @@
-export interface WorldspawnMapInfoInterface {
+export interface ParsedMapInfoInterface {
   name: string;
   size: string;
   author: string;

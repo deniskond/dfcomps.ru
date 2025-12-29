@@ -14,8 +14,9 @@ import { CupDemo } from '../../shared/entities/cup-demo.entity';
 import { OldRating } from '../../shared/entities/old-rating.entity';
 import { Multicup } from '../../shared/entities/multicup.entity';
 import { MapSuggestion } from '../../shared/entities/map-suggestion.entity';
-import { WorldspawnParseService } from '../../shared/services/worldspawn-parse.service';
+import { MapParsingService } from '../../shared/services/map-parsing.service';
 import { LevelshotsService } from '../../shared/services/levelshots.service';
+import { CupReview } from '../../shared/entities/cups-reviews.entity';
 
 @Module({
   imports: [
@@ -30,9 +31,10 @@ import { LevelshotsService } from '../../shared/services/levelshots.service';
       OldRating,
       Multicup,
       MapSuggestion,
+      CupReview,
     ]),
   ],
   controllers: [CupController],
-  providers: [CupService, AuthService, TablesService, WorldspawnParseService, LevelshotsService],
+  providers: [CupService, AuthService, TablesService, MapParsingService, LevelshotsService],
 })
 export class CupModule {}

@@ -13,8 +13,8 @@ export class NewsComment {
   @Column({ type: 'timestamp with time zone' })
   datetimezone: string;
 
-  @Column({ type: 'character varying' })
-  reason: string;
+  @Column({ type: 'character varying', nullable: true })
+  reason: string | null;
 
   @ManyToOne(() => User)
   user: User;

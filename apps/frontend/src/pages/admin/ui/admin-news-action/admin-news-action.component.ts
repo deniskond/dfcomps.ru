@@ -16,8 +16,8 @@ import * as moment from 'moment-timezone';
 import { combineLatest, map, Observable, of, ReplaySubject, switchMap, tap } from 'rxjs';
 import {
   AdminActiveCupInterface,
-  AdminActiveMulticupInterface,
   AdminEditNewsInterface,
+  AdminMulticupInterface,
   CupTypes,
   Languages,
   NewsStreamInterface,
@@ -49,7 +49,7 @@ export class AdminNewsActionComponent implements OnInit {
   public newsActionForm: FormGroup;
   public isCupRequired: boolean;
   public isMulticupRequired: boolean;
-  public availableMulticups$: Observable<AdminActiveMulticupInterface[]>;
+  public allMulticups$: Observable<AdminMulticupInterface[]>;
   public availableCups$: Observable<AdminActiveCupInterface[]>;
   public mapNewsTypeToHumanTitle = mapNewsTypeToHumanTitle;
   public newsType: NewsTypes;
@@ -78,7 +78,7 @@ export class AdminNewsActionComponent implements OnInit {
     this.isMulticupRequired = this.newsType === NewsTypes.MULTICUP_RESULTS;
 
     if (this.isMulticupRequired) {
-      this.availableMulticups$ = this.adminDataService.getAllAvailableMulticups$();
+      this.allMulticups$ = this.adminDataService.getAllMulticups$();
     }
 
     if (this.newsType === NewsTypes.ONLINE_ANNOUNCE || this.newsType === NewsTypes.ONLINE_RESULTS) {
@@ -252,8 +252,8 @@ export class AdminNewsActionComponent implements OnInit {
           postingTime: new FormControl(''),
           russianText: new FormControl(''),
           englishText: new FormControl(''),
-          cup: new FormControl(null),
-          multicup: new FormControl(null),
+          cup: this.isCupRequired ? new FormControl(null, Validators.required) : new FormControl(null),
+          multicup: this.isMulticupRequired ? new FormControl(null, Validators.required) : new FormControl(null),
           imageLink: new FormControl(null),
         },
         this.postingTimeValidator(),
@@ -272,8 +272,12 @@ export class AdminNewsActionComponent implements OnInit {
             postingTime: new FormControl(this.mapDateTimeZoneToInput(singleNews.newsItem.date)),
             russianText: new FormControl(singleNews.newsItem.textRussian),
             englishText: new FormControl(singleNews.newsItem.textEnglish),
-            cup: new FormControl(singleNews.newsItem.cup?.cupId),
-            multicup: new FormControl(singleNews.newsItem.multicupId),
+            cup: this.isCupRequired
+              ? new FormControl(singleNews.newsItem.cup?.cupId, Validators.required)
+              : new FormControl(singleNews.newsItem.cup?.cupId),
+            multicup: this.isMulticupRequired
+              ? new FormControl(singleNews.newsItem.multicupId, Validators.required)
+              : new FormControl(singleNews.newsItem.multicupId),
             imageLink: new FormControl(singleNews.newsItem.imageLink),
           },
           this.postingTimeValidator(),

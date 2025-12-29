@@ -160,7 +160,8 @@ export class URL_PARAMS {
     ONLINE_CUP_INFO: (uuid: string) => string;
     SUGGEST: string;
     CHECK_PREVIOUS_CUPS: (mapName: string) => string;
-    GET_WORLDSPAWN_MAP_INFO: string;
+    GET_PARSED_MAP_INFO: string;
+    REVIEW: string;
   } {
     return {
       GET_NEXTCUP: `${API_URL}/cup/next-cup-info`,
@@ -172,7 +173,8 @@ export class URL_PARAMS {
       ONLINE_CUP_INFO: (uuid: string) => `${API_URL}/cup/online-cup/${uuid}`,
       SUGGEST: `${API_URL}/cup/suggest`,
       CHECK_PREVIOUS_CUPS: (mapName: string) => `${API_URL}/cup/check-previous-cups/${mapName}`,
-      GET_WORLDSPAWN_MAP_INFO: `${API_URL}/cup/get-worldspawn-map-info`,
+      GET_PARSED_MAP_INFO: `${API_URL}/cup/get-parsed-map-info`,
+      REVIEW: `${API_URL}/cup/review`,
     };
   }
 

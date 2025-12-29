@@ -25,7 +25,7 @@ describe('admin offline cups', () => {
     cy.intercept(
       {
         method: 'GET',
-        url: '/api/admin/cups/get-worldspawn-map-info?map=crosspath',
+        url: '/api/admin/cups/get-parsed-map-info?map=crosspath',
       },
       {
         statusCode: 200,
@@ -91,7 +91,7 @@ describe('admin offline cups', () => {
     cy.intercept(
       {
         method: 'GET',
-        url: '/api/admin/cups/get-worldspawn-map-info?map=st1',
+        url: '/api/admin/cups/get-parsed-map-info?map=st1',
       },
       {
         statusCode: 200,

@@ -15,7 +15,7 @@ export { OnlineCupActionDto } from './online-cup-action.dto';
 export { ProcessValidationDto } from './process-validation.dto';
 export { UpdateOfflineCupDto } from './update-offline-cup.dto';
 export { ValidationResultInterface } from './validation-result.interface';
-export { WorldspawnMapInfoInterface } from './worldspawn-map-info.interface';
+export { ParsedMapInfoInterface } from './parsed-map-info.interface';
 export { OnlineCupServersPlayersInterface } from './online-cup-servers-players.interface';
 export { SetPlayerServerDto } from './set-player-server.dto';
 export { ParsedOnlineCupRoundInterface } from './parsed-online-cup-round.interface';

@@ -12,6 +12,18 @@ const routes: Routes = [
     path: '',
     component: ArchivePageComponent,
   },
+  {
+    path: 'page/:pageNumber',
+    component: ArchivePageComponent,
+  },
+  {
+    path: 'filter/:filterType',
+    component: ArchivePageComponent,
+  },
+  {
+    path: 'filter/:filterType/page/:pageNumber',
+    component: ArchivePageComponent,
+  },
 ];
 
 @NgModule({

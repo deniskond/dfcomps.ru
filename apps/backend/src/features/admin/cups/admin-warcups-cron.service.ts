@@ -28,8 +28,14 @@ export class AdminWarcupsCronService {
     @InjectRepository(WarcupAdminVote) private readonly warcupAdminVoteRepository: Repository<WarcupAdminVote>,
   ) {}
 
-  @Cron('30 21 * * 6', { timeZone: 'Europe/Moscow' })
+  @Cron('00 18 * * 6', { timeZone: 'Europe/Moscow' })
   async addWarcup() {
+    const warcupInfo: WarcupInfo = (await this.warcupInfoRepository.createQueryBuilder().getOne())!;
+
+    if (!warcupInfo.is_voting_active) {
+      return;
+    }
+
     const mapSuggestions: MapSuggestion[] = await this.mapSuggestionsRepository
       .createQueryBuilder('map_suggestions')
       .leftJoinAndSelect('map_suggestions.warcupAdminVotes', 'warcup_admin_votes')
@@ -61,7 +67,6 @@ export class AdminWarcupsCronService {
     );
 
     const winnerMap: VoteResultMapInterface = winnersMapArray[Math.floor(Math.random() * winnersMapArray.length)];
-    const warcupInfo: WarcupInfo = (await this.warcupInfoRepository.createQueryBuilder().getOne())!;
 
     this.addOfflineCupService.addOfflineCup(
       {
@@ -91,12 +96,17 @@ export class AdminWarcupsCronService {
       .execute();
   }
 
-  @Cron('30 22 * * 6', { timeZone: 'Europe/Moscow' })
+  @Cron('00 19 * * 6', { timeZone: 'Europe/Moscow' })
   async postWarcupStart() {
+    const warcupInfo: WarcupInfo = (await this.warcupInfoRepository.createQueryBuilder().getOne())!;
+
+    if (!warcupInfo.is_voting_active) {
+      return;
+    }
+
     await this.warcupAdminVoteRepository.createQueryBuilder().delete().execute();
     await this.mapSuggestionsRepository.createQueryBuilder().delete().where({ is_admin_suggestion: true }).execute();
 
-    const warcupInfo: WarcupInfo = (await this.warcupInfoRepository.createQueryBuilder().getOne())!;
     const nextRotation: number = {
       1: 2,
       2: 3,

@@ -1,31 +1,29 @@
 import { Injectable } from '@nestjs/common';
-import * as winston from 'winston';
-import * as os from 'os';
-require('winston-syslog').Syslog;
+import { Logtail } from '@logtail/node';
 
 @Injectable()
 export class LoggerService {
-  private logger: winston.Logger;
+  private logger: Logtail;
 
   constructor() {
-    this.logger = winston.createLogger({
-      format: winston.format.simple(),
-      levels: winston.config.syslog.levels,
-      transports: [
-        new (winston.transports as any).Syslog({
-          host: 'logs3.papertrailapp.com',
-          port: 39258,
-          protocol: 'tls4',
-          localhost: os.hostname(),
-          eol: '\n',
-        }),
-      ],
-    });
+    if (process.env.LOGTAIL_API_KEY) {
+      this.logger = new Logtail(process.env.LOGTAIL_API_KEY, {
+        endpoint: 'https://s1207863.eu-nbg-2.betterstackdata.com',
+      });
+    }
   }
 
-  public log(message: string) {
-    if (process.env.NODE_ENV !== 'development') {
+  public info(message: string) {
+    if (this.logger) {
       this.logger.info(message);
+      this.logger.flush();
+    }
+  }
+
+  public error(message: string) {
+    if (this.logger) {
+      this.logger.error(message);
+      this.logger.flush();
     }
   }
 }

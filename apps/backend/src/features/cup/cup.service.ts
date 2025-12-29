@@ -17,7 +17,9 @@ import {
   OnlineCupInfoInterface,
   CupTypes,
   CheckPreviousCupsType,
-  WorldspawnMapInfoInterface,
+  ParsedMapInfoInterface,
+  MapRatingInterface,
+  MapType,
 } from '@dfcomps/contracts';
 import { AuthService } from '../auth/auth.service';
 import * as moment from 'moment';
@@ -27,16 +29,18 @@ import { UserAccessInterface } from '../../shared/interfaces/user-access.interfa
 import { mapCupEntityToInterface } from '../../shared/mappers/cup.mapper';
 import { UserRoles, checkUserRoles } from '@dfcomps/auth';
 import { TablesService } from '../tables/tables.service';
-import * as Zip from 'adm-zip';
 import * as fs from 'fs';
+import * as path from 'path';
+import * as archiver from 'archiver';
 import { CupDemo } from '../../shared/entities/cup-demo.entity';
 import { v4 } from 'uuid';
 import { User } from '../../shared/entities/user.entity';
 import { getNextWarcupTime, mapWeaponsToString } from '@dfcomps/helpers';
 import { MapSuggestion } from '../../shared/entities/map-suggestion.entity';
-import { WorldspawnParseService } from '../../shared/services/worldspawn-parse.service';
 import { LevelshotsService } from '../../shared/services/levelshots.service';
 import { OLD_WARCUP_MAPS } from './old-warcup-maps';
+import { CupReview } from '../../shared/entities/cups-reviews.entity';
+import { MapParsingService } from '../../shared/services/map-parsing.service';
 
 @Injectable()
 export class CupService {
@@ -46,9 +50,10 @@ export class CupService {
     @InjectRepository(CupDemo) private readonly cupDemosRepository: Repository<CupDemo>,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @InjectRepository(MapSuggestion) private readonly mapSuggestionRepository: Repository<MapSuggestion>,
+    @InjectRepository(CupReview) private readonly cupReviewRepository: Repository<CupReview>,
     private readonly authService: AuthService,
     private readonly tablesService: TablesService,
-    private readonly worldspawnParseService: WorldspawnParseService,
+    private readonly mapParsingService: MapParsingService,
     private readonly levelshotsService: LevelshotsService,
   ) {}
 
@@ -127,7 +132,6 @@ export class CupService {
     const vq3Table: ResultsTableInterface = await this.tablesService.getOfflineCupTable(cup, Physics.VQ3);
     const cpmTable: ResultsTableInterface = await this.tablesService.getOfflineCupTable(cup, Physics.CPM);
     const cupName: string = cup.full_name.replace(/#/g, '').replace(/\s/g, '_');
-    const zip = new Zip();
     const validationArchiveFileName = `${cupName}_all_demos_validation.zip`;
     const validationArchiveFilePath =
       process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${validationArchiveFileName}`;
@@ -136,32 +140,32 @@ export class CupService {
       fs.rmSync(validationArchiveFilePath);
     }
 
+    const writeStream = fs.createWriteStream(validationArchiveFilePath);
+    const archive = archiver('zip', { zlib: { level: 9 } });
+
+    archive.pipe(writeStream);
+
     const allCupDemos: CupDemo[] = await this.cupDemosRepository
       .createQueryBuilder('cups_demos')
       .where('cups_demos.cupId = :cupId', { cupId })
       .getMany();
 
     allCupDemos.forEach((demo: CupDemo) => {
-      const isVq3TableDemo = vq3Table.valid.some((vq3Demo: ValidDemoInterface) => vq3Demo.demopath === demo.demopath);
+      const demoPath = path.join(process.env.DFCOMPS_FILES_ABSOLUTE_PATH!, `demos/cup${cupId}/${demo.demopath}`);
+      let folder: string;
 
-      if (isVq3TableDemo) {
-        zip.addLocalFile(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${demo.demopath}`, 'vq3');
-
-        return;
+      if (vq3Table.valid.some((vq3Demo: ValidDemoInterface) => vq3Demo.demopath === demo.demopath)) {
+        folder = 'vq3';
+      } else if (cpmTable.valid.some((cpmDemo: ValidDemoInterface) => cpmDemo.demopath === demo.demopath)) {
+        folder = 'cpm';
+      } else {
+        folder = 'bonus';
       }
 
-      const isCpmTableDemo = cpmTable.valid.some((cpmDemo: ValidDemoInterface) => cpmDemo.demopath === demo.demopath);
-
-      if (isCpmTableDemo) {
-        zip.addLocalFile(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${demo.demopath}`, 'cpm');
-
-        return;
-      }
-
-      zip.addLocalFile(process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${demo.demopath}`, 'bonus');
+      archive.file(demoPath, { name: path.join(folder, path.basename(demo.demopath)) });
     });
 
-    zip.writeZip(validationArchiveFilePath);
+    await archive.finalize();
 
     await this.cupRepository
       .createQueryBuilder()
@@ -177,7 +181,7 @@ export class CupService {
 
   public async getStreamersArchiveLink(accessToken: string | undefined, cupId: number): Promise<ArchiveLinkInterface> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
-    const MAX_DEMOS_FOR_PHYSICS = 30;
+    const MAX_DEMOS_FOR_PHYSICS = 1000;
 
     if (!userAccess.userId || !checkUserRoles(userAccess.roles, [UserRoles.STREAMER])) {
       throw new UnauthorizedException("Can't get demos for streamers without STREAMER role");
@@ -202,7 +206,6 @@ export class CupService {
     const vq3Table: ResultsTableInterface = await this.tablesService.getOfflineCupTable(cup, Physics.VQ3);
     const cpmTable: ResultsTableInterface = await this.tablesService.getOfflineCupTable(cup, Physics.CPM);
     const cupName: string = cup.full_name.replace(/#/g, '').replace(/\s/g, '_');
-    const zip = new Zip();
     const streamersArchiveFileName = `${cupName}_streamers_demos_${v4().substring(0, 12)}.zip`;
     const streamersArchiveFilePath =
       process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${streamersArchiveFileName}`;
@@ -210,6 +213,11 @@ export class CupService {
     if (fs.existsSync(streamersArchiveFilePath)) {
       fs.rmSync(streamersArchiveFilePath);
     }
+
+    const writeStream = fs.createWriteStream(streamersArchiveFilePath);
+    const archive = archiver('zip', { zlib: { level: 9 } });
+
+    archive.pipe(writeStream);
 
     let cpmDemosCount = 0;
     let vq3DemosCount = 0;
@@ -219,10 +227,12 @@ export class CupService {
       vq3DemoIndex < vq3Table.valid.length && vq3DemoIndex < MAX_DEMOS_FOR_PHYSICS;
       vq3DemoIndex++
     ) {
-      zip.addLocalFile(
-        process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${vq3Table.valid[vq3DemoIndex].demopath}`,
-        'vq3',
-        this.formatNumberWithLeadingZeroes(vq3DemoIndex + 1) + '.dm_68',
+      archive.file(
+        path.join(
+          process.env.DFCOMPS_FILES_ABSOLUTE_PATH!,
+          `demos/cup${cupId}/${vq3Table.valid[vq3DemoIndex].demopath}`,
+        ),
+        { name: path.join('vq3', this.formatNumberWithLeadingZeroes(vq3DemoIndex + 1) + '.dm_68') },
       );
       vq3DemosCount++;
     }
@@ -232,15 +242,17 @@ export class CupService {
       cpmDemoIndex < cpmTable.valid.length && cpmDemoIndex < MAX_DEMOS_FOR_PHYSICS;
       cpmDemoIndex++
     ) {
-      zip.addLocalFile(
-        process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cupId}/${cpmTable.valid[cpmDemoIndex].demopath}`,
-        'cpm',
-        this.formatNumberWithLeadingZeroes(cpmDemoIndex + 1) + '.dm_68',
+      archive.file(
+        path.join(
+          process.env.DFCOMPS_FILES_ABSOLUTE_PATH!,
+          `demos/cup${cupId}/${cpmTable.valid[cpmDemoIndex].demopath}`,
+        ),
+        { name: path.join('cpm', this.formatNumberWithLeadingZeroes(cpmDemoIndex + 1) + '.dm_68') },
       );
       cpmDemosCount++;
     }
 
-    zip.writeZip(streamersArchiveFilePath);
+    await archive.finalize();
 
     await this.cupRepository
       .createQueryBuilder()
@@ -424,10 +436,10 @@ export class CupService {
       throw new BadRequestException(`Map ${normalizedMapname} was already played (cup Warcup #${oldWarcup.number})`);
     }
 
-    let worldspawnMapInfo: WorldspawnMapInfoInterface;
+    let parsedMapInfo: ParsedMapInfoInterface;
 
     try {
-      worldspawnMapInfo = await this.worldspawnParseService.getWorldspawnMapInfo(normalizedMapname);
+      parsedMapInfo = await this.mapParsingService.getParsedMapInfo(normalizedMapname);
     } catch (e) {
       throw new NotFoundException(`Map ${normalizedMapname} was not found on ws.q3df.org`);
     }
@@ -445,6 +457,8 @@ export class CupService {
         .where({ map_name: normalizedMapname })
         .execute();
     } else {
+      const weaponsString = mapWeaponsToString(parsedMapInfo.weapons);
+
       this.levelshotsService.downloadLevelshot(normalizedMapname);
 
       await this.mapSuggestionRepository
@@ -455,11 +469,12 @@ export class CupService {
           {
             map_name: normalizedMapname,
             suggestions_count: 1,
-            author: worldspawnMapInfo.author,
-            weapons: mapWeaponsToString(worldspawnMapInfo.weapons),
+            author: parsedMapInfo.author,
+            weapons: weaponsString,
             is_admin_suggestion: false,
-            size: worldspawnMapInfo.size,
-            pk3_link: worldspawnMapInfo.pk3,
+            size: parsedMapInfo.size,
+            map_type: weaponsString.includes('U') ? MapType.STRAFE : MapType.WEAPON,
+            pk3_link: parsedMapInfo.pk3,
             is_blacklisted: false,
             user: {
               id: userAccess.userId!,
@@ -525,14 +540,97 @@ export class CupService {
     }
   }
 
-  public async getWorldspawnMapInfo(accessToken: string | undefined, map: string): Promise<WorldspawnMapInfoInterface> {
+  public async getParsedMapInfo(accessToken: string | undefined, map: string): Promise<ParsedMapInfoInterface> {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!userAccess.userId) {
-      throw new UnauthorizedException(`Unauthorized users can't get worldspawn map info`);
+      throw new UnauthorizedException(`Unauthorized users can't get parsed map info`);
     }
 
-    return await this.worldspawnParseService.getWorldspawnMapInfo(map);
+    return await this.mapParsingService.getParsedMapInfo(map);
+  }
+
+  public async reviewMap(accessToken: string | undefined, cupId: number, vote: number): Promise<MapRatingInterface> {
+    const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+
+    if (!userAccess.userId) {
+      throw new UnauthorizedException("Unauthorized users can't vote for map rating");
+    }
+
+    const cup: Cup | null = await this.cupRepository.createQueryBuilder('cups').where({ id: cupId }).getOne();
+
+    if (!cup) {
+      throw new NotFoundException(`Cup with id = ${cupId} not found`);
+    }
+
+    if (![1, 2, 3, 4, 5].includes(vote)) {
+      throw new BadRequestException(`Wrong value for vote, should be in [1, 2, 3, 4, 5]`);
+    }
+
+    const previousCupReview: CupReview | null = await this.cupReviewRepository
+      .createQueryBuilder('cups_reviews')
+      .where({ user: { id: userAccess.userId } })
+      .andWhere({ cup: { id: cupId } })
+      .getOne();
+
+    if (previousCupReview) {
+      throw new BadRequestException(`Can't vote for map rating twice`);
+    }
+
+    const isFinishedCup: boolean = moment().isAfter(moment(cup.end_datetime));
+
+    if (!isFinishedCup) {
+      throw new BadRequestException(`Map rating voting is unavailable - cup is not finished`);
+    }
+
+    const isAfterTwoWeeks: boolean = moment().isAfter(moment(cup.end_datetime).add(2, 'weeks'));
+
+    if (isAfterTwoWeeks) {
+      throw new BadRequestException(`Map rating voting is unavailable - two weeks passed since cup finish time`);
+    }
+
+    const cupDemoForUser: CupDemo | null = await this.cupDemosRepository
+      .createQueryBuilder('cups_demos')
+      .where({ user: { id: userAccess.userId } })
+      .andWhere({ cup: { id: cupId } })
+      .getOne();
+
+    const isCupParticipant = !!cupDemoForUser;
+    const currentMapRating = cup.map_rating || 0;
+    const currentInternalVoteCount = cup.internal_vote_count || 0;
+    const numberOfVotesForCurrentUser = isCupParticipant ? 2 : 1;
+    const resultingInternalVoteCount = currentInternalVoteCount + numberOfVotesForCurrentUser;
+    const resultingDisplayVoteCount = (cup.display_vote_count || 0) + 1;
+    const resultingMapRating =
+      (currentMapRating * currentInternalVoteCount + vote * numberOfVotesForCurrentUser) / resultingInternalVoteCount;
+
+    await this.cupRepository
+      .createQueryBuilder('cups')
+      .update(Cup)
+      .set({
+        map_rating: Number(resultingMapRating.toFixed(5)),
+        internal_vote_count: resultingInternalVoteCount,
+        display_vote_count: resultingDisplayVoteCount,
+      })
+      .where({ id: cupId })
+      .execute();
+
+    await this.cupReviewRepository
+      .createQueryBuilder()
+      .insert()
+      .into(CupReview)
+      .values([
+        {
+          user: { id: userAccess.userId },
+          cup: { id: cupId },
+          vote,
+        },
+      ])
+      .execute();
+
+    return {
+      mapRating: Number(resultingMapRating.toFixed(2)),
+    };
   }
 
   private formatNumberWithLeadingZeroes(n: number): string {

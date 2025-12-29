@@ -44,7 +44,7 @@ export class DemosService {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!userAccess.userId) {
-      this.loggerService.log(`Demo upload for cup ${cupId} and map ${mapName} failed: not authorized`);
+      this.loggerService.error(`Demo upload for cup ${cupId} and map ${mapName} failed: not authorized`);
 
       return {
         status: DemoUploadResult.ERROR,
@@ -59,7 +59,7 @@ export class DemosService {
       .getOne();
 
     if (!cup) {
-      this.loggerService.log(
+      this.loggerService.error(
         `Demo upload for cup ${cupId} and map ${mapName} failed: cup not found. User ID: ${userAccess.userId}`,
       );
 
@@ -70,7 +70,7 @@ export class DemosService {
     }
 
     if (moment().isAfter(moment(cup.end_datetime))) {
-      this.loggerService.log(
+      this.loggerService.error(
         `Demo upload for cup ${cupId} and map ${mapName} failed: cup already finished. User ID: ${userAccess.userId}`,
       );
 
@@ -95,7 +95,7 @@ export class DemosService {
     const patternMatch: RegExpMatchArray | null = fileName.match(pattern);
 
     if (!patternMatch) {
-      this.loggerService.log(
+      this.loggerService.error(
         `Demo upload for cup ${cupId} and map ${mapName} failed: wrong df_ar_format (${fileName}). User ID: ${userAccess.userId}`,
       );
 
@@ -108,7 +108,7 @@ export class DemosService {
     const physics: Physics | string = patternMatch[2];
 
     if (physics !== Physics.CPM && physics !== Physics.VQ3) {
-      this.loggerService.log(
+      this.loggerService.error(
         `Demo upload for cup ${cupId} and map ${mapName} failed: wrong physics. User ID: ${userAccess.userId}`,
       );
 
@@ -126,7 +126,7 @@ export class DemosService {
       .getMany();
 
     if (playerDemos.length >= 3) {
-      this.loggerService.log(
+      this.loggerService.error(
         `Demo upload for cup ${cupId} and map ${mapName} failed: more than three demos. User ID: ${userAccess.userId}`,
       );
 
@@ -175,7 +175,9 @@ export class DemosService {
         ])
         .execute();
 
-      this.loggerService.log(`Demo upload for cup ${cupId} and map ${mapName} success. User ID: ${userAccess.userId}`);
+      this.loggerService.info(
+        `Demo upload for cup ${cupId} and map ${mapName} success. Demo: ${resultFilename}. User ID: ${userAccess.userId}`,
+      );
 
       return {
         status: DemoUploadResult.SUCCESS,
@@ -185,7 +187,7 @@ export class DemosService {
     } else {
       fs.rmSync(demoFullName);
 
-      this.loggerService.log(
+      this.loggerService.error(
         `Demo upload for cup ${cupId} and map ${mapName} failed: invalid demo. Validation errors: ${JSON.stringify(
           demoCheckResult.errors,
         )}. User ID: ${userAccess.userId}`,
@@ -334,16 +336,23 @@ export class DemosService {
     const userAccess: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
 
     if (!userAccess.userId) {
+      this.loggerService.error(`Demo delete for cup ${cupId} and demo ${demoName} failed: not authorized`);
       throw new UnauthorizedException("Can't delete demo while unauthorized");
     }
 
     const cup: Cup | null = await this.cupRepository.createQueryBuilder('cups').where({ id: cupId }).getOne();
 
     if (!cup) {
+      this.loggerService.error(
+        `Demo delete for cup ${cupId} and demo ${demoName} failed: cup not found. User ID: ${userAccess.userId}`,
+      );
       throw new BadRequestException(`No cup with id = ${cupId}`);
     }
 
     if (moment().isAfter(moment(cup.end_datetime))) {
+      this.loggerService.error(
+        `Demo delete for cup ${cupId} and demo ${demoName} failed: cup already finished. User ID: ${userAccess.userId}`,
+      );
       throw new BadRequestException('Cup already finished');
     }
 
@@ -352,6 +361,9 @@ export class DemosService {
     if (fs.existsSync(demoPath)) {
       fs.rmSync(demoPath);
     } else {
+      this.loggerService.error(
+        `Demo delete for cup ${cupId} and demo ${demoName} failed: demo not found. User ID: ${userAccess.userId}`,
+      );
       throw new BadRequestException(`No demo with name = ${demoName}`);
     }
 
@@ -367,6 +379,8 @@ export class DemosService {
       .where('cups_demos.cupId = :cupId', { cupId: cup.id })
       .andWhere('cups_demos.userId = :userId', { userId: userAccess.userId })
       .getMany();
+
+    this.loggerService.info(`Demo delete for cup ${cupId} and demo ${demoName} success. User ID: ${userAccess.userId}`);
 
     return remainingDemos.map(({ demopath, physics, time }: CupDemo) => ({
       demopath,
@@ -424,7 +438,7 @@ export class DemosService {
       }
       if (demoConfig.player.hc !== '100') {
         valid = false;
-        errors.defrag_svfps = {
+        errors.handicap = {
           actual: demoConfig.player.hc,
           expected: '100',
         };

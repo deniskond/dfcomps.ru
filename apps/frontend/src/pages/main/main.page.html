@@ -13,6 +13,7 @@
         [newsElement]="singleNews"
         [isHeaderSelectable]="true"
         [areCommentsExpanded]="false"
+        (reloadNews)="reloadNews()"
         class="news-element"
       ></app-news-element>
     </ng-container>
@@ -22,6 +23,7 @@
     [newsElement]="singleNews"
     [isHeaderSelectable]="true"
     [areCommentsExpanded]="false"
+    (reloadNews)="reloadNews()"
     class="news-element"
   ></app-news-element>
   <div translate translation="goToArchive" (click)="navigateToArchive()" class="block-link archive"></div>
