@@ -178,7 +178,7 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
   noReviews: 'No reviews',
   loginToAddReview: 'Log in or sign up to add review',
   averagePlace: 'Average place',
-  firstPlaces: '1st places',
-  secondPlaces: '2nd places',
-  thirdPlaces: '3rd places',
+  firstPlaces: 'First places',
+  secondPlaces: 'Second places',
+  thirdPlaces: 'Third places',
 };

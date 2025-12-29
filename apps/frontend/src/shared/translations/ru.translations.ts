@@ -177,7 +177,7 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   noReviews: 'Оценок нет',
   loginToAddReview: 'Войдите или зарегистрируйтесь, чтобы оставить оценку',
   averagePlace: 'Среднее место',
-  firstPlaces: 'Первое место',
-  secondPlaces: 'Второе место',
-  thirdPlaces: 'Третье место',
+  firstPlaces: 'Первые места',
+  secondPlaces: 'Вторые места',
+  thirdPlaces: 'Третьи места',
 };
