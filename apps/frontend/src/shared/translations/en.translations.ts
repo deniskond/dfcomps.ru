@@ -181,4 +181,5 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
   firstPlaces: 'First places',
   secondPlaces: 'Second places',
   thirdPlaces: 'Third places',
+  tournamentStats: 'Tournament stats',
 };

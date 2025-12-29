@@ -180,4 +180,5 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   firstPlaces: 'Первые места',
   secondPlaces: 'Вторые места',
   thirdPlaces: 'Третьи места',
+  tournamentStats: 'Статистика по турнирам',
 };
