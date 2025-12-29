@@ -1,0 +1,109 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Local Backend",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "backend"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "openOnSessionStart",
+      "autoAttachChildProcesses": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "cwd": "${workspaceFolder}/apps/backend",
+      "presentation": {
+        "hidden": true
+      }
+    },
+    {
+      "name": "Chrome Frontend",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:4000",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "frontend:local-db",
+      "postDebugTask": "stop",
+      "presentation": {
+        "hidden": true
+      }
+    },
+    {
+      "name": "Debug Chrome - Frontend",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:4000",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "frontend:dfcomps",
+      "postDebugTask": "stop"
+    },
+    {
+      "name": "Edge Frontend",
+      "type": "msedge",
+      "request": "launch",
+      "url": "http://localhost:4000",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "frontend:local-db",
+      "postDebugTask": "stop",
+      "presentation": {
+        "hidden": true
+      }
+    },
+    {
+      "name": "Debug Edge - Frontend",
+      "type": "msedge",
+      "request": "launch",
+      "url": "http://localhost:4000",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "frontend:dfcomps",
+      "postDebugTask": "stop"
+    },
+    {
+      "name": "Firefox Frontend",
+      "type": "firefox",
+      "request": "launch",
+      "url": "http://localhost:4000",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "frontend:local-db",
+      "postDebugTask": "stop",
+      "pathMappings": [
+        {
+          "url": "webpack:///apps",
+          "path": "${workspaceFolder}/apps"
+        }
+      ],
+      "presentation": {
+        "hidden": true
+      }
+    },
+    {
+      "name": "Debug Firefox - Frontend",
+      "type": "firefox",
+      "request": "launch",
+      "url": "http://localhost:4000",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "frontend:dfcomps",
+      "postDebugTask": "stop",
+      "pathMappings": [
+        {
+          "url": "webpack:///apps",
+          "path": "${workspaceFolder}/apps"
+        }
+      ]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Debug Chrome - Fullstack",
+      "configurations": ["Local Backend", "Chrome Frontend"]
+    },
+    {
+      "name": "Debug Edge - Fullstack",
+      "configurations": ["Local Backend", "Edge Frontend"]
+    },
+    {
+      "name": "Debug Firefox - Fullstack",
+      "configurations": ["Local Backend", "Firefox Frontend"]
+    }
+  ]
+}
