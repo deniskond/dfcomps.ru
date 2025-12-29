@@ -176,4 +176,8 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   score: 'Оценка',
   noReviews: 'Оценок нет',
   loginToAddReview: 'Войдите или зарегистрируйтесь, чтобы оставить оценку',
+  averagePlace: 'Среднее место',
+  firstPlaces: 'Первое место',
+  secondPlaces: 'Второе место',
+  thirdPlaces: 'Третье место',
 };
