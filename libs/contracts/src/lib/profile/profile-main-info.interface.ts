@@ -1,4 +1,5 @@
 export interface ProfileMainInfoInterface {
+  id: number;
   avatar: string | null;
   nick: string;
   vq3Rating: number;

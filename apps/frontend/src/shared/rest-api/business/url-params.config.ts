@@ -68,12 +68,14 @@ export class URL_PARAMS {
     CHECK_NICK_CHANGE: string;
     UPDATE_INFO: string;
     UPDATE_AVATAR: string;
+    GET_CUPS: string;
   } {
     return {
       GET_PROFILE: (id: number) => `${API_URL}/profile/get/${id}`,
       CHECK_NICK_CHANGE: `${API_URL}/profile/check_last_nick_change_time`,
       UPDATE_INFO: `${API_URL}/profile/update-info`,
       UPDATE_AVATAR: `${API_URL}/profile/update-avatar`,
+      GET_CUPS: `${API_URL}/profile/get-profile-cups`,
     };
   }
 
