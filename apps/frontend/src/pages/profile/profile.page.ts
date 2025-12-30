@@ -14,6 +14,7 @@ import { UserService } from '~shared/services/user-service/user.service';
 import {
   Physics,
   ProfileCupResponseInterface,
+  ProfileCupStatInterface,
   ProfileDemosInterface,
   ProfileInterface,
   ProfileMainInfoInterface,
@@ -36,6 +37,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   public cups: ProfileCupInterface[];
   public pagesCount: number;
   public currentCupsPage = 0;
+  public stats: ProfileCupStatInterface;
   public rewards: Rewards[];
   public range = range;
   public isLoading$ = new Subject<boolean>();
@@ -135,6 +137,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     this.vq3Chart = profileInfo.rating.vq3;
     this.demos = profileInfo.demos;
     this.cups = this.mapCupsToView(profileInfo.cups);
+    this.stats = profileInfo.stats;
     this.rewards = profileInfo.rewards.map(({ name }: ProfileRewardsInterface) => name);
     this.pagesCount = Math.ceil(profileInfo.cupsCount / CUPS_ON_PAGE);
     this.sanitizer.bypassSecurityTrustResourceUrl(`/assets/images/avatars/${this.mainInfo.avatar}.jpg`);

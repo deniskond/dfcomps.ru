@@ -115,6 +115,18 @@ export class ProfileService {
       .orderBy('cups.id', 'DESC')
       .getCount();
 
+    const vq3Cups: RatingChange[] = cups.filter(c => c.vq3_place ?? 0 > 0);
+    const vq3Avg: number = vq3Cups.reduce((sum, c) => sum + (c.vq3_place ?? 0), 0) / vq3Cups.length;
+    const vq3First: number = vq3Cups.filter(c => c.vq3_place == 1).length;
+    const vq3Second: number = vq3Cups.filter(c => c.vq3_place == 2).length;
+    const vq3Third: number = vq3Cups.filter(c => c.vq3_place == 3).length;
+
+    const cpmCups: RatingChange[] = cups.filter(c => c.cpm_place ?? 0 > 0);
+    const cpmAvg: number = cpmCups.reduce((sum, c) => sum + (c.cpm_place ?? 0), 0) / cpmCups.length;
+    const cpmFirst: number = cpmCups.filter(c => c.cpm_place == 1).length;
+    const cpmSecond: number = cpmCups.filter(c => c.cpm_place == 2).length;
+    const cpmThird: number = cpmCups.filter(c => c.cpm_place == 3).length;
+
     const demos: CupDemo[] = await this.cupsDemosRepository
       .createQueryBuilder('cups_demos')
       .leftJoinAndSelect('cups_demos.cup', 'cups')
@@ -172,6 +184,18 @@ export class ProfileService {
       rating: {
         cpm: cpmRatingChanges,
         vq3: vq3RatingChanges,
+      },
+      stats: {
+        vq3_cups: vq3Cups.length,
+        vq3_avg: Number.isNaN(vq3Avg) ? 0 : Math.round((vq3Avg + Number.EPSILON) * 100) / 100,
+        vq3_first_place: vq3First,
+        vq3_second_place: vq3Second,
+        vq3_third_place: vq3Third,
+        cpm_cups: cpmCups.length,
+        cpm_avg: Number.isNaN(cpmAvg) ? 0 : Math.round((cpmAvg + Number.EPSILON) * 100) / 100,
+        cpm_first_place: cpmFirst,
+        cpm_second_place: cpmSecond,
+        cpm_third_place: cpmThird
       },
       demos: filteredDemos,
       cups: cups,

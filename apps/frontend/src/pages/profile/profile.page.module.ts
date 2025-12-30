@@ -8,6 +8,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ProfileCupsTableComponent } from './components/profile-cups-table/profile-cups-table.component';
+import { ProfileCupStatsComponent } from './components/profile-cup-stats/profile-cup-stats.component';
 import { ProfileRewardsComponent } from './components/profile-rewards/profile-rewards.component';
 import { ProfileRatingChartComponent } from './components/profile-rating-chart/profile-rating-chart.component';
 import { ProfileService } from './services/profile.service';
@@ -30,6 +31,7 @@ const routes: Routes = [
   declarations: [
     ProfilePageComponent,
     ProfileCupsTableComponent,
+    ProfileCupStatsComponent,
     ProfileRewardsComponent,
     ProfileRatingChartComponent,
     ProfileLastDemosComponent,

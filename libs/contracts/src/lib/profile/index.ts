@@ -1,5 +1,6 @@
 export { NickChangeResponseInterface } from './nick-change-response.interface';
 export { ProfileCupResponseInterface } from './profile-cup-response.interface';
+export { ProfileCupStatInterface } from './profile-cup-stat.interface';
 export { ProfileDemosInterface } from './profile-demos.interface';
 export { ProfileMainInfoInterface } from './profile-main-info.interface';
 export { ProfileRewardsInterface } from './profile-rewards.interface';
