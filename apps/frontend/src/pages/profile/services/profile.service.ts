@@ -2,7 +2,7 @@ import { BackendService, URL_PARAMS } from '~shared/rest-api';
 import { Injectable } from '@angular/core';
 import { Observable, combineLatest, of } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
-import { NickChangeResponseInterface, ProfileInterface } from '@dfcomps/contracts';
+import { NickChangeResponseInterface, ProfileCupResponseInterface, ProfileInterface } from '@dfcomps/contracts';
 
 @Injectable()
 export class ProfileService extends BackendService {
@@ -14,6 +14,14 @@ export class ProfileService extends BackendService {
       : this.get$<ProfileInterface>(URL_PARAMS.PROFILE.GET_PROFILE(playerId)).pipe(
           tap((profile: ProfileInterface) => (this.profiles[playerId] = profile)),
         );
+  }
+
+  public getPlayerCups$(
+    userId: number,
+    startIndex: number,
+    endIndex: number,
+  ): Observable<ProfileCupResponseInterface[]> {
+    return this.post$(URL_PARAMS.PROFILE.GET_CUPS, { userId, startIndex, endIndex });
   }
 
   public getProfileNickCanBeChanged$(): Observable<boolean> {
