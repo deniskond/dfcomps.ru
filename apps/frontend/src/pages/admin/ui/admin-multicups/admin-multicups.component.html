@@ -23,7 +23,30 @@
       <div class="cell header" data-test-id="multicup-name-text">{{ multicup.name }}</div>
       <div class="cell rounds header" data-test-id="multicup-rounds-text">{{ multicup.rounds }}</div>
       <div class="cell actions buttons">
-        <ng-container *ngIf="isEditingMulticupAvailable(multicup)">
+        <ng-container *ngIf="areMulticupActionsAvailable(multicup)">
+          <button
+            mat-raised-button
+            color="basic"
+            [matMenuTriggerFor]="multicupMenu"
+            data-test-id="button-multicup-actions"
+          >
+            Multicup actions
+          </button>
+          <mat-menu #multicupMenu="matMenu">
+            <button
+              [disabled]="multicup.isRatingCalculated"
+              (click)="calculateRatings(multicup)"
+              mat-menu-item
+              data-test-id="button-calculate-ratings-by-ee"
+            >
+              <mat-icon>checklist_rtl</mat-icon>
+              <span>Calculate ratings by EE</span>
+            </button>
+            <button (click)="finishMulticup(multicup)" mat-menu-item data-test-id="button-finish-multicup">
+              <mat-icon>outlined_flag</mat-icon>
+              <span>Finish cup</span>
+            </button>
+          </mat-menu>
           <button
             [routerLink]="'/admin/multicups/edit/' + multicup.id"
             mat-raised-button
@@ -41,7 +64,7 @@
             Delete
           </button>
         </ng-container>
-        <ng-container *ngIf="!isEditingMulticupAvailable(multicup)">No actions available</ng-container>
+        <ng-container *ngIf="!areMulticupActionsAvailable(multicup)">No actions available</ng-container>
       </div>
     </ng-container>
   </div>

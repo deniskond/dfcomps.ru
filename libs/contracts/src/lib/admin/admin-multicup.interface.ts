@@ -3,4 +3,5 @@ export interface AdminMulticupInterface {
   name: string;
   rounds: number;
   isFinished: boolean;
+  isRatingCalculated: boolean;
 }

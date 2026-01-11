@@ -56,7 +56,7 @@ export class AdminMulticupsComponent implements OnInit {
         this.multicups = this.multicups.filter((cupEntry: AdminMulticupInterface) => cupEntry.id !== multicup.id);
         this.multicups$.next(this.multicups);
         this.adminDataService.setMulticups(this.multicups);
-        this.snackBar.open(`Successfully deleted "${multicup.name}"!`, '', { duration: 1000 });
+        this.snackBar.open(`Successfully deleted "${multicup.name}" multicup!`, 'OK', { duration: 2000 });
       });
   }
 
@@ -68,7 +68,7 @@ export class AdminMulticupsComponent implements OnInit {
     return checkUserRoles(this.user.roles, [UserRoles.CUP_ORGANIZER]);
   }
 
-  public isEditingMulticupAvailable(multicup: AdminMulticupInterface): boolean {
+  public areMulticupActionsAvailable(multicup: AdminMulticupInterface): boolean {
     if (!this.user) {
       return false;
     }
@@ -78,6 +78,30 @@ export class AdminMulticupsComponent implements OnInit {
     }
 
     return checkUserRoles(this.user.roles, [UserRoles.CUP_ORGANIZER]);
+  }
+
+  public calculateRatings(multicup: AdminMulticupInterface): void {
+    this.adminDataService.calculateMulticupEERatings$(multicup.id).subscribe(() => {
+      this.multicups = this.multicups.map((cupEntry: AdminMulticupInterface) =>
+        cupEntry.id === multicup.id ? { ...cupEntry, isRatingCalculated: true } : cupEntry,
+      );
+      this.multicups$.next(this.multicups);
+      this.adminDataService.setMulticups(this.multicups);
+      this.snackBar.open(`Successfully calculated EE ratings for "${multicup.name}" multicup!`, 'OK', {
+        duration: 2000,
+      });
+    });
+  }
+
+  public finishMulticup(multicup: AdminMulticupInterface): void {
+    this.adminDataService.finishMulticup$(multicup.id).subscribe(() => {
+      this.multicups = this.multicups.map((cupEntry: AdminMulticupInterface) =>
+        cupEntry.id === multicup.id ? { ...cupEntry, isFinished: true } : cupEntry,
+      );
+      this.multicups$.next(this.multicups);
+      this.adminDataService.setMulticups(this.multicups);
+      this.snackBar.open(`Successfully finished "${multicup.name}" multicup!`, 'OK', { duration: 2000 });
+    });
   }
 
   private initCurrentUserSubscription(): void {
