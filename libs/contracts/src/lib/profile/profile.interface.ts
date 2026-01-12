@@ -14,4 +14,5 @@ export interface ProfileInterface {
   demos: ProfileDemosInterface[];
   cups: ProfileCupResponseInterface[];
   rewards: ProfileRewardsInterface[];
+  cupsCount: number;
 }

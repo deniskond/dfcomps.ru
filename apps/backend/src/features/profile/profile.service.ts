@@ -5,6 +5,7 @@ import {
   ProfileDemosInterface,
   ProfileInterface,
   ProfileMainInfoInterface,
+  ProfileCupResponseInterface,
 } from '@dfcomps/contracts';
 import {
   BadRequestException,
@@ -51,6 +52,7 @@ export class ProfileService {
       throw new NotFoundException(`Player with id ${userId} not found`);
     }
     return {
+      id: player.id,
       avatar: player.avatar,
       nick: player.displayed_nick,
       vq3Rating: player.vq3_rating,
@@ -68,13 +70,11 @@ export class ProfileService {
     return players.map((x) => x.id);
   }
 
-  public async getPlayerProfile(userId: number): Promise<ProfileInterface> {
-    const player: User | null = await this.userRepository.createQueryBuilder('users').where({ id: userId }).getOne();
-
-    if (!player) {
-      throw new NotFoundException(`Player with id ${userId} not found`);
-    }
-
+  public async getPlayerCups(
+    userId: number,
+    startIndex: number,
+    endIndex: number,
+  ): Promise<ProfileCupResponseInterface[]> {
     const cups: RatingChange[] = await this.ratingChangeRepository
       .createQueryBuilder('rating_changes')
       .leftJoinAndSelect('rating_changes.cup', 'cups')
@@ -82,15 +82,46 @@ export class ProfileService {
       .where('rating_changes.userId = :userId', { userId })
       .andWhere('cups.rating_calculated = true')
       .orderBy('cups.id', 'DESC')
+      .offset(startIndex)
+      .limit(endIndex - startIndex)
       .getMany();
 
-    const vq3Cups: RatingChange[] = cups.filter(c => c.vq3_place ?? 0 > 0);
+    return cups.map((ratingChange: RatingChange) => ({
+      full_name: ratingChange.cup!.full_name,
+      short_name: ratingChange.cup!.type === CupTypes.ONLINE ? ratingChange.cup!.short_name : ratingChange.cup!.map1!,
+      news_id: ratingChange.cup!.news[0]?.id || null,
+      cpm_place: ratingChange.cpm_place,
+      vq3_place: ratingChange.vq3_place,
+      cpm_change: ratingChange.cpm_change,
+      vq3_change: ratingChange.vq3_change,
+    }));
+  }
+
+  public async getPlayerProfile(userId: number): Promise<ProfileInterface> {
+    const player: User | null = await this.userRepository.createQueryBuilder('users').where({ id: userId }).getOne();
+
+    if (!player) {
+      throw new NotFoundException(`Player with id ${userId} not found`);
+    }
+
+    const cups: ProfileCupResponseInterface[] = await this.getPlayerCups(userId, 0, 15);
+
+    const totalCupsCount: number = await this.ratingChangeRepository
+      .createQueryBuilder('rating_changes')
+      .leftJoinAndSelect('rating_changes.cup', 'cups')
+      .leftJoinAndSelect('cups.news', 'news', 'news.newsTypeId = 5 OR news.newsTypeId = 1')
+      .where('rating_changes.userId = :userId', { userId })
+      .andWhere('cups.rating_calculated = true')
+      .orderBy('cups.id', 'DESC')
+      .getCount();
+
+    const vq3Cups: ProfileCupResponseInterface[] = cups.filter(c => c.vq3_place ?? 0 > 0);
     const vq3Avg: number = vq3Cups.reduce((sum, c) => sum + (c.vq3_place ?? 0), 0) / vq3Cups.length;
     const vq3First: number = vq3Cups.filter(c => c.vq3_place == 1).length;
     const vq3Second: number = vq3Cups.filter(c => c.vq3_place == 2).length;
     const vq3Third: number = vq3Cups.filter(c => c.vq3_place == 3).length;
 
-    const cpmCups: RatingChange[] = cups.filter(c => c.cpm_place ?? 0 > 0);
+    const cpmCups: ProfileCupResponseInterface[] = cups.filter(c => c.cpm_place ?? 0 > 0);
     const cpmAvg: number = cpmCups.reduce((sum, c) => sum + (c.cpm_place ?? 0), 0) / cpmCups.length;
     const cpmFirst: number = cpmCups.filter(c => c.cpm_place == 1).length;
     const cpmSecond: number = cpmCups.filter(c => c.cpm_place == 2).length;
@@ -143,6 +174,7 @@ export class ProfileService {
 
     return {
       player: {
+        id: player.id,
         avatar: player.avatar,
         nick: player.displayed_nick,
         vq3Rating: player.vq3_rating,
@@ -166,18 +198,11 @@ export class ProfileService {
         cpm_third_place: cpmThird
       },
       demos: filteredDemos,
-      cups: cups.slice(0, 10).map((ratingChange: RatingChange) => ({
-        full_name: ratingChange.cup!.full_name,
-        short_name: ratingChange.cup!.type === CupTypes.ONLINE ? ratingChange.cup!.short_name : ratingChange.cup!.map1!,
-        news_id: ratingChange.cup!.news[0]?.id || null,
-        cpm_place: ratingChange.cpm_place,
-        vq3_place: ratingChange.vq3_place,
-        cpm_change: ratingChange.cpm_change,
-        vq3_change: ratingChange.vq3_change,
-      })),
+      cups: cups,
       rewards: rewards.map((reward: Reward) => ({
         name: reward.name_en,
       })),
+      cupsCount: totalCupsCount,
     };
   }
 
