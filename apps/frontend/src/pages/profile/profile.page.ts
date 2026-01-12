@@ -141,7 +141,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     this.rewards = profileInfo.rewards.map(({ name }: ProfileRewardsInterface) => name);
     this.pagesCount = Math.ceil(profileInfo.cupsCount / CUPS_ON_PAGE);
     this.sanitizer.bypassSecurityTrustResourceUrl(`/assets/images/avatars/${this.mainInfo.avatar}.jpg`);
-
+    this.currentCupsPage = 0;
+    
     setTimeout(() => {
       this.isLoading$.next(false);
       this.changeDetectorRef.detectChanges();

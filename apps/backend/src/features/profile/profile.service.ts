@@ -115,13 +115,13 @@ export class ProfileService {
       .orderBy('cups.id', 'DESC')
       .getCount();
 
-    const vq3Cups: RatingChange[] = cups.filter(c => c.vq3_place ?? 0 > 0);
+    const vq3Cups: ProfileCupResponseInterface[] = cups.filter(c => c.vq3_place ?? 0 > 0);
     const vq3Avg: number = vq3Cups.reduce((sum, c) => sum + (c.vq3_place ?? 0), 0) / vq3Cups.length;
     const vq3First: number = vq3Cups.filter(c => c.vq3_place == 1).length;
     const vq3Second: number = vq3Cups.filter(c => c.vq3_place == 2).length;
     const vq3Third: number = vq3Cups.filter(c => c.vq3_place == 3).length;
 
-    const cpmCups: RatingChange[] = cups.filter(c => c.cpm_place ?? 0 > 0);
+    const cpmCups: ProfileCupResponseInterface[] = cups.filter(c => c.cpm_place ?? 0 > 0);
     const cpmAvg: number = cpmCups.reduce((sum, c) => sum + (c.cpm_place ?? 0), 0) / cpmCups.length;
     const cpmFirst: number = cpmCups.filter(c => c.cpm_place == 1).length;
     const cpmSecond: number = cpmCups.filter(c => c.cpm_place == 2).length;
