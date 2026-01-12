@@ -7,12 +7,12 @@ export class AdminMulticupsController {
   constructor(private readonly adminMulticupsService: AdminMulticupsService) {}
 
   @Get('get-all-multicups')
-  getAllCups(@Headers('X-Auth') accessToken: string | undefined): Promise<any> {
+  getAllMulticups(@Headers('X-Auth') accessToken: string | undefined): Promise<any> {
     return this.adminMulticupsService.getAllMulticups(accessToken);
   }
 
   @Get('get/:multicupId')
-  getSingleCup(
+  getSingleMulticup(
     @Headers('X-Auth') accessToken: string | undefined,
     @Param('multicupId', new ParseIntPipe()) multicupId: number,
   ): Promise<AdminMulticupActionInterface> {
@@ -20,15 +20,31 @@ export class AdminMulticupsController {
   }
 
   @Post('delete/:multicupId')
-  deleteCup(
+  deleteMulticup(
     @Headers('X-Auth') accessToken: string | undefined,
     @Param('multicupId', new ParseIntPipe()) multicupId: number,
   ): Promise<void> {
     return this.adminMulticupsService.deleteMulticup(accessToken, multicupId);
   }
 
+  @Post('calculate-ee-ratings/:multicupId')
+  calculateMulticupEERatings(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Param('multicupId', new ParseIntPipe()) multicupId: number,
+  ): Promise<void> {
+    return this.adminMulticupsService.calculateMulticupEERatings(accessToken, multicupId);
+  }
+
+  @Post('finish/:multicupId')
+  finishMulticup(
+    @Headers('X-Auth') accessToken: string | undefined,
+    @Param('multicupId', new ParseIntPipe()) multicupId: number,
+  ): Promise<void> {
+    return this.adminMulticupsService.finishMulticup(accessToken, multicupId);
+  }
+
   @Post('add-multicup')
-  addOfflineCup(
+  addMulticup(
     @Headers('X-Auth') accessToken: string | undefined,
     @Body() multicupActionDto: MulticupActionDto,
   ): Promise<void> {
@@ -36,7 +52,7 @@ export class AdminMulticupsController {
   }
 
   @Post('update-multicup/:multicupId')
-  updateOfflineCup(
+  updateMulticup(
     @Headers('X-Auth') accessToken: string | undefined,
     @Body() updateMulticupDto: MulticupActionDto,
     @Param('multicupId', new ParseIntPipe()) multicupId: number,

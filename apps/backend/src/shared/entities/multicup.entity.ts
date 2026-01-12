@@ -17,6 +17,12 @@ export class Multicup {
   @Column({ type: 'character varying' })
   system: MulticupSystems;
 
+  @Column({ type: 'boolean', nullable: true })
+  isFinished: boolean | null;
+
+  @Column({ type: 'boolean', nullable: true })
+  isRatingCalculated: boolean | null;
+
   @OneToMany(() => RatingChange, (ratingChange) => ratingChange.multicup)
   ratingChanges: RatingChange[];
 

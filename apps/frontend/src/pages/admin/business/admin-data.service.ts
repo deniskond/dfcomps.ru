@@ -350,6 +350,14 @@ export class AdminDataService {
     return this.backendService.uploadFile$(URL_PARAMS.ADMIN.UPLOAD_NEWS_IMAGE, [{ fileKey: 'image', file: image }]);
   }
 
+  public finishMulticup$(multicupId: number): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.FINISH_MULTICUP(multicupId));
+  }
+
+  public calculateMulticupEERatings$(multicupId: number): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.MULTICUP_CALCULATE_EE_RATINGS(multicupId));
+  }
+
   private getAdminNewsDto(
     formValue: Record<string, any>,
     newsType: NewsTypes,

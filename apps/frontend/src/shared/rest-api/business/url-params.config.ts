@@ -218,6 +218,8 @@ export class URL_PARAMS {
     ADD_MULTICUP: string;
     UPDATE_MULTICUP: (multicupId: number) => string;
     DELETE_MULTICUP: (multicupId: number) => string;
+    FINISH_MULTICUP: (multicupId: number) => string;
+    MULTICUP_CALCULATE_EE_RATINGS: (multicupId: number) => string;
     GET_ALL_AVAILABLE_MULTICUPS: string;
     SET_ONLINE_CUP_MAPS: string;
     ONLINE_CUP_PLAYERS: (cupId: number) => string;
@@ -266,6 +268,8 @@ export class URL_PARAMS {
       ADD_MULTICUP: `${API_URL}/admin/multicups/add-multicup`,
       UPDATE_MULTICUP: (multicupId: number) => `${API_URL}/admin/multicups/update-multicup/${multicupId}`,
       DELETE_MULTICUP: (multicupId: number) => `${API_URL}/admin/multicups/delete/${multicupId}`,
+      FINISH_MULTICUP: (multicupId: number) => `${API_URL}/admin/multicups/finish/${multicupId}`,
+      MULTICUP_CALCULATE_EE_RATINGS: (multicupId: number) => `${API_URL}/admin/multicups/calculate-ee-ratings/${multicupId}`,
       GET_ALL_AVAILABLE_MULTICUPS: `${API_URL}/admin/multicups/get-all-active-multicups`,
       SET_ONLINE_CUP_MAPS: `${API_URL}/admin/cups/online/set-maps`,
       ONLINE_CUP_PLAYERS: (cupId: number) => `${API_URL}/admin/cups/online/players/${cupId}`,

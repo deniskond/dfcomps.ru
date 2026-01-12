@@ -359,6 +359,7 @@ export class TablesService {
             playerId: cupResult.user.id,
             playerNick: cupResult.user.displayed_nick,
             playerCountry: cupResult.user.country,
+            playerRating: null,
             roundResults,
             overall,
             minround: null,
@@ -407,6 +408,7 @@ export class TablesService {
         playerId: cupResult.user.id,
         playerNick: cupResult.user.displayed_nick,
         playerCountry: cupResult.user.country,
+        playerRating: null,
         roundResults: [],
         overall: 0,
         minround: null,
@@ -543,6 +545,7 @@ export class TablesService {
             playerId: result.playerId,
             playerNick: result.nick,
             playerCountry: result.country,
+            playerRating: result.rating,
             roundResults,
             overall: result.eePoints,
             minround: null, // is mapped after if needed
@@ -595,7 +598,8 @@ export class TablesService {
 
     return multicupResults.map((multicupResult: MulticupResultInterface) => {
       const playerRatingChangeRecord: RatingChange | undefined = ratingChanges.find(
-        (ratingChange: RatingChange) => ratingChange.user.id === multicupResult.playerId,
+        (ratingChange: RatingChange) =>
+          ratingChange.user.id === multicupResult.playerId && ratingChange[`${physics}_change`] !== null,
       );
       let ratingChange: number | null = null;
 

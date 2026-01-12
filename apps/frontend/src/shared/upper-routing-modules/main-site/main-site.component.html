@@ -10,7 +10,7 @@
       <div class="main-column">
         <router-outlet></router-outlet>
       </div>
-      <div class="right-column">
+      <div class="right-column sticky-main-column">
         <div class="right-block shadowed">
           <app-cup-timer
             *ngIf="nextCupInfo$ | async as cup"
@@ -31,7 +31,7 @@
           </div>
           <app-one-v-one-widget></app-one-v-one-widget>
         </div>
-        <div class="right-block shadowed">
+        <div class="right-block shadowed top-10-tables">
           <div class="side-block-header table-header">
             <span translate translation="ratingLeaders"></span>
           </div>
