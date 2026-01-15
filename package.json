@@ -92,7 +92,7 @@
     "reflect-metadata": "0.1.13",
     "rxjs": "7.8.1",
     "sharp": "0.32.6",
-    "typeorm": "0.3.17",
+    "typeorm": "0.3.27",
     "uuid": "9.0.0",
     "ws": "8.17.1",
     "zone.js": "0.13.1"
