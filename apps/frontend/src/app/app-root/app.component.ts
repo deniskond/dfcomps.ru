@@ -9,6 +9,7 @@ import { ThemeService } from '~shared/services/theme/theme.service';
 import { DuelService } from '~pages/1v1/services/duel.service';
 import { MatIconRegistry } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { getDiscordAuthURL } from '~shared/helpers/get-discord-auth-url';
 
 @Component({
   selector: 'app-root',
@@ -76,11 +77,7 @@ export class AppComponent implements OnInit, OnDestroy {
       snackBar
         .onAction()
         .pipe(take(1))
-        .subscribe(
-          () =>
-            (window.location.href =
-              'https://discord.com/oauth2/authorize?response_type=token&client_id=1154028126783946772&scope=identify&state=link'),
-        );
+        .subscribe(() => (window.location.href = getDiscordAuthURL('link')));
     });
   }
 }

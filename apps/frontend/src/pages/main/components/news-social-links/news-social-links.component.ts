@@ -32,18 +32,19 @@ export class NewsSocialLinksComponent implements OnInit, OnDestroy {
     const mappedHeader$ = this.languageService
       .getLanguage$()
       .pipe(map((language: Languages) => (language === Languages.EN ? this.news.headerEn : this.news.header)));
+    const origin = window.location.origin;
 
     this.telegramShareLink$ = mappedHeader$.pipe(
       map(
         (header: string) =>
-          `https://t.me/share/url?url=https://dfcomps.ru/news/${this.news.id}&text=${encodeURIComponent(header)}`,
+          `https://t.me/share/url?url=${origin}/news/${this.news.id}&text=${encodeURIComponent(header)}`,
       ),
     );
 
     this.twitterShareLink$ = mappedHeader$.pipe(
       map(
         (header: string) =>
-          `https://twitter.com/intent/tweet?text=${encodeURIComponent(header)} https://dfcomps.ru/news/${this.news.id}`,
+          `https://twitter.com/intent/tweet?text=${encodeURIComponent(header)} ${origin}/news/${this.news.id}`,
       ),
     );
   }

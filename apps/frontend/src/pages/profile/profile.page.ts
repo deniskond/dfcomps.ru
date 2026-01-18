@@ -20,6 +20,7 @@ import {
   ProfileRewardsInterface,
   Rewards,
 } from '@dfcomps/contracts';
+import { getDiscordAuthURL } from '~shared/helpers/get-discord-auth-url';
 
 @Component({
   templateUrl: './profile.page.html',
@@ -82,8 +83,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   }
 
   public linkDiscord(): void {
-    window.location.href =
-      'https://discord.com/oauth2/authorize?response_type=token&client_id=1154028126783946772&scope=identify&state=link';
+    window.location.href = getDiscordAuthURL('link');
   }
 
   private initObservables(): void {

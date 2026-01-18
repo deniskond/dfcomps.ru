@@ -12,10 +12,11 @@ export const API_URL = MAIN_URL;
 
 export class URL_PARAMS {
   public static get WEBSOCKET_1V1_URL(): string {
+    const host = window.location.host;
     const websocketEnvMap: Record<string, string> = {
-      local: 'wss://dfcomps.ru/ws/1v1',
+      local: `wss://${host}/ws/1v1`,
       'local-backend': 'ws://localhost:4002/1v1',
-      prod: 'wss://dfcomps.ru/ws/1v1',
+      prod: `wss://${host}/ws/1v1`,
     };
 
     return websocketEnvMap[environment.name];
@@ -267,7 +268,8 @@ export class URL_PARAMS {
       UPDATE_MULTICUP: (multicupId: number) => `${API_URL}/admin/multicups/update-multicup/${multicupId}`,
       DELETE_MULTICUP: (multicupId: number) => `${API_URL}/admin/multicups/delete/${multicupId}`,
       FINISH_MULTICUP: (multicupId: number) => `${API_URL}/admin/multicups/finish/${multicupId}`,
-      MULTICUP_CALCULATE_EE_RATINGS: (multicupId: number) => `${API_URL}/admin/multicups/calculate-ee-ratings/${multicupId}`,
+      MULTICUP_CALCULATE_EE_RATINGS: (multicupId: number) =>
+        `${API_URL}/admin/multicups/calculate-ee-ratings/${multicupId}`,
       GET_ALL_AVAILABLE_MULTICUPS: `${API_URL}/admin/multicups/get-all-active-multicups`,
       SET_ONLINE_CUP_MAPS: `${API_URL}/admin/cups/online/set-maps`,
       ONLINE_CUP_PLAYERS: (cupId: number) => `${API_URL}/admin/cups/online/players/${cupId}`,
