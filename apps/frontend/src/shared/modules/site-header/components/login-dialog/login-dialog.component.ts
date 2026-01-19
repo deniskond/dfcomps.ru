@@ -3,6 +3,7 @@ import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/
 import { MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
+import { getDiscordAuthURL } from '~shared/helpers/get-discord-auth-url';
 
 @Component({
   selector: 'app-login-dialog',
@@ -51,6 +52,6 @@ export class LoginDialogComponent {
   }
 
   public startDiscordOAuth(): void {
-    window.location.href = 'https://discord.com/oauth2/authorize?response_type=token&client_id=1154028126783946772&scope=identify&state=login';
+    window.location.href = getDiscordAuthURL('login');
   }
 }

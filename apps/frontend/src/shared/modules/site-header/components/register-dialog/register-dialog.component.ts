@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { getDiscordAuthURL } from '~shared/helpers/get-discord-auth-url';
 
 @Component({
   selector: 'app-register-dialog',
@@ -10,7 +11,6 @@ export class RegisterDialogComponent {
   constructor(public dialogRef: MatDialogRef<RegisterDialogComponent>) {}
 
   public registerWithDiscord(): void {
-    window.location.href =
-      'https://discord.com/oauth2/authorize?response_type=token&client_id=1154028126783946772&scope=identify&state=register';
+    window.location.href = getDiscordAuthURL('register');
   }
 }

@@ -21,6 +21,7 @@ import {
   ProfileRewardsInterface,
   Rewards,
 } from '@dfcomps/contracts';
+import { getDiscordAuthURL } from '~shared/helpers/get-discord-auth-url';
 
 const CUPS_ON_PAGE = 15;
 
@@ -88,8 +89,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   }
 
   public linkDiscord(): void {
-    window.location.href =
-      'https://discord.com/oauth2/authorize?response_type=token&client_id=1154028126783946772&scope=identify&state=link';
+    window.location.href = getDiscordAuthURL('link');
   }
 
   public getProfileCupsPage(page: number) {
