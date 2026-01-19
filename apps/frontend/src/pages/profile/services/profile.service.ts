@@ -16,7 +16,7 @@ export class ProfileService extends BackendService {
         );
   }
 
-  public getPlayerCups$(
+  public getPlayerCupsPage$(
     userId: number,
     startIndex: number,
     endIndex: number,

@@ -73,9 +73,9 @@ export class ProfileController {
   }
 
   @Post('get-profile-cups')
-  getPlayerCups(
+  getPlayerCupsPage(
     @Body() { userId, startIndex, endIndex }: ProfileCupPaginateDto,
   ): Promise<ProfileCupResponseInterface[]> {
-    return this.profileService.getPlayerCups(userId, startIndex, endIndex);
+    return this.profileService.getPlayerCupsPage(userId, startIndex, endIndex);
   }
 }

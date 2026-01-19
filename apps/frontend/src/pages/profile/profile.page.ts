@@ -166,7 +166,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
   private fetchCups(): void {
     this.profileService
-      .getPlayerCups$(this.mainInfo.id, this.currentCupsPage * CUPS_ON_PAGE, (this.currentCupsPage + 1) * CUPS_ON_PAGE)
+      .getPlayerCupsPage$(this.mainInfo.id, this.currentCupsPage * CUPS_ON_PAGE, (this.currentCupsPage + 1) * CUPS_ON_PAGE)
       .subscribe((nextCups: ProfileCupResponseInterface[]) => {
         this.cups = this.mapCupsToView(nextCups);
         this.changeDetectorRef.markForCheck();
