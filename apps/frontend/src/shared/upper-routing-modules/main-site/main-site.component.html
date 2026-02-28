@@ -18,7 +18,7 @@
             [startTime]="cup.startDateTime"
             [endTime]="cup.endDateTime"
             [cupType]="cup.type"
-            [cupName]="cup.shortName"
+            [cupName]="cup | invokeFunction: getCupTimerName"
             [customNews]="cup.customNews"
             [mapLink]="cup.customMap || cup.mapPk3"
             [server]="server$ | async"

@@ -44,4 +44,11 @@ export class MainSiteComponent implements OnInit {
   public setTab(index: number): void {
     this.activePage = index;
   }
+
+  public getCupTimerName(nextCupInfo: CupInterface): string {
+    // For online cups, fullName is usually something like "Online Cup #16", and shortName is something like "VQ3 Plasma".
+    // For offline cups, fullName usually matches shortName, but shortName is set manually when the cup name is too long. 
+    // For example, "FPS Winter Cup - Round 3" will have the manual shortName "FPS Winter Cup - R3".
+    return nextCupInfo.type === CupTypes.ONLINE ? nextCupInfo.fullName : nextCupInfo.shortName;
+  }
 }
