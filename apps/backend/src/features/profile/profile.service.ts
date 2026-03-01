@@ -5,6 +5,7 @@ import {
   ProfileDemosInterface,
   ProfileInterface,
   ProfileMainInfoInterface,
+  ProfileCupResponseInterface,
 } from '@dfcomps/contracts';
 import {
   BadRequestException,
@@ -51,6 +52,7 @@ export class ProfileService {
       throw new NotFoundException(`Player with id ${userId} not found`);
     }
     return {
+      id: player.id,
       avatar: player.avatar,
       nick: player.displayed_nick,
       vq3Rating: player.vq3_rating,
@@ -66,6 +68,33 @@ export class ProfileService {
       .where({ displayed_nick: nick })
       .getMany();
     return players.map((x) => x.id);
+  }
+
+  public async getPlayerCupsPage(
+    userId: number,
+    startIndex: number,
+    endIndex: number,
+  ): Promise<ProfileCupResponseInterface[]> {
+    const cups: RatingChange[] = await this.ratingChangeRepository
+      .createQueryBuilder('rating_changes')
+      .leftJoinAndSelect('rating_changes.cup', 'cups')
+      .leftJoinAndSelect('cups.news', 'news', 'news.newsTypeId = 5 OR news.newsTypeId = 1')
+      .where('rating_changes.userId = :userId', { userId })
+      .andWhere('cups.rating_calculated = true')
+      .orderBy('cups.id', 'DESC')
+      .offset(startIndex)
+      .limit(endIndex - startIndex)
+      .getMany();
+
+    return cups.map((ratingChange: RatingChange) => ({
+      full_name: ratingChange.cup!.full_name,
+      short_name: ratingChange.cup!.type === CupTypes.ONLINE ? ratingChange.cup!.short_name : ratingChange.cup!.map1!,
+      news_id: ratingChange.cup!.news[0]?.id || null,
+      cpm_place: ratingChange.cpm_place,
+      vq3_place: ratingChange.vq3_place,
+      cpm_change: ratingChange.cpm_change,
+      vq3_change: ratingChange.vq3_change,
+    }));
   }
 
   public async getPlayerProfile(userId: number): Promise<ProfileInterface> {
@@ -143,6 +172,7 @@ export class ProfileService {
 
     return {
       player: {
+        id: player.id,
         avatar: player.avatar,
         nick: player.displayed_nick,
         vq3Rating: player.vq3_rating,
@@ -166,7 +196,7 @@ export class ProfileService {
         cpm_third_place: cpmThird
       },
       demos: filteredDemos,
-      cups: cups.slice(0, 10).map((ratingChange: RatingChange) => ({
+      cups: cups.slice(0, 15).map((ratingChange: RatingChange) => ({
         full_name: ratingChange.cup!.full_name,
         short_name: ratingChange.cup!.type === CupTypes.ONLINE ? ratingChange.cup!.short_name : ratingChange.cup!.map1!,
         news_id: ratingChange.cup!.news[0]?.id || null,
@@ -178,6 +208,7 @@ export class ProfileService {
       rewards: rewards.map((reward: Reward) => ({
         name: reward.name_en,
       })),
+      cupsCount: cups.length,
     };
   }
 
