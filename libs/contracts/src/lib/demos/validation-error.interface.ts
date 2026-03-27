@@ -1,4 +1,5 @@
 export interface ValidationErrorInterface {
-  actual: string;
-  expected: string;
+  actual?: string;
+  expected?: string;
+  message?: string;
 }
