@@ -53,6 +53,8 @@ export class BitStreamReader {
         intBits >>= 1;
         --bits;
       }
+    } else if ((intIdx & 31) === 0) {
+      intBits = this.data[Math.floor(intIdx / 32)];
     }
 
     this.currentBits = intBits;

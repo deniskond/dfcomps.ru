@@ -28,17 +28,17 @@ export class Q3Utils {
   }
 
   static emulatePHPOverflow(value: number): number {
-    const maxInt32 = 2147483647;
-    if (value > maxInt32) {
-      value = -(maxInt32 - (value % maxInt32)) - 2;
-    }
-    return value;
+    return value | 0;
   }
 
   static unpack(data: Buffer): number[] {
     const result: number[] = [];
-    const dataView = new DataView(data.buffer, data.byteOffset, data.byteLength);
-    for (let i = 0; i < Math.floor(data.length / 4); i++) {
+    // Pad to next 4-byte boundary (matching C# behaviour which always pads with zeros)
+    const addBytes = 4 - (data.length & 3);
+    const padded = Buffer.alloc(data.length + addBytes);
+    data.copy(padded);
+    const dataView = new DataView(padded.buffer, padded.byteOffset, padded.byteLength);
+    for (let i = 0; i < padded.length / 4; i++) {
       result.push(Q3Utils.emulatePHPOverflow(dataView.getUint32(i * 4, true)));
     }
     return result;
