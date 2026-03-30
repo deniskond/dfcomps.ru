@@ -7,7 +7,8 @@ import { Q3DemoParser } from './parser/q3-demo-parser';
 import { Q3Utils } from './utils/q3-utils';
 import { ClientEvent } from './structures/client-event';
 import { ClientConnection } from './structures/client-connection';
-import { DemoRecordSection, DemoTimerSection } from '../demo-config.interface';
+import { DemoRecordSection } from './structures/demo-record-section.interface';
+import { DemoTimerSection } from './structures/demo-timer-section.interface';
 
 function getTimeByMillis(millis: number): string {
   const ms = millis % 1000;
@@ -53,7 +54,9 @@ function isFinishCorrect(events: ClientEvent[], index: number): 'CORRECT_START' 
   return 'INCORRECT';
 }
 
-function getCorrectFinishEvent(events: ClientEvent[]): { finishType: 'CORRECT_START' | 'CORRECT_TR'; event: ClientEvent } | null {
+function getCorrectFinishEvent(
+  events: ClientEvent[],
+): { finishType: 'CORRECT_START' | 'CORRECT_TR'; event: ClientEvent } | null {
   let best: { finishType: 'CORRECT_START' | 'CORRECT_TR'; event: ClientEvent; timeNoError: number } | null = null;
   for (let i = events.length - 1; i >= 0; i--) {
     const finType = isFinishCorrect(events, i);
@@ -263,51 +266,51 @@ export class DemoParser {
     const { clc, client } = rawInfo;
     const conf = clc.configs;
 
-    const result: DemoConfigInterface = {} as DemoConfigInterface;
+    const clientConfig = conf[Q3Const.Q3_DEMO_CFG_FIELD_CLIENT]
+      ? Q3Utils.splitConfig(conf[Q3Const.Q3_DEMO_CFG_FIELD_CLIENT])
+      : {};
+    const gameConfig = conf[Q3Const.Q3_DEMO_CFG_FIELD_GAME]
+      ? Q3Utils.splitConfig(conf[Q3Const.Q3_DEMO_CFG_FIELD_GAME])
+      : {};
+    const playerConfig = conf[Q3Const.Q3_DEMO_CFG_FIELD_PLAYER]
+      ? Q3Utils.splitConfig(conf[Q3Const.Q3_DEMO_CFG_FIELD_PLAYER])
+      : {};
 
-    if (conf[Q3Const.Q3_DEMO_CFG_FIELD_CLIENT]) {
-      result.client = Q3Utils.splitConfig(conf[Q3Const.Q3_DEMO_CFG_FIELD_CLIENT]) as DemoConfigInterface['client'];
-      result.physic = (result.client as any).df_promode === '0' ? Physics.VQ3 : Physics.CPM;
+    const record = buildRecord(demoName, client.clientEvents, clc, client.maxSpeed);
+
+    let time: string | undefined;
+    let isTimeReset: boolean | undefined;
+    if (record.bestTime) {
+      const TIME_RESET_SUFFIX = ' (Time reset)';
+      if (record.bestTime.endsWith(TIME_RESET_SUFFIX)) {
+        time = record.bestTime.slice(0, -TIME_RESET_SUFFIX.length);
+        isTimeReset = true;
+      } else {
+        time = record.bestTime;
+        isTimeReset = false;
+      }
     }
 
-    if (conf[Q3Const.Q3_DEMO_CFG_FIELD_GAME]) {
-      result.game = Q3Utils.splitConfig(conf[Q3Const.Q3_DEMO_CFG_FIELD_GAME]) as DemoConfigInterface['game'];
-    }
-
-    if (conf[Q3Const.Q3_DEMO_CFG_FIELD_PLAYER]) {
-      result.player = Q3Utils.splitConfig(conf[Q3Const.Q3_DEMO_CFG_FIELD_PLAYER]) as DemoConfigInterface['player'];
-    }
-
-    result.raw = conf as unknown as DemoConfigInterface['raw'];
-
-    // New fields from full snapshot parsing
-    result.clientEvents = client.clientEvents.map((e) => ({
-      time: e.time,
-      timeHasError: e.timeHasError,
-      serverTime: e.serverTime,
-      playerNum: e.playerNum,
-      playerMode: e.playerMode,
-      speed: e.speed,
-      eventStartFile: e.eventStartFile,
-      eventStartTime: e.eventStartTime,
-      eventTimeReset: e.eventTimeReset,
-      eventFinish: e.eventFinish,
-      eventCheckPoint: e.eventCheckPoint,
-      eventSomeTrigger: e.eventSomeTrigger,
-      eventChangePmType: e.eventChangePmType,
-      eventChangeUser: e.eventChangeUser,
-    }));
-    result.isCpmInParams = client.isCpmInParams;
-    result.isCpmInSnapshots = client.isCpmInSnapshots;
-    result.isCheatsOn = client.isCheatsOn;
-    result.isOnline = client.isOnline;
-    result.maxSpeed = client.maxSpeed;
-    result.dfvers = client.dfvers;
-
-    result.record = buildRecord(demoName, client.clientEvents, clc, client.maxSpeed);
-    const timer = buildTimer(Object.values(clc.console).map((v) => v.command));
-    if (timer) result.timer = timer;
-
-    return result;
+    return {
+      defragGameType: clientConfig['defrag_gametype'] ?? '',
+      rawDemoInfo: conf[Q3Const.Q3_DEMO_CFG_FIELD_PLAYER] ?? '',
+      serverFPS: gameConfig['defrag_svfps'] ?? '',
+      handicap: playerConfig['hc'] ?? '',
+      g_synchronousClients: gameConfig['g_synchronousClients'] ?? '',
+      mapName: clientConfig['mapname'] ?? '',
+      defragVersion: clientConfig['defrag_vers'] ?? '',
+      physic: clientConfig['df_promode'] === '0' ? Physics.VQ3 : Physics.CPM,
+      g_gravity: gameConfig['g_gravity'] ?? '',
+      g_knockback: gameConfig['g_knockback'] ?? '',
+      g_speed: gameConfig['g_speed'] ?? '',
+      pmove_msec: gameConfig['pmove_msec'] ?? '',
+      sv_cheats: gameConfig['sv_cheats'] ?? '',
+      timescale: gameConfig['timescale'] ?? '',
+      areOBsEnabled: gameConfig['defrag_obs'] ?? '',
+      pmove_fixed: gameConfig['pmove_fixed'] ?? '',
+      maxSpeed: record.maxSpeed,
+      time,
+      isTimeReset,
+    };
   }
 }

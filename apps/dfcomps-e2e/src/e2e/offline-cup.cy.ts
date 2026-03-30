@@ -27,6 +27,18 @@ describe('offline cup full cycle', () => {
     cy.get('[data-test-id=table-validation-errors]').should('contain.text', 'timescale');
   });
 
+  it('should display error on time reset demo upload', () => {
+    loginAs(UserRoles.USER);
+
+    cy.get('[data-test-id=input-demo-upload]').first().selectFile(
+      'test-data/offline-cup/tr-demo/st1[df.vq3]00.07.808(Nosf.Russia).dm_68',
+    );
+    cy.get('[data-test-id=button-demo-upload]').click();
+
+    cy.get('[data-test-id=table-validation-errors]').should('exist');
+    cy.get('[data-test-id=table-validation-errors]').should('contain.text', 'timereset');
+  });
+
   it('should display overbounce popup on valid demo with overbounce upload', () => {
     loginAs(UserRoles.USER);
 
@@ -57,7 +69,7 @@ describe('offline cup full cycle', () => {
     // tr demo
     loginAs(UserRoles.MODERATOR);
     cy.get('[data-test-id=input-demo-upload]').selectFile(
-      'test-data/offline-cup/tr-demo/st1[df.vq3]00.07.808(Nosf.Russia).dm_68',
+      'test-data/offline-cup/valid-extra-demos/st1[df.cpm]00.07.432(Nosf.Russia).dm_68',
     );
     cy.get('[data-test-id=button-demo-upload]').click();
     logOut();
