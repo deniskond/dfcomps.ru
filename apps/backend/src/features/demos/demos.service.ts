@@ -17,7 +17,7 @@ import * as fs from 'fs';
 import { AuthService } from '../auth/auth.service';
 import { UserAccessInterface } from '../../shared/interfaces/user-access.interface';
 import { CupDemo } from '../../shared/entities/cup-demo.entity';
-import { DemoParser } from './demo-parser';
+import { DemoParser } from './demo-parser/demo-parser';
 import { DemoAcceptMode } from './demo-upload-mode.enum';
 import { DemoCheckResultInterface } from './demo-check-result.interface';
 import { DemoConfigInterface } from './demo-config.interface';
@@ -405,6 +405,7 @@ export class DemosService {
     demoAcceptMode = DemoAcceptMode.OFFLINE_AND_ONLINE,
   ): DemoCheckResultInterface {
     const demoConfig: DemoConfigInterface | null = new DemoParser().parseDemo(demoPath);
+    console.log(demoConfig);
 
     if (!demoConfig) {
       return {

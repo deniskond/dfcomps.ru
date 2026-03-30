@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import * as path from 'path';
 import { Physics } from '@dfcomps/contracts';
-import { DemoConfigInterface } from './demo-config.interface';
-import { Q3Const } from './demo-parser/const/q3-const';
-import { Q3DemoParser } from './demo-parser/parser/q3-demo-parser';
-import { Q3Utils } from './demo-parser/utils/q3-utils';
-import { ClientEvent } from './demo-parser/structures/client-event';
-import { ClientConnection } from './demo-parser/structures/client-connection';
-import { DemoRecordSection, DemoTimerSection } from './demo-config.interface';
+import { DemoConfigInterface } from '../demo-config.interface';
+import { Q3Const } from './const/q3-const';
+import { Q3DemoParser } from './parser/q3-demo-parser';
+import { Q3Utils } from './utils/q3-utils';
+import { ClientEvent } from './structures/client-event';
+import { ClientConnection } from './structures/client-connection';
+import { DemoRecordSection, DemoTimerSection } from '../demo-config.interface';
 
 function getTimeByMillis(millis: number): string {
   const ms = millis % 1000;
