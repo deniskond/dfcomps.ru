@@ -15,7 +15,12 @@
   </tr>
   <tr *ngFor="let validationError of validationErrorNames">
     <td class="table-field error-name">{{ validationError }}</td>
-    <td class="table-field">{{ data[validationError].actual }}</td>
-    <td class="table-field">{{ data[validationError].expected }}</td>
+    <ng-container *ngIf="data[validationError].message; else comparisonCells">
+      <td class="table-field" colspan="2">{{ data[validationError].message }}</td>
+    </ng-container>
+    <ng-template #comparisonCells>
+      <td class="table-field">{{ data[validationError].actual }}</td>
+      <td class="table-field">{{ data[validationError].expected }}</td>
+    </ng-template>
   </tr>
 </table>

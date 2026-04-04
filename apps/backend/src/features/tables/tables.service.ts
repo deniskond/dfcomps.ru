@@ -102,11 +102,26 @@ export class TablesService {
         time: cupDemo.time,
       }));
 
-    let validDemos: ValidDemoInterface[] = cupDemos
-      .filter(
-        ({ verified_status }: CupDemo) =>
-          verified_status === VerifiedStatuses.VALID || verified_status === VerifiedStatuses.UNWATCHED,
-      )
+    const validCupDemos: CupDemo[] = cupDemos.filter(
+      ({ verified_status }: CupDemo) =>
+        verified_status === VerifiedStatuses.VALID || verified_status === VerifiedStatuses.UNWATCHED,
+    );
+
+    const bestDemoByPlayer = new Map<number, CupDemo>();
+    validCupDemos.forEach((demo: CupDemo) => {
+      const existing = bestDemoByPlayer.get(demo.user.id);
+
+      if (!existing || demo.time < existing.time) {
+        bestDemoByPlayer.set(demo.user.id, demo);
+      }
+    });
+
+    const maxSpeedValues: number[] = [...bestDemoByPlayer.values()]
+      .map((cupDemo: CupDemo) => cupDemo.maxSpeed ?? 0)
+      .filter((maxSpeed: number) => maxSpeed !== 0);
+    const maxSpeedInTable: number = maxSpeedValues.length > 0 ? Math.max(...maxSpeedValues) : 0;
+
+    let validDemos: ValidDemoInterface[] = validCupDemos
       .reduce((demos: ValidDemoInterface[], demo: CupDemo) => {
         const userPhysicsRatingChanges: RatingChange[] = demo.user.ratingChanges.filter(
           (ratingChange: RatingChange) => ratingChange[`${physics}_change`] !== null,
@@ -129,6 +144,7 @@ export class TablesService {
           time: demo.time,
           isOrganizer: demo.isOrganizer,
           isOutsideCompetition: demo.isOutsideCompetition,
+          isMaxSpeed: maxSpeedInTable !== 0 && (bestDemoByPlayer.get(demo.user.id)?.maxSpeed ?? 0) === maxSpeedInTable,
         };
 
         const previousBestDemo: ValidDemoInterface | undefined = demos.find(

@@ -4,4 +4,6 @@ export interface DemoCheckResultInterface {
   valid: boolean;
   errors: Record<string, ValidationErrorInterface>;
   warnings: string[];
+  maxSpeed: number | null;
+  time: number | null;
 }

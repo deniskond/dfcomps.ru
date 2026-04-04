@@ -17,7 +17,7 @@ import * as fs from 'fs';
 import { AuthService } from '../auth/auth.service';
 import { UserAccessInterface } from '../../shared/interfaces/user-access.interface';
 import { CupDemo } from '../../shared/entities/cup-demo.entity';
-import { DemoParser } from './demo-parser';
+import { DemoParser } from './demo-parser/demo-parser';
 import { DemoAcceptMode } from './demo-upload-mode.enum';
 import { DemoCheckResultInterface } from './demo-check-result.interface';
 import { DemoConfigInterface } from './demo-config.interface';
@@ -153,6 +153,7 @@ export class DemosService {
       physics,
       null,
       demoAcceptMode,
+      demoTime,
     );
 
     if (demoCheckResult.valid) {
@@ -166,11 +167,12 @@ export class DemosService {
             cup: { id: cup.id },
             demopath: resultFilename,
             map: mapName,
-            time: demoTime,
+            time: demoCheckResult.time || demoTime,
             physics,
             obs: demoCheckResult.warnings.includes('killobs 0'),
             verified_status: VerifiedStatuses.UNWATCHED,
             impressive: false,
+            maxSpeed: demoCheckResult.maxSpeed,
           },
         ])
         .execute();
@@ -289,6 +291,7 @@ export class DemosService {
       physics,
       match.security_code,
       DemoAcceptMode.OFFLINE_AND_ONLINE,
+      demoTime,
     );
 
     if (demoCheckResult.valid) {
@@ -297,7 +300,7 @@ export class DemosService {
           .createQueryBuilder()
           .update(Match)
           .set({
-            first_player_time: demoTime,
+            first_player_time: demoCheckResult.time || demoTime,
             first_player_demo: resultFilename,
           })
           .where({ first_player_id: userAccess.userId })
@@ -308,7 +311,7 @@ export class DemosService {
           .createQueryBuilder()
           .update(Match)
           .set({
-            second_player_time: demoTime,
+            second_player_time: demoCheckResult.time || demoTime,
             second_player_demo: resultFilename,
           })
           .where({ second_player_id: userAccess.userId })
@@ -403,15 +406,28 @@ export class DemosService {
     physics: Physics,
     securityCode: string | null = null,
     demoAcceptMode = DemoAcceptMode.OFFLINE_AND_ONLINE,
+    demoTime: number,
   ): DemoCheckResultInterface {
-    const demoConfig: DemoConfigInterface = new DemoParser().parseDemo(demoPath);
+    const demoConfig: DemoConfigInterface | null = new DemoParser().parseDemo(demoPath);
+
+    if (!demoConfig) {
+      return {
+        valid: false,
+        errors: { parse_failed: { message: 'Demo file could not be parsed' } },
+        warnings: [],
+        maxSpeed: null,
+        time: null,
+      };
+    }
+
     let valid = true;
     const errors: Record<string, ValidationErrorInterface> = {};
     const warnings = [];
-    const isOfflineDemo = demoConfig.client.defrag_gametype && demoConfig.client.defrag_gametype === '1';
+    const isOfflineDemo = demoConfig.defragGameType && demoConfig.defragGameType === '1';
+    const maxSpeed: number | null = Number(demoConfig.maxSpeed) || null;
 
     // 1v1 upload check
-    if (securityCode !== null && !demoConfig.raw['544'].match(securityCode)) {
+    if (securityCode !== null && !demoConfig.rawDemoInfo.match(securityCode)) {
       valid = false;
       errors.name = {
         actual: 'wrong code',
@@ -427,25 +443,39 @@ export class DemosService {
       };
     }
 
+    const [minutes, seconds, milliseconds] = demoConfig.time?.split('.') ?? [];
+    const parsedTime: number | null =
+      minutes !== undefined && seconds !== undefined && milliseconds !== undefined
+        ? parseInt(minutes) * 60 + parseInt(seconds) + parseInt(milliseconds) / 1000
+        : null;
+
+    if (parsedTime && parsedTime !== demoTime) {
+      valid = false;
+      errors.demoname_time = {
+        actual: demoTime.toString(),
+        expected: parsedTime.toString(),
+      };
+    }
+
     // offline unique checks
     if (isOfflineDemo) {
-      if (demoConfig.game.defrag_svfps !== '125') {
+      if (demoConfig.serverFPS !== '125') {
         valid = false;
         errors.defrag_svfps = {
-          actual: demoConfig.game.defrag_svfps,
+          actual: demoConfig.serverFPS,
           expected: '125',
         };
       }
-      if (demoConfig.player.hc !== '100') {
+      if (demoConfig.handicap !== '100') {
         valid = false;
         errors.handicap = {
-          actual: demoConfig.player.hc,
+          actual: demoConfig.handicap,
           expected: '100',
         };
       }
     }
 
-    if (demoConfig.game.g_synchronousclients === '0' && demoConfig.game.pmove_fixed === '0') {
+    if (demoConfig.g_synchronousClients === '0' && demoConfig.pmove_fixed === '0') {
       valid = false;
       errors.pmove_and_gsync = {
         actual: 'g_synchronousclients=0, pmove_fixed=0',
@@ -453,18 +483,18 @@ export class DemosService {
       };
     }
 
-    if ((demoConfig.client.mapname as string).toLowerCase() !== mapName.toLowerCase()) {
+    if (demoConfig.mapName.toLowerCase() !== mapName.toLowerCase()) {
       valid = false;
       errors.mapname = {
-        actual: demoConfig.client.mapname.toLowerCase(),
+        actual: demoConfig.mapName.toLowerCase(),
         expected: mapName.toLowerCase(),
       };
     }
 
-    if (parseInt(demoConfig.client.defrag_vers) < 19123) {
+    if (parseInt(demoConfig.defragVersion) < 19123) {
       valid = false;
       errors.defrag_version = {
-        actual: demoConfig.client.defrag_vers,
+        actual: demoConfig.defragVersion,
         expected: '1.91.23 or higher',
       };
     }
@@ -477,55 +507,63 @@ export class DemosService {
       };
     }
 
-    if (demoConfig.game.g_gravity !== '800') {
+    if (demoConfig.g_gravity !== '800') {
       valid = false;
       errors.g_gravity = {
-        actual: demoConfig.game.g_gravity,
+        actual: demoConfig.g_gravity,
         expected: '800',
       };
     }
 
-    if (demoConfig.game.g_knockback !== '1000') {
+    if (demoConfig.g_knockback !== '1000') {
       valid = false;
       errors.g_knockback = {
-        actual: demoConfig.game.g_knockback,
+        actual: demoConfig.g_knockback,
         expected: '1000',
       };
     }
 
-    if (demoConfig.game.g_speed !== '320') {
+    if (demoConfig.g_speed !== '320') {
       valid = false;
       errors.g_speed = {
-        actual: demoConfig.game.g_speed,
+        actual: demoConfig.g_speed,
         expected: '320',
       };
     }
 
-    if (demoConfig.game.pmove_msec !== '8') {
+    if (demoConfig.pmove_msec !== '8') {
       valid = false;
       errors.pmove_msec = {
-        actual: demoConfig.game.pmove_msec,
+        actual: demoConfig.pmove_msec,
         expected: '8',
       };
     }
 
-    if (demoConfig.game.sv_cheats !== '0') {
+    if (demoConfig.sv_cheats !== '0') {
       valid = false;
       errors.sv_cheats = {
-        actual: demoConfig.game.sv_cheats,
+        actual: demoConfig.sv_cheats,
         expected: '0',
       };
     }
 
-    if (demoConfig.game.timescale !== '1') {
+    if (demoConfig.timescale !== '1') {
       valid = false;
       errors.timescale = {
-        actual: demoConfig.game.timescale,
+        actual: demoConfig.timescale,
         expected: '1',
       };
     }
 
-    if (demoConfig.game.defrag_obs === '1') {
+    if (demoConfig.isTimeReset) {
+      valid = false;
+      errors.timereset = {
+        actual: 'TR',
+        expected: 'no TR',
+      };
+    }
+
+    if (demoConfig.areOBsEnabled === '1') {
       warnings.push('killobs 0');
     }
 
@@ -533,6 +571,8 @@ export class DemosService {
       valid,
       errors,
       warnings,
+      maxSpeed,
+      time: parsedTime,
     };
   }
 }

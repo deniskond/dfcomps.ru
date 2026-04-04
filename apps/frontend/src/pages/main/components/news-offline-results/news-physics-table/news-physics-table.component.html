@@ -12,16 +12,19 @@
     <app-player-place [place]="places[i]"></app-player-place>
   </div>
   <div class="player-column">
-    <app-player-cell [country]="result.country" [nick]="result.nick" [playerId]="result.playerId"> </app-player-cell>
-    <img *ngIf="result.impressive === true" class="impressive" src="/assets/images/icons/impressive.png" />
-    <img *ngIf="result.isOrganizer === true" class="org" src="/assets/images/icons/org.png" />
+    <app-player-cell [country]="result.country" [nick]="result.nick" [playerId]="result.playerId"></app-player-cell>
+    <div class="icons-container">
+      <img *ngIf="result.impressive === true" src="/assets/images/icons/impressive.png" />
+      <img *ngIf="result.isMaxSpeed === true" src="/assets/images/icons/haste.png" />
+      <img *ngIf="result.isOrganizer === true" class="org" src="/assets/images/icons/org.png" />
+    </div>
   </div>
   <div *ngIf="archiveLink || !result.demopath; else noArchiveLink" class="time-column time">
     {{ result.time | invokeFunction: formatResult }}
   </div>
   <ng-template #noArchiveLink>
     <div class="time-column time">
-      <a [href]="result | invokeFunction: getDemoLink:cup.id">{{ result.time | invokeFunction: formatResult }}</a>
+      <a [href]="result | invokeFunction: getDemoLink : cup.id">{{ result.time | invokeFunction: formatResult }}</a>
     </div>
   </ng-template>
   <div class="rating-column">
@@ -42,6 +45,7 @@
 
 <div *ngIf="cup.multicupId && cup.demosValidated" class="multicup-button-container">
   <button (click)="openFullMulticupTable()" mat-raised-button color="primary">
-    <span translate translation="fullTable"></span> ({{ physics.toUpperCase() }})
+    <span translate translation="fullTable"></span>
+    ({{ physics.toUpperCase() }})
   </button>
 </div>
