@@ -153,6 +153,7 @@ export class DemosService {
       physics,
       null,
       demoAcceptMode,
+      demoTime,
     );
 
     if (demoCheckResult.valid) {
@@ -166,7 +167,7 @@ export class DemosService {
             cup: { id: cup.id },
             demopath: resultFilename,
             map: mapName,
-            time: demoTime,
+            time: demoCheckResult.time || demoTime,
             physics,
             obs: demoCheckResult.warnings.includes('killobs 0'),
             verified_status: VerifiedStatuses.UNWATCHED,
@@ -290,6 +291,7 @@ export class DemosService {
       physics,
       match.security_code,
       DemoAcceptMode.OFFLINE_AND_ONLINE,
+      demoTime,
     );
 
     if (demoCheckResult.valid) {
@@ -298,7 +300,7 @@ export class DemosService {
           .createQueryBuilder()
           .update(Match)
           .set({
-            first_player_time: demoTime,
+            first_player_time: demoCheckResult.time || demoTime,
             first_player_demo: resultFilename,
           })
           .where({ first_player_id: userAccess.userId })
@@ -309,7 +311,7 @@ export class DemosService {
           .createQueryBuilder()
           .update(Match)
           .set({
-            second_player_time: demoTime,
+            second_player_time: demoCheckResult.time || demoTime,
             second_player_demo: resultFilename,
           })
           .where({ second_player_id: userAccess.userId })
@@ -404,6 +406,7 @@ export class DemosService {
     physics: Physics,
     securityCode: string | null = null,
     demoAcceptMode = DemoAcceptMode.OFFLINE_AND_ONLINE,
+    demoTime: number,
   ): DemoCheckResultInterface {
     const demoConfig: DemoConfigInterface | null = new DemoParser().parseDemo(demoPath);
 
@@ -413,6 +416,7 @@ export class DemosService {
         errors: { parse_failed: { message: 'Demo file could not be parsed' } },
         warnings: [],
         maxSpeed: null,
+        time: null,
       };
     }
 
@@ -436,6 +440,20 @@ export class DemosService {
       errors.demo_type = {
         actual: 'online',
         expected: 'offline',
+      };
+    }
+
+    const [minutes, seconds, milliseconds] = demoConfig.time?.split('.') ?? [];
+    const parsedTime: number | null =
+      minutes !== undefined && seconds !== undefined && milliseconds !== undefined
+        ? parseInt(minutes) * 60000 + parseInt(seconds) * 1000 + parseInt(milliseconds)
+        : null;
+
+    if (parsedTime && parsedTime !== demoTime) {
+      valid = false;
+      errors.demoname_time = {
+        actual: demoTime.toString(),
+        expected: parsedTime.toString(),
       };
     }
 
@@ -554,6 +572,7 @@ export class DemosService {
       errors,
       warnings,
       maxSpeed,
+      time: parsedTime,
     };
   }
 }

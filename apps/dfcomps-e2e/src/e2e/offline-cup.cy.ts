@@ -13,9 +13,9 @@ describe('offline cup full cycle', () => {
   it('should display errors on invalid demo upload', () => {
     loginAs(UserRoles.USER);
 
-    cy.get('[data-test-id=input-demo-upload]').first().selectFile(
-      'test-data/offline-cup/fully-invalid/st1[df.vq3]00.05.616(Nosf.Russia).dm_68',
-    );
+    cy.get('[data-test-id=input-demo-upload]')
+      .first()
+      .selectFile('test-data/offline-cup/fully-invalid/st1[df.vq3]00.05.616(Nosf.Russia).dm_68');
     cy.get('[data-test-id=button-demo-upload]').click();
 
     cy.get('[data-test-id=table-validation-errors]').should('exist');
@@ -25,14 +25,15 @@ describe('offline cup full cycle', () => {
     cy.get('[data-test-id=table-validation-errors]').should('contain.text', 'sv_cheats');
     cy.get('[data-test-id=table-validation-errors]').should('contain.text', 'g_speed');
     cy.get('[data-test-id=table-validation-errors]').should('contain.text', 'timescale');
+    cy.get('[data-test-id=table-validation-errors]').should('contain.text', 'demoname_time');
   });
 
   it('should display error on time reset demo upload', () => {
     loginAs(UserRoles.USER);
 
-    cy.get('[data-test-id=input-demo-upload]').first().selectFile(
-      'test-data/offline-cup/tr-demo/st1[df.vq3]00.07.808(Nosf.Russia).dm_68',
-    );
+    cy.get('[data-test-id=input-demo-upload]')
+      .first()
+      .selectFile('test-data/offline-cup/tr-demo/st1[df.vq3]00.07.808(Nosf.Russia).dm_68');
     cy.get('[data-test-id=button-demo-upload]').click();
 
     cy.get('[data-test-id=table-validation-errors]').should('exist');
@@ -138,7 +139,7 @@ describe('offline cup full cycle', () => {
     cy.get('simple-snack-bar').find('.mat-mdc-snack-bar-label').should('exist');
 
     cy.visit('/');
-    cy.get('.news-block').first().find('[data-test-id=text-rating-change]').should('exist');  
+    cy.get('.news-block').first().find('[data-test-id=text-rating-change]').should('exist');
     cy.get('.news-block').first().find('[data-test-id=button-all-demos-archive]').should('exist');
   });
 });
