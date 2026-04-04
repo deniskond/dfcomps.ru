@@ -5,7 +5,6 @@ import { Q3DemoMessage } from './q3-demo-message';
 
 export class Q3MessageStream {
   private fileHandle: number | null = null;
-  private readMessages: number = 0;
 
   constructor(fileName: string) {
     try {
@@ -43,8 +42,6 @@ export class Q3MessageStream {
     }
 
     msg.data = dataBuffer;
-    this.readMessages++;
-
     return msg;
   }
 

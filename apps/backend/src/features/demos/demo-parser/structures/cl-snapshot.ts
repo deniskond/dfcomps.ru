@@ -2,7 +2,6 @@ import { Q3Const } from '../const/q3-const';
 import { PlayerState } from './player-state';
 
 export class CLSnapshot {
-  serverCommandNum: number = 0;
   serverTime: number = 0;
   messageNum: number = 0;
   deltaNum: number = -1;

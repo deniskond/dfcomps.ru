@@ -103,7 +103,7 @@ export class Q3DemoConfigParser {
   }
 
   private parseSnapshot(decoder: Q3HuffmanReader): void {
-    // Populate client config once on first snapshot
+    // Initialize client and game state from config strings once on first snapshot
     if (this.client.clientConfig === null) {
       this.client.clientConfig = {};
 
@@ -124,7 +124,6 @@ export class Q3DemoConfigParser {
     const newSnap = new CLSnapshot();
     let old: CLSnapshot | null = null;
 
-    newSnap.serverCommandNum = this.clc.serverCommandSequence;
     newSnap.serverTime = decoder.readLong();
     newSnap.messageNum = this.clc.serverMessageSequence;
     this.serverTime = newSnap.serverTime;
@@ -184,7 +183,6 @@ export class Q3DemoConfigParser {
     this.client.snap = newSnap;
     this.client.snap.ping = 0;
     this.client.snapshots[this.client.snap.messageNum & Q3Const.PACKET_MASK] = this.client.snap;
-    this.client.newSnapshots = true;
 
     this.updateClientEvents(newSnap);
   }
@@ -241,21 +239,21 @@ export class Q3DemoConfigParser {
             clientEvent.eventCheckPoint = true;
           }
         } else if (prevEvent.eventFinish && (prevStat & 2) !== 0 && (newStat & 2) === 0) {
-          // fix double finish
+          // 0x2 bit clears in the snapshot after finish: re-attribute finish here for accurate timing
           if ((isNormal || prevIsNormal) && !clientEvent.eventChangeUser) {
             prevEvent.eventFinish = false;
             if (!prevEvent.hasAnyEvent) events.splice(events.length - 1, 1);
             clientEvent.eventFinish = true;
           }
         } else if (prevEvent.eventStartTime && (prevStat & 2) === 0 && (newStat & 2) !== 0) {
-          // fix double start timer
+          // 0x2 bit sets in the snapshot after start: re-attribute start here for accurate timing
           if (isNormal) {
             prevEvent.eventStartTime = false;
             if (!prevEvent.hasAnyEvent) events.splice(events.length - 1, 1);
             clientEvent.eventStartTime = true;
           }
         } else if (prevEvent.eventTimeReset && (prevStat & 4) === 0 && (newStat & 2) !== 0) {
-          // fix double time reset
+          // 0x2 bit sets in the snapshot after time reset: re-attribute reset here for accurate timing
           if (isNormal) {
             prevEvent.eventTimeReset = false;
             if (!prevEvent.hasAnyEvent) events.splice(events.length - 1, 1);
@@ -278,7 +276,6 @@ export class Q3DemoConfigParser {
     if (clientEvent.hasAnyEvent) {
       events.push(clientEvent);
     }
-    this.client.lastClientEvent = clientEvent;
 
     if (this.client.clientConfig !== null && this.client.isCpmInParams === null) {
       const promode = Q3Utils.getOrZero(this.client.clientConfig, 'df_promode');

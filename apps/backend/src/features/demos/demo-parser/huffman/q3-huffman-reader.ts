@@ -71,10 +71,6 @@ export class Q3HuffmanReader {
     return (val << 16) >> 16;
   }
 
-  readInt(): number {
-    return this.readNumBits(32);
-  }
-
   readLong(): number {
     return this.readNumBits(32);
   }
@@ -83,10 +79,6 @@ export class Q3HuffmanReader {
     const ival = this.readNumBits(32);
     if (this.isEOD()) return -1;
     return Q3Utils.rawBitsToFloat(ival);
-  }
-
-  readAngle16(): number {
-    return Q3Utils.SHORT2ANGLE(this.readNumBits(16));
   }
 
   readFloatIntegral(): number {
@@ -130,10 +122,6 @@ export class Q3HuffmanReader {
 
   readBigString(): string {
     return this.readStringBase(Q3_BIG_INFO_STRING, false);
-  }
-
-  readStringLine(): string {
-    return this.readStringBase(Q3_MAX_STRING_CHARS, true);
   }
 
   readDeltaEntity(state: EntityState, number: number): boolean {

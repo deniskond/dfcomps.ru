@@ -8,7 +8,6 @@ import { Q3Utils } from './utils/q3-utils';
 import { ClientEvent } from './structures/client-event';
 import { ClientConnection } from './structures/client-connection';
 import { DemoRecordSection } from './structures/demo-record-section.interface';
-import { DemoTimerSection } from './structures/demo-timer-section.interface';
 
 function getTimeByMillis(millis: number): string {
   const ms = millis % 1000;
@@ -16,20 +15,6 @@ function getTimeByMillis(millis: number): string {
   const seconds = totalSec % 60;
   const totalMin = Math.floor(totalSec / 60);
   return `${String(totalMin).padStart(2, '0')}.${String(seconds).padStart(2, '0')}.${String(ms).padStart(3, '0')}`;
-}
-
-function getDiffByMillis(diff: number): string {
-  const ms = diff % 1000;
-  const totalSec = Math.floor(diff / 1000);
-  const seconds = totalSec % 60;
-  const totalMin = Math.floor(totalSec / 60);
-  if (seconds < 1) return `0.${String(ms).padStart(3, '0')}`;
-  if (totalMin < 1) return `${seconds}.${String(ms).padStart(3, '0')}`;
-  return `${totalMin}.${String(seconds).padStart(2, '0')}.${String(ms).padStart(3, '0')}`;
-}
-
-function getNumKey(num: number): string {
-  return num <= 1 ? '' : ` ${num}`;
 }
 
 function hasStartBefore(events: ClientEvent[], index: number): boolean {
@@ -166,90 +151,6 @@ function buildRecord(
   }
 
   return record;
-}
-
-function buildTimer(consoleValues: string[]): DemoTimerSection | null {
-  // Find last TimerStopped, tracking TR via TimerStarted count
-  let timerStartedCount = 0;
-  let lastTimerStopped: string | null = null;
-  let isTr = false;
-
-  for (const cmd of consoleValues) {
-    if (cmd.startsWith('TimerStarted')) {
-      timerStartedCount++;
-    } else if (cmd.startsWith('TimerStopped')) {
-      isTr = timerStartedCount > 1;
-      timerStartedCount = 0;
-      lastTimerStopped = cmd;
-    }
-  }
-
-  if (!lastTimerStopped) return null;
-
-  const timer: DemoTimerSection = { Source: lastTimerStopped };
-
-  // Parse: TimerStopped <time_ms> <cp_count> [cp1_ms cp2_ms ...] [Stats ...]
-  const parts = lastTimerStopped.split(' ');
-  const millis = parseInt(parts[1] ?? '-1', 10);
-  if (millis < 0) return timer;
-
-  const partOffset = parseInt(parts[2] ?? '-1', 10);
-  if (partOffset < 0) return timer;
-
-  const cpData: number[] = [];
-  for (let i = 0; i < partOffset; i++) {
-    cpData.push(parseInt(parts[3 + i] ?? '0', 10));
-  }
-
-  let diff = '';
-  let cpCount = 0;
-  for (let i = 0; i < cpData.length; i++) {
-    if (i > 0) {
-      const segDiff = cpData[i] - cpData[i - 1];
-      diff = segDiff > 0 ? ` (+${getDiffByMillis(segDiff)})` : '';
-    }
-    timer[`CheckPoint${getNumKey(++cpCount)}`] = getTimeByMillis(cpData[i]) + diff;
-  }
-
-  if (cpData.length > 0) {
-    const segDiff = millis - cpData[cpData.length - 1];
-    diff = segDiff > 0 ? ` (+${getDiffByMillis(segDiff)})` : '';
-  } else {
-    diff = '';
-  }
-  timer['FinishTimer'] = getTimeByMillis(millis) + diff;
-
-  timer['timereset'] = isTr ? 'true' : 'false';
-
-  // Parse Stats section
-  const statsIndex = partOffset + 3;
-  if (parts[statsIndex] === 'Stats') {
-    const pmoveDepends = parseInt(parts[statsIndex + 1] ?? '-1', 10);
-    const pmoveFixed = parseInt(parts[statsIndex + 2] ?? '-1', 10);
-    const svFps = parseInt(parts[statsIndex + 3] ?? '-1', 10);
-    const comMaxFps = parseInt(parts[statsIndex + 4] ?? '-1', 10);
-    const gSync = parseInt(parts[statsIndex + 5] ?? '-1', 10);
-
-    if (pmoveFixed >= 0) timer['pmove_fixed'] = pmoveFixed.toString();
-    if (svFps >= 0) timer['sv_fps'] = svFps.toString();
-    if (comMaxFps >= 0) timer['com_maxfps'] = comMaxFps.toString();
-    if (gSync >= 0) timer['g_sync'] = gSync.toString();
-
-    if (pmoveDepends <= 4) {
-      const pmoveMsec = parseInt(parts[statsIndex + 6] ?? '-1', 10);
-      if (pmoveMsec >= 0) timer['pmove_msec'] = pmoveMsec.toString();
-    }
-
-    const allWeapons = parseInt(parts[statsIndex + 7] ?? '-1', 10);
-    const noDamage = parseInt(parts[statsIndex + 8] ?? '-1', 10);
-    const enablePowerups = parseInt(parts[statsIndex + 9] ?? '-1', 10);
-
-    if (allWeapons >= 0) timer['all_weapons'] = allWeapons.toString();
-    if (noDamage >= 0) timer['no_damage'] = noDamage.toString();
-    if (enablePowerups >= 0) timer['enable_powerups'] = enablePowerups.toString();
-  }
-
-  return timer;
 }
 
 @Injectable()

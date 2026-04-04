@@ -19,14 +19,6 @@ export class Q3Utils {
     return new DataView(buf).getFloat32(0, true);
   }
 
-  static SHORT2ANGLE(x: number): number {
-    return x * (360.0 / 65536.0);
-  }
-
-  static ANGLE2SHORT(x: number): number {
-    return ((x * 65536.0 / 360.0) | 0) & 65535;
-  }
-
   static emulatePHPOverflow(value: number): number {
     return value | 0;
   }

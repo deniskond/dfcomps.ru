@@ -8,7 +8,7 @@ export class Q3DemoParser {
   parseConfig(): RawInfo {
     const msgParser = new Q3DemoConfigParser();
     this.doParse(msgParser);
-    return new RawInfo(this.fileName, msgParser.clc, msgParser.client);
+    return new RawInfo(msgParser.clc, msgParser.client);
   }
 
   private doParse(msgParser: Q3DemoConfigParser): void {

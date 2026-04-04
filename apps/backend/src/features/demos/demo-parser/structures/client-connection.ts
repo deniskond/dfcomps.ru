@@ -2,7 +2,6 @@ import { EntityState } from './entity-state';
 
 export class ClientConnection {
   serverMessageSequence: number = 0;
-  serverCommandSequence: number = 0;
   configs: Record<number, string> = {};
   entityBaselines: Record<number, EntityState> = {};
   checksumFeed: number = 0;
