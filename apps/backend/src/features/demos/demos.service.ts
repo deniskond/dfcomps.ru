@@ -171,6 +171,7 @@ export class DemosService {
             obs: demoCheckResult.warnings.includes('killobs 0'),
             verified_status: VerifiedStatuses.UNWATCHED,
             impressive: false,
+            maxSpeed: demoCheckResult.maxSpeed,
           },
         ])
         .execute();

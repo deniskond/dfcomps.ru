@@ -62,20 +62,25 @@
   height: 9px;
 }
 
-.impressive {
+.icons-container {
   position: absolute;
   right: 7px;
   top: 9px;
-  width: 14px;
-  height: 14px;
-}
 
-.org {
-  position: absolute;
-  right: 9px;
-  top: 10px;
-  width: 26px;
-  height: 11px;
+  img {
+    width: 14px;
+    height: 14px;
+    margin-left: 2px;
+
+    &.first-of-type {
+      margin-left: 0;
+    }
+
+    &.org {
+      width: 26px;
+      height: 11px;
+    }
+  }
 }
 
 .multicup-button-container {
