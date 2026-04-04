@@ -118,7 +118,7 @@ export class TablesService {
 
     const maxSpeedValues: number[] = [...bestDemoByPlayer.values()]
       .map((cupDemo: CupDemo) => cupDemo.maxSpeed ?? 0)
-      .filter((s: number) => s !== 0);
+      .filter((maxSpeed: number) => maxSpeed !== 0);
     const maxSpeedInTable: number = maxSpeedValues.length > 0 ? Math.max(...maxSpeedValues) : 0;
 
     let validDemos: ValidDemoInterface[] = validCupDemos
