@@ -24,7 +24,15 @@
         "customWebpackConfig": {
           "path": "apps/frontend/webpack.config.js"
         },
-        "sourceMap": true
+        "sourceMap": true,
+        "allowedCommonJsDependencies": [
+          "lodash",
+          "moment",
+          "moment-timezone",
+          "validator",
+          "quill",
+          "localforage"
+        ]
       },
       "configurations": {
         "production": {

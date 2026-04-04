@@ -69,7 +69,7 @@ import { CupReview } from '../shared/entities/cups-reviews.entity';
       ],
       database: 'dfcomps',
       synchronize: true,
-      logging: true,
+      logging: process.env.NODE_ENV !== 'test',
     }),
     AuthModule,
     MoviesModule,
