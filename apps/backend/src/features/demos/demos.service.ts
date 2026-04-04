@@ -446,7 +446,7 @@ export class DemosService {
     const [minutes, seconds, milliseconds] = demoConfig.time?.split('.') ?? [];
     const parsedTime: number | null =
       minutes !== undefined && seconds !== undefined && milliseconds !== undefined
-        ? parseInt(minutes) * 60000 + parseInt(seconds) * 1000 + parseInt(milliseconds)
+        ? parseInt(minutes) * 60 + parseInt(seconds) + parseInt(milliseconds) / 1000
         : null;
 
     if (parsedTime && parsedTime !== demoTime) {
