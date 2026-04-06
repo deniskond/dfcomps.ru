@@ -6,6 +6,7 @@ import { NewsMulticupResultsInterface, Physics } from '@dfcomps/contracts';
   templateUrl: './news-multicup-results.component.html',
   styleUrls: ['./news-multicup-results.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class NewsMulticupResultsComponent implements OnInit {
   @Input() news: NewsMulticupResultsInterface;

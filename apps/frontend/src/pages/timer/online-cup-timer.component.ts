@@ -12,6 +12,7 @@ import { LanguageService } from '~shared/services/language/language.service';
   templateUrl: './online-cup-timer.component.html',
   styleUrls: ['./online-cup-timer.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class OnlineCupTimerComponent implements OnInit {
   public placeholder: string = '?????';

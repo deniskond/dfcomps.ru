@@ -7,6 +7,7 @@ import { ValidationErrorInterface } from '@dfcomps/contracts';
   templateUrl: './validation-dialog.component.html',
   styleUrls: ['./validation-dialog.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ValidationDialogComponent implements OnInit {
   public validationErrorNames: string[];

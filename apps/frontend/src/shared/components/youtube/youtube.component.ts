@@ -6,6 +6,7 @@ import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core
   templateUrl: './youtube.component.html',
   styleUrls: ['./youtube.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class YoutubeComponent implements OnInit {
   @Input()

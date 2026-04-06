@@ -10,6 +10,7 @@ const DEBOUNCE_TIME = 300;
   selector: 'dfcomps-register-form',
   templateUrl: './register-form.component.html',
   styleUrls: ['./register-form.component.less'],
+  standalone: false,
 })
 export class RegisterFormComponent {
   @Input() discordAccessToken: string;

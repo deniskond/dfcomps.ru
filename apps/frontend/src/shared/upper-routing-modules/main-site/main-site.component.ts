@@ -9,6 +9,7 @@ import * as moment from 'moment';
 @Component({
   templateUrl: './main-site.component.html',
   styleUrls: ['./main-site.component.less'],
+  standalone: false,
 })
 export class MainSiteComponent implements OnInit {
   public cupTypes = CupTypes;

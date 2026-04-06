@@ -9,6 +9,7 @@ import { Languages, NewsInterfaceUnion } from '@dfcomps/contracts';
   templateUrl: './news-social-links.component.html',
   styleUrls: ['./news-social-links.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class NewsSocialLinksComponent implements OnInit, OnDestroy {
   @Input() news: NewsInterfaceUnion;

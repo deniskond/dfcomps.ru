@@ -6,6 +6,7 @@ import { NewsOnlineResultsInterface } from '@dfcomps/contracts';
   templateUrl: './news-online-results.component.html',
   styleUrls: ['./news-online-results.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class NewsOnlineResultsComponent {
   @Input() news: NewsOnlineResultsInterface;

@@ -6,6 +6,7 @@ import { InvalidDemoInterface } from '@dfcomps/contracts';
   templateUrl: './invalid-demos-list.component.html',
   styleUrls: ['./invalid-demos-list.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class InvalidDemosListComponent {
   @Input() cupId: number;

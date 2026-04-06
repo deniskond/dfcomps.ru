@@ -8,6 +8,7 @@ import { AdminDataService } from '../../business/admin-data.service';
   templateUrl: './admin-season.component.html',
   styleUrls: ['./admin-season.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class AdminSeasonComponent implements OnInit {
   public currentSeason$ = new BehaviorSubject<number | null>(null);

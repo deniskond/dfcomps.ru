@@ -6,28 +6,19 @@
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/helpers",
         "main": "libs/helpers/src/index.ts",
         "tsConfig": "libs/helpers/tsconfig.lib.json",
-        "assets": [
-          "libs/helpers/*.md"
-        ]
+        "assets": ["libs/helpers/*.md"]
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "libs/helpers/**/*.ts",
-          "libs/helpers/package.json"
-        ]
+        "lintFilePatterns": ["libs/helpers/**/*.ts", "libs/helpers/package.json"]
       }
     }
   },

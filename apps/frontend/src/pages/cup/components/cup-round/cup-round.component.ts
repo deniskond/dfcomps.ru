@@ -10,6 +10,7 @@ import { formatResultTime } from '@dfcomps/helpers';
   templateUrl: './cup-round.component.html',
   styleUrls: ['./cup-round.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class CupRoundComponent implements OnChanges {
   @Input()

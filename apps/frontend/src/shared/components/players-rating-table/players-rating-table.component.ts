@@ -7,6 +7,7 @@ import { LeaderTableInterface } from '@dfcomps/contracts';
   templateUrl: './players-rating-table.component.html',
   styleUrls: ['./players-rating-table.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class PlayersRatingTableComponent implements OnInit {
   @Input()

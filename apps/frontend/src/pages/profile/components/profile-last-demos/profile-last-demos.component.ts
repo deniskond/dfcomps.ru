@@ -6,6 +6,7 @@ import { ProfileDemosInterface } from '@dfcomps/contracts';
   templateUrl: './profile-last-demos.component.html',
   styleUrls: ['./profile-last-demos.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ProfileLastDemosComponent {
   @Input()

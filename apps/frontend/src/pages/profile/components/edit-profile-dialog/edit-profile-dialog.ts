@@ -19,6 +19,7 @@ import { CountryInterface } from '~shared/interfaces/country.interface';
   templateUrl: './edit-profile-dialog.html',
   styleUrls: ['./edit-profile-dialog.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class EditProfileDialogComponent implements OnInit {
   @Output()

@@ -16,6 +16,7 @@ import { Languages } from '@dfcomps/contracts';
   templateUrl: './site-header.component.html',
   styleUrls: ['./site-header.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class SiteHeaderComponent implements OnInit, OnDestroy {
   public pages = NavigationPages;

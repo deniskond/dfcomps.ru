@@ -25,14 +25,7 @@
           "path": "apps/frontend/webpack.config.js"
         },
         "sourceMap": true,
-        "allowedCommonJsDependencies": [
-          "lodash",
-          "moment",
-          "moment-timezone",
-          "validator",
-          "quill",
-          "localforage"
-        ]
+        "allowedCommonJsDependencies": ["lodash", "moment", "moment-timezone", "validator", "quill", "localforage"]
       },
       "configurations": {
         "production": {
@@ -82,18 +75,18 @@
       "defaultConfiguration": "production"
     },
     "serve": {
-      "executor": "@angular-devkit/build-angular:dev-server",
+      "executor": "@nx/angular:dev-server",
       "configurations": {
         "production": {
-          "browserTarget": "frontend:build:production"
+          "buildTarget": "frontend:build:production"
         },
         "development": {
-          "browserTarget": "frontend:build:development",
-          "proxyConfig": "apps/frontend/proxy.conf.json"
+          "proxyConfig": "apps/frontend/proxy.conf.json",
+          "buildTarget": "frontend:build:development"
         },
         "local-backend": {
-          "browserTarget": "frontend:build:local-backend",
-          "proxyConfig": "apps/frontend/proxy.conf.local.json"
+          "proxyConfig": "apps/frontend/proxy.conf.local.json",
+          "buildTarget": "frontend:build:local-backend"
         }
       },
       "options": {
@@ -104,11 +97,11 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "browserTarget": "frontend:build"
+        "buildTarget": "frontend:build"
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "options": {
         "lintFilePatterns": ["apps/frontend/src/**/*.ts", "apps/frontend/src/**/*.html"]
       }

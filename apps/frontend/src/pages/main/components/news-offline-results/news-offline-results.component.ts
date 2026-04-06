@@ -12,6 +12,7 @@ import { UserInterface } from '~shared/interfaces/user.interface';
   templateUrl: './news-offline-results.component.html',
   styleUrls: ['./news-offline-results.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class NewsOfflineResultsComponent implements OnInit, OnChanges {
   @Input() news: NewsOfflineResultsInterface;

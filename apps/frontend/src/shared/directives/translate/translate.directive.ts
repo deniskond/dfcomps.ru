@@ -8,6 +8,7 @@ import { Languages } from '@dfcomps/contracts';
 
 @Directive({
   selector: '[translate]',
+  standalone: false,
 })
 export class TranslateDirective implements OnInit, OnDestroy, OnChanges {
   @Input() translation: string;
@@ -15,7 +16,10 @@ export class TranslateDirective implements OnInit, OnDestroy, OnChanges {
   private translation$ = new ReplaySubject<string>(1);
   private onDestroy$ = new Subject<void>();
 
-  constructor(private elementRef: ElementRef<HTMLElement>, private languageService: LanguageService) {}
+  constructor(
+    private elementRef: ElementRef<HTMLElement>,
+    private languageService: LanguageService,
+  ) {}
 
   ngOnInit(): void {
     this.initLanguageSubscription();

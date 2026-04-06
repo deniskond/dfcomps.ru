@@ -16,6 +16,7 @@ import { MapSuggestionComponent } from '~shared/modules/site-header/components/m
   templateUrl: './admin-warcup-selection.component.html',
   styleUrls: ['./admin-warcup-selection.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class AdminWarcupSelectionComponent implements OnInit {
   public title: string;

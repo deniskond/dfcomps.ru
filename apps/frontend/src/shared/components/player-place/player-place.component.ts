@@ -5,6 +5,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
   templateUrl: './player-place.component.html',
   styleUrls: ['./player-place.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class PlayerPlaceComponent {
   @Input() place: number | null;

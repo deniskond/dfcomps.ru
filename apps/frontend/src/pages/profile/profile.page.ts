@@ -26,6 +26,7 @@ import { getDiscordAuthURL } from '~shared/helpers/get-discord-auth-url';
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ProfilePageComponent implements OnInit, OnDestroy {
   public mainInfo: ProfileMainInfoInterface;
