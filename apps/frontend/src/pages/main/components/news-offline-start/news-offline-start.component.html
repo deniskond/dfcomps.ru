@@ -9,149 +9,160 @@
           <span translate translation="map"></span>
         </div>
         <div class="row-info">
-          <a
-            *ngIf="!news.cup.customMap"
-            href="https://ws.q3df.org/map/{{ news.cup.map1 }}/"
-            target="_blank"
-            class="map-link"
-            data-test-id="cup-map-link"
-            >{{ news.cup.map1 }}</a
-          >
-          <a
-            *ngIf="news.cup.customMap"
-            [href]="news.cup.customMap"
-            class="map-link"
-            data-test-id="cup-map-link"
-            >{{ news.cup.map1 }}</a
-          >
+          @if (!news.cup.customMap) {
+            <a
+              href="https://ws.q3df.org/map/{{ news.cup.map1 }}/"
+              target="_blank"
+              class="map-link"
+              data-test-id="cup-map-link"
+              >{{ news.cup.map1 }}</a
+              >
+            }
+            @if (news.cup.customMap) {
+              <a
+                [href]="news.cup.customMap"
+                class="map-link"
+                data-test-id="cup-map-link"
+                >{{ news.cup.map1 }}</a
+                >
+              }
+            </div>
+          </div>
+          <div class="map-info-row">
+            <div class="row-desc">
+              <span translate translation="start"></span>
+            </div>
+            <div class="row-info">
+              <app-gmt-date-time [dateTime]="news.cup.startDateTime"></app-gmt-date-time>
+            </div>
+          </div>
+          <div class="map-info-row">
+            <div class="row-desc">
+              <span translate translation="finish"></span>
+            </div>
+            <div class="row-info">
+              <app-gmt-date-time [dateTime]="news.cup.endDateTime"></app-gmt-date-time>
+            </div>
+          </div>
+          <div class="map-info-row">
+            <div class="row-desc">
+              <span translate translation="author"></span>
+            </div>
+            <div class="row-info">{{ news.cup.mapAuthor }}</div>
+          </div>
+          <div class="map-info-row">
+            <div class="row-desc">
+              <span translate translation="weapons"></span>
+            </div>
+            <div class="row-info">
+              <app-weapons [weapons]="news.cup.mapWeapons!"></app-weapons>
+            </div>
+          </div>
+          <div class="map-info-row">
+            <div class="row-desc">
+              <span translate translation="download"></span>
+            </div>
+            <div class="row-info">
+              <a [href]="news.cup.mapPk3" download>{{ news.cup.mapSize }} MB</a>
+            </div>
+          </div>
+          <div class="map-info-row">
+            <div class="row-desc">
+              <span translate translation="rules"></span>
+            </div>
+            <div class="row-info">
+              <a routerLink="/rules">
+                <span translate translation="fullRules"></span>
+              </a>
+              <span class="separator">|</span>
+              <a href="/assets/files/offline-rules.cfg" target="_blank">
+                <span translate translation="config"></span>
+              </a>
+              @if (news.cup.multicupId === 10) {
+                <span class="separator">|</span>
+                <a (click)="openSDCPopup()" class="popup-link" target="_blank">
+                  SDC
+                </a>
+              }
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="map-info-row">
-        <div class="row-desc">
-          <span translate translation="start"></span>
-        </div>
-        <div class="row-info">
-          <app-gmt-date-time [dateTime]="news.cup.startDateTime"></app-gmt-date-time>
-        </div>
-      </div>
-      <div class="map-info-row">
-        <div class="row-desc">
-          <span translate translation="finish"></span>
-        </div>
-        <div class="row-info">
-          <app-gmt-date-time [dateTime]="news.cup.endDateTime"></app-gmt-date-time>
-        </div>
-      </div>
-      <div class="map-info-row">
-        <div class="row-desc">
-          <span translate translation="author"></span>
-        </div>
-        <div class="row-info">{{ news.cup.mapAuthor }}</div>
-      </div>
-      <div class="map-info-row">
-        <div class="row-desc">
-          <span translate translation="weapons"></span>
-        </div>
-        <div class="row-info">
-          <app-weapons [weapons]="news.cup.mapWeapons!"></app-weapons>
-        </div>
-      </div>
-      <div class="map-info-row">
-        <div class="row-desc">
-          <span translate translation="download"></span>
-        </div>
-        <div class="row-info">
-          <a [href]="news.cup.mapPk3" download>{{ news.cup.mapSize }} MB</a>
-        </div>
-      </div>
-      <div class="map-info-row">
-        <div class="row-desc">
-          <span translate translation="rules"></span>
-        </div>
-        <div class="row-info">
-          <a routerLink="/rules">
-            <span translate translation="fullRules"></span>
-          </a>
-          <span class="separator">|</span>
-          <a href="/assets/files/offline-rules.cfg" target="_blank">
-            <span translate translation="config"></span>
-          </a>
-          <ng-container *ngIf="news.cup.multicupId === 10">
-            <span class="separator">|</span>
-            <a (click)="openSDCPopup()" class="popup-link" target="_blank">
-              SDC
-            </a>
-          </ng-container>
-        </div>
-      </div>
-    </div>
-    <div class="map-info-table">
-      <div class="map-info-row">
-        <div class="row-desc">
-          <span translate translation="upload"></span>
-        </div>
-        <div class="row-info">
-          <ng-container *ngIf="user$ | async; else notLogged">
-            <ng-container [ngSwitch]="cupTimerState">
-              <div *ngSwitchCase="cupTimerStates.IN_PROGRESS" class="demo-upload-block">
-                <input #fileInput name="demo" accept=".dm_68" type="file" data-test-id="input-demo-upload" />
-                <div (click)="uploadDemo()" class="demo-upload-button" data-test-id="button-demo-upload">
-                  <mat-spinner
-                    *ngIf="isUploading"
-                    diameter="20"
-                    strokeWidth="2"
-                    color="accent"
-                    class="spinner"
-                  ></mat-spinner>
-                  <mat-icon class="upload-icon">upload</mat-icon>
+        <div class="map-info-table">
+          <div class="map-info-row">
+            <div class="row-desc">
+              <span translate translation="upload"></span>
+            </div>
+            <div class="row-info">
+              @if (user$ | async) {
+                @switch (cupTimerState) {
+                  @case (cupTimerStates.IN_PROGRESS) {
+                    <div class="demo-upload-block">
+                      <input #fileInput name="demo" accept=".dm_68" type="file" data-test-id="input-demo-upload" />
+                      <div (click)="uploadDemo()" class="demo-upload-button" data-test-id="button-demo-upload">
+                        @if (isUploading) {
+                          <mat-spinner
+                            diameter="20"
+                            strokeWidth="2"
+                            color="accent"
+                            class="spinner"
+                          ></mat-spinner>
+                        }
+                        <mat-icon class="upload-icon">upload</mat-icon>
+                      </div>
+                    </div>
+                  }
+                  @case (cupTimerStates.FINISHED) {
+                    <div>
+                      <span translate translation="cupFinished"></span>
+                    </div>
+                  }
+                  @case (cupTimerStates.AWAITING_START) {
+                    <div>
+                      <span translate translation="cupNotStarted"></span>
+                    </div>
+                  }
+                }
+              } @else {
+                <span translate translation="loginOrRegister"></span>
+              }
+
+            </div>
+          </div>
+          <div class="map-info-row">
+            <div class="row-desc">
+              <span translate translation="time"></span>
+            </div>
+            <div class="row-info">
+              @if (news.playerDemos && !!news.playerDemos.length) {
+                <div class="top-demos">
+                  @if (news.cpmRes && news.cpmDemo) {
+                    <a href="/uploads/demos/cup{{ news.cup.id }}/{{ news.cpmDemo }}">{{ news.cpmRes }}</a
+                      >&nbsp;(cpm)
+                      @if (news.vq3Res && news.vq3Demo) {
+                        <span>,&nbsp;</span>
+                      }
+                    }
+                    @if (news.vq3Res && news.vq3Demo) {
+                      <a href="/uploads/demos/cup{{ news.cup.id }}/{{ news.vq3Demo }}">{{ news.vq3Res }}</a
+                        >&nbsp;(vq3)
+                      }
+                    </div>
+                    <div (click)="openPlayerDemosDialog()" class="player-demos-button">
+                      <img src="/assets/images/icons/list.png" />
+                    </div>
+                  } @else {
+                    <span translate translation="noUploadedDemos"></span>
+                  }
                 </div>
               </div>
-              <div *ngSwitchCase="cupTimerStates.FINISHED">
-                <span translate translation="cupFinished"></span>
-              </div>
-              <div *ngSwitchCase="cupTimerStates.AWAITING_START">
-                <span translate translation="cupNotStarted"></span>
-              </div>
-            </ng-container>
-          </ng-container>
-
-          <ng-template #notLogged>
-            <span translate translation="loginOrRegister"></span>
-          </ng-template>
-        </div>
-      </div>
-      <div class="map-info-row">
-        <div class="row-desc">
-          <span translate translation="time"></span>
-        </div>
-        <div class="row-info">
-          <ng-container *ngIf="news.playerDemos && !!news.playerDemos.length; else noDemos">
-            <div class="top-demos">
-              <ng-container *ngIf="news.cpmRes && news.cpmDemo">
-                <a href="/uploads/demos/cup{{ news.cup.id }}/{{ news.cpmDemo }}">{{ news.cpmRes }}</a
-                >&nbsp;(cpm)
-                <span *ngIf="news.vq3Res && news.vq3Demo">,&nbsp;</span>
-              </ng-container>
-              <ng-container *ngIf="news.vq3Res && news.vq3Demo">
-                <a href="/uploads/demos/cup{{ news.cup.id }}/{{ news.vq3Demo }}">{{ news.vq3Res }}</a
-                >&nbsp;(vq3)
-              </ng-container>
             </div>
-            <div (click)="openPlayerDemosDialog()" class="player-demos-button">
-              <img src="/assets/images/icons/list.png" />
-            </div>
-          </ng-container>
-          <ng-template #noDemos>
-            <span translate translation="noUploadedDemos"></span>
-          </ng-template>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
 
-<div *ngIf="news.cup.bonusRating !== 0" class="bonus-rating">
-  <span translate translation="bonusRating"></span>: +{{ news.cup.bonusRating }}.
-</div>
+        @if (news.cup.bonusRating !== 0) {
+          <div class="bonus-rating">
+            <span translate translation="bonusRating"></span>: +{{ news.cup.bonusRating }}.
+          </div>
+        }
 
-<app-html-news [news]="news"></app-html-news>
+        <app-html-news [news]="news"></app-html-news>

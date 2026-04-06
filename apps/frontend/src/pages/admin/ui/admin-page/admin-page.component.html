@@ -1,59 +1,70 @@
 <div class="admin-page">
-  <div *ngIf="navigationPage$ | async as navigationPage" class="navigation">
-    <div class="logo-container">
-      <a href="/">
-        <img src="../../../../../assets/images/admin/logo.png" />
-      </a>
+  @if (navigationPage$ | async; as navigationPage) {
+    <div class="navigation">
+      <div class="logo-container">
+        <a href="/">
+          <img src="../../../../../assets/images/admin/logo.png" />
+        </a>
+      </div>
+      @if (user$ | async; as user) {
+        @if (hasNewsAccess(user)) {
+          <admin-menu-item
+            [isActive]="navigationPage === 'news'"
+            routerLink="/admin/news"
+            caption="News"
+            icon="article"
+          ></admin-menu-item>
+        }
+        @if (hasCupsAccess(user)) {
+          <admin-menu-item
+            [isActive]="navigationPage === 'cups'"
+            routerLink="/admin/cups"
+            caption="Cups"
+            icon="emoji_events"
+          ></admin-menu-item>
+        }
+        @if (hasCupsAccess(user)) {
+          <admin-menu-item
+            [isActive]="navigationPage === 'multicups'"
+            routerLink="/admin/multicups"
+            caption="Multicups"
+            icon="date_range"
+          ></admin-menu-item>
+        }
+        @if (hasSeasonAccess(user)) {
+          <admin-menu-item
+            [isActive]="navigationPage === 'season'"
+            routerLink="/admin/season"
+            caption="Season"
+            icon="auto_mode"
+          ></admin-menu-item>
+        }
+        @if (hasWarcupAdminAccess(user)) {
+          <admin-menu-item
+            [isActive]="navigationPage === 'warcup-selection'"
+            routerLink="/admin/warcup-selection"
+            caption="Warcup Selection"
+            icon="event_repeat"
+          ></admin-menu-item>
+        }
+      }
     </div>
-    <ng-container *ngIf="user$ | async as user">
-      <admin-menu-item
-        *ngIf="hasNewsAccess(user)"
-        [isActive]="navigationPage === 'news'"
-        routerLink="/admin/news"
-        caption="News"
-        icon="article"
-      ></admin-menu-item>
-      <admin-menu-item
-        *ngIf="hasCupsAccess(user)"
-        [isActive]="navigationPage === 'cups'"
-        routerLink="/admin/cups"
-        caption="Cups"
-        icon="emoji_events"
-      ></admin-menu-item>
-      <admin-menu-item
-        *ngIf="hasCupsAccess(user)"
-        [isActive]="navigationPage === 'multicups'"
-        routerLink="/admin/multicups"
-        caption="Multicups"
-        icon="date_range"
-      ></admin-menu-item>
-      <admin-menu-item
-        *ngIf="hasSeasonAccess(user)"
-        [isActive]="navigationPage === 'season'"
-        routerLink="/admin/season"
-        caption="Season"
-        icon="auto_mode"
-      ></admin-menu-item>
-      <admin-menu-item
-        *ngIf="hasWarcupAdminAccess(user)"
-        [isActive]="navigationPage === 'warcup-selection'"
-        routerLink="/admin/warcup-selection"
-        caption="Warcup Selection"
-        icon="event_repeat"
-      ></admin-menu-item>
-    </ng-container>
-  </div>
+  }
   <div class="content">
     <div class="content-header">
-      <div *ngIf="currentPage$ | async as currentPage" class="title">{{ currentPage | titlecase }}</div>
-      <div *ngIf="user$ | async as user" class="user-info">
-        <div>{{ user.nick }}</div>
-        <div class="avatar">
-          <div class="border-container">
-            <img [src]="'uploads/images/avatars/' + user.avatar + '.jpg'" />
+      @if (currentPage$ | async; as currentPage) {
+        <div class="title">{{ currentPage | titlecase }}</div>
+      }
+      @if (user$ | async; as user) {
+        <div class="user-info">
+          <div>{{ user.nick }}</div>
+          <div class="avatar">
+            <div class="border-container">
+              <img [src]="'uploads/images/avatars/' + user.avatar + '.jpg'" />
+            </div>
           </div>
         </div>
-      </div>
+      }
     </div>
     <router-outlet></router-outlet>
   </div>

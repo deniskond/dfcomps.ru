@@ -8,6 +8,7 @@ import { GlobalServicesModule } from '~shared/modules/global-services.module';
 import { appRoutes } from '../routing/app.routing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import * as Sentry from '@sentry/angular';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { UnauthorizedInterceptor } from '~shared/interceptors/unauthorized.interceptor';
 
 @NgModule({
@@ -40,6 +41,7 @@ import { UnauthorizedInterceptor } from '~shared/interceptors/unauthorized.inter
       multi: true,
     },
     provideHttpClient(withInterceptorsFromDi()),
+    provideCharts(withDefaultRegisterables()),
   ],
 })
 export class AppModule {}

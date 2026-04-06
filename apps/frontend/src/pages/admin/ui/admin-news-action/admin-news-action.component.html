@@ -2,202 +2,230 @@
   <h3 class="header">
     {{ operationType | titlecase }} {{ newsType | invokeFunction: mapNewsTypeToHumanTitle | lowercase }} news
   </h3>
-  <form *ngIf="newsActionForm; else loading" [formGroup]="newsActionForm">
-    <div class="form">
-      <div class="input-title">Title (Russian)</div>
-      <div>
-        <input formControlName="russianTitle" class="input-field" data-test-id="russian-news-title-input" />
-        <div *ngIf="hasFieldError(this.newsActionForm.get('russianTitle')!)" class="field-error">Field is required</div>
-      </div>
-      <div class="input-title">Title (English)</div>
-      <div>
-        <input formControlName="englishTitle" class="input-field" data-test-id="english-news-title-input" />
-        <div *ngIf="hasFieldError(this.newsActionForm.get('englishTitle')!)" class="field-error">Field is required</div>
-      </div>
-      <div class="input-title">Image</div>
-      <div>
-        <div *ngIf="this.newsActionForm.get('imageLink')!.value as imageLink" class="uploaded-image-container">
-          <img [src]="imageLink | invokeFunction: getImageSrc" class="uploaded-image" />
-          <button
-            (click)="deleteImage()"
-            mat-mini-fab
-            color="warn"
-            class="delete-image-button"
-            data-test-id="button-delete-image"
-          >
-            <mat-icon>delete</mat-icon>
-          </button>
+  @if (newsActionForm) {
+    <form [formGroup]="newsActionForm">
+      <div class="form">
+        <div class="input-title">Title (Russian)</div>
+        <div>
+          <input formControlName="russianTitle" class="input-field" data-test-id="russian-news-title-input" />
+          @if (hasFieldError(this.newsActionForm.get('russianTitle')!)) {
+            <div class="field-error">Field is required</div>
+          }
         </div>
-        <div class="input-file-container">
-          <input
-            #imageFileInput
-            (change)="deleteImage()"
-            type="file"
-            accept=".png, .jpg, .jpeg, .gif"
-            data-test-id="input-image-upload"
-          />
+        <div class="input-title">Title (English)</div>
+        <div>
+          <input formControlName="englishTitle" class="input-field" data-test-id="english-news-title-input" />
+          @if (hasFieldError(this.newsActionForm.get('englishTitle')!)) {
+            <div class="field-error">Field is required</div>
+          }
         </div>
-      </div>
-      <div class="input-title">Russian text</div>
-      <div class="wysiwyg-container">
-        <quill-editor formControlName="russianText" class="quill" data-test-id="russian-text-quill"></quill-editor>
-        <div *ngIf="hasFieldError(this.newsActionForm.get('russianText')!)" class="field-error">Field is required</div>
-      </div>
-      <div class="input-title">English text</div>
-      <div class="wysiwyg-container">
-        <quill-editor formControlName="englishText" class="quill" data-test-id="english-text-quill"></quill-editor>
-        <div *ngIf="hasFieldError(this.newsActionForm.get('englishText')!)" class="field-error">Field is required</div>
-      </div>
-      <div class="input-title">Streams</div>
-      <div class="streams-form-container">
-        <div *ngIf="!!streamsFormArray.controls.length" class="streams-form">
-          <div class="streams-form-header"></div>
-          <div class="streams-form-header">Platform</div>
-          <div class="streams-form-header">Stream link</div>
-          <div class="streams-form-header">Streamer</div>
-          <div class="streams-form-header">Language</div>
-          <div class="streams-form-header"></div>
-
-          <ng-container
-            *ngFor="let row of range(streamsFormArray.controls.length); let i = index"
-            [formGroup]="streamsFormArray.controls[i]"
-          >
-            <div class="stream-number">{{ i + 1 }}.</div>
-            <div>
-              <mat-form-field appearance="outline" class="medium-size-select">
-                <mat-select formControlName="platform" data-test-id="select-streaming-platform">
-                  <mat-option *ngFor="let platform of streamingPlatforms" [value]="platform">
-                    {{ platform | invokeFunction: mapStreamingPlatformName }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div>
-              <div class="pseudo-input">
-                <div class="pseudo-input-fixed-text" (click)="focusInput($event)">
-                  {{ streamsFormArray.controls[i].get('platform')?.value | invokeFunction: getStreamLinkPrefix }}
-                </div>
-                <input formControlName="streamId" class="input-field-stream-link" data-test-id="input-stream-link" />
-              </div>
-              <div *ngIf="hasFieldError(streamsFormArray.controls[i].get('streamId')!)" class="field-error">
-                Field is required
-              </div>
-            </div>
-            <div>
-              <input formControlName="streamer" class="input-field" data-test-id="input-streamer-name" />
-              <div *ngIf="hasFieldError(streamsFormArray.controls[i].get('streamer')!)" class="field-error">
-                Field is required
-              </div>
-            </div>
-            <div>
-              <mat-form-field appearance="outline" class="medium-size-select">
-                <mat-select formControlName="language" data-test-id="select-stream-language">
-                  <mat-option [value]="languages.RU">Russian</mat-option>
-                  <mat-option [value]="languages.EN">English</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div>
-              <button (click)="deleteStream(i)" mat-mini-fab color="warn" class="delete-button">
+        <div class="input-title">Image</div>
+        <div>
+          @if (this.newsActionForm.get('imageLink')!.value; as imageLink) {
+            <div class="uploaded-image-container">
+              <img [src]="imageLink | invokeFunction: getImageSrc" class="uploaded-image" />
+              <button
+                (click)="deleteImage()"
+                mat-mini-fab
+                color="warn"
+                class="delete-image-button"
+                data-test-id="button-delete-image"
+                >
                 <mat-icon>delete</mat-icon>
               </button>
             </div>
-          </ng-container>
-        </div>
-        <div [ngClass]="{ 'no-margin': !streamsFormArray.controls.length }" class="add-button-container">
-          <button
-            [disabled]="streamsFormArray.controls.length === 3"
-            (click)="addStream()"
-            class="add-stream-button"
-            color="basic"
-            mat-raised-button
-            data-test-id="add-stream-button"
-          >
-            <mat-icon>add</mat-icon>
-            Add stream
-          </button>
-          <div *ngIf="streamsFormArray.controls.length === 3" class="add-unavailable-text">3 streams max</div>
-        </div>
-      </div>
-      <div class="input-title">
-        Time to post
-        <br />
-        <span class="comment">(MSK GMT +3:00)</span>
-      </div>
-      <div class="radio-container">
-        <mat-radio-group formControlName="timeOption">
-          <div>
-            <mat-radio-button value="now" color="primary" data-test-id="now-option-radio"></mat-radio-button>
-            <span>Now</span>
-          </div>
-          <div>
-            <mat-radio-button value="custom" color="primary" data-test-id="custom-time-option-radio"></mat-radio-button>
-            <span>Custom time</span>
+          }
+          <div class="input-file-container">
             <input
-              formControlName="postingTime"
-              class="input-field date"
-              type="datetime-local"
-              data-test-id="news-posting-time-input"
-            />
-            <span
-              *ngIf="
+              #imageFileInput
+              (change)="deleteImage()"
+              type="file"
+              accept=".png, .jpg, .jpeg, .gif"
+              data-test-id="input-image-upload"
+              />
+          </div>
+        </div>
+        <div class="input-title">Russian text</div>
+        <div class="wysiwyg-container">
+          <quill-editor formControlName="russianText" class="quill" data-test-id="russian-text-quill"></quill-editor>
+          @if (hasFieldError(this.newsActionForm.get('russianText')!)) {
+            <div class="field-error">Field is required</div>
+          }
+        </div>
+        <div class="input-title">English text</div>
+        <div class="wysiwyg-container">
+          <quill-editor formControlName="englishText" class="quill" data-test-id="english-text-quill"></quill-editor>
+          @if (hasFieldError(this.newsActionForm.get('englishText')!)) {
+            <div class="field-error">Field is required</div>
+          }
+        </div>
+        <div class="input-title">Streams</div>
+        <div class="streams-form-container">
+          @if (!!streamsFormArray.controls.length) {
+            <div class="streams-form">
+              <div class="streams-form-header"></div>
+              <div class="streams-form-header">Platform</div>
+              <div class="streams-form-header">Stream link</div>
+              <div class="streams-form-header">Streamer</div>
+              <div class="streams-form-header">Language</div>
+              <div class="streams-form-header"></div>
+              @for (row of range(streamsFormArray.controls.length); track row; let i = $index) {
+                <ng-container
+                  [formGroup]="streamsFormArray.controls[i]"
+                  >
+                  <div class="stream-number">{{ i + 1 }}.</div>
+                  <div>
+                    <mat-form-field appearance="outline" class="medium-size-select">
+                      <mat-select formControlName="platform" data-test-id="select-streaming-platform">
+                        @for (platform of streamingPlatforms; track platform) {
+                          <mat-option [value]="platform">
+                            {{ platform | invokeFunction: mapStreamingPlatformName }}
+                          </mat-option>
+                        }
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div>
+                    <div class="pseudo-input">
+                      <div class="pseudo-input-fixed-text" (click)="focusInput($event)">
+                        {{ streamsFormArray.controls[i].get('platform')?.value | invokeFunction: getStreamLinkPrefix }}
+                      </div>
+                      <input formControlName="streamId" class="input-field-stream-link" data-test-id="input-stream-link" />
+                    </div>
+                    @if (hasFieldError(streamsFormArray.controls[i].get('streamId')!)) {
+                      <div class="field-error">
+                        Field is required
+                      </div>
+                    }
+                  </div>
+                  <div>
+                    <input formControlName="streamer" class="input-field" data-test-id="input-streamer-name" />
+                    @if (hasFieldError(streamsFormArray.controls[i].get('streamer')!)) {
+                      <div class="field-error">
+                        Field is required
+                      </div>
+                    }
+                  </div>
+                  <div>
+                    <mat-form-field appearance="outline" class="medium-size-select">
+                      <mat-select formControlName="language" data-test-id="select-stream-language">
+                        <mat-option [value]="languages.RU">Russian</mat-option>
+                        <mat-option [value]="languages.EN">English</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div>
+                    <button (click)="deleteStream(i)" mat-mini-fab color="warn" class="delete-button">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </ng-container>
+              }
+            </div>
+          }
+          <div [ngClass]="{ 'no-margin': !streamsFormArray.controls.length }" class="add-button-container">
+            <button
+              [disabled]="streamsFormArray.controls.length === 3"
+              (click)="addStream()"
+              class="add-stream-button"
+              color="basic"
+              mat-raised-button
+              data-test-id="add-stream-button"
+              >
+              <mat-icon>add</mat-icon>
+              Add stream
+            </button>
+            @if (streamsFormArray.controls.length === 3) {
+              <div class="add-unavailable-text">3 streams max</div>
+            }
+          </div>
+        </div>
+        <div class="input-title">
+          Time to post
+          <br />
+          <span class="comment">(MSK GMT +3:00)</span>
+        </div>
+        <div class="radio-container">
+          <mat-radio-group formControlName="timeOption">
+            <div>
+              <mat-radio-button value="now" color="primary" data-test-id="now-option-radio"></mat-radio-button>
+              <span>Now</span>
+            </div>
+            <div>
+              <mat-radio-button value="custom" color="primary" data-test-id="custom-time-option-radio"></mat-radio-button>
+              <span>Custom time</span>
+              <input
+                formControlName="postingTime"
+                class="input-field date"
+                type="datetime-local"
+                data-test-id="news-posting-time-input"
+                />
+              @if (
                 this.newsActionForm.errors &&
                 this.newsActionForm.errors['postingTimeEmpty'] &&
                 !this.newsActionForm.get('postingTime')!.pristine
-              "
-              class="field-error"
-            >
-              Field is required
-            </span>
-          </div>
-        </mat-radio-group>
+                ) {
+                <span
+                  class="field-error"
+                  >
+                  Field is required
+                </span>
+              }
+            </div>
+          </mat-radio-group>
+        </div>
+        @if (isCupRequired) {
+          @if (cupsList$ | async; as availableCups) {
+            <div class="input-title">Cup</div>
+            <div>
+              <mat-form-field appearance="outline" class="select">
+                <mat-select formControlName="cup" data-test-id="news-cup-select">
+                  @for (availableCup of availableCups; track availableCup) {
+                    <mat-option [value]="availableCup.cupId">
+                      {{ availableCup.name }}
+                    </mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+              @if (hasFieldError(this.newsActionForm.get('cup')!)) {
+                <div class="field-error">Field is required</div>
+              }
+            </div>
+          }
+        }
+        @if (isMulticupRequired) {
+          @if (allMulticups$ | async; as allMulticups) {
+            <div class="input-title">Multicup</div>
+            <div>
+              <mat-form-field appearance="outline" class="select">
+                <mat-select formControlName="multicup" data-test-id="news-multicup-select">
+                  @for (multicup of allMulticups; track multicup) {
+                    <mat-option [value]="multicup.id">
+                      {{ multicup.name }}
+                    </mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+              @if (hasFieldError(this.newsActionForm.get('multicup')!)) {
+                <div class="field-error">Field is required</div>
+              }
+            </div>
+          }
+        }
       </div>
-
-      <ng-container *ngIf="isCupRequired">
-        <ng-container *ngIf="cupsList$ | async as availableCups">
-          <div class="input-title">Cup</div>
-          <div>
-            <mat-form-field appearance="outline" class="select">
-              <mat-select formControlName="cup" data-test-id="news-cup-select">
-                <mat-option *ngFor="let availableCup of availableCups" [value]="availableCup.cupId">
-                  {{ availableCup.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <div *ngIf="hasFieldError(this.newsActionForm.get('cup')!)" class="field-error">Field is required</div>
-          </div>
-        </ng-container>
-      </ng-container>
-
-      <ng-container *ngIf="isMulticupRequired">
-        <ng-container *ngIf="allMulticups$ | async as allMulticups">
-          <div class="input-title">Multicup</div>
-          <div>
-            <mat-form-field appearance="outline" class="select">
-              <mat-select formControlName="multicup" data-test-id="news-multicup-select">
-                <mat-option *ngFor="let multicup of allMulticups" [value]="multicup.id">
-                  {{ multicup.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <div *ngIf="hasFieldError(this.newsActionForm.get('multicup')!)" class="field-error">Field is required</div>
-          </div>
-        </ng-container>
-      </ng-container>
-    </div>
-    <button
-      (click)="submitNews()"
-      mat-raised-button
-      color="accent"
-      class="submit-button"
-      data-test-id="news-action-button"
-    >
-      Save news
-    </button>
-  </form>
-  <ng-template #loading>
+      <button
+        (click)="submitNews()"
+        mat-raised-button
+        color="accent"
+        class="submit-button"
+        data-test-id="news-action-button"
+        >
+        Save news
+      </button>
+    </form>
+  } @else {
     <div class="loading-block">
       <mat-spinner diameter="75" strokeWidth="4" color="accent"></mat-spinner>
     </div>
-  </ng-template>
+  }
 </mat-card>

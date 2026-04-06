@@ -1,13 +1,13 @@
-<ng-container *ngIf="(language$ | async) === languages.RU">
+@if ((language$ | async) === languages.RU) {
   <div class="shadowed-main-block">
     <h1 class="h1-block-header">EE Система</h1>
     <div class="rules-section">
       <p>
-        Эта система используется для подсчета очков в турнирах с несколькими раундами, 
-        таких как онлайн-капы или оффлайн-турниры, подобные DFWC. Система называется EE по 
-        первым буквам ников игроков, которые ее предложили (Enter & Exten). Общий результат 
-        для каждого игрока представляет собой сумму очков во всех раундах (без вычитания худшего 
-        раунда, как это было в первой редакции EE-системы). Очки игрока за каждый раунд рассчитываются 
+        Эта система используется для подсчета очков в турнирах с несколькими раундами,
+        таких как онлайн-капы или оффлайн-турниры, подобные DFWC. Система называется EE по
+        первым буквам ников игроков, которые ее предложили (Enter & Exten). Общий результат
+        для каждого игрока представляет собой сумму очков во всех раундах (без вычитания худшего
+        раунда, как это было в первой редакции EE-системы). Очки игрока за каждый раунд рассчитываются
         по следующей формуле:
       </p>
       <p class="formula large">
@@ -52,7 +52,6 @@
       </p>
     </div>
   </div>
-
   <div class="shadowed-main-block" id="online">
     <h1 class="h1-block-header">Примеры</h1>
     <div class="rules-section">
@@ -67,22 +66,22 @@
       </p>
       <p>
         3. <i>У двух или более игроков одинаковое время.</i><br>
-        Это означает, что они также получат одинаковое количество очков, поскольку у них будет одинаковый 
+        Это означает, что они также получат одинаковое количество очков, поскольку у них будет одинаковый
         номер места в таблице и поэтому у них будут одинаковые k<sub>n</sub> и t<sub>1</sub> / t<sub>n</sub>.
       </p>
     </div>
   </div>
-</ng-container>
+}
 
-<ng-container *ngIf="(language$ | async) === languages.EN">
+@if ((language$ | async) === languages.EN) {
   <div class="shadowed-main-block">
     <h1 class="h1-block-header">EE System</h1>
     <div class="rules-section">
       <p>
-        This system is used to calculate points for multi round tournaments like online cups or DFWC-like 
-        offline tournaments. The system is called EE after the first letters of the nicknames of the players 
-        who proposed it (Enter & Exten). Overall result for each player is a sum of points of each 
-        round (there’s no subtraction of the worst round as it was in the first edition of EE System). 
+        This system is used to calculate points for multi round tournaments like online cups or DFWC-like
+        offline tournaments. The system is called EE after the first letters of the nicknames of the players
+        who proposed it (Enter & Exten). Overall result for each player is a sum of points of each
+        round (there’s no subtraction of the worst round as it was in the first edition of EE System).
         Player’s points for each round are counted by the following formula:
       </p>
       <p class="formula large">
@@ -127,7 +126,6 @@
       </p>
     </div>
   </div>
-
   <div class="shadowed-main-block" id="online">
     <h1 class="h1-block-header">Examples</h1>
     <div class="rules-section">
@@ -142,9 +140,9 @@
       </p>
       <p>
         3. <i>Two or more players have the same time.</i><br>
-        This means they will also get the same number of points, because they will share one standing 
+        This means they will also get the same number of points, because they will share one standing
         place and thus they will have the same k<sub>n</sub> and t<sub>1</sub> / t<sub>n</sub>.
       </p>
     </div>
   </div>
-</ng-container>
+}

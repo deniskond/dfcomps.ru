@@ -1,8 +1,9 @@
-<ng-container *ngFor="let messagePart of messageParts">
-  <div *ngIf="messagePart.type === messagePartTypes.SMILE; else text" class="smile-container">
-    <app-smile [smile]="$any(messagePart.content)"></app-smile>
-  </div>
-  <ng-template #text>
+@for (messagePart of messageParts; track messagePart) {
+  @if (messagePart.type === messagePartTypes.SMILE) {
+    <div class="smile-container">
+      <app-smile [smile]="$any(messagePart.content)"></app-smile>
+    </div>
+  } @else {
     <span [innerText]="messagePart.content" class="comment-text"></span>
-  </ng-template>
-</ng-container>
+  }
+}

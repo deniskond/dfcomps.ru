@@ -2,32 +2,34 @@
   <span translate translation="myDemos"></span>: {{ data.cupName }}
 </div>
 <table>
-  <ng-container *ngIf="demos$ | async as demos">
-    <ng-container *ngIf="demos.length; else noDemos">
-      <tr *ngFor="let demo of demos">
+  @if (demos$ | async; as demos) {
+    @if (demos.length) {
+      @for (demo of demos; track demo) {
+        <tr>
+          <td class="table-field">
+            <a class="demo-link" href="/uploads/demos/cup{{ data.cupId }}/{{ demo.demopath }}">
+              {{ demo.time | invokeFunction: getFormattedTime }}
+            </a>
+          </td>
+          <td class="table-field">{{ demo.physics }}</td>
+          <td class="table-field delete">
+            @if (!isLoading(demo.demopath)) {
+              <a (click)="deleteDemo(demo.demopath)" class="link">
+                <span translate translation="delete"></span>
+              </a>
+            } @else {
+              <mat-spinner diameter="20" strokeWidth="2" color="accent" class="spinner"></mat-spinner>
+            }
+          </td>
+        </tr>
+      }
+    } @else {
+      <tr>
         <td class="table-field">
-          <a class="demo-link" href="/uploads/demos/cup{{ data.cupId }}/{{ demo.demopath }}">
-            {{ demo.time | invokeFunction: getFormattedTime }}
-          </a>
-        </td>
-        <td class="table-field">{{ demo.physics }}</td>
-        <td class="table-field delete">
-          <a *ngIf="!isLoading(demo.demopath); else loader" (click)="deleteDemo(demo.demopath)" class="link">
-            <span translate translation="delete"></span>
-          </a>
-          <ng-template #loader>
-            <mat-spinner diameter="20" strokeWidth="2" color="accent" class="spinner"></mat-spinner>
-          </ng-template>
+          <span translate translation="noUploadedDemos"></span>
         </td>
       </tr>
-    </ng-container>
-  </ng-container>
+    }
+  }
 
-  <ng-template #noDemos>
-    <tr>
-      <td class="table-field">
-        <span translate translation="noUploadedDemos"></span>
-      </td>
-    </tr>
-  </ng-template>
 </table>

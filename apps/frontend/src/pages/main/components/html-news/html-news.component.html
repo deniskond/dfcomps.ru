@@ -1,6 +1,7 @@
-<div
-  *ngIf="$any(newsHtml)['changingThisBreaksApplicationSecurity']"
-  class="news-text"
-  [innerHTML]="newsHtml"
-  data-test-id="news-html-text"
-></div>
+@if ($any(newsHtml)['changingThisBreaksApplicationSecurity']) {
+  <div
+    class="news-text"
+    [innerHTML]="newsHtml"
+    data-test-id="news-html-text"
+  ></div>
+}

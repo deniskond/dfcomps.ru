@@ -30,6 +30,7 @@
       "@dfcomps/auth": ["libs/auth/src/index.ts"],
       "@dfcomps/helpers": ["libs/helpers/src/index.ts"]
     },
+    "moduleResolution": "bundler",
     "target": "es2020"
   },
   "angularCompilerOptions": {
