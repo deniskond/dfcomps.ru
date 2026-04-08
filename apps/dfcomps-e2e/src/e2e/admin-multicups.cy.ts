@@ -1,13 +1,14 @@
 import { UserRoles } from '@dfcomps/auth';
 import { loginAs } from '../support/app.po';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
+import { randomInt } from '@dfcomps/helpers';
 
 describe('admin multicups', () => {
   const initialMulticupName = faker.lorem.words();
-  const initialRounds = faker.datatype.number();
+  const initialRounds = randomInt();
 
   const secondMulticupName = faker.lorem.words();
-  const secondMulticupRounds = faker.datatype.number();
+  const secondMulticupRounds = randomInt();
 
   beforeEach(() => {
     loginAs(UserRoles.CUP_ORGANIZER);

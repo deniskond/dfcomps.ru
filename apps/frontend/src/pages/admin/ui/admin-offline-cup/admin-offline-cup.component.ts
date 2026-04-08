@@ -36,6 +36,7 @@ import { CupsService } from '~shared/services/cups/cups.service';
   templateUrl: './admin-offline-cup.component.html',
   styleUrls: ['./admin-offline-cup.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class AdminOfflineCupComponent implements OnInit {
   @ViewChild('pk3FileInput') pk3Input: ElementRef;
@@ -237,9 +238,7 @@ export class AdminOfflineCupComponent implements OnInit {
     this.offlineCupForm.get('size')!.setValue(mapInfo.size);
 
     this.weaponControls.forEach((control: string) =>
-      this.offlineCupForm
-        .get(control)!
-        .setValue(mapInfo.weapons[control as keyof ParsedMapInfoInterface['weapons']]),
+      this.offlineCupForm.get(control)!.setValue(mapInfo.weapons[control as keyof ParsedMapInfoInterface['weapons']]),
     );
   }
 

@@ -24,6 +24,7 @@ import { UserRoles, checkUserRoles } from '@dfcomps/auth';
   templateUrl: './news-online-announce.component.html',
   styleUrls: ['./news-online-announce.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class NewsOnlineAnnounceComponent implements OnInit, OnChanges {
   @Input() news: NewsOnlineAnnounceInterface;

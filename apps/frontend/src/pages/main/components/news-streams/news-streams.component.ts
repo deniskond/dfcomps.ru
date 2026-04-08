@@ -6,6 +6,7 @@ import { NewsStreamInterface, StreamingPlatforms } from '@dfcomps/contracts';
   templateUrl: './news-streams.component.html',
   styleUrls: ['./news-streams.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class NewsStreamsComponent {
   @Input() streams: NewsStreamInterface[];

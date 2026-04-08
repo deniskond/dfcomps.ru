@@ -20,6 +20,7 @@ enum MapRatingComponentState {
   templateUrl: './map-rating.component.html',
   styleUrls: ['./map-rating.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class MapRatingComponent implements OnInit, OnDestroy {
   @Input() rating: number | null;

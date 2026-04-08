@@ -10,6 +10,7 @@ import { UserService } from '~shared/services/user-service/user.service';
   templateUrl: './admin-redirect.component.html',
   styleUrls: ['./admin-redirect.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class AdminRedirectComponent implements OnInit {
   constructor(

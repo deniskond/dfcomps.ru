@@ -5,6 +5,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
   templateUrl: './admin-menu-item.component.html',
   styleUrls: ['./admin-menu-item.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class AdminMenuItemComponent implements OnInit {
   @Input() caption: string;

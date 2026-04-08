@@ -9,11 +9,15 @@ import { Languages } from '@dfcomps/contracts';
   templateUrl: './download-df-dialog.component.html',
   styleUrls: ['./download-df-dialog.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class DownloadDfDialogComponent {
   public language$ = this.languageService.getLanguage$();
   public languages = Languages;
   public mainUrl = MAIN_URL;
 
-  constructor(public dialogRef: MatDialogRef<DownloadDfDialogComponent>, private languageService: LanguageService) {}
+  constructor(
+    public dialogRef: MatDialogRef<DownloadDfDialogComponent>,
+    private languageService: LanguageService,
+  ) {}
 }

@@ -5,10 +5,11 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/webpack:webpack",
+      "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/backend",
+        "outputFileName": "main.js",
         "main": "apps/backend/src/app/main.ts",
         "tsConfig": "apps/backend/tsconfig.app.json",
         "compiler": "tsc",
@@ -36,7 +37,7 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["apps/backend/**/*.ts"]

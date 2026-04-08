@@ -1,29 +1,33 @@
-<ng-container *ngIf="user$ | async as user; else notLogged">
+@if (user$ | async; as user) {
   <span class="logged-in-as">
     <span translate translation="loggedInAs"></span>
     <span data-test-id="user-nick-text">&nbsp;{{ user.nick }}</span>
   </span>
   <div class="profile-links">
-    <a
-      *ngIf="hasAdminPanelAccess(user)"
-      matRipple
-      href="/admin"
-      class="profile-link blue-link"
-      data-test-id="admin-panel-button"
-    >
-      <span translate translation="adminPanel"></span>
-    </a>
-    <div *ngIf="isValidSuggestionTime" (click)="onMapSuggestionClick()" matRipple class="profile-link blue-link">
-      <span translate translation="mapSuggestion"></span>
-    </div>
-    <div
-      *ngIf="!isValidSuggestionTime"
-      [matTooltip]="suggestionHintText"
-      matTooltipPosition="above"
-      class="profile-link gray"
-    >
-      <span translate translation="mapSuggestion"></span>
-    </div>
+    @if (hasAdminPanelAccess(user)) {
+      <a
+        matRipple
+        href="/admin"
+        class="profile-link blue-link"
+        data-test-id="admin-panel-button"
+        >
+        <span translate translation="adminPanel"></span>
+      </a>
+    }
+    @if (isValidSuggestionTime) {
+      <div (click)="onMapSuggestionClick()" matRipple class="profile-link blue-link">
+        <span translate translation="mapSuggestion"></span>
+      </div>
+    }
+    @if (!isValidSuggestionTime) {
+      <div
+        [matTooltip]="suggestionHintText"
+        matTooltipPosition="above"
+        class="profile-link gray"
+        >
+        <span translate translation="mapSuggestion"></span>
+      </div>
+    }
     <div (click)="onProfileClick()" matRipple class="profile-link blue-link">
       <span translate translation="profile"></span>
     </div>
@@ -31,8 +35,7 @@
       <span translate translation="logout"></span>
     </div>
   </div>
-</ng-container>
-<ng-template #notLogged>
+} @else {
   <div class="profile-links">
     <div (click)="onLoginClick()" matRipple class="profile-link blue-link" data-test-id="userpanel-login-button">
       <span translate translation="logIn"></span>
@@ -41,4 +44,4 @@
       <span translate translation="signUp"></span>
     </div>
   </div>
-</ng-template>
+}

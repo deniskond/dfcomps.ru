@@ -14,6 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './main.page.html',
   styleUrls: ['./main.page.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class MainPageComponent implements OnInit {
   public news$: Observable<NewsInterfaceUnion[]>;

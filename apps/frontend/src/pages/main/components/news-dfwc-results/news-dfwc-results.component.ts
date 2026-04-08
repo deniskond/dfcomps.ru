@@ -7,6 +7,7 @@ import { NewsOfflineResultsInterface } from '@dfcomps/contracts';
   templateUrl: './news-dfwc-results.component.html',
   styleUrls: ['./news-dfwc-results.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class NewsDfwcResultsComponent implements OnInit {
   @Input()

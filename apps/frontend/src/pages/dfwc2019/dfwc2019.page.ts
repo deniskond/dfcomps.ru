@@ -6,6 +6,7 @@ import { MAX_DFWC_RATING, vq3Table, cpmTable } from './constants/results.constan
   templateUrl: './dfwc2019.page.html',
   styleUrls: ['./dfwc2019.page.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class Dfwc2019PageComponent implements OnInit {
   public vq3TableWithChange: DfwcResultInterface[];

@@ -1,23 +1,26 @@
-<div *ngIf="onlineCupInfo" class="container">
-  <div class="inner-container">
-    <div class="title">{{ onlineCupInfo.fullName }}</div>
-    <div class="subtitle" data-test-id="text-online-cup-name">{{ onlineCupInfo.shortName }}</div>
-    <div class="timer-and-maps">
-      <div class="timer">{{ displayedMinutes }}:{{ displayedSeconds }}</div>
-      <div class="maps">
-        <div
-          *ngFor="let map of onlineCupInfo.maps; let i = index"
+@if (onlineCupInfo) {
+  <div class="container">
+    <div class="inner-container">
+      <div class="title">{{ onlineCupInfo.fullName }}</div>
+      <div class="subtitle" data-test-id="text-online-cup-name">{{ onlineCupInfo.shortName }}</div>
+      <div class="timer-and-maps">
+        <div class="timer">{{ displayedMinutes }}:{{ displayedSeconds }}</div>
+        <div class="maps">
+          @for (map of onlineCupInfo.maps; track map; let i = $index) {
+            <div
           [ngClass]="{
             played: currentMap > i + 1,
             selected: currentMap === i + 1,
             map: true
           }"
-          (click)="setMap(i + 1)"
-          [attr.data-test-id]="'button-map-' + (i + 1)"
-        >
-          {{ i + 1 }}. {{ currentMap < i + 1 ? placeholder : map }}
+              (click)="setMap(i + 1)"
+              [attr.data-test-id]="'button-map-' + (i + 1)"
+              >
+              {{ i + 1 }}. {{ currentMap < i + 1 ? placeholder : map }}
+            </div>
+          }
         </div>
       </div>
     </div>
   </div>
-</div>
+}

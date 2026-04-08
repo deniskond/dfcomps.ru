@@ -5,6 +5,8 @@ import { Client } from 'pg';
 export default defineConfig({
   e2e: {
     ...nxE2EPreset(__dirname),
+    allowCypressEnv: false,
+    video: true,
     setupNodeEvents(on) {
       on('task', {
         async queryDb(queryString) {

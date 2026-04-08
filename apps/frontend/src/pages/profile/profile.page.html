@@ -3,32 +3,36 @@
     <h1 class="h1-block-header">
       <span translate translation="playerProfile"></span>
 
-      <ng-container *ngIf="(isLoading$ | async) === false"> {{ mainInfo.nick }} </ng-container>
+      @if ((isLoading$ | async) === false) {
+        {{ mainInfo.nick }}
+      }
     </h1>
     <div>
-      <button
-        *ngIf="isDiscordLinkButtonShown$ | async"
-        (click)="linkDiscord()"
-        mat-raised-button
-        color="primary"
-        class="profile-button"
-      >
-        <mat-icon>discord</mat-icon>
-        <span translate translation="linkDiscord"></span>
-      </button>
-      <button
-        *ngIf="isEditProfileAvailable$ | async"
-        (click)="openEditProfilePopup()"
-        mat-raised-button
-        color="primary"
-        class="profile-button"
-      >
-        <span translate translation="editProfile"></span>
-      </button>
+      @if (isDiscordLinkButtonShown$ | async) {
+        <button
+          (click)="linkDiscord()"
+          mat-raised-button
+          color="primary"
+          class="profile-button"
+          >
+          <mat-icon>discord</mat-icon>
+          <span translate translation="linkDiscord"></span>
+        </button>
+      }
+      @if (isEditProfileAvailable$ | async) {
+        <button
+          (click)="openEditProfilePopup()"
+          mat-raised-button
+          color="primary"
+          class="profile-button"
+          >
+          <span translate translation="editProfile"></span>
+        </button>
+      }
     </div>
   </div>
 
-  <ng-container *ngIf="(isLoading$ | async) === false; else loader">
+  @if ((isLoading$ | async) === false) {
     <div class="info-and-charts">
       <div class="player-info">
         <img [src]="mainInfo.avatar | invokeFunction : getAvatarSrc" class="avatar" />
@@ -53,11 +57,10 @@
     <app-profile-cup-stats [stats]="stats" class="bottom-16"></app-profile-cup-stats>
     <app-profile-cups-table [cups]="cups" class="bottom-16"></app-profile-cups-table>
     <app-profile-last-demos [demos]="demos"></app-profile-last-demos>
-  </ng-container>
-
-  <ng-template #loader>
+  } @else {
     <div class="loader">
       <mat-spinner diameter="80" strokeWidth="5" color="accent"></mat-spinner>
     </div>
-  </ng-template>
+  }
+
 </div>

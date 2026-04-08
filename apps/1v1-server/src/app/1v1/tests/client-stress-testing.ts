@@ -1,4 +1,4 @@
-import * as faker from 'faker';
+import { randomInt } from '@dfcomps/helpers';
 import { Subject } from 'rxjs';
 import { DuelWebsocketClientActions } from '../enums/duel-websocket-client-actions.enum';
 import { GetPlayerStateMessageInterface } from '../interfaces/get-player-state-message.interface';
@@ -16,7 +16,7 @@ const numberOfMatchesInEachPhysics = stressTestNumberOfMatchesInEachPhysics;
 // for both physics two players are needed for one match
 const numberOfClients = numberOfMatchesInEachPhysics * 4;
 
-const playersIds: number[] = new Array(numberOfClients).fill(null).map(() => faker.datatype.number());
+const playersIds: number[] = new Array(numberOfClients).fill(null).map(() => randomInt());
 console.log(`Starting stress testing for ${numberOfClients} clients`);
 
 // double check for same array of players; the idea is to test if server state is correct for the same players to join and play again

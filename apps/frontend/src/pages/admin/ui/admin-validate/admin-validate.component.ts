@@ -12,6 +12,7 @@ import { Unpacked, formatResultTime } from '@dfcomps/helpers';
   templateUrl: './admin-validate.component.html',
   styleUrls: ['./admin-validate.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class AdminValidateComponent implements OnInit {
   public cupValidationInfo$: Observable<AdminValidationInterface>;

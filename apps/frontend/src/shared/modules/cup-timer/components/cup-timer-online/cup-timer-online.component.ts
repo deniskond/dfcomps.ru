@@ -6,6 +6,7 @@ import { CupTimerStates } from '~shared/enums/cup-timer-states.enum';
   selector: 'app-cup-timer-online',
   templateUrl: './cup-timer-online.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class CupTimerOnlineComponent implements OnInit {
   @Input()

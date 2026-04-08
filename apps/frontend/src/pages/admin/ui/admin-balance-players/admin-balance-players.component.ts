@@ -8,6 +8,7 @@ import { AdminDataService } from '~pages/admin/business/admin-data.service';
   templateUrl: './admin-balance-players.component.html',
   styleUrls: ['./admin-balance-players.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class AdminBalancePlayersComponent implements OnInit {
   public serversPlayers: OnlineCupServersPlayersInterface;

@@ -1,12 +1,18 @@
 <div class="shadowed-main-block news-block">
-  <h1 *ngIf="language$ | async as language" class="h1-block-header no-margin" data-test-id="news-header-text">
-    <a *ngIf="isHeaderSelectable" routerLink="/news/{{ newsElement.id }}" class="news-header-link hoverable">
-      {{ language === languages.EN ? newsElement.headerEn : newsElement.header }}
-    </a>
-    <span *ngIf="!isHeaderSelectable" routerLink="/news/{{ newsElement.id }}" class="news-header-link">
-      {{ language === languages.EN ? newsElement.headerEn : newsElement.header }}
-    </span>
-  </h1>
+  @if (language$ | async; as language) {
+    <h1 class="h1-block-header no-margin" data-test-id="news-header-text">
+      @if (isHeaderSelectable) {
+        <a routerLink="/news/{{ newsElement.id }}" class="news-header-link hoverable">
+          {{ language === languages.EN ? newsElement.headerEn : newsElement.header }}
+        </a>
+      }
+      @if (!isHeaderSelectable) {
+        <span routerLink="/news/{{ newsElement.id }}" class="news-header-link">
+          {{ language === languages.EN ? newsElement.headerEn : newsElement.header }}
+        </span>
+      }
+    </h1>
+  }
 
   <div class="author-and-date">
     <span translate translation="author"></span>
@@ -18,49 +24,63 @@
 
   <app-news-social-links [news]="newsElement"></app-news-social-links>
 
-  <img
-    *ngIf="newsElement.image"
-    [src]="newsElement.image | invokeFunction: getImageSrc"
-    class="news-image"
-    data-test-id="image-news"
-  />
+  @if (newsElement.image) {
+    <img
+      [src]="newsElement.image | invokeFunction: getImageSrc"
+      class="news-image"
+      data-test-id="image-news"
+      />
+  }
 
-  <app-news-streams *ngIf="newsElement.streams.length && showStreamsOnTop" [streams]="newsElement.streams"></app-news-streams>
+  @if (newsElement.streams.length && showStreamsOnTop) {
+    <app-news-streams [streams]="newsElement.streams"></app-news-streams>
+  }
 
-  <ng-container [ngSwitch]="newsElement.type">
-    <app-news-simple *ngSwitchCase="newsTypes.SIMPLE" [news]="$any(newsElement)"></app-news-simple>
-    <app-news-multicup-results
-      *ngSwitchCase="newsTypes.MULTICUP_RESULTS"
-      [news]="$any(newsElement)"
-    ></app-news-multicup-results>
-    <app-news-online-announce
-      *ngSwitchCase="newsTypes.ONLINE_ANNOUNCE"
-      [news]="$any(newsElement)"
-    ></app-news-online-announce>
-    <app-news-online-results
-      *ngSwitchCase="newsTypes.ONLINE_RESULTS"
-      [news]="$any(newsElement)"
-    ></app-news-online-results>
-    <app-news-offline-start
-      *ngSwitchCase="newsTypes.OFFLINE_START"
-      [news]="$any(newsElement)"
-      (reloadNews)="reloadNews.emit()"
-    ></app-news-offline-start>
-    <app-news-offline-results
-      *ngSwitchCase="newsTypes.OFFLINE_RESULTS"
-      [news]="$any(newsElement)"
-    ></app-news-offline-results>
-    <app-news-dfwc-results
-      *ngSwitchCase="newsTypes.DFWC_ROUND_RESULTS"
-      [news]="$any(newsElement)"
-    ></app-news-dfwc-results>
-    <app-news-streamers-results
-      *ngSwitchCase="newsTypes.STREAMERS_RESULTS"
-      [news]="$any(newsElement)"
-    ></app-news-streamers-results>
-  </ng-container>
+  @switch (newsElement.type) {
+    @case (newsTypes.SIMPLE) {
+      <app-news-simple [news]="$any(newsElement)"></app-news-simple>
+    }
+    @case (newsTypes.MULTICUP_RESULTS) {
+      <app-news-multicup-results
+        [news]="$any(newsElement)"
+      ></app-news-multicup-results>
+    }
+    @case (newsTypes.ONLINE_ANNOUNCE) {
+      <app-news-online-announce
+        [news]="$any(newsElement)"
+      ></app-news-online-announce>
+    }
+    @case (newsTypes.ONLINE_RESULTS) {
+      <app-news-online-results
+        [news]="$any(newsElement)"
+      ></app-news-online-results>
+    }
+    @case (newsTypes.OFFLINE_START) {
+      <app-news-offline-start
+        [news]="$any(newsElement)"
+        (reloadNews)="reloadNews.emit()"
+      ></app-news-offline-start>
+    }
+    @case (newsTypes.OFFLINE_RESULTS) {
+      <app-news-offline-results
+        [news]="$any(newsElement)"
+      ></app-news-offline-results>
+    }
+    @case (newsTypes.DFWC_ROUND_RESULTS) {
+      <app-news-dfwc-results
+        [news]="$any(newsElement)"
+      ></app-news-dfwc-results>
+    }
+    @case (newsTypes.STREAMERS_RESULTS) {
+      <app-news-streamers-results
+        [news]="$any(newsElement)"
+      ></app-news-streamers-results>
+    }
+  }
 
-  <app-news-streams *ngIf="newsElement.streams.length && !showStreamsOnTop" [streams]="newsElement.streams"></app-news-streams>
+  @if (newsElement.streams.length && !showStreamsOnTop) {
+    <app-news-streams [streams]="newsElement.streams"></app-news-streams>
+  }
 </div>
 <app-news-comments
   [comments]="newsElement.comments"

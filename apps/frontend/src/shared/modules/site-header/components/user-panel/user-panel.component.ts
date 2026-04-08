@@ -28,6 +28,7 @@ const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   styleUrls: ['./user-panel.component.less'],
   providers: [{ provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults }],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class UserPanelComponent implements OnInit, OnDestroy {
   public user$: Observable<UserInterface | null>;

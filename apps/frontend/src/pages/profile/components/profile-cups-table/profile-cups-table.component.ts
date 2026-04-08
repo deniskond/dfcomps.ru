@@ -6,6 +6,7 @@ import { ProfileCupInterface } from '../../interfaces/profile-cup.interface';
   templateUrl: './profile-cups-table.component.html',
   styleUrls: ['./profile-cups-table.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ProfileCupsTableComponent {
   @Input()

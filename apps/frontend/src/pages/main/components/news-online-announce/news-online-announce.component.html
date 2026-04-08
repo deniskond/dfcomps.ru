@@ -4,42 +4,51 @@
   <span>:</span>
 </div>
 <div class="players-table" data-test-id="online-cup-players-table">
-  <div *ngFor="let row of range(rowCount)" class="players-row">
-    <div *ngFor="let column of range(columnCount)" class="players-cell">
-      <div class="number">{{ column * rowCount + row + 1 }}</div>
-      <div class="player">
-        <ng-container *ngIf="registeredPlayers[column * rowCount + row] as player">
-          <app-player-cell
-            [country]="player.country"
-            [nick]="player.nick"
-            [playerId]="player.id"
-            class="player-cell"
-          ></app-player-cell>
-        </ng-container>
-      </div>
+  @for (row of range(rowCount); track row) {
+    <div class="players-row">
+      @for (column of range(columnCount); track column) {
+        <div class="players-cell">
+          <div class="number">{{ column * rowCount + row + 1 }}</div>
+          <div class="player">
+            @if (registeredPlayers[column * rowCount + row]; as player) {
+              <app-player-cell
+                [country]="player.country"
+                [nick]="player.nick"
+                [playerId]="player.id"
+                class="player-cell"
+              ></app-player-cell>
+            }
+          </div>
+        </div>
+      }
     </div>
-  </div>
+  }
 </div>
 <div class="buttons-container">
-  <button
-    *ngIf="showStreamersTimerLink$ | async"
-    (click)="goToStreamersTimer()"
-    mat-raised-button
-    color="primary"
-    class="action-button"
-    data-test-id="streamers-timer-button"
-  >
-    <span translate translation="openStreamersTimer"></span>
-  </button>
+  @if (showStreamersTimerLink$ | async) {
+    <button
+      (click)="goToStreamersTimer()"
+      mat-raised-button
+      color="primary"
+      class="action-button"
+      data-test-id="streamers-timer-button"
+      >
+      <span translate translation="openStreamersTimer"></span>
+    </button>
+  }
   <button
     (click)="toggleRegistration()"
     mat-raised-button
     color="primary"
     class="action-button"
     data-test-id="button-toggle-cup-registration"
-  >
-    <span *ngIf="isRegistered" translate translation="cancelRegistration"></span>
-    <span *ngIf="!isRegistered" translate translation="registerForCup"></span>
+    >
+    @if (isRegistered) {
+      <span translate translation="cancelRegistration"></span>
+    }
+    @if (!isRegistered) {
+      <span translate translation="registerForCup"></span>
+    }
   </button>
   <button (click)="openFullTable()" mat-raised-button color="primary" class="action-button">
     <span translate translation="fullTable"></span>

@@ -6,6 +6,7 @@ import { SmileInterface } from '../../configs/smiles.config';
   templateUrl: './smile.component.html',
   styleUrls: ['./smile.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class SmileComponent {
   @Input() smile: SmileInterface;

@@ -20,6 +20,7 @@ import { Physics } from '@dfcomps/contracts';
   templateUrl: './one-v-one-widget.component.html',
   styleUrls: ['./one-v-one-widget.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class OneVOneWidgetComponent implements OnInit {
   public matchState: MatchStates;

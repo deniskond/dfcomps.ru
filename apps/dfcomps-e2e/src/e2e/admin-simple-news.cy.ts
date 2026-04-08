@@ -1,7 +1,7 @@
 import { UserRoles } from '@dfcomps/auth';
 import { loginAs } from '../support/app.po';
 import * as moment from 'moment';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 
 describe('admin panel simple news + embeds', () => {
   const initialRussianTitle = faker.lorem.words();
@@ -77,10 +77,10 @@ describe('admin panel simple news + embeds', () => {
     // checking main page in both languages
     cy.visit('/');
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', initialRussianTitle);
-    cy.get('[data-test-id=news-html-text]').first().should('contain.text', initialRussianText);
+    cy.get('[data-test-id=news-html-text]').first().containsText(initialRussianText);
     cy.get('[data-test-id=language-toggle]').click();
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', initialEnglishTitle);
-    cy.get('[data-test-id=news-html-text]').first().should('contain.text', initialEnglishText);
+    cy.get('[data-test-id=news-html-text]').first().containsText(initialEnglishText);
     cy.get('[data-test-id=language-toggle]').click();
 
     // checking embeds
@@ -153,10 +153,10 @@ describe('admin panel simple news + embeds', () => {
     // checking main page in both languages
     cy.visit('/');
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', editedRussianTitle);
-    cy.get('[data-test-id=news-html-text]').first().should('contain.text', editedRussianText);
+    cy.get('[data-test-id=news-html-text]').first().containsText(editedRussianText);
     cy.get('[data-test-id=language-toggle]').click();
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', editedEnglishTitle);
-    cy.get('[data-test-id=news-html-text]').first().should('contain.text', editedEnglishText);
+    cy.get('[data-test-id=news-html-text]').first().containsText(editedEnglishText);
     cy.get('[data-test-id=language-toggle]').click();
 
     // checking embeds

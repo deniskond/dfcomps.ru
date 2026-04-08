@@ -1,18 +1,20 @@
 <mat-card class="container">
-  <ng-container *ngIf="currentSeason$ | async as currentSeason; else isLoading">
+  @if (currentSeason$ | async; as currentSeason) {
     <h3 data-test-id="text-current-season">Current season: {{ currentSeason }}</h3>
-    <div *ngIf="!isFinishingSeason">
-      <button
-        (click)="showEndSeasonButtons()"
-        class="finish-season-first-button"
-        mat-raised-button
-        color="accent"
-        data-test-id="button-finish-season-first"
-      >
-        Finish season
-      </button>
-    </div>
-    <ng-container *ngIf="isFinishingSeason">
+    @if (!isFinishingSeason) {
+      <div>
+        <button
+          (click)="showEndSeasonButtons()"
+          class="finish-season-first-button"
+          mat-raised-button
+          color="accent"
+          data-test-id="button-finish-season-first"
+          >
+          Finish season
+        </button>
+      </div>
+    }
+    @if (isFinishingSeason) {
       <div class="finish-season-row">
         <span class="button-count">1.</span>
         <button
@@ -22,10 +24,12 @@
           color="accent"
           class="finish-season-button"
           data-test-id="button-save-old-ratings"
-        >
+          >
           Save old ratings
         </button>
-        <span *ngIf="currentFinishingStep > 1" class="done-caption">Done!</span>
+        @if (currentFinishingStep > 1) {
+          <span class="done-caption">Done!</span>
+        }
       </div>
       <div class="finish-season-row">
         <span class="button-count">2.</span>
@@ -36,10 +40,12 @@
           color="accent"
           class="finish-season-button"
           data-test-id="button-set-rewards"
-        >
+          >
           Set rewards
         </button>
-        <span *ngIf="currentFinishingStep > 2" class="done-caption">Done!</span>
+        @if (currentFinishingStep > 2) {
+          <span class="done-caption">Done!</span>
+        }
       </div>
       <div class="finish-season-row">
         <span class="button-count">3.</span>
@@ -50,10 +56,12 @@
           color="accent"
           class="finish-season-button"
           data-test-id="button-reset-ratings"
-        >
+          >
           Reset ratings
         </button>
-        <span *ngIf="currentFinishingStep > 3" class="done-caption">Done!</span>
+        @if (currentFinishingStep > 3) {
+          <span class="done-caption">Done!</span>
+        }
       </div>
       <div class="finish-season-row">
         <span class="button-count">4.</span>
@@ -64,16 +72,17 @@
           color="accent"
           class="finish-season-button"
           data-test-id="button-increment-season"
-        >
+          >
           Increment season counter
         </button>
-        <span *ngIf="currentFinishingStep > 4" class="done-caption">Done!</span>
+        @if (currentFinishingStep > 4) {
+          <span class="done-caption">Done!</span>
+        }
       </div>
-    </ng-container>
-  </ng-container>
-  <ng-template #isLoading>
+    }
+  } @else {
     <div class="spinner">
       <mat-spinner diameter="75" strokeWidth="4" color="accent"></mat-spinner>
     </div>
-  </ng-template>
+  }
 </mat-card>

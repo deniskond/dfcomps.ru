@@ -13,6 +13,7 @@ import { AdminMulticupInterface } from '@dfcomps/contracts';
   templateUrl: './admin-multicups.component.html',
   styleUrls: ['./admin-multicups.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class AdminMulticupsComponent implements OnInit {
   public multicups: AdminMulticupInterface[];

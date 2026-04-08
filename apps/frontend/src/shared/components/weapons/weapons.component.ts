@@ -5,6 +5,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
   templateUrl: './weapons.component.html',
   styleUrls: ['./weapons.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WeaponsComponent {
   @Input() weapons: string;

@@ -1,10 +1,14 @@
-<div *ngIf="invalidDemos.length" class="invalid-demos-container">
-  <div class="invalid-demos-header" data-test-id="text-invalid-demos">
-    <span translate translation="invalidDemos"></span>:
+@if (invalidDemos.length) {
+  <div class="invalid-demos-container">
+    <div class="invalid-demos-header" data-test-id="text-invalid-demos">
+      <span translate translation="invalidDemos"></span>:
+    </div>
+    @for (demo of invalidDemos; track demo; let i = $index) {
+      <div>
+        <span>{{ i + 1 }})&nbsp;</span>
+        <a href="/uploads/demos/cup{{ cupId }}/{{ demo.demopath }}">{{ demo.demopath }}</a>
+        <span> - {{ demo.reason }}</span>
+      </div>
+    }
   </div>
-  <div *ngFor="let demo of invalidDemos; let i = index">
-    <span>{{ i + 1 }})&nbsp;</span>
-    <a href="/uploads/demos/cup{{ cupId }}/{{ demo.demopath }}">{{ demo.demopath }}</a>
-    <span> - {{ demo.reason }}</span>
-  </div>
-</div>
+}

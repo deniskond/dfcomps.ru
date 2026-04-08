@@ -1,4 +1,4 @@
-<ng-container *ngIf="(language$ | async) === languages.RU">
+@if ((language$ | async) === languages.RU) {
   <div class="shadowed-main-block">
     <h1 class="h1-block-header">Общие правила турниров</h1>
     <div class="rules-section">
@@ -45,7 +45,6 @@
       <p><b>4.3</b> Игроку запрещено иметь более одного аккаунта.</p>
     </div>
   </div>
-
   <div class="shadowed-main-block" id="online">
     <h1 class="h1-block-header">Правила онлайн турниров</h1>
     <div class="rules-section">
@@ -76,7 +75,6 @@
       </p>
     </div>
   </div>
-
   <div class="shadowed-main-block" id="offline">
     <h1 class="h1-block-header">Правила оффлайн турниров</h1>
     <div class="rules-section">
@@ -110,7 +108,7 @@
         <span class="italic-console-command">df_ob_allslopes 1</span>.
       </p>
       <p>
-        <b>6.3.2</b> Разрешенными считаются только овербаунсы с одной горизонтальной поверхности на другую 
+        <b>6.3.2</b> Разрешенными считаются только овербаунсы с одной горизонтальной поверхности на другую
         горизонтальную поверхность, при этом возможны несколько вариантов:<br />
         &ndash; овербаунс до прыжка виден на овербаунс-детекторе (либо был бы виден, если бы поверхности были в прямой
         видимости);<br />
@@ -123,7 +121,7 @@
       <p>
         <b>6.3.3</b> Список напрямую запрещенных овербаунсов:<br />
         &ndash; овербаунсы с использованием нетвердых брашей (вода, лава, и т.п.);<br />
-        &ndash; sticky-овербаунсы - овербаунсы, первоначальный прыжок в которых 
+        &ndash; sticky-овербаунсы - овербаунсы, первоначальный прыжок в которых
         происходит с ненулевой высоты от поверхности.
       </p>
       <p>
@@ -132,16 +130,16 @@
         &ndash; овербаунс повлиял на все распределение очков по
         <a href="/rules/ee-system">EE-системе</a>.<br />
         <i>Примеры:</i> <br />
-        1) В турнире по ЕЕ-системе любой неразрешенный овербаунс, который дал плюс в топ1 демке повлияет 
-        на распределение очков во всей таблице, потому что очки рассчитываются от времени первого места. 
+        1) В турнире по ЕЕ-системе любой неразрешенный овербаунс, который дал плюс в топ1 демке повлияет
+        на распределение очков во всей таблице, потому что очки рассчитываются от времени первого места.
         Поэтому такая демка будет невалидна.<br />
-        2) Игрок использовал неразрешенный овербаунс, чтобы пропустить трикс на карте, но не получил 
-        достаточного преимущества, чтобы встать на строчку выше в таблице. В этом случае демо также 
-        будет невалидным, потому что без неразрешенного овербаунса игрок мог не пройти карту вообще, 
+        2) Игрок использовал неразрешенный овербаунс, чтобы пропустить трикс на карте, но не получил
+        достаточного преимущества, чтобы встать на строчку выше в таблице. В этом случае демо также
+        будет невалидным, потому что без неразрешенного овербаунса игрок мог не пройти карту вообще,
         поэтому он бы вообще не попал в таблицу.
       </p>
       <p>
-        <b>6.3.5</b> Любой овербаунс может быть напрямую разрешен в новости турнира, 
+        <b>6.3.5</b> Любой овербаунс может быть напрямую разрешен в новости турнира,
         тогда правила 6.3.2 - 6.3.4 не применяются при валидации этого овербаунса.
       </p>
       <p>
@@ -156,9 +154,9 @@
       <p><b>6.7</b> В тимран турнирах таймы всех участников команды должны быть записаны в одно время.</p>
     </div>
   </div>
-</ng-container>
+}
 
-<ng-container *ngIf="(language$ | async) === languages.EN">
+@if ((language$ | async) === languages.EN) {
   <div class="shadowed-main-block">
     <h1 class="h1-block-header">Common ruleset</h1>
     <div class="rules-section">
@@ -211,7 +209,6 @@
       <p><b>4.3</b> It is not allowed to have more than one account per person.</p>
     </div>
   </div>
-
   <div class="shadowed-main-block" id="online">
     <h1 class="h1-block-header">Online cups ruleset</h1>
     <div class="rules-section">
@@ -248,7 +245,6 @@
       </p>
     </div>
   </div>
-
   <div class="shadowed-main-block" id="offline">
     <h1 class="h1-block-header">Offline cups ruleset</h1>
     <div class="rules-section">
@@ -281,7 +277,7 @@
         <i style="background: var(--comments-border-color)">df_ob_allslopes 1</i>.
       </p>
       <p>
-        <b>6.3.2</b> Overbounces are considered allowed only if they are performed from one horizontal surface to another 
+        <b>6.3.2</b> Overbounces are considered allowed only if they are performed from one horizontal surface to another
         horizontal surface, and one of the following condition should be met:<br />
         &ndash; overbounce should be visible on the overbounce detector before the jump (or it would have been visible
         if the landing surface was in the direct view);<br />
@@ -299,18 +295,18 @@
       <p>
         <b>6.3.4</b> Unallowed overbounces cause a demo to be rejected during validation in two cases:<br />
         &ndash; overbounce affected the distribution of places in the table<br />
-        &ndash; overbounce affected the whole distribution of points according to the 
+        &ndash; overbounce affected the whole distribution of points according to the
         <a href="/rules/ee-system">EE-system</a><br />
         <i>Examples:</i> <br />
-        1) In an EE-system tournament, any unallowed overbounce that gave a plus in the top1 demo will affect the 
-        distribution of points in the entire table, because points are calculated from the time of the first place. 
+        1) In an EE-system tournament, any unallowed overbounce that gave a plus in the top1 demo will affect the
+        distribution of points in the entire table, because points are calculated from the time of the first place.
         Therefore, such demo will be invalid.<br />
-        2) The player used an unallowed overbounce to skip the trix on the map, but did not get enough advantage 
-        to move up the table. In this case, the demo will also be invalid, because without an unallowed overbounce, 
+        2) The player used an unallowed overbounce to skip the trix on the map, but did not get enough advantage
+        to move up the table. In this case, the demo will also be invalid, because without an unallowed overbounce,
         the player may not have passed the map, so he would not have gotten into the table at all.
       </p>
       <p>
-        <b>6.3.5</b> Any overbounce can be explicitly allowed in tournament news, in which case rules 6.3.2 - 6.3.4 
+        <b>6.3.5</b> Any overbounce can be explicitly allowed in tournament news, in which case rules 6.3.2 - 6.3.4
         do not apply when validating that overbounce.
       </p>
       <p>
@@ -325,4 +321,4 @@
       <p><b>6.7</b> In teamrun competitions all team players times must be recorded at one time.</p>
     </div>
   </div>
-</ng-container>
+}

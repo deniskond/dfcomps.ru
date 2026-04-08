@@ -10,6 +10,7 @@ import { getDiscordAuthURL } from '~shared/helpers/get-discord-auth-url';
   templateUrl: './login-dialog.component.html',
   styleUrls: ['./login-dialog.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class LoginDialogComponent {
   public loginResult: boolean;

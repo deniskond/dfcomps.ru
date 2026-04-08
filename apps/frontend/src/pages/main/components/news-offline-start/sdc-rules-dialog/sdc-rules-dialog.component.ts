@@ -8,6 +8,7 @@ import { LanguageService } from '~shared/services/language/language.service';
   templateUrl: './sdc-rules-dialog.component.html',
   styleUrls: ['./sdc-rules-dialog.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class SDCRulesDialogComponent {
   public language$: Observable<Languages> = this.languageService.getLanguage$();

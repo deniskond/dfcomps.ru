@@ -7,6 +7,7 @@ import { CupTypes } from '@dfcomps/contracts';
   styleUrls: ['./cup-timer.component.less'],
   encapsulation: ViewEncapsulation.ShadowDom,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class CupTimerComponent {
   @Input()

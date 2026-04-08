@@ -5,33 +5,43 @@
   <div class="place-column">#</div>
   <div class="player-column">Player</div>
   <div class="points-column">Points</div>
-  <div *ngIf="hasRatingChange" class="ratings-column">Rating</div>
+  @if (hasRatingChange) {
+    <div class="ratings-column">Rating</div>
+  }
 </div>
-<div *ngFor="let result of slicedPhysicsTable; let i = index" class="multicup-results-row">
-  <div class="place-column">
-    <app-player-place [place]="places[i]"></app-player-place>
+@for (result of slicedPhysicsTable; track result; let i = $index) {
+  <div class="multicup-results-row">
+    <div class="place-column">
+      <app-player-place [place]="places[i]"></app-player-place>
+    </div>
+    <div class="player-column">
+      <app-player-cell
+        [country]="result.playerCountry"
+        [nick]="result.playerNick"
+        [playerId]="result.playerId"
+      ></app-player-cell>
+    </div>
+    <div class="points-column">{{ result.overall }}</div>
+    @if (hasRatingChange) {
+      <div class="ratings-column">
+        <app-rating-change
+          [change]="result.ratingChange === 0 ? null : result.ratingChange"
+          [zeroIfNull]="false"
+        ></app-rating-change>
+      </div>
+    }
   </div>
-  <div class="player-column">
-    <app-player-cell
-      [country]="result.playerCountry"
-      [nick]="result.playerNick"
-      [playerId]="result.playerId"
-    ></app-player-cell>
+}
+@for (cell of emptyCells; track cell) {
+  <div class="multicup-results-row">
+    <div class="place-column"></div>
+    <div class="player-column"></div>
+    <div class="points-column"></div>
+    @if (hasRatingChange) {
+      <div class="ratings-column"></div>
+    }
   </div>
-  <div class="points-column">{{ result.overall }}</div>
-  <div *ngIf="hasRatingChange" class="ratings-column">
-    <app-rating-change
-      [change]="result.ratingChange === 0 ? null : result.ratingChange"
-      [zeroIfNull]="false"
-    ></app-rating-change>
-  </div>
-</div>
-<div *ngFor="let cell of emptyCells" class="multicup-results-row">
-  <div class="place-column"></div>
-  <div class="player-column"></div>
-  <div class="points-column"></div>
-  <div *ngIf="hasRatingChange" class="ratings-column"></div>
-</div>
+}
 <div class="multicup-footer">
   <button (click)="navigateToMultiCup()" mat-raised-button color="primary">
     <span translate translation="fullTable"></span>

@@ -10,24 +10,28 @@
       </div>
     </div>
 
-    <div *ngIf="theme$ | async as theme" class="themes">
-      <mat-slide-toggle
-        [class]="theme"
-        [checked]="theme === themes.DARK"
-        (toggleChange)="toggleTheme()"
-        color="primary"
-      ></mat-slide-toggle>
-    </div>
+    @if (theme$ | async; as theme) {
+      <div class="themes">
+        <mat-slide-toggle
+          [class]="theme"
+          [checked]="theme === themes.DARK"
+          (toggleChange)="toggleTheme()"
+          color="primary"
+        ></mat-slide-toggle>
+      </div>
+    }
 
-    <div *ngIf="language$ | async as language" class="langs">
-      <mat-slide-toggle
-        [class]="language"
-        [checked]="language === languages.RU"
-        (toggleChange)="toggleLanguage()"
-        color="primary"
-        data-test-id="language-toggle"
-      ></mat-slide-toggle>
-    </div>
+    @if (language$ | async; as language) {
+      <div class="langs">
+        <mat-slide-toggle
+          [class]="language"
+          [checked]="language === languages.RU"
+          (toggleChange)="toggleLanguage()"
+          color="primary"
+          data-test-id="language-toggle"
+        ></mat-slide-toggle>
+      </div>
+    }
 
     <app-user-panel></app-user-panel>
   </div>
@@ -36,15 +40,16 @@
 
   <div class="header-second-row">
     <nav mat-tab-nav-bar [tabPanel]="tabPanel" class="navigation">
-      <a
-        *ngFor="let tab of tabs"
-        mat-tab-link
-        [active]="activePage === tab.page"
-        (click)="navigate(tab.page)"
-        class="navigation-link"
-      >
-        <span [translation]="tab.name" translate></span>
-      </a>
+      @for (tab of tabs; track tab) {
+        <a
+          mat-tab-link
+          [active]="activePage === tab.page"
+          (click)="navigate(tab.page)"
+          class="navigation-link"
+          >
+          <span [translation]="tab.name" translate></span>
+        </a>
+      }
     </nav>
     <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
 

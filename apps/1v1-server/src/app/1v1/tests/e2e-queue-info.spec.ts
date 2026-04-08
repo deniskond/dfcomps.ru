@@ -1,5 +1,5 @@
 import { DuelWebsocketClientActions } from '../enums/duel-websocket-client-actions.enum';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { Physics } from '../../enums/physics.enum';
 import { GetPlayerStateMessageInterface } from '../interfaces/get-player-state-message.interface';
 import { JoinQueueMessageInterface } from '../interfaces/join-queue-message.interface';
@@ -41,7 +41,7 @@ describe('end-to-end: case 5 - sending queue info to all players', () => {
     playerIdSecond = 15;
     webSocketThird = new WebSocket('ws://localhost:4002/1v1');
     playerIdThird = 16;
-    physics = faker.random.arrayElement([Physics.VQ3, Physics.CPM]);
+    physics = faker.helpers.arrayElement([Physics.VQ3, Physics.CPM]);
 
     return Promise.all([
       new Promise((resolve) => {

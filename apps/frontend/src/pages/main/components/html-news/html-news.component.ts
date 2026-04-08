@@ -13,6 +13,7 @@ import { LanguageService } from '~shared/services/language/language.service';
   templateUrl: './html-news.component.html',
   styleUrls: ['./html-news.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class HtmlNewsComponent implements OnInit, OnDestroy {
   @Input() news: NewsInterfaceUnion;
@@ -102,8 +103,8 @@ export class HtmlNewsComponent implements OnInit, OnDestroy {
       return null;
     }
 
-    return `<div style="display:inline-block;vertical-align: middle;background-position: -${(country.col - 1) * COUNTRIES_CONFIG.SPRITE_COLUMN_WIDTH}px -${
-      (country.row - 1) * COUNTRIES_CONFIG.SPRITE_ROW_HEIGHT
-    }px" class="flag"></div>`;
+    return `<div style="display:inline-block;vertical-align: middle;background-position: -${
+      (country.col - 1) * COUNTRIES_CONFIG.SPRITE_COLUMN_WIDTH
+    }px -${(country.row - 1) * COUNTRIES_CONFIG.SPRITE_ROW_HEIGHT}px" class="flag"></div>`;
   }
 }

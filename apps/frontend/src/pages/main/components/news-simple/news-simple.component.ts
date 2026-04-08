@@ -6,6 +6,7 @@ import { NewsSimpleInterface } from '@dfcomps/contracts';
   templateUrl: './news-simple.component.html',
   styleUrls: ['./news-simple.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class NewsSimpleComponent {
   @Input() news: NewsSimpleInterface;
