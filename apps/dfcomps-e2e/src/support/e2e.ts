@@ -12,3 +12,14 @@
 // You can read more here:
 // https://on.cypress.io/configuration
 // ***********************************************************
+
+// Quill 2.x serializes spaces as &nbsp; (\u00A0) in its HTML output.
+// This command normalizes non-breaking spaces to regular spaces before asserting.
+Cypress.Commands.add('containsText', { prevSubject: 'element' }, (subject, text: string) => {
+  cy.wrap(subject)
+    .invoke('text')
+    .then((actual: string) => {
+      expect(actual.replace(/\u00A0/g, ' ')).to.include(text);
+    });
+});
+

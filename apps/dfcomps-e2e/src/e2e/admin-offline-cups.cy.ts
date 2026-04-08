@@ -1,7 +1,7 @@
 import { UserRoles } from '@dfcomps/auth';
 import { loginAs } from '../support/app.po';
 import * as moment from 'moment';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 
 describe('admin offline cups', () => {
   const initialCupFullName = faker.lorem.words();

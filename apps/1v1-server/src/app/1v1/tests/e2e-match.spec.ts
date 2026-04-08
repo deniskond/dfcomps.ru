@@ -1,5 +1,5 @@
 import { DuelWebsocketClientActions } from '../enums/duel-websocket-client-actions.enum';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { Physics } from '../../enums/physics.enum';
 import { pickbanStepMock } from './mocks/pickban-step.mock';
 import { PickbanStepMessageInterface } from '../interfaces/pickban-step-message.interface';
@@ -31,7 +31,7 @@ describe('end-to-end: case 2 - full match', () => {
     playerIdFirst = 12;
     webSocketSecond = new WebSocket('ws://localhost:4002/1v1');
     playerIdSecond = 13;
-    physics = faker.random.arrayElement([Physics.VQ3, Physics.CPM]);
+    physics = faker.helpers.arrayElement([Physics.VQ3, Physics.CPM]);
 
     webSocketFirst.onmessage = (message: MessageEvent) => {
       const parsedMessage: DuelServerMessageType = JSON.parse(message.data as string);

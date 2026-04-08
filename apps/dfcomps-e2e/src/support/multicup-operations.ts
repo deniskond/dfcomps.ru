@@ -1,6 +1,7 @@
 import { UserRoles } from '@dfcomps/auth';
 import { loginAs } from './app.po';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
+import { randomInt } from '@dfcomps/helpers';
 
 export function addMultiCup(): string {
   const fullName = faker.lorem.words();
@@ -12,7 +13,7 @@ export function addMultiCup(): string {
 
   // filling the form
   cy.get('[data-test-id=multicup-name-input]').type(fullName);
-  cy.get('[data-test-id=multicup-rounds-input]').type(faker.datatype.number().toString());
+  cy.get('[data-test-id=multicup-rounds-input]').type(randomInt().toString());
 
   cy.get('[data-test-id=multicup-submit-button]').click(); 
 

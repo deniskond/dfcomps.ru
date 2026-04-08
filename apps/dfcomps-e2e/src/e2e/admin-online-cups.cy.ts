@@ -1,7 +1,7 @@
 import { UserRoles } from '@dfcomps/auth';
 import { logOut, loginAs } from '../support/app.po';
 import * as moment from 'moment';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { addOnlineCup } from '../support/online-cup-operations';
 import { getInsertPlayersQuery } from './../../test-data/online-cup/insert-players-query-generator';
 
@@ -115,10 +115,10 @@ describe('admin online cup full cycle', () => {
     // checking main page in both languages
     cy.visit('/');
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', russianTitle);
-    cy.get('[data-test-id=news-html-text]').first().should('contain.text', russianText);
+    cy.get('[data-test-id=news-html-text]').first().containsText(russianText);
     cy.get('[data-test-id=language-toggle]').click();
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', englishTitle);
-    cy.get('[data-test-id=news-html-text]').first().should('contain.text', englishText);
+    cy.get('[data-test-id=news-html-text]').first().containsText(englishText);
     cy.get('[data-test-id=language-toggle]').click();
 
     cy.get('.news-block').first().find('[data-test-id=online-cup-players-table]').should('exist');
@@ -313,10 +313,10 @@ describe('admin online cup full cycle', () => {
     // checking main page in both languages
     cy.visit('/');
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', russianTitle);
-    cy.get('[data-test-id=news-html-text]').first().should('contain.text', russianText);
+    cy.get('[data-test-id=news-html-text]').first().containsText(russianText);
     cy.get('[data-test-id=language-toggle]').click();
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', englishTitle);
-    cy.get('[data-test-id=news-html-text]').first().should('contain.text', englishText);
+    cy.get('[data-test-id=news-html-text]').first().containsText(englishText);
     cy.get('[data-test-id=language-toggle]').click();
 
     // checking final results
