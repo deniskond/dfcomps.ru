@@ -50,7 +50,7 @@ function copyPackageLockFile(outputPath) {
  * @returns {*} A Webpack plugin
  */
 function generatePackageJson() {
-  const implicitDeps = ['@nestjs/platform-express', 'reflect-metadata'];
+  const implicitDeps = ['@nestjs/platform-express', 'reflect-metadata', 'pg'];
   const dependencies = implicitDeps.reduce((acc, dep) => {
     acc[dep] = packageJson.dependencies[dep];
     return acc;
