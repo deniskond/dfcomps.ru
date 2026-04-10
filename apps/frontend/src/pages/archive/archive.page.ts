@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { ArchiveService } from './services/archive/archive.service';
-import { range } from 'lodash';
 import { take, takeUntil } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
@@ -22,7 +21,6 @@ export class ArchivePageComponent implements OnInit, OnDestroy {
   public news: ArchiveNewsInterface[] = [];
   public languages = Languages;
   public currentPage = 0;
-  public range = range;
   public language: Languages;
   public currentFilter = ArchiveNewsFilter.ALL;
   public archiveNewsFilter = ArchiveNewsFilter;
@@ -82,12 +80,12 @@ export class ArchivePageComponent implements OnInit, OnDestroy {
     return moment(date).format('DD.MM.YYYY HH:mm');
   }
 
-  public getPaginationLink(page: number): string[] {
+  public getPaginationLink = (page: number): string[] => {
     if (this.currentFilter === ArchiveNewsFilter.ALL) {
       return ['/archive', 'page', (page + 1).toString()];
     }
     return ['/archive', 'filter', this.currentFilter, 'page', (page + 1).toString()];
-  }
+  };
 
   public filterNewsBy(filter: ArchiveNewsFilter): void {
     this.currentFilter = filter;

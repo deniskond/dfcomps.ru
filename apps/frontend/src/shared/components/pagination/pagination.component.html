@@ -1,0 +1,25 @@
+@if (visiblePages.length > 0) {
+  <div class="pagination-container">
+    <div class="pagination">
+      @for (item of visiblePages; track item) {
+        @if (item === null) {
+          <span class="page-ellipsis">...</span>
+        } @else if (routerLinkFn) {
+          <a
+            [routerLink]="routerLinkFn(item)"
+            [class.selected]="currentPage === item"
+            class="page blue-link"
+            matRipple
+          >{{ item + 1 }}</a>
+        } @else {
+          <a
+            (click)="pageChange.emit(item)"
+            [class.selected]="currentPage === item"
+            class="page blue-link"
+            matRipple
+          >{{ item + 1 }}</a>
+        }
+      }
+    </div>
+  </div>
+}

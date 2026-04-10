@@ -3,6 +3,7 @@ import { GmtDateTimeComponent } from '../components/gmt-date-time/gmt-date-time.
 import { FlagComponent } from '../components/flag/flag.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { RatingChangeComponent } from '../components/rating-change/rating-change.component';
 import { PlayerCellComponent } from '../components/player-cell/player-cell.component';
 import { MatRippleModule } from '@angular/material/core';
@@ -17,6 +18,7 @@ import { SmileComponent } from '../components/smile/smile.component';
 import { TranslateDirective } from '../directives/translate/translate.directive';
 import { BigFlagComponent } from '../components/big-flag/big-flag.component';
 import { TwitchComponent } from '~shared/components/twitch/twitch.component';
+import { PaginationComponent } from '../components/pagination/pagination.component';
 
 const COMPONENTS = [
   FlagComponent,
@@ -30,6 +32,7 @@ const COMPONENTS = [
   SmileComponent,
   BigFlagComponent,
   TwitchComponent,
+  PaginationComponent,
 ];
 
 const DIRECTIVES = [ClickOutsideDirective, TranslateDirective];
@@ -38,7 +41,7 @@ const PIPES = [InvokeFunctionPipe];
 
 @NgModule({
   declarations: [...COMPONENTS, ...DIRECTIVES, ...PIPES],
-  imports: [CommonModule, MatRippleModule, MatTableModule, CdkTableModule],
+  imports: [CommonModule, RouterModule, MatRippleModule, MatTableModule, CdkTableModule],
   exports: [...COMPONENTS, ...DIRECTIVES, ...PIPES],
 })
 export class SharedModule {}

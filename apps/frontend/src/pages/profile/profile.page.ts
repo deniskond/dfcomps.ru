@@ -4,7 +4,6 @@ import { switchMap, tap, takeUntil, map, withLatestFrom } from 'rxjs/operators';
 import { Subject, Observable, combineLatest } from 'rxjs';
 import { ProfileService } from './services/profile.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { range } from 'lodash';
 import { ProfileCupInterface } from './interfaces/profile-cup.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { EditProfileDialogComponent } from './components/edit-profile-dialog/edit-profile-dialog';
@@ -41,7 +40,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   public currentCupsPage = 0;
   public stats: ProfileCupStatInterface;
   public rewards: Rewards[];
-  public range = range;
   public isLoading$ = new Subject<boolean>();
   public physics = Physics;
   public isEditProfileAvailable$: Observable<boolean>;

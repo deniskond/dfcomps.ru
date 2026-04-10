@@ -61,20 +61,12 @@
             </a>
           }
         </div>
-        <div class="pagination-container">
-          <div class="pagination">
-            @for (page of range(pagesCount); track page) {
-              <a
-                [routerLink]="getPaginationLink(page)"
-                [class.selected]="currentPage === page"
-                class="page blue-link"
-                matRipple
-                >
-                {{ page + 1 }}
-              </a>
-            }
-          </div>
-        </div>
+        <app-pagination
+          [currentPage]="currentPage"
+          [totalPagesCount]="pagesCount"
+          [componentPagesCount]="15"
+          [routerLinkFn]="getPaginationLink"
+        />
       } @else {
         <div class="loader">
           <mat-spinner diameter="80" strokeWidth="5" color="accent"></mat-spinner>
