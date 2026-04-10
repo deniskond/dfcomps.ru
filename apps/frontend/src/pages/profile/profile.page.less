@@ -56,3 +56,39 @@
   display: block;
   margin-bottom: 16px;
 }
+
+.pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination {
+  border-radius: 4px;
+  border: 1px solid var(--divider-border-color);
+  height: 28px;
+  display: flex;
+  text-align: center;
+  font-weight: bold;
+
+  .page {
+    border-right: 1px solid var(--divider-border-color);
+    padding: 0 12px;
+    font-size: 14px;
+    line-height: 28px;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:last-child {
+      border: 0;
+    }
+
+    &:hover {
+      background-color: var(--base-background-hover-color);
+    }
+  }
+}
+
+.selected {
+  background-color: var(--base-background-hover-color);
+}
