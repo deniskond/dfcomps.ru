@@ -14,7 +14,7 @@ import { ProfileRatingChartComponent } from './components/profile-rating-chart/p
 import { ProfileService } from './services/profile.service';
 import { ProfileLastDemosComponent } from './components/profile-last-demos/profile-last-demos.component';
 import { CdkTableModule } from '@angular/cdk/table';
-import { NgChartsModule } from 'ng2-charts';
+import { BaseChartDirective } from 'ng2-charts';
 import { EditProfileDialogComponent } from './components/edit-profile-dialog/edit-profile-dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '~shared/modules/shared.module';
@@ -46,7 +46,7 @@ const routes: Routes = [
     MatTooltipModule,
     MatTableModule,
     CdkTableModule,
-    NgChartsModule,
+    BaseChartDirective,
     MatDialogModule,
     FormsModule,
     ReactiveFormsModule,

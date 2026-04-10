@@ -30,6 +30,7 @@ import { formatResultTime } from '@dfcomps/helpers';
   templateUrl: './match-progress.component.html',
   styleUrls: ['./match-progress.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class MatchProgressComponent implements OnChanges {
   @Input() match: MatchInterface;

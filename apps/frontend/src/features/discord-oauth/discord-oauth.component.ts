@@ -6,6 +6,7 @@ import { isNonNull } from '~shared/helpers';
 @Component({
   templateUrl: './discord-oauth.component.html',
   styleUrls: ['./discord-oauth.component.less'],
+  standalone: false,
 })
 export class DiscordOauthComponent {
   constructor(

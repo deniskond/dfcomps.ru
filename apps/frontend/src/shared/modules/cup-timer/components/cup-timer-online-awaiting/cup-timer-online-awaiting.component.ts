@@ -18,6 +18,7 @@ import { Languages } from '@dfcomps/contracts';
   selector: 'app-cup-timer-online-awaiting',
   templateUrl: './cup-timer-online-awaiting.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class CupTimerOnlineAwaitingComponent implements OnInit, OnChanges {
   @Input()

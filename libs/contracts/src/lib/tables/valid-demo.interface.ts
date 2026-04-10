@@ -4,6 +4,7 @@ export interface ValidDemoInterface {
   country: string | null;
   demopath: string;
   impressive: boolean;
+  isMaxSpeed: boolean;
   nick: string;
   playerId: number;
   rating: number;

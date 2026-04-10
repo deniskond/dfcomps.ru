@@ -1,3 +1,7 @@
-<img *ngIf="change && +change > 0" src="/assets/images/icons/result-tables/up.png" class="change-icon right-4" />
-<img *ngIf="change && +change < 0" src="/assets/images/icons/result-tables/down.png" class="change-icon right-4" />
+@if (change && +change > 0) {
+  <img src="/assets/images/icons/result-tables/up.png" class="change-icon right-4" />
+}
+@if (change && +change < 0) {
+  <img src="/assets/images/icons/result-tables/down.png" class="change-icon right-4" />
+}
 <span data-test-id="text-rating-change">{{ change || defaultValue }}</span>

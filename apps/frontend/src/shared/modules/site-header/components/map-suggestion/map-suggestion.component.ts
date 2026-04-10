@@ -34,6 +34,7 @@ import { GlobalConfig } from '@dfcomps/helpers';
   templateUrl: './map-suggestion.component.html',
   styleUrls: ['./map-suggestion.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class MapSuggestionComponent implements OnInit, OnDestroy {
   public isPristine = true;

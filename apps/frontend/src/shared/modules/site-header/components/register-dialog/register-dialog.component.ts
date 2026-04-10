@@ -6,6 +6,7 @@ import { getDiscordAuthURL } from '~shared/helpers/get-discord-auth-url';
   selector: 'app-register-dialog',
   templateUrl: './register-dialog.component.html',
   styleUrls: ['./register-dialog.component.less'],
+  standalone: false,
 })
 export class RegisterDialogComponent {
   constructor(public dialogRef: MatDialogRef<RegisterDialogComponent>) {}

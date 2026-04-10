@@ -1,36 +1,50 @@
-<div
-  *ngIf="componentState === componentStates.WAITING_FOR_VOTE || componentState === componentStates.VOTE_CLOSED"
-  [ngClass]="{ 'hover-disabled': componentState !== componentStates.WAITING_FOR_VOTE }"
-  (mouseleave)="resetToSelectedRating()"
-  class="rating-stars-container"
->
-  <app-rating-star
-    *ngFor="let ratingValue of ratingValues; let i = index"
-    [fillValue]="ratingValue"
-    (mouseenter)="onStarHover(i)"
-    (click)="onStarClick(i)"
-    class="rating-star"
-  ></app-rating-star>
-</div>
-<div *ngIf="componentState === componentStates.VOTE_CLOSED" class="rating-info-container">
-  <div class="rating-value">{{ selectedRating | invokeFunction : formatRating }}/5</div>
-  <mat-icon [matTooltip]="tooltipContent" matTooltipPosition="right" class="info-icon">
-    info
-  </mat-icon>
-</div>
-<div *ngIf="componentState === componentStates.WAITING_FOR_VOTE" class="vote-button-container">
-  <button [disabled]="isRequestInProcess" (click)="onVoteSubmit()" mat-stroked-button class="rate-map-button">
-    <span *ngIf="!isRequestInProcess" translate translation="send"></span>
-  </button>
-  <div *ngIf="isRequestInProcess" class="spinner">
-    <mat-spinner diameter="20" strokeWidth="2" color="accent"></mat-spinner>
+@if (componentState === componentStates.WAITING_FOR_VOTE || componentState === componentStates.VOTE_CLOSED) {
+  <div
+    [ngClass]="{ 'hover-disabled': componentState !== componentStates.WAITING_FOR_VOTE }"
+    (mouseleave)="resetToSelectedRating()"
+    class="rating-stars-container"
+    >
+    @for (ratingValue of ratingValues; track ratingValue; let i = $index) {
+      <app-rating-star
+        [fillValue]="ratingValue"
+        (mouseenter)="onStarHover(i)"
+        (click)="onStarClick(i)"
+        class="rating-star"
+      ></app-rating-star>
+    }
   </div>
-</div>
+}
+@if (componentState === componentStates.VOTE_CLOSED) {
+  <div class="rating-info-container">
+    <div class="rating-value">{{ selectedRating | invokeFunction : formatRating }}/5</div>
+    <mat-icon [matTooltip]="tooltipContent" matTooltipPosition="right" class="info-icon">
+      info
+    </mat-icon>
+  </div>
+}
+@if (componentState === componentStates.WAITING_FOR_VOTE) {
+  <div class="vote-button-container">
+    <button [disabled]="isRequestInProcess" (click)="onVoteSubmit()" mat-stroked-button class="rate-map-button">
+      @if (!isRequestInProcess) {
+        <span translate translation="send"></span>
+      }
+    </button>
+    @if (isRequestInProcess) {
+      <div class="spinner">
+        <mat-spinner diameter="20" strokeWidth="2" color="accent"></mat-spinner>
+      </div>
+    }
+  </div>
+}
 
-<div *ngIf="componentState === componentStates.VOTE_CLOSED_WITH_NO_VOTES">
-  <span translate translation="noReviews"></span>
-</div>
+@if (componentState === componentStates.VOTE_CLOSED_WITH_NO_VOTES) {
+  <div>
+    <span translate translation="noReviews"></span>
+  </div>
+}
 
-<div *ngIf="componentState === componentStates.NOT_LOGGED">
-  <span translate translation="loginToAddReview"></span>
-</div>
+@if (componentState === componentStates.NOT_LOGGED) {
+  <div>
+    <span translate translation="loginToAddReview"></span>
+  </div>
+}

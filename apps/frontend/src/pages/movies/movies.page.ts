@@ -10,11 +10,15 @@ import { shuffle } from 'lodash';
   templateUrl: './movies.page.html',
   styleUrls: ['./movies.page.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class MoviesPageComponent implements OnInit {
   public movies$: Observable<MovieInterface[]>;
 
-  constructor(private moviesService: MoviesService, private sanitizer: DomSanitizer) {}
+  constructor(
+    private moviesService: MoviesService,
+    private sanitizer: DomSanitizer,
+  ) {}
 
   ngOnInit(): void {
     this.moviesService.loadMoviesIfNeeded();

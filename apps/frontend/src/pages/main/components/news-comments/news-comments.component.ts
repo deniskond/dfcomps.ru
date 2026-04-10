@@ -45,6 +45,7 @@ const COMMENT_ACTION_PERIOD_MINUTES = 2;
   styleUrls: ['./news-comments.component.less'],
   animations: [smilesDialogAnimation],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class NewsCommentsComponent implements OnInit, OnChanges {
   @Input()

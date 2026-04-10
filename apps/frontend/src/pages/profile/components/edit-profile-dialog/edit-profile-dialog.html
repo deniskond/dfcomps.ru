@@ -34,22 +34,26 @@
     <div class="right-column">
       <select formControlName="country" class="input-field">
         <option></option>
-        <option *ngFor="let country of countries" [selected]="country.shortName === data.country">
-          {{ country.fullName }}
-        </option>
+        @for (country of countries; track country) {
+          <option [selected]="country.shortName === data.country">
+            {{ country.fullName }}
+          </option>
+        }
       </select>
     </div>
   </div>
 </form>
 
 <div class="dialog-button">
-  <mat-spinner *ngIf="isLoading" diameter="20" strokeWidth="2" color="accent" class="spinner"></mat-spinner>
+  @if (isLoading) {
+    <mat-spinner diameter="20" strokeWidth="2" color="accent" class="spinner"></mat-spinner>
+  }
   <button
     [disabled]="!editProfileForm.valid || isLoading"
     (click)="onEditProfileClick()"
     mat-raised-button
     color="primary"
-  >
+    >
     <span translate translation="save"></span>
   </button>
 </div>

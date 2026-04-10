@@ -1,2 +1,6 @@
-<span *ngIf="country" [ngClass]="'fi-' + country" class="fi"></span>
-<div *ngIf="!country" class="unknown-flag"></div>
+@if (country) {
+  <span [ngClass]="'fi-' + country" class="fi"></span>
+}
+@if (!country) {
+  <div class="unknown-flag"></div>
+}

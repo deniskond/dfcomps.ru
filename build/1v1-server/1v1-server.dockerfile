@@ -1,4 +1,4 @@
-FROM node:18-alpine as builder
+FROM node:24-alpine AS builder
 RUN apk add --no-cache --update python3 make g++
 WORKDIR /opt/app
 COPY decorate-angular-cli.js ./
@@ -7,7 +7,7 @@ RUN npm ci
 COPY . .
 RUN npm run 1v1-server:build
 
-FROM node:18-alpine
+FROM node:24-alpine
 WORKDIR /opt/app
 COPY --from=builder /opt/app/dist/apps/1v1-server /opt/app
 RUN npm i

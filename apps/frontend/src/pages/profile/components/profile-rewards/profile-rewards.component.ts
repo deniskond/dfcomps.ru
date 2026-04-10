@@ -12,6 +12,7 @@ interface RewardWithIconPath {
   templateUrl: './profile-rewards.component.html',
   styleUrls: ['./profile-rewards.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ProfileRewardsComponent implements OnChanges {
   @Input()

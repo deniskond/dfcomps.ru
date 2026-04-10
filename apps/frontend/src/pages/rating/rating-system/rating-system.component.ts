@@ -8,6 +8,7 @@ import { LanguageService } from '~shared/services/language/language.service';
   templateUrl: './rating-system.component.html',
   styleUrls: ['./rating-system.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class RatingSystemComponent {
   public language$: Observable<Languages> = this.languageService.getLanguage$();

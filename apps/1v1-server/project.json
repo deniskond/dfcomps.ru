@@ -5,10 +5,11 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/webpack:webpack",
+      "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/1v1-server",
+        "outputFileName": "main.js",
         "main": "apps/1v1-server/src/main.ts",
         "tsConfig": "apps/1v1-server/tsconfig.app.json",
         "assets": ["apps/1v1-server/src/assets"],
@@ -37,7 +38,7 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["apps/1v1-server/**/*.ts"]

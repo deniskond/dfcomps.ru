@@ -7,6 +7,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   templateUrl: './moderator-delete-comment-dialog.component.html',
   styleUrls: ['./moderator-delete-comment-dialog.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ModeratorDeleteCommentDialogComponent {
   public reasonForm = new FormGroup({

@@ -15,6 +15,7 @@ import { PickbanMapInterface } from '../../interfaces/pickban-map.interface';
   templateUrl: './pickban-map.component.html',
   styleUrls: ['./pickban-map.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class PickbanMapComponent implements OnChanges {
   @Input() pickbanPhase: PickbanPhases;

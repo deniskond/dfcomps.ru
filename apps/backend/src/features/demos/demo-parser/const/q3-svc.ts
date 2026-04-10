@@ -1,0 +1,11 @@
+export const Q3_SVC = {
+  BAD: 0,
+  NOP: 1,
+  GAMESTATE: 2,
+  CONFIGSTRING: 3,
+  BASELINE: 4,
+  SERVERCOMMAND: 5,
+  DOWNLOAD: 6,
+  SNAPSHOT: 7,
+  EOF: 8,
+};

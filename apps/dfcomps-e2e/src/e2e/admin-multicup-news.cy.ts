@@ -1,6 +1,6 @@
 import { UserRoles } from '@dfcomps/auth';
 import { logOut, loginAs } from '../support/app.po';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import * as moment from 'moment';
 import { addMultiCup } from '../support/multicup-operations';
 
@@ -45,10 +45,10 @@ describe('admin multicup news', () => {
     // checking main page in both languages
     cy.visit('/');
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', russianTitle);
-    cy.get('[data-test-id=news-html-text]').first().should('contain.text', russianText);
+    cy.get('[data-test-id=news-html-text]').first().containsText(russianText);
     cy.get('[data-test-id=language-toggle]').click();
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', englishTitle);
-    cy.get('[data-test-id=news-html-text]').first().should('contain.text', englishText);
+    cy.get('[data-test-id=news-html-text]').first().containsText(englishText);
     cy.get('[data-test-id=language-toggle]').click();
 
     cy.get('.news-block').first().find('[data-test-id=multicup-physics-table-vq3]').should('exist');

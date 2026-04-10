@@ -18,6 +18,7 @@ interface MessagePartInterface {
   templateUrl: './news-comment-text.component.html',
   styleUrls: ['./news-comment-text.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class NewsCommentTextComponent implements OnInit {
   @Input() comment: CommentInterface;
@@ -32,7 +33,9 @@ export class NewsCommentTextComponent implements OnInit {
   }
 
   private getMessageParts(): void {
-    const splitMessage = this.comment.comment.split(/(\:\w+?\:)/gm).filter((messagePart: string) => !!messagePart.trim());
+    const splitMessage = this.comment.comment
+      .split(/(\:\w+?\:)/gm)
+      .filter((messagePart: string) => !!messagePart.trim());
 
     this.messageParts = splitMessage.map((messagePart: string) => {
       const smile: SmileInterface | null = this.getSmile(messagePart);

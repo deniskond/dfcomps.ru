@@ -20,6 +20,7 @@ interface SortedSmileGroupsInterface {
   templateUrl: './smiles-dropdown.component.html',
   styleUrls: ['./smiles-dropdown.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class SmilesDropdownComponent implements OnInit {
   @Input() currentUser: UserInterface | null;

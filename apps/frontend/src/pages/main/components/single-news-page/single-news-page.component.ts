@@ -11,6 +11,7 @@ import { NewsInterfaceUnion, NewsTypes } from '@dfcomps/contracts';
   templateUrl: './single-news-page.component.html',
   styleUrls: ['./single-news-page.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class SingleNewsPageComponent implements OnInit, OnDestroy {
   public singleNews$: Observable<NewsInterfaceUnion>;
@@ -20,7 +21,10 @@ export class SingleNewsPageComponent implements OnInit, OnDestroy {
   private reloadNews$ = new Subject<null>();
   private onDestroy$ = new Subject<void>();
 
-  constructor(private activatedRoute: ActivatedRoute, private newsService: NewsService) {}
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private newsService: NewsService,
+  ) {}
 
   ngOnInit(): void {
     this.singleNews$ = combineLatest([this.activatedRoute.params, this.reloadNews$.pipe(startWith(null))]).pipe(

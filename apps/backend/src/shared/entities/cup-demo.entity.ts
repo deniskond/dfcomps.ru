@@ -38,6 +38,9 @@ export class CupDemo {
   @Column({ type: 'boolean', nullable: true })
   isOutsideCompetition: boolean;
 
+  @Column({ type: 'integer', nullable: true })
+  maxSpeed: number | null;
+
   @ManyToOne(() => Cup)
   cup: Cup;
 

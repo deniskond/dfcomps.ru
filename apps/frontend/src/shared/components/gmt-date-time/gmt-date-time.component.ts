@@ -6,6 +6,7 @@ import * as moment from 'moment';
   templateUrl: './gmt-date-time.component.html',
   styleUrls: ['./gmt-date-time.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class GmtDateTimeComponent implements OnInit {
   @Input()

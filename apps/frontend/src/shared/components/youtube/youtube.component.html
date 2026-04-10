@@ -1,22 +1,24 @@
-<div *ngIf="!iframeShown; else youtubeEmbed" (click)="iframeShown = true" class="image-container">
-  <div class="stream-title" data-test-id="text-stream-title">{{ title }}</div>
-  <img
-    [width]="width"
-    [height]="height"
-    src="https://img.youtube.com/vi/{{ id }}/maxresdefault.jpg"
-    data-test-id="youtube-cover-image"
-  />
-  <div class="play"></div>
-</div>
+@if (!iframeShown) {
+  <div (click)="iframeShown = true" class="image-container">
+    <div class="stream-title" data-test-id="text-stream-title">{{ title }}</div>
+    <img
+      [width]="width"
+      [height]="height"
+      src="https://img.youtube.com/vi/{{ id }}/maxresdefault.jpg"
+      data-test-id="youtube-cover-image"
+      />
+    <div class="play"></div>
+  </div>
+} @else {
+  @if (iframeLink) {
+    <iframe
+      [width]="width"
+      [height]="height"
+      [src]="iframeLink"
+      frameborder="0"
+      allow="accelerometer; autoplay; encrypted-media; gyroscope;"
+      allowfullscreen
+    ></iframe>
+  }
+}
 
-<ng-template #youtubeEmbed>
-  <iframe
-    *ngIf="iframeLink"
-    [width]="width"
-    [height]="height"
-    [src]="iframeLink"
-    frameborder="0"
-    allow="accelerometer; autoplay; encrypted-media; gyroscope;"
-    allowfullscreen
-  ></iframe>
-</ng-template>

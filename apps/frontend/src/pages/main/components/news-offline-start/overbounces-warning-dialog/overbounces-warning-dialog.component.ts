@@ -9,6 +9,7 @@ import { LanguageService } from '~shared/services/language/language.service';
   templateUrl: './overbounces-warning-dialog.component.html',
   styleUrls: ['./overbounces-warning-dialog.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class OverbouncesWarningDialogComponent {
   public language$: Observable<Languages> = this.languageService.getLanguage$();

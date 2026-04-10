@@ -33,6 +33,7 @@ const SNACKBAR_DURATION = 3000;
   templateUrl: './news-offline-start.component.html',
   styleUrls: ['./news-offline-start.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class NewsOfflineStartComponent implements OnInit {
   @Input()

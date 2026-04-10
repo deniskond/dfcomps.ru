@@ -15,6 +15,7 @@ import { getDiscordAuthURL } from '~shared/helpers/get-discord-auth-url';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.less'],
+  standalone: false,
 })
 export class AppComponent implements OnInit, OnDestroy {
   public user$: Observable<UserInterface | null>;

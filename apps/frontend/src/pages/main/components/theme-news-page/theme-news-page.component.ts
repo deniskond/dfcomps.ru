@@ -11,6 +11,7 @@ import { Languages, NewsInterfaceUnion, NewsTypes } from '@dfcomps/contracts';
   templateUrl: './theme-news-page.component.html',
   styleUrls: ['./theme-news-page.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ThemeNewsPageComponent {
   public news$: Observable<NewsInterfaceUnion[]>;

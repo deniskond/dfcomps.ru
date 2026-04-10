@@ -1,4 +1,4 @@
-import * as faker from 'faker';
+import axios from 'axios';
 import { Subject } from 'rxjs';
 import { DuelWebsocketClientActions } from '../enums/duel-websocket-client-actions.enum';
 import { GetPlayerStateMessageInterface } from '../interfaces/get-player-state-message.interface';
@@ -16,22 +16,29 @@ const numberOfMatchesInEachPhysics = stressTestNumberOfMatchesInEachPhysics;
 // for both physics two players are needed for one match
 const numberOfClients = numberOfMatchesInEachPhysics * 4;
 
-const playersIds: number[] = new Array(numberOfClients).fill(null).map(() => faker.datatype.number());
-console.log(`Starting stress testing for ${numberOfClients} clients`);
+async function fetchPlayerIds(): Promise<number[]> {
+  const response = await axios.get<{ playerId: number }[]>('http://localhost:4001/tables/rating/cpm/1');
 
-// double check for same array of players; the idea is to test if server state is correct for the same players to join and play again
-Promise.all(getClientsFunctionsBatch())
-  .then(() => {
-    console.log('First phase: success');
-    console.log('Testing second time queue for each player');
-    return Promise.all(getClientsFunctionsBatch());
-  })
-  .then(() => {
-    console.log('\x1b[32m%s\x1b[0m', 'Stress test passed!');
-    process.exit(0);
-  });
+  return response.data.slice(0, numberOfClients).map(({ playerId }) => playerId);
+}
 
-function getClientsFunctionsBatch(): Promise<void>[] {
+fetchPlayerIds().then((playersIds) => {
+  console.log(`Starting stress testing for ${numberOfClients} clients`);
+
+  // double check for same array of players; the idea is to test if server state is correct for the same players to join and play again
+  Promise.all(getClientsFunctionsBatch(playersIds))
+    .then(() => {
+      console.log('First phase: success');
+      console.log('Testing second time queue for each player');
+      return Promise.all(getClientsFunctionsBatch(playersIds));
+    })
+    .then(() => {
+      console.log('\x1b[32m%s\x1b[0m', 'Stress test passed!');
+      process.exit(0);
+    });
+});
+
+function getClientsFunctionsBatch(playersIds: number[]): Promise<void>[] {
   return new Array(numberOfClients)
     .fill(null)
     .map(

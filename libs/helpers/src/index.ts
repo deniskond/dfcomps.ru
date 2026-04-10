@@ -6,3 +6,4 @@ export { transformBoolean } from './lib/transform-boolean';
 export { transformNumber } from './lib/transform-number';
 export { transformJSON } from './lib/transform-json';
 export { GlobalConfig } from './lib/global-config';
+export { randomInt } from './lib/random-int.helper';

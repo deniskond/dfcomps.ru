@@ -1,6 +1,6 @@
 import { UserRoles } from '@dfcomps/auth';
 import { loginAs } from './app.po';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import * as moment from 'moment';
 
 export function addOnlineCup(): string {

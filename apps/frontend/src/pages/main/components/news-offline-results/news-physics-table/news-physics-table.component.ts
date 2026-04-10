@@ -11,6 +11,7 @@ import { getTablePlacesWithExclude } from '~shared/helpers/table-places-with-exc
   templateUrl: './news-physics-table.component.html',
   styleUrls: ['./news-physics-table.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class NewsPhysicsTableComponent implements OnInit {
   @Input() physics: Physics;

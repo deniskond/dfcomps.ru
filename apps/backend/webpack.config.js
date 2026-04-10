@@ -1,23 +1,17 @@
+const { composePlugins, withNx } = require('@nx/webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 const GeneratePackageJsonPlugin = require('generate-package-json-webpack-plugin');
 const path = require('path');
 const packageJson = require('../../package.json');
 
 /**
- * Extend the default Webpack configuration from nx
+ * Extend the default Webpack configuration from nx.
+ * withNx() handles entry, output, target, TypeScript compilation, and module resolution.
  */
-module.exports = (config, context) => {
-  // Extract output path from context
-  const {
-    options: { outputPath },
-  } = context;
-
-  // Install additional plugins
-  config.plugins = config.plugins || [];
-  config.plugins.push(...extractRelevantNodeModules(outputPath));
-
+module.exports = composePlugins(withNx(), (config) => {
+  config.plugins.push(...extractRelevantNodeModules(config.output.path));
   return config;
-};
+});
 
 /**
  * This repository only contains one single package.json file that lists the dependencies
@@ -44,7 +38,9 @@ function extractRelevantNodeModules(outputPath) {
  * @returns {*} A Webpack plugin
  */
 function copyPackageLockFile(outputPath) {
-  return new CopyPlugin({ patterns: [{ from: '../../package-lock.json', to: path.join(outputPath, 'package-lock.json') }] });
+  return new CopyPlugin({
+    patterns: [{ from: path.resolve(__dirname, '../../package-lock.json'), to: path.join(outputPath, 'package-lock.json') }],
+  });
 }
 
 /**
@@ -54,14 +50,12 @@ function copyPackageLockFile(outputPath) {
  * @returns {*} A Webpack plugin
  */
 function generatePackageJson() {
-  const implicitDeps = ['@nestjs/platform-express', 'reflect-metadata'];
+  const implicitDeps = ['@nestjs/platform-express', 'reflect-metadata', 'pg'];
   const dependencies = implicitDeps.reduce((acc, dep) => {
     acc[dep] = packageJson.dependencies[dep];
     return acc;
   }, {});
-  const basePackageJson = {
-    dependencies,
-  };
+  const basePackageJson = { dependencies };
   const pathToPackageJson = path.join(__dirname, 'package.json');
   return new GeneratePackageJsonPlugin(basePackageJson, pathToPackageJson);
 }

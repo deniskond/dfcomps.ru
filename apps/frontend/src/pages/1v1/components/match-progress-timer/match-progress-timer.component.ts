@@ -9,6 +9,7 @@ import { PickbanPhases } from '../../enums/pickban-phases.enum';
   templateUrl: './match-progress-timer.component.html',
   styleUrls: ['./match-progress-timer.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class MatchProgressTimerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() initialSeconds: number;

@@ -9,6 +9,7 @@ import { OnlineCupResultInterface, Physics } from '@dfcomps/contracts';
   templateUrl: './online-results-table.component.html',
   styleUrls: ['./online-results-table.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class NewsOnlineResultsTableComponent implements OnInit {
   @Input() table: OnlineCupResultInterface[];

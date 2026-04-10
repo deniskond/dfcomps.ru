@@ -9,6 +9,7 @@ import { LanguageService } from '~shared/services/language/language.service';
   templateUrl: './news-element.component.html',
   styleUrls: ['./news-element.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class NewsElementComponent implements OnInit {
   @Input() newsElement: NewsInterfaceUnion;
@@ -28,9 +29,7 @@ export class NewsElementComponent implements OnInit {
   ngOnInit(): void {
     this.language$ = this.languageService.getLanguage$();
 
-    this.showStreamsOnTop =
-      !this.newsElement.image &&
-      this.newsElement.type !== NewsTypes.STREAMERS_RESULTS;
+    this.showStreamsOnTop = !this.newsElement.image && this.newsElement.type !== NewsTypes.STREAMERS_RESULTS;
   }
 
   public formatDate(date: string): string {

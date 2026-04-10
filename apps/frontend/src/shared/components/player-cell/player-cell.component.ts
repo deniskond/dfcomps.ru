@@ -15,6 +15,7 @@ import { PlayerCellStyles } from './enums/player-cell-styles.enum';
   styleUrls: ['./player-cell.component.less'],
   animations: [hoverableCellAnimation],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class PlayerCellComponent {
   @Input() country: string | null;

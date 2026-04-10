@@ -8,14 +8,22 @@
         <span translate translation="tournamentName"></span>
       </mat-header-cell>
       <mat-cell *cdkCellDef="let row" class="cup-name-column">
-        <a *ngIf="row.newsId" href="/news/{{ row.newsId }}">
-          {{ row.fullName }}
-          <span *ngIf="row.shortName">– {{ row.shortName }}</span>
-        </a>
-        <span class="cup-name" *ngIf="!row.newsId">
-          {{ row.fullName }}
-          <span *ngIf="row.shortName">– {{ row.shortName }}</span>
-        </span>
+        @if (row.newsId) {
+          <a href="/news/{{ row.newsId }}">
+            {{ row.fullName }}
+            @if (row.shortName) {
+              <span>– {{ row.shortName }}</span>
+            }
+          </a>
+        }
+        @if (!row.newsId) {
+          <span class="cup-name">
+            {{ row.fullName }}
+            @if (row.shortName) {
+              <span>– {{ row.shortName }}</span>
+            }
+          </span>
+        }
       </mat-cell>
     </ng-container>
 
@@ -31,9 +39,15 @@
         <span translate translation="result"></span>
       </mat-header-cell>
       <mat-cell *cdkCellDef="let row" class="result-column">
-        <img *ngIf="row.resultPlace === 1" src="/assets/images/icons/result-tables/gold.png" class="place-icon" />
-        <img *ngIf="row.resultPlace === 2" src="/assets/images/icons/result-tables/silver.png" class="place-icon" />
-        <img *ngIf="row.resultPlace === 3" src="/assets/images/icons/result-tables/bronze.png" class="place-icon" />
+        @if (row.resultPlace === 1) {
+          <img src="/assets/images/icons/result-tables/gold.png" class="place-icon" />
+        }
+        @if (row.resultPlace === 2) {
+          <img src="/assets/images/icons/result-tables/silver.png" class="place-icon" />
+        }
+        @if (row.resultPlace === 3) {
+          <img src="/assets/images/icons/result-tables/bronze.png" class="place-icon" />
+        }
         <span class="left-4">
           {{ row.resultPlace }}
           <span translate translation="place" class="lowercase"></span>

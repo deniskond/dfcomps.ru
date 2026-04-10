@@ -10,6 +10,7 @@ import { ThemeService } from '~shared/services/theme/theme.service';
   templateUrl: './profile-rating-chart.component.html',
   styleUrls: ['./profile-rating-chart.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ProfileRatingChartComponent implements OnChanges {
   @Input()

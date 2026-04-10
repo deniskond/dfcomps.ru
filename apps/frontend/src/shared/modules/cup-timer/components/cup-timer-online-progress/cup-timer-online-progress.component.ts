@@ -19,6 +19,7 @@ import { Languages } from '@dfcomps/contracts';
   selector: 'app-cup-timer-online-progress',
   templateUrl: './cup-timer-online-progress.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class CupTimerOnlineProgressComponent implements OnInit, OnChanges {
   @Input()

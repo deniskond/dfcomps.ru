@@ -14,6 +14,7 @@ const NEWS_ON_PAGE = 50;
   templateUrl: './archive.page.html',
   styleUrls: ['./archive.page.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ArchivePageComponent implements OnInit, OnDestroy {
   public newsCount: number;
