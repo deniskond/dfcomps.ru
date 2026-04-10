@@ -1,6 +1,8 @@
 <div class="header-container">
   <div translate translation="suggestMapOnWarcup" class="h1-block-header dialog-header"></div>
-  <div *ngIf="data.isAdmin" class="h1-block-header dialog-header">&nbsp;(admin)</div>
+  @if (data.isAdmin) {
+    <div class="h1-block-header dialog-header">&nbsp;(admin)</div>
+  }
 </div>
 
 <div class="mappers-info-block">
@@ -19,41 +21,53 @@
     <input [(ngModel)]="mapName" (input)="onMapnameInput()" class="input-field" data-test-id="input-mapname" />
   </div>
 
-  <div *ngIf="!isPristine && isNotFoundOnWS" class="status-container">
-    <img src="../../../../../../assets/images/icons/not-ok.png" class="status-icon" />
-    <div class="error">
-      <span translate translation="mapWasNotFoundOnWS"></span>&nbsp;{{ parsingSite }}
+  @if (!isPristine && isNotFoundOnWS) {
+    <div class="status-container">
+      <img src="../../../../../../assets/images/icons/not-ok.png" class="status-icon" />
+      <div class="error">
+        <span translate translation="mapWasNotFoundOnWS"></span>&nbsp;{{ parsingSite }}
+      </div>
     </div>
-  </div>
-  <div *ngIf="!isPristine && wasPlayedBefore" class="status-container">
-    <img src="../../../../../../assets/images/icons/not-ok.png" class="status-icon" />
-    <div translate translation="mapWasOnCompetition" class="error"></div>
-    <span class="error">&nbsp;{{ previousCupName }}</span>
-  </div>
-  <div *ngIf="!isPristine && !isNotFoundOnWS" class="status-container">
-    <img src="../../../../../../assets/images/icons/ok.png" class="status-icon" />
-    <div class="success">
-      <span translate translation="mapWasFoundOnWS" class="success"></span>&nbsp;{{ parsingSite }}
+  }
+  @if (!isPristine && wasPlayedBefore) {
+    <div class="status-container">
+      <img src="../../../../../../assets/images/icons/not-ok.png" class="status-icon" />
+      <div translate translation="mapWasOnCompetition" class="error"></div>
+      <span class="error">&nbsp;{{ previousCupName }}</span>
     </div>
-  </div>
-  <div *ngIf="!isPristine && !wasPlayedBefore" class="status-container">
-    <img src="../../../../../../assets/images/icons/ok.png" class="status-icon" />
-    <div translate translation="mapWasntOnCompetitions" class="success"></div>
-  </div>
+  }
+  @if (!isPristine && !isNotFoundOnWS) {
+    <div class="status-container">
+      <img src="../../../../../../assets/images/icons/ok.png" class="status-icon" />
+      <div class="success">
+        <span translate translation="mapWasFoundOnWS" class="success"></span>&nbsp;{{ parsingSite }}
+      </div>
+    </div>
+  }
+  @if (!isPristine && !wasPlayedBefore) {
+    <div class="status-container">
+      <img src="../../../../../../assets/images/icons/ok.png" class="status-icon" />
+      <div translate translation="mapWasntOnCompetitions" class="success"></div>
+    </div>
+  }
 
-  <div *ngIf="mapInfo" class="map-info-container">
-    <div class="map-info-item">
-      <b class="map-info-caption">Map author:</b>
-      <span>{{ mapInfo.author }}</span>
+  @if (mapInfo) {
+    <div class="map-info-container">
+      <div class="map-info-item">
+        <b class="map-info-caption">Map author:</b>
+        <span>{{ mapInfo.author }}</span>
+      </div>
+      <div class="map-info-item">
+        <b class="map-info-caption">Weapons:</b>
+        <app-weapons [weapons]="mapWeapons"></app-weapons>
+      </div>
     </div>
-    <div class="map-info-item">
-      <b class="map-info-caption">Weapons:</b>
-      <app-weapons [weapons]="mapWeapons"></app-weapons>
-    </div>
-  </div>
+  }
 
   <div class="dialog-button">
-    <mat-spinner *ngIf="isLoading" diameter="20" strokeWidth="2" color="accent" class="spinner"></mat-spinner>
+    @if (isLoading) {
+      <mat-spinner diameter="20" strokeWidth="2" color="accent" class="spinner"></mat-spinner>
+    }
     <button (click)="sendSuggestion()" [disabled]="isLoading || isInvalid" mat-raised-button color="primary">
       <span translate translation="send"></span>
     </button>

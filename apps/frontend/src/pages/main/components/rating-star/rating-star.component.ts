@@ -5,6 +5,7 @@ import { Component, Input, OnInit, ChangeDetectionStrategy, OnChanges, SimpleCha
   templateUrl: './rating-star.component.html',
   styleUrls: ['./rating-star.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class RatingStarComponent implements OnChanges {
   @Input() fillValue: number;

@@ -1,24 +1,26 @@
-<button
-  *ngIf="showDemosForValidationLink$ | async"
-  (click)="getValidationArchive()"
-  mat-raised-button
-  color="primary"
-  class="download-demos-button"
-  data-test-id="button-validation-archive"
->
-  <span translate translation="downloadForValidation"></span>
-</button>
+@if (showDemosForValidationLink$ | async) {
+  <button
+    (click)="getValidationArchive()"
+    mat-raised-button
+    color="primary"
+    class="download-demos-button"
+    data-test-id="button-validation-archive"
+    >
+    <span translate translation="downloadForValidation"></span>
+  </button>
+}
 
-<button
-  *ngIf="news.cup.archiveLink"
-  (click)="downloadAllDemosArchive(news.cup.archiveLink)"
-  mat-raised-button
-  color="primary"
-  class="download-demos-button"
-  data-test-id="button-all-demos-archive"
->
-  <span translate translation="allDemosArchive"></span>
-</button>
+@if (news.cup.archiveLink) {
+  <button
+    (click)="downloadAllDemosArchive(news.cup.archiveLink)"
+    mat-raised-button
+    color="primary"
+    class="download-demos-button"
+    data-test-id="button-all-demos-archive"
+    >
+    <span translate translation="allDemosArchive"></span>
+  </button>
+}
 
 <div class="map-info">
   <div class="levelshot-container">
@@ -33,7 +35,7 @@
           target="_blank"
           class="map-link"
           data-test-id="offline-results-map-link"
-        >
+          >
           {{ news.cup.map1 }}
         </a>
       </div>
@@ -41,13 +43,17 @@
     <div class="map-info-table-row">
       <div translate translation="start" class="map-info-cell-desc"></div>
       <div class="map-info-cell-info">
-        <app-gmt-date-time *ngIf="news.cup.startDateTime" [dateTime]="news.cup.startDateTime"></app-gmt-date-time>
+        @if (news.cup.startDateTime) {
+          <app-gmt-date-time [dateTime]="news.cup.startDateTime"></app-gmt-date-time>
+        }
       </div>
     </div>
     <div class="map-info-table-row">
       <div translate translation="finish" class="map-info-cell-desc"></div>
       <div class="map-info-cell-info">
-        <app-gmt-date-time *ngIf="news.cup.endDateTime" [dateTime]="news.cup.endDateTime"></app-gmt-date-time>
+        @if (news.cup.endDateTime) {
+          <app-gmt-date-time [dateTime]="news.cup.endDateTime"></app-gmt-date-time>
+        }
       </div>
     </div>
     <div class="map-info-table-row">

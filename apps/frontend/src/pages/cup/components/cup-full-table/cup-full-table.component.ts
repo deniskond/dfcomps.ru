@@ -17,6 +17,7 @@ import { MulticupResultInterface, MulticupSystems, Physics } from '@dfcomps/cont
   templateUrl: './cup-full-table.component.html',
   styleUrls: ['./cup-full-table.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class CupFullTableComponent implements OnChanges {
   @Input()

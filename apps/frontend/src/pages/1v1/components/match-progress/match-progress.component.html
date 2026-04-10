@@ -17,14 +17,15 @@
     </div>
   </div>
   <div class="map-row">
-    <app-pickban-map
-      *ngFor="let map of mapList"
-      [pickbanPhase]="pickbanPhase"
-      [map]="map"
-      (banned)="onMapBanned(map.map!.name)"
-      class="map"
-    >
-    </app-pickban-map>
+    @for (map of mapList; track map) {
+      <app-pickban-map
+        [pickbanPhase]="pickbanPhase"
+        [map]="map"
+        (banned)="onMapBanned(map.map!.name)"
+        class="map"
+        >
+      </app-pickban-map>
+    }
   </div>
   <div class="player">
     <div class="player-flag-nick">
@@ -37,22 +38,26 @@
   </div>
 </div>
 
-<div *ngIf="pickedMapName" class="upload-demo-container">
-  <div class="upload-demo-caption">
-    <div class="bebas">
-      <span translate translation="map" class="bebas"></span><span class="bebas">: {{ pickedMapName }}</span>
+@if (pickedMapName) {
+  <div class="upload-demo-container">
+    <div class="upload-demo-caption">
+      <div class="bebas">
+        <span translate translation="map" class="bebas"></span><span class="bebas">: {{ pickedMapName }}</span>
+      </div>
+      <div class="margin-left-16">
+        <span translate translation="code" class="yellow-bebas"></span
+          ><span class="yellow-bebas">: {{ securityCode }}</span>
+        </div>
+      </div>
+      <input (change)="uploadDemo()" #fileInput name="demo" accept=".dm_68" type="file" class="file-input" />
+      <button (click)="openFileDialog()" mat-raised-button color="accent">
+        <span translate translation="uploadDemo"></span>
+      </button>
+      @if (bestDemoTime) {
+        <div class="best-demo-time">
+          <span translate translation="yourBestTime" class="bebas"></span>:
+          <span class="time">{{ bestDemoTime | invokeFunction : formatTime }}</span>
+        </div>
+      }
     </div>
-    <div class="margin-left-16">
-      <span translate translation="code" class="yellow-bebas"></span
-      ><span class="yellow-bebas">: {{ securityCode }}</span>
-    </div>
-  </div>
-  <input (change)="uploadDemo()" #fileInput name="demo" accept=".dm_68" type="file" class="file-input" />
-  <button (click)="openFileDialog()" mat-raised-button color="accent">
-    <span translate translation="uploadDemo"></span>
-  </button>
-  <div *ngIf="bestDemoTime" class="best-demo-time">
-    <span translate translation="yourBestTime" class="bebas"></span>:
-    <span class="time">{{ bestDemoTime | invokeFunction : formatTime }}</span>
-  </div>
-</div>
+  }

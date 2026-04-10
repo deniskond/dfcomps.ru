@@ -10,6 +10,7 @@ const MAX_PLAYERS_IN_TABLE = 30;
   templateUrl: './multicup-physics-table.component.html',
   styleUrls: ['./multicup-physics-table.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class MulticupPhysicsTableComponent implements OnInit {
   @Input() physics: Physics;

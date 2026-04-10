@@ -1,4 +1,4 @@
-<ng-container *ngIf="(language$ | async) === languages.RU">
+@if ((language$ | async) === languages.RU) {
   <div class="shadowed-main-block">
     <h1 class="h1-block-header">Правила Speedrun DeFrag Cup</h1>
     <div class="rules-section">
@@ -79,9 +79,9 @@
       </p>
     </div>
   </div>
-</ng-container>
+}
 
-<ng-container *ngIf="(language$ | async) === languages.EN">
+@if ((language$ | async) === languages.EN) {
   <div class="shadowed-main-block">
     <h1 class="h1-block-header">Speedrun DeFrag Cup rules</h1>
     <div class="rules-section">
@@ -163,4 +163,4 @@
       </p>
     </div>
   </div>
-</ng-container>
+}

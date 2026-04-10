@@ -6,118 +6,132 @@
     </mat-panel-title>
   </mat-expansion-panel-header>
 
-  <ng-container *ngIf="commentsWithActions$ | async as comments">
-    <div *ngIf="comments.length" class="comments-container">
-      <ng-container *ngFor="let comment of comments; let i = index">
-        <div class="comment">
-          <div class="comment-header">
-            <div class="comment-header-left">
-              <span [class.no-hover]="!(currentUser$ | async)" (click)="copyIdToComment(i + 1)" class="black-link">
-                #{{ i + 1 }}
-              </span>
-              <span class="separator"></span>
-              <span>
-                <a routerLink="/profile/{{ comment.playerId }}" class="black-link">{{ comment.username }}</a>
-              </span>
-              <span *ngIf="comment.isEditable">
+  @if (commentsWithActions$ | async; as comments) {
+    @if (comments.length) {
+      <div class="comments-container">
+        @for (comment of comments; track comment; let i = $index) {
+          <div class="comment">
+            <div class="comment-header">
+              <div class="comment-header-left">
+                <span [class.no-hover]="!(currentUser$ | async)" (click)="copyIdToComment(i + 1)" class="black-link">
+                  #{{ i + 1 }}
+                </span>
                 <span class="separator"></span>
-                <a (click)="editComment(comment.commentId)" class="bluelink hoverable">
-                  <span translate translation="edit"></span>
-                </a>
-              </span>
-              <span *ngIf="comment.isEditable">
-                <span class="separator"></span>
-                <a (click)="deleteComment(comment.commentId)" class="bluelink hoverable">
-                  <span translate translation="delete"></span>
-                </a>
-              </span>
-              <span *ngIf="comment.isModeratorDeletable">
-                <span class="separator"></span>
-                <a (click)="moderatorDeleteComment(comment.commentId)" class="bluelink hoverable">
-                  <span translate translation="delete"></span>
-                </a>
-              </span>
+                <span>
+                  <a routerLink="/profile/{{ comment.playerId }}" class="black-link">{{ comment.username }}</a>
+                </span>
+                @if (comment.isEditable) {
+                  <span>
+                    <span class="separator"></span>
+                    <a (click)="editComment(comment.commentId)" class="bluelink hoverable">
+                      <span translate translation="edit"></span>
+                    </a>
+                  </span>
+                }
+                @if (comment.isEditable) {
+                  <span>
+                    <span class="separator"></span>
+                    <a (click)="deleteComment(comment.commentId)" class="bluelink hoverable">
+                      <span translate translation="delete"></span>
+                    </a>
+                  </span>
+                }
+                @if (comment.isModeratorDeletable) {
+                  <span>
+                    <span class="separator"></span>
+                    <a (click)="moderatorDeleteComment(comment.commentId)" class="bluelink hoverable">
+                      <span translate translation="delete"></span>
+                    </a>
+                  </span>
+                }
+              </div>
+              <div class="comment-header-right">
+                {{ comment.datetimezone | invokeFunction: formatDate }}
+              </div>
             </div>
-            <div class="comment-header-right">
-              {{ comment.datetimezone | invokeFunction: formatDate }}
-            </div>
+            @if (!comment.reason) {
+              @if (personalSmiles$ | async; as personalSmiles) {
+                <app-news-comment-text
+                  [comment]="comment"
+                  [personalSmiles]="personalSmiles"
+                  [currentUser]="(currentUser$ | async)!"
+                ></app-news-comment-text>
+              }
+            } @else {
+              <div class="comment-inner-gray">
+                <span translate translation="commentDeletedByModerator"></span>
+                <span>&nbsp;{{ comment.reason }}</span>
+              </div>
+            }
           </div>
-          <ng-container *ngIf="!comment.reason; else moderatorDeleted">
-            <app-news-comment-text
-              *ngIf="personalSmiles$ | async as personalSmiles"
-              [comment]="comment"
-              [personalSmiles]="personalSmiles"
-              [currentUser]="(currentUser$ | async)!"
-            ></app-news-comment-text>
-          </ng-container>
-          <ng-template #moderatorDeleted>
-            <div class="comment-inner-gray">
-              <span translate translation="commentDeletedByModerator"></span>
-              <span>&nbsp;{{ comment.reason }}</span>
-            </div>
-          </ng-template>
-        </div>
-      </ng-container>
-    </div>
-  </ng-container>
+        }
+      </div>
+    }
+  }
 
-  <ng-container *ngIf="currentUser$ | async; else notLogged">
-    <div *ngIf="editingCommentId" class="write-commentary">
-      <span translate translation="editComment"></span>
-      :
-    </div>
-    <div *ngIf="!editingCommentId" class="write-commentary">
-      <span translate translation="writeComment" class="write-comment"></span>
-      :
-    </div>
+  @if (currentUser$ | async) {
+    @if (editingCommentId) {
+      <div class="write-commentary">
+        <span translate translation="editComment"></span>
+        :
+      </div>
+    }
+    @if (!editingCommentId) {
+      <div class="write-commentary">
+        <span translate translation="writeComment" class="write-comment"></span>
+        :
+      </div>
+    }
     <div class="textarea-container">
       <textarea #textarea class="comment-textarea"></textarea>
       <img (click)="openSmilesDropdown($event)" src="/assets/images/icons/smile-icon.png" class="smiles-icon" />
-      <app-smiles-dropdown
-        *ngIf="personalSmiles$ | async as personalSmiles"
-        #smilesDropdown
-        [class.hidden]="smilesDropdownDisplayHidden"
-        [currentUser]="(currentUser$ | async)!"
-        [personalSmiles]="personalSmiles"
-        [@smilesDialog]="smilesDropdownOpened ? openedAnimationState : closedAnimationState"
-        (@smilesDialog.done)="onAnimationEnd($event)"
-        (clickOutside)="closeSmilesDropdown()"
-        (chooseSmile)="addSmile($event)"
-      ></app-smiles-dropdown>
+      @if (personalSmiles$ | async; as personalSmiles) {
+        <app-smiles-dropdown
+          #smilesDropdown
+          [class.hidden]="smilesDropdownDisplayHidden"
+          [currentUser]="(currentUser$ | async)!"
+          [personalSmiles]="personalSmiles"
+          [@smilesDialog]="smilesDropdownOpened ? openedAnimationState : closedAnimationState"
+          (@smilesDialog.done)="onAnimationEnd($event)"
+          (clickOutside)="closeSmilesDropdown()"
+          (chooseSmile)="addSmile($event)"
+        ></app-smiles-dropdown>
+      }
     </div>
-
-    <div *ngIf="!editingCommentId; else isEditing" class="send-comment-button">
-      <mat-spinner *ngIf="isLoading" diameter="20" strokeWidth="2" color="accent" class="spinner"></mat-spinner>
-      <button
-        [disabled]="isLoading"
-        (click)="sendComment()"
-        mat-raised-button
-        color="primary"
-        class="add-comment-button"
-      >
-        <span translate translation="send"></span>
-      </button>
-    </div>
-
-    <ng-template #isEditing>
+    @if (!editingCommentId) {
+      <div class="send-comment-button">
+        @if (isLoading) {
+          <mat-spinner diameter="20" strokeWidth="2" color="accent" class="spinner"></mat-spinner>
+        }
+        <button
+          [disabled]="isLoading"
+          (click)="sendComment()"
+          mat-raised-button
+          color="primary"
+          class="add-comment-button"
+          >
+          <span translate translation="send"></span>
+        </button>
+      </div>
+    } @else {
       <div class="buttons-container">
         <div class="spinner-with-button">
           <div class="spinner-container">
-            <mat-spinner *ngIf="isLoading" diameter="20" strokeWidth="2" color="accent"></mat-spinner>
+            @if (isLoading) {
+              <mat-spinner diameter="20" strokeWidth="2" color="accent"></mat-spinner>
+            }
           </div>
           <button [disabled]="isLoading" (click)="updateComment()" mat-raised-button color="primary">
             <span translate translation="save"></span>
           </button>
         </div>
-
         <button [disabled]="isLoading" (click)="cancelEditingComment()" mat-raised-button color="primary">
           <span translate translation="cancel"></span>
         </button>
       </div>
-    </ng-template>
-  </ng-container>
-
-  <ng-template #notLogged>
+    }
+  } @else {
     <div translate translation="loginOrRegisterToComment" class="not-logged"></div>
-  </ng-template>
+  }
+
 </mat-expansion-panel>

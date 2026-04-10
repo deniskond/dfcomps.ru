@@ -12,6 +12,7 @@ const MAX_PLAYERS_PER_PAGE = 100;
   templateUrl: './rating.page.html',
   styleUrls: ['./rating.page.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class RatingPageComponent implements OnInit {
   public currentPage = 1;

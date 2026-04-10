@@ -11,6 +11,7 @@ const SECONDS_IN_MINUTE = 60;
   selector: 'app-countdown-timer',
   templateUrl: './countdown-timer.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class CountdownTimerComponent implements OnInit, OnDestroy {
   @Input()

@@ -8,6 +8,7 @@ import { mapSecondsToFormattedTime } from '../../helpers/match-progress-time-for
   templateUrl: './queue-timer.component.html',
   styleUrls: ['./queue-timer.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class QueueTimerComponent implements OnInit {
   public formattedTime$: Observable<string>;

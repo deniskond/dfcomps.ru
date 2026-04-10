@@ -10,6 +10,7 @@ import { AdminDataService } from '~pages/admin/business/admin-data.service';
   templateUrl: './admin-input-results.component.html',
   styleUrls: ['./admin-input-results.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class AdminInputResultsComponent implements OnInit {
   public cupId: number;

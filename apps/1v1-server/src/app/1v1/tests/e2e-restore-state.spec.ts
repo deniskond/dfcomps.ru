@@ -1,4 +1,4 @@
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { combineLatest, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Physics } from '../../enums/physics.enum';
@@ -26,7 +26,7 @@ describe('end-to-end: case 4 - restoring state', () => {
     playerIdFirst = 20;
     webSocketSecond = new WebSocket('ws://localhost:4002/1v1');
     playerIdSecond = 21;
-    physics = faker.random.arrayElement([Physics.VQ3, Physics.CPM]);
+    physics = faker.helpers.arrayElement([Physics.VQ3, Physics.CPM]);
 
     webSocketFirst.onmessage = (message: MessageEvent) => {
       const parsedMessage: DuelServerMessageType = JSON.parse(message.data as string);

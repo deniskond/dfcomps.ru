@@ -12,6 +12,7 @@ import { LanguageService } from '~shared/services/language/language.service';
   templateUrl: './player-demos-dialog.component.html',
   styleUrls: ['./player-demos-dialog.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class PlayerDemosDialogComponent {
   @Output()

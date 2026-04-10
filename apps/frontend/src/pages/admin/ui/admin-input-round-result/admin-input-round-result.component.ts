@@ -25,6 +25,7 @@ import { AdminDataService } from '~pages/admin/business/admin-data.service';
   templateUrl: './admin-input-round-result.component.html',
   styleUrls: ['./admin-input-round-result.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class AdminInputRoundResultComponent implements OnInit {
   @ViewChild('serverLogsInput1') serverLogsInput1: ElementRef;

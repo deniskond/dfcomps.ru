@@ -12,6 +12,7 @@ import * as moment from 'moment-timezone';
   templateUrl: './admin-online-cup.component.html',
   styleUrls: ['./admin-online-cup.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class AdminOnlineCupComponent implements OnInit {
   public isLoadingCupAction = false;
@@ -48,7 +49,7 @@ export class AdminOnlineCupComponent implements OnInit {
         filter(({ id }: Params) => !!id),
         tap(({ id }: Params) => (this.cupId = parseInt(id))),
         switchMap(({ id }: Params) => this.adminDataService.getSingleCup$(id)),
-        finalize(() => { 
+        finalize(() => {
           this.isInitialLoading = false;
           this.changeDetectorRef.markForCheck();
         }),

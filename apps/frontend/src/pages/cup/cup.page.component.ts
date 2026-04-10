@@ -13,6 +13,7 @@ import { Physics } from '@dfcomps/contracts';
   templateUrl: './cup.page.component.html',
   styleUrls: ['./cup.page.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class CupPageComponent implements OnInit, OnDestroy {
   public type: CupPageTypes;

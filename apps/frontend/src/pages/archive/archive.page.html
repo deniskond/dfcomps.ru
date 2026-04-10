@@ -6,7 +6,7 @@
       [class.filter-selected]="currentFilter === archiveNewsFilter.ALL"
       [routerLink]="['/archive']"
       class="filter-button"
-    >
+      >
       <span translate translation="allNews"></span>
     </a>
     <a
@@ -16,7 +16,7 @@
       [routerLink]="['/archive', 'filter', archiveNewsFilter.START]"
       class="filter-button"
       rel="nofollow"
-    >
+      >
       <span translate translation="start"></span>
     </a>
     <a
@@ -26,7 +26,7 @@
       [routerLink]="['/archive', 'filter', archiveNewsFilter.RESULT]"
       class="filter-button"
       rel="nofollow"
-    >
+      >
       <span translate translation="result"></span>
     </a>
     <a
@@ -36,46 +36,55 @@
       [routerLink]="['/archive', 'filter', archiveNewsFilter.OTHER]"
       class="filter-button"
       rel="nofollow"
-    >
+      >
       <span translate translation="other"></span>
     </a>
   </div>
 
   <h1 translate translation="newsArchive" class="h1-block-header"></h1>
 
-  <div *ngIf="news; else loader" class="movies-container">
-    <ng-container *ngIf="!!news.length; else loader">
-      <div class="news-container">
-        <a *ngFor="let singleNews of news" [routerLink]="['/news', singleNews.id]" class="archive-news-row">
-          <span>
-            <span *ngIf="language" class="blue-link bold">
-              {{ language === languages.RU ? singleNews.header : singleNews.headerEn }}
-            </span>
-            <span class="map-name">{{ singleNews.mapName }}</span>
-          </span>
-          <div>{{ singleNews.datetimezone | invokeFunction : formatDate }}</div>
-        </a>
-      </div>
-
-      <div class="pagination-container">
-        <div class="pagination">
-          <a
-            *ngFor="let page of range(pagesCount)"
-            [routerLink]="getPaginationLink(page)"
-            [class.selected]="currentPage === page"
-            class="page blue-link"
-            matRipple
-          >
-            {{ page + 1 }}
-          </a>
+  @if (news) {
+    <div class="movies-container">
+      @if (!!news.length) {
+        <div class="news-container">
+          @for (singleNews of news; track singleNews) {
+            <a [routerLink]="['/news', singleNews.id]" class="archive-news-row">
+              <span>
+                @if (language) {
+                  <span class="blue-link bold">
+                    {{ language === languages.RU ? singleNews.header : singleNews.headerEn }}
+                  </span>
+                }
+                <span class="map-name">{{ singleNews.mapName }}</span>
+              </span>
+              <div>{{ singleNews.datetimezone | invokeFunction : formatDate }}</div>
+            </a>
+          }
         </div>
-      </div>
-    </ng-container>
-  </div>
-
-  <ng-template #loader>
+        <div class="pagination-container">
+          <div class="pagination">
+            @for (page of range(pagesCount); track page) {
+              <a
+                [routerLink]="getPaginationLink(page)"
+                [class.selected]="currentPage === page"
+                class="page blue-link"
+                matRipple
+                >
+                {{ page + 1 }}
+              </a>
+            }
+          </div>
+        </div>
+      } @else {
+        <div class="loader">
+          <mat-spinner diameter="80" strokeWidth="5" color="accent"></mat-spinner>
+        </div>
+      }
+    </div>
+  } @else {
     <div class="loader">
       <mat-spinner diameter="80" strokeWidth="5" color="accent"></mat-spinner>
     </div>
-  </ng-template>
+  }
+
 </div>

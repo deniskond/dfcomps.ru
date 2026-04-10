@@ -7,41 +7,62 @@
   <div class="time-column">Time</div>
   <div class="rating-column">{{ customTable ? 'Points' : 'Rating' }}</div>
 </div>
-<div *ngFor="let result of table; let i = index" class="cup-results-row">
-  <div class="place-column">
-    <app-player-place [place]="places[i]"></app-player-place>
-  </div>
-  <div class="player-column">
-    <app-player-cell [country]="result.country" [nick]="result.nick" [playerId]="result.playerId"> </app-player-cell>
-    <img *ngIf="result.impressive === true" class="impressive" src="/assets/images/icons/impressive.png" />
-    <img *ngIf="result.isOrganizer === true" class="org" src="/assets/images/icons/org.png" />
-  </div>
-  <div *ngIf="archiveLink || !result.demopath; else noArchiveLink" class="time-column time">
-    {{ result.time | invokeFunction: formatResult }}
-  </div>
-  <ng-template #noArchiveLink>
-    <div class="time-column time">
-      <a [href]="result | invokeFunction: getDemoLink:cup.id">{{ result.time | invokeFunction: formatResult }}</a>
+@for (result of table; track result; let i = $index) {
+  <div class="cup-results-row">
+    <div class="place-column">
+      <app-player-place [place]="places[i]"></app-player-place>
     </div>
-  </ng-template>
-  <div class="rating-column">
-    <ng-container *ngIf="!customTable">
-      <app-rating-change [change]="result.change" [zeroIfNull]="cup.ratingCalculated"></app-rating-change>
-      <img *ngIf="result.bonus === true" class="bonus-plus" src="/assets/images/icons/plus.png" />
-    </ng-container>
-    <span *ngIf="customTable">{{ result.rating || '-' }}</span>
+    <div class="player-column">
+      <app-player-cell [country]="result.country" [nick]="result.nick" [playerId]="result.playerId"></app-player-cell>
+      <div class="icons-container">
+        @if (result.impressive === true) {
+          <img src="/assets/images/icons/impressive.png" />
+        }
+        @if (result.isMaxSpeed === true) {
+          <img src="/assets/images/icons/haste.png" />
+        }
+        @if (result.isOrganizer === true) {
+          <img class="org" src="/assets/images/icons/org.png" />
+        }
+      </div>
+    </div>
+    @if (archiveLink || !result.demopath) {
+      <div class="time-column time">
+        {{ result.time | invokeFunction: formatResult }}
+      </div>
+    } @else {
+      <div class="time-column time">
+        <a [href]="result | invokeFunction: getDemoLink : cup.id">{{ result.time | invokeFunction: formatResult }}</a>
+      </div>
+    }
+    <div class="rating-column">
+      @if (!customTable) {
+        <app-rating-change [change]="result.change" [zeroIfNull]="cup.ratingCalculated"></app-rating-change>
+        @if (result.bonus === true) {
+          <img class="bonus-plus" src="/assets/images/icons/plus.png" />
+        }
+      }
+      @if (customTable) {
+        <span>{{ result.rating || '-' }}</span>
+      }
+    </div>
   </div>
-</div>
+}
 
-<div *ngFor="let row of range(maxDemosCount - table.length)" class="cup-results-row">
-  <div class="place-column"></div>
-  <div class="player-column"></div>
-  <div class="time-column"></div>
-  <div class="rating-column"></div>
-</div>
+@for (row of range(maxDemosCount - table.length); track row) {
+  <div class="cup-results-row">
+    <div class="place-column"></div>
+    <div class="player-column"></div>
+    <div class="time-column"></div>
+    <div class="rating-column"></div>
+  </div>
+}
 
-<div *ngIf="cup.multicupId && cup.demosValidated" class="multicup-button-container">
-  <button (click)="openFullMulticupTable()" mat-raised-button color="primary">
-    <span translate translation="fullTable"></span> ({{ physics.toUpperCase() }})
-  </button>
-</div>
+@if (cup.multicupId && cup.demosValidated) {
+  <div class="multicup-button-container">
+    <button (click)="openFullMulticupTable()" mat-raised-button color="primary">
+      <span translate translation="fullTable"></span>
+      ({{ physics.toUpperCase() }})
+    </button>
+  </div>
+}

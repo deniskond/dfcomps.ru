@@ -1,7 +1,7 @@
 import { UserRoles } from '@dfcomps/auth';
 import { logOut, loginAs } from '../support/app.po';
 import { addOfflineCup } from '../support/offline-cup-operations';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import * as moment from 'moment';
 
 describe('admin offline cups news', () => {
@@ -52,10 +52,10 @@ describe('admin offline cups news', () => {
     // checking main page in both languages
     cy.visit('/');
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', initialRussianTitle);
-    cy.get('[data-test-id=news-html-text]').first().should('contain.text', initialRussianText);
+    cy.get('[data-test-id=news-html-text]').first().containsText(initialRussianText);
     cy.get('[data-test-id=language-toggle]').click();
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', initialEnglishTitle);
-    cy.get('[data-test-id=news-html-text]').first().should('contain.text', initialEnglishText);
+    cy.get('[data-test-id=news-html-text]').first().containsText(initialEnglishText);
     cy.get('[data-test-id=language-toggle]').click();
     cy.get('[data-test-id=cup-map-link]').first().should('contain.text', firstCupMap);
   });
@@ -79,10 +79,10 @@ describe('admin offline cups news', () => {
     // checking main page in both languages
     cy.visit('/');
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', editedRussianTitle);
-    cy.get('[data-test-id=news-html-text]').first().should('contain.text', editedRussianText);
+    cy.get('[data-test-id=news-html-text]').first().containsText(editedRussianText);
     cy.get('[data-test-id=language-toggle]').click();
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', editedEnglishTitle);
-    cy.get('[data-test-id=news-html-text]').first().should('contain.text', editedEnglishText);
+    cy.get('[data-test-id=news-html-text]').first().containsText(editedEnglishText);
     cy.get('[data-test-id=language-toggle]').click();
     cy.get('[data-test-id=cup-map-link]').first().should('contain.text', secondCupMap);
 
@@ -116,10 +116,10 @@ describe('admin offline cups news', () => {
     // checking main page in both languages
     cy.visit('/');
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', initialRussianTitle);
-    cy.get('[data-test-id=news-html-text]').first().should('contain.text', initialRussianText);
+    cy.get('[data-test-id=news-html-text]').first().containsText(initialRussianText);
     cy.get('[data-test-id=language-toggle]').click();
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', initialEnglishTitle);
-    cy.get('[data-test-id=news-html-text]').first().should('contain.text', initialEnglishText);
+    cy.get('[data-test-id=news-html-text]').first().containsText(initialEnglishText);
     cy.get('[data-test-id=language-toggle]').click();
 
     cy.get('[data-test-id=offline-results-map-link]').first().should('contain.text', firstCupMap);
@@ -144,10 +144,10 @@ describe('admin offline cups news', () => {
     // checking main page in both languages
     cy.visit('/');
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', editedRussianTitle);
-    cy.get('[data-test-id=news-html-text]').first().should('contain.text', editedRussianText);
+    cy.get('[data-test-id=news-html-text]').first().containsText(editedRussianText);
     cy.get('[data-test-id=language-toggle]').click();
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', editedEnglishTitle);
-    cy.get('[data-test-id=news-html-text]').first().should('contain.text', editedEnglishText);
+    cy.get('[data-test-id=news-html-text]').first().containsText(editedEnglishText);
     cy.get('[data-test-id=language-toggle]').click();
     cy.get('[data-test-id=offline-results-map-link]').first().should('contain.text', secondCupMap);
 
@@ -181,10 +181,10 @@ describe('admin offline cups news', () => {
     // checking main page in both languages
     cy.visit('/');
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', initialRussianTitle);
-    cy.get('[data-test-id=news-html-text]').first().should('contain.text', initialRussianText);
+    cy.get('[data-test-id=news-html-text]').first().containsText(initialRussianText);
     cy.get('[data-test-id=language-toggle]').click();
     cy.get('[data-test-id=news-header-text]').first().should('contain.text', initialEnglishTitle);
-    cy.get('[data-test-id=news-html-text]').first().should('contain.text', initialEnglishText);
+    cy.get('[data-test-id=news-html-text]').first().containsText(initialEnglishText);
     cy.get('[data-test-id=language-toggle]').click();
 
     logOut();

@@ -21,6 +21,7 @@ import { formatResultTime } from '@dfcomps/helpers';
   templateUrl: './1v1.page.html',
   styleUrls: ['./1v1.page.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class OneVOnePageComponent implements OnInit, OnDestroy {
   public matchState: MatchStates;

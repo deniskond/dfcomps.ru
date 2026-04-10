@@ -5,10 +5,11 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/webpack:webpack",
+      "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/race",
+        "outputFileName": "main.js",
         "main": "apps/race/src/main.ts",
         "tsConfig": "apps/race/tsconfig.app.json",
         "assets": ["apps/race/src/assets"],
@@ -37,7 +38,7 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["apps/race/**/*.ts"]

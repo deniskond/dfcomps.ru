@@ -8,6 +8,7 @@ import { LeaderTableInterface, Physics, RatingTablesModes } from '@dfcomps/contr
   templateUrl: './top-ten-table.component.html',
   styleUrls: ['./top-ten-table.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class TopTenTableComponent implements OnInit {
   @Input()

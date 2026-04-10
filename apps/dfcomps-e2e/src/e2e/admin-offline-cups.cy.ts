@@ -1,7 +1,7 @@
 import { UserRoles } from '@dfcomps/auth';
 import { loginAs } from '../support/app.po';
 import * as moment from 'moment';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 
 describe('admin offline cups', () => {
   const initialCupFullName = faker.lorem.words();
@@ -25,7 +25,7 @@ describe('admin offline cups', () => {
     cy.intercept(
       {
         method: 'GET',
-        url: '/api/admin/cups/get-parsed-map-info?map=crosspath',
+        url: '/api/cup/get-parsed-map-info?map=crosspath',
       },
       {
         statusCode: 200,
@@ -91,7 +91,7 @@ describe('admin offline cups', () => {
     cy.intercept(
       {
         method: 'GET',
-        url: '/api/admin/cups/get-parsed-map-info?map=st1',
+        url: '/api/cup/get-parsed-map-info?map=st1',
       },
       {
         statusCode: 200,

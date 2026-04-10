@@ -41,6 +41,7 @@ const newsTypesWithRequiredCup: NewsTypes[] = [
   templateUrl: './admin-news-action.component.html',
   styleUrls: ['./admin-news-action.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class AdminNewsActionComponent implements OnInit {
   @ViewChild('imageFileInput') imageFileInput: ElementRef;

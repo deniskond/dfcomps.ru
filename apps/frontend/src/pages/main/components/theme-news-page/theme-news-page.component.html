@@ -1,18 +1,20 @@
-<div *ngIf="news$ | async as news; else loader" class="news-container">
-  <app-news-element
-    *ngFor="let singleNews of postedNews$ | async"
-    [newsElement]="singleNews"
-    [isHeaderSelectable]="true"
-    [areCommentsExpanded]="false"
-    (reloadNews)="reloadNews()"
-    class="news-element"
-  ></app-news-element>
-</div>
-
-<ng-template #loader>
+@if (news$ | async; as news) {
+  <div class="news-container">
+    @for (singleNews of postedNews$ | async; track singleNews) {
+      <app-news-element
+        [newsElement]="singleNews"
+        [isHeaderSelectable]="true"
+        [areCommentsExpanded]="false"
+        (reloadNews)="reloadNews()"
+        class="news-element"
+      ></app-news-element>
+    }
+  </div>
+} @else {
   <div class="shadowed-main-block">
     <div class="loader">
       <mat-spinner diameter="80" strokeWidth="5" color="accent"></mat-spinner>
     </div>
   </div>
-</ng-template>
+}
+

@@ -7,6 +7,7 @@ import { StreamingPlatforms } from '@dfcomps/contracts';
   templateUrl: './twitch.component.html',
   styleUrls: ['./twitch.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class TwitchComponent implements OnInit {
   @Input()

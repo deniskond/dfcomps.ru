@@ -1,5 +1,5 @@
 import { DuelWebsocketClientActions } from '../enums/duel-websocket-client-actions.enum';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { Physics } from '../../enums/physics.enum';
 import { GetPlayerStateMessageInterface } from '../interfaces/get-player-state-message.interface';
 import { JoinQueueMessageInterface } from '../interfaces/join-queue-message.interface';
@@ -19,7 +19,7 @@ describe('end-to-end: case 1a - joining and leaving queue', () => {
   beforeAll(() => {
     webSocket = new WebSocket('ws://localhost:4002/1v1');
     playerId = 17;
-    physics = faker.random.arrayElement([Physics.VQ3, Physics.CPM]);
+    physics = faker.helpers.arrayElement([Physics.VQ3, Physics.CPM]);
 
     webSocket.onmessage = (message: MessageEvent) => {
       const parsedMessage: DuelServerMessageType = JSON.parse(message.data as string);
@@ -115,7 +115,7 @@ describe('end-to-end: case 1b - checking if player left queue after disconnect',
     playerIdFirst = 18;
     webSocketSecond = new WebSocket('ws://localhost:4002/1v1');
     playerIdSecond = 19;
-    physics = faker.random.arrayElement([Physics.VQ3, Physics.CPM]);
+    physics = faker.helpers.arrayElement([Physics.VQ3, Physics.CPM]);
 
     webSocketFirst.onmessage = (message: MessageEvent) => {
       const parsedMessage: DuelServerMessageType = JSON.parse(message.data as string);

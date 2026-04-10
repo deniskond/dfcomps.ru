@@ -14,6 +14,7 @@ import * as moment from 'moment';
   templateUrl: './admin-cups.component.html',
   styleUrls: ['./admin-cups.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class AdminCupsComponent implements OnInit {
   public cups: AdminCupInterface[];

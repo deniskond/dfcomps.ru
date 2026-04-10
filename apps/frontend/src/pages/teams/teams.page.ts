@@ -4,5 +4,6 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   templateUrl: './teams.page.html',
   styleUrls: ['./teams.page.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class TeamsPageComponent {}

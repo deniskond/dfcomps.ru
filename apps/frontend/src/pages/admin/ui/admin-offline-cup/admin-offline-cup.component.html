@@ -1,209 +1,236 @@
 <mat-card class="main-form-card">
   <h3 class="header">{{ componentMode }}{{ isMulticupRequired ? ' multicup round' : ' offline cup' }}</h3>
-  <form *ngIf="offlineCupForm; else loading" [formGroup]="offlineCupForm">
-    <div class="form">
-      <div>
-        Full name
-        <br />
-        <span class="comment">(displayed in news)</span>
-      </div>
-      <div>
-        <input formControlName="fullName" class="input-field" data-test-id="offline-cup-fullname-input" />
-        <div *ngIf="hasFieldError(this.offlineCupForm.get('fullName')!)" class="field-error">Field is required</div>
-      </div>
-      <div>
-        Short name
-        <br />
-        <span class="comment">(displayed in cup timer)</span>
-      </div>
-      <div>
-        <input formControlName="shortName" class="input-field" data-test-id="offline-cup-shortname-input" />
-        <div *ngIf="hasFieldError(this.offlineCupForm.get('shortName')!)" class="field-error">Field is required</div>
-      </div>
-      <div>
-        Start time
-        <br />
-        <span class="comment">(MSK GMT +3:00)</span>
-      </div>
-      <div>
-        <input
-          formControlName="startTime"
-          class="input-field date"
-          type="datetime-local"
-          data-test-id="offline-cup-starttime-input"
-        />
-        <span *ngIf="hasFieldError(this.offlineCupForm.get('startTime')!)" class="field-error">Field is required</span>
-      </div>
-      <div>
-        End time
-        <br />
-        <span class="comment">(MSK GMT +3:00)</span>
-      </div>
-      <div>
-        <input
-          formControlName="endTime"
-          class="input-field date"
-          type="datetime-local"
-          data-test-id="offline-cup-endtime-input"
-        />
-        <span *ngIf="hasFieldError(this.offlineCupForm.get('endTime')!)" class="field-error">Field is required</span>
-      </div>
-      <div class="map-type-label">Map type</div>
-      <div>
-        <mat-radio-group (change)="onMapTypeChange($event)" formControlName="mapType">
-          <div class="radio-container">
-            <mat-radio-button value="ws" color="primary" data-test-id="offline-cup-map-ws-radio"></mat-radio-button>
-            <span>ws.q3df.org</span>
-          </div>
-          <div class="radio-container">
-            <mat-radio-button value="custom" color="primary" data-test-id="offline-cup-map-custom-radio"></mat-radio-button>
-            <span>Custom uploaded map</span>
-          </div>
-        </mat-radio-group>
-      </div>
-      <div class="input-title">Map name</div>
-      <div>
-        <input formControlName="mapName" class="input-field" data-test-id="cup-mapname-input" />
-        <div *ngIf="hasFieldError(this.offlineCupForm.get('mapName')!)" class="field-error">Field is required</div>
-        <div *ngIf="isMapFound === true" class="field-ok">Map was found on ws.q3df.org</div>
-        <div *ngIf="isMapFound === false" class="field-error">Map was not found on ws.q3df.org</div>
-      </div>
-      <div class="input-title">Map pk3</div>
-      <div>
-        <ng-container *ngIf="isCustomMap">
+  @if (offlineCupForm) {
+    <form [formGroup]="offlineCupForm">
+      <div class="form">
+        <div>
+          Full name
+          <br />
+          <span class="comment">(displayed in news)</span>
+        </div>
+        <div>
+          <input formControlName="fullName" class="input-field" data-test-id="offline-cup-fullname-input" />
+          @if (hasFieldError(this.offlineCupForm.get('fullName')!)) {
+            <div class="field-error">Field is required</div>
+          }
+        </div>
+        <div>
+          Short name
+          <br />
+          <span class="comment">(displayed in cup timer)</span>
+        </div>
+        <div>
+          <input formControlName="shortName" class="input-field" data-test-id="offline-cup-shortname-input" />
+          @if (hasFieldError(this.offlineCupForm.get('shortName')!)) {
+            <div class="field-error">Field is required</div>
+          }
+        </div>
+        <div>
+          Start time
+          <br />
+          <span class="comment">(MSK GMT +3:00)</span>
+        </div>
+        <div>
           <input
-            #pk3FileInput
-            (change)="setMapSize()"
-            formControlName="mapPk3File"
-            class="input-field file"
-            type="file"
-            accept=".pk3"
-            data-test-id="offline-cup-pk3-input"
-          />
-          <div *ngIf="hasFieldError(this.offlineCupForm.get('mapPk3File')!)" class="field-error">Field is required</div>
-        </ng-container>
-
-        <input *ngIf="!isCustomMap" formControlName="mapPk3Link" class="input-field" data-test-id="offline-cup-pk3link-input" />
-      </div>
-      <div class="input-title">
-        Map levelshot
-        <br />
-        <span class="comment">(512px * 384px)</span>
-      </div>
-      <div>
-        <ng-container *ngIf="isCustomMap">
+            formControlName="startTime"
+            class="input-field date"
+            type="datetime-local"
+            data-test-id="offline-cup-starttime-input"
+            />
+          @if (hasFieldError(this.offlineCupForm.get('startTime')!)) {
+            <span class="field-error">Field is required</span>
+          }
+        </div>
+        <div>
+          End time
+          <br />
+          <span class="comment">(MSK GMT +3:00)</span>
+        </div>
+        <div>
           <input
-            #levelshotFileInput
-            formControlName="mapLevelshotFile"
-            class="input-field file"
-            type="file"
-            accept=".jpg"
-            data-test-id="offline-cup-levelshot-input"
-          />
-          <div *ngIf="hasFieldError(this.offlineCupForm.get('mapLevelshotFile')!)" class="field-error">
-            Field is required
+            formControlName="endTime"
+            class="input-field date"
+            type="datetime-local"
+            data-test-id="offline-cup-endtime-input"
+            />
+          @if (hasFieldError(this.offlineCupForm.get('endTime')!)) {
+            <span class="field-error">Field is required</span>
+          }
+        </div>
+        <div class="map-type-label">Map type</div>
+        <div>
+          <mat-radio-group (change)="onMapTypeChange($event)" formControlName="mapType">
+            <div class="radio-container">
+              <mat-radio-button value="ws" color="primary" data-test-id="offline-cup-map-ws-radio"></mat-radio-button>
+              <span>ws.q3df.org</span>
+            </div>
+            <div class="radio-container">
+              <mat-radio-button value="custom" color="primary" data-test-id="offline-cup-map-custom-radio"></mat-radio-button>
+              <span>Custom uploaded map</span>
+            </div>
+          </mat-radio-group>
+        </div>
+        <div class="input-title">Map name</div>
+        <div>
+          <input formControlName="mapName" class="input-field" data-test-id="cup-mapname-input" />
+          @if (hasFieldError(this.offlineCupForm.get('mapName')!)) {
+            <div class="field-error">Field is required</div>
+          }
+          @if (isMapFound === true) {
+            <div class="field-ok">Map was found on ws.q3df.org</div>
+          }
+          @if (isMapFound === false) {
+            <div class="field-error">Map was not found on ws.q3df.org</div>
+          }
+        </div>
+        <div class="input-title">Map pk3</div>
+        <div>
+          @if (isCustomMap) {
+            <input
+              #pk3FileInput
+              (change)="setMapSize()"
+              formControlName="mapPk3File"
+              class="input-field file"
+              type="file"
+              accept=".pk3"
+              data-test-id="offline-cup-pk3-input"
+              />
+            @if (hasFieldError(this.offlineCupForm.get('mapPk3File')!)) {
+              <div class="field-error">Field is required</div>
+            }
+          }
+          @if (!isCustomMap) {
+            <input formControlName="mapPk3Link" class="input-field" data-test-id="offline-cup-pk3link-input" />
+          }
+        </div>
+        <div class="input-title">
+          Map levelshot
+          <br />
+          <span class="comment">(512px * 384px)</span>
+        </div>
+        <div>
+          @if (isCustomMap) {
+            <input
+              #levelshotFileInput
+              formControlName="mapLevelshotFile"
+              class="input-field file"
+              type="file"
+              accept=".jpg"
+              data-test-id="offline-cup-levelshot-input"
+              />
+            @if (hasFieldError(this.offlineCupForm.get('mapLevelshotFile')!)) {
+              <div class="field-error">
+                Field is required
+              </div>
+            }
+          }
+          @if (!isCustomMap) {
+            <input
+              formControlName="mapLevelshotLink"
+              class="input-field"
+              data-test-id="offline-cup-levelshotlink-input"
+              />
+          }
+        </div>
+        <div class="input-title">Map author</div>
+        <div>
+          <input formControlName="mapAuthor" class="input-field" data-test-id="offline-cup-mapauthor-input" />
+          @if (hasFieldError(this.offlineCupForm.get('mapAuthor')!)) {
+            <div class="field-error">Field is required</div>
+          }
+        </div>
+        <div class="input-title">Map weapons</div>
+        <div class="weapons-checkboxes">
+          <div class="checkbox-container">
+            <mat-checkbox color="primary" formControlName="gauntlet" data-test-id="offline-cup-weapon-u-checkbox">
+              <app-weapons weapons="U" class="weapon-icons"></app-weapons>
+            </mat-checkbox>
           </div>
-        </ng-container>
-
-        <input
-          *ngIf="!isCustomMap"
-          formControlName="mapLevelshotLink"
-          class="input-field"
-          data-test-id="offline-cup-levelshotlink-input"
-        />
-      </div>
-      <div class="input-title">Map author</div>
-      <div>
-        <input formControlName="mapAuthor" class="input-field" data-test-id="offline-cup-mapauthor-input" />
-        <div *ngIf="hasFieldError(this.offlineCupForm.get('mapAuthor')!)" class="field-error">Field is required</div>
-      </div>
-      <div class="input-title">Map weapons</div>
-      <div class="weapons-checkboxes">
-        <div class="checkbox-container">
-          <mat-checkbox color="primary" formControlName="gauntlet" data-test-id="offline-cup-weapon-u-checkbox">
-            <app-weapons weapons="U" class="weapon-icons"></app-weapons>
-          </mat-checkbox>
-        </div>
-        <div class="checkbox-container">
-          <mat-checkbox color="primary" formControlName="grenade" data-test-id="offline-cup-weapon-g-checkbox">
-            <app-weapons weapons="G" class="weapon-icons"></app-weapons>
-          </mat-checkbox>
-        </div>
-        <div class="checkbox-container">
-          <mat-checkbox color="primary" formControlName="rocket" data-test-id="offline-cup-weapon-r-checkbox">
-            <app-weapons weapons="R" class="weapon-icons"></app-weapons>
-          </mat-checkbox>
-        </div>
-        <div class="checkbox-container">
-          <mat-checkbox color="primary" formControlName="plasma" data-test-id="offline-cup-weapon-p-checkbox">
-            <app-weapons weapons="P" class="weapon-icons"></app-weapons>
-          </mat-checkbox>
-        </div>
-        <div class="checkbox-container">
-          <mat-checkbox color="primary" formControlName="lightning" data-test-id="offline-cup-weapon-l-checkbox">
-            <app-weapons weapons="L" class="weapon-icons"></app-weapons>
-          </mat-checkbox>
-        </div>
-        <div class="checkbox-container">
-          <mat-checkbox color="primary" formControlName="bfg" data-test-id="offline-cup-weapon-b-checkbox">
-            <app-weapons weapons="B" class="weapon-icons"></app-weapons>
-          </mat-checkbox>
-        </div>
-        <div class="checkbox-container">
-          <mat-checkbox color="primary" formControlName="railgun" data-test-id="offline-cup-weapon-i-checkbox">
-            <app-weapons weapons="I" class="weapon-icons"></app-weapons>
-          </mat-checkbox>
-        </div>
-        <div class="checkbox-container">
-          <mat-checkbox color="primary" formControlName="shotgun" data-test-id="offline-cup-weapon-s-checkbox">
-            <app-weapons weapons="S" class="weapon-icons"></app-weapons>
-          </mat-checkbox>
-        </div>
-        <div class="checkbox-container">
-          <mat-checkbox color="primary" formControlName="grapple" data-test-id="offline-cup-weapon-h-checkbox">
-            <app-weapons weapons="H" class="weapon-icons"></app-weapons>
-          </mat-checkbox>
-        </div>
-      </div>
-      <ng-container *ngIf="isMulticupRequired">
-        <ng-container *ngIf="availableMulticups$ | async as availableMulticups">
-          <div class="input-title">Multicup</div>
-          <div>
-            <mat-form-field appearance="outline">
-              <mat-select formControlName="multicup" data-test-id="offline-cup-multicup-select">
-                <mat-option *ngFor="let availableMulticup of availableMulticups" [value]="availableMulticup.multicupId">
-                  {{ availableMulticup.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <div *ngIf="hasFieldError(this.offlineCupForm.get('multicup')!)" class="field-error">Field is required</div>
+          <div class="checkbox-container">
+            <mat-checkbox color="primary" formControlName="grenade" data-test-id="offline-cup-weapon-g-checkbox">
+              <app-weapons weapons="G" class="weapon-icons"></app-weapons>
+            </mat-checkbox>
           </div>
-        </ng-container>
-      </ng-container>
-      <div class="add-news-label">{{ componentMode }} start and ending news</div>
-      <div>
-        <mat-checkbox color="primary" formControlName="addNews" data-test-id="offline-cup-add-news-checkbox"></mat-checkbox>
+          <div class="checkbox-container">
+            <mat-checkbox color="primary" formControlName="rocket" data-test-id="offline-cup-weapon-r-checkbox">
+              <app-weapons weapons="R" class="weapon-icons"></app-weapons>
+            </mat-checkbox>
+          </div>
+          <div class="checkbox-container">
+            <mat-checkbox color="primary" formControlName="plasma" data-test-id="offline-cup-weapon-p-checkbox">
+              <app-weapons weapons="P" class="weapon-icons"></app-weapons>
+            </mat-checkbox>
+          </div>
+          <div class="checkbox-container">
+            <mat-checkbox color="primary" formControlName="lightning" data-test-id="offline-cup-weapon-l-checkbox">
+              <app-weapons weapons="L" class="weapon-icons"></app-weapons>
+            </mat-checkbox>
+          </div>
+          <div class="checkbox-container">
+            <mat-checkbox color="primary" formControlName="bfg" data-test-id="offline-cup-weapon-b-checkbox">
+              <app-weapons weapons="B" class="weapon-icons"></app-weapons>
+            </mat-checkbox>
+          </div>
+          <div class="checkbox-container">
+            <mat-checkbox color="primary" formControlName="railgun" data-test-id="offline-cup-weapon-i-checkbox">
+              <app-weapons weapons="I" class="weapon-icons"></app-weapons>
+            </mat-checkbox>
+          </div>
+          <div class="checkbox-container">
+            <mat-checkbox color="primary" formControlName="shotgun" data-test-id="offline-cup-weapon-s-checkbox">
+              <app-weapons weapons="S" class="weapon-icons"></app-weapons>
+            </mat-checkbox>
+          </div>
+          <div class="checkbox-container">
+            <mat-checkbox color="primary" formControlName="grapple" data-test-id="offline-cup-weapon-h-checkbox">
+              <app-weapons weapons="H" class="weapon-icons"></app-weapons>
+            </mat-checkbox>
+          </div>
+        </div>
+        @if (isMulticupRequired) {
+          @if (availableMulticups$ | async; as availableMulticups) {
+            <div class="input-title">Multicup</div>
+            <div>
+              <mat-form-field appearance="outline">
+                <mat-select formControlName="multicup" data-test-id="offline-cup-multicup-select">
+                  @for (availableMulticup of availableMulticups; track availableMulticup) {
+                    <mat-option [value]="availableMulticup.multicupId">
+                      {{ availableMulticup.name }}
+                    </mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+              @if (hasFieldError(this.offlineCupForm.get('multicup')!)) {
+                <div class="field-error">Field is required</div>
+              }
+            </div>
+          }
+        }
+        <div class="add-news-label">{{ componentMode }} start and ending news</div>
+        <div>
+          <mat-checkbox color="primary" formControlName="addNews" data-test-id="offline-cup-add-news-checkbox"></mat-checkbox>
+        </div>
       </div>
-    </div>
-    <input type="hidden" formControlName="size" />
-
-    <button
-      [disabled]="isLoadingMapInfo || isLoadingCupAction"
-      (click)="submit()"
-      mat-raised-button
-      color="accent"
-      class="submit-button"
-      data-test-id="offline-cup-submit-button"
-    >
-      <div *ngIf="isLoadingCupAction" class="button-spinner-container">
-        <mat-spinner diameter="20" strokeWidth="2" color="primary"></mat-spinner>
-      </div>
-      {{ componentMode }} cup
-    </button>
-  </form>
-  <ng-template #loading>
+      <input type="hidden" formControlName="size" />
+      <button
+        [disabled]="isLoadingMapInfo || isLoadingCupAction"
+        (click)="submit()"
+        mat-raised-button
+        color="accent"
+        class="submit-button"
+        data-test-id="offline-cup-submit-button"
+        >
+        @if (isLoadingCupAction) {
+          <div class="button-spinner-container">
+            <mat-spinner diameter="20" strokeWidth="2" color="primary"></mat-spinner>
+          </div>
+        }
+        {{ componentMode }} cup
+      </button>
+    </form>
+  } @else {
     <div class="loading-block">
       <mat-spinner diameter="75" strokeWidth="4" color="accent"></mat-spinner>
     </div>
-  </ng-template>
+  }
 </mat-card>

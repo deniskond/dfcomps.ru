@@ -1,4 +1,4 @@
-<ng-container *ngIf="(language$ | async) === languages.RU">
+@if ((language$ | async) === languages.RU) {
   <div class="h1-block-header dialog-header"><span translate translation="rules"></span> SDC</div>
   <div>
     1. SDC-UK20 состоит из 7 раундов, каждый будет проходить в течение недели<br />
@@ -12,8 +12,8 @@
     Например, топ 1 игрок всегда получит 20000 очков, игрок отставший ровно на одну секунду получит 19000, игрок
     отставший больше чем на 20 секунд получит 0 очков
   </div>
-</ng-container>
-<ng-container *ngIf="(language$ | async) === languages.EN">
+}
+@if ((language$ | async) === languages.EN) {
   <div class="h1-block-header dialog-header">SDC <span translate translation="rules"></span></div>
   <div>
     1. SDC-UK20 consists of 7 rounds, each round duration is one week<br />
@@ -27,4 +27,4 @@
     For example, the top 1 player will always get 20000 points, a player behind the top time by exactly one second will
     get 19000 points, a player more than 20 seconds behind will get 0 points
   </div>
-</ng-container>
+}

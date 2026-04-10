@@ -11,6 +11,7 @@ import { AdminMulticupActionInterface } from '@dfcomps/contracts';
   templateUrl: './admin-multicup.component.html',
   styleUrls: ['./admin-multicup.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class AdminMulticupComponent implements OnInit {
   public isLoadingMulticupAction = false;

@@ -17,6 +17,7 @@ import { mapNewsTypeToHumanTitle } from '../../business/admin-news-types.mapper'
   templateUrl: './admin-news.component.html',
   styleUrls: ['./admin-news.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class AdminNewsComponent implements OnInit {
   public news: AdminNewsListInterface[];

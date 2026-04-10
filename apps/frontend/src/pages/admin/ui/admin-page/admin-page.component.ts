@@ -12,6 +12,7 @@ import { UserRoles, checkUserRoles, isSuperadmin } from '@dfcomps/auth';
   templateUrl: './admin-page.component.html',
   styleUrls: ['./admin-page.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class AdminPageComponent implements OnInit {
   public currentPage$: Observable<string>;

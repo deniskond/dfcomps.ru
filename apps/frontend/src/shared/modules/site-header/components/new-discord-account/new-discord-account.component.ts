@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   selector: 'dfcomps-new-discord-account',
   templateUrl: './new-discord-account.component.html',
   styleUrls: ['./new-discord-account.component.less'],
+  standalone: false,
 })
 export class NewDiscordAccountComponent {
   public isFirstStep: boolean;

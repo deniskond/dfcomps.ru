@@ -44,6 +44,7 @@ export class DfwcResultsService {
           country: result.flag,
           demopath,
           impressive: false,
+          isMaxSpeed: false,
           nick: result.name,
           playerId: 0,
           rating: points,

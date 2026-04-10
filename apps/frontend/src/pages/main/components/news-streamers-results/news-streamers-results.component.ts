@@ -10,6 +10,7 @@ import { UserService } from '~shared/services/user-service/user.service';
   templateUrl: './news-streamers-results.component.html',
   styleUrls: ['./news-streamers-results.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class NewsStreamersResultsComponent implements OnInit {
   @Input() news: NewsStreamersResultsInterface;

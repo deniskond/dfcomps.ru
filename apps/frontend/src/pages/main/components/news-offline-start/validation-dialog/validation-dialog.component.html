@@ -13,9 +13,15 @@
       <span translate translation="requiredValue"></span>
     </td>
   </tr>
-  <tr *ngFor="let validationError of validationErrorNames">
-    <td class="table-field error-name">{{ validationError }}</td>
-    <td class="table-field">{{ data[validationError].actual }}</td>
-    <td class="table-field">{{ data[validationError].expected }}</td>
-  </tr>
+  @for (validationError of validationErrorNames; track validationError) {
+    <tr>
+      <td class="table-field error-name">{{ validationError }}</td>
+      @if (data[validationError].message) {
+        <td class="table-field" colspan="2">{{ data[validationError].message }}</td>
+      } @else {
+        <td class="table-field">{{ data[validationError].actual }}</td>
+        <td class="table-field">{{ data[validationError].expected }}</td>
+      }
+    </tr>
+  }
 </table>

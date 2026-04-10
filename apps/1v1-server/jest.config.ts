@@ -12,6 +12,7 @@ export default {
       },
     ],
   },
+  transformIgnorePatterns: ['node_modules/(?!@faker-js/faker)'],
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/apps/1v1-server',
 };

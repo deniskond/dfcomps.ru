@@ -7,6 +7,7 @@ import { LanguageService } from '~shared/services/language/language.service';
   templateUrl: './sdfc.component.html',
   styleUrls: ['./sdfc.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class SdfcComponent {
   public language$: Observable<Languages> = this.languageService.getLanguage$();

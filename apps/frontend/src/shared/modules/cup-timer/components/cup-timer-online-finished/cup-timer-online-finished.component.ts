@@ -9,6 +9,7 @@ import { Languages } from '@dfcomps/contracts';
   selector: 'app-cup-timer-online-finished',
   templateUrl: './cup-timer-online-finished.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class CupTimerOnlineFinishedComponent implements OnInit, OnChanges {
   @Input()

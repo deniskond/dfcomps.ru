@@ -7,6 +7,7 @@ import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } f
   templateUrl: './flag.component.html',
   styleUrls: ['./flag.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FlagComponent implements OnChanges {
   @Input()

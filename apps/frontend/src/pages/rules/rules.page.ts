@@ -7,6 +7,7 @@ import { LanguageService } from '~shared/services/language/language.service';
   templateUrl: './rules.page.html',
   styleUrls: ['./rules.page.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class RulesPageComponent {
   public language$: Observable<Languages> = this.languageService.getLanguage$();
