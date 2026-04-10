@@ -9,9 +9,9 @@ export class ProfileCupPaginateDto {
 
   @IsNumber()
   @Transform(transformNumber)
-  startIndex: number;
+  offset: number;
 
   @IsNumber()
   @Transform(transformNumber)
-  endIndex: number;
+  limit: number;
 }

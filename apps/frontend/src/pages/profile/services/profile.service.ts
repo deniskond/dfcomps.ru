@@ -18,10 +18,10 @@ export class ProfileService extends BackendService {
 
   public getPlayerCupsPage$(
     userId: number,
-    startIndex: number,
-    endIndex: number,
+    offset: number,
+    limit: number,
   ): Observable<ProfileCupResponseInterface[]> {
-    return this.post$(URL_PARAMS.PROFILE.GET_CUPS, { userId, startIndex, endIndex });
+    return this.post$(URL_PARAMS.PROFILE.GET_CUPS, { userId, offset, limit });
   }
 
   public getProfileNickCanBeChanged$(): Observable<boolean> {

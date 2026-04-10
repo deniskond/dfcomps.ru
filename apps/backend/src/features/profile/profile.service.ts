@@ -72,8 +72,8 @@ export class ProfileService {
 
   public async getPlayerCupsPage(
     userId: number,
-    startIndex: number,
-    endIndex: number,
+    offset: number,
+    limit: number,
   ): Promise<ProfileCupResponseInterface[]> {
     const cups: RatingChange[] = await this.ratingChangeRepository
       .createQueryBuilder('rating_changes')
@@ -82,8 +82,8 @@ export class ProfileService {
       .where('rating_changes.userId = :userId', { userId })
       .andWhere('cups.rating_calculated = true')
       .orderBy('cups.id', 'DESC')
-      .offset(startIndex)
-      .limit(endIndex - startIndex)
+      .offset(offset)
+      .limit(limit)
       .getMany();
 
     return cups.map((ratingChange: RatingChange) => ({

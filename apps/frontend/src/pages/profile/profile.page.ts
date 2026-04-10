@@ -93,7 +93,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     window.location.href = getDiscordAuthURL('link');
   }
 
-  public getProfileCupsPage(page: number) {
+  public getProfileCupsPage(page: number): void {
     this.currentCupsPage = page;
     this.fetchCups();
   }
@@ -143,7 +143,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     this.pagesCount = Math.ceil(profileInfo.cupsCount / CUPS_ON_PAGE);
     this.sanitizer.bypassSecurityTrustResourceUrl(`/assets/images/avatars/${this.mainInfo.avatar}.jpg`);
     this.currentCupsPage = 0;
-    
+
     setTimeout(() => {
       this.isLoading$.next(false);
       this.changeDetectorRef.detectChanges();
@@ -167,7 +167,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
   private fetchCups(): void {
     this.profileService
-      .getPlayerCupsPage$(this.mainInfo.id, this.currentCupsPage * CUPS_ON_PAGE, (this.currentCupsPage + 1) * CUPS_ON_PAGE)
+      .getPlayerCupsPage$(this.mainInfo.id, this.currentCupsPage * CUPS_ON_PAGE, CUPS_ON_PAGE)
       .subscribe((nextCups: ProfileCupResponseInterface[]) => {
         this.cups = this.mapCupsToView(nextCups);
         this.changeDetectorRef.markForCheck();
