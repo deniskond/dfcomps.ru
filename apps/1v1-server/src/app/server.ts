@@ -35,8 +35,16 @@ export class OneVOneServer {
 
   // TODO Нужно выносить всю логику в OneVOneHandler и декомпозировать
   private setWSServerHandlers(): void {
+    this.webSocketServer.on('error', (error: Error) => {
+      console.log(`WebSocket server error: ${error}`);
+    });
+
     this.webSocketServer.on('connection', (ws: WebSocket) => {
       const uniqueId = v4();
+
+      ws.on('error', (error: Error) => {
+        console.log(`WebSocket error for client ${uniqueId}: ${error}`);
+      });
 
       ws.on('message', (message: string) => {
         let parsedMessage: DuelClientMessage;
