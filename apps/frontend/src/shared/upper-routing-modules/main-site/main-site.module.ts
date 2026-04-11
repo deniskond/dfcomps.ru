@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { OneVOneWidgetComponent } from '../../components/one-v-one-widget/one-v-one-widget.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { LastWrsModule } from '../../modules/last-wrs/last-wrs.module';
 
 @NgModule({
   declarations: [MainSiteComponent, OneVOneWidgetComponent],
@@ -26,6 +27,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatButtonModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
+    LastWrsModule,
   ],
 })
 export class MainSiteModule {}

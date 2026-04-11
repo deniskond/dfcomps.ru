@@ -12,6 +12,10 @@
       </div>
       <div class="right-column sticky-main-column">
         <div class="right-block shadowed">
+          <div class="side-block-header table-header">Recent World Records</div>
+          <app-last-wrs></app-last-wrs>
+        </div>
+        <div class="right-block shadowed">
           @if (nextCupInfo$ | async; as cup) {
             <app-cup-timer
               [newsId]="cup.newsId"

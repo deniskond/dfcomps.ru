@@ -8,6 +8,7 @@ import { RatingChangeComponent } from '../components/rating-change/rating-change
 import { PlayerCellComponent } from '../components/player-cell/player-cell.component';
 import { MatRippleModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
+import { MatDialogModule } from '@angular/material/dialog';
 import { WeaponsComponent } from '../components/weapons/weapons.component';
 import { PlayerPlaceComponent } from '../components/player-place/player-place.component';
 import { CdkTableModule } from '@angular/cdk/table';
@@ -19,6 +20,7 @@ import { TranslateDirective } from '../directives/translate/translate.directive'
 import { BigFlagComponent } from '../components/big-flag/big-flag.component';
 import { TwitchComponent } from '~shared/components/twitch/twitch.component';
 import { PaginationComponent } from '../components/pagination/pagination.component';
+import { ValidationDialogComponent } from '../components/validation-dialog/validation-dialog.component';
 
 const COMPONENTS = [
   FlagComponent,
@@ -33,6 +35,7 @@ const COMPONENTS = [
   BigFlagComponent,
   TwitchComponent,
   PaginationComponent,
+  ValidationDialogComponent,
 ];
 
 const DIRECTIVES = [ClickOutsideDirective, TranslateDirective];
@@ -41,7 +44,7 @@ const PIPES = [InvokeFunctionPipe];
 
 @NgModule({
   declarations: [...COMPONENTS, ...DIRECTIVES, ...PIPES],
-  imports: [CommonModule, RouterModule, MatRippleModule, MatTableModule, CdkTableModule],
+  imports: [CommonModule, RouterModule, MatRippleModule, MatTableModule, MatDialogModule, CdkTableModule],
   exports: [...COMPONENTS, ...DIRECTIVES, ...PIPES],
 })
 export class SharedModule {}

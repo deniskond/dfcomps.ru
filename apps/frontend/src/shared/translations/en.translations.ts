@@ -13,6 +13,7 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
   mainPage: 'Home',
   rules: 'Rules',
   movies: 'Movies',
+  wrDatabase: 'WR Database',
   comments: 'Comments',
   hideComments: 'Hide comments',
   writeComment: 'Write a comment',

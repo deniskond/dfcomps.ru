@@ -1,0 +1,84 @@
+.loader {
+  display: flex;
+  justify-content: center;
+  padding: 16px 0;
+}
+
+.empty-state {
+  padding: 12px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--base-text-color);
+}
+
+.wr-rows {
+  padding: 4px 0;
+}
+
+.wr-row {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--base-border-color);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.wr-map-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.map-link {
+  color: var(--accent-color);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: bold;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.wr-time {
+  font-family: monospace;
+  font-size: 12px;
+  flex-shrink: 0;
+  color: var(--base-text-color);
+}
+
+.physics-badge {
+  display: inline-block;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: bold;
+  flex-shrink: 0;
+
+  &--vq3 {
+    background: rgba(66, 133, 244, 0.2);
+    color: #4285f4;
+  }
+
+  &--cpm {
+    background: rgba(234, 67, 53, 0.2);
+    color: #ea4335;
+  }
+}
+
+.wr-player-line {
+  font-size: 12px;
+}
+
+.df-name {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+}

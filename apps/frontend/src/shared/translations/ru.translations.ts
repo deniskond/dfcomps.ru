@@ -13,6 +13,7 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   mainPage: 'Главная',
   rules: 'Правила',
   movies: 'Мувики',
+  wrDatabase: 'База WR',
   comments: 'Комментарии',
   hideComments: 'Скрыть комментарии',
   writeComment: 'Написать комментарий',

@@ -14,7 +14,7 @@ import { finalize, take, switchMap, catchError, filter } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ValidationDialogComponent } from './validation-dialog/validation-dialog.component';
+import { ValidationDialogComponent } from '~shared/components/validation-dialog/validation-dialog.component';
 import { PlayerDemosDialogComponent } from './player-demos-dialog/player-demos-dialog.component';
 import { OverbouncesWarningDialogComponent } from './overbounces-warning-dialog/overbounces-warning-dialog.component';
 import { SDCRulesDialogComponent } from './sdc-rules-dialog/sdc-rules-dialog.component';

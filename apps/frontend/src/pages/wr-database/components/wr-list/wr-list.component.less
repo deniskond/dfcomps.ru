@@ -1,0 +1,125 @@
+.wr-list-block {
+  padding: 16px;
+}
+
+.list-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.filter-field {
+  min-width: 260px;
+  flex: 1;
+  max-width: 400px;
+}
+
+.physics-toggle {
+  flex-shrink: 0;
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 30px;
+  color: var(--base-text-color);
+}
+
+.wr-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.wr-row {
+  display: grid;
+  grid-template-columns: 180px 1fr 80px 120px 110px;
+  border-bottom: 1px solid var(--base-border-color);
+  align-items: center;
+  min-height: 38px;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.wr-table-header {
+  background: var(--base-background-hover-color);
+  font-weight: bold;
+  min-height: 34px;
+}
+
+.table-header {
+  text-align: center;
+  padding: 6px 8px;
+  font-size: 13px;
+}
+
+.col-map {
+  padding: 6px 8px;
+  font-size: 13px;
+  word-break: break-all;
+}
+
+.col-player {
+  padding: 4px 8px;
+}
+
+.col-physics {
+  padding: 4px 8px;
+  text-align: center;
+}
+
+.col-time {
+  padding: 6px 8px;
+  text-align: center;
+}
+
+.col-date {
+  padding: 6px 8px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--base-text-secondary-color, var(--base-text-color));
+}
+
+.physics-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: bold;
+
+  &--vq3 {
+    background: rgba(66, 133, 244, 0.2);
+    color: #4285f4;
+  }
+
+  &--cpm {
+    background: rgba(234, 67, 53, 0.2);
+    color: #ea4335;
+  }
+}
+
+.time-link {
+  color: var(--accent-color);
+  text-decoration: none;
+  font-family: monospace;
+  font-size: 14px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.df-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}

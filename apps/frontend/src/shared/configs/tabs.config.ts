@@ -14,6 +14,7 @@ export class TABS_CONFIG {
       { page: NavigationPages.RATING, name: 'rating' },
       { page: NavigationPages.RULES, name: 'rules' },
       { page: NavigationPages.MOVIES, name: 'movies' },
+      { page: NavigationPages.WR_DATABASE, name: 'wrDatabase' },
     ];
   }
 }
