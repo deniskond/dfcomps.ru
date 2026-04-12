@@ -43,6 +43,6 @@ const routes: Routes = [
     MatIconModule,
     SharedModule,
   ],
-  providers: [WrDatabaseService, UserService],
+  providers: [WrDatabaseService],
 })
 export class WrDatabasePageModule {}

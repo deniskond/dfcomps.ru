@@ -10,22 +10,22 @@
       <div class="wr-row">
         <div class="wr-map-line">
           <a routerLink="/wr-database" class="map-link">{{ record.map }}</a>
+          <div class="wr-player-line">
+            @if (record.playerId) {
+              <app-player-cell
+                [nick]="record.playerNick!"
+                [country]="record.playerCountry"
+                [playerId]="record.playerId"
+              ></app-player-cell>
+            } @else {
+              <span class="df-name">
+                <app-flag [country]="null"></app-flag>
+                {{ record.playerNick }}
+              </span>
+            }
+          </div>
           <span class="physics-badge physics-badge--{{ record.physics }}">{{ record.physics | uppercase }}</span>
           <span class="wr-time">{{ formatTime(record.time) }}</span>
-        </div>
-        <div class="wr-player-line">
-          @if (record.playerId) {
-            <app-player-cell
-              [nick]="record.playerNick!"
-              [country]="record.playerCountry"
-              [playerId]="record.playerId"
-            ></app-player-cell>
-          } @else {
-            <span class="df-name">
-              <app-flag [country]="null"></app-flag>
-              {{ record.playerNick }}
-            </span>
-          }
         </div>
       </div>
     }
