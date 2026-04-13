@@ -31,7 +31,8 @@ export class WorldRecordsController {
     @Query('filter') filter = '',
     @Query('physics') physics = '',
   ): Promise<WrListResponseInterface> {
-    return this.worldRecordsService.getWrList(parseInt(page) || 1, filter, physics);
+    const parsedPage = Math.max(1, Math.min(parseInt(page) || 1, 10_000));
+    return this.worldRecordsService.getWrList(parsedPage, filter, physics);
   }
 
   @Get('last-five')

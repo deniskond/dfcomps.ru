@@ -32,7 +32,7 @@
         }
       </div>
       <div class="cell time">
-        <a href="#" class="wr-time">{{ formatTime(record.time) }}</a>
+        <a [href]="record.demoLink" download class="wr-time">{{ formatTime(record.time) }}</a>
       </div>
     </div>
   }

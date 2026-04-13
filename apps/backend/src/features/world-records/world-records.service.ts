@@ -65,7 +65,10 @@ export class WorldRecordsService {
       .getCount();
 
     if (uploadedToday >= WR_DAILY_UPLOAD_LIMIT) {
-      return { status: DemoUploadResult.ERROR, message: 'Daily world record upload limit reached. Try again tomorrow.' };
+      return {
+        status: DemoUploadResult.ERROR,
+        message: 'Daily world record upload limit reached. Try again tomorrow.',
+      };
     }
 
     const fileName = demo.originalname;
@@ -113,7 +116,10 @@ export class WorldRecordsService {
 
     // Resolve country for df_name uploads
     const countryFromFilename = patternMatch[8].toLowerCase();
-    const matchedCountry = COUNTRIES_CONFIG.COUNTRIES.find(({ fullName }) => fullName.toLowerCase() === countryFromFilename);
+    const matchedCountry = COUNTRIES_CONFIG.COUNTRIES.find(
+      ({ fullName, shortName }) =>
+        fullName.toLowerCase() === countryFromFilename || shortName.toLowerCase() === countryFromFilename,
+    );
     const targetDfCountry: string | null = targetDfName !== null && matchedCountry ? matchedCountry.shortName : null;
 
     // Write demo to temp location for parsing
@@ -160,15 +166,23 @@ export class WorldRecordsService {
     }
 
     // Archive demo to zip
+    // Build filename from parsed components only — never use client-supplied raw filename
+    // to avoid path traversal via crafted filenames containing '../' sequences.
     const wrDir = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/${WR_DEMOS_SUBDIR}`;
-    const resultFilename = fileName.replace(/#/g, '').replace('.dm_68', '') + '.zip';
+    const resultFilename = `${mapNameFromFilename}[${patternMatch[2]}.${physics}]${patternMatch[4]}.${patternMatch[5]}.${patternMatch[6]}(${patternMatch[7]}.${patternMatch[8]}).zip`;
     const zipFullPath = wrDir + '/' + resultFilename;
 
-    await this.archiveDemoToZip(tmpFullPath, fileName, zipFullPath);
-    fs.rmSync(tmpFullPath);
+    try {
+      await this.archiveDemoToZip(tmpFullPath, fileName, zipFullPath);
+    } finally {
+      fs.rmSync(tmpFullPath);
+    }
 
     // Insert new WR row
-    const uploaderUser = (await this.userRepository.createQueryBuilder('users').where({ id: userAccess.userId }).getOne())!;
+    const uploaderUser = (await this.userRepository
+      .createQueryBuilder('users')
+      .where({ id: userAccess.userId })
+      .getOne())!;
 
     await this.worldRecordRepository
       .createQueryBuilder()
@@ -257,6 +271,7 @@ export class WorldRecordsService {
       map: wr.map,
       time: wr.time,
       physics: wr.physics,
+      demoLink: `/uploads/${wr.demopath}`,
       uploadedAt: wr.uploaded_at.toISOString(),
       playerId: wr.player?.id ?? null,
       playerNick: wr.player?.displayed_nick ?? wr.df_name ?? null,

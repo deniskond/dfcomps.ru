@@ -4,6 +4,7 @@ export interface WrLastFiveItemInterface {
   map: string;
   time: number;
   physics: Physics;
+  demoLink: string;
   uploadedAt: string;
   playerId: number | null;
   playerNick: string | null;
