@@ -26,7 +26,7 @@ export class WrListComponent implements OnInit, OnChanges, OnDestroy {
   public totalCount = 0;
   public currentPage = 0;
   public physics = Physics;
-  public selectedPhysics = '';
+  public selectedPhysics: Physics | null = null;
   public filterControl = new FormControl('');
   public isLoading = false;
 
@@ -63,7 +63,7 @@ export class WrListComponent implements OnInit, OnChanges, OnDestroy {
     return Math.ceil(this.totalCount / WR_PAGINATION_SIZE);
   }
 
-  public onPhysicsChange(physics: string): void {
+  public changePhysicsFilter(physics: Physics | null): void {
     this.selectedPhysics = physics;
     this.currentPage = 0;
     this.loadRecords();
@@ -92,7 +92,7 @@ export class WrListComponent implements OnInit, OnChanges, OnDestroy {
     this.changeDetectorRef.markForCheck();
 
     this.wrDatabaseService
-      .getWrList$(this.currentPage + 1, this.filterControl.value ?? '', this.selectedPhysics)
+      .getWrList$(this.currentPage + 1, this.filterControl.value ?? '', this.selectedPhysics ?? '')
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: WrListResponseInterface) => {
         this.records = response.records;

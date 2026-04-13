@@ -1,1 +1,1 @@
-export const WR_PAGINATION_SIZE = 25;
+export const WR_PAGINATION_SIZE = 10;

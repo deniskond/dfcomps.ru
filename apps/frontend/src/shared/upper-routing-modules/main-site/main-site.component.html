@@ -26,6 +26,20 @@
             ></app-cup-timer>
           }
         </div>
+        <div class="right-block shadowed">
+          <div class="side-block-header table-header">Recent World Records</div>
+          <nav mat-tab-nav-bar [tabPanel]="tabPanelWr" class="navigation">
+            <a [active]="activeWrPage === 1" (click)="setWrTab(1)" mat-tab-link class="navigation-link wr">CPM</a>
+            <a [active]="activeWrPage === 2" (click)="setWrTab(2)" mat-tab-link class="navigation-link wr">VQ3</a>
+          </nav>
+          <mat-tab-nav-panel #tabPanelWr></mat-tab-nav-panel>
+          @if (activeWrPage === 1) {
+            <app-last-wrs></app-last-wrs>
+          }
+          @if (activeWrPage === 2) {
+            <app-last-wrs></app-last-wrs>
+          }
+        </div>
         <div class="right-block shadowed top-10-tables">
           <div class="side-block-header table-header">
             <span translate translation="ratingLeaders"></span>
@@ -57,26 +71,6 @@
           @if (activeRatingPage === 4) {
             <app-top-ten-table [physics]="physics.VQ3" [mode]="ratingtablesModes.ONEVONE"></app-top-ten-table>
           }
-        </div>
-        <div class="right-block shadowed">
-          <div class="side-block-header table-header">Recent World Records</div>
-          <nav mat-tab-nav-bar [tabPanel]="tabPanelWr" class="navigation">
-            <a [active]="activeWrPage === 1" (click)="setWrTab(1)" mat-tab-link class="navigation-link wr">CPM</a>
-            <a [active]="activeWrPage === 2" (click)="setWrTab(2)" mat-tab-link class="navigation-link wr">VQ3</a>
-          </nav>
-          <mat-tab-nav-panel #tabPanelWr></mat-tab-nav-panel>
-          @if (activeWrPage === 1) {
-            <app-last-wrs></app-last-wrs>
-          }
-          @if (activeWrPage === 2) {
-            <app-last-wrs></app-last-wrs>
-          }
-        </div>
-        <div class="right-block shadowed">
-          <div class="side-block-header table-header">
-            <span translate translation="findOnevOne"></span>
-          </div>
-          <app-one-v-one-widget></app-one-v-one-widget>
         </div>
       </div>
     </div>

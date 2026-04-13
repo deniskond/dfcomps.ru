@@ -16,7 +16,7 @@ import { WrDatabasePageComponent } from './wr-database.page';
 import { WrUploadBlockComponent } from './components/wr-upload-block/wr-upload-block.component';
 import { WrListComponent } from './components/wr-list/wr-list.component';
 import { WrDatabaseService } from './services/wr-database.service';
-import { UserService } from '~shared/services/user-service/user.service';
+import { MatRippleModule } from '@angular/material/core';
 
 const routes: Routes = [
   {
@@ -41,6 +41,7 @@ const routes: Routes = [
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatIconModule,
+    MatRippleModule,
     SharedModule,
   ],
   providers: [WrDatabaseService],
