@@ -183,7 +183,7 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   thirdPlaces: 'Третьи места',
   tournamentStats: 'Статистика по турнирам',
   uploadWr: 'Загрузить WR',
-  uploadWorldRecord: 'Загрузить демку',
+  uploadWorldRecord: 'Загрузить демку с WR',
   itsMyDemo: `Это моё демо`,
   useDfName: 'Использовать df_name',
   selectFromUsers: 'Выбрать из игроков на dfcomps',
@@ -193,7 +193,7 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   toUploadWr: 'чтобы загрузить демки с WR',
   filterByMapName: 'Фильтровать по имени карты',
   noWrFound: 'Рекордов пока нет',
-  wrList: 'Лист рекордов на картах',
+  wrList: 'Рекорды на картах',
   date: 'Дата',
   recentWorldRecords: 'Последние WR',
 };
