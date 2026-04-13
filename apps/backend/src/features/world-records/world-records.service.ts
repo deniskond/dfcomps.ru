@@ -4,6 +4,7 @@ import {
   Physics,
   UploadDemoResponseInterface,
   ValidationErrorInterface,
+  WR_DAILY_UPLOAD_LIMIT,
   WR_PAGINATION_SIZE,
   WrLastFiveItemInterface,
   WrListItemInterface,
@@ -53,6 +54,18 @@ export class WorldRecordsService {
 
     if (!userAccess.userId) {
       return { status: DemoUploadResult.ERROR, message: 'Not authorized' };
+    }
+
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const uploadedToday = await this.worldRecordRepository
+      .createQueryBuilder('wr')
+      .where('wr.uploaded_at >= :startOfDay', { startOfDay })
+      .getCount();
+
+    if (uploadedToday >= WR_DAILY_UPLOAD_LIMIT) {
+      return { status: DemoUploadResult.ERROR, message: 'Daily world record upload limit reached. Try again tomorrow.' };
     }
 
     const fileName = demo.originalname;
