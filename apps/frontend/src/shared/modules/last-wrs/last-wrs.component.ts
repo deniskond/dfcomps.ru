@@ -1,5 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { WrLastFiveItemInterface } from '@dfcomps/contracts';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, Input } from '@angular/core';
+import { Physics, WrLastFiveItemInterface } from '@dfcomps/contracts';
 import { LastWrsService } from './last-wrs.service';
 
 @Component({
@@ -10,6 +10,8 @@ import { LastWrsService } from './last-wrs.service';
   standalone: false,
 })
 export class LastWrsComponent implements OnInit {
+  @Input() physics: Physics;
+
   public records: WrLastFiveItemInterface[] = [];
   public isLoading = true;
 
@@ -19,7 +21,7 @@ export class LastWrsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.lastWrsService.getLastFive$().subscribe((records: WrLastFiveItemInterface[]) => {
+    this.lastWrsService.getLastFive$(this.physics).subscribe((records: WrLastFiveItemInterface[]) => {
       this.records = records;
       this.isLoading = false;
       this.cdr.markForCheck();

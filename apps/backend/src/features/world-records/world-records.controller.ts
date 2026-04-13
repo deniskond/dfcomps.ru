@@ -35,8 +35,8 @@ export class WorldRecordsController {
   }
 
   @Get('last-five')
-  getLastFive(): Promise<WrLastFiveItemInterface[]> {
-    return this.worldRecordsService.getLastFive();
+  getLastFive(@Query('physics') physics = ''): Promise<WrLastFiveItemInterface[]> {
+    return this.worldRecordsService.getLastFive(physics);
   }
 
   @Get('search-players')

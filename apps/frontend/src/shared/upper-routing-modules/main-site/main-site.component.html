@@ -34,10 +34,10 @@
           </nav>
           <mat-tab-nav-panel #tabPanelWr></mat-tab-nav-panel>
           @if (activeWrPage === 1) {
-            <app-last-wrs></app-last-wrs>
+            <app-last-wrs [physics]="physics.CPM"></app-last-wrs>
           }
           @if (activeWrPage === 2) {
-            <app-last-wrs></app-last-wrs>
+            <app-last-wrs [physics]="physics.VQ3"></app-last-wrs>
           }
         </div>
         <div class="right-block shadowed top-10-tables">

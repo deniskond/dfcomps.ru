@@ -27,4 +27,10 @@ export class WorldRecord {
 
   @Column({ type: 'character varying', nullable: true })
   df_name: string | null;
+
+  @Column({ type: 'character varying', nullable: true })
+  df_country: string | null;
+
+  @ManyToOne(() => User)
+  uploader: User;
 }

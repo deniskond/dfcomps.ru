@@ -1,4 +1,5 @@
 import {
+  COUNTRIES_CONFIG,
   DemoUploadResult,
   Physics,
   UploadDemoResponseInterface,
@@ -97,6 +98,11 @@ export class WorldRecordsService {
       targetDfName = dfName;
     }
 
+    // Resolve country for df_name uploads
+    const countryFromFilename = patternMatch[8].toLowerCase();
+    const matchedCountry = COUNTRIES_CONFIG.COUNTRIES.find(({ fullName }) => fullName.toLowerCase() === countryFromFilename);
+    const targetDfCountry: string | null = targetDfName !== null && matchedCountry ? matchedCountry.shortName : null;
+
     // Write demo to temp location for parsing
     this.makeDemosDirectoryIfNotExists();
     const tmpDir = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/${WR_DEMOS_SUBDIR}/tmp`;
@@ -149,6 +155,8 @@ export class WorldRecordsService {
     fs.rmSync(tmpFullPath);
 
     // Insert new WR row
+    const uploaderUser = (await this.userRepository.createQueryBuilder('users').where({ id: userAccess.userId }).getOne())!;
+
     await this.worldRecordRepository
       .createQueryBuilder()
       .insert()
@@ -161,6 +169,8 @@ export class WorldRecordsService {
           demopath: `${WR_DEMOS_SUBDIR}/${resultFilename}`,
           player: targetPlayer ?? undefined,
           df_name: targetDfName,
+          df_country: targetDfCountry,
+          uploader: uploaderUser,
         },
       ])
       .execute();
@@ -209,7 +219,7 @@ export class WorldRecordsService {
     };
   }
 
-  public async getLastFive(): Promise<WrLastFiveItemInterface[]> {
+  public async getLastFive(physics: string): Promise<WrLastFiveItemInterface[]> {
     const subQuery = this.worldRecordRepository
       .createQueryBuilder()
       .subQuery()
@@ -219,13 +229,16 @@ export class WorldRecordsService {
       .andWhere('sub.physics = wr.physics')
       .getQuery();
 
-    const records: WorldRecord[] = await this.worldRecordRepository
+    const queryBuilder = this.worldRecordRepository
       .createQueryBuilder('wr')
       .leftJoinAndSelect('wr.player', 'player')
-      .where(`wr.time = (${subQuery})`)
-      .orderBy('wr.uploaded_at', 'DESC')
-      .take(5)
-      .getMany();
+      .where(`wr.time = (${subQuery})`);
+
+    if (physics === Physics.VQ3 || physics === Physics.CPM) {
+      queryBuilder.andWhere('wr.physics = :physics', { physics });
+    }
+
+    const records: WorldRecord[] = await queryBuilder.orderBy('wr.uploaded_at', 'DESC').take(5).getMany();
 
     return records.map((wr) => ({
       map: wr.map,
@@ -234,7 +247,7 @@ export class WorldRecordsService {
       uploadedAt: wr.uploaded_at.toISOString(),
       playerId: wr.player?.id ?? null,
       playerNick: wr.player?.displayed_nick ?? wr.df_name ?? null,
-      playerCountry: wr.player?.country ?? null,
+      playerCountry: wr.player?.country ?? wr.df_country ?? null,
     }));
   }
 
@@ -272,7 +285,7 @@ export class WorldRecordsService {
       uploadedAt: wr.uploaded_at.toISOString(),
       playerId: wr.player?.id ?? null,
       playerNick: wr.player?.displayed_nick ?? wr.df_name ?? null,
-      playerCountry: wr.player?.country ?? null,
+      playerCountry: wr.player?.country ?? wr.df_country ?? null,
     };
   }
 

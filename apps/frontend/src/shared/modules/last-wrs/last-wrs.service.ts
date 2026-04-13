@@ -7,7 +7,7 @@ import { WrLastFiveItemInterface } from '@dfcomps/contracts';
   providedIn: 'root',
 })
 export class LastWrsService extends BackendService {
-  public getLastFive$(): Observable<WrLastFiveItemInterface[]> {
-    return this.get$<WrLastFiveItemInterface[]>(URL_PARAMS.WORLD_RECORDS.LAST_FIVE);
+  public getLastFive$(physics: string): Observable<WrLastFiveItemInterface[]> {
+    return this.get$<WrLastFiveItemInterface[]>(URL_PARAMS.WORLD_RECORDS.LAST_FIVE(physics));
   }
 }
