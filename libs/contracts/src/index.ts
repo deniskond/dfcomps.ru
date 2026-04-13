@@ -9,3 +9,4 @@ export * from './lib/profile';
 export * from './lib/rating';
 export * from './lib/tables';
 export * from './lib/warcup';
+export * from './lib/world-records';

@@ -1,0 +1,152 @@
+.wr-list-block {
+  padding: 16px;
+}
+
+.list-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.filter-field {
+  min-width: 260px;
+  flex: 1;
+  max-width: 400px;
+  height: 36px;
+  padding: 10px 12px;
+  border: 1px dashed var(--base-border-color);
+  border-radius: 4px;
+  font-size: 14px;
+
+  &:focus {
+    border-color: var(--accent-color);
+  }
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 30px;
+  color: var(--base-text-color);
+}
+
+.wr-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--base-border-color);
+  margin-bottom: 12px;
+  border-bottom: 0px;
+}
+
+.physics-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: bold;
+
+  &--cpm {
+    background: rgba(66, 133, 244, 0.2);
+    color: #4285f4;
+  }
+
+  &--vq3 {
+    background: rgba(234, 67, 53, 0.2);
+    color: #ea4335;
+  }
+}
+
+.time-link {
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.df-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-left: 8px;
+}
+
+.toggle-container {
+  height: 36px;
+  border: 1px solid var(--divider-border-color);
+  border-radius: 4px;
+  display: flex;
+
+  .toggle-option {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 12px;
+    width: 80px;
+    border-right: 1px solid var(--divider-border-color);
+    cursor: pointer;
+
+    &:last-of-type {
+      border-right: 0;
+    }
+
+    &:hover,
+    &.selected {
+      background: var(--base-background-hover-color);
+    }
+  }
+}
+
+.row {
+  display: flex;
+  height: 32px;
+  border-bottom: 1px solid var(--divider-border-color);
+
+  &.header {
+    background: var(--base-background-hover-color);
+  }
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid var(--divider-border-color);
+
+  &:last-of-type {
+    border-right: 0;
+  }
+
+  &.map {
+    width: 220px;
+  }
+
+  &.player {
+    flex: 1;
+  }
+
+  &.physics {
+    width: 120px;
+  }
+
+  &.time {
+    width: 120px;
+  }
+
+  &.date {
+    width: 110px;
+  }
+
+  &.left {
+    justify-content: flex-start;
+  }
+
+  &.padding {
+    padding-left: 12px;
+  }
+}

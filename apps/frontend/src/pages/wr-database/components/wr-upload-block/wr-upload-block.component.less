@@ -1,0 +1,135 @@
+.upload-block {
+  margin-bottom: 20px;
+  padding: 16px;
+}
+
+.block-header {
+  margin-bottom: 16px;
+}
+
+.player-type-group {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.player-type-option {
+  display: block;
+}
+
+.player-search-input {
+  width: 240px;
+  height: 36px;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px dashed var(--base-border-color);
+  border-radius: 4px;
+
+  &:focus {
+    border-color: var(--accent-color);
+  }
+}
+
+.file-upload-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.hidden-file-input {
+  display: none;
+}
+
+.file-name-display {
+  flex: 1;
+  min-width: 200px;
+  padding: 10px 12px;
+  border: 1px dashed var(--base-border-color);
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--base-text-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 36px;
+  border-radius: 4px;
+
+  &:hover {
+    border-color: var(--accent-color);
+  }
+}
+
+.upload-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+
+  &.uploading {
+    padding-left: 44px;
+  }
+}
+
+.btn-spinner {
+  position: absolute;
+  top: -3px;
+  left: -31px;
+}
+
+.player-selected-arrow {
+  display: flex;
+  align-items: center;
+  padding-top: 4px;
+  padding-left: 4px;
+  margin-right: -3px;
+}
+
+.login-prompt {
+  padding: 8px 0;
+}
+
+.upload-rules-text {
+  line-height: 1.5;
+  color: #888;
+  margin-top: 4px;
+}
+
+::ng-deep {
+  .mdc-label {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding-top: 2px;
+    padding-left: 0 !important;
+    color: var(--base-font-color) !important;
+  }
+
+  .mdc-radio__background::before {
+    display: none;
+  }
+
+  .mdc-radio__outer-circle {
+    border-color: var(--base-font-color) !important;
+  }
+
+  .mat-mdc-raised-button {
+    .mdc-button__label,
+    mat-icon {
+      margin-top: 3px;
+    }
+  }
+
+  .mat-mdc-autocomplete-panel {
+    background: var(--base-background) !important;
+  }
+
+  .mat-mdc-option {
+    color: var(--base-font-color) !important;
+  }
+
+  .mat-mdc-option:hover:not(.mdc-list-item--disabled) {
+    background: var(--base-background-hover-color) !important;
+  }
+}

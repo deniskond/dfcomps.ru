@@ -34,6 +34,8 @@ import { WarcupInfo } from '../shared/entities/warcup-info.entity';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SentryModule } from '@sentry/nestjs/setup';
 import { CupReview } from '../shared/entities/cups-reviews.entity';
+import { WorldRecord } from '../shared/entities/world-record.entity';
+import { WorldRecordsModule } from '../features/world-records/world-records.module';
 
 @Module({
   imports: [
@@ -66,6 +68,7 @@ import { CupReview } from '../shared/entities/cups-reviews.entity';
         WarcupAdminVote,
         WarcupInfo,
         CupReview,
+        WorldRecord,
       ],
       database: 'dfcomps',
       synchronize: true,
@@ -82,6 +85,7 @@ import { CupReview } from '../shared/entities/cups-reviews.entity';
     DemosModule,
     MatchModule,
     AdminModule,
+    WorldRecordsModule,
     ScheduleModule.forRoot(),
   ],
 })

@@ -17,7 +17,6 @@ import { MulticupPhysicsTableComponent } from './components/news-multicup-result
 import { NewsPhysicsTableComponent } from './components/news-offline-results/news-physics-table/news-physics-table.component';
 import { NewsOnlineResultsTableComponent } from './components/news-online-results/online-results-table/online-results-table.component';
 import { NewsCommentsComponent } from './components/news-comments/news-comments.component';
-import { ValidationDialogComponent } from './components/news-offline-start/validation-dialog/validation-dialog.component';
 import { PlayerDemosDialogComponent } from './components/news-offline-start/player-demos-dialog/player-demos-dialog.component';
 import { SingleNewsPageComponent } from './components/single-news-page/single-news-page.component';
 import { InvalidDemosListComponent } from './components/news-offline-results/invalid-demos-list/invalid-demos-list.component';
@@ -86,7 +85,6 @@ const routes: Routes = [
     NewsPhysicsTableComponent,
     NewsOnlineResultsTableComponent,
     NewsCommentsComponent,
-    ValidationDialogComponent,
     PlayerDemosDialogComponent,
     SingleNewsPageComponent,
     InvalidDemosListComponent,

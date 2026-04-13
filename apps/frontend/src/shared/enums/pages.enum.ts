@@ -6,4 +6,5 @@ export enum NavigationPages {
   NEWS = 'archive',
   MOVIES = 'movies',
   ONE_V_ONE = '1v1',
+  WR_DATABASE = 'wr-database',
 }

@@ -130,6 +130,21 @@ export class URL_PARAMS {
     };
   }
 
+  public static get WORLD_RECORDS(): {
+    UPLOAD: string;
+    LIST: (page: number, filter: string, physics: string) => string;
+    LAST_FIVE: (physics: string) => string;
+    SEARCH_PLAYERS: (nick: string) => string;
+  } {
+    return {
+      UPLOAD: `${API_URL}/world-records/upload`,
+      LIST: (page: number, filter: string, physics: string) =>
+        `${API_URL}/world-records/list?page=${page}&filter=${encodeURIComponent(filter)}&physics=${physics}`,
+      LAST_FIVE: (physics: string) => `${API_URL}/world-records/last-five?physics=${physics}`,
+      SEARCH_PLAYERS: (nick: string) => `${API_URL}/world-records/search-players?nick=${encodeURIComponent(nick)}`,
+    };
+  }
+
   public static get DUEL(): {
     GET_PLAYERS_INFO: string;
   } {

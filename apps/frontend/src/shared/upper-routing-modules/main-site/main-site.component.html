@@ -27,45 +27,49 @@
           }
         </div>
         <div class="right-block shadowed">
-          <div class="side-block-header table-header">
-            <span translate translation="findOnevOne"></span>
-          </div>
-          <app-one-v-one-widget></app-one-v-one-widget>
+          <div translate translation="recentWorldRecords" class="side-block-header table-header"></div>
+          <nav mat-tab-nav-bar [tabPanel]="tabPanelWr" class="navigation">
+            <a [active]="activeWrPage === 1" (click)="setWrTab(1)" mat-tab-link class="navigation-link wr">CPM</a>
+            <a [active]="activeWrPage === 2" (click)="setWrTab(2)" mat-tab-link class="navigation-link wr">VQ3</a>
+          </nav>
+          <mat-tab-nav-panel #tabPanelWr></mat-tab-nav-panel>
+          @if (activeWrPage === 1) {
+            <app-last-wrs [physics]="physics.CPM"></app-last-wrs>
+          }
+          @if (activeWrPage === 2) {
+            <app-last-wrs [physics]="physics.VQ3"></app-last-wrs>
+          }
         </div>
         <div class="right-block shadowed top-10-tables">
           <div class="side-block-header table-header">
             <span translate translation="ratingLeaders"></span>
           </div>
-          <nav mat-tab-nav-bar [tabPanel]="tabPanel" class="navigation">
-            <a [active]="activePage === 1" (click)="setTab(1)" mat-tab-link class="navigation-link">CPM</a>
-            <a [active]="activePage === 2" (click)="setTab(2)" mat-tab-link class="navigation-link">VQ3</a>
-            <a [active]="activePage === 3" (click)="setTab(3)" mat-tab-link class="navigation-link">CPM (1v1)</a>
-            <a [active]="activePage === 4" (click)="setTab(4)" mat-tab-link class="navigation-link">VQ3 (1v1)</a>
+          <nav mat-tab-nav-bar [tabPanel]="tabPanelRating" class="navigation">
+            <a [active]="activeRatingPage === 1" (click)="setRatingTab(1)" mat-tab-link class="navigation-link rating">
+              CPM
+            </a>
+            <a [active]="activeRatingPage === 2" (click)="setRatingTab(2)" mat-tab-link class="navigation-link rating">
+              VQ3
+            </a>
+            <a [active]="activeRatingPage === 3" (click)="setRatingTab(3)" mat-tab-link class="navigation-link rating">
+              CPM (1v1)
+            </a>
+            <a [active]="activeRatingPage === 4" (click)="setRatingTab(4)" mat-tab-link class="navigation-link rating">
+              VQ3 (1v1)
+            </a>
           </nav>
-          <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
-          @if (activePage === 1) {
-            <app-top-ten-table
-              [physics]="physics.CPM"
-              [mode]="ratingtablesModes.CLASSIC"
-            ></app-top-ten-table>
+          <mat-tab-nav-panel #tabPanelRating></mat-tab-nav-panel>
+          @if (activeRatingPage === 1) {
+            <app-top-ten-table [physics]="physics.CPM" [mode]="ratingtablesModes.CLASSIC"></app-top-ten-table>
           }
-          @if (activePage === 2) {
-            <app-top-ten-table
-              [physics]="physics.VQ3"
-              [mode]="ratingtablesModes.CLASSIC"
-            ></app-top-ten-table>
+          @if (activeRatingPage === 2) {
+            <app-top-ten-table [physics]="physics.VQ3" [mode]="ratingtablesModes.CLASSIC"></app-top-ten-table>
           }
-          @if (activePage === 3) {
-            <app-top-ten-table
-              [physics]="physics.CPM"
-              [mode]="ratingtablesModes.ONEVONE"
-            ></app-top-ten-table>
+          @if (activeRatingPage === 3) {
+            <app-top-ten-table [physics]="physics.CPM" [mode]="ratingtablesModes.ONEVONE"></app-top-ten-table>
           }
-          @if (activePage === 4) {
-            <app-top-ten-table
-              [physics]="physics.VQ3"
-              [mode]="ratingtablesModes.ONEVONE"
-            ></app-top-ten-table>
+          @if (activeRatingPage === 4) {
+            <app-top-ten-table [physics]="physics.VQ3" [mode]="ratingtablesModes.ONEVONE"></app-top-ten-table>
           }
         </div>
       </div>

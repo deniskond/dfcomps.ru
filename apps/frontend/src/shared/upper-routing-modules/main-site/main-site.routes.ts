@@ -37,6 +37,11 @@ export const mainSiteRoutes: Routes = [
         loadChildren: () => import('~pages/dfwc2019/dfwc2019.page.module').then((m) => m.Dfwc2019PageModule),
       },
       { path: '1v1', loadChildren: () => import('~pages/1v1/1v1.page.module').then((m) => m.OneVOnePageModule) },
+      {
+        path: 'wr-database',
+        loadChildren: () =>
+          import('~pages/wr-database/wr-database.page.module').then((m) => m.WrDatabasePageModule),
+      },
     ],
   },
 ];

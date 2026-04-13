@@ -1,0 +1,93 @@
+:host {
+  display: block;
+  background: var(--base-background);
+  height: 192px;
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  padding: 16px 0;
+}
+
+.empty-state {
+  padding: 12px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--base-text-color);
+}
+
+.df-name {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  padding-left: 8px;
+}
+
+.df-name-caption {
+  width: 72px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.last-wrs-header {
+  background: var(--base-background-hover-color);
+  height: 32px;
+  border-bottom: 1px solid var(--divider-border-color);
+  display: flex;
+}
+
+.row {
+  display: flex;
+  border-bottom: 1px solid var(--divider-border-color);
+  height: 32px;
+
+  &:last-of-type {
+    border-bottom: 0;
+  }
+}
+
+.cell {
+  border-right: 1px solid var(--base-border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  :last-of-type {
+    border-right: 0;
+  }
+
+  &.map {
+    display: block;
+    width: 125px;
+    line-height: 32px;
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &.header {
+      display: flex;
+      font-weight: normal;
+    }
+  }
+
+  &.player {
+    width: 105px;
+  }
+
+  &.time {
+    width: 90px;
+    gap: 4px;
+  }
+
+  &.left {
+    justify-content: flex-start;
+  }
+
+  &.padding {
+    padding-left: 8px;
+  }
+}

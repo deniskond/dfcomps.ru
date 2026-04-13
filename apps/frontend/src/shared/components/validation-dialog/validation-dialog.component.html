@@ -1,0 +1,27 @@
+<div class="h1-block-header dialog-header">
+  <span translate translation="demoValidationFailed"></span>
+</div>
+<table data-test-id="table-validation-errors">
+  <tr>
+    <td class="parameter-th table-header">
+      <span translate translation="parameter"></span>
+    </td>
+    <td class="table-header">
+      <span translate translation="actualValue"></span>
+    </td>
+    <td class="table-header">
+      <span translate translation="requiredValue"></span>
+    </td>
+  </tr>
+  @for (validationError of validationErrorNames; track validationError) {
+    <tr>
+      <td class="table-field error-name">{{ validationError }}</td>
+      @if (data[validationError].message) {
+        <td class="table-field" colspan="2">{{ data[validationError].message }}</td>
+      } @else {
+        <td class="table-field">{{ data[validationError].actual }}</td>
+        <td class="table-field">{{ data[validationError].expected }}</td>
+      }
+    </tr>
+  }
+</table>

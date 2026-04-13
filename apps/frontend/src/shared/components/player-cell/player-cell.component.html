@@ -1,17 +1,41 @@
 @if (playerId) {
-  <div
-    mat-ripple
-    [@hoveredCell]="hovered | invokeFunction: getHoveredState : style"
-    (mouseenter)="darkenPlayerRow()"
-    (mouseleave)="lightenPlayerRow()"
-    (click)="navigateToPlayerProfile(playerId)"
-    class="player-nick-container"
+  @if (hoverEventsEnabled) {
+    <div
+      mat-ripple
+      [@hoveredCell]="hovered | invokeFunction: getHoveredState : style"
+      (mouseenter)="darkenPlayerRow()"
+      (mouseleave)="lightenPlayerRow()"
+      (click)="navigateToPlayerProfile(playerId)"
+      class="player-nick-container"
     >
-    <app-flag [country]="country" [class.light]="style === playerCellStyles.TRANSPARENT" class="flag"></app-flag>
-    <div [class.light]="style === playerCellStyles.TRANSPARENT" class="player-nick" data-test-id="text-player-nick">
-      {{ nick }}
+      <app-flag [country]="country" [class.light]="style === playerCellStyles.TRANSPARENT" class="flag"></app-flag>
+      <div
+        [class.light]="style === playerCellStyles.TRANSPARENT"
+        [style.max-width.px]="maxPlayerNameWidth"
+        class="player-nick"
+        data-test-id="text-player-nick"
+      >
+        {{ nick }}
+      </div>
     </div>
-  </div>
+  } @else {
+    <div
+      (mouseenter)="darkenPlayerRow()"
+      (mouseleave)="lightenPlayerRow()"
+      (click)="navigateToPlayerProfile(playerId)"
+      class="player-nick-container"
+    >
+      <app-flag [country]="country" [class.light]="style === playerCellStyles.TRANSPARENT" class="flag"></app-flag>
+      <div
+        [class.light]="style === playerCellStyles.TRANSPARENT"
+        [style.max-width.px]="maxPlayerNameWidth"
+        class="player-nick"
+        data-test-id="text-player-nick"
+      >
+        {{ nick }}
+      </div>
+    </div>
+  }
 }
 
 @if (!playerId) {
