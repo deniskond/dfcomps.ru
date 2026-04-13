@@ -22,6 +22,7 @@ export class PlayerCellComponent {
   @Input() nick: string;
   @Input() playerId: number;
   @Input() style = PlayerCellStyles.LIGHT;
+  @Input() hoverEventsEnabled = true;
 
   constructor(private router: Router) {}
 
@@ -29,10 +30,18 @@ export class PlayerCellComponent {
   public playerCellStyles = PlayerCellStyles;
 
   public darkenPlayerRow(): void {
+    if (!this.hoverEventsEnabled) {
+      return;
+    }
+
     this.hovered = true;
   }
 
   public lightenPlayerRow(): void {
+    if (!this.hoverEventsEnabled) {
+      return;
+    }
+
     this.hovered = false;
   }
 
@@ -45,6 +54,10 @@ export class PlayerCellComponent {
   }
 
   public navigateToPlayerProfile(playerId: number): void {
+    if (!this.hoverEventsEnabled) {
+      return;
+    }
+
     if (playerId) {
       this.router.navigate([`/profile/${playerId}`]);
     }

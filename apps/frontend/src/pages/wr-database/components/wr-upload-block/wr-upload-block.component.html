@@ -1,80 +1,101 @@
-<div class="upload-block shadowed-main-block">
-  <div class="block-header h1-block-header">Upload World Record</div>
+<div class="block-header h1-block-header">Upload World Record</div>
 
-  @if (user$ | async) {
-    <div class="upload-content">
-      <div class="player-type-section">
-        <mat-radio-group [(ngModel)]="playerType" (ngModelChange)="onPlayerTypeChange()" class="player-type-group">
-          <mat-radio-button [value]="wrPlayerTypes.MY_DEMO" class="player-type-option" data-test-id="radio-my-demo">
-            It's my demo
-          </mat-radio-button>
-          <mat-radio-button [value]="wrPlayerTypes.DFCOMPS_USER" class="player-type-option" data-test-id="radio-dfcomps-user">
-            Select from dfcomps users
-          </mat-radio-button>
-          <mat-radio-button [value]="wrPlayerTypes.DF_NAME" class="player-type-option" data-test-id="radio-df-name">
-            Use df_name from demo
-          </mat-radio-button>
-        </mat-radio-group>
-
-        @if (playerType === wrPlayerTypes.DFCOMPS_USER) {
-          <div class="player-search-section">
-            <mat-form-field appearance="outline" class="player-search-field">
-              <mat-label>Search player by nick</mat-label>
-              <input
-                matInput
-                [formControl]="playerSearchControl"
-                [matAutocomplete]="playerAutocomplete"
-                placeholder="Type at least 2 characters..."
-                data-test-id="input-player-search"
-              />
-              <mat-autocomplete
-                #playerAutocomplete="matAutocomplete"
-                [displayWith]="displayPlayerFn"
-              >
-                @for (player of filteredPlayers; track player.id) {
-                  <mat-option [value]="player" (onSelectionChange)="onPlayerSelected(player)">
-                    <app-player-cell
-                      [nick]="player.nick"
-                      [country]="player.country"
-                      [playerId]="player.id"
-                    ></app-player-cell>
-                  </mat-option>
-                }
-              </mat-autocomplete>
-            </mat-form-field>
-            @if (selectedPlayer) {
-              <div class="selected-player">
-                Selected: <app-player-cell [nick]="selectedPlayer.nick" [country]="selectedPlayer.country" [playerId]="selectedPlayer.id"></app-player-cell>
-              </div>
+@if (user$ | async) {
+  <div class="upload-content">
+    <div class="file-upload-row">
+      <input
+        #fileInput
+        (change)="onFileSelected()"
+        type="file"
+        accept=".dm_68"
+        class="hidden-file-input"
+        data-test-id="input-demo-upload"
+      />
+      <div class="file-name-display" (click)="fileInput.click()">
+        {{ fileInput.files?.length ? fileInput.files![0].name : 'Choose demo (.dm_68)' }}
+      </div>
+      @if (playerType === wrPlayerTypes.DFCOMPS_USER) {
+        <div>
+          <input
+            #playerInput
+            class="player-search-input"
+            [disabled]="playerType === wrPlayerTypes.DFCOMPS_USER"
+            [formControl]="playerSearchControl"
+            [matAutocomplete]="playerAutocomplete"
+            placeholder="Choose player"
+            data-test-id="input-player-search"
+          />
+          <mat-autocomplete #playerAutocomplete="matAutocomplete" [displayWith]="displayPlayerFn">
+            @for (player of filteredPlayers; track player.id) {
+              <mat-option [value]="player" (onSelectionChange)="onPlayerSelected(player)">
+                <app-player-cell
+                  [nick]="player.nick"
+                  [country]="player.country"
+                  [playerId]="player.id"
+                  [hoverEventsEnabled]="false"
+                ></app-player-cell>
+              </mat-option>
             }
-          </div>
-        }
-      </div>
-
-      <div class="file-upload-row">
-        <input #fileInput type="file" accept=".dm_68" class="hidden-file-input" data-test-id="input-demo-upload" />
-        <div class="file-name-display" (click)="fileInput.click()">
-          {{ fileInput.files?.length ? fileInput.files![0].name : 'Choose demo (.dm_68)' }}
+          </mat-autocomplete>
         </div>
-        <button
-          mat-raised-button
+      }
+      <button
+        mat-raised-button
+        color="primary"
+        class="upload-button"
+        (click)="upload()"
+        [disabled]="isUploading"
+        data-test-id="button-demo-upload"
+      >
+        @if (isUploading) {
+          <mat-spinner diameter="18" strokeWidth="2" color="accent" class="btn-spinner"></mat-spinner>
+        }
+        <mat-icon>upload</mat-icon>
+        Upload WR
+      </button>
+    </div>
+
+    <div class="player-type-section">
+      <mat-radio-group [(ngModel)]="playerType" (ngModelChange)="onPlayerTypeChange()" class="player-type-group">
+        <mat-radio-button
+          [value]="wrPlayerTypes.MY_DEMO"
           color="primary"
-          class="upload-button"
-          (click)="upload()"
-          [disabled]="isUploading"
-          data-test-id="button-demo-upload"
+          class="player-type-option"
+          data-test-id="radio-my-demo"
         >
-          @if (isUploading) {
-            <mat-spinner diameter="18" strokeWidth="2" color="accent" class="btn-spinner"></mat-spinner>
-          }
-          <mat-icon>upload</mat-icon>
-          Upload WR
-        </button>
-      </div>
+          It's my demo
+        </mat-radio-button>
+        <mat-radio-button
+          [value]="wrPlayerTypes.DF_NAME"
+          color="primary"
+          class="player-type-option"
+          data-test-id="radio-df-name"
+        >
+          Use df_name from demo
+        </mat-radio-button>
+        <mat-radio-button
+          [value]="wrPlayerTypes.DFCOMPS_USER"
+          color="primary"
+          class="player-type-option"
+          data-test-id="radio-dfcomps-user"
+        >
+          Select from dfcomps users
+        </mat-radio-button>
+        @if (selectedPlayer) {
+          <div class="player-selected-arrow">→</div>
+          <app-player-cell
+            [nick]="selectedPlayer.nick"
+            [country]="selectedPlayer.country"
+            [playerId]="selectedPlayer.id"
+            [hoverEventsEnabled]="false"
+          ></app-player-cell>
+        }
+      </mat-radio-group>
     </div>
-  } @else {
-    <div class="login-prompt">
-      <span translate translation="loginOrRegister"></span> to upload world records
-    </div>
-  }
-</div>
+  </div>
+} @else {
+  <div class="login-prompt">
+    <span translate translation="loginOrRegister"></span>
+    to upload world records
+  </div>
+}

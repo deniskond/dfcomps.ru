@@ -3,6 +3,7 @@ import {
   Physics,
   UploadDemoResponseInterface,
   ValidationErrorInterface,
+  WR_PAGINATION_SIZE,
   WrLastFiveItemInterface,
   WrListItemInterface,
   WrListResponseInterface,
@@ -26,7 +27,6 @@ import { WrPlayerType } from './dto/upload-wr-demo.dto';
 import { LoggerService } from '../../shared/services/logger.service';
 
 const WR_DEMOS_SUBDIR = 'demos/wrecords';
-const PAGE_SIZE = 25;
 
 // Filename pattern: mapName[df|mdf.vq3|cpm]mm.ss.mmm(playerName.country)<anything>.dm_68
 // Groups: 1=mapName, 2=df|mdf, 3=physics, 4=minutes, 5=seconds, 6=milliseconds, 7=playerName, 8=country
@@ -199,8 +199,8 @@ export class WorldRecordsService {
 
     const records: WorldRecord[] = await qb
       .orderBy('wr.map', 'ASC')
-      .skip((page - 1) * PAGE_SIZE)
-      .take(PAGE_SIZE)
+      .skip((page - 1) * WR_PAGINATION_SIZE)
+      .take(WR_PAGINATION_SIZE)
       .getMany();
 
     return {

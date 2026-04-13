@@ -9,10 +9,8 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
-import { Physics, WrListItemInterface, WrListResponseInterface } from '@dfcomps/contracts';
+import { Physics, WR_PAGINATION_SIZE, WrListItemInterface, WrListResponseInterface } from '@dfcomps/contracts';
 import { WrDatabaseService } from '../../services/wr-database.service';
-
-const PAGE_SIZE = 25;
 
 @Component({
   selector: 'app-wr-list',
@@ -62,7 +60,7 @@ export class WrListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public get pagesCount(): number {
-    return Math.ceil(this.totalCount / PAGE_SIZE);
+    return Math.ceil(this.totalCount / WR_PAGINATION_SIZE);
   }
 
   public onPhysicsChange(physics: string): void {

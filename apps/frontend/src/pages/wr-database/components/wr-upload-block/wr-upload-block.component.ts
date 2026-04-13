@@ -35,6 +35,7 @@ export enum WrPlayerType {
 export class WrUploadBlockComponent implements OnInit, OnDestroy {
   @Output() uploadSuccess = new EventEmitter<void>();
   @ViewChild('fileInput') fileInput: ElementRef<HTMLInputElement>;
+  @ViewChild('playerInput') playerInput: ElementRef<HTMLInputElement>;
 
   public user$: Observable<UserInterface | null>;
   public playerType = WrPlayerType.MY_DEMO;
@@ -86,7 +87,11 @@ export class WrUploadBlockComponent implements OnInit, OnDestroy {
     this.selectedPlayer = player;
     this.playerSearchControl.setValue(player.nick, { emitEvent: false });
     this.filteredPlayers = [];
-    this.changeDetectorRef.markForCheck();
+
+    setTimeout(() => {
+      this.playerInput.nativeElement.blur();
+      this.changeDetectorRef.markForCheck();
+    }, 0);
   }
 
   public displayPlayerFn(player: WrPlayerSearchItemInterface | string | null): string {
@@ -99,6 +104,10 @@ export class WrUploadBlockComponent implements OnInit, OnDestroy {
     }
 
     return player.nick;
+  }
+
+  public onFileSelected(): void {
+    this.changeDetectorRef.markForCheck();
   }
 
   public upload(): void {

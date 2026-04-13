@@ -1,74 +1,74 @@
-<div class="wr-list-block shadowed-main-block">
-  <div class="list-controls">
-    <mat-form-field appearance="outline" class="filter-field">
-      <mat-label>Filter by map name</mat-label>
-      <input matInput [formControl]="filterControl" placeholder="e.g. st1, hub..." data-test-id="input-map-filter" />
-      <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
+<div class="block-header h1-block-header wr-list-header">World Records List</div>
 
-    <mat-button-toggle-group
-      [value]="selectedPhysics"
-      (change)="onPhysicsChange($event.value)"
-      class="physics-toggle"
-      data-test-id="physics-toggle"
-    >
-      <mat-button-toggle value="">All</mat-button-toggle>
-      <mat-button-toggle [value]="physics.VQ3">VQ3</mat-button-toggle>
-      <mat-button-toggle [value]="physics.CPM">CPM</mat-button-toggle>
-    </mat-button-toggle-group>
+<div class="list-controls">
+  <mat-form-field appearance="outline" class="filter-field">
+    <mat-label>Filter by map name</mat-label>
+    <input matInput [formControl]="filterControl" placeholder="e.g. st1, hub..." data-test-id="input-map-filter" />
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <mat-button-toggle-group
+    [value]="selectedPhysics"
+    (change)="onPhysicsChange($event.value)"
+    class="physics-toggle"
+    data-test-id="physics-toggle"
+  >
+    <mat-button-toggle value="">All</mat-button-toggle>
+    <mat-button-toggle [value]="physics.VQ3">VQ3</mat-button-toggle>
+    <mat-button-toggle [value]="physics.CPM">CPM</mat-button-toggle>
+  </mat-button-toggle-group>
+</div>
+
+@if (isLoading) {
+  <div class="loader">
+    <mat-spinner diameter="50" strokeWidth="4" color="accent"></mat-spinner>
+  </div>
+} @else if (records.length === 0) {
+  <div class="empty-state">No world records found.</div>
+} @else {
+  <div class="wr-table">
+    <div class="wr-table-header wr-row">
+      <div class="col-map table-header">Map</div>
+      <div class="col-player table-header">Player</div>
+      <div class="col-physics table-header">Physics</div>
+      <div class="col-time table-header">Time</div>
+      <div class="col-date table-header">Date</div>
+    </div>
+
+    @for (record of records; track record.map + record.physics) {
+      <div class="wr-row">
+        <div class="col-map">{{ record.map }}</div>
+        <div class="col-player">
+          @if (record.playerId) {
+            <app-player-cell
+              [nick]="record.playerNick!"
+              [country]="record.playerCountry"
+              [playerId]="record.playerId"
+            ></app-player-cell>
+          } @else {
+            <span class="df-name">
+              <app-flag [country]="null"></app-flag>
+              {{ record.playerNick }}
+            </span>
+          }
+        </div>
+        <div class="col-physics">
+          <span class="physics-badge physics-badge--{{ record.physics }}">{{ record.physics | uppercase }}</span>
+        </div>
+        <div class="col-time">
+          <a [href]="record.demoLink" download class="time-link" data-test-id="demo-time-link">
+            {{ formatTime(record.time) }}
+          </a>
+        </div>
+        <div class="col-date">{{ formatDate(record.uploadedAt) }}</div>
+      </div>
+    }
   </div>
 
-  @if (isLoading) {
-    <div class="loader">
-      <mat-spinner diameter="50" strokeWidth="4" color="accent"></mat-spinner>
-    </div>
-  } @else if (records.length === 0) {
-    <div class="empty-state">No world records found.</div>
-  } @else {
-    <div class="wr-table">
-      <div class="wr-table-header wr-row">
-        <div class="col-map table-header">Map</div>
-        <div class="col-player table-header">Player</div>
-        <div class="col-physics table-header">Physics</div>
-        <div class="col-time table-header">Time</div>
-        <div class="col-date table-header">Date</div>
-      </div>
-
-      @for (record of records; track record.map + record.physics) {
-        <div class="wr-row">
-          <div class="col-map">{{ record.map }}</div>
-          <div class="col-player">
-            @if (record.playerId) {
-              <app-player-cell
-                [nick]="record.playerNick!"
-                [country]="record.playerCountry"
-                [playerId]="record.playerId"
-              ></app-player-cell>
-            } @else {
-              <span class="df-name">
-                <app-flag [country]="null"></app-flag>
-                {{ record.playerNick }}
-              </span>
-            }
-          </div>
-          <div class="col-physics">
-            <span class="physics-badge physics-badge--{{ record.physics }}">{{ record.physics | uppercase }}</span>
-          </div>
-          <div class="col-time">
-            <a [href]="record.demoLink" download class="time-link" data-test-id="demo-time-link">
-              {{ formatTime(record.time) }}
-            </a>
-          </div>
-          <div class="col-date">{{ formatDate(record.uploadedAt) }}</div>
-        </div>
-      }
-    </div>
-
-    <app-pagination
-      [currentPage]="currentPage"
-      [totalPagesCount]="pagesCount"
-      [componentPagesCount]="10"
-      (pageChange)="onPageChange($event)"
-    ></app-pagination>
-  }
-</div>
+  <app-pagination
+    [currentPage]="currentPage"
+    [totalPagesCount]="pagesCount"
+    [componentPagesCount]="10"
+    (pageChange)="onPageChange($event)"
+  ></app-pagination>
+}
