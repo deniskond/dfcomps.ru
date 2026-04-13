@@ -66,10 +66,16 @@
   align-items: center;
   gap: 6px;
   white-space: nowrap;
+
+  &.uploading {
+    padding-left: 44px;
+  }
 }
 
 .btn-spinner {
-  display: inline-block;
+  position: absolute;
+  top: -3px;
+  left: -31px;
 }
 
 .player-selected-arrow {
@@ -82,7 +88,6 @@
 
 .login-prompt {
   padding: 8px 0;
-  color: var(--base-text-color);
 }
 
 .upload-rules-text {
@@ -98,9 +103,33 @@
     align-items: center;
     padding-top: 2px;
     padding-left: 0 !important;
+    color: var(--base-font-color) !important;
   }
 
   .mdc-radio__background::before {
     display: none;
+  }
+
+  .mdc-radio__outer-circle {
+    border-color: var(--base-font-color) !important;
+  }
+
+  .mat-mdc-raised-button {
+    .mdc-button__label,
+    mat-icon {
+      margin-top: 3px;
+    }
+  }
+
+  .mat-mdc-autocomplete-panel {
+    background: var(--base-background) !important;
+  }
+
+  .mat-mdc-option {
+    color: var(--base-font-color) !important;
+  }
+
+  .mat-mdc-option:hover:not(.mdc-list-item--disabled) {
+    background: var(--base-background-hover-color) !important;
   }
 }

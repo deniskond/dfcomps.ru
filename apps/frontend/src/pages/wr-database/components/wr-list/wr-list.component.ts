@@ -11,6 +11,7 @@ import { FormControl } from '@angular/forms';
 import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
 import { Physics, WR_PAGINATION_SIZE, WrListItemInterface, WrListResponseInterface } from '@dfcomps/contracts';
 import { WrDatabaseService } from '../../services/wr-database.service';
+import { LanguageService } from '~shared/services/language/language.service';
 
 @Component({
   selector: 'app-wr-list',
@@ -29,12 +30,14 @@ export class WrListComponent implements OnInit, OnChanges, OnDestroy {
   public selectedPhysics: Physics | null = null;
   public filterControl = new FormControl('');
   public isLoading = false;
+  public filterByMapNameText: string;
 
   private destroy$ = new Subject<void>();
 
   constructor(
     private wrDatabaseService: WrDatabaseService,
     private changeDetectorRef: ChangeDetectorRef,
+    private languageService: LanguageService,
   ) {}
 
   ngOnInit(): void {
@@ -45,6 +48,14 @@ export class WrListComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(() => {
         this.currentPage = 0;
         this.loadRecords();
+      });
+
+    this.languageService
+      .getTranslations$()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((translations) => {
+        this.filterByMapNameText = translations['filterByMapName'];
+        this.changeDetectorRef.markForCheck();
       });
   }
 

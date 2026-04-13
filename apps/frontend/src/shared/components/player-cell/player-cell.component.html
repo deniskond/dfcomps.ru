@@ -23,7 +23,7 @@
       (mouseenter)="darkenPlayerRow()"
       (mouseleave)="lightenPlayerRow()"
       (click)="navigateToPlayerProfile(playerId)"
-      class="player-nick-container no-hover"
+      class="player-nick-container"
     >
       <app-flag [country]="country" [class.light]="style === playerCellStyles.TRANSPARENT" class="flag"></app-flag>
       <div

@@ -1,4 +1,4 @@
-<div class="block-header h1-block-header">Upload World Record</div>
+<div translate translation="uploadWorldRecord" class="block-header h1-block-header"></div>
 
 @if (user$ | async) {
   <div class="upload-content">
@@ -12,7 +12,7 @@
         data-test-id="input-demo-upload"
       />
       <div class="file-name-display" (click)="fileInput.click()">
-        {{ fileInput.files?.length ? fileInput.files![0].name : 'Choose demo (.dm_68)' }}
+        {{ fileInput.files?.length ? fileInput.files![0].name : chooseDemoText }}
       </div>
       @if (playerType === wrPlayerTypes.DFCOMPS_USER) {
         <div>
@@ -22,7 +22,7 @@
             [disabled]="playerType === wrPlayerTypes.DFCOMPS_USER"
             [formControl]="playerSearchControl"
             [matAutocomplete]="playerAutocomplete"
-            placeholder="Choose player"
+            [placeholder]="choosePlayerText"
             data-test-id="input-player-search"
           />
           <mat-autocomplete #playerAutocomplete="matAutocomplete" [displayWith]="displayPlayerFn">
@@ -45,13 +45,16 @@
         class="upload-button"
         (click)="upload()"
         [disabled]="isUploading"
+        [class.uploading]="isUploading"
         data-test-id="button-demo-upload"
       >
         @if (isUploading) {
           <mat-spinner diameter="18" strokeWidth="2" color="accent" class="btn-spinner"></mat-spinner>
         }
-        <mat-icon>upload</mat-icon>
-        Upload WR
+        @if (!isUploading) {
+          <mat-icon>upload</mat-icon>
+        }
+        <span translate translation="uploadWr"></span>
       </button>
     </div>
 
@@ -63,7 +66,7 @@
           class="player-type-option"
           data-test-id="radio-my-demo"
         >
-          It's my demo
+          <span translate translation="itsMyDemo"></span>
         </mat-radio-button>
         <mat-radio-button
           [value]="wrPlayerTypes.DF_NAME"
@@ -71,7 +74,7 @@
           class="player-type-option"
           data-test-id="radio-df-name"
         >
-          Use df_name from demo
+          <span translate translation="useDfName"></span>
         </mat-radio-button>
         <mat-radio-button
           [value]="wrPlayerTypes.DFCOMPS_USER"
@@ -79,7 +82,7 @@
           class="player-type-option"
           data-test-id="radio-dfcomps-user"
         >
-          Select from dfcomps users
+          <span translate translation="selectFromUsers"></span>
         </mat-radio-button>
         @if (selectedPlayer) {
           <div class="player-selected-arrow">→</div>
@@ -92,15 +95,11 @@
         }
       </mat-radio-group>
     </div>
-    <div class="upload-rules-text">
-      Можно загрузить любое демо на карте, на которой демо ещё не загружено, либо демо, тайм которого строго меньше
-      текущего рекорда на карте. К загруженным демо применяются проверки валидации стандартного конфига и правила
-      оффлайн-турниров.
-    </div>
+    <div translate translation="uploadWrRules" class="upload-rules-text"></div>
   </div>
 } @else {
   <div class="login-prompt">
     <span translate translation="loginOrRegister"></span>
-    to upload world records
+    <span translate translation="toUploadWr"></span>
   </div>
 }

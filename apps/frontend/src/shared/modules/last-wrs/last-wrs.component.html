@@ -3,12 +3,12 @@
     <mat-spinner diameter="30" strokeWidth="3" color="accent"></mat-spinner>
   </div>
 } @else if (records.length === 0) {
-  <div class="empty-state">No world records yet.</div>
+  <div translate translation="noWrFound" class="empty-state"></div>
 } @else {
   <div class="last-wrs-header">
-    <div class="cell header map">Map</div>
-    <div class="cell header player">Player</div>
-    <div class="cell header time">Time</div>
+    <div translate translation="map" class="cell header map"></div>
+    <div translate translation="player" class="cell header player"></div>
+    <div translate translation="time" class="cell header time"></div>
   </div>
 
   @for (record of records; track record.map + record.physics) {

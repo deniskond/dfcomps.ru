@@ -18,6 +18,7 @@ import { UserInterface } from '~shared/interfaces/user.interface';
 import { UserService } from '~shared/services/user-service/user.service';
 import { WrDatabaseService } from '../../services/wr-database.service';
 import { ValidationDialogComponent } from '~shared/components/validation-dialog/validation-dialog.component';
+import { LanguageService } from '~shared/services/language/language.service';
 
 export enum WrPlayerType {
   MY_DEMO = 'MY_DEMO',
@@ -44,6 +45,8 @@ export class WrUploadBlockComponent implements OnInit, OnDestroy {
   public playerSearchControl = new FormControl('');
   public filteredPlayers: WrPlayerSearchItemInterface[] = [];
   public selectedPlayer: WrPlayerSearchItemInterface | null = null;
+  public chooseDemoText: string;
+  public choosePlayerText: string;
 
   private destroy$ = new Subject<void>();
 
@@ -53,6 +56,7 @@ export class WrUploadBlockComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private changeDetectorRef: ChangeDetectorRef,
+    private languageService: LanguageService,
   ) {}
 
   ngOnInit(): void {
@@ -68,6 +72,15 @@ export class WrUploadBlockComponent implements OnInit, OnDestroy {
       )
       .subscribe((players) => {
         this.filteredPlayers = players;
+        this.changeDetectorRef.markForCheck();
+      });
+
+    this.languageService
+      .getTranslations$()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((translations) => {
+        this.chooseDemoText = translations['chooseDemo'];
+        this.choosePlayerText = translations['choosePlayer'];
         this.changeDetectorRef.markForCheck();
       });
   }
