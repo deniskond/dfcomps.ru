@@ -23,6 +23,7 @@ export class PlayerCellComponent {
   @Input() playerId: number;
   @Input() style = PlayerCellStyles.LIGHT;
   @Input() hoverEventsEnabled = true;
+  @Input() maxPlayerNameWidth: number = 172;
 
   constructor(private router: Router) {}
 

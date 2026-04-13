@@ -9,7 +9,12 @@
       class="player-nick-container"
     >
       <app-flag [country]="country" [class.light]="style === playerCellStyles.TRANSPARENT" class="flag"></app-flag>
-      <div [class.light]="style === playerCellStyles.TRANSPARENT" class="player-nick" data-test-id="text-player-nick">
+      <div
+        [class.light]="style === playerCellStyles.TRANSPARENT"
+        [style.max-width.px]="maxPlayerNameWidth"
+        class="player-nick"
+        data-test-id="text-player-nick"
+      >
         {{ nick }}
       </div>
     </div>
@@ -21,7 +26,12 @@
       class="player-nick-container no-hover"
     >
       <app-flag [country]="country" [class.light]="style === playerCellStyles.TRANSPARENT" class="flag"></app-flag>
-      <div [class.light]="style === playerCellStyles.TRANSPARENT" class="player-nick" data-test-id="text-player-nick">
+      <div
+        [class.light]="style === playerCellStyles.TRANSPARENT"
+        [style.max-width.px]="maxPlayerNameWidth"
+        class="player-nick"
+        data-test-id="text-player-nick"
+      >
         {{ nick }}
       </div>
     </div>

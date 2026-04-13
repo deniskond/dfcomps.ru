@@ -1,6 +1,7 @@
 :host {
   display: block;
   background: var(--base-background);
+  height: 192px;
 }
 
 .loader {
@@ -16,74 +17,77 @@
   color: var(--base-text-color);
 }
 
-.wr-rows {
-  padding: 4px 0;
-}
-
-.wr-row {
-  padding: 6px 10px;
-  border-bottom: 1px solid var(--base-border-color);
-
-  &:last-child {
-    border-bottom: none;
-  }
-}
-
-.wr-map-line {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 2px;
-}
-
-.map-link {
-  color: var(--accent-color);
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: bold;
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-.wr-time {
-  font-family: monospace;
-  font-size: 12px;
-  flex-shrink: 0;
-  color: var(--base-text-color);
-}
-
-.physics-badge {
-  display: inline-block;
-  padding: 1px 5px;
-  border-radius: 3px;
-  font-size: 10px;
-  font-weight: bold;
-  flex-shrink: 0;
-
-  &--vq3 {
-    background: rgba(66, 133, 244, 0.2);
-    color: #4285f4;
-  }
-
-  &--cpm {
-    background: rgba(234, 67, 53, 0.2);
-    color: #ea4335;
-  }
-}
-
-.wr-player-line {
-  font-size: 12px;
-}
-
 .df-name {
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 12px;
+  font-size: 14px;
+  padding-left: 8px;
+}
+
+.df-name-caption {
+  width: 72px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.last-wrs-header {
+  background: var(--base-background-hover-color);
+  height: 32px;
+  border-bottom: 1px solid var(--divider-border-color);
+  display: flex;
+}
+
+.row {
+  display: flex;
+  border-bottom: 1px solid var(--divider-border-color);
+  height: 32px;
+
+  &:last-of-type {
+    border-bottom: 0;
+  }
+}
+
+.cell {
+  border-right: 1px solid var(--base-border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  :last-of-type {
+    border-right: 0;
+  }
+
+  &.map {
+    display: block;
+    width: 125px;
+    line-height: 32px;
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &.header {
+      display: flex;
+      font-weight: normal;
+    }
+  }
+
+  &.player {
+    width: 105px;
+  }
+
+  &.time {
+    width: 90px;
+    gap: 4px;
+  }
+
+  &.left {
+    justify-content: flex-start;
+  }
+
+  &.padding {
+    padding-left: 8px;
+  }
 }

@@ -16,7 +16,8 @@ export class MainSiteComponent implements OnInit {
   public physics = Physics;
   public nextCupInfo$ = new ReplaySubject<CupInterface>(1);
   public server$: Observable<string | null>;
-  public activePage = Math.random() > 0.5 ? 1 : 2;
+  public activeRatingPage = Math.random() > 0.5 ? 1 : 2;
+  public activeWrPage = Math.random() > 0.5 ? 1 : 2;
   public ratingtablesModes = RatingTablesModes;
   public isMlp = false;
 
@@ -46,8 +47,12 @@ export class MainSiteComponent implements OnInit {
     this.isMlp = moment().date() === 1 && moment().month() === 3;
   }
 
-  public setTab(index: number): void {
-    this.activePage = index;
+  public setRatingTab(index: number): void {
+    this.activeRatingPage = index;
+  }
+
+  public setWrTab(index: number): void {
+    this.activeWrPage = index;
   }
 
   public getCupTimerName(nextCupInfo: CupInterface): string {

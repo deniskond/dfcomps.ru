@@ -5,29 +5,35 @@
 } @else if (records.length === 0) {
   <div class="empty-state">No world records yet.</div>
 } @else {
-  <div class="wr-rows">
-    @for (record of records; track record.map + record.physics) {
-      <div class="wr-row">
-        <div class="wr-map-line">
-          <a routerLink="/wr-database" class="map-link">{{ record.map }}</a>
-          <div class="wr-player-line">
-            @if (record.playerId) {
-              <app-player-cell
-                [nick]="record.playerNick!"
-                [country]="record.playerCountry"
-                [playerId]="record.playerId"
-              ></app-player-cell>
-            } @else {
-              <span class="df-name">
-                <app-flag [country]="null"></app-flag>
-                {{ record.playerNick }}
-              </span>
-            }
-          </div>
-          <span class="physics-badge physics-badge--{{ record.physics }}">{{ record.physics | uppercase }}</span>
-          <span class="wr-time">{{ formatTime(record.time) }}</span>
-        </div>
-      </div>
-    }
+  <div class="last-wrs-header">
+    <div class="cell header map">Map</div>
+    <div class="cell header player">Player</div>
+    <div class="cell header time">Time</div>
   </div>
+
+  @for (record of records; track record.map + record.physics) {
+    <div class="row">
+      <div class="cell map left padding">
+        {{ record.map }}
+      </div>
+      <div class="cell player left">
+        @if (record.playerId) {
+          <app-player-cell
+            [nick]="record.playerNick!"
+            [country]="record.playerCountry"
+            [playerId]="record.playerId"
+            [maxPlayerNameWidth]="72"
+          ></app-player-cell>
+        } @else {
+          <div class="df-name">
+            <app-flag [country]="null"></app-flag>
+            <div class="df-name-caption">{{ record.playerNick }}</div>
+          </div>
+        }
+      </div>
+      <div class="cell time">
+        <a href="#" class="wr-time">{{ formatTime(record.time) }}</a>
+      </div>
+    </div>
+  }
 }
