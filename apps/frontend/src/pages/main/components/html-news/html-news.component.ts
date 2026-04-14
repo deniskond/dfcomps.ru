@@ -36,7 +36,7 @@ export class HtmlNewsComponent implements OnInit, OnDestroy {
         const newsHtml = language === Languages.RU ? this.news.text : this.news.textEn;
 
         this.newsHtml = this.domSanitizer.bypassSecurityTrustHtml(
-          newsHtml ? this.getNewsWithSmilesAndFlags(newsHtml) : '',
+          newsHtml ? this.getNewsWithSmilesAndFlags(newsHtml.replace(/&nbsp;/g, ' ')) : '',
         );
         this.changeDetectorRef.markForCheck();
       });
