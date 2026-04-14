@@ -188,7 +188,7 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
   itsMyDemo: `It's my demo`,
   useDfName: 'Use df_name from demo',
   selectFromUsers: 'Select from dfcomps users',
-  uploadWrRules: `You can upload any demo on a map that does not yet have a demo uploaded, or a demo whose time is strictly lower than the current record on that map. Uploaded demos are subject to standard config validation checks and offline tournament rules.`,
+  uploadWrRules: `You can upload any demo on a map that does not yet have a demo uploaded, or a demo whose time is strictly lower than the current record on that map. Only settings from the standard config and the time resets are validated upon upload. All types of overbounces and the use of map-specific online mechanics are allowed, only demos with cheats will be removed.`,
   choosePlayer: 'Choose player',
   chooseDemo: 'Choose demo (.dm_68)',
   toUploadWr: 'to upload world records',
