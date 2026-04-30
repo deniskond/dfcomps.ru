@@ -31,6 +31,7 @@ import {
   SetPlayerServerDto,
   OnlineCupRoundResultsInterface,
   NewsStreamInterface,
+  AdminTimerCupInterface,
 } from '@dfcomps/contracts';
 import * as moment from 'moment';
 
@@ -348,6 +349,14 @@ export class AdminDataService {
 
   public uploadNewsImage$(image: File): Observable<UploadedFileLinkInterface> {
     return this.backendService.uploadFile$(URL_PARAMS.ADMIN.UPLOAD_NEWS_IMAGE, [{ fileKey: 'image', file: image }]);
+  }
+
+  public getTimerCup$(): Observable<AdminTimerCupInterface> {
+    return this.backendService.get$<AdminTimerCupInterface>(URL_PARAMS.ADMIN.GENERAL.GET_TIMER_CUP);
+  }
+
+  public setTimerCup$(cupId: number | null): Observable<void> {
+    return this.backendService.post$<void>(URL_PARAMS.ADMIN.GENERAL.SET_TIMER_CUP, { cupId });
   }
 
   public finishMulticup$(multicupId: number): Observable<void> {

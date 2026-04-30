@@ -33,6 +33,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { AdminWarcupSelectionComponent } from './ui/admin-warcup-selection/admin-warcup-selection.component';
 import { CupTimerModule } from '~shared/modules/cup-timer/cup-timer.module';
 import { MatDialogModule } from '@angular/material/dialog';
+import { AdminGeneralComponent } from './ui/admin-general/admin-general.component';
+import { HasAdminRights } from './business/has-admin-rights.guard';
 
 const adminRoutes: Routes = [
   {
@@ -108,6 +110,11 @@ const adminRoutes: Routes = [
         children: [{ path: '', component: AdminSeasonComponent }],
         canActivate: [HasSuperadminRights],
       },
+      {
+        path: 'general',
+        component: AdminGeneralComponent,
+        canActivate: [HasAdminRights],
+      },
     ],
   },
 ];
@@ -129,6 +136,7 @@ const adminRoutes: Routes = [
     AdminInputResultsComponent,
     AdminInputRoundResultComponent,
     AdminWarcupSelectionComponent,
+    AdminGeneralComponent,
   ],
   imports: [
     RouterModule.forChild(adminRoutes),
@@ -149,6 +157,6 @@ const adminRoutes: Routes = [
     CupTimerModule,
     MatDialogModule,
   ],
-  providers: [HasAdminPanelAccess, HasSuperadminRights],
+  providers: [HasAdminPanelAccess, HasSuperadminRights, HasAdminRights],
 })
 export class AdminModule {}

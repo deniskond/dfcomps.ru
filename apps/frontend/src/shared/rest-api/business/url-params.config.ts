@@ -252,6 +252,10 @@ export class URL_PARAMS {
       ADMIN_SUGGEST: string;
     };
     UPLOAD_NEWS_IMAGE: string;
+    GENERAL: {
+      GET_TIMER_CUP: string;
+      SET_TIMER_CUP: string;
+    };
   } {
     return {
       GET_NEWS: `${API_URL}/admin/news/get-all-news`,
@@ -304,6 +308,10 @@ export class URL_PARAMS {
         ADMIN_SUGGEST: `${API_URL}/admin/cups/warcup-suggest`,
       },
       UPLOAD_NEWS_IMAGE: `${API_URL}/admin/news/upload-news-image`,
+      GENERAL: {
+        GET_TIMER_CUP: `${API_URL}/admin/general/get-timer-cup`,
+        SET_TIMER_CUP: `${API_URL}/admin/general/set-timer-cup`,
+      },
     };
   }
 }

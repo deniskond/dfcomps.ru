@@ -47,6 +47,14 @@
             icon="event_repeat"
           ></admin-menu-item>
         }
+        @if (hasGeneralAccess(user)) {
+          <admin-menu-item
+            [isActive]="navigationPage === 'general'"
+            routerLink="/admin/general"
+            caption="General"
+            icon="settings"
+          ></admin-menu-item>
+        }
       }
     </div>
   }

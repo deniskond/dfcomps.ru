@@ -52,4 +52,8 @@ export class AdminPageComponent implements OnInit {
   public hasWarcupAdminAccess(user: UserInterface): boolean {
     return checkUserRoles(user.roles, [UserRoles.WARCUP_ADMIN]);
   }
+
+  public hasGeneralAccess(user: UserInterface): boolean {
+    return checkUserRoles(user.roles, [UserRoles.ADMIN]);
+  }
 }

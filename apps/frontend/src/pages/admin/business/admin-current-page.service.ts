@@ -15,6 +15,7 @@ export class AdminCurrentPageService {
     season: 'season',
     multicups: 'multicups',
     'warcup-selection': 'warcup-selection',
+    general: 'general',
   };
   private currentPageMap: Record<string, string> = {
     cups: 'cups',
@@ -23,6 +24,7 @@ export class AdminCurrentPageService {
     season: 'season',
     multicups: 'multicups',
     'warcup-selection': 'Warcup Selection',
+    general: 'General',
   };
 
   constructor(private router: Router) {}
