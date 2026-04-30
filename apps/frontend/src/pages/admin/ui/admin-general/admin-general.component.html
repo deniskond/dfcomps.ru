@@ -1,6 +1,6 @@
 <mat-card class="container">
   @if (isLoaded) {
-    <div style="display:flex;align-items:center;">
+    <div class="cup-timer-row">
       <div class="card-header">Cup timer override</div>
       <mat-form-field appearance="outline" class="cup-select">
         <mat-select [value]="selectedCupId ?? 0" (selectionChange)="onCupSelect($event.value)">
