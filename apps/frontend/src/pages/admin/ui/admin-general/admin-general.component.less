@@ -1,0 +1,54 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.card-header {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.cup-select {
+  margin-left: 12px;
+  width: 300px;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+::ng-deep {
+  .mat-mdc-form-field-infix {
+    min-height: unset !important;
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+  }
+
+  .mat-mdc-option {
+    min-height: 36px !important;
+  }
+
+  .mat-mdc-select-panel {
+    padding: 0 !important;
+  }
+
+  .mat-mdc-select {
+    letter-spacing: 0 !important;
+  }
+
+  .mat-mdc-text-field-wrapper {
+    padding-left: 12px !important;
+  }
+
+  .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+
+  .mat-mdc-select-panel {
+    max-height: 300px !important;
+  }
+}
