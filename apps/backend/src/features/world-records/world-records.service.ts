@@ -371,14 +371,6 @@ export class WorldRecordsService {
       };
     }
 
-    if (parseInt(demoConfig.defragVersion) < 19123) {
-      valid = false;
-      errors.defrag_version = {
-        actual: demoConfig.defragVersion,
-        expected: '1.91.23 or higher',
-      };
-    }
-
     if (demoConfig.physic !== physics) {
       valid = false;
       errors.physics = {
