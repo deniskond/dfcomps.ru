@@ -420,7 +420,7 @@ export class CupService {
     const dfcompsCupWithSuggestedMap: Cup | null = await this.cupRepository
       .createQueryBuilder('cups')
       .where(
-        `map1 = '${normalizedMapname}' OR map2 = '${normalizedMapname}' OR map3 = '${normalizedMapname}' OR map4 = '${normalizedMapname}' OR map5 = '${normalizedMapname}'`,
+        `LOWER(map1) = '${normalizedMapname}' OR LOWER(map2) = '${normalizedMapname}' OR LOWER(map3) = '${normalizedMapname}' OR LOWER(map4) = '${normalizedMapname}' OR LOWER(map5) = '${normalizedMapname}'`,
       )
       .getOne();
 
@@ -513,7 +513,7 @@ export class CupService {
     const cupWithSuggestedMap: Cup | null = await this.cupRepository
       .createQueryBuilder('cups')
       .where(
-        `map1 = '${normalizedMapname}' OR map2 = '${normalizedMapname}' OR map3 = '${normalizedMapname}' OR map4 = '${normalizedMapname}' OR map5 = '${normalizedMapname}'`,
+        `LOWER(map1) = '${normalizedMapname}' OR LOWER(map2) = '${normalizedMapname}' OR LOWER(map3) = '${normalizedMapname}' OR LOWER(map4) = '${normalizedMapname}' OR LOWER(map5) = '${normalizedMapname}'`,
       )
       .getOne();
 
