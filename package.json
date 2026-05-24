@@ -99,7 +99,7 @@
     "sharp": "0.34.5",
     "typeorm": "0.3.28",
     "uuid": "11.0.0",
-    "ws": "8.20.0",
+    "ws": "8.20.1",
     "zone.js": "0.16.1"
   },
   "devDependencies": {
