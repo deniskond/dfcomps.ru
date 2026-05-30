@@ -1411,6 +1411,10 @@ export class AdminCupsService {
    * @param table
    */
   private addTop3BonusRatings(table: TableEntryWithRatingInterface[]): TableEntryWithRatingInterface[] {
+    if (!table.length) {
+      return [];
+    }
+
     const resultTable: TableEntryWithRatingInterface[] = [...table];
     let bonusCoefficientForNumberOfPlayers = (resultTable.length - 3) / 27;
 
