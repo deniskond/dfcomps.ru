@@ -172,7 +172,7 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
   mapWasntOnCompetitions: `Map wasn't on dfcomps competitions`,
   mapSuggested: 'Map was sent as a suggestion for Warcup',
   suggestionGrayHint: 'Suggestion will be available again at the next warcup',
-  seasonPeriod: '20 December 2025 - 27 June 2025',
+  seasonPeriod: '27 June 2026 - 26 December 2026',
   forMappers: 'For mappers',
   mappersSuggestionInfo: 'if you want to suggest your new map on warcup, write PM in Discord n0sf',
   score: 'Score',

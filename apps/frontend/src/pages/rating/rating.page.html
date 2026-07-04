@@ -11,7 +11,7 @@
     @if (currentSeason !== selectedSeason) {
       <h1 class="h1-block-header">
         <span translate translation="seasonRatingList"></span>
-        <span>&nbsp;{{ selectedSeason }}</span>
+        <span>&nbsp;{{ getSeasonHeaderLabel(selectedSeason) }}</span>
       </h1>
     }
     <div class="top-text">
@@ -29,8 +29,7 @@
           (click)="setSeason(i + 1)"
           class="season-link"
           >
-          <span translate translation="season"></span>
-          <span>&nbsp;{{ i + 1 }}</span>
+          {{ getSeasonLinkLabel(i + 1) }}
         </a>
       }
     </div>
@@ -64,24 +63,14 @@
         }
       </div>
     </div>
-    @if (currentSeason === selectedSeason) {
-      @if ((pagesCount$ | async); as pagesCount;) {
-        <div class="pagination-container">
-          @for (page of range(pagesCount); track page; let i = $index) {
-            <a (click)="loadCurrentSeasonPage(i + 1)">{{ i + 1 }}</a>
-          }
-        </div>
-      }
-    } @else {
-      @if ((pagesCount$ | async); as pagesCount;) {
-        <div class="pagination-container">
-          @for (page of range(pagesCount); track page; let i = $index) {
-            <a (click)="loadPreviousSeasonPage(i + 1)">
-              {{ i + 1 }}
-            </a>
-          }
-        </div>
-      }
+    @if (pagesCount$ | async; as pagesCount) {
+      <app-pagination
+        [currentPage]="currentPage - 1"
+        [totalPagesCount]="pagesCount"
+        [componentPagesCount]="10"
+        (pageChange)="onPageChange($event)"
+        class="pagination"
+      ></app-pagination>
     }
   } @else {
     <div class="loader">

@@ -1,9 +1,10 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { switchMap, ReplaySubject, Subject } from 'rxjs';
-import { range } from 'lodash';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { switchMap, ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { take, finalize } from 'rxjs/operators';
 import { CurrentSeasonService } from '~shared/rest-api';
 import { RatingTablesService } from '~shared/services/rating-tables-service/rating-tables-service';
+import { LanguageService } from '~shared/services/language/language.service';
+import { getSeasonName } from '~shared/helpers';
 import { LeaderTableInterface, Physics } from '@dfcomps/contracts';
 
 const MAX_PLAYERS_PER_PAGE = 100;
@@ -14,27 +15,50 @@ const MAX_PLAYERS_PER_PAGE = 100;
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
-export class RatingPageComponent implements OnInit {
+export class RatingPageComponent implements OnInit, OnDestroy {
   public currentPage = 1;
   public selectedSeason: number;
   public currentSeason: number;
   public vq3Ratings$ = new ReplaySubject<LeaderTableInterface[]>(1);
   public cpmRatings$ = new ReplaySubject<LeaderTableInterface[]>(1);
   public pagesCount$ = new ReplaySubject<number>(1);
-  public range = range;
   public isLoadingVq3$ = new Subject<boolean>();
   public isLoadingCpm$ = new Subject<boolean>();
   public bias = 0;
+
+  private translations: Record<string, string> = {};
+  private onDestroy$ = new Subject<void>();
 
   constructor(
     private ratingTablesService: RatingTablesService,
     private changeDetectorRef: ChangeDetectorRef,
     private currentSeasonService: CurrentSeasonService,
+    private languageService: LanguageService,
   ) {}
 
   ngOnInit(): void {
     this.loadCurrentSeason();
     this.loadCurrentSeasonPage(this.currentPage);
+    this.languageService
+      .getTranslations$()
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((translations: Record<string, string>) => {
+        this.translations = translations;
+        this.changeDetectorRef.markForCheck();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+  }
+
+  public getSeasonLinkLabel(season: number): string {
+    return getSeasonName(season) ?? `${this.translations['season']} ${season}`;
+  }
+
+  public getSeasonHeaderLabel(season: number): string {
+    return getSeasonName(season) ?? `${season}`;
   }
 
   public loadCurrentSeasonPage(page: number): void {
@@ -57,7 +81,10 @@ export class RatingPageComponent implements OnInit {
         take(1),
         finalize(() => this.isLoadingVq3$.next(false)),
       )
-      .subscribe((ratingTable: LeaderTableInterface[]) => this.vq3Ratings$.next(ratingTable));
+      .subscribe((ratingTable: LeaderTableInterface[]) => {
+        this.vq3Ratings$.next(ratingTable);
+        this.changeDetectorRef.markForCheck();
+      });
 
     this.ratingTablesService
       .getRatingTablePage$(Physics.CPM, page)
@@ -65,7 +92,10 @@ export class RatingPageComponent implements OnInit {
         take(1),
         finalize(() => this.isLoadingCpm$.next(false)),
       )
-      .subscribe((ratingTable: LeaderTableInterface[]) => this.cpmRatings$.next(ratingTable));
+      .subscribe((ratingTable: LeaderTableInterface[]) => {
+        this.cpmRatings$.next(ratingTable);
+        this.changeDetectorRef.markForCheck();
+      });
   }
 
   public loadPreviousSeasonPage(page: number): void {
@@ -101,8 +131,12 @@ export class RatingPageComponent implements OnInit {
     this.currentSeason === season ? this.loadCurrentSeasonPage(1) : this.loadPreviousSeasonPage(1);
   }
 
-  public getRange(count: number): Array<null> {
-    return new Array(count).fill(null);
+  public onPageChange(page: number): void {
+    const targetPage = page + 1;
+
+    this.currentSeason === this.selectedSeason
+      ? this.loadCurrentSeasonPage(targetPage)
+      : this.loadPreviousSeasonPage(targetPage);
   }
 
   private loadCurrentSeason(): void {
