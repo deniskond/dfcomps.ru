@@ -7,6 +7,8 @@ export default defineConfig({
     ...nxE2EPreset(__dirname),
     allowCypressEnv: false,
     video: true,
+    viewportWidth: 1920,
+    viewportHeight: 1080,
     setupNodeEvents(on) {
       on('task', {
         async queryDb(queryString) {
