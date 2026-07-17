@@ -131,13 +131,6 @@ Test cases (☐ - needs to be automated, ☑ - already has e2e test):
 ☐ 34. Warcup map admin voting
 ```
 
-## Discord bot
-Designed to bring some dfcomps functionality to discord channels. Currently is not used and is in deprecated state. To run locally:
-
-```bash
-npm run discord-bot
-```
-
 # Server scheme
 
 Everything related to server scheme is stored in `build` folder, main part of which is `build/base-nginx.conf`. Visual interpretation of nginx config and server scheme:

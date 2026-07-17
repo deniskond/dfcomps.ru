@@ -1,7 +1,6 @@
 FROM node:24-alpine AS source
 RUN apk add --no-cache --update python3 make g++
 WORKDIR /opt/app
-COPY decorate-angular-cli.js ./
 COPY package*.json ./
 RUN npm ci
 COPY . .
