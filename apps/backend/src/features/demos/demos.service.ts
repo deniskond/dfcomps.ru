@@ -14,6 +14,7 @@ import { Repository } from 'typeorm';
 import { Cup } from '../../shared/entities/cup.entity';
 import * as moment from 'moment';
 import * as fs from 'fs';
+import * as path from 'path';
 import { AuthService } from '../auth/auth.service';
 import { UserAccessInterface } from '../../shared/interfaces/user-access.interface';
 import { CupDemo } from '../../shared/entities/cup-demo.entity';
@@ -88,7 +89,7 @@ export class DemosService {
       fs.mkdirSync(demoDirectory);
     }
 
-    const fileName = demo.originalname;
+    const fileName = path.basename(demo.originalname);
     const pattern = new RegExp(
       `${mapName}\\[(df|mdf)\\.(vq3|cpm)\\](\\d+)\\.(\\d+)\\.(\\d{3})\\((.*)\\.(.*)\\)\\.dm_68`,
     );
@@ -246,7 +247,7 @@ export class DemosService {
 
     const matchMap: MapInterface = JSON.parse(match.map);
     const mapName = matchMap.name;
-    const fileName = demo.originalname;
+    const fileName = path.basename(demo.originalname);
     const pattern = new RegExp(`${mapName.toLowerCase()}\\[(.*)df\\.(.*)\\](\\d+)\\.(\\d+)\\.(\\d+)\\((.*)\\)\\.dm_68`);
     const patternMatch: RegExpMatchArray | null = fileName.toLowerCase().match(pattern);
 
@@ -359,22 +360,40 @@ export class DemosService {
       throw new BadRequestException('Cup already finished');
     }
 
+    // Reject any demoName that is not a plain filename
+    if (demoName !== path.basename(demoName)) {
+      this.loggerService.error(
+        `Demo delete for cup ${cupId} and demo ${demoName} failed: invalid demo name. User ID: ${userAccess.userId}`,
+      );
+      throw new BadRequestException('Invalid demo name');
+    }
+
+    // Verify the demo belongs to the requesting user before deleting anything
+    const ownedDemo: CupDemo | null = await this.cupsDemosRepository
+      .createQueryBuilder('cups_demos')
+      .where('cups_demos.cupId = :cupId', { cupId: cup.id })
+      .andWhere('cups_demos.userId = :userId', { userId: userAccess.userId })
+      .andWhere('cups_demos.demopath = :demopath', { demopath: demoName })
+      .getOne();
+
+    if (!ownedDemo) {
+      this.loggerService.error(
+        `Demo delete for cup ${cupId} and demo ${demoName} failed: demo not found for user. User ID: ${userAccess.userId}`,
+      );
+      throw new BadRequestException(`No demo with name = ${demoName}`);
+    }
+
     const demoPath: string = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/demos/cup${cup.id}/${demoName}`;
 
     if (fs.existsSync(demoPath)) {
       fs.rmSync(demoPath);
-    } else {
-      this.loggerService.error(
-        `Demo delete for cup ${cupId} and demo ${demoName} failed: demo not found. User ID: ${userAccess.userId}`,
-      );
-      throw new BadRequestException(`No demo with name = ${demoName}`);
     }
 
     await this.cupsDemosRepository
       .createQueryBuilder('cups_demos')
       .delete()
       .from(CupDemo)
-      .where({ demopath: demoName })
+      .where({ id: ownedDemo.id })
       .execute();
 
     const remainingDemos: CupDemo[] = await this.cupsDemosRepository

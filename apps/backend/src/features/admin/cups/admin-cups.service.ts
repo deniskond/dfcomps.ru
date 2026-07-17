@@ -528,6 +528,12 @@ export class AdminCupsService {
       }));
   }
 
+  private assertSafeMapName(mapName: string): void {
+    if (!/^[\w.-]+$/.test(mapName)) {
+      throw new BadRequestException('Invalid map name');
+    }
+  }
+
   public async uploadLevelshot(
     accessToken: string | undefined,
     levelshot: MulterFileInterface,
@@ -538,6 +544,8 @@ export class AdminCupsService {
     if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
       throw new UnauthorizedException('Unauthorized to upload map levelshot, CUP_ORGANIZER role needed');
     }
+
+    this.assertSafeMapName(mapName);
 
     const image: Sharp = await sharp(levelshot.buffer);
     const metadata: Metadata = await image.metadata();
@@ -573,6 +581,8 @@ export class AdminCupsService {
     if (!checkUserRoles(userAccess.roles, [UserRoles.CUP_ORGANIZER])) {
       throw new UnauthorizedException('Unauthorized to upload map pk3, CUP_ORGANIZER role needed');
     }
+
+    this.assertSafeMapName(mapName);
 
     const uuid = v4();
     const relativePath = `/maps/${uuid}/${mapName.toLowerCase()}.pk3`;
