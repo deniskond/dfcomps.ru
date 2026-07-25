@@ -135,7 +135,7 @@
     "@types/node": "24.12.2",
     "@typescript-eslint/eslint-plugin": "8.58.0",
     "@typescript-eslint/parser": "8.58.0",
-    "concurrently": "10.0.3",
+    "concurrently": "10.0.4",
     "cross-env": "10.1.0",
     "cypress": "15.18.1",
     "eslint": "8.57.1",
