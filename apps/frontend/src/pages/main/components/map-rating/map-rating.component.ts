@@ -82,11 +82,12 @@ export class MapRatingComponent implements OnInit, OnDestroy {
   }
 
   public onVoteSubmit(): void {
+    const userVote = this.selectedRating;
+
     this.isRequestInProcess = true;
-    this.userVoteValue$.next(this.selectedRating);
 
     this.cupsService
-      .reviewMap$(this.cupId, this.selectedRating)
+      .reviewMap$(this.cupId, userVote)
       .pipe(
         finalize(() => {
           this.isRequestInProcess = false;
@@ -96,7 +97,9 @@ export class MapRatingComponent implements OnInit, OnDestroy {
       .subscribe(({ mapRating }: MapRatingInterface) => {
         this.componentState = MapRatingComponentState.VOTE_CLOSED;
         this.selectedRating = mapRating;
+        this.voteCount = this.voteCount + 1;
         this.setRatingValues(this.selectedRating);
+        this.userVoteValue$.next(userVote);
         this.changeDetectorRef.markForCheck();
       });
   }
