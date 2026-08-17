@@ -11,7 +11,7 @@
         <div class="row-info">
           @if (!news.cup.customMap) {
             <a
-              href="https://ws.q3df.org/map/{{ news.cup.map1 }}/"
+              [href]="news.cup.mapPk3"
               target="_blank"
               class="map-link"
               data-test-id="cup-map-link"
