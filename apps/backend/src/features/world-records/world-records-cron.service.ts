@@ -16,8 +16,7 @@ export class WorldRecordsCronService {
 
   @Cron('00 03 * * 1', { timeZone: 'Europe/Moscow' })
   async cleanupOldWorldRecords(): Promise<void> {
-    // needs to be replace with 6 month after release tests are complete
-    const sixMonthsAgo = moment().subtract(1, 'day').toDate();
+    const oneMonthAgo = moment().subtract(1, 'month').toDate();
 
     const subQuery = this.worldRecordRepository
       .createQueryBuilder()
@@ -28,18 +27,18 @@ export class WorldRecordsCronService {
       .andWhere('sub.physics = wr.physics')
       .getQuery();
 
-    // Find superseded rows that are older than 6 months
+    // Find the records that are not the best time and that are more than one month old
     const oldRecords: WorldRecord[] = await this.worldRecordRepository
       .createQueryBuilder('wr')
       .where(`wr.time > (${subQuery})`)
-      .andWhere('wr.uploaded_at < :cutoff', { cutoff: sixMonthsAgo })
+      .andWhere('wr.uploaded_at < :cutoff', { cutoff: oneMonthAgo })
       .getMany();
 
     if (!oldRecords.length) {
       return;
     }
 
-    this.loggerService.info(`WR cron: cleaning up ${oldRecords.length} old superseded records`);
+    this.loggerService.info(`WR cron: deleting ${oldRecords.length} old records that are not the best time`);
 
     for (const record of oldRecords) {
       const demoFilePath = process.env.DFCOMPS_FILES_ABSOLUTE_PATH + `/${record.demopath}`;
