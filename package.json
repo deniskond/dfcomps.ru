@@ -60,7 +60,7 @@
     "@nestjs/common": "11.1.28",
     "@nestjs/core": "11.1.28",
     "@nestjs/mapped-types": "2.1.1",
-    "@nestjs/microservices": "11.1.28",
+    "@nestjs/microservices": "11.2.7",
     "@nestjs/platform-express": "11.1.28",
     "@nestjs/schedule": "6.1.1",
     "@nestjs/typeorm": "11.0.1",
