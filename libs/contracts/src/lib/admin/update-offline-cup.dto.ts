@@ -1,6 +1,7 @@
 import { transformBoolean, transformNumber } from '@dfcomps/helpers';
 import { Transform } from 'class-transformer';
-import { IsBoolean, IsNotEmpty } from 'class-validator';
+import { IsBoolean, IsIn, IsNotEmpty } from 'class-validator';
+import { RATING_MODIFIERS, RatingModifier } from './rating-modifier';
 
 export class UpdateOfflineCupDto {
   @IsNotEmpty()
@@ -41,4 +42,8 @@ export class UpdateOfflineCupDto {
 
   @Transform(transformNumber)
   multicupId?: number;
+
+  @IsIn([...RATING_MODIFIERS])
+  @Transform(transformNumber)
+  ratingModifier: RatingModifier;
 }

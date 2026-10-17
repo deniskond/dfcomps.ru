@@ -22,6 +22,9 @@ import {
   AdminEditCupInterface,
   UploadedFileLinkInterface,
   ParsedMapInfoInterface,
+  DEFAULT_RATING_MODIFIER,
+  RATING_MODIFIERS,
+  RatingModifier,
 } from '@dfcomps/contracts';
 import { MatRadioChange } from '@angular/material/radio';
 import * as moment from 'moment-timezone';
@@ -48,6 +51,7 @@ export class AdminOfflineCupComponent implements OnInit {
   public isLoadingCupAction = false;
   public isMulticupRequired = true;
   public componentMode: 'Add' | 'Edit' = 'Add';
+  public ratingModifiers = RATING_MODIFIERS;
   public offlineCupForm: FormGroup = new FormGroup({
     fullName: new FormControl('', Validators.required),
     shortName: new FormControl('', Validators.required),
@@ -72,6 +76,7 @@ export class AdminOfflineCupComponent implements OnInit {
     mapPk3File: new FormControl({ value: '', disabled: true }, Validators.required),
     addNews: new FormControl(true),
     size: new FormControl(''),
+    ratingModifier: new FormControl<RatingModifier>(DEFAULT_RATING_MODIFIER, Validators.required),
   });
 
   private onDestroy$ = new Subject<void>();
@@ -267,6 +272,7 @@ export class AdminOfflineCupComponent implements OnInit {
       mapPk3Link: cup.mapPk3,
       size: cup.size,
       addNews: cup.addNews,
+      ratingModifier: cup.ratingModifier,
     });
 
     if (cup.mapType === 'custom') {

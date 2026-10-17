@@ -6,7 +6,7 @@ import * as moment from 'moment';
 describe('offline cup full cycle', () => {
   before(() => {
     cy.visit('/');
-    addOfflineCup('st1', { needToLogin: true, needToAddNews: true });
+    addOfflineCup('st1', { needToLogin: true, needToAddNews: true, ratingModifier: 50 });
     logOut({ isHeaderVisible: false });
   });
 
@@ -131,12 +131,39 @@ describe('offline cup full cycle', () => {
   });
 
   it('should finish cup correctly', () => {
+    const expectedRatingChange = 30;
+
+    cy.task(
+      'queryDb',
+      `UPDATE users SET vq3_rating = 1500, cpm_rating = 1500 WHERE login IN ('user', 'validator', 'moderator', 'streamer')`,
+    );
+
     loginAs(UserRoles.VALIDATOR);
 
     cy.visit('/admin/cups');
     cy.get('[data-test-id=button-offline-cup-actions]').first().click();
     cy.get('[data-test-id=button-finish-offline-cup]').click();
     cy.get('simple-snack-bar').find('.mat-mdc-snack-bar-label').should('exist');
+
+    cy.task('queryDb', 'SELECT "id", "rating_modifier" FROM cups ORDER BY id DESC LIMIT 1').then(
+      (cupQueryResult: { id: number; rating_modifier: number }[]) => {
+        const { id: cupId } = cupQueryResult[0];
+
+        cy.task(
+          'queryDb',
+          `SELECT users.login, rating_changes.vq3_change, rating_changes.cpm_change FROM rating_changes
+           LEFT JOIN users ON users.id = rating_changes."userId" WHERE rating_changes."cupId" = ${cupId}`,
+        ).then((ratingChanges: { login: string; vq3_change: number | null; cpm_change: number | null }[]) => {
+          const userRatingChange = ratingChanges.find(({ login }) => login === 'user');
+
+          expect(userRatingChange?.vq3_change).to.equal(expectedRatingChange);
+
+          ratingChanges.forEach(({ vq3_change, cpm_change }) => {
+            expect(vq3_change ?? cpm_change).to.equal(expectedRatingChange);
+          });
+        });
+      },
+    );
 
     cy.visit('/');
     cy.get('.news-block').first().find('[data-test-id=text-rating-change]').should('exist');

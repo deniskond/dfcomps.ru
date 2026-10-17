@@ -37,4 +37,5 @@ export interface CupInterface {
   logo: string | null;
   mapRating: number | null;
   voteCount: number;
+  ratingModifier: number;
 }

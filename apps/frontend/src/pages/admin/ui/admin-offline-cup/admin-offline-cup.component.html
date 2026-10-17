@@ -206,6 +206,21 @@
             </div>
           }
         }
+        <div class="input-title">Rating modifier</div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-select formControlName="ratingModifier" data-test-id="offline-cup-rating-modifier-select">
+              @for (ratingModifier of ratingModifiers; track ratingModifier) {
+                <mat-option
+                  [value]="ratingModifier"
+                  [attr.data-test-id]="'offline-cup-rating-modifier-option-' + ratingModifier"
+                  >
+                  {{ ratingModifier }}%
+                </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
         <div class="add-news-label">{{ componentMode }} start and ending news</div>
         <div>
           <mat-checkbox color="primary" formControlName="addNews" data-test-id="offline-cup-add-news-checkbox"></mat-checkbox>

@@ -70,6 +70,7 @@ export const RUSSIAN_TRANSLATIONS: Record<string, string> = {
   wrongEmailFormat: 'Неверный формат e-mail',
   loginAlreadyTaken: 'Логин уже занят',
   bonusRating: 'Бонусный рейтинг',
+  ratingModifier: 'Модификатор рейтинга',
   daysShorthand: 'Дн',
   starting: 'Начало',
   awaitingTournamentStart: 'Ожидание начала турнира',

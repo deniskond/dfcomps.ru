@@ -20,6 +20,7 @@ import {
   ParsedOnlineCupRoundInterface,
   Physics,
   ProcessValidationDto,
+  RatingModifier,
   ResultsTableInterface,
   RoundResultEntryInterface,
   UpdateOfflineCupDto,
@@ -149,6 +150,7 @@ export class AdminCupsService {
       physics: cup.physics,
       maps: [cup.map1, cup.map2, cup.map3, cup.map4, cup.map5],
       currentRound: cup.current_round,
+      ratingModifier: cup.rating_modifier as RatingModifier,
     };
   }
 
@@ -210,6 +212,7 @@ export class AdminCupsService {
         map_pk3: updateOfflineCupDto.mapPk3Link || undefined,
         map_size: updateOfflineCupDto.size,
         multicup: updateOfflineCupDto.multicupId ? { id: updateOfflineCupDto.multicupId } : undefined,
+        rating_modifier: updateOfflineCupDto.ratingModifier,
       })
       .where({ id: cupId })
       .execute();
@@ -1386,6 +1389,7 @@ export class AdminCupsService {
     tableWithCalculatedRatings = this.addTop3BonusRatings(tableWithCalculatedRatings);
     tableWithCalculatedRatings = this.recalculateChangeFor1700(tableWithCalculatedRatings);
     tableWithCalculatedRatings = this.addTwoPhysicsBonus(tableWithCalculatedRatings, otherPhysicsOfflineCupTable);
+    tableWithCalculatedRatings = this.applyRatingModifier(tableWithCalculatedRatings, cup.rating_modifier);
 
     const playersUpdate: Partial<User>[] = tableWithCalculatedRatings.map(
       ({ playerId, ratingChange, rating }: TableEntryWithRatingInterface) => ({
@@ -1506,6 +1510,25 @@ export class AdminCupsService {
         ...demo,
         ratingChange: demo.ratingChange + bothPhysicsBonusRating,
         hasBothPhysicsBonus,
+      };
+    });
+  }
+
+  private applyRatingModifier(
+    table: TableEntryWithRatingInterface[],
+    ratingModifier: number,
+  ): TableEntryWithRatingInterface[] {
+    return table.map((tableEntry: TableEntryWithRatingInterface) => {
+      let ratingChange = Math.round((tableEntry.ratingChange * ratingModifier) / 100);
+
+      // Players below 1700 always get a positive change
+      if (tableEntry.rating < 1700 && ratingChange <= 0) {
+        ratingChange = 1;
+      }
+
+      return {
+        ...tableEntry,
+        ratingChange,
       };
     });
   }

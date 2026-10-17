@@ -126,6 +126,9 @@ export class Cup {
   @Column({ type: 'integer', nullable: true })
   display_vote_count: number | null;
 
+  @Column({ type: 'integer', default: 100 })
+  rating_modifier: number;
+
   @OneToMany(() => CupResult, (cupResult) => cupResult.cup)
   cupResults: CupResult[];
 

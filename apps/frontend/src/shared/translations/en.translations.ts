@@ -70,6 +70,7 @@ export const ENGLISH_TRANSLATIONS: Record<string, string> = {
   wrongEmailFormat: 'Wrong email format',
   loginAlreadyTaken: 'Login already taken',
   bonusRating: 'Bonus rating',
+  ratingModifier: 'Rating modifier',
   daysShorthand: 'Days',
   starting: 'Starting',
   awaitingTournamentStart: 'Awaiting tournament start',

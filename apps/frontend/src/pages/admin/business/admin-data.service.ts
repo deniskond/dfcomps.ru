@@ -179,6 +179,7 @@ export class AdminDataService {
       mapLevelshotLink: formValue['mapLevelshotLink'],
       mapPk3Link: formValue['mapPk3Link'],
       isCustomMap,
+      ratingModifier: formValue['ratingModifier'],
     };
 
     return this.backendService.post$<void>(URL_PARAMS.ADMIN.ADD_OFFLINE_CUP, addOfflineCupDto);
@@ -202,6 +203,7 @@ export class AdminDataService {
       mapLevelshotLink: formValue['mapLevelshotLink'] || undefined,
       mapPk3Link: formValue['mapPk3Link'] || undefined,
       isCustomMap,
+      ratingModifier: formValue['ratingModifier'],
     };
 
     if (formValue['multicup']) {

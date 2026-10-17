@@ -44,5 +44,6 @@ export function mapCupEntityToInterface(
     logo: cup.logo,
     mapRating: cup.map_rating ? Number(cup.map_rating.toFixed(2)) : null,
     voteCount: cup.display_vote_count || 0,
+    ratingModifier: cup.rating_modifier,
   };
 }

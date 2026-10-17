@@ -5,7 +5,10 @@ import * as moment from 'moment';
 
 export function addOfflineCup(
   mapName: string,
-  options: { needToLogin: boolean; needToAddNews: boolean } = { needToLogin: true, needToAddNews: false },
+  options: { needToLogin: boolean; needToAddNews: boolean; ratingModifier?: 20 | 50 | 100 } = {
+    needToLogin: true,
+    needToAddNews: false,
+  },
 ): string {
   const fullName = faker.lorem.words();
   const testAuthorValue = faker.lorem.word();
@@ -56,6 +59,11 @@ export function addOfflineCup(
 
   if (!options.needToAddNews) {
     cy.get('[data-test-id=offline-cup-add-news-checkbox]').click();
+  }
+
+  if (options.ratingModifier) {
+    cy.get('[data-test-id=offline-cup-rating-modifier-select]').click();
+    cy.get(`[data-test-id=offline-cup-rating-modifier-option-${options.ratingModifier}]`).click();
   }
 
   cy.get('[data-test-id=offline-cup-mapauthor-input]').invoke('val').should('contain', testAuthorValue);

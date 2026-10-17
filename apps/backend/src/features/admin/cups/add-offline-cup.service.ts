@@ -1,4 +1,4 @@
-import { AddOfflineCupDto, CupStates, CupTypes, NewsTypes } from '@dfcomps/contracts';
+import { AddOfflineCupDto, CupStates, CupTypes, DEFAULT_RATING_MODIFIER, NewsTypes } from '@dfcomps/contracts';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cup } from 'apps/backend/src/shared/entities/cup.entity';
@@ -60,6 +60,7 @@ export class AdminAddOfflineCupService {
           demos_validated: false,
           multicup: addOfflineCupDto.multicupId ? { id: addOfflineCupDto.multicupId } : null,
           state: CupStates.WAITING_FOR_FINISH,
+          rating_modifier: addOfflineCupDto.ratingModifier ?? DEFAULT_RATING_MODIFIER,
         },
       ])
       .execute();

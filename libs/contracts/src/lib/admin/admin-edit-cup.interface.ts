@@ -1,4 +1,5 @@
 import { Physics } from '../global/physics.enum';
+import { RatingModifier } from './rating-modifier';
 
 export interface AdminEditCupInterface {
   id: number;
@@ -21,4 +22,5 @@ export interface AdminEditCupInterface {
   physics: Physics | 'mixed';
   maps: (string | null)[];
   currentRound: number;
+  ratingModifier: RatingModifier;
 }

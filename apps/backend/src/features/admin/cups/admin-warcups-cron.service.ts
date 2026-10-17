@@ -7,6 +7,7 @@ import { AdminAddOfflineCupService } from './add-offline-cup.service';
 import { WarcupInfo } from 'apps/backend/src/shared/entities/warcup-info.entity';
 import { getMapLevelshot } from 'apps/backend/src/shared/helpers/get-map-levelshot';
 import { getNextWarcupTime } from '@dfcomps/helpers';
+import { DEFAULT_RATING_MODIFIER } from '@dfcomps/contracts';
 import * as moment from 'moment';
 import { WarcupAdminVote } from 'apps/backend/src/shared/entities/warcup-admin-vote.entity';
 
@@ -83,6 +84,7 @@ export class AdminWarcupsCronService {
         mapPk3Link: winnerMap.mapPk3Link,
         multicupId: undefined,
         isCustomMap: false,
+        ratingModifier: DEFAULT_RATING_MODIFIER,
       },
       warcupInfo.warcup_bot_id,
     );
