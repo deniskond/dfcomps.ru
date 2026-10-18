@@ -153,6 +153,9 @@ export class PROFILE_REWARDS {
       [Rewards.TOP3_CPM_ELEVENTH_SEASON]: 'top_3_cpm',
       [Rewards.TOP10_VQ3_ELEVENTH_SEASON]: 'top10',
       [Rewards.TOP10_CPM_ELEVENTH_SEASON]: 'top10',
+      [Rewards.LUCY_CUP_WINNER_VQ3]: 'lucy-icon',
+      [Rewards.LUCY_CUP_WINNER_CPM]: 'lucy-icon',
+      [Rewards.LUCY]: 'lucy-icon',
     };
   }
 }

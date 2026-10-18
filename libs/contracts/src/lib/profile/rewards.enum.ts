@@ -149,4 +149,7 @@ export enum Rewards {
   TOP3_CPM_ELEVENTH_SEASON = 'Top 3 CPM (2026 Winter)',
   TOP10_VQ3_ELEVENTH_SEASON = 'Top 10 VQ3 (2026 Winter)',
   TOP10_CPM_ELEVENTH_SEASON = 'Top 10 CPM (2026 Winter)',
+  LUCY_CUP_WINNER_VQ3 = 'Lucy Cup Winner (VQ3)',
+  LUCY_CUP_WINNER_CPM = 'Lucy Cup Winner (CPM)',
+  LUCY = 'Lucy',
 }
