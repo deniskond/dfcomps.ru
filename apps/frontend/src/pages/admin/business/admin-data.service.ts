@@ -8,6 +8,8 @@ import {
   AdminNewsDto,
   AdminCupInterface,
   AdminValidationInterface,
+  AnticheatDemoCheckInterface,
+  AnticheatPlayerScoresInterface,
   ValidationResultInterface,
   VerifiedStatuses,
   AdminActiveMulticupInterface,
@@ -75,6 +77,14 @@ export class AdminDataService {
 
   public getCupValidationInfo$(newsId: number): Observable<AdminValidationInterface> {
     return this.backendService.get$<AdminValidationInterface>(URL_PARAMS.ADMIN.CUP_VALIDATION(newsId));
+  }
+
+  public checkDemoWithAnticheat$(demoId: number): Observable<AnticheatDemoCheckInterface> {
+    return this.backendService.post$<AnticheatDemoCheckInterface>(URL_PARAMS.ADMIN.ANTICHEAT_CHECK_DEMO(demoId));
+  }
+
+  public getAnticheatPlayerScores$(cupId: number): Observable<AnticheatPlayerScoresInterface> {
+    return this.backendService.get$<AnticheatPlayerScoresInterface>(URL_PARAMS.ADMIN.ANTICHEAT_PLAYER_SCORES(cupId));
   }
 
   public setCups(cups: AdminCupInterface[]): void {

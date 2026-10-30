@@ -1,4 +1,11 @@
 export { AddOfflineCupDto } from './add-offline-cup.dto';
+export { AnticheatDemoCheckInterface } from './anticheat-demo-check.interface';
+export { AnticheatDemoCheckStatus } from './anticheat-demo-check-status.enum';
+export { AnticheatDemoDisplayInterface } from './anticheat-demo-display.interface';
+export { AnticheatDemoSourceInterface } from './anticheat-demo-source.interface';
+export { AnticheatDemoSourcesDto } from './anticheat-demo-sources.dto';
+export { AnticheatPlayerDisplayInterface } from './anticheat-player-display.interface';
+export { AnticheatPlayerScoresInterface } from './anticheat-player-scores.interface';
 export { AdminActiveCupInterface } from './admin-active-cup.interface';
 export { AdminActiveMulticupInterface } from './admin-active-multicup.interface';
 export { AdminCupInterface } from './admin-cup.interface';

@@ -1287,6 +1287,7 @@ export class AdminCupsService {
         }
 
         const addedDemo: AdminPlayerDemosValidationInterface = {
+          playerId: playerDemo.user.id,
           nick: playerDemo.user.displayed_nick,
           country: playerDemo.user.country,
           demos: [

@@ -212,6 +212,8 @@ export class URL_PARAMS {
     DELETE_NEWS: (newsId: number) => string;
     GET_CUPS: string;
     CUP_VALIDATION: (cupId: number) => string;
+    ANTICHEAT_CHECK_DEMO: (demoId: number) => string;
+    ANTICHEAT_PLAYER_SCORES: (cupId: number) => string;
     PROCESS_VALIDATION: (cupId: number) => string;
     CALCULATE_CUP_RATING: (cupId: number) => string;
     FINISH_OFFLINE_CUP: (cupId: number) => string;
@@ -265,6 +267,8 @@ export class URL_PARAMS {
       DELETE_NEWS: (newsId: number) => `${API_URL}/admin/news/delete/${newsId}`,
       GET_CUPS: `${API_URL}/admin/cups/get-all-cups`,
       CUP_VALIDATION: (cupId: number) => `${API_URL}/admin/cups/get-validation-demos/${cupId}`,
+      ANTICHEAT_CHECK_DEMO: (demoId: number) => `${API_URL}/admin/anticheat/validation/check-demo/${demoId}`,
+      ANTICHEAT_PLAYER_SCORES: (cupId: number) => `${API_URL}/admin/anticheat/validation/${cupId}/player-scores`,
       PROCESS_VALIDATION: (cupId: number) => `${API_URL}/admin/cups/process-validation/${cupId}`,
       CALCULATE_CUP_RATING: (cupId: number) => `${API_URL}/admin/cups/calculate-rating/${cupId}`,
       FINISH_OFFLINE_CUP: (cupId: number) => `${API_URL}/admin/cups/finish-offline-cup/${cupId}`,

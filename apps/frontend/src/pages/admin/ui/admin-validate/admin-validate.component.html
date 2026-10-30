@@ -7,7 +7,7 @@
         mat-raised-button
         class="action-button"
         data-test-id="button-set-all-demos-valid"
-        >
+      >
         Set all demos valid
       </button>
       <button
@@ -16,7 +16,7 @@
         mat-raised-button
         class="action-button"
         data-test-id="button-submit-validation"
-        >
+      >
         Submit validation result
       </button>
     </div>
@@ -45,6 +45,15 @@
               [nick]="player.nick"
               [playerId]="player.playerId"
             ></app-player-cell>
+            @if (showAnticheatPlayerScores) {
+              <div class="anticheat-player-score" data-test-id="anticheat-player-score">
+                @if (anticheatPlayerScores[player.playerId]; as score) {
+                  {{ score.label }}: {{ score.value }}
+                } @else {
+                  Score unavailable
+                }
+              </div>
+            }
           </div>
           <div class="cell demos">
             @for (demo of player.demos; track demo) {
@@ -63,7 +72,11 @@
                   </mat-radio-button>
                 </mat-radio-group>
                 <span>Reason:</span>
-                <input [formControlName]="'reason_' + demo.id" class="reason-input" data-test-id="input-invalid-reason" />
+                <input
+                  [formControlName]="'reason_' + demo.id"
+                  class="reason-input"
+                  data-test-id="input-invalid-reason"
+                />
               </div>
             }
           </div>
@@ -71,10 +84,65 @@
             @for (demo of player.demos; track demo) {
               <div class="demo-cell">
                 <mat-checkbox color="primary" [formControlName]="'impressive_' + demo.id">
-                  <img src="../../../../../assets/images/icons/impressive.png" style="width: 16px; height: 16px;margin-top: 5px;" />
+                  <img
+                    src="../../../../../assets/images/icons/impressive.png"
+                    style="width: 16px; height: 16px; margin-top: 5px"
+                  />
                 </mat-checkbox>
                 <mat-checkbox color="primary" [formControlName]="'org_' + demo.id">Org</mat-checkbox>
                 <mat-checkbox color="primary" [formControlName]="'exclude_' + demo.id">Exclude</mat-checkbox>
+              </div>
+            }
+          </div>
+          <div class="anticheat-row">
+            @for (demo of player.demos; track demo) {
+              <div class="anticheat-demo" data-test-id="anticheat-demo">
+                <div class="anticheat-demo-time">{{ demo.time | invokeFunction: formatTime }}</div>
+                @if (anticheatChecks[demo.id]; as check) {
+                  @switch (check.status) {
+                    @case (anticheatStatuses.CHECKED) {
+                      <div class="anticheat-summary">
+                        @for (row of check.display!.summary; track $index) {
+                          <span>
+                            {{ row.label }}:
+                            <b>{{ row.value }}</b>
+                          </span>
+                        }
+                      </div>
+                      @for (warning of check.display!.warnings; track $index) {
+                        <div class="anticheat-warning">{{ warning }}</div>
+                      }
+                      @for (table of check.display!.tables; track $index) {
+                        <div class="anticheat-table-title">{{ table.title }}</div>
+                        <table class="anticheat-table">
+                          <tr>
+                            @for (column of table.columns; track $index) {
+                              <th>{{ column }}</th>
+                            }
+                          </tr>
+                          @for (row of table.rows; track $index) {
+                            <tr>
+                              @for (value of row; track $index) {
+                                <td>{{ value }}</td>
+                              }
+                            </tr>
+                          }
+                        </table>
+                      }
+                    }
+                    @case (anticheatStatuses.NOT_A_DEMO) {
+                      <div>Not a valid demo file</div>
+                    }
+                    @case (anticheatStatuses.NOT_STARTED) {
+                      <div>Check runs after the cup ends</div>
+                    }
+                    @case (anticheatStatuses.UNAVAILABLE) {
+                      <div>Check unavailable</div>
+                    }
+                  }
+                } @else {
+                  <div>Checking...</div>
+                }
               </div>
             }
           </div>

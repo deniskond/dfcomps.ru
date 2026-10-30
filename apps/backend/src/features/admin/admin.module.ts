@@ -4,8 +4,16 @@ import { AdminCupsModule } from './cups/admin-cups.module';
 import { AdminMulticupsModule } from './multicups/admin-multicups.module';
 import { AdminSeasonModule } from './season/admin-season.module';
 import { AdminGeneralModule } from './general/admin-general.module';
+import { AdminAnticheatModule } from './anticheat/admin-anticheat.module';
 
 @Module({
-  imports: [AdminNewsModule, AdminCupsModule, AdminMulticupsModule, AdminSeasonModule, AdminGeneralModule],
+  imports: [
+    AdminNewsModule,
+    AdminCupsModule,
+    AdminMulticupsModule,
+    AdminSeasonModule,
+    AdminGeneralModule,
+    AdminAnticheatModule,
+  ],
 })
 export class AdminModule {}

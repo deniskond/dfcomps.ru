@@ -1,11 +1,38 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { map, Observable, switchMap, take, tap } from 'rxjs';
+import {
+  catchError,
+  filter,
+  from,
+  map,
+  mergeMap,
+  Observable,
+  of,
+  Subject,
+  switchMap,
+  take,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { AdminDataService } from '../../business/admin-data.service';
-import { AdminPlayerDemosValidationInterface, AdminValidationInterface, VerifiedStatuses } from '@dfcomps/contracts';
+import {
+  AdminPlayerDemosValidationInterface,
+  AdminValidationInterface,
+  AnticheatDemoCheckInterface,
+  AnticheatDemoCheckStatus,
+  AnticheatPlayerDisplayInterface,
+  AnticheatPlayerScoresInterface,
+  VerifiedStatuses,
+} from '@dfcomps/contracts';
 import { Unpacked, formatResultTime } from '@dfcomps/helpers';
+import { isSuperadmin } from '@dfcomps/auth';
+import { UserService } from '~shared/services/user-service/user.service';
+import { UserInterface } from '~shared/interfaces/user.interface';
+import { isNonNull } from '~shared/helpers';
+
+const MAX_SIMULTANEOUS_ANTICHEAT_CHECKS = 3;
 
 @Component({
   selector: 'dfcomps.ru-admin-validate',
@@ -14,10 +41,16 @@ import { Unpacked, formatResultTime } from '@dfcomps/helpers';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
-export class AdminValidateComponent implements OnInit {
+export class AdminValidateComponent implements OnInit, OnDestroy {
   public cupValidationInfo$: Observable<AdminValidationInterface>;
   public demoValidationStatuses = VerifiedStatuses;
   public validationForm: FormGroup;
+  public anticheatStatuses = AnticheatDemoCheckStatus;
+  public anticheatChecks: Record<number, AnticheatDemoCheckInterface> = {};
+  public anticheatPlayerScores: Record<number, AnticheatPlayerDisplayInterface | null> = {};
+  public showAnticheatPlayerScores = false;
+
+  private onDestroy$ = new Subject<void>();
 
   constructor(
     private adminDataService: AdminDataService,
@@ -25,13 +58,23 @@ export class AdminValidateComponent implements OnInit {
     private changeDetectorRef: ChangeDetectorRef,
     private snackBar: MatSnackBar,
     private router: Router,
+    private userService: UserService,
   ) {}
 
   ngOnInit(): void {
     this.cupValidationInfo$ = this.activatedRoute.params.pipe(
       switchMap((params: Params) => this.adminDataService.getCupValidationInfo$(parseInt(params['id']))),
-      tap((cupValidationInfo: AdminValidationInterface) => this.initValidationForm(cupValidationInfo)),
+      tap((cupValidationInfo: AdminValidationInterface) => {
+        this.initValidationForm(cupValidationInfo);
+        this.startAnticheatChecks(cupValidationInfo);
+        this.loadAnticheatPlayerScores(cupValidationInfo.cupInfo.id);
+      }),
     );
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
   }
 
   public setAllDemosValid(): void {
@@ -62,6 +105,58 @@ export class AdminValidateComponent implements OnInit {
 
   public formatTime(time: number): string {
     return formatResultTime(time);
+  }
+
+  private startAnticheatChecks({ vq3Demos, cpmDemos }: AdminValidationInterface): void {
+    const demoIds: number[] = [...vq3Demos, ...cpmDemos].reduce(
+      (ids: number[], player: AdminPlayerDemosValidationInterface) => [
+        ...ids,
+        ...player.demos.map(({ id }: Unpacked<AdminPlayerDemosValidationInterface['demos']>) => id),
+      ],
+      [],
+    );
+
+    from(demoIds)
+      .pipe(
+        mergeMap(
+          (demoId: number) =>
+            this.adminDataService.checkDemoWithAnticheat$(demoId).pipe(
+              catchError(() => of<AnticheatDemoCheckInterface>({ status: AnticheatDemoCheckStatus.UNAVAILABLE })),
+              map((check: AnticheatDemoCheckInterface) => ({ demoId, check })),
+            ),
+          MAX_SIMULTANEOUS_ANTICHEAT_CHECKS,
+        ),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(({ demoId, check }: { demoId: number; check: AnticheatDemoCheckInterface }) => {
+        this.anticheatChecks = { ...this.anticheatChecks, [demoId]: check };
+        this.changeDetectorRef.markForCheck();
+      });
+  }
+
+  private loadAnticheatPlayerScores(cupId: number): void {
+    this.userService
+      .getCurrentUser$()
+      .pipe(
+        filter(isNonNull),
+        take(1),
+        filter((user: UserInterface) => isSuperadmin(user.roles)),
+        tap(() => {
+          this.showAnticheatPlayerScores = true;
+          this.changeDetectorRef.markForCheck();
+        }),
+        switchMap(() =>
+          this.adminDataService.getAnticheatPlayerScores$(cupId).pipe(catchError(() => of({ scores: [] }))),
+        ),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(({ scores }: AnticheatPlayerScoresInterface) => {
+        this.anticheatPlayerScores = scores.reduce(
+          (accumulator, { playerId, display }) => ({ ...accumulator, [playerId]: display }),
+          {},
+        );
+        this.changeDetectorRef.markForCheck();
+      });
   }
 
   private initValidationForm(cupValidationInfo: AdminValidationInterface): void {

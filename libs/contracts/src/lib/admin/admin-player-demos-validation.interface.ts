@@ -1,6 +1,7 @@
 import { VerifiedStatuses } from '../cup/verified-statuses.enum';
 
 export interface AdminPlayerDemosValidationInterface {
+  playerId: number;
   nick: string;
   country: string | null;
   demos: {
