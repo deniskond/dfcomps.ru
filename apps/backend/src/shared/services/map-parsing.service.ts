@@ -6,9 +6,35 @@ import axios from 'axios';
 @Injectable()
 export class MapParsingService {
   public async getParsedMapInfo(map: string): Promise<ParsedMapInfoInterface> {
+    if (process.env.NODE_ENV === 'test') {
+      return this.getTestMapInfo(map);
+    }
+
     return GlobalConfig.settings.isWorldspawnParserEnabled
       ? this.getWorldspawnMapInfo(map)
       : this.getDfracingMapInfo(map);
+  }
+
+  private getTestMapInfo(map: string): ParsedMapInfoInterface {
+    return {
+      name: map,
+      size: '1',
+      author: 'Test author',
+      pk3: `https://ws.q3df.org/maps/downloads/${map}.pk3`,
+      weapons: {
+        grenade: false,
+        rocket: false,
+        plasma: false,
+        lightning: false,
+        bfg: false,
+        railgun: false,
+        shotgun: false,
+        grapple: false,
+        machinegun: false,
+        gauntlet: true,
+      },
+      levelshot: `https://ws.q3df.org/images/authorshots/512x384/${map}.jpg`,
+    };
   }
 
   private async getWorldspawnMapInfo(map: string): Promise<ParsedMapInfoInterface> {
