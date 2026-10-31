@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { switchMap, tap, takeUntil, map, withLatestFrom } from 'rxjs/operators';
-import { Subject, Observable, combineLatest } from 'rxjs';
+import { catchError, switchMap, tap, takeUntil, map, withLatestFrom } from 'rxjs/operators';
+import { Subject, Observable, combineLatest, of } from 'rxjs';
 import { ProfileService } from './services/profile.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ProfileCupInterface } from './interfaces/profile-cup.interface';
@@ -11,6 +11,7 @@ import { UserInterface } from '~shared/interfaces/user.interface';
 import { LanguageService } from '~shared/services/language/language.service';
 import { UserService } from '~shared/services/user-service/user.service';
 import {
+  AntiscriptLevel,
   Physics,
   ProfileCupResponseInterface,
   ProfileCupStatInterface,
@@ -46,6 +47,13 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   public isNickChangeAllowed = false;
   public profileUpdate$ = new Subject<void>();
   public isDiscordLinkButtonShown$: Observable<boolean>;
+  public antiscriptLevel: AntiscriptLevel | null = null;
+  public antiscriptLevels = AntiscriptLevel;
+  public antiscriptTooltips: Record<AntiscriptLevel, string> = {
+    [AntiscriptLevel.OK]: '',
+    [AntiscriptLevel.WARNING]: '',
+    [AntiscriptLevel.BUSTED]: '',
+  };
 
   private onDestroy$ = new Subject<void>();
 
@@ -65,6 +73,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     this.initObservables();
     this.setRouteSubscription();
     this.setProfileUpdateSubscription();
+    this.setAntiscriptSubscription();
+    this.setAntiscriptTooltipsSubscription();
   }
 
   ngOnDestroy(): void {
@@ -128,6 +138,36 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
         takeUntil(this.onDestroy$),
       )
       .subscribe((profileInfo: ProfileInterface) => this.updateProfile(profileInfo));
+  }
+
+  private setAntiscriptSubscription(): void {
+    this.activatedRoute.params
+      .pipe(
+        tap(() => {
+          this.antiscriptLevel = null;
+          this.changeDetectorRef.markForCheck();
+        }),
+        switchMap(({ id }: Params) => this.profileService.getAntiscriptLevel$(id).pipe(catchError(() => of(null)))),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe((level: AntiscriptLevel | null) => {
+        this.antiscriptLevel = level;
+        this.changeDetectorRef.markForCheck();
+      });
+  }
+
+  private setAntiscriptTooltipsSubscription(): void {
+    this.languageService
+      .getTranslations$()
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((translations: Record<string, string>) => {
+        this.antiscriptTooltips = {
+          [AntiscriptLevel.OK]: translations['antiscriptOk'],
+          [AntiscriptLevel.WARNING]: translations['antiscriptWarning'],
+          [AntiscriptLevel.BUSTED]: translations['antiscriptBusted'],
+        };
+        this.changeDetectorRef.markForCheck();
+      });
   }
 
   private updateProfile(profileInfo: ProfileInterface): void {

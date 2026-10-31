@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { EntityManager, In, Repository } from 'typeorm';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -16,6 +16,7 @@ import {
 import { UserRoles, checkUserRoles, isSuperadmin } from '@dfcomps/auth';
 import { AuthService } from '../../auth/auth.service';
 import { CupDemo } from '../../../shared/entities/cup-demo.entity';
+import { User } from '../../../shared/entities/user.entity';
 import { UserAccessInterface } from '../../../shared/interfaces/user-access.interface';
 import { LoggerService } from '../../../shared/services/logger.service';
 
@@ -36,6 +37,7 @@ const PUT_SCORES_TIMEOUT_MS = 120000;
 export class AdminAnticheatService {
   constructor(
     @InjectRepository(CupDemo) private readonly cupsDemosRepository: Repository<CupDemo>,
+    @InjectRepository(User) private readonly usersRepository: Repository<User>,
     private readonly authService: AuthService,
     private readonly loggerService: LoggerService,
   ) {}
@@ -78,9 +80,7 @@ export class AdminAnticheatService {
   ): Promise<AnticheatDemoSourceInterface[]> {
     await this.assertSuperadmin(accessToken);
 
-    const numericIds: number[] = demoIds
-      .filter((demoId: string) => /^\d+$/.test(demoId) && Number(demoId) <= MAX_POSTGRES_INTEGER)
-      .map(Number);
+    const numericIds: number[] = demoIds.filter((demoId: string) => this.isPostgresInteger(demoId)).map(Number);
 
     if (!numericIds.length) {
       return [];
@@ -109,7 +109,18 @@ export class AdminAnticheatService {
   public async putPlayerScores(accessToken: string | undefined, body: unknown): Promise<CheckerResponse> {
     await this.assertSuperadmin(accessToken);
 
-    return this.callChecker({ method: 'PUT', url: '/admin/player_scores', data: body, timeout: PUT_SCORES_TIMEOUT_MS });
+    const response: CheckerResponse = await this.callChecker({
+      method: 'PUT',
+      url: '/admin/player_scores',
+      data: body,
+      timeout: PUT_SCORES_TIMEOUT_MS,
+    });
+
+    if (response.status === 200) {
+      await this.saveUserScores(body);
+    }
+
+    return response;
   }
 
   public async checkDemo(accessToken: string | undefined, demoId: number): Promise<AnticheatDemoCheckInterface> {
@@ -196,6 +207,20 @@ export class AdminAnticheatService {
     }
 
     return { scores };
+  }
+
+  private async saveUserScores(body: unknown): Promise<void> {
+    const { scores } = body as { scores: { player_id: string; p_scripter: number }[] };
+
+    await this.usersRepository.manager.transaction(async (manager: EntityManager) => {
+      for (const { player_id, p_scripter } of scores.filter(({ player_id }) => this.isPostgresInteger(player_id))) {
+        await manager.update(User, { id: Number(player_id) }, { antiscript_score: p_scripter });
+      }
+    });
+  }
+
+  private isPostgresInteger(id: string): boolean {
+    return /^\d+$/.test(id) && Number(id) <= MAX_POSTGRES_INTEGER;
   }
 
   private async getPlayerDisplay(playerId: number): Promise<AnticheatPlayerDisplayInterface | null> {

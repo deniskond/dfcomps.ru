@@ -2,7 +2,13 @@ import { BackendService, URL_PARAMS } from '~shared/rest-api';
 import { Injectable } from '@angular/core';
 import { Observable, combineLatest, of } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
-import { NickChangeResponseInterface, ProfileCupResponseInterface, ProfileInterface } from '@dfcomps/contracts';
+import {
+  AntiscriptLevel,
+  NickChangeResponseInterface,
+  ProfileAntiscriptInterface,
+  ProfileCupResponseInterface,
+  ProfileInterface,
+} from '@dfcomps/contracts';
 
 @Injectable()
 export class ProfileService extends BackendService {
@@ -14,6 +20,12 @@ export class ProfileService extends BackendService {
       : this.get$<ProfileInterface>(URL_PARAMS.PROFILE.GET_PROFILE(playerId)).pipe(
           tap((profile: ProfileInterface) => (this.profiles[playerId] = profile)),
         );
+  }
+
+  public getAntiscriptLevel$(playerId: number): Observable<AntiscriptLevel | null> {
+    return this.get$<ProfileAntiscriptInterface>(URL_PARAMS.PROFILE.GET_ANTISCRIPT(playerId)).pipe(
+      map(({ level }: ProfileAntiscriptInterface) => level),
+    );
   }
 
   public getPlayerCupsPage$(

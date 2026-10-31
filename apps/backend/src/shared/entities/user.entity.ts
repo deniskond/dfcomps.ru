@@ -37,6 +37,9 @@ export class User {
   @Column({ type: 'character varying' })
   access_token: string;
 
+  @Column({ type: 'double precision', nullable: true, select: false })
+  antiscript_score: number | null;
+
   @Column({ type: 'timestamp with time zone', nullable: true })
   last_nick_change_time: string | null;
 

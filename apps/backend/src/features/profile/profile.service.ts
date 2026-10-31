@@ -1,7 +1,9 @@
 import {
+  AntiscriptLevel,
   CupTypes,
   NickChangeResponseInterface,
   Physics,
+  ProfileAntiscriptInterface,
   ProfileDemosInterface,
   ProfileInterface,
   ProfileMainInfoInterface,
@@ -31,6 +33,8 @@ import { MulterFileInterface } from '../../shared/interfaces/multer.interface';
 @Injectable()
 export class ProfileService {
   private readonly MAX_RATING_RECORDS = 8;
+  private readonly ANTISCRIPT_OK_BELOW = 0.9;
+  private readonly ANTISCRIPT_BUSTED_ABOVE = 0.999;
 
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
@@ -40,6 +44,35 @@ export class ProfileService {
     @InjectRepository(Reward) private readonly rewardRepository: Repository<Reward>,
     private readonly authService: AuthService,
   ) {}
+
+  public async getPlayerAntiscript(
+    accessToken: string | undefined,
+    playerId: number,
+  ): Promise<ProfileAntiscriptInterface> {
+    const { userId }: UserAccessInterface = await this.authService.getUserInfoByAccessToken(accessToken);
+    const player: User | null = await this.userRepository
+      .createQueryBuilder('users')
+      .select(['users.id', 'users.antiscript_score'])
+      .where({ id: playerId })
+      .getOne();
+    const level: AntiscriptLevel | null = this.getAntiscriptLevel(player?.antiscript_score ?? null);
+
+    return { level: level === AntiscriptLevel.WARNING && userId !== playerId ? AntiscriptLevel.OK : level };
+  }
+
+  // The confidence that a player uses no scripts is 1 - score.
+  // Over 10% confidence is OK, under 0.1% is BUSTED, and all other values are WARNING.
+  private getAntiscriptLevel(score: number | null): AntiscriptLevel | null {
+    if (score === null) {
+      return null;
+    }
+
+    if (score > this.ANTISCRIPT_BUSTED_ABOVE) {
+      return AntiscriptLevel.BUSTED;
+    }
+
+    return score < this.ANTISCRIPT_OK_BELOW ? AntiscriptLevel.OK : AntiscriptLevel.WARNING;
+  }
 
   public async getPlayerProfileMainInfo(userId: number): Promise<ProfileMainInfoInterface> {
     const player: User | null = await this.userRepository
