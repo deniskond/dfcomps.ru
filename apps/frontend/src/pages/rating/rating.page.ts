@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { switchMap, ReplaySubject, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { take, finalize } from 'rxjs/operators';
 import { CurrentSeasonService } from '~shared/rest-api';
 import { RatingTablesService } from '~shared/services/rating-tables-service/rating-tables-service';
@@ -22,8 +22,8 @@ export class RatingPageComponent implements OnInit, OnDestroy {
   public vq3Ratings$ = new ReplaySubject<LeaderTableInterface[]>(1);
   public cpmRatings$ = new ReplaySubject<LeaderTableInterface[]>(1);
   public pagesCount$ = new ReplaySubject<number>(1);
-  public isLoadingVq3$ = new Subject<boolean>();
-  public isLoadingCpm$ = new Subject<boolean>();
+  public isLoadingVq3$ = new BehaviorSubject<boolean>(true);
+  public isLoadingCpm$ = new BehaviorSubject<boolean>(true);
   public bias = 0;
 
   private translations: Record<string, string> = {};
