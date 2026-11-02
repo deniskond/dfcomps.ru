@@ -66,7 +66,6 @@ export class URL_PARAMS {
 
   public static get PROFILE(): {
     GET_PROFILE: (id: number) => string;
-    GET_ANTISCRIPT: (id: number) => string;
     CHECK_NICK_CHANGE: string;
     UPDATE_INFO: string;
     UPDATE_AVATAR: string;
@@ -74,7 +73,6 @@ export class URL_PARAMS {
   } {
     return {
       GET_PROFILE: (id: number) => `${API_URL}/profile/get/${id}`,
-      GET_ANTISCRIPT: (id: number) => `${API_URL}/profile/get/${id}/antiscript`,
       CHECK_NICK_CHANGE: `${API_URL}/profile/check_last_nick_change_time`,
       UPDATE_INFO: `${API_URL}/profile/update-info`,
       UPDATE_AVATAR: `${API_URL}/profile/update-avatar`,

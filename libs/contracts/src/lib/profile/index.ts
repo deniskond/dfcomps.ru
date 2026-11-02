@@ -1,6 +1,4 @@
-export { AntiscriptLevel } from './antiscript-level.enum';
 export { NickChangeResponseInterface } from './nick-change-response.interface';
-export { ProfileAntiscriptInterface } from './profile-antiscript.interface';
 export { ProfileCupResponseInterface } from './profile-cup-response.interface';
 export { ProfileCupStatInterface } from './profile-cup-stat.interface';
 export { ProfileDemosInterface } from './profile-demos.interface';

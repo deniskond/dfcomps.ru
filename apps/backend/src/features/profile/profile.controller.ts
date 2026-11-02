@@ -13,13 +13,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ProfileService } from './profile.service';
-import {
-  NickChangeResponseInterface,
-  ProfileAntiscriptInterface,
-  ProfileInterface,
-  ProfileMainInfoInterface,
-  ProfileCupResponseInterface,
-} from '@dfcomps/contracts';
+import { NickChangeResponseInterface, ProfileInterface, ProfileMainInfoInterface, ProfileCupResponseInterface } from '@dfcomps/contracts';
 import { ProfileUpdateDto } from './dto/profile-update.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MulterFileInterface } from '../../shared/interfaces/multer.interface';
@@ -37,14 +31,6 @@ export class ProfileController {
   @Get('get/:id/info')
   getPlayerProfileMainInfo(@Param('id', new ParseIntPipe()) playerId: number): Promise<ProfileMainInfoInterface> {
     return this.profileService.getPlayerProfileMainInfo(playerId);
-  }
-
-  @Get('get/:id/antiscript')
-  getPlayerAntiscript(
-    @Headers('X-Auth') accessToken: string | undefined,
-    @Param('id', new ParseIntPipe()) playerId: number,
-  ): Promise<ProfileAntiscriptInterface> {
-    return this.profileService.getPlayerAntiscript(accessToken, playerId);
   }
 
   @Get('search')
