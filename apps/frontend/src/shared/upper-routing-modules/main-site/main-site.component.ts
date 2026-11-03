@@ -61,4 +61,15 @@ export class MainSiteComponent implements OnInit {
     // For example, "FPS Winter Cup - Round 3" will have the manual shortName "FPS Winter Cup - R3".
     return nextCupInfo.type === CupTypes.ONLINE ? nextCupInfo.fullName : nextCupInfo.shortName;
   }
+
+  public getCupTimerMapLink(nextCupInfo: CupInterface): string | null {
+    // Map fields are null for cups that did not start yet
+    if (!nextCupInfo.map1) {
+      return null;
+    }
+
+    return (
+      nextCupInfo.customMap || nextCupInfo.mapPk3 || `https://defrag.racing/maps/download/${nextCupInfo.map1}`
+    );
+  }
 }

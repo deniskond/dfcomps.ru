@@ -35,7 +35,7 @@ export class AddOfflineCupDto {
   @IsNotEmpty()
   mapLevelshotLink: string;
 
-  @IsNotEmpty()
+  // Empty value: the site uses the default defrag.racing links for this map
   mapPk3Link: string;
 
   @IsBoolean()

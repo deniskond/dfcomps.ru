@@ -46,7 +46,7 @@ export class AdminAddOfflineCupService {
           type: CupTypes.OFFLINE,
           map_weapons: addOfflineCupDto.weapons,
           map_author: addOfflineCupDto.mapAuthor,
-          map_pk3: addOfflineCupDto.mapPk3Link,
+          map_pk3: addOfflineCupDto.mapPk3Link || '',
           map_size: addOfflineCupDto.size,
           archive_link: null,
           bonus_rating: 0,

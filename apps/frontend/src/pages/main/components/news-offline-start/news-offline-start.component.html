@@ -11,7 +11,7 @@
         <div class="row-info">
           @if (!news.cup.customMap) {
             <a
-              [href]="news.cup.mapPk3"
+              [href]="news.cup.mapPk3 || 'https://defrag.racing/maps/' + news.cup.map1"
               target="_blank"
               class="map-link"
               data-test-id="cup-map-link"
@@ -63,7 +63,7 @@
               <span translate translation="download"></span>
             </div>
             <div class="row-info">
-              <a [href]="news.cup.mapPk3" download>{{ news.cup.mapSize }} MB</a>
+              <a [href]="news.cup.mapPk3 || 'https://defrag.racing/maps/download/' + news.cup.map1" download>{{ news.cup.mapSize }} MB</a>
             </div>
           </div>
           <div class="map-info-row">

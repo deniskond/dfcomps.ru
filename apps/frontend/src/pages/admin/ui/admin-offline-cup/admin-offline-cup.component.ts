@@ -82,6 +82,8 @@ export class AdminOfflineCupComponent implements OnInit {
   private onDestroy$ = new Subject<void>();
   private mapType: 'ws' | 'custom' = 'ws';
   private cupId: number | null = null;
+  // In edit mode, keep the saved pk3 link while the map name is not changed
+  private savedPk3LinkMapName: string | null = null;
   private weaponControls: string[] = [
     'gauntlet',
     'rocket',
@@ -226,6 +228,7 @@ export class AdminOfflineCupComponent implements OnInit {
 
     this.isMapFound = null;
     this.mapType = value;
+    this.savedPk3LinkMapName = null;
     this.offlineCupForm.get('mapAuthor')!.setValue('');
     this.offlineCupForm.get('mapAuthor')!.markAsPristine();
     this.offlineCupForm.get('mapLevelshotLink')!.setValue('');
@@ -238,7 +241,13 @@ export class AdminOfflineCupComponent implements OnInit {
 
   private setMapInfoFormValues(mapInfo: ParsedMapInfoInterface): void {
     this.offlineCupForm.get('mapAuthor')!.setValue(mapInfo.author);
-    this.offlineCupForm.get('mapPk3Link')!.setValue(mapInfo.pk3);
+
+    if (mapInfo.name !== this.savedPk3LinkMapName) {
+      this.offlineCupForm.get('mapPk3Link')!.setValue(mapInfo.pk3);
+    }
+
+    this.savedPk3LinkMapName = null;
+
     this.offlineCupForm.get('mapLevelshotLink')!.setValue(mapInfo.levelshot);
     this.offlineCupForm.get('size')!.setValue(mapInfo.size);
 
@@ -248,6 +257,7 @@ export class AdminOfflineCupComponent implements OnInit {
   }
 
   private setFormValues(cup: AdminEditCupInterface): void {
+    this.savedPk3LinkMapName = cup.mapName;
     this.offlineCupForm.setValue({
       fullName: cup.fullName,
       shortName: cup.shortName,

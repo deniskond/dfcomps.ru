@@ -193,13 +193,6 @@ export class MapParsingService {
 
     const authorRegex = /author&quot;:&quot;([^&]*)&quot;/;
     const authorMatches = mapPageHtml.match(authorRegex);
-    const pk3Regex = /pk3&quot;:&quot;([^&]*)&quot;/;
-    const pk3Matches = mapPageHtml.match(pk3Regex);
-
-    if (!pk3Matches) {
-      throw new InternalServerErrorException(`Could not parse pk3 link for map ${map}`);
-    }
-
     const sizeRegex = /pk3_size&quot;:([^&]*),&quot;/;
     const sizeMatches = mapPageHtml.match(sizeRegex);
 
@@ -211,7 +204,8 @@ export class MapParsingService {
       name: map,
       size: (Number(sizeMatches[1]) / (1024 * 1024)).toFixed(2),
       author: authorMatches && authorMatches.length > 1 ? authorMatches[1] : 'Unknown',
-      pk3: `https://ws.q3df.org/maps/downloads/` + pk3Matches[1],
+      // Empty pk3 link: the site uses the default defrag.racing links for this map
+      pk3: '',
       weapons: mapWeapons,
       levelshot: `https://ws.q3df.org/images/authorshots/512x384/${map}.jpg`,
     };

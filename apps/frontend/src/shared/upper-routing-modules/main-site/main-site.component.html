@@ -20,7 +20,7 @@
               [cupType]="cup.type"
               [cupName]="cup | invokeFunction: getCupTimerName"
               [customNews]="cup.customNews"
-              [mapLink]="cup.customMap || cup.mapPk3"
+              [mapLink]="cup | invokeFunction: getCupTimerMapLink"
               [server]="server$ | async"
               [logo]="cup.logo"
             ></app-cup-timer>

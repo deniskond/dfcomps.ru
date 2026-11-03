@@ -187,7 +187,7 @@ export class AdminDataService {
       addNews: formValue['addNews'],
       size: formValue['size'],
       mapLevelshotLink: formValue['mapLevelshotLink'],
-      mapPk3Link: formValue['mapPk3Link'],
+      mapPk3Link: formValue['mapPk3Link'] || '',
       isCustomMap,
       ratingModifier: formValue['ratingModifier'],
     };
