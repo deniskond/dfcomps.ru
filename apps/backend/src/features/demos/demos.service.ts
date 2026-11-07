@@ -468,7 +468,13 @@ export class DemosService {
         ? parseInt(minutes) * 60 + parseInt(seconds) + parseInt(milliseconds) / 1000
         : null;
 
-    if (parsedTime && parsedTime !== demoTime) {
+    if (parsedTime === null) {
+      valid = false;
+      errors.no_finish = {
+        actual: 'no finish',
+        expected: 'finished run',
+      };
+    } else if (parsedTime !== demoTime) {
       valid = false;
       errors.demoname_time = {
         actual: demoTime.toString(),

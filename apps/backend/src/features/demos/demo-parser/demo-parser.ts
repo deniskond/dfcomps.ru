@@ -82,6 +82,42 @@ function parseConsoleTimeStrings(consoleValues: string[]): string[] {
   return result;
 }
 
+// Remove Quake 3 color codes: "^" and the character after it.
+function stripColors(text: string): string {
+  return text.replace(/\^./g, '');
+}
+
+const SERVER_FINISH_MESSAGE = /^print "(.*) reached the finish line in (\d+(?::\d+)*):(\d{3})\b/;
+
+// Read the finish time from the server message "<name> reached the finish line in M:SS:mmm".
+// Only messages for the recording player count. If there are more, the best time is used.
+// Use this only for online demos: in some long online runs the timer events do not show the finish.
+function getServerMessageFinishTime(consoleValues: string[], playerName: string | null): number | null {
+  if (!playerName) {
+    return null;
+  }
+
+  const expectedName = stripColors(playerName).trim();
+  let best: number | null = null;
+
+  for (const cmd of consoleValues) {
+    const match = stripColors(cmd).match(SERVER_FINISH_MESSAGE);
+
+    if (!match || match[1].trim() !== expectedName) {
+      continue;
+    }
+
+    const seconds = match[2].split(':').reduce((total, part) => total * 60 + parseInt(part), 0);
+    const millis = seconds * 1000 + parseInt(match[3]);
+
+    if (millis > 0 && (best === null || millis < best)) {
+      best = millis;
+    }
+  }
+
+  return best;
+}
+
 function buildRecord(
   demoName: string,
   clientEvents: ClientEvent[],
@@ -188,6 +224,18 @@ export class DemoParser {
         isTimeReset = true;
       } else {
         time = record.bestTime;
+        isTimeReset = false;
+      }
+    }
+
+    // Online demos: if the timer events show no finish, use the server finish message of the recording player.
+    const isOnline = Number(clientConfig['defrag_gametype'] ?? 0) > 4;
+    if (time === undefined && isOnline) {
+      const consoleValues = Object.values(clc.console).map((v) => v.command);
+      const playerName = getPlayerName(conf, clc.clientNum);
+      const serverFinishMs = getServerMessageFinishTime(consoleValues, playerName);
+      if (serverFinishMs !== null) {
+        time = getTimeByMillis(serverFinishMs);
         isTimeReset = false;
       }
     }

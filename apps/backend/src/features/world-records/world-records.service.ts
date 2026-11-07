@@ -347,7 +347,13 @@ export class WorldRecordsService {
         ? parseInt(minutes) * 60 + parseInt(seconds) + parseInt(milliseconds) / 1000
         : null;
 
-    if (parsedTime && parsedTime !== demoTimeFromFilename) {
+    if (parsedTime === null) {
+      valid = false;
+      errors.no_finish = {
+        actual: 'no finish',
+        expected: 'finished run',
+      };
+    } else if (parsedTime !== demoTimeFromFilename) {
       valid = false;
       errors.demoname_time = {
         actual: demoTimeFromFilename.toString(),

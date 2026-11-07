@@ -160,6 +160,12 @@ Produces the `record` section:
 - `spectatorRecorded` — set when the file-start player name differs from the timer-start player name
 - `lateStart` — set when the timer starts more than 20 s after file recording started
 
+### Server message fallback (online demos)
+In some long online runs the timer events do not show the finish. When `bestTime` is empty and `defrag_gametype > 4`, `parseDemo()` reads the time from the server message `<name> reached the finish line in M:SS:mmm`. Only messages for the recording player (`clc.clientNum`, color codes removed) count, and the best time is used. Offline demos never use this fallback.
+
+### Upload validation
+`checkDemo()` (cup uploads) and `checkWrDemo()` (WR database) reject a demo with `no_finish` when the parser finds no finish time, and with `demoname_time` when the parsed time is not the time in the file name.
+
 ### `buildTimer()`
 Parses the last `TimerStopped` server command:
 ```
